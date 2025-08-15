@@ -1,0 +1,15 @@
+[
+  {
+    "code": "en",
+    "locale": "en-GB",
+    "label": "English",
+    "shortLabel": "EN",
+    "dateFormat": "dd/mm/yyyy"
+  },
+  {
+    "code": "nl",
+    "locale": "nl-NL",
+    "label": "Nederlands",
+    "dateFormat": "dd-mm-yyyy"
+  }
+]

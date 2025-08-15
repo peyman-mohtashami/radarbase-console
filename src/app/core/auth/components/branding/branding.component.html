@@ -1,0 +1,13 @@
+<div class="hidden md:flex h-full w-full shrink-0 grow-0 items-center bg-linear-to-r from-primary to-tertiary dark:from-primary-dark dark:to-tertiary-dark rounded-b md:rounded-r md:rounded-bl-none">
+  @if (instanceConfig | async; as config) {
+    <div class="p-16 text-white text-center">
+      <rb-logo class="block mx-auto w-56" />
+      <h2 class="mb-12 mt-1 text-lg font-semibold">
+        {{ config.branding.title | translate}}
+      </h2>
+      <p class="text-sm">
+        {{ config.branding.description | translate }}
+      </p>
+    </div>
+  }
+</div>

@@ -1,0 +1,31 @@
+{
+  "clientError": "Client Error",
+  "unknownError": "Unknown error occurred.",
+  "serverDown": "(Backend server is down.)",
+  "contactSupport": "Retry again or contact support.",
+  "loginRequired": "You need to log in to view requested page.",
+  "sessionExpired": "The session is expired. Log in again.",
+  "invalid_grant": "Invalid username or password",
+  "500": "Internal Server Error",
+  "error": {
+    "emailNotRegistered": "Email address not registered",
+    "internalServerError": "Internal Server Error",
+    "sourceDataNameAvailable": "Source Data Name exists",
+    "sourceTypeExists": "Source Type (Producer, model and catalog version) exists",
+    "nameexists": "Organization Name exists"
+  },
+  "ValidatorError": {
+    "requiredValidator": "'{{value}}' is required."
+  },
+  "group": {
+    "error.validation": "Group has subjects. Do you still want to delete this group?"
+  },
+  "source": {
+    "error.sourceNameExists": "Source Name exists. Enter another Source Name."
+  },
+  "userManagement": {
+    "error": {
+      "emailNotRegistered": "This email is not registered."
+    }
+  }
+}

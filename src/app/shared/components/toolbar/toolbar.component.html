@@ -1,0 +1,96 @@
+<mat-toolbar color="primary"
+             class="bg-linear-to-r! from-tertiary from-0 via-tertiary via-[256px] to-primary to-100% dark:from-tertiary-dark dark:to-primary-dark dark:via-tertiary-dark">
+  <mat-toolbar-row class="justify-between">
+    <div class="flex items-center sm:gap-2">
+      @if (user$ | async) {
+        <button class="small"
+                mat-icon-button
+                aria-label="Menu button"
+                (click)="toggleMenu()">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      }
+      <rb-logo class="block mx-auto w-32" />
+    </div>
+
+    <div class="flex items-center sm:gap-1">
+      @if (locale$ | async; as locale) {
+        @if (locale && locale.languages && locale.languages.length > 1) {
+          <div class="flex items-center">
+            <button mat-button
+                    [matMenuTriggerFor]="languageMenu"
+                    aria-label="Language button">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined">language</span>
+                <span class="text-base">
+                  {{ locale.currentLanguage?.shortLabel || locale.currentLanguage?.label }}
+                </span>
+              </span>
+            </button>
+          </div>
+
+          <mat-menu #languageMenu="matMenu"
+                    xPosition="before"
+                    class="text-base w-64">
+            @for (language of locale.languages; track language.code) {
+              <button class="hover:text-primary! hover:bg-transparent! transition-all"
+                      mat-menu-item
+                      [class.text-primary!]="locale?.currentLanguage?.locale === language.locale"
+                      (click)="switchLanguage(language)">
+                <span>{{ language.label }}</span>
+              </button>
+            }
+          </mat-menu>
+        }
+      }
+
+      @if (user$ | async; as user) {
+        <button mat-icon-button
+                class="small"
+                aria-label="User account button"
+                [matMenuTriggerFor]="userMenu">
+          <span class="material-symbols-outlined">account_circle</span>
+        </button>
+        <mat-menu #userMenu="matMenu"
+                  xPosition="before"
+                  class="text-base w-64 *:p-0!">
+          <div class="bg-primary/40 dark:bg-neutral-500 dark:text-white p-4">
+            <span>{{ user.firstName || user.login }}</span>
+          </div>
+          <button class="hover:text-primary! hover:bg-transparent! transition-all"
+                  mat-menu-item
+                  [routerLink]="['/admin','profile']">
+              <span class="flex items-center gap-4">
+                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">account_circle</span>
+                <span>{{ 'Profile' | translate }}</span>
+              </span>
+          </button>
+          <button class="hover:text-primary! hover:bg-transparent! transition-all"
+                  mat-menu-item
+                  [routerLink]="['/admin','change-password']">
+              <span class="flex items-center gap-4">
+                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">lock</span>
+                <span>{{ 'Reset Password' | translate }}</span>
+              </span>
+          </button>
+          <button class="hover:text-primary! hover:bg-transparent! transition-all"
+                  mat-menu-item
+                  (click)="logout()">
+              <span class="flex items-center gap-4">
+                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">logout</span>
+                <span>{{ 'Sign Out' | translate }}</span>
+              </span>
+          </button>
+        </mat-menu>
+      }
+
+      <button mat-icon-button
+              class="tiny"
+              aria-label="Light/Dark mode button"
+              (click)="toggleTheme()">
+        <span class="material-symbols-outlined">{{ (isLightTheme$ | async) ? "dark_mode" : "light_mode" }}</span>
+      </button>
+
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

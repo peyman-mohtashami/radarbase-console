@@ -1,0 +1,30 @@
+<rb-auth-card>
+  <ng-container header>
+    {{ 'CORE.AUTH.ACTIVATION_PAGE.title' | translate }}
+  </ng-container>
+  <ng-container body>
+    @if (!key) {
+      <p>
+        {{ 'CORE.AUTH.ACTIVATION_PAGE.invalidKeyErrorDescription' | translate }}
+      </p>
+    } @else {
+      @if (success) {
+        <p>
+          {{ 'CORE.AUTH.ACTIVATION_PAGE.successMessage' | translate }}
+        </p>
+      }
+      @if (error) {
+        <rb-message />
+        <p>
+          {{ 'CORE.AUTH.ACTIVATION_PAGE.errorMessage' | translate }}
+        </p>
+      }
+    }
+
+    <p class="mt-4">
+      <a class="text-primary dark:text-primary-dark" [routerLink]='["/login"]'>
+        {{ 'CORE.AUTH.FORGOT_PASSWORD_PAGE.return' | translate }}
+      </a>
+    </p>
+  </ng-container>
+</rb-auth-card>

@@ -1,0 +1,83 @@
+{
+  "CORE": {
+    "AUTH": {
+      "LOGIN_PAGE": {
+        "title": "Inloggen",
+        "subtitle": "Inloggen op de Management Portal-app",
+        "description": "Met deze app kunt u onderwerpen vanuit de RADAR-gebaseerde Management Portal koppelen aan API's voor externe apparaten (bijv. Fitbit, Withings en ...)",
+        "loginButtonOauthCodeGrant": "Inloggen met Management Portal",
+        "username": "Gebruikersnaam",
+        "password": "Wachtwoord",
+        "loginButtonPasswordGrant": "Inloggen",
+        "gotoForgotPassword": "Wachtwoord vergeten?"
+      },
+      "ACTIVATION_PAGE": {
+        "title": "Activering",
+        "invalidKeyErrorMessage": "Uw gebruiker kon niet worden geactiveerd. De sleutel is ongeldig.",
+        "invalidKeyErrorDescription": "Neem contact op met het supportteam en vraag de activeringslink opnieuw aan.",
+        "successMessage": "Uw gebruikersaccount is geactiveerd.",
+        "gotTo": "Ga naar",
+        "loginPage": "Inloggen",
+        "errorMessage": "Vraag de activeringslink opnieuw aan."
+      },
+      "FORGOT_PASSWORD_PAGE": {
+        "title": "Wachtwoord vergeten?",
+        "subtitle": "Vul het formulier in om uw wachtwoord te resetten",
+        "successMessage": "Er is een bevestigingsmail met instructies naar uw e-mailadres verzonden. Volg deze instructies om uw e-mailadres te bevestigen en uw account te activeren.",
+        "successButton": "Uw verzoek succesvol verzonden",
+        "email": "E-mail",
+        "submitButton": "Verzenden",
+        "gotTo": "Ga naar",
+        "loginPage": "Inloggen",
+        "return": "Terug naar Inloggen"
+
+      },
+      "PASSWORD_PAGE": {
+        "title": "Wijzig uw wachtwoord",
+        "subtitle": "Maak een nieuw wachtwoord aan voor uw account",
+        "newPassword": "Nieuw wachtwoord",
+        "weakPasswordError": "Zwak wachtwoord. (Minimaal 8 tekens met 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 symbool)",
+        "confirmPassword": "Wachtwoordbevestiging",
+        "confirmPasswordError": "Wachtwoord en wachtwoordbevestiging komen niet overeen.",
+        "updateButton": "Bijwerken",
+        "successButton": "Succesvol bijgewerkt"
+      },
+      "PROFILE_PAGE": {
+        "title": "Profiel bewerken",
+        "subtitle": "Gebruiker",
+        "login": "Inloggen",
+        "firstName": "Voornaam",
+        "lastName": "Achternaam",
+        "email": "E-mail",
+        "language": "Taal",
+        "updateButton": "Bijwerken",
+        "successButton": "Succesvol bijgewerkt"
+      },
+      "RESET_PASSWORD_PAGE": {
+        "title": "Uw wachtwoord opnieuw instellen",
+        "subtitle": "Maak een nieuw wachtwoord aan voor uw account",
+        "invalidKeyErrorMessage": "Sleutel is niet geldig.",
+        "invalidKeyErrorDescription": "Wilt u de link voor wachtwoordherstel opnieuw opvragen?",
+        "gotoForgotPasswordPage": "Ga naar Wachtwoord vergeten",
+        "successMessage": "Uw gebruikersaccount is geactiveerd.",
+        "errorMessage": "Wilt u de activeringslink opnieuw opvragen?",
+        "newPassword": "Nieuw wachtwoord",
+        "weakPasswordError": "Zwak wachtwoord. (Minimaal 8 tekens, 1 letter, 1 cijfer en 1 symbool)",
+        "confirmPassword": "Wachtwoordbevestiging",
+        "confirmPasswordError": "Wachtwoord en wachtwoordbevestiging komen niet overeen.",
+        "updateButton": "Bijwerken",
+        "successButton": "Succesvol bijgewerkt",
+        "gotTo": "Ga naar",
+        "loginPage": "Inloggen",
+        "forgotPasswordPage": "Wachtwoord vergeten",
+        "gotToForgotPasswordEndMessage": "naar Vraag de link voor het opnieuw instellen van het wachtwoord opnieuw aan."
+      }
+    },
+
+    "ERROR": {
+      "sessionExpired": "De sessie is verlopen. Meld u opnieuw aan.",
+      "authGuard": "U moet ingelogd zijn om de gevraagde pagina te bekijken."
+    }
+  },
+  "title": "Management Portal (NL)"
+}

@@ -1,0 +1,112 @@
+@if (user) {
+  <div class="flex justify-center items-center h-[calc(100vh-64px)]">
+    <mat-card appearance="outlined" class="w-[400px]">
+      <mat-card-header class='block! text-center'>
+        <mat-card-title class="text-lg">
+          {{ 'CORE.AUTH.PROFILE_PAGE.title' | translate }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ 'CORE.AUTH.PROFILE_PAGE.subtitle' | translate }}: {{ user.login }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (error) {
+          <rb-message/>
+        }
+        <form [formGroup]='form' novalidate>
+          <mat-form-field class='w-full my-4'
+                          subscriptSizing="fixed"
+                          appearance='outline'
+                          floatLabel='always'>
+            <mat-label>
+              {{ 'CORE.AUTH.PROFILE_PAGE.login' | translate }}
+            </mat-label>
+            <input matInput formControlName='login'>
+          </mat-form-field>
+
+          <mat-form-field class='w-full mb-4'
+                          subscriptSizing="fixed"
+                          appearance='outline'
+                          floatLabel='always'>
+            <mat-label>
+              {{ 'CORE.AUTH.PROFILE_PAGE.firstName' | translate }}
+            </mat-label>
+            <input matInput formControlName='firstName'>
+            <mat-hint align="start">
+              {{ ValidatorHint.normalTextValidator }}
+            </mat-hint>
+            @if (form.controls.firstName.errors; as errors) {
+              <mat-error>
+                @if (errors['required']) {
+                } @else if (errors['pattern']) {
+                  {{ ValidatorError.normalTextValidator }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class='w-full mb-4'
+                          subscriptSizing="fixed"
+                          appearance='outline'
+                          floatLabel='always'>
+            <mat-label>
+              {{ 'CORE.AUTH.PROFILE_PAGE.lastName' | translate }}
+            </mat-label>
+            <input matInput formControlName='lastName'/>
+            <mat-hint align="start">
+              {{ ValidatorHint.normalTextValidator }}
+            </mat-hint>
+            @if (form.controls.lastName.errors; as errors) {
+              <mat-error>
+                @if (errors['required']) {
+                } @else if (errors['pattern']) {
+                    {{ ValidatorError.normalTextValidator }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class='w-full mb-4'
+                          subscriptSizing="fixed"
+                          appearance='outline'
+                          floatLabel='always'>
+            <mat-label>
+              {{ 'CORE.AUTH.PROFILE_PAGE.email' | translate }}
+            </mat-label>
+            <input matInput formControlName='email' required>
+            @if (form.controls.email.errors; as errors) {
+              <mat-error>
+                @if (errors['required']) {
+                  {{ ValidatorError.requiredValidator | translate: {value: 'CORE.AUTH.PROFILE_PAGE.email' | translate} }}
+                } @else if (errors['email']) {
+                  {{ ValidatorError.emailValidator }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        </form>
+
+        <button mat-raised-button
+                class="w-full"
+                [class]="success ? 'bg-green-200! text-green-700!' : ''"
+                color='primary'
+                type='submit'
+                name='update'
+                [disabled]='!form.valid || !form.dirty || isLoading || success'
+                (click)='save()'>
+          @if (isLoading) {
+            <mat-icon>
+              <mat-spinner diameter='20'/>
+            </mat-icon>
+          }
+
+          @if (success) {
+            <mat-icon>check</mat-icon>
+          }
+          {{ success ? ('CORE.AUTH.PROFILE_PAGE.successButton' | translate) : ('CORE.AUTH.PROFILE_PAGE.updateButton' | translate) }}
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

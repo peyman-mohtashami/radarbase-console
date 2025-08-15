@@ -1,0 +1,5 @@
+<a [routerLink]="['/admin/organizations']">
+  @if ((instanceConfig$ | async)?.logo; as logo) {
+    <img class="w-full " [src]="logo" alt="App Logo" >
+  }
+</a>
