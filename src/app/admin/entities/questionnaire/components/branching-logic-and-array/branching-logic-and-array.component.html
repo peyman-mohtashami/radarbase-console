@@ -1,0 +1,46 @@
+<div [formGroup]="form">
+<!--  <mat-slide-toggle formControlName='has_branching_logic'-->
+<!--                    class="mb-4" color="accent">-->
+<!--    Branching Logic-->
+<!--  </mat-slide-toggle>-->
+  <div formArrayName="and_group">
+<!--  <div class="mb-4">Show this question if:</div>-->
+    <div class="flex items-start gap-4" *ngFor="let condition of branchingLogics.controls; let j=index"
+                  [formGroupName]="j">
+      <rb-mat-select-autocomplete class="small-input w-1/4"
+                                  formControlName='condition_field'
+                                  [legend]='"Field"'
+                                  [options]='previousQuestions'
+                                  [label]='"Field"'
+                                  [multiple]="false">
+      </rb-mat-select-autocomplete>
+      <mat-form-field class='small-input w-1/4'
+                      subscriptSizing="fixed"
+                      appearance='outline'
+                      floatLabel='always'>
+        <mat-label>Condition</mat-label>
+        <mat-select formControlName='condition_operator'>
+          <mat-option [value]="'equal'">Equals</mat-option>
+          <mat-option [value]="'not_equal'">Not equal</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class='small-input w-1/4'
+                      subscriptSizing="fixed"
+                      appearance='outline'
+                      floatLabel='always'>
+<!--                      *ngIf="condition?.get('condition_field')?.value as name">-->
+        <!--                    *ngIf="question.get('branching_logic')?.get('condition_field')?.value as name">-->
+        <mat-label>Value</mat-label>
+        <mat-select formControlName='condition_value'>
+          <ng-container *ngIf="condition?.get('condition_field')?.value as name">
+            <mat-option *ngFor="let option of questionsOptions[name]" [value]="option.code">{{option.label}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <div class="flex items-center gap-4">
+        <mat-icon fontSet='material-icons-outlined' (click)="removeBranchingLogic(j)" color="warn">do_not_disturb_on</mat-icon>
+        <button mat-button color="primary" (click)="addBranchingLogic()">AND</button>
+      </div>
+    </div>
+  </div>
+</div>

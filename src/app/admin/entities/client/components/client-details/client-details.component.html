@@ -1,0 +1,41 @@
+<rb-details [properties]="PROPERTIES"
+            [name]="ENTITY_NAME.client"
+            [entity]="entity()"
+            [config]="config()" [type]="type()"
+            [customTemplate]="detailsTemplate" />
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('dynamic_registration') {
+      @if (entity().additionalInformation?.['dynamic_registration']) {
+        <span class="text-green-700"><mat-icon>check</mat-icon></span>
+      } @else {
+        <span class="text-red-700"><mat-icon>clear</mat-icon></span>
+      }
+    }
+    @case ('resourceIds') {
+      <rb-client-tags [tags]="entity().resourceIds" colorClass="bg-red-100 text-red-700"/>
+    }
+    @case ('authorizedGrantTypes') {
+      <rb-client-tags [tags]="entity().authorizedGrantTypes" colorClass="bg-green-100 text-green-700"/>
+    }
+    @case ('scope') {
+      <rb-client-tags [tags]="entity().scope" colorClass="bg-blue-100 text-blue-700"/>
+    }
+    @case ('autoApproveScopes') {
+      <rb-client-tags [tags]="entity().autoApproveScopes" colorClass="bg-green-100 text-green-700"/>
+    }
+    @case ('accessTokenValiditySeconds') {
+      {{ entity().accessTokenValiditySeconds | dhms }}
+    }
+    @case ('refreshTokenValiditySeconds') {
+      {{ entity().refreshTokenValiditySeconds | dhms }}
+    }
+    @case ('registeredRedirectUri') {
+      <rb-client-tags [tags]="entity().registeredRedirectUri" colorClass="bg-neutral-100 text-neutral-700"/>
+    }
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
+  }
+</ng-template>

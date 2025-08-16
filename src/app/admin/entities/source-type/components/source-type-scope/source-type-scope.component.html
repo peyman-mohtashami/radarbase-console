@@ -1,0 +1,6 @@
+<!--<rb-tag [colorClass]="sourceTypeScope() === SourceTypeScope.ACTIVE ? 'bg-green-500' : 'bg-red-500 ' +  ' text-white'">-->
+<!--  {{ sourceTypeScope() }}-->
+<!--</rb-tag>-->
+<rb-tag class="text-white" [class]="sourceTypeScope() === SourceTypeScope.ACTIVE ? 'bg-green-500' : 'bg-red-500'">
+  {{ sourceTypeScope() }}
+</rb-tag>

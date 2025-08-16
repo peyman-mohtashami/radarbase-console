@@ -1,0 +1,137 @@
+// Custom utility classes or helpers
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  .rb-table {
+    @apply w-full text-sm relative px-4;
+  }
+  .rb-table-header {
+    @apply sticky top-[72px] z-50 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark;
+  }
+  .rb-table-head {
+    @apply flex items-center gap-2 cursor-pointer;
+  }
+  .rb-table-sort {
+    @apply group-hover:opacity-70 transition-opacity duration-500;
+  }
+  .rb-sort-icon {
+    @apply w-3.5! h-3.5! text-base!;
+  }
+  /*.rb-table-row {*/
+  /*  @apply shadow-sm rounded-sm bg-white dark:bg-neutral-700 my-1 hover:drop-shadow-sm transition-all;*/
+  /*}*/
+  .rb-table-main-row {
+    @apply flex gap-4 items-center py-2 px-4;
+  }
+  .rb-table-extension-row {
+    @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];
+  }
+
+  .sticky-head thead {
+    @apply sticky top-0 z-50;
+  }
+
+  .grid-container {
+    /*@apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 px-4 text-base;*/
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 px-4 text-base items-stretch;
+  }
+
+  .small-button {
+    @apply h-6! text-xs! font-bold! rounded-sm! bg-neutral-100!;
+  }
+  .rb-hint {
+    @apply text-xs leading-3 mb-4 -mt-3;
+  }
+  /*.gradient-btn {*/
+  /*  @apply text-white! bg-linear-to-r! from-accent-color-500! to-primary-color-500! dark:from-accent-dark-color-500! dark:to-primary-dark-color-500! disabled:opacity-50!;*/
+  /*}*/
+  .gradient-btn {
+    @apply text-white! bg-linear-to-r! from-secondary! to-primary! disabled:opacity-50!;
+  }
+
+  rb-sidebar-nav mat-expansion-panel {
+    /*@apply text-neutral-300! bg-black/10! hover:bg-black/20! my-1!;*/
+    @apply hover:bg-black/20!;
+  }
+  rb-sidebar-nav mat-expansion-panel-header {
+    /*@apply py-2! bg-transparent! h-auto!;*/
+    @apply py-2! h-auto!;
+  }
+  rb-sidebar-nav mat-nav-list {
+    @apply p-0!;
+  }
+  /*rb-sidebar-nav mat-list-item {*/
+  /*  @apply px-0! py-2! rounded-sm! transition-all! hover:text-primary-color! dark:hover:text-primary-dark-color!;*/
+  /*}*/
+  rb-sidebar-nav mat-list-item {
+    @apply px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary!;
+  }
+  /*rb-sidebar-nav .routerLinkActive {*/
+  /*  @apply bg-linear-to-r! from-primary-color-500! to-accent-color-500! dark:bg-primary-dark-color-400! [&>span>span]:text-white! dark:from-primary-dark-color-500! dark:to-accent-dark-color-500!;*/
+  /*}*/
+
+  /*rb-sidebar-nav .routerLinkActive {*/
+  /*  @apply bg-linear-to-r! from-primary! to-secondary! [&>span>span]:text-white!;*/
+  /*}*/
+
+  .mat-mdc-dialog-content {
+    @apply max-h-none!;
+  }
+
+  .tailwind-slide-panel {
+    @apply fixed top-0 right-0 h-screen m-0 rounded-none bg-white shadow-lg overflow-hidden;
+    transform: translateX(100%);
+    /*transition: transform 0.3s ease;*/
+  }
+
+  .dialog-enter-active {
+    animation: slideInRight 0.3s ease-out forwards;
+    /*transform: translateX(0);*/
+  }
+
+  .dialog-exit-active {
+    animation: slideOutRight 0.3s ease-out forwards;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+rb-tag {
+  @apply rounded-sm
+}

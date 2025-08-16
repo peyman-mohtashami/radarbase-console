@@ -1,0 +1,76 @@
+<rb-loader *ngIf="loading"
+           [loadingText]='"loading" | translate'>
+</rb-loader>
+
+<div class='details-page-container'>
+<!--  <rb-breadcrumb-->
+<!--    [items]='[-->
+<!--      {label: "ADMIN.organization.title.plural" | translate, path: "/admin/organizations/"},-->
+
+<!--    ]'>-->
+<!--&lt;!&ndash;    {label: "ADMIN.organization.title.singular" | translate, name: organizationName, path: "/admin/organizations/" + organizationName},&ndash;&gt;-->
+<!--&lt;!&ndash;    {label: "ADMIN.project.title.singular" | translate, name: projectName, path: "/admin/projects/" + projectName},&ndash;&gt;-->
+<!--  </rb-breadcrumb>-->
+
+  <div class='details-page-header'>
+    <h2 class='details-page-header-title subject-color-fg'>
+      <mat-chip-option disableRipple class='label-chip subject-color'>
+        <mat-icon fontSet='material-icons-outlined'>person_outline</mat-icon>
+        {{'ADMIN.subject.title.singular' | translate }}
+      </mat-chip-option>
+      {{entity.name}}
+    </h2>
+
+    <div class='details-page-header-buttons-container'>
+      <button mat-icon-button [matMenuTriggerFor]="menu" color='primary' aria-label="Example icon-button with a menu" (click)='$event.stopPropagation()'>
+        <mat-icon class='subject-color-fg'>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+<!--        <rb-pair-app [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-app>-->
+<!--        <rb-pair-source [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-source>-->
+<!--        <button mat-menu-item-->
+<!--                (click)='pairApp(entity)'>-->
+<!--          <mat-icon color='primary'>qr_code</mat-icon>-->
+<!--          <span>Pair App</span>-->
+<!--        </button>-->
+
+<!--        <button mat-menu-item-->
+<!--                (click)='pairSource(entity)'>-->
+<!--          <mat-icon color='primary'>link</mat-icon>-->
+<!--          <span>Pair Source</span>-->
+<!--        </button>-->
+        <button
+          mat-menu-item
+          (click)='onAction(DialogMode.EDIT, entity)'>
+          <mat-icon color='primary' fontSet='material-icons-outlined'>edit</mat-icon>
+          <span>{{'ADMIN.subject.edit' | translate }}</span>
+        </button>
+        <button
+          mat-menu-item
+          [routerLink]='["revisions"]'>
+          <mat-icon color='primary' fontSet='material-icons-outlined'>history</mat-icon>
+          <span>{{'ADMIN.subject.history' | translate }}</span>
+        </button>
+<!--        <rb-discontinue [entity]="entity" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-discontinue>-->
+        <!--        <button mat-menu-item-->
+<!--                (click)='discontinue(entity)'>-->
+<!--          <mat-icon color='accent' fontSet="material-icons-outlined">stop_circle</mat-icon>-->
+<!--          <span>Discontinue</span>-->
+<!--        </button>-->
+        <button
+          mat-menu-item
+          (click)='onAction(DialogMode.DELETE, entity)'>
+          <mat-icon color='warn' fontSet='material-icons-outlined'>delete</mat-icon>
+          <span>{{'ADMIN.subject.delete' | translate }}</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+  <div class='details-page-content'>
+    <rb-config-details [entity]='entity'></rb-config-details>
+  </div>
+</div>
+

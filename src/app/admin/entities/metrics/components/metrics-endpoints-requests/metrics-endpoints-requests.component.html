@@ -1,0 +1,22 @@
+<div class="p-4 metrics" *ngIf="endpointsRequestsMetrics">
+  <table class="w-full text-xs">
+    <thead class="border-b border-gray-500">
+    <tr class="[&>th]:text-start">
+      <th>Method</th>
+      <th>Endpoint url</th>
+      <th>Count</th>
+      <th>Mean</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let entry of endpointsRequestsMetrics | keyvalue">
+      <tr *ngFor="let method of entry.value | keyvalue">
+        <td>{{ method.key }}</td>
+        <td>{{ entry.key }}</td>
+        <td>{{ method.value.count }}</td>
+        <td>{{ method.value.mean | number: '1.0-3' }}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

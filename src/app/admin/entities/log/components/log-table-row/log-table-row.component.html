@@ -1,0 +1,55 @@
+@let configFields = config$ | async;
+
+<mat-card class="rb-table-row" [class]="
+    (updated() && updated() === entity().id ? 'bg-green-100! ' : '') +
+    (expanded ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (property of PROPERTIES; track property.name) {
+      @if (configFields[property.name] !== false) {
+        <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+             [class.flex-1]="!property.width"
+             [class.shrink-0]="!!property.width">
+          @switch (property.name) {
+            @default {
+              {{ entity()[property.name] || '-' }}
+            }
+          }
+        </div>
+
+<!--        @if (property.name === 'level') {-->
+        {{entity().level}}
+        <div class='w-full md:w-1/2 flex justify-end'>
+          <mat-button-toggle-group class="flex" name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="TRACE" [class]="entity().level === 'TRACE'? 'bg-primary!' : ''"
+                               (click)="updateAction(entity(), 'TRACE')">{{ 'ADMIN.log.level.TRACE' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle value="DEBUG" [class]="entity().level === 'DEBUG'? 'bg-teal-500!' : ''"
+                               (click)="updateAction(entity(), 'DEBUG')">{{ 'ADMIN.log.level.DEBUG' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle value="INFO" [class]="entity().level === 'INFO'? 'bg-primary!' : ''"
+                               (click)="updateAction(entity(), 'INFO')">{{ 'ADMIN.log.level.INFO' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle value="WARN" [class]="entity().level === 'WARN'? 'bg-orange-400!' : ''"
+                               (click)="updateAction(entity(), 'WARN')">{{ 'ADMIN.log.level.WARN' | translate }}
+            </mat-button-toggle>
+            <mat-button-toggle value="ERROR" [class]="entity().level === 'ERROR'? 'bg-red-400!' : ''"
+                               (click)="updateAction(entity(), 'ERROR')">{{ 'ADMIN.log.level.ERROR' | translate }}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+<!--        }-->
+      }
+    }
+<!--    <div class='w-22'>-->
+<!--      <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">-->
+<!--        <span class="material-symbols-outlined">-->
+<!--          {{ expanded ? 'expand_less' : 'expand_more' }}-->
+<!--        </span>-->
+<!--      </button>-->
+<!--    </div>-->
+  </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
+    <!--  <rb-source-data-details class="py-4" [entity]='entity()' [type]="DetailType.TABLE"></rb-source-data-details>-->
+  </div>
+</mat-card>

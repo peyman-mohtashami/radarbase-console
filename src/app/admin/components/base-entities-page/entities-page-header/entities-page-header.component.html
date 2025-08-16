@@ -1,0 +1,40 @@
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 w-full mat-app-background dark:bg-background-dark'>
+  @if (showTitle()) {
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+      <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES[entityName()].icon }}</span>
+      {{ 'ADMIN.' + entityName() + '.title.plural' | translate }}
+    </h2>
+  }
+  <ng-content select="[top-filter]" />
+
+  <div class="flex items-center gap-2">
+    <ng-content select="[extra-buttons]" />
+
+    @if (isGridView !== undefined) {
+      <button type='button'
+              class=""
+              mat-icon-button
+              color="primary"
+              (click)="toggleGridListView()">
+        <span class="material-symbols-outlined">{{ isGridView ? "list" : "grid_view" }}</span>
+      </button>
+    }
+    <ng-container *rbPermission="permission()">
+      @if (enableAddButton()) {
+        <button (click)='onAction(DialogMode.ADD)'
+                mat-stroked-button
+                color="primary"
+                type="button">
+          <span class="font-bold flex items-center gap-2">
+            <span class="material-symbols-outlined">add</span>
+            {{ 'ADMIN.' + entityName() + '.create' | translate }}
+          </span>
+        </button>
+      }
+    </ng-container>
+  </div>
+</div>
+
+<div class="px-4">
+  <ng-content select="[bottom-filter]" />
+</div>

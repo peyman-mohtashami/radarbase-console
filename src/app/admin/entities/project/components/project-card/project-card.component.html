@@ -1,0 +1,53 @@
+<!--@let tp = (config$ | async)?.entities['project'].fields ?? {};-->
+
+<!--<mat-card appearance="outlined" class="cursor-pointer flex items-start justify-start h-full"-->
+<!--          [class]="updated() === entity().id ? 'bg-green-100!' : ''"-->
+<!--          [routerLink]='[entity().name]'>-->
+<!--  <mat-card-content class="p-0! w-full">-->
+
+<!--    <div class="px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">-->
+<!--      <div-->
+<!--        class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">-->
+<!--        <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>-->
+<!--        <span class='text-xs'>{{ entity().organization.name }}</span>-->
+<!--      </div>-->
+<!--      @if (tp['projectStatus'] !== false) {-->
+<!--      <rb-project-status class="" [projectStatus]="entity()['projectStatus']"/>-->
+<!--      }-->
+<!--    </div>-->
+
+<!--    <div class="p-4 flex items-center justify-between gap-2 w-full">-->
+<!--      <div class="flex items-center gap-2">-->
+<!--        <span-->
+<!--          class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">folder_open</span>-->
+<!--        <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity().name }}</span>-->
+<!--      </div>-->
+<!--      <rb-actions *rbPermission="[{role: ROLES.SYS_ADMIN}]" [entity]="entity()"-->
+<!--                  (action)="onAction($event.mode, $event.entity)" />-->
+<!--    </div>-->
+<!--    <div class="p-4">-->
+<!--      @if (tp['description'] !== false) {-->
+<!--      <div class="text-sm text-gray-500 dark:text-gray-300">{{ entity().description }}</div>-->
+<!--      }-->
+<!--      @if (tp['startDate'] !== false || tp['endDate'] !== false) {-->
+<!--      <div class="text-sm flex mt-4 gap-4 items-center text-gray-500 dark:text-gray-300">-->
+<!--        <span class="material-symbols-outlined text-xl shrink-0">date_range</span>-->
+<!--        @if (entity()['startDate'] || entity()['endDate']) {-->
+<!--                      <rb-local-date [date]="entity()['startDate']" [format]="'mediumDate'"></rb-local-date>-->
+<!--          <span> - </span>-->
+<!--                      <rb-local-date [date]="entity()['endDate']" [format]="'mediumDate'"></rb-local-date>-->
+<!--        } @else {-->
+<!--          Dates not set.-->
+<!--        }-->
+<!--      </div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">-->
+<!--      <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Source Types-->
+<!--        ({{ entity()['sourceTypes']?.length ?? 0 }})-->
+<!--      </div>-->
+<!--      <rb-project-source-types [sourceTypes]="entity()['sourceTypes']"/>-->
+<!--    </div>-->
+
+<!--  </mat-card-content>-->
+<!--</mat-card>-->

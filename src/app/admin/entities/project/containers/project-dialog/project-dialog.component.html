@@ -1,0 +1,33 @@
+<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="mode"
+                                [label]="'ADMIN.project.title.singular' | translate"
+                                [entityName]="entity.projectName">
+      <!--        <rb-subject-details [mode]='mode' [entity]='entity' [config]="configFields"/>-->
+    </rb-dialog-body-description>
+  }
+
+  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+    <form [formGroup]="form" novalidate autocomplete="off">
+      @for (field of _fields; track field.name) {
+        @if (!field.auto || mode !== DialogMode.ADD) {
+          <rb-mat-dynamic-input  [entityName]="name"
+                                 [field]="field"
+                                 [formControlName]="field.name"
+                                 [options]="data[field.optionsName] ?? []" />
+        }
+      }
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error) {
+  <rb-message/>
+}
+
+<rb-dialog-actions [mode]='mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>
+

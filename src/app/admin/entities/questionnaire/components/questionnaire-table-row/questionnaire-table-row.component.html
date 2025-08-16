@@ -1,0 +1,135 @@
+@let configFields = config$ | async;
+
+@if (!gridView()) {
+  <mat-card class="rb-table-row" [class]="
+    (updated() === entity().id ? 'bg-green-100! ' : '') +
+    (expanded ? 'mb-2' : '')
+  ">
+    <div class="rb-table-main-row">
+      @for (property of PROPERTIES; track property.name) {
+        @if (configFields[property.name] !== false) {
+          <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes" [class.flex-1]="!property.width" [class.shrink-0]="!!property.width">
+            @switch (property.name) {
+              @case ('name') {
+                <p class="font-bold">{{ entity()['name'] || '-' }}</p>
+                <!--            <div class="w-96">-->
+                <div class="flex items-center flex-wrap">
+                  <span class="text-xs font-bold text-neutral-400 uppercase">Translations</span>
+                  @for (l of entity()['languages']; track l) {
+                    <span>
+                      <button mat-icon-button class="tiny uppercase"
+                              (click)='$event.stopPropagation()'
+                              [class]="entity().defaultLanguage !== l ? 'text-secondary! dark:text-secondary-dark!' : 'text-primary! dark:text-primary-dark!'"
+                              [matMenuTriggerFor]="menu">
+<!--                              [class]="'en' !== l.key ? 'text-secondary! dark:text-secondary-dark!' : 'text-primary! dark:text-primary-dark!'"-->
+                        <!--                        <span class="text-sm font-bold">{{l.key}}</span>-->
+                        <span class="h-full flex items-center justify-center"><span class="text-sm font-bold">{{l}}</span></span>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)='onTranslationAction(DialogMode.EDIT, entity(), l, undefined)'>
+                          <span class="flex items-center gap-2">
+                            <span class="text-xl! material-symbols-outlined font-bold! text-primary">edit</span>
+                            <span class="text-base">{{ 'ADMIN.questionnaire.edit' | translate }}</span>
+                          </span>
+                          <!--                          <span class="text-xl! material-symbols-outlined text-primary">edit</span>-->
+                          <!--                          <span class="text-lg">{{ 'ADMIN.questionnaire.edit' | translate }}</span>-->
+                        </button>
+                        <button mat-menu-item (click)='onTranslationAction(DialogMode.DELETE, entity(), l, undefined)'>
+                          <span class="flex items-center gap-2">
+                            <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>
+                            <span class="text-base">{{ 'ADMIN.questionnaire.delete' | translate }}</span>
+                          </span>
+
+                          <!--                          <span class="text-xl! material-symbols-outlined text-red-500">delete</span>-->
+                          <!--                          <span class="text-sm">{{ 'ADMIN.questionnaire.delete' | translate }}</span>-->
+                        </button>
+                      </mat-menu>
+                    </span>
+                  }
+<!--                  @for (l of entity()['translations'] | keyvalue; track l.key;) {-->
+<!--                    <span>-->
+<!--                      <button mat-icon-button class="tiny uppercase"-->
+<!--                              (click)='$event.stopPropagation()'-->
+<!--                              [class]="entity().defaultLanguage !== l.key ? 'text-secondary! dark:text-secondary-dark!' : 'text-primary! dark:text-primary-dark!'"-->
+<!--                              [matMenuTriggerFor]="menu">-->
+<!--&lt;!&ndash;                              [class]="'en' !== l.key ? 'text-secondary! dark:text-secondary-dark!' : 'text-primary! dark:text-primary-dark!'"&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span class="text-sm font-bold">{{l.key}}</span>&ndash;&gt;-->
+<!--                        <span class="h-full flex items-center justify-center"><span class="text-sm font-bold">{{l.key}}</span></span>-->
+<!--                      </button>-->
+<!--                      <mat-menu #menu="matMenu">-->
+<!--                        <button mat-menu-item (click)='onTranslationAction(DialogMode.EDIT, entity(), l.key?.toString(), undefined)'>-->
+<!--                          <span class="flex items-center gap-2">-->
+<!--                            <span class="text-xl! material-symbols-outlined font-bold! text-primary">edit</span>-->
+<!--                            <span class="text-base">{{ 'ADMIN.questionnaire.edit' | translate }}</span>-->
+<!--                          </span>-->
+<!--&lt;!&ndash;                          <span class="text-xl! material-symbols-outlined text-primary">edit</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <span class="text-lg">{{ 'ADMIN.questionnaire.edit' | translate }}</span>&ndash;&gt;-->
+<!--                        </button>-->
+<!--                        <button mat-menu-item (click)='onTranslationAction(DialogMode.DELETE, entity(), l.key?.toString(), undefined)'>-->
+<!--                          <span class="flex items-center gap-2">-->
+<!--                            <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>-->
+<!--                            <span class="text-base">{{ 'ADMIN.questionnaire.delete' | translate }}</span>-->
+<!--                          </span>-->
+
+<!--&lt;!&ndash;                          <span class="text-xl! material-symbols-outlined text-red-500">delete</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <span class="text-sm">{{ 'ADMIN.questionnaire.delete' | translate }}</span>&ndash;&gt;-->
+<!--                        </button>-->
+<!--                      </mat-menu>-->
+<!--                    </span>-->
+<!--                  }-->
+                  <button mat-icon-button class="tiny"
+                          (click)='onTranslationAction(DialogMode.ADD, entity())'>
+                    <span class="material-symbols-outlined text-xl! text-primary">add</span>
+
+<!--                    <span class="text-lg text-primary-color-500 material-symbols-outlined">add</span>-->
+                  </button>
+                </div>
+              }
+              @case ('questionCount') {
+                {{ entity()["questions"]?.length || '-' }}
+              }
+              @case ('actions') {
+                <button mat-icon-button class="tiny lg:hidden!" (click)="onExpansionClick($event)">
+                  <span class="material-symbols-outlined">
+                    {{ expanded ? 'expand_less' : 'expand_more' }}
+                  </span>
+                </button>
+                <ng-container *rbPermission="[{role: ROLES.SYS_ADMIN}]">
+                  <button class="tiny" mat-icon-button color="primary" (click)='onAction(DialogMode.EDIT, entity(), entity().defaultLanguage)'>
+                    <span class="material-symbols-outlined text-xl!">edit</span>
+                  </button>
+                  <button class="tiny" mat-icon-button color="warn" (click)='onAction(DialogMode.DELETE, entity(), entity().defaultLanguage)'>
+                    <span class="text-red-500 material-symbols-outlined text-xl!">delete</span>
+                  </button>
+                </ng-container>
+              }
+              @default {
+                {{ entity()[property.name] || '-' }}
+              }
+            }
+          </div>
+        }
+      }
+<!--      <div class='w-20'>-->
+<!--        <button mat-icon-button class="mat-small-icon-button lg:hidden!" (click)="onExpansionClick($event)">-->
+<!--          <span class="material-symbols-outlined">-->
+<!--            {{ expanded ? 'expand_less' : 'expand_more' }}-->
+<!--          </span>-->
+<!--        </button>-->
+<!--        <ng-container *rbPermission="[{role: ROLES.SYS_ADMIN}]">-->
+<!--          <button class="tiny" mat-icon-button color="primary" (click)='onAction(DialogMode.EDIT, entity())'>-->
+<!--            <span class="material-symbols-outlined text-xl!">edit</span>-->
+<!--          </button>-->
+<!--          <button class="tiny" mat-icon-button color="warn" (click)='onAction(DialogMode.DELETE, entity())'>-->
+<!--            <span class="text-red-500 material-symbols-outlined text-xl!">delete</span>-->
+<!--          </button>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+    </div>
+
+    <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
+<!--      <rb-organization-details [entity]="entity()" [config]="configFields" [type]="DetailType.TABLE"/>-->
+    </div>
+  </mat-card>
+} @else {
+}

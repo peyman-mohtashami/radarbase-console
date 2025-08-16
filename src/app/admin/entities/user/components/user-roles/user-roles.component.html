@@ -1,0 +1,20 @@
+@if (roles(); as roles) {
+  @if (roles["_sysAdmin"]) {
+    <rb-tag class="bg-primary text-white" colorClass="bg-cyan-800 text-white">ROLE_SYS_ADMIN</rb-tag>
+  }
+  @if(roles["_organizationAdmin"]) {
+    @for (organization of roles['_organizations']; track organization.id) {
+      <rb-tag class="bg-organization-color text-white" colorClass="bg-organization-color text-white">
+        ROLE_ORGANIZATION_ADMIN: {{organization["name"]}}
+      </rb-tag>
+    }
+  }
+
+  @if (roles["_projectAdmin"]) {
+    @for (project of roles['_projects']; track project.id) {
+      <rb-tag class="bg-project-color text-white" colorClass="bg-project-color text-white">
+        ROLE_PROJECT_ADMIN: {{project["name"]}}
+      </rb-tag>
+    }
+  }
+}

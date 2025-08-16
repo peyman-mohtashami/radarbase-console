@@ -1,0 +1,28 @@
+<mat-drawer-container class="absolute! top-[56px]  sm:top-[64px] bottom-0 inset-x-0">
+<!--  class="h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)]">-->
+  <mat-drawer #drawer
+              class="w-64! md:![transition-property:width] md:!duration-300 h-full"
+              [opened]="!isHandset"
+              [class]="!isMenuOpened && !isHandset ? 'w-0! md:w-[72px]!' : ''"
+              [mode]="isHandset ? 'over' : 'side'">
+<!--              [class]="isHandset ? 'w-0! md:w-[72px]!' : ''"-->
+<!--             -->
+    <div class="absolute inset-0 flex flex-col">
+      <div class="flex-grow overflow-auto">
+      <rb-sidebar-nav class="min-h-0"/>
+      </div>
+  <!--    class="block h-[calc(100%-34px)] grow shrink overflow-auto" />-->
+      <rb-footer class="" [isMenuOpen]="isMenuOpened" />
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content class="duration-300"
+                      [class]="!isMenuOpened && !isHandset ? 'md:!ml-[72px]' : 'md:!ml-[256px]'">
+    @if (routeLoading) {
+      <rb-loader [loadingText]="'SHARED.loading'" />
+    }
+<!--    <div class="min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)]">-->
+      <router-outlet />
+<!--    </div>-->
+  </mat-drawer-content>
+</mat-drawer-container>

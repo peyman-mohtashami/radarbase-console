@@ -1,0 +1,9 @@
+<rb-loader *ngIf='loading' [loadingText]='"loading" | translate' />
+
+<rb-static-breadcrumb [entityName]="ENTITY_NAME.sourceType" [entity]="entity" />
+
+<rb-details-page-header [entity]="entity"
+                        [entityName]="ENTITY_NAME.sourceType"
+                        (action)="onAction($event.mode, $event.entity)">
+  <rb-source-type-details [entity]='entity' />
+</rb-details-page-header>

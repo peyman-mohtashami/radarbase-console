@@ -1,0 +1,50 @@
+<h2 mat-dialog-title class="border-b-2">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      <span>{{'ADMIN.subject.discontinue.title' | translate }}</span>
+    </span>
+    <button mat-icon-button
+            (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </span>
+</h2>
+
+<mat-dialog-content>
+  <rb-dialog-body-description>
+    <rb-subject-details [mode]='mode' [entity]='entity' />
+  </rb-dialog-body-description>
+  <p>{{'ADMIN.subject.discontinue.message' | translate }}</p>
+</mat-dialog-content>
+
+@if (error) {
+  <rb-message />
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='primary'
+            type='button'
+            class='close-button'
+            [mat-dialog-close]='true'
+            (click)='close()'>
+      {{ 'ADMIN.subject.discontinue.no' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end'>
+    @if (mode === DialogMode.DELETE) {
+      <button mat-raised-button
+              color='warn'
+              [disabled]='isLoading'
+              (click)='delete()'>
+        @if (isLoading) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          {{ 'ADMIN.subject.discontinue.deleting' | translate }}
+        } @else {
+          {{ 'ADMIN.subject.discontinue.discontinue' | translate }}
+        }
+      </button>
+    }
+  </div>
+</div>

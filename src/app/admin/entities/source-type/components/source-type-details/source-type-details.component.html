@@ -1,0 +1,23 @@
+<rb-details [properties]="PROPERTIES"
+            [name]="ENTITY_NAME.sourceType"
+            [entity]="entity()"
+            [config]="config()"
+            [type]="type()"
+            [customTemplate]="detailsTemplate" />
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('sourceTypeScope') {
+      <rb-source-type-scope [sourceTypeScope]="entity()['sourceTypeScope']"/>
+    }
+    @case ('canRegisterDynamically') {
+      <rb-source-type-source-registration [canRegisterDynamically]="entity()['canRegisterDynamically']"/>
+    }
+    @case ('sourceData') {
+      <rb-source-type-sources-data [sourcesData]="entity()['sourceData']"/>
+    }
+    @default {
+      {{ entity()[property.name] || "-" }}
+    }
+  }
+</ng-template>

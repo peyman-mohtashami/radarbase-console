@@ -1,0 +1,21 @@
+import { Component, Input } from '@angular/core';
+import {DecimalPipe, KeyValuePipe, NgForOf, NgIf} from "@angular/common";
+import {MatProgressBar} from "@angular/material/progress-bar";
+import {HttpServerRequests} from '../../../../../shared/models/radar-metrics.model';
+
+@Component({
+  selector: 'rb-metrics-request',
+  templateUrl: './metrics-request.component.html',
+  imports: [
+    NgIf,
+    NgForOf,
+    MatProgressBar,
+    KeyValuePipe,
+    DecimalPipe
+  ]
+})
+export class MetricsRequestComponent {
+
+  @Input() requestMetrics?: HttpServerRequests;
+
+}

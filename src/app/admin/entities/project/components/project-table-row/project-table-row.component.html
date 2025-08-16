@@ -1,0 +1,145 @@
+@let configFields = config$ | async;
+
+@if (!gridView()) {
+  <mat-card class="rb-table-row" [class]="
+    (updated() === entity().id ? 'bg-green-100! ' : '') +
+    (expanded ? 'mb-2' : '')
+  ">
+    <div class="rb-table-main-row">
+      @for (property of PROPERTIES; track property.name) {
+        @if (configFields[property.name] !== false) {
+          <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+               [class.flex-1]="!property.width"
+               [class.shrink-0]="!!property.width">
+            @switch (property.name) {
+              @case ('name') {
+                <a [routerLink]='[entity().name]'>
+                  <span class='font-bold text-primary'>{{ entity().name }}</span>
+                </a>
+                @if (configFields['description'] !== false) {
+                  <p class="">{{ entity().description }}</p>
+                }
+              }
+              @case ('startDate') {
+                <rb-local-date [date]="entity()['startDate']" [format]="'mediumDate'"/>
+              }
+              @case ('endDate') {
+                <rb-local-date [date]="entity()['endDate']" [format]="'mediumDate'"/>
+              }
+              @case ('projectStatus') {
+                <rb-project-status [projectStatus]="entity()['projectStatus']"/>
+              }
+              @case ('sourceTypes') {
+                <rb-project-source-types [sourceTypes]="entity()['sourceTypes']"/>
+              }
+              @case ("actions") {
+                <button mat-icon-button class="tiny xl:hidden!"
+                        (click)="onExpansionClick($event)">
+                  <span class="material-symbols-outlined">
+                    {{ expanded ? 'expand_less' : 'expand_more' }}
+                  </span>
+                </button>
+
+                <ng-container *rbPermission="[{role: ROLES.SYS_ADMIN}]">
+                  <button class="tiny"
+                          mat-icon-button color="primary"
+                          (click)='onAction(DialogMode.EDIT, entity())'>
+                    <!--          (click)='onAction(DialogMode.EDIT, entity(), undefined)'>-->
+                    <span class="material-symbols-outlined text-xl!">edit</span>
+                  </button>
+                  <button class="tiny" mat-icon-button color="warn"
+                          (click)='onAction(DialogMode.DELETE, entity())'>
+                    <!--          (click)='onAction(DialogMode.DELETE, entity(), undefined)'>-->
+                    <span class="text-red-500 material-symbols-outlined text-xl!">delete</span>
+                    <!--          mat-small-icon-button-->
+                  </button>
+                </ng-container>
+              }
+              @default {
+                {{ entity()[property.name] || '-' }}
+              }
+            }
+          </div>
+        }
+      }
+<!--      <div class='w-20'>-->
+<!--        <button mat-icon-button class="mat-small-icon-button lg:hidden!"-->
+<!--                (click)="onExpansionClick($event)">-->
+<!--            <span class="material-symbols-outlined">-->
+<!--              {{ expanded ? 'expand_less' : 'expand_more' }}-->
+<!--            </span>-->
+<!--        </button>-->
+
+<!--        <ng-container *rbPermission="[{role: ROLES.SYS_ADMIN}]">-->
+<!--          <button class="tiny"-->
+<!--                  mat-icon-button color="primary"-->
+<!--                  (click)='onAction(DialogMode.EDIT, entity())'>-->
+<!--            &lt;!&ndash;          (click)='onAction(DialogMode.EDIT, entity(), undefined)'>&ndash;&gt;-->
+<!--            <span class="material-symbols-outlined text-xl!">edit</span>-->
+<!--          </button>-->
+<!--          <button class="tiny" mat-icon-button color="warn"-->
+<!--                  (click)='onAction(DialogMode.DELETE, entity())'>-->
+<!--            &lt;!&ndash;          (click)='onAction(DialogMode.DELETE, entity(), undefined)'>&ndash;&gt;-->
+<!--            <span class="text-red-500 material-symbols-outlined text-xl!">delete</span>-->
+<!--            &lt;!&ndash;          mat-small-icon-button&ndash;&gt;-->
+<!--          </button>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+    </div>
+    <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
+      <rb-project-details [entity]="entity()" [config]="configFields" [type]="DetailType.TABLE"/>
+    </div>
+  </mat-card>
+} @else {
+  <mat-card appearance="outlined" class="cursor-pointer flex items-start justify-start h-full"
+            [class]="updated() === entity().id ? 'bg-green-100!' : ''"
+            [routerLink]='[entity().name]'>
+    <mat-card-content class="p-0! w-full">
+
+      <div class="px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
+        <div
+          class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">
+          <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>
+          <span class='text-xs'>{{ entity().organization.name }}</span>
+        </div>
+        @if (configFields['projectStatus'] !== false) {
+          <rb-project-status class="" [projectStatus]="entity()['projectStatus']"/>
+        }
+      </div>
+
+      <div class="p-4 flex items-center justify-between gap-2 w-full">
+        <div class="flex items-center gap-2">
+        <span
+          class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">folder_open</span>
+          <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity().name }}</span>
+        </div>
+        <rb-actions *rbPermission="[{role: ROLES.SYS_ADMIN}]" [entity]="entity()"
+                    (action)="onAction($event.mode, $event.entity)"/>
+      </div>
+      <div class="p-4">
+        @if (configFields['description'] !== false) {
+          <div class="text-sm text-gray-500 dark:text-gray-300">{{ entity().description }}</div>
+        }
+        @if (configFields['startDate'] !== false || configFields['endDate'] !== false) {
+          <div class="text-sm flex mt-4 gap-4 items-center text-gray-500 dark:text-gray-300">
+            <span class="material-symbols-outlined text-xl shrink-0">date_range</span>
+            @if (entity()['startDate'] || entity()['endDate']) {
+              <rb-local-date [date]="entity()['startDate']" [format]="'mediumDate'"></rb-local-date>
+              <span> - </span>
+              <rb-local-date [date]="entity()['endDate']" [format]="'mediumDate'"></rb-local-date>
+            } @else {
+              Dates not set.
+            }
+          </div>
+        }
+      </div>
+      <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
+        <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Source Types
+          ({{ entity()['sourceTypes']?.length ?? 0 }})
+        </div>
+        <rb-project-source-types [sourceTypes]="entity()['sourceTypes']"/>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+}

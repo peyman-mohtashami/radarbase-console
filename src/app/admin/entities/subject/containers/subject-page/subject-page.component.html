@@ -1,0 +1,296 @@
+<rb-breadcrumb />
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-neutral-50 dark:bg-neutral-700'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['subject'].icon }}</span>
+    @if (entity.externalId) {
+      <span>{{entity.externalId}}</span>
+    }
+    @if (entity.personName) {
+      <span>[{{entity.personName}}]</span>
+    }
+    {{entity.login}}
+  </h2>
+  <div class='flex gap-1 ml-auto'>
+    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>
+<!--      <rb-actions [entity]="entity" (action)="onAction($event.mode, $event.entity)"></rb-actions>-->
+    </ng-container>
+  </div>
+</div>
+<!--<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>-->
+
+<!--<div class='flex flex-wrap justify-between gap-2 p-4 bg-white'>-->
+<div class="m-4">
+
+<!--  <nav class="border-b pt-4 bg-white"-->
+<!--       mat-tab-nav-bar mat-stretch-tabs="false"-->
+<!--       mat-align-tabs="start" [backgroundColor]="undefined" [tabPanel]="tabPanel">-->
+  <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+       mat-tab-nav-bar
+       mat-stretch-tabs="false"
+       mat-align-tabs="start"
+       [tabPanel]="tabPanel">
+    @for (link of links; track link) {
+      <a mat-tab-link
+         (click)="activePath = link.path"
+         [active]="link.path === activePath"
+         [routerLink]="link.path">
+        <!--        {{link | json}}-->
+        <h2 class='flex items-center gap-2 m-0 text-base font-bold text-black '>
+          <!--          <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">-->
+          <!--            folder-->
+          <!--          </span>-->
+          {{ link.label }}
+          <!--          {{ 'ADMIN.' + entityName + '.title.plural' | translate }}-->
+        </h2>
+        <!--        <span class="font-bold">{{ link.label }}</span>-->
+      </a>
+    }
+
+<!--    <a mat-tab-link-->
+<!--       [routerLink]='["clients/app-config"]'-->
+<!--       routerLinkActive=''-->
+<!--       #rla6='routerLinkActive'-->
+<!--       [active]='rla6.isActive'-->
+<!--       [ngClass]="rla6.isActive ? '': ''">-->
+<!--      <h2 class='flex items-center gap-2 m-0 text-base font-bold '>-->
+<!--        <span class="material-symbols-outlined font-bold">app_settings_alt</span>-->
+<!--        App Config-->
+<!--      </h2>-->
+<!--&lt;!&ndash;      <mat-icon fontSet='material-icons-outlined'>app_settings_alt</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;      <span class="mx-1 text-sm font-bold">App Config</span>&ndash;&gt;-->
+<!--    </a>-->
+<!--    <a mat-tab-link-->
+<!--       [routerLink]='["details"]'-->
+<!--       routerLinkActive=''-->
+<!--       #rla7='routerLinkActive'-->
+<!--       [routerLinkActiveOptions]="{exact: false}"-->
+<!--       [active]='rla7.isActive'-->
+<!--       [ngClass]="rla7.isActive ? '': ''">-->
+<!--      <h2 class='flex items-center gap-2 m-0 text-base font-bold '>-->
+<!--        <span class="material-symbols-outlined font-bold">article</span>-->
+<!--        Details-->
+<!--      </h2>-->
+<!--      <mat-icon fontSet='material-icons-outlined'>article</mat-icon>-->
+<!--      <span class="mx-1 text-sm font-bold">Details</span>-->
+<!--    </a>-->
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+  </mat-tab-nav-panel>
+
+<!--  <mat-card class="mt-4">-->
+
+<!--  </mat-card>-->
+</div>
+<!--  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
+<!--    <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-gray-200 dark:bg-gray-500">article</span>-->
+<!--    Details-->
+<!--  </h2>-->
+<!--  <div class='flex gap-1 ml-auto'>-->
+<!--    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>-->
+<!--      <button mat-icon-button-->
+<!--              [matMenuTriggerFor]="menu"-->
+<!--              (click)="$event.stopPropagation();">-->
+<!--        <span class="font-bold material-symbols-outlined">more_vert</span>-->
+<!--      </button>-->
+<!--      <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">-->
+<!--        <button class="hover:text-primary-color hover:bg-transparent! transition-all"-->
+<!--                mat-menu-item-->
+<!--                (click)='onAction(DialogMode.EDIT, entity)'>-->
+<!--              <span class="flex items-center gap-2">-->
+<!--                <span class="text-xl text-primary-color-500 material-symbols-outlined font-bold">edit</span>-->
+<!--                <span>{{ 'ADMIN.organization.edit' | translate }}</span>-->
+<!--              </span>-->
+<!--        </button>-->
+<!--        <button class="hover:text-red-500 hover:bg-transparent! transition-all"-->
+<!--                mat-menu-item-->
+<!--                (click)='onAction(DialogMode.DELETE, entity)'>-->
+<!--              <span class="flex items-center gap-2">-->
+<!--                <span class="text-xl text-red-500 material-symbols-outlined font-bold">delete</span>-->
+<!--                <span>{{ 'ADMIN.organization.delete' | translate }}</span>-->
+<!--              </span>-->
+<!--        </button>-->
+<!--      </mat-menu>-->
+<!--    </ng-container>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<mat-card class="m-4 p-4 text-sm border">-->
+<!--  <mat-card-content>-->
+<!--    <rb-organization-details [entity]="entity"></rb-organization-details>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->
+
+
+<!--<rb-loader *ngIf="loading"-->
+<!--           [loadingText]='"loading" | translate'>-->
+<!--</rb-loader>-->
+
+<!--<div class="px-4">-->
+<!--  &lt;!&ndash;  <rb-breadcrumb&ndash;&gt;-->
+<!--&lt;!&ndash;    [items]='[&ndash;&gt;-->
+<!--&lt;!&ndash;      {label: "ADMIN.organization.title.plural" | translate, path: "/admin/organizations/"},&ndash;&gt;-->
+<!--&lt;!&ndash;      {label: "ADMIN.organization.title.singular" | translate, name: organizationName, path: "/admin/organizations/" + organizationName},&ndash;&gt;-->
+<!--&lt;!&ndash;      {label: "ADMIN.project.title.singular" | translate, name: projectName, path: "/admin/projects/" + projectName},&ndash;&gt;-->
+<!--&lt;!&ndash;    ]'>&ndash;&gt;-->
+<!--&lt;!&ndash;  </rb-breadcrumb>&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class='px-4 py-2 flex mb-4 gap-2 flex-wrap items-center bg-primary-color-50'>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class='flex flex-wrap gap-2 items-center'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="h-6! text-xs font-bold! rounded-full! bg-primary-color-200!" color="primary" mat-flat-button&ndash;&gt;-->
+<!--&lt;!&ndash;              [routerLink]="['/admin/organizations/']">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined' class="" matPrefix>corporate_fare</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        {{ 'ADMIN.organization.title.plural' | translate }}&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2 class="text-xs font-bold">{{ organizationName }}</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <span>|</span>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <mat-icon fontSet='material-icons-outlined' class="">chevron_right</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class='flex flex-wrap gap-2 items-center'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="h-6! text-xs font-bold! rounded-full! bg-primary-color-200!" color="primary" mat-flat-button&ndash;&gt;-->
+<!--&lt;!&ndash;              [routerLink]="['/admin/organizations/', organizationName, 'projects']">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined' class="" matPrefix>folder</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        {{ 'ADMIN.project.title.plural' | translate }}&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2 class="text-xs font-bold">{{ projectName }}</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <span>|</span>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash;    <mat-icon fontSet='material-icons-outlined' class="">chevron_right</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class='flex flex-wrap gap-2 items-center'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="h-6! text-xs font-bold! rounded-full! bg-primary-color-200!" color="primary" mat-flat-button&ndash;&gt;-->
+<!--&lt;!&ndash;              [routerLink]="['/admin/projects', projectName, 'subjects']">&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined' class="" matPrefix>person_outline</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        {{ 'ADMIN.subject.title.plural' | translate }}&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2 class="text-xs font-bold">{{ entity.login }}</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <button class="text-sm font-bold! rounded-full! bg-gray-200!" color="primary" mat-flat-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              [routerLink]="['/admin/projects', projectName, 'subjects']">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined' class="" matPrefix>person_outline</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        {{ 'ADMIN.subject.title.plural' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <h2 class="font-bold">{{ entity.login }}</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;  </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;    <div class='flex justify-between mb-4 flex-wrap items-center'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class='flex flex-wrap gap-2 items-center mb-2'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <button class="h-6! text-xs font-bold! rounded-full! bg-gray-200!" color="primary" mat-flat-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [routerLink]="['/admin/organizations/']">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon fontSet='material-icons-outlined' class="" matPrefix>corporate_fare</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.organization.title.plural' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <h2 class="text-xs font-bold">{{ organizationName }}</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <button class="h-6! text-xs font-bold! rounded-full! bg-gray-200!" color="primary" mat-flat-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [routerLink]="['/admin/organizations/', organizationName, 'projects']">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon fontSet='material-icons-outlined' class="" matPrefix>folder</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.project.title.plural' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <h2 class="text-xs font-bold">{{ projectName }}</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      &lt;!&ndash;      <mat-icon>chevron_right</mat-icon>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class='flex flex-wrap gap-2 items-center'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <button class="text-sm font-bold! rounded-full! bg-gray-200!" color="primary" mat-flat-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [routerLink]="['/admin/projects', projectName, 'subjects']">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon fontSet='material-icons-outlined' class="" matPrefix>person_outline</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.subject.title.plural' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <h2 class="font-bold">{{ entity.login }}</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;&lt;!&ndash;    <div class='flex flex-wrap gap-2 items-center m-0 text-subject-color'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class='flex items-center text-sm font-semibold rounded-full gap-1 py-2 px-4 bg-subject-color-100 text-subject-color-700'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined'>person_outline</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        {{ 'ADMIN.subject.title.singular' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <h2 class="">{{ entity.login }}</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <h2 class='details-page-header-title subject-color-fg'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <mat-chip disableRipple class='label-chip subject-color'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <mat-icon fontSet='material-icons-outlined'>person_outline</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        {{'ADMIN.subject.title.singular' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </mat-chip>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      {{entity.login}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </h2>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <div class='flex gap-1 ml-auto'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <button mat-icon-button [matMenuTriggerFor]="menu" color='primary' aria-label="Example icon-button with a menu" (click)='$event.stopPropagation()'>&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon class='text-black'>more_vert</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <mat-menu #menu="matMenu">&ndash;&gt;-->
+<!--&lt;!&ndash;        <rb-pair-app [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-app>&ndash;&gt;-->
+<!--&lt;!&ndash;        <rb-pair-source [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-source>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <button mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)='pairApp(entity)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon color='primary'>qr_code</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span>Pair App</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <button mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)='pairSource(entity)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon color='primary'>link</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span>Pair Source</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <button&ndash;&gt;-->
+<!--&lt;!&ndash;          mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;          (click)='onAction(DialogMode.EDIT, entity)'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='primary' fontSet='material-icons-outlined'>edit</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{'ADMIN.subject.edit' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button&ndash;&gt;-->
+<!--&lt;!&ndash;          mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;          [routerLink]='["revisions"]'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='primary' fontSet='material-icons-outlined'>history</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{'ADMIN.subject.history' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--&lt;!&ndash;        <rb-discontinue [entity]="entity" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-discontinue>&ndash;&gt;-->
+<!--&lt;!&ndash;        &lt;!&ndash;        <button mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)='discontinue(entity)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon color='accent' fontSet="material-icons-outlined">stop_circle</mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span>Discontinue</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        <button&ndash;&gt;-->
+<!--&lt;!&ndash;          mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;          (click)='onAction(DialogMode.DELETE, entity)'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='warn' fontSet='material-icons-outlined'>delete</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>{{'ADMIN.subject.delete' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--&lt;!&ndash;      </mat-menu>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <router-outlet></router-outlet>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <div class='p-4 text-sm border'>&ndash;&gt;-->
+<!--&lt;!&ndash;    <rb-subject-details [entity]='entity'></rb-subject-details>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--  <nav class="border-b" mat-tab-nav-bar mat-stretch-tabs="false" mat-align-tabs="start" [backgroundColor]="undefined" [tabPanel]="tabPanel">-->
+<!--    <a mat-tab-link-->
+<!--       [routerLink]='["clients/app-config"]'-->
+<!--       routerLinkActive=''-->
+<!--       #rla6='routerLinkActive'-->
+<!--       [active]='rla6.isActive'-->
+<!--       [ngClass]="rla6.isActive ? '': ''">-->
+<!--      <mat-icon fontSet='material-icons-outlined'>app_settings_alt</mat-icon>-->
+<!--      <span class="mx-1 text-sm font-bold">App Config</span>-->
+<!--    </a>-->
+<!--    <a mat-tab-link-->
+<!--       [routerLink]='["details"]'-->
+<!--       routerLinkActive=''-->
+<!--       #rla7='routerLinkActive'-->
+<!--       [routerLinkActiveOptions]="{exact: false}"-->
+<!--       [active]='rla7.isActive'-->
+<!--       [ngClass]="rla7.isActive ? '': ''">-->
+<!--      <mat-icon fontSet='material-icons-outlined'>article</mat-icon>-->
+<!--      <span class="mx-1 text-sm font-bold">Details</span>-->
+<!--    </a>-->
+<!--  </nav>-->
+<!--  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>-->
+
+<!--  <mat-card class="mt-4">-->
+<!--    <router-outlet ></router-outlet>-->
+<!--  </mat-card>-->
+<!--</div>-->
+

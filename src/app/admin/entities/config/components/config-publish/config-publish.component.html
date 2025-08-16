@@ -1,0 +1,26 @@
+<div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
+  <div class="flex items-center gap-4 text-orange-700">
+    <span class="material-symbols-outlined">error_outline</span>
+    <span>Unpublished changes</span>
+  </div>
+  <div class="flex items-center gap-4">
+    <button type='button'
+            mat-stroked-button
+            color='primary'
+            (click)="onDiscard()">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined font-bold">close</span>
+        Discard all
+      </span>
+    </button>
+    <button class="text-white!" type='button'
+            mat-flat-button
+            color='accent'
+            (click)="onPublish(entity())">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined font-bold">publish</span>
+        Publish changes
+      </span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div *ngIf="jvmMemoryMetrics" class='metrics'>
+  <div class='even:bg-neutral-100 dark:even:bg-neutral-600 p-4 flex'
+       *ngFor="let entry of jvmMemoryMetrics | keyvalue">
+    <ng-container *ngIf="entry.value.max !== -1">
+      <span class='shrink-0 w-1/3'>
+        {{ entry.key }} ({{ entry.value.used | fileSize:0 }} / {{ entry.value.max | fileSize:0 }})<br/>
+        {{'ADMIN.metrics.jvm.committed' | translate }}: {{ entry.value.committed | fileSize:0 }}
+      </span>
+      <span class='shrink-0 w-2/3 whitespace-pre-wrap'>
+        <section class="flex items-center">
+          <mat-progress-bar
+            class="h-6!"
+            [color]="'primary'"
+            [value]="100 * entry.value.used / entry.value.max">
+<!--            [bufferValue]="50">-->
+          </mat-progress-bar>
+          <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+            {{ (entry.value.used / entry.value.max) | percent  }}
+          </div>
+        </section>
+      </span>
+    </ng-container>
+    <ng-container *ngIf="entry.value.max === -1">
+      <span class='shrink-0 w-1/3'>
+        {{ entry.key }} ({{ entry.value.used | fileSize:0 }})
+      </span>
+      <span class='shrink-0 w-2/3 whitespace-pre-wrap'></span>
+    </ng-container>
+  </div>
+</div>

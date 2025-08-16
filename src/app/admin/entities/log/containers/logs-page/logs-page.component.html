@@ -1,0 +1,98 @@
+<rb-entities-page [$filters]="filters" [$name]="name" [$loading]="loading" [$entities]="entities" [$page]="page" [$sort]="sort"
+                  [tableProperties]="PROPERTIES"
+                  [$entitiesToShow]="entitiesToShow"
+                  (action)="onAction(DialogMode.ADD)"
+                  (filterChange)='handleFilterChange($event)'
+                  (filterEnabledChanged)="onFilterEnabledChanged($event)"
+                  (activeQueryChange)="handleActiveQueryChange($event)"
+                  (switchPageAction)="switchPage($event)"
+                  (switchSortAction)="switchSort($event)"
+                  [$filteredAndSortedEntities]="filteredAndSortedEntities"
+                  [$updated]="updated"
+                  [$expandedElement]="expandedElement">
+  <!--                  (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )"-->
+
+</rb-entities-page>
+
+
+<!--<rb-entities-page-header [entityName]="name" [enableAddButton]="false"-->
+<!--                         (action)="onAction(DialogMode.ADD)">-->
+<!--  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <rb-data-table-filter bottom-filter-->
+<!--                          [filters]='filters'-->
+<!--                          [filterOpened]='isFilterOpened'-->
+<!--                          (filterChanged)='handleFilterChange($event)'-->
+<!--                          (filterEnableChanged)="onFilterEnabledChanged($event)" />-->
+<!--  }-->
+<!--</rb-entities-page-header>-->
+
+<!--@if (loading) {-->
+<!--  <rb-loader />-->
+<!--}-->
+
+<!--<div class="rb-table" rbTableQueryReflector [page]="page" [sort]="sort"-->
+<!--     [defaultSort]="{sortField: 'name', sortOrder: 'asc'}"-->
+<!--     (activeQueryParams)="handleActiveQueryChange($event)" (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
+<!--  <div class="rb-table-header flex-wrap md:flex-nowrap">-->
+<!--    @for (property of PROPERTIES; track property.name) {-->
+<!--    <div *ngFor="let property of PROPERTIES"-->
+<!--         [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"-->
+<!--         [class.flex-1]="!property.width"-->
+<!--         [class.shrink-0]="!!property.width">-->
+<!--      <div class="rb-table-head group" (click)="switchSort(property)">-->
+<!--        <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>-->
+<!--        <div *ngIf="property.sortable">-->
+<!--          <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">-->
+<!--          <span class="rb-sort-icon material-symbols-outlined">-->
+<!--            {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}-->
+<!--          </span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    }-->
+<!--    <div class='w-full md:w-1/2'>-->
+<!--      <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  @if (entitiesToShow) {-->
+<!--    @for (entity of entitiesToShow; track entity.id) {-->
+<!--      <rb-log-table-row [entity]="entity" [updated]="updated"-->
+<!--                             (actionEvent)="onAction($event.mode, $event.entity, undefined)" />-->
+<!--    }-->
+<!--  }-->
+
+<!--&lt;!&ndash;  <ng-container *ngIf="entitiesToShow">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="rb-table-row"&ndash;&gt;-->
+<!--&lt;!&ndash;         *ngFor="let entity of entitiesToShow">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="rb-table-main-row flex-wrap md:flex-nowrap">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div *ngFor="let property of PROPERTIES"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class.flex-1]="!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class.shrink-0]="!!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;             [ngSwitch]="property.name">&ndash;&gt;-->
+<!--&lt;!&ndash;          <ng-container *ngSwitchDefault>{{ entity[property.name] || '-' }}</ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class='w-full md:w-1/2'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-button-toggle-group class="flex" name="fontStyle" aria-label="Font Style">&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-button-toggle value="TRACE" [ngClass]="entity.level === 'TRACE'? 'bg-primary-color-100!' : ''" (click)="updateAction(entity, 'TRACE')">{{'ADMIN.log.level.TRACE' | translate }}</mat-button-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-button-toggle value="DEBUG" [ngClass]="entity.level === 'DEBUG'? 'bg-accent-color-100!' : ''" (click)="updateAction(entity, 'DEBUG')">{{'ADMIN.log.level.DEBUG' | translate }}</mat-button-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-button-toggle value="INFO" [ngClass]="entity.level === 'INFO'? 'bg-primary-color-100!' : ''" (click)="updateAction(entity, 'INFO')">{{'ADMIN.log.level.INFO' | translate }}</mat-button-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-button-toggle value="WARN" [ngClass]="entity.level === 'WARN'? 'bg-red-100!' : ''" (click)="updateAction(entity, 'WARN')">{{'ADMIN.log.level.WARN' | translate }}</mat-button-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-button-toggle value="ERROR" [ngClass]="entity.level === 'ERROR'? 'bg-red-100!' : ''" (click)="updateAction(entity, 'ERROR')">{{'ADMIN.log.level.ERROR' | translate }}</mat-button-toggle>&ndash;&gt;-->
+<!--&lt;!&ndash;          </mat-button-toggle-group>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </ng-container>&ndash;&gt;-->
+<!--</div>-->
+
+<!--@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {-->
+<!--  <mat-paginator (page)="switchPage($event)"-->
+<!--                 [length]="filteredAndSortedEntities.length"-->
+<!--                 [pageSize]="page.pageSize"-->
+<!--                 [pageSizeOptions]="pageSizeOptions"-->
+<!--                 [pageIndex]="page.pageIndex"-->
+<!--                 aria-label="Select page" />-->
+<!--}-->

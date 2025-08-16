@@ -1,0 +1,14 @@
+<div [class]="class" class="inline-block text-sm px-2 py-1 rounded-sm gap-1" [class.cursor-pointer]="!!link()">
+<!--     [ngClass]="colorClass ?? ''"-->
+<!--  {{link()}}-->
+<!--  @if (!!link()){-->
+    <a [routerLink]='link()' class="flex items-center gap-1">
+      <ng-content />
+  <!--    <ng-container *ngTemplateOutlet="content"></ng-container>-->
+    </a>
+<!--  } @else {-->
+<!--  <ng-template #content>-->
+<!--    <ng-content />-->
+<!--  </ng-template>-->
+<!--  }-->
+</div>

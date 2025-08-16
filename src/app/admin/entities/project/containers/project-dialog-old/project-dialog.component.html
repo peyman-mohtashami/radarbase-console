@@ -1,0 +1,367 @@
+<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='close()'/>
+
+@let configFields = (config$ | async)?.['fields'] ?? {};
+
+<mat-dialog-content>
+  @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
+    <rb-dialog-body-description>
+      <rb-project-details [mode]='mode' [entity]="entity" [config]="configFields" />
+    </rb-dialog-body-description>
+  }
+
+  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+
+      @if (mode !== DialogMode.ADD) {
+        @if (!floatLabel) {
+          <label for="id" class="text-sm">{{ 'ADMIN.project.id.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full my-4'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.id.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='id'/>
+        </mat-form-field>
+      }
+
+
+      @if (!floatLabel) {
+        <label for="projectName" class="text-sm">{{ 'ADMIN.project.projectName.label' | translate }}</label>
+      }
+      <mat-form-field class='small-input w-full'
+                      subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if (floatLabel) {
+          <mat-label>{{ 'ADMIN.project.projectName.label' | translate }}</mat-label>
+        }
+        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+        <input matInput formControlName='projectName' required/>
+        <mat-error *ngIf="form.controls.projectName?.errors?.['duplicate']">
+          {{ "Project Name exists" }} <!-- TODO translate -->
+        </mat-error>
+        <mat-error *ngIf="form.controls.projectName?.errors?.['pattern']">
+          {{ ValidatorError.normalTextValidator }}
+        </mat-error>
+        <mat-error *ngIf="form.controls.projectName?.errors?.['required']">
+          {{ ValidatorError.requiredValidator | translate: {value: 'ADMIN.project.projectName.label' | translate} }}
+        </mat-error>
+      </mat-form-field>
+
+
+      @if (configFields['humanReadableProjectName'] !== false) {
+        @if (!floatLabel) {
+          <label for="humanReadableProjectName"
+                 class="text-sm">{{ 'ADMIN.project.humanReadableProjectName.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.humanReadableProjectName.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='humanReadableProjectName'/>
+          <mat-error *ngIf="form.controls.humanReadableProjectName?.errors?.['pattern']">
+            {{ ValidatorError.normalTextValidator }}
+          </mat-error>
+        </mat-form-field>
+
+        <span class="block text-xs leading-3 -mt-3 mb-4">
+        {{ 'ADMIN.project.humanReadableProjectName.hint' | translate }}
+      </span>
+      }
+
+      @if (configFields['description'] !== false) {
+        @if (!floatLabel) {
+          <label for="description" class="text-sm">{{ 'ADMIN.project.description.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-ful'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.description.label' | translate }}</mat-label>
+          }
+          <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <mat-hint align="start">{{ ValidatorHint.longTextValidator }}</mat-hint>
+          <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+          <mat-error *ngIf="form.controls.description?.errors?.['pattern']">
+            {{ ValidatorError.longTextValidator }}
+          </mat-error>
+          <mat-error *ngIf="form.controls.description?.errors?.['required']">
+            {{ ValidatorError.requiredValidator | translate: {value: 'ADMIN.project.description.label' | translate} }}
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (configFields['location'] !== false) {
+        @if (!floatLabel) {
+          <label for="location" class="text-sm">{{ 'ADMIN.project.location.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.location.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='location'/>
+          <mat-error *ngIf="form.controls.location?.errors?.['pattern']">
+            {{ ValidatorError.normalTextValidator }}
+          </mat-error>
+          <mat-error *ngIf="form.controls.location?.errors?.['required']">
+            {{ ValidatorError.requiredValidator | translate: {value: 'ADMIN.project.location.label' | translate} }}
+          </mat-error>
+        </mat-form-field>
+      }
+
+      <!-- TODO organizationName is deprecated -->
+      @if (configFields['organizationName'] !== false) {
+        @if (!floatLabel) {
+          <label for="organizationName"
+                 class="text-sm">{{ 'ADMIN.project.organizationName.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          <!--                      *ngIf='entity?.organizationName'-->
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.organizationName.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='organizationName'/>
+        </mat-form-field>
+      }
+
+      <rb-mat-select-autocomplete formControlName='organization'
+                                  [legend]="'ADMIN.project.organization.label' | translate"
+                                  [options]='organizationsOptions'
+                                  [label]="'ADMIN.project.organization.label' | translate"
+                                  [multiple]="false"
+                                  [required]="true">
+      </rb-mat-select-autocomplete>
+
+      @if (configFields['projectStatus'] !== false) {
+        @if (!floatLabel) {
+          <label for="projectStatus" class="text-sm">{{ 'ADMIN.project.projectStatus.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.projectStatus.label' | translate }}</mat-label>
+          }
+          <mat-select formControlName='projectStatus'>
+            <mat-option [value]="ProjectStatus.PLANNING">{{ 'ADMIN.project.projectStatus.PLANNING' | translate }}
+            </mat-option>
+            <mat-option [value]="ProjectStatus.ONGOING">{{ 'ADMIN.project.projectStatus.ONGOING' | translate }}
+            </mat-option>
+            <mat-option [value]="ProjectStatus.ENDED">{{ 'ADMIN.project.projectStatus.ENDED' | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <!--        <mat-form-field class="example-full-width" appearance="fill">-->
+      <!--          <mat-label>Choose a date</mat-label>-->
+      <!--          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker">-->
+      <!--          <mat-hint>MM/DD/YYYY</mat-hint>-->
+      <!--          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>-->
+      <!--          <mat-datepicker #picker></mat-datepicker>-->
+      <!--        </mat-form-field>-->
+      @if (configFields['startDate'] !== false) {
+        @if (!floatLabel) {
+          <label for="startDate" class="text-sm">{{ 'ADMIN.project.startDate.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.startDate.label' | translate }}</mat-label>
+          }
+          <input matInput [matDatepicker]='startDatePicker'
+                 formControlName='startDate'
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='dateFormat'>
+          <mat-datepicker-toggle matSuffix [for]='startDatePicker'></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.controls.startDate?.errors?.['matDatepickerMin']">
+            Date is out of range. It should be after 2000. <!-- TODO translate -->
+          </mat-error>
+          <mat-error *ngIf="form.controls.startDate?.errors?.['matDatepickerMax']">
+            Date is out of range. It should be before 2050. <!-- TODO translate -->
+          </mat-error>
+          <mat-error *ngIf="form.controls.startDate?.errors?.['matDatepickerParse']">
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.controls.startDate?.errors?.['matStartDateInvalid']">
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (configFields['endDate'] !== false) {
+        @if (!floatLabel) {
+          <label for="endDate" class="text-sm">{{ 'ADMIN.project.endDate.label' | translate }}</label>
+        }
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if (floatLabel) {
+            <mat-label>{{ 'ADMIN.project.endDate.label' | translate }}</mat-label>
+          }
+          <!-- IntelliJ bug -->
+          <!-- Type MatDatepicker is not assignable to type MatDatepickerPanel<MatDatepickerControl<Date>, Date | null, Date>-->
+          <input matInput [matDatepicker]='endDatePicker'
+                 formControlName='endDate'
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='dateFormat'>
+          <mat-datepicker-toggle matSuffix [for]='endDatePicker'></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.controls.endDate?.errors?.['matDatepickerMin']">
+            Date is out of range. It should be after 2000. <!-- TODO translate -->
+          </mat-error>
+          <mat-error *ngIf="form.controls.endDate?.errors?.['matDatepickerMax']">
+            Date is out of range. It should be before 2050. <!-- TODO translate -->
+          </mat-error>
+          <mat-error *ngIf="form.controls.endDate?.errors?.['matDatepickerParse']">
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.controls.endDate?.errors?.['matStartDateInvalid']">
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          </mat-error>
+        </mat-form-field>
+      }
+
+      <rb-mat-select-autocomplete formControlName='sourceTypes'
+                                  [legend]="'ADMIN.project.sourceTypes.label' | translate"
+                                  [options]='sourceTypesOptions'
+                                  [label]="'ADMIN.project.sourceTypes.label' | translate"
+                                  [multiple]="true">
+      </rb-mat-select-autocomplete>
+
+      <div formGroupName='attributes'>
+        @if (configFields['extraFields']) {
+
+          @for (f of configFields['extraFields']; track f.name) {
+            <!--            {{f | json}}-->
+            <rb-mat-dynamic-input [field]="f" [formControlName]='f.name' entityName="project"/>
+          }
+        }
+
+        @if (configFields['attributes'] !== false) {
+          @if (!floatLabel) {
+            <label for="attributes" class="text-sm">{{ 'ADMIN.project.attributes.label' | translate }}</label>
+          }
+          <fieldset
+            class="mb-4 rounded-sm border p-4">
+            <!--        formGroupName='attributes'-->
+            @if (floatLabel) {
+              <legend class="text-xs text-gray-500">{{ 'ADMIN.project.attributes.label' | translate }}</legend>
+            }
+
+            @if (!floatLabel) {
+              <label for="workPackage"
+                     class="text-sm">{{ 'ADMIN.project.attributes.workPackage' | translate }}</label>
+            }
+            <mat-form-field class='small-input w-full'
+                            subscriptSizing="fixed"
+                            appearance='outline'
+                            [floatLabel]='floatLabel ? "always" : "auto"'>
+              @if (floatLabel) {
+                <mat-label>{{ 'ADMIN.project.attributes.workPackage' | translate }}</mat-label>
+              }
+              <input matInput formControlName='Work-package'/>
+              <mat-error *ngIf="form.controls.attributes.controls['Work-package']?.errors?.['pattern']">
+                {{ ValidatorError.normalTextValidator }}
+              </mat-error>
+            </mat-form-field>
+
+            @if (!floatLabel) {
+              <label for="phase" class="text-sm">{{ 'ADMIN.project.attributes.phase' | translate }}</label>
+            }
+            <mat-form-field class='small-input w-full'
+                            subscriptSizing="fixed"
+                            appearance='outline'
+                            [floatLabel]='floatLabel ? "always" : "auto"'>
+              @if (floatLabel) {
+                <mat-label>{{ 'ADMIN.project.attributes.phase' | translate }}</mat-label>
+              }
+              <input matInput formControlName='Phase'/>
+              <mat-error *ngIf="form.controls.attributes.controls['Phase']?.errors?.['pattern']">
+                {{ ValidatorError.normalTextValidator }}
+              </mat-error>
+            </mat-form-field>
+
+            @if (!floatLabel) {
+              <label for="externalProjectUrl"
+                     class="text-sm">{{ 'ADMIN.project.attributes.externalProjectUrl' | translate }}</label>
+            }
+            <mat-form-field class='small-input w-full'
+                            subscriptSizing="fixed"
+                            appearance='outline'
+                            [floatLabel]='floatLabel ? "always" : "auto"'>
+              @if (floatLabel) {
+                <mat-label>{{ 'ADMIN.project.attributes.externalProjectUrl' | translate }}</mat-label>
+              }
+              <input matInput formControlName='External-project-url'/>
+              <mat-error *ngIf="form.controls.attributes.controls['External-project-url']?.errors?.['pattern']">
+                {{ ValidatorError.urlValidator }}
+              </mat-error>
+            </mat-form-field>
+
+            @if (!floatLabel) {
+              <label for="externalProjectId"
+                     class="text-sm">{{ 'ADMIN.project.attributes.externalProjectId' | translate }}</label>
+            }
+            <mat-form-field class='small-input w-full'
+                            subscriptSizing="fixed"
+                            appearance='outline'
+                            [floatLabel]='floatLabel ? "always" : "auto"'>
+              @if (floatLabel) {
+                <mat-label>{{ 'ADMIN.project.attributes.externalProjectId' | translate }}</mat-label>
+              }
+              <input matInput formControlName='External-project-id'/>
+              <mat-error *ngIf="form.controls.attributes.controls['External-project-id']?.errors?.['pattern']">
+                {{ ValidatorError.stringIdValidator }}
+              </mat-error>
+            </mat-form-field>
+
+            @if (!floatLabel) {
+              <label for="privacyPolicyUrl"
+                     class="text-sm">{{ 'ADMIN.project.attributes.privacyPolicyUrl' | translate }}</label>
+            }
+            <mat-form-field class='small-input w-full'
+                            subscriptSizing="fixed"
+                            appearance='outline'
+                            [floatLabel]='floatLabel ? "always" : "auto"'>
+              @if (floatLabel) {
+                <mat-label>{{ 'ADMIN.project.attributes.privacyPolicyUrl' | translate }}</mat-label>
+              }
+              <input matInput formControlName='Privacy-policy-url'/>
+              <mat-error *ngIf="form.controls.attributes.controls['Privacy-policy-url']?.errors?.['pattern']">
+                {{ ValidatorError.urlValidator }}
+              </mat-error>
+            </mat-form-field>
+          </fieldset>
+        }
+      </div>
+
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error) {
+  <rb-message/>
+}
+
+<rb-dialog-actions [mode]='mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

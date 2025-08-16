@@ -1,0 +1,22 @@
+<!--@if (tags() && tags()?.length) {-->
+<!--  <div class="flex flex-wrap gap-1 py-1">-->
+<!--    @for (tag of tags(); track tag) {-->
+<!--      <rb-tag [colorClass]="colorClass()">-->
+<!--        {{ tag }}-->
+<!--      </rb-tag>-->
+<!--    }-->
+<!--  </div>-->
+<!--} @else {-->
+<!--  - -->
+<!--}-->
+
+<div class="flex flex-wrap gap-1 py-1">
+  @for (tag of tags(); track tag) {
+    <rb-tag [class]="colorClass()">
+      {{ tag }}
+    </rb-tag>
+  } @empty {
+    -
+  }
+</div>
+

@@ -1,0 +1,46 @@
+<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>
+
+<rb-static-breadcrumb *ngIf="inGlobalScope$ | async"
+                      [entityName]="ENTITY_NAME.client" [entity]="entity">
+</rb-static-breadcrumb>
+
+<form *ngIf="form" class="pt-4 px-4 bg-white" [formGroup]='form' novalidate>
+    <mat-form-field *ngIf="entity.clientId === 'pRMT'"
+                    subscriptSizing="dynamic"
+                    class='small-input mb-0! sm:w-[300px]'
+                    appearance='outline'
+                    floatLabel='always'>
+        <mat-label>Config Category</mat-label>
+        <mat-select formControlName='category' placeholder="Select a config category">
+            <mat-option [value]="'general'">General</mat-option>
+            <mat-option [value]="'measurements'">Therapist App - Measurements</mat-option>
+            <mat-option [value]="'feedbackConfig'">Therapist App - Feedback</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="entity.clientId === 'aRMT'"
+                    subscriptSizing="dynamic"
+                    class='small-input mb-0! sm:w-[300px]'
+                    appearance='outline'
+                    floatLabel='always'>
+        <mat-label>Config Category</mat-label>
+        <mat-select formControlName='category' placeholder="Select a config category">
+            <mat-option [value]="'general'">General</mat-option>
+            <mat-option [value]="'protocols'">Protocols</mat-option>
+            <mat-option [value]="'questionnaires'">Questionnaires</mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+<div class="mx-4">
+    <mat-accordion class='' multi>
+        <mat-expansion-panel [expanded]='panelOpenState'
+                             class=''>
+            <div class='p-4 text-sm border'>
+                <rb-client-details [entity]='entity'>
+                </rb-client-details>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+
+<router-outlet></router-outlet>

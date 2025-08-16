@@ -1,0 +1,14 @@
+@if (mode() === "MENU") {
+  <button class="hover:text-primary hover:bg-transparent! transition-all"
+          mat-menu-item
+          (click)='discontinue()'>
+    <span class="flex items-center gap-2">
+      <span class="text-xl text-yellow-500 material-symbols-outlined font-bold">stop_circle</span>
+      <span>{{ 'Discontinue' | translate }}</span>
+    </span>
+  </button>
+} @else {
+  <button class="tiny" mat-icon-button color="primary" [matTooltip]="'DISCONTINUE'" (click)='discontinue()'>
+    <span class="text-xl! text-yellow-500 material-symbols-outlined font-bold">stop_circle</span>
+  </button>
+}

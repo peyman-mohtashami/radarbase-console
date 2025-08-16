@@ -1,0 +1,46 @@
+@if(!floatLabel()) {
+  <label for="clientId" class="text-sm">{{ label() }}</label>
+}
+<mat-form-field class='small-input w-full'
+                subscriptSizing="fixed"
+                appearance="outline"
+                [floatLabel]='floatLabel() ? "always" : "auto"'>
+  @if(floatLabel()) {
+  <mat-label>{{label()}}</mat-label>
+  }
+  <mat-select [formControl]="form"
+              placeholder=""
+              [multiple]="multiple()"
+              [required]="required()"
+              #multiSelect>
+    @if (multiple()) {
+      <mat-select-trigger>
+        <mat-chip-listbox>
+          @for (selected of form?.value; track selected.name) {
+            <mat-chip-option [value]="selected"
+                             [removable]="true"
+                             (removed)="removeChip(selected)">
+              {{selected["name"]}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </mat-select-trigger>
+    }
+    <mat-option>
+      <ngx-mat-select-search [formControl]="multiFilterCtrl"
+                             [placeholderLabel]="'Search ' + label() + ' ...'"
+                             [noEntriesFoundLabel]="'No matching ' + label() + ' found'" />
+    </mat-option>
+    @for (option of filteredMulti$ | async; track option.name) {
+      <mat-option [value]="option">
+        {{option.name}}
+      </mat-option>
+    }
+  </mat-select>
+  @if (form?.hasError('required')) {
+    <mat-error>
+      {{ValidatorError.requiredValidator | translate: {value: label()} }}
+    </mat-error>
+  }
+</mat-form-field>

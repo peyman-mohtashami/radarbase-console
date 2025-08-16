@@ -1,0 +1,10 @@
+<div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500'
+     [class.border-b]="type !== DetailType.TABLE"
+     [ngClass]="type !== DetailType.TABLE ? '' : element?.extensionClass || ''">
+  <span class='shrink-0 w-full' [ngClass]="type === DetailType.TABLE ? 'sm:w-52' : ' sm:w-1/4'">
+    <ng-content select="[label]"></ng-content>
+  </span>
+  <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
+    <ng-content select="[value]"></ng-content>
+  </span>
+</div>

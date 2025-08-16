@@ -1,0 +1,85 @@
+<h2 mat-dialog-title class="border-b-2">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      <span>{{'ADMIN.subject.pairSource.title' | translate }}</span>
+    </span>
+    <button mat-icon-button
+            (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </span>
+</h2>
+
+<mat-dialog-content>
+  <rb-dialog-body-description>
+    <rb-subject-details [mode]='DialogMode.DELETE' [entity]='entity' />
+  </rb-dialog-body-description>
+
+  @if (assignedSources?.length || assignableSources?.length) {
+    {{'ADMIN.source.title.plural' | translate }}
+    <rb-dialog-body-description >
+      @for (source of assignedSources; track source.id) {
+        <div class='detail-item'>
+          <span class='label'>
+            <mat-checkbox [(ngModel)]='source.assigned'>
+              {{source.sourceTypeProducer+"_"+source.sourceTypeModel+"_"+source.sourceTypeCatalogVersion}}
+            </mat-checkbox>
+          </span>
+          <span class='value' >
+            {{source.sourceName}}
+            @if (source.expectedSourceName) {
+              <span>({{ source.expectedSourceName }})</span>
+            }
+          </span>
+        </div>
+      }
+      @for (source of assignableSources; track source.id) {
+        <div class='detail-item'>
+          <span class='label'>
+            <mat-checkbox [(ngModel)]='source.assigned'>
+              {{source.sourceTypeProducer+"_"+source.sourceTypeModel+"_"+source.sourceTypeCatalogVersion}}
+            </mat-checkbox>
+          </span>
+          <span class='value' >
+            {{source.sourceName}}
+            <span *ngIf='source.expectedSourceName'>({{ source.expectedSourceName }})</span>
+          </span>
+        </div>
+      }
+    </rb-dialog-body-description>
+  } @else {
+    <p>
+      {{'ADMIN.subject.pairSource.noItemAvailable' | translate }}
+    </p>
+  }
+</mat-dialog-content>
+
+@if (error) {
+  <rb-message />
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='primary'
+            type='button'
+            class='close-button'
+            [mat-dialog-close]='true'
+            (click)='close()'>
+      {{'ADMIN.subject.pairSource.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end'>
+    <button mat-raised-button
+            color='primary'
+            type='submit'
+            name='update'
+            [disabled]='isLoading'
+            (click)='save()'>
+      @if (isLoading) {
+        <mat-icon><mat-spinner diameter='20' /></mat-icon>
+      }
+      {{'ADMIN.subject.pairSource.save' | translate }}
+    </button>
+  </div>
+</div>

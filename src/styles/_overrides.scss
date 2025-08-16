@@ -1,0 +1,51 @@
+// Global style overrides (for Material or Tailwind)
+
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-slide-toggle {
+  @apply text-sm mb-4
+}
+.mat-mdc-checkbox {
+  @apply text-sm
+}
+.mdc-checkbox__mixedmark {
+  @apply border-red-500
+}
+
+fieldset {
+  @apply mb-4 rounded border px-2
+}
+fieldset legend {
+  @apply text-sm
+}
+mat-hint {
+  @apply text-xs leading-3
+}
+
+mat-option {
+  @apply min-h-[36px] text-sm
+}
+
+.mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper {
+  @apply text-sm p-0
+}
+
+.mat-mdc-paginator {
+  @apply text-sm mt-2 bg-transparent
+}
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+.rb-error-snackbar {
+  .mat-mdc-snackbar-surface {
+    @apply bg-red-700!;
+  }
+}

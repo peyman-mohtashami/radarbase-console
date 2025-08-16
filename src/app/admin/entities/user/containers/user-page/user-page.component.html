@@ -1,0 +1,10 @@
+<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>
+
+<rb-static-breadcrumb [entityName]="ENTITY_NAME.user" [entity]="entity"></rb-static-breadcrumb>
+
+<rb-details-page-header [entity]="entity" [entityName]="ENTITY_NAME.user"
+                        (action)="onAction($event.mode, $event.entity)"
+                        [buttons]="{delete: {disabled: deleteDisabled}}">
+  <rb-activate extraButton [entity]="entity"></rb-activate>
+  <rb-user-details [entity]='entity'></rb-user-details>
+</rb-details-page-header>

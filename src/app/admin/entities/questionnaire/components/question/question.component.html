@@ -1,0 +1,481 @@
+<div [formGroup]="form">
+  <div class="text-base" formArrayName="questions">
+    <div class="mb-4 flex justify-between items-center">
+      <span class="font-bold">Questions</span>
+      <button type='button'
+              mat-stroked-button
+              color='primary'
+              (click)="addQuestion()">
+        <mat-icon>add</mat-icon>
+        <span class="font-bold">Add Question</span>
+      </button>
+    </div>
+    <div cdkDropList class="" (cdkDropListDropped)="drop($event)">
+      @for (question of questions.controls; let i = $index; track question) {
+        <mat-expansion-panel class="mb-3" [formGroupName]="i" cdkDrag>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="flex justify-between items-center w-full">
+                <div class="w-8 flex">
+                  <span class="material-symbols-outlined">swap_vertical_circle</span>
+                </div>
+                <span class="w-16">#{{ i }}</span>
+                <span class="grow">{{ question.get('field_name')?.value }}</span>
+                <span class="w-72">{{ question.get('field_type')?.value }}</span>
+                <div class="w-8 flex">
+                  <button class="material-symbols-outlined text-red-500" (click)="removeQuestion(i)">do_not_disturb_on
+                  </button>
+                </div>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+<!--          {{language}}-->
+<!--          @if (!language || language !== 'en') {-->
+          @if (!language) {
+<!--            HHH1-->
+<!--            {{entity | json}}-->
+            <div class="p-4">
+<!--              @if (entity?.translations?.['en']?.['questions']?.[i]; as defaultTranslation) {-->
+                <mat-form-field class='small-input w-full'
+                                appearance='outline'
+                                floatLabel='always'>
+                  <mat-label>Field Name</mat-label>
+                  <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                  <input matInput formControlName='field_name' required>
+<!--                  <input matInput [formControl]='question.get("field_name")!' required>-->
+                  @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                    <!--                        @if (question.get('section_header')?.errors?.['pattern'] && !question.get('section_header')?.hasError('required')) {-->
+                    <mat-error>
+                      {{ ValidatorError.normalTextValidator }}
+                    </mat-error>
+                  }
+                  @if (question.hasError('required')) {
+                    <!--                        @if (question.get('section_header')?.hasError('required')) {-->
+                    <mat-error>
+                      {{ ValidatorError.requiredValidator | translate: {value: 'Section Header'} }}
+                    </mat-error>
+                  }
+                </mat-form-field>
+<!--                <p>Filed Name: {{ defaultTranslation["field_name"] }}</p>-->
+                <mat-form-field class='small-input w-full'
+                                appearance='outline'
+                                floatLabel='always'>
+                  <mat-label>Field Type</mat-label>
+                  <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                  <mat-select formControlName='field_type' required>
+                    @for (type of questionTypes; track type) {
+                    <mat-option [value]="type.name">{{type.label}}</mat-option>
+                    }
+                  </mat-select>
+                  @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                    <!--                        @if (question.get('section_header')?.errors?.['pattern'] && !question.get('section_header')?.hasError('required')) {-->
+                    <mat-error>
+                      {{ ValidatorError.normalTextValidator }}
+                    </mat-error>
+                  }
+                  @if (question.hasError('required')) {
+                    <!--                        @if (question.get('section_header')?.hasError('required')) {-->
+                    <mat-error>
+                      {{ ValidatorError.requiredValidator | translate: {value: 'Section Header'} }}
+                    </mat-error>
+                  }
+                </mat-form-field>
+<!--                <p>Field Type: {{ defaultTranslation["field_type"] }}</p>-->
+              <mat-form-field class='small-input w-full'
+                              appearance='outline'
+                              floatLabel='always'>
+                <mat-label>Field Label</mat-label>
+                <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                <textarea rows="3" matInput formControlName='field_label' required></textarea>
+                @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                  <!--                        @if (question.get('field_label')?.errors?.['pattern'] && !question.get('field_label')?.hasError('required')) {-->
+                  <mat-error>
+                    {{ ValidatorError.normalTextValidator }}
+                  </mat-error>
+                }
+                @if (question.hasError('required')) {
+                  <!--                        @if (question.get('field_label')?.hasError('required')) {-->
+                  <mat-error>
+                    {{ ValidatorError.requiredValidator | translate: {value: 'Field Label'} }}
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class='small-input w-full'
+                              appearance='outline'
+                              floatLabel='always'>
+                <mat-label>Section Header</mat-label>
+                <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                <textarea rows="3" matInput formControlName='section_header' required></textarea>
+                @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                  <!--                        @if (question.get('section_header')?.errors?.['pattern'] && !question.get('section_header')?.hasError('required')) {-->
+                  <mat-error>
+                    {{ ValidatorError.normalTextValidator }}
+                  </mat-error>
+                }
+                @if (question.hasError('required')) {
+                  <!--                        @if (question.get('section_header')?.hasError('required')) {-->
+                  <mat-error>
+                    {{ ValidatorError.requiredValidator | translate: {value: 'Section Header'} }}
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              @if (question.get('field_type')?.value; as type) {
+                <ng-container>
+                  @if (type !== 'timed' && type !== 'audio' && type !== 'text' && type !== 'datepicker' && type !== 'slider') {
+                    <mat-form-field
+                      class='small-input  w-full mt-4'
+                      appearance='outline'
+                      floatLabel='always'>
+                      <mat-label>Choices</mat-label>
+                      <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                      <textarea rows="6" matInput formControlName='select_choices_or_calculations'
+                                required></textarea>
+                      <!--                          @if (question.get('select_choices_or_calculations')?.errors?.['pattern'] && !question.get('select_choices_or_calculations')?.hasError('required')) {-->
+                      @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                        <mat-error>
+                          {{ ValidatorError.normalTextValidator }}
+                        </mat-error>
+                      }
+                      <!--                          @if (question.get('select_choices_or_calculations')?.hasError('required')) {-->
+                      @if (question.hasError('required')) {
+                        <mat-error>
+                          {{ ValidatorError.requiredValidator | translate: {value: 'Choices'} }}
+                        </mat-error>
+                      }
+                    </mat-form-field>
+                  }
+                </ng-container>
+              }
+<!--              }-->
+            </div>
+          } @else {
+<!--            @if (entity?.defaultLanguage === language) {-->
+<!--              DEFAULT-->
+              <div class="p-4">
+<!--            <pre>-->
+<!--            {{question}}-->
+
+<!--            </pre>-->
+<!--                <div class="flex justify-between items-center gap-4">-->
+                  <mat-form-field class='small-input w-1/2'
+                                  appearance='outline'
+                                  floatLabel='always'>
+                    <mat-label>Field Name</mat-label>
+                    <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                    <input matInput formControlName='field_name' required />
+                    <!--                <mat-error *ngIf="form.get('field_name')?.errors?.['pattern'] && !form.get('field_name')?.hasError('required')">-->
+                    <!--                  {{ValidatorError.normalTextValidator}}-->
+                    <!--                </mat-error>-->
+                    <!--              hhhh: {{question.get('field_name')?.hasError('required') }}-->
+                    <!--                  @if (question.get('field_name')?.hasError('required')) {-->
+                    @if (question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.requiredValidator | translate: {value: 'Field Name'} }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+
+                  <mat-form-field class='small-input w-1/2'
+                                  appearance='outline'
+                                  floatLabel='always'>
+                    <mat-label>Field Type</mat-label>
+                    <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                    <mat-select formControlName='field_type'>
+                      @for (type of questionTypes; track type) {
+                        <mat-option [value]="type.name">{{ type.label }}</mat-option>
+                      }
+                    </mat-select>
+                    <!--                  @if (question.get('field_type')?.errors?.['pattern'] && !question.get('field_type')?.hasError('required')) {-->
+                    @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.normalTextValidator }}
+                      </mat-error>
+                    }
+                    @if (question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.requiredValidator | translate: {value: 'Field Type'} }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+<!--                </div>-->
+
+<!--                <div class="flex justify-between items-center gap-4 mt-4">-->
+                  <mat-form-field class='small-input w-1/2'
+                                  appearance='outline'
+                                  floatLabel='always'>
+                    <mat-label>Field Label</mat-label>
+                    <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                    <textarea rows="3" matInput formControlName='field_label' required></textarea>
+                    <!--                  @if (question.get('field_label')?.errors?.['pattern'] && !question.get('field_label')?.hasError('required')) {-->
+                    @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.normalTextValidator }}
+                      </mat-error>
+                    }
+                    @if (question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.requiredValidator | translate: {value: 'Field Label'} }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+
+                  <mat-form-field class='small-input w-1/2'
+                                  appearance='outline'
+                                  floatLabel='always'>
+                    <mat-label>Section Header</mat-label>
+                    <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                    <textarea rows="3" matInput formControlName='section_header' required></textarea>
+                    <!--                  @if (question.get('section_header')?.errors?.['pattern'] && !question.get('section_header')?.hasError('required')) {-->
+                    @if (question.get('section_header')?.errors?.['pattern'] && !question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.normalTextValidator }}
+                      </mat-error>
+                    }
+                    <!--                  @if (question.get('section_header')?.hasError('required')) {-->
+                    @if (question.hasError('required')) {
+                      <mat-error>
+                        {{ ValidatorError.requiredValidator | translate: {value: 'Section Header'} }}
+                      </mat-error>
+                    }
+                  </mat-form-field>
+<!--                </div>-->
+
+                @if (question.get('field_type')?.value; as type) {
+                  @if (type !== 'timed' && type !== 'audio' && type !== 'text' && type !== 'datepicker' && type !== 'slider') {
+                    <mat-form-field
+                      class='small-input w-full mt-4'
+                      appearance='outline'
+                      floatLabel='always'>
+                      <mat-label>Choices</mat-label>
+                      <!--                  <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                      <textarea rows="6" matInput formControlName='select_choices_or_calculations' required></textarea>
+                      <!--                  @if (question.get('select_choices_or_calculations')?.errors?.['pattern'] && !question.get('select_choices_or_calculations')?.hasError('required')) {-->
+                      @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                        <mat-error>
+                          {{ ValidatorError.normalTextValidator }}
+                        </mat-error>
+                      }
+                      <!--                  @if (question.get('select_choices_or_calculations')?.hasError('required')) {-->
+                      @if (question.hasError('required')) {
+                        <mat-error>
+                          {{ ValidatorError.requiredValidator | translate: {value: 'Choices'} }}
+                        </mat-error>
+                      }
+                    </mat-form-field>
+                  }
+
+                  @if (type === 'timed') {
+                    <fieldset formGroupName="field_annotation" class="p-4 rounded-sm border">
+                      <legend class="px-4">Field Annotation</legend>
+                      <div class="flex justify-between items-center gap-4">
+                        <mat-form-field class='small-input w-1/2'
+                                        appearance='outline'
+                                        floatLabel='always'>
+                          <mat-label>Image</mat-label>
+                          <!--                      <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                          <input matInput formControlName='image' required/>
+                          <mat-error
+                            *ngIf="question.get('image')?.errors?.['pattern'] && !question.get('image')?.hasError('required')">
+                            {{ ValidatorError.normalTextValidator }}
+                          </mat-error>
+                          <mat-error *ngIf="question.get('image')?.hasError('required')">
+                            {{ ValidatorError.requiredValidator | translate: {value: 'Image'} }}
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class='small-input w-1/6'
+                                        appearance='outline'
+                                        floatLabel='always'>
+                          <mat-label>Timer Unit</mat-label>
+                          <!--                      <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                          <input matInput formControlName='unit' required/>
+                          <mat-error
+                            *ngIf="question.get('unit')?.errors?.['pattern'] && !question.get('unit')?.hasError('required')">
+                            {{ ValidatorError.normalTextValidator }}
+                          </mat-error>
+                          <mat-error *ngIf="question.get('unit')?.hasError('required')">
+                            {{ ValidatorError.requiredValidator | translate: {value: 'Unit'} }}
+                          </mat-error>
+                        </mat-form-field>
+                        <ng-container formGroupName="timer">
+                          <mat-form-field class='small-input w-1/6'
+                                          appearance='outline'
+                                          floatLabel='always'>
+                            <mat-label>Timer Start</mat-label>
+                            <!--                        <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                            <input matInput formControlName='start' required/>
+                            <mat-error
+                              *ngIf="question.get('start')?.errors?.['pattern'] && !question.get('start')?.hasError('required')">
+                              {{ ValidatorError.normalTextValidator }}
+                            </mat-error>
+                            <mat-error *ngIf="question.get('start')?.hasError('required')">
+                              {{ ValidatorError.requiredValidator | translate: {value: 'Start'} }}
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class='small-input w-1/6'
+                                          appearance='outline'
+                                          floatLabel='always'>
+                            <mat-label>Timer End</mat-label>
+                            <!--                        <mat-hint align="end">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                            <input matInput formControlName='end' required/>
+                            <mat-error
+                              *ngIf="question.get('end')?.errors?.['pattern'] && !question.get('end')?.hasError('required')">
+                              {{ ValidatorError.normalTextValidator }}
+                            </mat-error>
+                            <mat-error *ngIf="question.get('end')?.hasError('required')">
+                              {{ ValidatorError.requiredValidator | translate: {value: 'End'} }}
+                            </mat-error>
+                          </mat-form-field>
+                        </ng-container>
+                      </div>
+                    </fieldset>
+                  }
+
+                  @if (type === 'slider') {
+                    <fieldset formGroupName="range" class="p-4 rounded-sm border">
+                      <legend class="px-4">Range</legend>
+                      <div class="flex justify-between items-center gap-4">
+                        <mat-form-field class='small-input w-1/3'
+                                        appearance='outline'
+                                        floatLabel='always'>
+                          <mat-label>Min</mat-label>
+                          <!--                      <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                          <input matInput formControlName='min' required/>
+                          <!--                      @if (question.get('min')?.errors?.['pattern'] && !question.get('min')?.hasError('required')) {-->
+                          @if (question.errors?.['pattern'] && !question.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.normalTextValidator }}
+                            </mat-error>
+                          }
+                          <!--                      @if (question.get('min')?.hasError('required')) {-->
+                          @if (question.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.requiredValidator | translate: {value: 'Min'} }}
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                        <mat-form-field class='small-input w-1/3'
+                                        appearance='outline'
+                                        floatLabel='always'>
+                          <mat-label>Max</mat-label>
+                          <!--                      <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                          <input matInput formControlName='max' required/>
+                          @if (question.get('max')?.errors?.['pattern'] && !question.get('max')?.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.normalTextValidator }}
+                            </mat-error>
+                          }
+                          @if (question.get('max')?.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.requiredValidator | translate: {value: 'Unit'} }}
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                        <mat-form-field class='w-1/3'
+                                        appearance='outline'
+                                        floatLabel='always'>
+                          <mat-label>Step</mat-label>
+                          <!--                      <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>-->
+                          <input matInput formControlName='step' required/>
+                          @if (question.get('step')?.errors?.['pattern'] && !question.get('step')?.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.normalTextValidator }}
+                            </mat-error>
+                          }
+                          @if (question.get('step')?.hasError('required')) {
+                            <mat-error>
+                              {{ ValidatorError.requiredValidator | translate: {value: 'Unit'} }}
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+                    </fieldset>
+                  }
+                }
+
+                @if (i > 0) {
+                  <rb-branching-logic [entity]="entity" [index]="i"
+                                      formControlName="branching_logic"></rb-branching-logic>
+                }
+
+                <!--          <div>-->
+                <!--            <mat-slide-toggle *ngIf="i > 0" formControlName='has_branching_logic'-->
+                <!--                              class="mb-4" color="accent">-->
+                <!--              Branching Logic-->
+                <!--            </mat-slide-toggle>-->
+                <!--          </div>-->
+                <!--          <div *ngIf="question.get('has_branching_logic')?.value && i > 0" formGroupName="branching_logic">-->
+                <!--            <div>Show this question if:</div>-->
+                <!--            <div class="flex items-center" *ngFor="let condition of branchingLogics(question).controls; let j=index"-->
+                <!--                 [formGroupName]="j">-->
+                <!--              <rb-mat-select-autocomplete class="w-1/4" formControlName='condition_field'-->
+                <!--                                          [legend]='"Field"'-->
+                <!--                                          [options]='getPreviousQuestionsName(i)'-->
+                <!--                                          [label]='"Field"'-->
+                <!--                                          [multiple]="false">-->
+                <!--              </rb-mat-select-autocomplete>-->
+                <!--              <mat-form-field class='w-1/4'-->
+                <!--                              subscriptSizing="fixed"-->
+                <!--                              appearance='outline'-->
+                <!--                              floatLabel='always'>-->
+                <!--                <mat-label>Condition</mat-label>-->
+                <!--                <mat-select formControlName='condition_operator'>-->
+                <!--                  <mat-option [value]="'equal'">Equals</mat-option>-->
+                <!--                  <mat-option [value]="'not_equal'">Not equal</mat-option>-->
+                <!--                </mat-select>-->
+                <!--              </mat-form-field>-->
+                <!--              <mat-form-field class='w-1/4'-->
+                <!--                              subscriptSizing="fixed"-->
+                <!--                              appearance='outline'-->
+                <!--                              floatLabel='always'-->
+                <!--                              *ngIf="condition?.get('condition_field')?.value as name">-->
+                <!--                &lt;!&ndash;                    *ngIf="question.get('branching_logic')?.get('condition_field')?.value as name">&ndash;&gt;-->
+                <!--                <mat-label>Value</mat-label>-->
+                <!--                <mat-select formControlName='condition_value'>-->
+                <!--                  <mat-option *ngFor="let option of questionsOptions[name]" [value]="option.code">{{option.label}}</mat-option>-->
+                <!--                </mat-select>-->
+                <!--              </mat-form-field>-->
+                <!--              <mat-icon fontSet='material-icons-outlined' (click)="removeBranchingLogic(question, j)" color="warn">do_not_disturb_on</mat-icon>-->
+                <!--            </div>-->
+                <!--            <button type='button' mat-icon-button color='primary' (click)="addBranchingLogic(question)">&</button>-->
+                <!--          </div>-->
+              </div>
+<!--            } @else {-->
+<!--              NOT DEFAULT-->
+<!--            }-->
+
+
+          }
+        </mat-expansion-panel>
+      }
+    </div>
+  </div>
+</div>
+
+
+<!--<fieldset [formGroup]="form">-->
+<!--&lt;!&ndash;  <legend>{{legend}}</legend>&ndash;&gt;-->
+<!--  <mat-form-field>-->
+<!--    <input matInput-->
+<!--           placeholder="Address Line 1"-->
+<!--           formControlName="addressLine1" (blur)="onTouched()">-->
+<!--  </mat-form-field>-->
+<!--  <mat-form-field>-->
+<!--    <input matInput-->
+<!--           placeholder="Address Line 2"-->
+<!--           formControlName="addressLine2" (blur)="onTouched()">-->
+<!--  </mat-form-field>-->
+<!--  <mat-form-field>-->
+<!--    <input matInput-->
+<!--           placeholder="Zip Code"-->
+<!--           formControlName="zipCode" (blur)="onTouched()">-->
+<!--  </mat-form-field>-->
+<!--  <mat-form-field>-->
+<!--    <input matInput-->
+<!--           placeholder="City"-->
+<!--           formControlName="city" (blur)="onTouched()">-->
+<!--  </mat-form-field>-->
+<!--</fieldset>-->
+<!--</div>-->

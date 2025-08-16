@@ -1,0 +1,185 @@
+<!--<rb-entities-page [$filters]="filters" [$name]="name" [$loading]="loading" [$entities]="entities" [$page]="page" [$sort]="sort"-->
+<!--                  [tableProperties]="PROPERTIES"-->
+<!--                  [$entitiesToShow]="entitiesToShow"-->
+<!--                  (action)="onAction(DialogMode.ADD)"-->
+<!--                  (filterChange)='handleFilterChange($event)'-->
+<!--                  (filterEnabledChanged)="onFilterEnabledChanged($event)"-->
+<!--                  (activeQueryChange)="handleActiveQueryChange($event)"-->
+<!--                  (switchPageAction)="switchPage($event)"-->
+<!--                  (switchSortAction)="switchSort($event)"-->
+<!--                  [$filteredAndSortedEntities]="filteredAndSortedEntities"-->
+<!--                  [$updated]="updated"-->
+<!--                  [$expandedElement]="expandedElement">-->
+<!--  &lt;!&ndash;                  (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )"&ndash;&gt;-->
+
+<!--</rb-entities-page>-->
+
+
+<!--&lt;!&ndash;<rb-entities-page-header [entityName]="name"&ndash;&gt;-->
+<!--&lt;!&ndash;                         [showTitle]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                         (action)="onAction(DialogMode.ADD)">&ndash;&gt;-->
+<!--&lt;!&ndash;  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <rb-data-table-filter *ngIf='filters.length'&ndash;&gt;-->
+<!--&lt;!&ndash;                        bottom-filter&ndash;&gt;-->
+<!--&lt;!&ndash;                        [filters]='filters'&ndash;&gt;-->
+<!--&lt;!&ndash;                        [filterOpened]='isFilterOpened'&ndash;&gt;-->
+<!--&lt;!&ndash;                        (filterChanged)='handleFilterChange($event)'&ndash;&gt;-->
+<!--&lt;!&ndash;                        (filterEnableChanged)="onFilterEnabledChanged($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--&lt;!&ndash;</rb-entities-page-header>&ndash;&gt;-->
+
+<!--&lt;!&ndash;@if (loading) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <rb-loader />&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="rb-table" [ngClass]="{'hidden!': gridView}" rbTableQueryReflector [page]="page" [sort]="sort"&ndash;&gt;-->
+<!--&lt;!&ndash;     [defaultSort]="{sortField: 'clientId', sortOrder: 'asc'}"&ndash;&gt;-->
+<!--&lt;!&ndash;     (activeQueryParams)="handleActiveQueryChange($event)" (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">&ndash;&gt;-->
+
+<!--&lt;!&ndash;  <div class="rb-table-header">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div *ngFor="let property of PROPERTIES"&ndash;&gt;-->
+<!--&lt;!&ndash;         [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;-->
+<!--&lt;!&ndash;         [class.flex-1]="!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;         [class.shrink-0]="!!property.width">&ndash;&gt;-->
+<!--&lt;!&ndash;      <button class="rb-table-head group" (click)="switchSort(property)">&ndash;&gt;-->
+<!--&lt;!&ndash;        <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div *ngIf="property.sortable">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">&ndash;&gt;-->
+<!--&lt;!&ndash;          <span class="rb-sort-icon material-symbols-outlined">&ndash;&gt;-->
+<!--&lt;!&ndash;            {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}&ndash;&gt;-->
+<!--&lt;!&ndash;          </span>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class='w-28'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  @if (entitiesToShow) {&ndash;&gt;-->
+<!--&lt;!&ndash;    @for (entity of entitiesToShow; track entity.id) {&ndash;&gt;-->
+<!--&lt;!&ndash;      <rb-client-table-row [entity]="entity" [updated]="updated"&ndash;&gt;-->
+<!--&lt;!&ndash;                         (actionEvent)="onAction($event.mode, $event.entity, undefined)" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;    <div class="rb-table-row" [ngClass]="updated === entity.id ? 'bg-green-100!' : ''"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;         *ngFor="let entity of entitiesToShow">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class="rb-table-main-row">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div *ngFor="let property of PROPERTIES"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class.flex-1]="!property.width"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class.shrink-0]="!!property.width"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [ngSwitch]="property.name">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'clientId'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <a [routerLink]='[entity.clientId, "general"]'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="">{{ entity.clientId || '-' }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'dynamic_registration'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-tag *ngIf="entity['additionalInformation']?.['dynamic_registration']"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    colorClass="bg-green-500 text-white">Dynamic</rb-tag>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-tag *ngIf="!entity['additionalInformation']?.['dynamic_registration']"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    colorClass="bg-red-500 text-white">Manual</rb-tag>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'resourceIds'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-client-tags [type]="DetailType.TABLE" [tags]="entity['resourceIds']" colorClass="bg-red-100 text-red-700"></rb-client-tags>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <div *ngSwitchCase="'authorizedGrantTypes'" class="flex flex-wrap gap-1 py-1">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-client-tags [type]="DetailType.TABLE" [tags]="entity['authorizedGrantTypes']" colorClass="bg-teal-500 text-white"></rb-client-tags>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'accessTokenValiditySeconds'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            {{ entity["accessTokenValiditySeconds"] | dhms }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'refreshTokenValiditySeconds'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            {{ entity["refreshTokenValiditySeconds"] | dhms }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchDefault>{{ entity[property.name] || '-' }}</ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div class='w-28'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button mat-icon-button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)="$event.stopPropagation(); expandedElement = expandedElement === entity ? null : entity">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              {{entity !== expandedElement ? 'expand_more' : 'expand_less'}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  mat-icon-button color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  [routerLink]='[entity.clientId]'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span class="text-xl material-symbols-outlined font-bold">app_settings_alt</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  mat-icon-button color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">edit</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button class="mat-small-icon-button" mat-icon-button color="warn"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">delete</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class="rb-table-extension-row" [@detailExpand]="entity === expandedElement ? 'expanded' : 'collapsed'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <rb-client-details [entity]='entity' [type]="DetailType.TABLE"></rb-client-details>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="grid-container" *ngIf="entitiesToShow" [ngClass]="{'hidden!': !gridView}">&ndash;&gt;-->
+<!--&lt;!&ndash;  <mat-card *ngFor="let item of entitiesToShow"&ndash;&gt;-->
+<!--&lt;!&ndash;            class="cursor-pointer flex items-center justify-center"&ndash;&gt;-->
+<!--&lt;!&ndash;            [ngClass]="updated === item.id ? 'bg-green-100!' : ''"&ndash;&gt;-->
+<!--&lt;!&ndash;            [routerLink]='[item.name]'>&ndash;&gt;-->
+<!--&lt;!&ndash;    <mat-card-content class="p-0! w-full">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="p-4 flex items-center justify-between gap-2 w-full">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="flex items-center gap-2">&ndash;&gt;-->
+<!--&lt;!&ndash;          <span class="material-symbols-outlined font-bold">{{ENTITIES.client.icon}}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class='text-base'>&ndash;&gt;-->
+<!--&lt;!&ndash;            {{item.name}}&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <button mat-icon-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [matMenuTriggerFor]="menu"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)="$event.stopPropagation();">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span class="font-bold material-symbols-outlined">more_vert</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button class="hover:text-primary-color hover:bg-transparent! transition-all"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.EDIT, item, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="text-xl text-primary-color-500 material-symbols-outlined font-bold">edit</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span>{{ 'ADMIN.organization.edit' | translate }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button class="hover:text-red-500 hover:bg-transparent! transition-all"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.DELETE, item, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="text-xl text-red-500 material-symbols-outlined font-bold">delete</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span>{{ 'ADMIN.organization.delete' | translate }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </mat-menu>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class="p-4">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="text-sm text-gray-500 dark:text-gray-300">{{item.description}}</div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="text-sm mt-4 flex gap-2 items-center text-gray-500 dark:text-gray-300">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span class="material-symbols-outlined">place</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span>{{item.location}}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;  </mat-card>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <mat-paginator (page)="switchPage($event)"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [length]="filteredAndSortedEntities.length"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageSize]="page.pageSize"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageSizeOptions]="pageSizeOptions"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageIndex]="page.pageIndex"&ndash;&gt;-->
+<!--&lt;!&ndash;                 aria-label="Select page" />&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->

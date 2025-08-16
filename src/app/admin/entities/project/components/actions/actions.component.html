@@ -1,0 +1,24 @@
+<button mat-icon-button
+        class="tiny mat-medium-icon-button"
+        [matMenuTriggerFor]="menu"
+        (click)="$event.stopPropagation();">
+  <span class="text-xl! font-bold material-symbols-outlined">more_vert</span>
+</button>
+<mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">
+  <button class="hover:text-primary! hover:bg-transparent! transition-all"
+          mat-menu-item
+          (click)='onAction(DialogMode.EDIT, entity())'>
+    <span class="flex items-center gap-2">
+      <span class="text-xl! text-primary material-symbols-outlined font-bold">edit</span>
+      <span>{{ 'ADMIN.organization.edit' | translate }}</span>
+    </span>
+  </button>
+  <button class="hover:text-red-500! hover:bg-transparent! transition-all"
+          mat-menu-item
+          (click)='onAction(DialogMode.DELETE, entity())'>
+    <span class="flex items-center gap-2">
+      <span class="text-xl! text-red-500 material-symbols-outlined font-bold">delete</span>
+      <span>{{ 'ADMIN.organization.delete' | translate }}</span>
+    </span>
+  </button>
+</mat-menu>

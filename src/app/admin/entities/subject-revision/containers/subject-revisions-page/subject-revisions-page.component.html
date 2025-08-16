@@ -1,0 +1,128 @@
+<!--<div>-->
+<!--  <div class='list-page-header'>-->
+<!--    <h2 class='list-page-header-title revision-color-fg'>-->
+<!--      <mat-icon class='circle-icon revision-color' fontSet='material-icons-outlined'>history</mat-icon>-->
+<!--      {{ 'ADMIN.subjectRevision.title.plural' | translate }}-->
+<!--    </h2>-->
+<!--    <div class='list-page-header-buttons-container'>-->
+<!--      <rb-tag colorClass="bg-green-100 text-green-700">{{ 'ADMIN.subjectRevision.added' | translate }}</rb-tag>-->
+<!--      <rb-tag colorClass="bg-cyan-100 text-cyan-700">{{ 'ADMIN.subjectRevision.modified' | translate }}</rb-tag>-->
+<!--      <rb-tag colorClass="bg-red-100 text-red-700">{{ 'ADMIN.subjectRevision.deleted' | translate }}</rb-tag>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <rb-data-table-filter *ngIf='filters.length'-->
+<!--                        [filters]='filters'-->
+<!--                        [filterOpened]='isFilterOpened'-->
+<!--                        (filterChanged)='onFilterChange($event)'>-->
+<!--  </rb-data-table-filter>-->
+
+<!--  <mat-card appearance="outlined">-->
+<!--    <mat-card-content>-->
+<!--      <div class='list-container'>-->
+<!--        <div class='table-container'>-->
+<!--          <rb-loader *ngIf='loading'></rb-loader>-->
+<!--          <table class='table-sticky-head full-width'-->
+<!--                 mat-table-->
+<!--                 matSort-->
+<!--                 [dataSource]='dataSource'-->
+<!--                 rbNgMatTableQueryReflector-->
+<!--                 [paginator]='paginator'-->
+<!--                 [sort]='sort'-->
+<!--                 [defaultPageSize]='defaultPageSize'-->
+<!--                 (changed)='onPageSortChange($event)'-->
+<!--                 [trackBy]="trackId"-->
+<!--                 aria-label='Items List'-->
+<!--                 multiTemplateDataRows>-->
+<!--&lt;!&ndash;                 (dialogQueryParams)='onAction($event.mode, undefined, $event.id)'&ndash;&gt;-->
+<!--            <ng-container matColumnDef='id'>-->
+<!--              <th mat-header-cell-->
+<!--                  *matHeaderCellDef-->
+<!--                  mat-sort-header=''-->
+<!--                  disableClear-->
+<!--                  class='w-10 hide-xsmall'>-->
+<!--                {{ 'ADMIN.subjectRevision.id.tableLabel' | translate }}-->
+<!--              </th>-->
+<!--              <td mat-cell *matCellDef='let entity' class='w-10 hide-xsmall'>-->
+<!--                  {{ entity.id || '-' }}-->
+<!--              </td>-->
+<!--            </ng-container>-->
+
+<!--            <ng-container matColumnDef='revisionType'>-->
+<!--              <th mat-header-cell-->
+<!--                  *matHeaderCellDef-->
+<!--                  mat-sort-header=''-->
+<!--                  disableClear-->
+<!--                  class='w-10 hide-small'>-->
+<!--                {{ 'ADMIN.subjectRevision.revisionType.tableLabel' | translate }}-->
+<!--              </th>-->
+<!--              <td mat-cell *matCellDef='let entity' class='w-10 hide-small'>-->
+<!--                {{ entity["revisionType"] || '-' }}-->
+<!--              </td>-->
+<!--            </ng-container>-->
+
+<!--            <ng-container matColumnDef='auditor'>-->
+<!--              <th mat-header-cell-->
+<!--                  *matHeaderCellDef-->
+<!--                  mat-sort-header=''-->
+<!--                  class='w-15'>-->
+<!--                {{ 'ADMIN.subjectRevision.auditor.tableLabel' | translate }}-->
+<!--              </th>-->
+<!--              <td mat-cell *matCellDef='let entity' class='w-15'>-->
+<!--                {{ entity.author }}-->
+<!--              </td>-->
+<!--            </ng-container>-->
+
+<!--            <ng-container matColumnDef='timestamp'>-->
+<!--              <th mat-header-cell-->
+<!--                  *matHeaderCellDef-->
+<!--                  mat-sort-header=''-->
+<!--                  class='w-30'>-->
+<!--                {{ 'ADMIN.subjectRevision.timestamp.tableLabel' | translate }}-->
+<!--              </th>-->
+<!--              <td mat-cell *matCellDef='let entity' class='w-30'>-->
+<!--                {{ entity.timestamp | date:'long' }}-->
+<!--              </td>-->
+<!--            </ng-container>-->
+
+<!--            <ng-container matColumnDef='entity'>-->
+<!--              <th mat-header-cell-->
+<!--                  *matHeaderCellDef-->
+<!--                  mat-sort-header=''>-->
+<!--                {{ 'ADMIN.subjectRevision.entity.entity' | translate }}-->
+<!--              </th>-->
+<!--              <td mat-cell *matCellDef='let entity'>-->
+<!--                {{ 'ADMIN.subjectRevision.entity.login' | translate }}: {{ entity["entity"]["login"] || '-' }}<br />-->
+<!--                {{ 'ADMIN.subjectRevision.entity.externalId' | translate }}: {{ entity["entity"]["externalId"] || '-' }}<br />-->
+<!--                {{ 'ADMIN.subjectRevision.entity.externalLink' | translate }}: {{ entity["entity"]["externalLink"] || '-' }}<br />-->
+<!--                {{ 'ADMIN.subjectRevision.entity.project' | translate }}: {{ entity["entity"]["project"]["projectName"] || '-'}}<br />-->
+<!--                {{ 'ADMIN.subjectRevision.entity.sources' | translate }}:-->
+<!--                <ng-container *ngIf='entity["entity"]["sources"]'>-->
+<!--                  <ng-container *ngFor='let source of entity["entity"]["sources"]'>-->
+<!--                    {{ source["sourceTypeProducer"] }}_{{ source["sourceTypeModel"] }}_{{ source["sourceTypeCatalogVersion"] }}: {{ source["sourceName"] }}-->
+<!--                  </ng-container>-->
+<!--                </ng-container>-->
+<!--                <br />-->
+<!--                {{ 'ADMIN.subjectRevision.entity.attributes' | translate }}: {{ entity["entity"].attributes | json }}-->
+<!--              </td>-->
+<!--            </ng-container>-->
+
+<!--            <tr mat-header-row *matHeaderRowDef='displayedColumns'></tr>-->
+<!--            <tr mat-row *matRowDef='let rowData; columns: displayedColumns'></tr>-->
+
+<!--            <tr class='mat-row' *matNoDataRow>-->
+<!--              <td class='mat-cell' [colSpan]='displayedColumns.length'>-->
+<!--                {{ 'ADMIN.subjectRevision.noItemFound' | translate }}-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </table>-->
+
+<!--          <mat-paginator [length]='total'-->
+<!--                         [pageSizeOptions]=pageSizeOptions-->
+<!--                         aria-label='Select page of items'>-->
+<!--          </mat-paginator>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </mat-card-content>-->
+<!--  </mat-card>-->
+<!--</div>-->

@@ -1,0 +1,12 @@
+@if (sourcesData()) {
+  <div class="flex flex-wrap gap-1 py-1">
+    @for (sourceData of sourcesData(); track sourceData.id) {
+      <rb-tag colorClass="bg-source-data-color-500 text-white"
+              [link]="['/admin/source-data', sourceData['sourceDataName']]">
+        {{sourceData["sourceDataName"]}}
+      </rb-tag>
+    }
+  </div>
+} @else {
+  -
+}

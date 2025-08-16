@@ -1,0 +1,442 @@
+<!--<rb-entities-page [$filters]="filters" [$name]="name" [$loading]="loading" [$entities]="entities" [$page]="page" [$sort]="sort"-->
+<!--                  [tableProperties]="PROPERTIES"-->
+<!--                  [$entitiesToShow]="entitiesToShow"-->
+<!--                  (action)="onAction(DialogMode.ADD)"-->
+<!--                  (filterChange)='handleFilterChange($event)'-->
+<!--                  (filterEnabledChanged)="onFilterEnabledChanged($event)"-->
+<!--                  (activeQueryChange)="handleActiveQueryChange($event)"-->
+<!--                  (switchPageAction)="switchPage($event)"-->
+<!--                  (switchSortAction)="switchSort($event)"-->
+<!--                  [$filteredAndSortedEntities]="filteredAndSortedEntities"-->
+<!--                  [$updated]="updated"-->
+<!--                  [$expandedElement]="expandedElement"-->
+<!--                  [$selection]="selection">-->
+<!--  &lt;!&ndash;                  (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )"&ndash;&gt;-->
+
+<!--</rb-entities-page>-->
+
+
+<!--&lt;!&ndash;<rb-entities-page-header [showTitle]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                         [entityName]="name"&ndash;&gt;-->
+<!--&lt;!&ndash;                         (action)="onAction(DialogMode.ADD)">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;  <button extra-buttons mat-stroked-button color="primary" (click)="isSourceClientsVisible = !isSourceClientsVisible">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <span class="material-symbols-outlined">{{isSourceClientsVisible ? "visibility_off": "visibility"}}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <span>3rd Party Apps</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;  </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {&ndash;&gt;-->
+<!--&lt;!&ndash;    <rb-data-table-filter bottom-filter&ndash;&gt;-->
+<!--&lt;!&ndash;                          [filters]='filters'&ndash;&gt;-->
+<!--&lt;!&ndash;                          [filterOpened]='isFilterOpened'&ndash;&gt;-->
+<!--&lt;!&ndash;                          (filterChanged)='handleFilterChange($event)'&ndash;&gt;-->
+<!--&lt;!&ndash;                          (filterEnableChanged)="onFilterEnabledChanged($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--&lt;!&ndash;</rb-entities-page-header>&ndash;&gt;-->
+
+<!--&lt;!&ndash;@if (loading) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <rb-loader />&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<rb-assign-group [selection]="selection" [groups]="groups" (updateTrigger)="triggerUpdate($event)" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;@if (entities?.length) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="rb-table"&ndash;&gt;-->
+<!--&lt;!&ndash;     rbTableQueryReflector&ndash;&gt;-->
+<!--&lt;!&ndash;     [page]="page"&ndash;&gt;-->
+<!--&lt;!&ndash;     [sort]="sort"&ndash;&gt;-->
+<!--&lt;!&ndash;     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"&ndash;&gt;-->
+<!--&lt;!&ndash;     (activeQueryParams)="handleActiveQueryChange($event)"&ndash;&gt;-->
+<!--&lt;!&ndash;     (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="rb-table-header">&ndash;&gt;-->
+<!--&lt;!&ndash;      <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [checked]="selection.hasValue() && isAllSelected()"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [indeterminate]="selection.hasValue() && !isAllSelected()"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [aria-label]="checkboxLabel()" />&ndash;&gt;-->
+<!--&lt;!&ndash;      @if (subjectConfig$ | async; as config) {&ndash;&gt;-->
+<!--&lt;!&ndash;      @for (property of TABLE_FIELDS; track property.name) {&ndash;&gt;-->
+<!--&lt;!&ndash;        @if (config?.[property.name] === undefined || config?.[property.name] === true) {&ndash;&gt;-->
+<!--&lt;!&ndash;        <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;-->
+<!--&lt;!&ndash;           [class.flex-1]="!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;           [class.shrink-0]="!!property.width">&ndash;&gt;-->
+<!--&lt;!&ndash;          <button class="rb-table-head group" (click)="switchSort(property)">&ndash;&gt;-->
+<!--&lt;!&ndash;            <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div *ngIf="property.sortable">&ndash;&gt;-->
+<!--&lt;!&ndash;              <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="rb-sort-icon material-symbols-outlined">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}&ndash;&gt;-->
+<!--&lt;!&ndash;                </span>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class='w-32 shrink-0 grow-0'>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    @for (entity of entitiesToShow; track entity.id) {&ndash;&gt;-->
+<!--&lt;!&ndash;      <rb-subject-table-row [entity]="entity" [selection]="selection"&ndash;&gt;-->
+<!--&lt;!&ndash;                            [updated]="updated" [clients]="clients"&ndash;&gt;-->
+<!--&lt;!&ndash;                            (actionEvent)="onAction($event.mode, $event.entity, undefined)" />&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;    <div class="rb-table-row" [ngClass]="updated === entity.id ? 'bg-green-100!' : ''"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;         *ngFor="let entity of entitiesToShow; let j = index">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <div class="rb-table-main-row">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <mat-checkbox color="primary" (click)="$event.stopPropagation()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      (change)="$event ? selection.toggle(entity) : null"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      [checked]="selection.isSelected(entity)"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      [aria-label]="checkboxLabel(entity)">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </mat-checkbox>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div *ngFor="let property of PROPERTIES"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class.flex-1]="!property.width"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [class.shrink-0]="!!property.width"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;             [ngSwitch]="property.name">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'login'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <div class="flex items-center gap-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;              <ng-container *ngIf="entity['status'] as status">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                &ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                <span *ngIf='status === SubjectStatus.DEACTIVATED' class="text-xl material-symbols-outlined font-bold text-red-500">circle</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                <span *ngIf='status === SubjectStatus.ACTIVATED' class="text-xl material-symbols-outlined font-bold text-green-500">circle</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                <span *ngIf='status === SubjectStatus.DISCONTINUED' class="text-xl material-symbols-outlined font-bold text-orange-500">circle</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                <span *ngIf='status === SubjectStatus.INVALID' class="text-xl material-symbols-outlined font-bold text-gray-500">circle</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;                <ng-container *ngIf='!status'>-</ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                &lt;!&ndash;              </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a [routerLink]='[entity["login"]]' class="align-middle">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  flex items-center gap-2&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <span class='font-bold text-primary-color'>{{ entity["login"] }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <rb-subject-status class="align-middle" [status]="entity['status']" [type]="DetailType.TABLE"></rb-subject-status>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <span class="text-gray-500">External ID: </span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <span class="font-bold">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='entity["externalId"] && entity["externalLink"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                    <a [href]='entity["externalLink"]' target='_blank'>{{entity["externalId"] }}</a>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='entity["externalId"] && !entity["externalLink"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                    {{entity["externalId"] }}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='!entity["externalId"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                    {{entity["externalId"] ? entity["externalId"] : '-'}}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                </span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <p><span class="text-gray-500">Name: </span><span class="font-bold">{{entity['personName'] ? entity['personName'] : '-'}}</span></p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <p><span class="text-gray-500">Date of birth: </span> <span class="font-bold"><rb-local-date [date]="entity['dateOfBirth']" [format]="'longDate'"></rb-local-date></span></p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <p><span class="text-gray-500">Enrollment date: </span> <span class="font-bold"><rb-local-date [date]="entity['enrollmentDate']" [format]="'medium'"></rb-local-date></span></p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <p><span class="text-gray-500">Group: </span> <rb-subject-group [group]="entity['group']"></rb-subject-group></p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'externalId'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <p>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="text-gray-500">External ID: </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="font-bold">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='entity["externalId"] && entity["externalLink"]'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    <a [href]='entity["externalLink"]' target='_blank'>{{entity["externalId"] }}</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='entity["externalId"] && !entity["externalLink"]'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    {{entity["externalId"] }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <ng-container *ngIf='!entity["externalId"]'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    {{entity["externalId"] ? entity["externalId"] : '-'}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </p>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <p><span class="text-gray-500">Name: </span><span class="font-bold">{{entity['personName'] ? entity['personName'] : '-'}}</span></p>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <p><span class="text-gray-500">Date of birth: </span> <span class="font-bold"><rb-local-date [date]="entity['dateOfBirth']" [format]="'longDate'"></rb-local-date></span></p>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <ng-container *ngIf='entity["externalId"] && entity["externalLink"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <a [href]='entity["externalLink"]' target='_blank'>{{entity["externalId"] }}</a>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <ng-container *ngIf='entity["externalId"] && !entity["externalLink"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              {{entity["externalId"] }}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <ng-container *ngIf='!entity["externalId"]'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              - &ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </ng-container>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <p>{{entity['personName']}}</p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'dateOfBirth'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-local-date [date]="entity['dateOfBirth']" [format]="'mediumDate'"></rb-local-date>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'group'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-subject-group [group]="entity['group']"></rb-subject-group>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <p>Enrollment date: <rb-local-date [date]="entity['enrollmentDate']" [format]="'long'"></rb-local-date></p>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'status'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-subject-status [status]="entity['status']"></rb-subject-status>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchCase="'sources'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <ng-container *ngFor="let source of entity['sources']">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a (click)="openSourceDialog(entity, source, 0)"><span>{{source.sourceTypeProducer}}_{{source.sourceTypeModel}}_{{source.sourceTypeCatalogVersion}}</span></a>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;                <rb-tag colorClass="bg-green-500 text-white">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  CONNECTED&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </rb-tag>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <div *ngFor="let source of entity['sources']" class="flex items-center gap-2 mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <span>{{source.sourceTypeProducer}}_{{source.sourceTypeModel}}_{{source.sourceTypeCatalogVersion}}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <rb-tag colorClass="bg-green-500 text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  CONNECTED&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <img src="assets/images/connectionStatus1.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <div class="flex items-center gap-2  mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <ng-container *ngFor="let source of mockSources; let i = index;">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a (click)="openSourceDialog(entity, source, i)"><span class="cursor-pointer text-primary-color-500 font-bold">{{source.name}}</span></a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="material-symbols-outlined {{source.color}}" [matTooltip]="source.status">{{source.icon}}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <rb-tag colorClass="{{source.color}} text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  {{source.status}}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;                <img *ngIf="i === 1" src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <img *ngIf="i === 0" src="assets/images/connectionStatusARMT{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40 bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <img *ngIf="i === 2" src="assets/images/connectionStatusFitbit{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40  bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;&lt;!&ndash;              </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div *ngFor="let source of entity['sources']" class="flex items-center gap-2 mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>{{source.sourceTypeProducer}}_{{source.sourceTypeModel}}_{{source.sourceTypeCatalogVersion}}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-green-500 text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                CONNECTED&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <img src="assets/images/connectionStatus1.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2  mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>aRMT v2.5</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-green-500 text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                CONNECTED&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <img src="assets/images/connectionStatus1.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2  mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>pRMT v2.7</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-yellow-500 text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                PAUSED&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <img src="assets/images/connectionStatus1.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2  mb-1">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>Fitbit charge2</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-purple-500 text-white">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                PENDING&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              </rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <img src="assets/images/connectionStatus1.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            {{entity['sources'] | json }}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngSwitchDefault>{{ entity[property.name] || '-' }}</ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+
+
+
+
+<!--&lt;!&ndash;&lt;!&ndash;        <div class='w-16 shrink-0 grow-0'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <button mat-icon-button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  (click)="$event.stopPropagation(); expandedElement = expandedElement === entity ? null : entity">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              {{entity !== expandedElement ? 'expand_more' : 'expand_less'}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <ng-container *ngIf="entity">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <button mat-icon-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    class="mat-medium-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    [matMenuTriggerFor]="menu"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    (click)="$event.stopPropagation();">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="font-bold material-symbols-outlined">more_vert</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button class="hover:text-primary-color hover:bg-transparent! transition-all"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      (click)='onAction(DialogMode.EDIT, entity)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <span class="text-xl text-primary-color-500 material-symbols-outlined font-bold">edit</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                  <span>{{ 'ADMIN.organization.edit' | translate }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <rb-pair-app [entity]="entity" [projects]="projects" [clients]="clients"></rb-pair-app>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <rb-pair-source [entity]="entity" [projects]="projects" [clients]="clients"></rb-pair-source>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <rb-discontinue [entity]="entity" [projects]="projects" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-discontinue>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button class="hover:text-red-500 hover:bg-transparent! transition-all"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      mat-menu-item&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      (click)='onAction(DialogMode.DELETE, entity)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="text-xl text-red-500 material-symbols-outlined font-bold">delete</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span>{{ 'ADMIN.organization.delete' | translate }}</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </mat-menu>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <rb-pair-app [entity]="entity" [projects]="projects" [clients]="clients"></rb-pair-app>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <rb-pair-source [entity]="entity" [projects]="projects" [clients]="clients"></rb-pair-source>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  mat-icon-button color="primary"&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">edit</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <rb-discontinue [entity]="entity" [projects]="projects" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-discontinue>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <button class="mat-small-icon-button" mat-icon-button color="warn"&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                  (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <span class="material-symbols-outlined">delete</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;      <div class="p-4 flex justify-end gap-4">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        <div class="p-2 border rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div class="flex items-center justify-between">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>Fitbit</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-gray-100 text-gray-700">Unset</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-purple-100","text-purple-700"]'>Pending</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-green-100","text-green-700"]'>Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-red-100","text-red-700"]'>Not-Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <button mat-icon-button color="primary"><mat-icon>add_link</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <button mat-icon-button color="warn"><mat-icon>link_off</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        <div class="p-2 border rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div class="flex items-center justify-between">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>Fitbit</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-gray-100","text-gray-700"]'>Unset</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-purple-100","text-purple-700"]'>Pending</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-green-100","text-green-700"]'>Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-red-100 text-red-700">Not-Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <button mat-icon-button color="primary"><mat-icon>add_link</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <button mat-icon-button color="warn"><mat-icon>link_off</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        <div class="p-2 border rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div class="flex items-center justify-between">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>Garmin</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-gray-100","text-gray-700"]'>Unset</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-purple-100 text-purple-700">Pending</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-green-100","text-green-700"]'>Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-red-100","text-red-700"]'>Not-Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <button mat-icon-button color="primary"><mat-icon>add_link</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <button mat-icon-button color="warn"><mat-icon>link_off</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        <div class="p-2 border rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div class="flex items-center justify-between">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="flex items-center gap-2">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <span>Whithings</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-gray-100","text-gray-700"]'>Unset</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-purple-100","text-purple-700"]'>Pending</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <rb-tag colorClass="bg-green-100 text-green-700">Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <rb-tag [colors]='["bg-red-100","text-red-700"]'>Not-Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              &lt;!&ndash;                    <button mat-icon-button color="primary"><mat-icon>add_link</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <button mat-icon-button color="primary"><mat-icon>restart_alt</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;              <button mat-icon-button color="warn"><mat-icon>link_off</mat-icon></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;              <div class="p-2 bg-red-50 rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                <div class="flex items-center gap-2"><span>Garmin</span><mat-icon>check</mat-icon></div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                  &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;              </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;              <div class="p-2 bg-blue-50 rounded-sm">&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                <div class="flex items-center gap-2"><span>Whithings</span><mat-icon>check</mat-icon></div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                <div><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;                  &lt;!&ndash;                <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;        &lt;!&ndash;              </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      <div *ngIf="isSourceClientsVisible" class="flex flex-col justify-end items-end px-4">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div *ngFor="let sourceClient of sourceClients" class="flex items-center gap-2 p-2 border mb-1">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <div class="w-24">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <img class="w-16" [src]="thirdPartyLogos[sourceClient.sourceType]" alt="logo"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;          <span class="font-bold uppercase w-24">{{sourceClient.sourceType}}</span>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <div class="w-24">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <rb-tag colorClass="bg-gray-100 text-gray-700">Unset</rb-tag>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            &lt;!&ndash;          <rb-tag colorClass="bg-red-100 text-red-700">Not-Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            &lt;!&ndash;          <rb-tag colorClass="bg-green-100 text-green-700">Linked</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            &lt;!&ndash;          <rb-tag colorClass="bg-purple-100 text-purple-700">Pending</rb-tag>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <div class="w-72"><span>Dates:</span>20/11/2002 - 20/11/2003</div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          <div class="w-20 flex items-center justify-end gap-2">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <button mat-icon-button class="mat-small-icon-button" color="primary" (click)="onAuthorizationAction(DialogMode.ADD, entity, undefined)"><span class="material-symbols-outlined">add_link</span></button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            &lt;!&ndash;          <button mat-icon-button class="mat-small-icon-button" color="primary"><span class="material-symbols-outlined">restart_alt</span></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            &lt;!&ndash;          <button mat-icon-button class="mat-small-icon-button" color="warn"><span class="material-symbols-outlined">link_off</span></button>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      <div class="rb-table-extension-row" [@detailExpand]="entity === expandedElement ? 'expanded' : 'collapsed'">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <rb-subject-details [entity]='entity' [type]="DetailType.TABLE"></rb-subject-details>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;  </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="flex items-center p-4 text-sm">&ndash;&gt;-->
+<!--&lt;!&ndash;  @if (!entities?.length) {&ndash;&gt;-->
+<!--&lt;!&ndash;    <span>{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--&lt;!&ndash;  @if (entities?.length && !entitiesToShow?.length) {&ndash;&gt;-->
+<!--&lt;!&ndash;    <span>{{ 'No item found with this filter' | translate }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {&ndash;&gt;-->
+<!--&lt;!&ndash;  <mat-paginator (page)="switchPage($event)"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [length]="filteredAndSortedEntities.length"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageSize]="page.pageSize"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageSizeOptions]="pageSizeOptions"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [pageIndex]="page.pageIndex"&ndash;&gt;-->
+<!--&lt;!&ndash;                 aria-label="Select page" />&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->

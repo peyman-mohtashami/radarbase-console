@@ -1,0 +1,92 @@
+@let configFields = config$ | async;
+
+<mat-card class="rb-table-row" [class]="
+    (updated() === entity().id ? 'bg-green-100! ' : '') +
+    (expanded ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (property of PROPERTIES; track property.name) {
+      @if (configFields[property.name] !== false) {
+        <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+           [class.flex-1]="!property.width"
+           [class.shrink-0]="!!property.width">
+          @switch (property.name) {
+            @case ('login') {
+              <a [routerLink]='[entity()["login"]]'>
+                <span class="font-bold text-primary dark:text-primary-dark">{{ entity()["login"] }}</span>
+              </a>
+              <p class="text-neutral-500 dark:text-neutral-300">{{entity()['firstName']}} {{entity()['lastName']}}</p>
+            }
+
+            @case('email') {
+              <span class="flex items-center gap-1">
+                <span>{{ entity()['email'] || '-' }}</span>
+                <rb-user-activated [activated]="entity()['activated']" />
+                <rb-activate [entity]="entity()" />
+              </span>
+            }
+
+            @case('roles') {
+              <rb-user-roles [roles]="entity()['_roles']" />
+            }
+            @case ('actions') {
+              <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">
+                <!--              (click)="$event.stopPropagation();">-->
+                <!--      expandedElement() = expandedElement() === entity() ? null : entity()-->
+                <span class="material-symbols-outlined text-xl!">
+          {{ expanded ? 'expand_less' : 'expand_more' }}
+                  <!--          {{entity() !== expandedElement() ? 'expand_more' : 'expand_less'}}-->
+        </span>
+              </button>
+              <button class="tiny"
+                      mat-icon-button color="primary"
+                      (click)='onAction(DialogMode.EDIT, entity())'>
+                <span class="material-symbols-outlined text-xl!">edit</span>
+              </button>
+              <!--            <button class="mat-small-icon-button" mat-icon-button color="warn"-->
+                <!--                    (click)='onAction(DialogMode.DELETE, entity, undefined)'>-->
+                <!--              <span class="text-xl material-symbols-outlined font-bold">delete</span>-->
+                <!--            </button>-->
+                <!--            <ng-container *ngIf="(user$ | async)?.['login'] === entity['login'] || ((entity['roles']?.[0]?.['authorityName'] as authorityName) && (-->
+                <!--                      entity['roles']?.[0]['authorityName'] === 'ROLE_PARTICIPANT' ||-->
+                <!--                      entity['roles']?.[0]['authorityName'] === 'ROLE_INACTIVE_PARTICIPANT')); else deleteEnabled">-->
+                <!--              <button class="mat-small-icon-button"-->
+                <!--                      mat-icon-button color="warn"-->
+                <!--                      [disabled]="true"-->
+                <!--                      (click)='onAction(DialogMode.DELETE, entity, undefined)'>-->
+                <!--                <span class="material-symbols-outlined">delete</span>-->
+                <!--              </button>-->
+                <!--            </ng-container>-->
+              <button class="tiny"
+                      mat-icon-button color="warn"
+                      [disabled]="true"
+                      (click)='onAction(DialogMode.DELETE, entity())'>
+                <span class="material-symbols-outlined text-xl!">delete</span>
+              </button>
+
+
+              <ng-template #deleteEnabled>
+                <button class="mat-small-icon-button"
+                        mat-icon-button color="warn"
+                        [disabled]="false"
+                        (click)='onAction(DialogMode.DELETE, entity())'>
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </ng-template>
+            }
+            @default {
+             {{ entity()[property.name] || '-' }}
+            }
+          }
+        </div>
+      }
+    }
+
+  </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
+    <rb-user-details class="py-4" [entity]='entity()' [type]="DetailType.TABLE" [config]="configFields" />
+  </div>
+<!--  <div class="rb-table-extension-row" [@detailExpand]="entity() === expandedElement() ? 'expanded' : 'collapsed'">-->
+<!--    <rb-user-details [entity]='entity()' [type]="DetailType.TABLE" />-->
+<!--  </div>-->
+</mat-card>

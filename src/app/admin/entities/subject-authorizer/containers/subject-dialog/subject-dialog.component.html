@@ -1,0 +1,252 @@
+<!--<rb-dialog-title [mode]='mode'-->
+<!--                 [label]='{singular: "ADMIN.subject.title.singular" | translate, plural: "ADMIN.subject.title.plural" | translate }'-->
+<!--                 (closeClicked)='close()'>-->
+<!--</rb-dialog-title>-->
+
+<!--<ng-container *ngIf='form'>-->
+<!--  <mat-dialog-content>-->
+<!--    <rb-dialog-body-description *ngIf='mode === DialogMode.VIEW || mode === DialogMode.DELETE' [mode]="mode" [label]="'ADMIN.subject.title.singular' | translate" [entityName]="entity.login">-->
+<!--      <rb-subject-authorizer-details [mode]='mode' [entity]='entity'></rb-subject-authorizer-details>-->
+<!--    </rb-dialog-body-description>-->
+
+<!--    <ng-container *ngIf="mode !== DialogMode.DELETE">-->
+<!--      <form [formGroup]="form" novalidate>-->
+<!--        <mat-form-field class='w-full'-->
+<!--                        appearance="outline"-->
+<!--                        floatLabel="always">-->
+<!--          <mat-label>Start/End Date</mat-label>-->
+<!--          <mat-date-range-input [rangePicker]="picker" required>-->
+<!--            <input matStartDate formControlName="startDate"-->
+<!--                   [placeholder]="dateFormat" >-->
+<!--            <input matEndDate formControlName="endDate"-->
+<!--                   [placeholder]="dateFormat" >-->
+<!--          </mat-date-range-input>-->
+<!--          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--          <mat-date-range-picker #picker></mat-date-range-picker>-->
+<!--          <mat-error *ngIf="form.controls['startDate'].errors || form.controls['endDate'].errors" class="date-errors">-->
+<!--            <span *ngIf="form.controls['startDate'].errors?.['required']">-->
+<!--              {{ 'ADMIN.USER_DIALOG.error.startDateRequired' | translate }}-->
+<!--            </span>-->
+<!--                <span *ngIf="form.controls['startDate'].hasError('matStartDateInvalid')">-->
+<!--              {{ 'ADMIN.USER_DIALOG.error.startDateInvalid' | translate }}-->
+<!--            </span>-->
+<!--                <span *ngIf="form.controls['startDate'].hasError('matDatepickerParse')">-->
+<!--              {{ 'ADMIN.USER_DIALOG.error.startDateInvalid' | translate }}-->
+<!--            </span>-->
+<!--                <span *ngIf="form.controls['endDate'].hasError('matEndDateInvalid')">-->
+<!--              {{ 'ADMIN.USER_DIALOG.error.endDateInvalid' | translate }}-->
+<!--            </span>-->
+<!--                <span *ngIf="form.controls['endDate'].hasError('matDatepickerParse')">-->
+<!--              {{ 'ADMIN.USER_DIALOG.error.endDateInvalid' | translate }}-->
+<!--            </span>-->
+<!--          </mat-error>-->
+<!--&lt;!&ndash;          <input matInput formControlName='id' />&ndash;&gt;-->
+<!--        </mat-form-field>-->
+
+<!--        <p *ngIf="messageForUserLink && messageForUserExpirationDate" class="full-width message-for-user-label">-->
+<!--          {{ 'ADMIN.USER_DIALOG.ADD.generateUrlDesc' | translate }}-->
+<!--        </p>-->
+<!--        <div *ngIf="messageForUserLink && messageForUserExpirationDate" class="full-width message-for-user-container">-->
+<!--          <p class="message-for-user">-->
+<!--            {{ 'ADMIN.USER_DIALOG.ADD.generateUrlMessage' | translate:{sourceType: this.entity.sourceType} }}-->
+<!--            <br/>-->
+<!--            {{messageForUserLink}}-->
+<!--            <br/>-->
+<!--            {{ 'ADMIN.USER_DIALOG.ADD.generateUrlExpirationDate' | translate }}:-->
+<!--            {{messageForUserExpirationDate }}-->
+<!--          </p>-->
+<!--          <button *ngIf="messageForUserExpirationDate"-->
+<!--                  mat-icon-button-->
+<!--                  [cdkCopyToClipboard]="-->
+<!--              ('ADMIN.USER_DIALOG.ADD.generateUrlMessage' | translate:{sourceType: this.entity.sourceType}) +-->
+<!--              '\n\n' +-->
+<!--              messageForUserLink +-->
+<!--              '\n\n' +-->
+<!--              ('ADMIN.USER_DIALOG.ADD.generateUrlExpirationDate' | translate) +-->
+<!--              ': ' +-->
+<!--              messageForUserExpirationDate"-->
+<!--                  aria-label="Copy to clipboard" >-->
+<!--            <mat-icon>content_copy</mat-icon>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </ng-container>-->
+<!--  </mat-dialog-content>-->
+
+<!--  <div>-->
+<!--&lt;!&ndash;    <rb-message *ngIf='error'></rb-message>&ndash;&gt;-->
+<!--    <rb-dialog-actions [mode]='mode'-->
+<!--                       [form]='form'-->
+<!--                       (actionTriggered)='onAction($event)'>-->
+<!--    </rb-dialog-actions>-->
+<!--  </div>-->
+
+<!--  <div class='flex flex-wrap justify-between gap-2 w-full'>-->
+<!--    <div class='flex flex-wrap gap-2'>-->
+<!--      <button mat-stroked-button-->
+<!--              color="primary"-->
+<!--              type="button"-->
+<!--              class="close-button"-->
+<!--              [mat-dialog-close]="true"-->
+<!--              (click)="close()">-->
+<!--        {{mode !== DialogMode.DELETE ?-->
+<!--        ('SHARED.dialog.cancel' | translate) :-->
+<!--        ('SHARED.dialog.no' | translate)-->
+<!--        }}-->
+<!--      </button>-->
+<!--    </div>-->
+<!--    <div class='ml-auto justify-end'>-->
+<!--      <button *ngIf="mode === DialogMode.DELETE"-->
+<!--              mat-raised-button-->
+<!--              color="warn"-->
+<!--              [disabled]='isLoading'-->
+<!--              (click)="delete()">-->
+<!--        <ng-container *ngIf="isLoading">-->
+<!--          <mat-icon><mat-spinner diameter="20"></mat-spinner></mat-icon>-->
+<!--          {{ 'ADMIN.USER_DIALOG.DELETE.deletingButton' | translate }}-->
+<!--        </ng-container>-->
+<!--        <ng-container *ngIf="!isLoading">-->
+<!--          {{ 'ADMIN.GENERAL.yes' | translate }}-->
+<!--        </ng-container>-->
+<!--      </button>-->
+
+<!--&lt;!&ndash;      ,,,&ndash;&gt;-->
+
+<!--      <ng-container *ngIf="mode !== DialogMode.DELETE">-->
+
+<!--        <button *ngIf="!entity.isAuthorized"-->
+<!--                mat-raised-button-->
+<!--                color="primary"-->
+<!--                type="submit"-->
+<!--                name="authorize"-->
+<!--                [disabled]="isAuthorizeLoading || isGenerateUrlLoading || !form.valid"-->
+<!--                (click)="authorize()">-->
+<!--          <mat-icon *ngIf="isAuthorizeLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>-->
+<!--          {{ 'ADMIN.USER_DIALOG.ADD.authorizeButton' | translate }}-->
+<!--        </button>-->
+
+<!--        <button *ngIf="!entity.isAuthorized"-->
+<!--                mat-raised-button-->
+<!--                color="primary"-->
+<!--                type="submit"-->
+<!--                name="link"-->
+<!--                [disabled]="isAuthorizeLoading || isGenerateUrlLoading || !form.valid"-->
+<!--                (click)="generateLink()">-->
+<!--          <mat-icon *ngIf="isGenerateUrlLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>-->
+<!--          {{ 'ADMIN.USER_DIALOG.ADD.generateUrlButton' | translate }}-->
+<!--        </button>-->
+
+<!--        <button *ngIf="entity.isAuthorized"-->
+<!--                mat-raised-button-->
+<!--                color="primary"-->
+<!--                type="submit"-->
+<!--                name="update"-->
+<!--                [disabled]="!form.valid || !form.dirty || isUpdateLoading"-->
+<!--                (click)="update()"-->
+<!--        >-->
+<!--          <mat-icon *ngIf="isUpdateLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>-->
+<!--          {{ 'ADMIN.USER_DIALOG.EDIT.updateButton' | translate }}-->
+<!--        </button>-->
+
+<!--      </ng-container>-->
+
+<!--&lt;!&ndash;      <button *ngIf='mode === DialogMode.EDIT'&ndash;&gt;-->
+<!--&lt;!&ndash;              mat-raised-button&ndash;&gt;-->
+<!--&lt;!&ndash;              color='primary'&ndash;&gt;-->
+<!--&lt;!&ndash;              type='submit'&ndash;&gt;-->
+<!--&lt;!&ndash;              name='update'&ndash;&gt;-->
+<!--&lt;!&ndash;              [disabled]='!form?.valid || !form?.dirty || isLoading'&ndash;&gt;-->
+<!--&lt;!&ndash;              (click)='save()'>&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon *ngIf='isLoading'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-spinner diameter='20'></mat-spinner>&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        {{ "SHARED.dialog.update" | translate }}&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+
+<!--&lt;!&ndash;      <button *ngIf='mode === DialogMode.ADD'&ndash;&gt;-->
+<!--&lt;!&ndash;              mat-raised-button&ndash;&gt;-->
+<!--&lt;!&ndash;              color='primary'&ndash;&gt;-->
+<!--&lt;!&ndash;              type='submit'&ndash;&gt;-->
+<!--&lt;!&ndash;              name='update'&ndash;&gt;-->
+<!--&lt;!&ndash;              [disabled]='!form?.valid || !form?.dirty || isLoading'&ndash;&gt;-->
+<!--&lt;!&ndash;              (click)='save()'>&ndash;&gt;-->
+<!--&lt;!&ndash;        <mat-icon *ngIf='isLoading'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-spinner diameter='20'></mat-spinner>&ndash;&gt;-->
+<!--&lt;!&ndash;        </mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;        {{ "SHARED.dialog.create" | translate}}&ndash;&gt;-->
+<!--&lt;!&ndash;      </button>&ndash;&gt;-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+
+<!--&lt;!&ndash;  <div class="action-buttons-container">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="action-buttons-container__left">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <button mat-stroked-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              type="button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              class="close-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              [mat-dialog-close]="true"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              (click)="close(mode)"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        {{ mode!==SubjectDialogMode.DELETE ? ('ADMIN.GENERAL.cancel' | translate) : ('ADMIN.GENERAL.no' | translate) }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="action-buttons-container__right">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      <button *ngIf="mode===SubjectDialogMode.DELETE"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              mat-raised-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              color="warn"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              [disabled]="isDeleteLoading"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              (click)="delete()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <ng-container *ngIf="isDeleteLoading">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon><mat-spinner diameter="20"></mat-spinner></mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.USER_DIALOG.DELETE.deletingButton' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <ng-container *ngIf="!isDeleteLoading">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.GENERAL.yes' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      </button>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      <ng-container *ngIf="mode!==SubjectDialogMode.DELETE">&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <button *ngIf="!subject.isAuthorized"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                mat-raised-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                type="submit"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                name="authorize"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [disabled]="isAuthorizeLoading || isGenerateUrlLoading || !form.valid"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)="authorize()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon *ngIf="isAuthorizeLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.USER_DIALOG.ADD.authorizeButton' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <button *ngIf="!subject.isAuthorized"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                mat-raised-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                type="submit"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                name="link"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [disabled]="isAuthorizeLoading || isGenerateUrlLoading || !form.valid"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)="generateLink()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon *ngIf="isGenerateUrlLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.USER_DIALOG.ADD.generateUrlButton' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <button *ngIf="subject.isAuthorized"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                mat-raised-button&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                color="primary"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                type="submit"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                name="update"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                [disabled]="!form.valid || !form.dirty || isUpdateLoading"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                (click)="update()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <mat-icon *ngIf="isUpdateLoading"><mat-spinner diameter="20"></mat-spinner></mat-icon>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{ 'ADMIN.USER_DIALOG.EDIT.updateButton' | translate }}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </button>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      </ng-container>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--</ng-container>-->

@@ -1,0 +1,226 @@
+<div *ngIf='filters?.length' class='mb-0 rounded-sm px-4 pt-2 mt-0 border-t-2'>
+
+  <form *ngIf='form'
+        [formGroup]="form"
+        novalidate autocomplete="off"
+        class='w-full flex gap-1 justify-between'>
+<!--    <div class="p-4 w-full max-w-md">-->
+
+
+    <div class="flex gap-1 flex-wrap w-full">
+      <mat-form-field class="m-0! max-w-[300px]"
+                      appearance="outline"
+                      floatLabel="auto"
+                      subscriptSizing="dynamic">
+        <mat-icon fontSet='material-icons-outlined' class="p-1.5! text-neutral-300" matPrefix>search</mat-icon>
+        <input [id]="'general-search'"
+               type="search"
+               [formControlName]='"search"'
+               matInput autocomplete="off" data-lpignore="true"
+               placeholder='Search...'>
+        <!--                 name='{{ filter.name }}'-->
+        <!--        [placeholder]='filter.placeHolder? (filter.placeHolder | translate) : ""'>-->
+      </mat-form-field>
+
+      <ng-container *ngFor='let filter of filters'>
+        <mat-form-field *ngIf="!filter.advanced"
+                        class="max-w-[300px]"
+                        appearance="outline"
+                        floatLabel="auto"
+                        subscriptSizing="dynamic">
+          <mat-select *ngIf='filter.type === FilterType.SELECT'
+                      [formControlName]='filter.name'>
+            <mat-option [value]='""'>
+              {{ 'SHARED.filter.all' | translate }}
+            </mat-option>
+            <mat-option *ngFor='let item of filter?.options || []'
+                        [value]='item.value.toString()'>
+              {{ item.label | translate }}
+            </mat-option>
+          </mat-select>
+          <mat-icon fontSet='material-icons-outlined' class="p-1.5! text-neutral-300" matPrefix>search</mat-icon>
+          <input *ngIf='filter.type === FilterType.INPUT'
+                 [id]="filter.name + '-search'"
+                 type="search"
+                 [formControlName]='filter.name'
+                 matInput autocomplete="off" data-lpignore="true"
+                 placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>
+<!--                 name='{{ filter.name }}'-->
+          <!--        [placeholder]='filter.placeHolder? (filter.placeHolder | translate) : ""'>-->
+
+          <input *ngIf='filter.type === FilterType.DATEPICKER'
+                 [formControlName]='filter.name'
+                 matInput
+                 [matDatepicker]="picker"
+                 [placeholder]='dateFormat'>
+          <mat-datepicker-toggle *ngIf='filter.type === FilterType.DATEPICKER'
+                                 matSuffix
+                                 [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-date-range-input [rangePicker]="rangePicker"
+                                *ngIf='filter.type === FilterType.RANGE_PICKER && filter.names'>
+            <input matStartDate
+                   [formControlName]="filter.names[0]"
+                   [placeholder]='dateFormat'>
+            <input matEndDate
+                   [formControlName]="filter.names[1]"
+                   [placeholder]='dateFormat'>
+          </mat-date-range-input>
+          <mat-datepicker-toggle *ngIf='filter.type === FilterType.RANGE_PICKER'
+                                 matSuffix
+                                 [for]="rangePicker">
+          </mat-datepicker-toggle>
+          <mat-date-range-picker #rangePicker></mat-date-range-picker>
+        </mat-form-field>
+      </ng-container>
+    </div>
+    <div class="shrink-0">
+      <button *ngIf="advancedFilterEnabled"
+              class="flex gap-1 justify-center items-center bg-neutral-300 border-neutral-300 border-2 rounded-full px-1 py-1 text-base font-bold text-neutral-700
+                transition duration-150 ease-in-out font-feature-default"
+              type="button"
+              [matMenuTriggerFor]="advancedFilter">
+        <span class="material-symbols-outlined text-lg font-bold">filter_alt</span>
+        <span class="text-sm">Advanced Filter</span>
+        <span class="material-symbols-outlined text-lg font-bold">expand_more</span>
+      </button>
+      <mat-menu #advancedFilter="matMenu">
+        <div class="text-sm p-4">
+          <ng-container *ngFor='let filter of filters'>
+            <div class="mb-4" *ngIf="filter.advanced">
+              <span class="dark:text-white">{{"SHARED.filter.filterBy" | translate}} {{filter.label | translate}}:</span>
+              <mat-form-field appearance="outline"
+                              floatLabel="always"
+                              subscriptSizing="dynamic"
+                              (click)="$event.stopPropagation()">
+                <!--        <mat-label>-->
+                <!--          {{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}-->
+                <!--        </mat-label>-->
+                <mat-select *ngIf='filter.type === FilterType.SELECT'
+                            [formControlName]='filter.name'>
+                  <mat-option [value]='""'>
+                    {{ 'SHARED.filter.all' | translate }}
+                  </mat-option>
+                  <mat-option *ngFor='let item of filter?.options || []'
+                              [value]='item.value.toString()'>
+                    {{ item.label | translate }}
+                  </mat-option>
+                </mat-select>
+                <span class="material-symbols-outlined p-1.5! text-neutral-300" matPrefix>filter_alt</span>
+                <!--              <mat-icon fontSet='material-icons-outlined'  matPrefix>filter_alt</mat-icon>-->
+                <input *ngIf='filter.type === FilterType.INPUT'
+                       [formControlName]='filter.name'
+                       matInput
+                       name='{{ filter.name }}'
+                       placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>
+                <!--        [placeholder]='filter.placeHolder? (filter.placeHolder | translate) : ""'>-->
+
+                <input *ngIf='filter.type === FilterType.DATEPICKER'
+                       [formControlName]='filter.name'
+                       matInput
+                       [matDatepicker]="picker"
+                       [placeholder]='dateFormat'>
+                <mat-datepicker-toggle *ngIf='filter.type === FilterType.DATEPICKER'
+                                       matSuffix
+                                       [for]="picker">
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-date-range-input [rangePicker]="rangePicker"
+                                      *ngIf='filter.type === FilterType.RANGE_PICKER && filter.names'>
+                  <input matStartDate
+                         [formControlName]="filter.names[0]"
+                         [placeholder]='dateFormat'>
+                  <input matEndDate
+                         [formControlName]="filter.names[1]"
+                         [placeholder]='dateFormat'>
+                </mat-date-range-input>
+                <mat-datepicker-toggle *ngIf='filter.type === FilterType.RANGE_PICKER'
+                                       matSuffix
+                                       [for]="rangePicker">
+                </mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker></mat-date-range-picker>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </div>
+      </mat-menu>
+    </div>
+  </form>
+</div>
+
+<mat-chip-listbox class='text-sm! text-white! mb-2 items-center px-0' aria-label="Filter selection">
+  <ng-container *ngFor='let filter of filters || []'>
+    <ng-container *ngIf='filter.type === FilterType.RANGE_PICKER && filter.names'>
+      <mat-chip-option class="!bg-accent-color-500! dark:bg-accent-dark-color-500! relative"
+                       *ngIf='form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value'
+                       color="accent">
+<!--      <mat-chip-option class="bg-primary-color-200  relative" *ngIf='form?.get([filter.names[0]])?.value || form?.get([filter.names[1]])?.value'-->
+<!--                       color="accent"-->
+<!--                       selected>-->
+        {{filter.label | translate}}
+<!--        <ng-container *ngIf='form?.get([filter.names[0]])?.value as fromValue'>-->
+        <ng-container *ngIf='form?.controls?.[filter.names[0]]?.value as fromValue'>
+          ({{ "SHARED.filter.from" | translate }}):
+          <rb-local-date [date]="fromValue" [format]="'mediumDate'"></rb-local-date>
+        </ng-container>
+<!--        <ng-container *ngIf='form?.get([filter.names[1]])?.value as toValue'>-->
+        <ng-container *ngIf='form?.controls?.[filter.names[1]]?.value as toValue'>
+          ({{ "SHARED.filter.to" | translate }}):
+          <rb-local-date [date]="toValue" [format]="'mediumDate'"></rb-local-date>
+        </ng-container>
+
+        <button matChipRemove (click)='removeFilter(filter)'>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-option>
+    </ng-container>
+
+    <ng-container *ngIf='filter.type === FilterType.DATEPICKER'>
+<!--      <mat-chip-option class="bg-primary-color-200 " *ngIf='form?.get([filter.name])?.value as value'-->
+<!--                       color="accent"-->
+<!--                       selected>-->
+      <mat-chip-option class="bg-accent-color-500! dark:bg-accent-dark-color-500!"
+                       *ngIf='form?.controls?.[filter.name]?.value as value'
+                       color="accent">
+        {{filter.label | translate}}:
+        <rb-local-date [date]="value" [format]="'mediumDate'"></rb-local-date>
+        <button matChipRemove (click)='removeFilter(filter)'>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-option>
+    </ng-container>
+<!--<div class="w-96 h-96 bg-accent-dark-color"></div>-->
+    <ng-container *ngIf='filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER'>
+      <mat-chip-option [selectable]="false"
+                       *ngIf='form?.controls?.[filter.name]?.value as value'
+                       color="accent">
+<!--                       class="text-white! bg-accent-color-500! dark:bg-accent-dark-color-500!"-->
+<!--      <mat-chip-option class="bg-primary-color-200"-->
+<!--                       *ngIf='form?.get(filter.name)?.value as value'-->
+<!--                       color="accent"-->
+<!--                       selected>-->
+        <ng-container *ngIf='filter.type === FilterType.SELECT'>
+          <ng-container *ngFor='let option of filter?.options || []'>
+            <ng-container *ngIf='option.value.toString() === value'>
+              {{filter.label | translate}}: {{option.label | translate}}
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf='filter.type !== FilterType.SELECT'>
+          {{filter.label | translate}}: {{value | translate}}
+        </ng-container>
+        <button matChipRemove (click)='removeFilter(filter)'>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-option>
+    </ng-container>
+  </ng-container>
+  <button *ngIf="filterEnabled" mat-icon-button
+          color='warn'
+          class='shrink-0 filter-reset-button'
+          [disabled]='!filterEnabled'
+          (click)='resetFilters()'>
+    <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>
+  </button>
+</mat-chip-listbox>

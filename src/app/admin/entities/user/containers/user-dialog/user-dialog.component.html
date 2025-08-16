@@ -1,0 +1,182 @@
+<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='close()' />
+
+@let configFields = (config$ | async)?.['fields'] ?? {};
+
+<mat-dialog-content>
+  @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="mode"
+                                [label]="'ADMIN.user.title.singular' | translate"
+                                [entityName]="entity.login">
+      <rb-user-details [mode]='mode' [entity]='entity' [config]="configFields" />
+    </rb-dialog-body-description>
+  }
+
+  @if(mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+
+      @if (mode !== DialogMode.ADD) {
+        @if(!floatLabel) {
+          <label for="id" class="text-sm">{{ 'ADMIN.user.id.label' | translate }}</label>
+        }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+            <mat-label>{{ 'ADMIN.user.id.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='id' />
+        </mat-form-field>
+      }
+
+      @if(!floatLabel) {
+        <label for="login" class="text-sm">{{ 'ADMIN.user.login.label' | translate }} *</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.user.login.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='login' required>
+<!--        @if (form.controls.login?.errors; as errors) {-->
+          @if (form.controls.login?.errors?.['duplicate']) {
+            <mat-error>{{ "ADMIN.user.login.duplicate" | translate }}</mat-error>
+          }
+          @if (form.controls.login?.errors?.['pattern']) {
+            <mat-error>{{ ValidatorError.normalTextValidator }}</mat-error>
+          }
+          @if (form.controls.login?.errors?.['required']) {
+            <mat-error>
+              {{ ValidatorError.requiredValidator | translate: { value: ('ADMIN.user.login.label' | translate) } }}
+            </mat-error>
+          }
+<!--        }-->
+      </mat-form-field>
+
+      @if(!floatLabel) {
+        <label for="firstName" class="text-sm">{{ 'ADMIN.user.firstName.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.user.firstName.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='firstName' />
+        @if (form.controls.firstName?.errors; as errors) {
+          @if (errors['pattern']) {
+            <mat-error>{{ValidatorError.normalTextValidator}}</mat-error>
+          }
+        }
+      </mat-form-field>
+
+      @if(!floatLabel) {
+        <label for="lastName" class="text-sm">{{ 'ADMIN.user.lastName.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+        <mat-label>{{ 'ADMIN.user.lastName.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='lastName' />
+        @if (form.controls.lastName?.errors; as errors) {
+          @if (errors['pattern']) {
+            <mat-error>{{ValidatorError.normalTextValidator}}</mat-error>
+          }
+        }
+      </mat-form-field>
+
+      @if(!floatLabel) {
+        <label for="email" class="text-sm">{{ 'ADMIN.user.email.label' | translate }} *</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+        <mat-label>{{ 'ADMIN.user.email.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='email' required/>
+<!--        @if (form.controls.email?.errors; as errors) {-->
+          @if (form.controls.email?.errors?.['duplicate']) {
+            <mat-error>{{ "ADMIN.user.email.duplicate" }}</mat-error>
+          }
+          @if (form.controls.email?.errors?.['email']) {
+            <mat-error>{{ValidatorError.emailValidator}}</mat-error>
+          }
+          @if (form.controls.email?.errors?.['required']) {
+            <mat-error>
+              {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.user.email.label' | translate } }}
+            </mat-error>
+          }
+<!--        }-->
+      </mat-form-field>
+
+      @if (configFields?.['langKey'] === undefined || configFields?.['langKey'] === true) {
+      @if(!floatLabel) {
+        <label for="langKey" class="text-sm">{{ 'ADMIN.user.langKey.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.user.langKey.label' | translate }}</mat-label>
+        }
+        <mat-select formControlName='langKey'>
+          <mat-option *ngFor='let language of (locale$ | async)?.languages' [value]='language.code'>{{language.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      }
+
+      @if(!floatLabel) {
+        <label for="_roles" class="text-sm">{{ 'ADMIN.user.roles.label' | translate }}</label>
+      }
+      <fieldset formGroupName='_roles'>
+        @if(floatLabel) {
+          <legend>{{ 'ADMIN.user.roles.label' | translate }}</legend>
+        }
+        <div>
+          <mat-slide-toggle color="primary" formControlName='_sysAdmin'>ROLE_SYS_ADMIN</mat-slide-toggle>
+        </div>
+        @if (!form.controls._roles.controls._sysAdmin?.value) {
+          <div class='flex items-center'>
+            <div class='w-1/3'>
+              <mat-slide-toggle color="primary" formControlName='_organizationAdmin'>ROLE_ORGANIZATION_ADMIN</mat-slide-toggle>
+            </div>
+            <div class="w-2/3">
+              @if (form.controls._roles.controls._organizationAdmin?.value) {
+                <rb-mat-select-autocomplete formControlName='_organizations'
+                                            [legend]='"ADMIN.organization.title.plural" | translate'
+                                            [options]='organizationOptions'
+                                            [label]='"ADMIN.organization.title.plural" | translate'
+                                            [multiple]="true" />
+                }
+            </div>
+          </div>
+        }
+        @if (!form.controls._roles.controls._sysAdmin?.value) {
+          <div class='flex items-center'>
+            <div class='w-1/3'>
+              <mat-slide-toggle color="primary" formControlName='_projectAdmin'>ROLE_PROJECT_ADMIN</mat-slide-toggle>
+            </div>
+            <div class="w-2/3">
+              @if (form.controls._roles.controls._projectAdmin?.value) {
+                <rb-mat-select-autocomplete formControlName='_projects'
+                                            [legend]='"ADMIN.project.title.plural" | translate'
+                                            [options]='projectOptions'
+                                            [label]='"ADMIN.project.title.plural" | translate'
+                                            [multiple]="true" />
+                }
+            </div>
+          </div>
+        }
+      </fieldset>
+    </form>
+  }
+</mat-dialog-content>
+
+
+<rb-message *ngIf='error' />
+<rb-dialog-actions [mode]='mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)' />

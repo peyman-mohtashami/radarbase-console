@@ -27,6 +27,7 @@
               }
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ]
           },
@@ -63,6 +64,11 @@
             "development": {
               "buildTarget": "radarbase-console:build:development"
             }
+          },
+          "options": {
+            "proxyConfig": "proxy.conf.json",
+            "port": 9000,
+            "buildTarget": "radarbase-console:build"
           },
           "defaultConfiguration": "development"
         },

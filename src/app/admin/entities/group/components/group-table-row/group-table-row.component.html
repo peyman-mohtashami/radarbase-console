@@ -1,0 +1,44 @@
+@let configFields = config$ | async;
+
+<mat-card class="rb-table-row" [class]="
+    (updated() === entity().id ? 'bg-green-100! ' : '') +
+    (expanded ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (property of PROPERTIES; track property.name) {
+      @if (configFields[property.name] !== false) {
+        <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+             [class.flex-1]="!property.width"
+             [class.shrink-0]="!!property.width">
+          @switch (property.name) {
+            @case ('actions') {
+              <!--      <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">-->
+                <!--        <span class="material-symbols-outlined text-xl!">-->
+                <!--          {{ expanded ? 'expand_less' : 'expand_more' }}-->
+                <!--        </span>-->
+                <!--      </button>-->
+              <button class="tiny"
+                      mat-icon-button color="primary"
+                      (click)='onAction(DialogMode.EDIT, entity())'>
+                <span class="material-symbols-outlined text-xl!">edit</span>
+              </button>
+              <button class="tiny"
+                      mat-icon-button color="warn"
+                      (click)='onAction(DialogMode.DELETE, entity())'>
+                <span class="material-symbols-outlined text-xl!">delete</span>
+              </button>
+
+            }
+            @default {
+              <span class="font-bold">{{ entity()[property.name] || '-' }}</span>
+            }
+          }
+        </div>
+      }
+    }
+  </div>
+<!--  <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">-->
+<!--    <rb-source-type-details class="py-4" [entity]='entity()' [type]="DetailType.TABLE"></rb-source-type-details>-->
+<!--  </div>-->
+</mat-card>
+

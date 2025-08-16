@@ -1,0 +1,135 @@
+<!--<rb-entities-page-header [showTitle]="true"-->
+<!--                         [entityName]="name"-->
+<!--                         (action)="onAction(DialogMode.ADD)">-->
+<!--  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <rb-data-table-filter bottom-filter *ngIf='filters.length'-->
+<!--                          [filters]='filters'-->
+<!--                          [filterOpened]='isFilterOpened'-->
+<!--                          (filterChanged)='handleFilterChange($event)'-->
+<!--                          (filterEnableChanged)="onFilterEnabledChanged($event)" />-->
+<!--  }-->
+<!--</rb-entities-page-header>-->
+
+<!--@if (loading) {-->
+<!--  <rb-loader />-->
+<!--}-->
+
+<!--<div class="rb-table" rbTableQueryReflector [page]="page" [sort]="sort"-->
+<!--     [defaultSort]="{sortField: 'login', sortOrder: 'asc'}"-->
+<!--     (activeQueryParams)="handleActiveQueryChange($event)" (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
+
+<!--  <div class="rb-table-header">-->
+<!--    @for (property of PROPERTIES; track property.name) {-->
+<!--      <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"-->
+<!--           [class.flex-1]="!property.width"-->
+<!--           [class.shrink-0]="!!property.width">-->
+<!--        <div class="rb-table-head group" (click)="switchSort(property)">-->
+<!--          <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>-->
+<!--          <div *ngIf="property.sortable">-->
+<!--            <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">-->
+<!--            <span class="rb-sort-icon material-symbols-outlined">-->
+<!--              {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}-->
+<!--            </span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    }-->
+<!--    <div class='w-20'>-->
+<!--      <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  @if (entitiesToShow) {-->
+<!--    @for (entity of entitiesToShow; track entity.id) {-->
+<!--&lt;!&ndash;    <div class="rb-table-row" [ngClass]="updated === entity.id ? 'bg-green-100!' : ''">&ndash;&gt;-->
+<!--      <rb-user-table-row [entity]="entity" [updated]="updated"-->
+<!--                         (actionEvent)="onAction($event.mode, $event.entity, undefined)" />-->
+<!--&lt;!&ndash;      <div class="rb-table-main-row">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div *ngFor="let property of PROPERTIES"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class.flex-1]="!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;             [class.shrink-0]="!!property.width"&ndash;&gt;-->
+<!--&lt;!&ndash;             [ngSwitch]="property.name">&ndash;&gt;-->
+<!--&lt;!&ndash;            <ng-container *ngSwitchCase="'login'">&ndash;&gt;-->
+<!--&lt;!&ndash;              <a *ngSwitchCase="'login'"&ndash;&gt;-->
+<!--&lt;!&ndash;                 [routerLink]='[entity["login"]]'>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="font-bold text-primary-color">{{ entity["login"] }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;              </a>&ndash;&gt;-->
+<!--&lt;!&ndash;              <p class="text-neutral-500 dark:text-neutral-300">{{entity['firstName']}} {{entity['lastName']}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ng-container>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <ng-container *ngSwitchCase="'email'">&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class="flex items-center gap-1">&ndash;&gt;-->
+<!--&lt;!&ndash;                <rb-user-activated [activated]="entity['activated']"></rb-user-activated>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span>{{ entity['email'] || '-' }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;              </span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ng-container>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <ng-container *ngSwitchCase="'roles'">&ndash;&gt;-->
+<!--&lt;!&ndash;              <rb-user-roles [roles]="entity['_roles']"></rb-user-roles>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ng-container>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <ng-container *ngSwitchDefault>{{ entity[property.name] || '-' }}</ng-container>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class='w-20'>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button mat-icon-button class="mat-small-icon-button"&ndash;&gt;-->
+<!--&lt;!&ndash;                    (click)="$event.stopPropagation(); expandedElement = expandedElement === entity ? null : entity">&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class="material-symbols-outlined">&ndash;&gt;-->
+<!--&lt;!&ndash;                {{entity !== expandedElement ? 'expand_more' : 'expand_less'}}&ndash;&gt;-->
+<!--&lt;!&ndash;              </span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="mat-small-icon-button text-primary!"&ndash;&gt;-->
+<!--&lt;!&ndash;                    mat-icon-button color="primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                    (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class="material-symbols-outlined">edit</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </button>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <button class="mat-small-icon-button" mat-icon-button color="warn"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                    (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <span class="text-xl material-symbols-outlined font-bold">delete</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <ng-container *ngIf="(user$ | async)?.['login'] === entity['login'] || ((entity['roles']?.[0]?.['authorityName'] as authorityName) && (&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      entity['roles']?.[0]['authorityName'] === 'ROLE_PARTICIPANT' ||&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      entity['roles']?.[0]['authorityName'] === 'ROLE_INACTIVE_PARTICIPANT')); else deleteEnabled">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      mat-icon-button color="warn"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      [disabled]="true"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                      (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <span class="material-symbols-outlined">delete</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </ng-container>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="mat-small-icon-button"&ndash;&gt;-->
+<!--&lt;!&ndash;                    mat-icon-button color="warn"&ndash;&gt;-->
+<!--&lt;!&ndash;                    [disabled]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                    (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class="material-symbols-outlined">delete</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </button>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;            <ng-template #deleteEnabled>&ndash;&gt;-->
+<!--&lt;!&ndash;              <button class="mat-small-icon-button"&ndash;&gt;-->
+<!--&lt;!&ndash;                      mat-icon-button color="warn"&ndash;&gt;-->
+<!--&lt;!&ndash;                      [disabled]="false"&ndash;&gt;-->
+<!--&lt;!&ndash;                      (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="material-symbols-outlined">delete</span>&ndash;&gt;-->
+<!--&lt;!&ndash;              </button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ng-template>&ndash;&gt;-->
+<!--&lt;!&ndash;            <rb-activate [entity]="entity"></rb-activate>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="rb-table-extension-row" [@detailExpand]="entity === expandedElement ? 'expanded' : 'collapsed'">&ndash;&gt;-->
+<!--&lt;!&ndash;        <rb-user-details [entity]='entity' [type]="DetailType.TABLE"></rb-user-details>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    }-->
+<!--  }-->
+<!--</div>-->
+
+<!--@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {-->
+<!--  <mat-paginator (page)="switchPage($event)"-->
+<!--                 [length]="filteredAndSortedEntities.length"-->
+<!--                 [pageSize]="page.pageSize"-->
+<!--                 [pageSizeOptions]="pageSizeOptions"-->
+<!--                 [pageIndex]="page.pageIndex"-->
+<!--                 aria-label="Select page" />-->
+<!--}-->

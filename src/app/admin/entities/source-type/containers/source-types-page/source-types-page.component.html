@@ -1,0 +1,121 @@
+<rb-entities-page-header [showTitle]="true"
+                         [entityName]="name"
+                         (action)="onAction(DialogMode.ADD)">
+  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {
+    <rb-data-table-filter bottom-filter
+                          [filters]='filters'
+                          [filterOpened]='isFilterOpened'
+                          (filterChanged)='handleFilterChange($event)'
+                          (filterEnableChanged)="onFilterEnabledChanged($event)" />
+  }
+</rb-entities-page-header>
+
+@if (loading) {
+  <rb-loader />
+}
+
+<div class="rb-table" rbTableQueryReflector [page]="page" [sort]="sort"
+     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
+     (activeQueryParams)="handleActiveQueryChange($event)"
+     (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">
+
+  <div class="rb-table-header">
+    @for (property of PROPERTIES; track property.name) {
+      <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+           [class.flex-1]="!property.width"
+           [class.shrink-0]="!!property.width">
+        <div class="rb-table-head group" (click)="switchSort(property)">
+          <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>
+          <div *ngIf="property.sortable">
+            <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">
+            <span class="rb-sort-icon material-symbols-outlined">
+              {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    <div class='w-22'>
+      <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>
+    </div>
+  </div>
+
+  @if (entitiesToShow) {
+    @for (entity of entitiesToShow; track entity.id) {
+      <rb-source-type-table-row [entity]="entity" [updated]="updated"
+                         (actionEvent)="onAction($event.mode, $event.entity, undefined)" />
+
+<!--    <div class="rb-table-row" [ngClass]="updated === entity.id ? 'bg-green-100!' : ''"-->
+<!--         *ngFor="let entity of entitiesToShow">-->
+<!--      <div class="rb-table-main-row">-->
+<!--        <div *ngFor="let property of PROPERTIES"-->
+<!--             [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"-->
+<!--             [class.flex-1]="!property.width"-->
+<!--             [class.shrink-0]="!!property.width"-->
+<!--             [ngSwitch]="property.name">-->
+<!--&lt;!&ndash;          <ng-container *ngSwitchCase="'producerModelVersion'">&ndash;&gt;-->
+<!--&lt;!&ndash;            <a [routerLink]='["/admin/source-types", entity["producer"], entity.model, entity["catalogVersion"]]'>&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class='font-bold text-primary-color'>&ndash;&gt;-->
+<!--&lt;!&ndash;                {{ entity["producer"] }}/{{entity["model"]}}/{{entity["catalogVersion"]}}&ndash;&gt;-->
+<!--&lt;!&ndash;              </span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <p class="text-neutral-500 dark:text-neutral-300">{{entity.name}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ng-container>&ndash;&gt;-->
+<!--          <ng-container *ngSwitchCase="'name'">-->
+<!--            <a [routerLink]='["/admin/source-types", entity["producer"], entity.model, entity["catalogVersion"]]'>-->
+<!--              <span class='font-bold text-primary-color'>-->
+<!--                {{ entity["producer"] }}/{{entity["model"]}}/{{entity["catalogVersion"]}}-->
+<!--              </span>-->
+<!--            </a>-->
+<!--            <p class="text-neutral-500 dark:text-neutral-300">{{entity.name}}</p>-->
+<!--          </ng-container>-->
+<!--          <ng-container *ngSwitchCase="'sourceTypeScope'">-->
+<!--            <rb-source-type-scope [sourceTypeScope]="entity['sourceTypeScope']"></rb-source-type-scope>-->
+<!--          </ng-container>-->
+
+<!--          <ng-container *ngSwitchCase="'canRegisterDynamically'">-->
+<!--            <rb-source-type-source-registration [canRegisterDynamically]="entity['canRegisterDynamically']"></rb-source-type-source-registration>-->
+<!--          </ng-container>-->
+
+<!--          <ng-container *ngSwitchDefault>{{ entity[property.name] || '-' }}</ng-container>-->
+<!--        </div>-->
+<!--        <div class='w-20'>-->
+<!--          <button mat-icon-button class="mat-small-icon-button"-->
+<!--                  (click)="$event.stopPropagation(); expandedElement = expandedElement === entity ? null : entity">-->
+<!--          <span class="material-symbols-outlined">-->
+<!--            {{entity !== expandedElement ? 'expand_more' : 'expand_less'}}-->
+<!--          </span>-->
+<!--          </button>-->
+<!--          <button class="mat-small-icon-button"-->
+<!--                  mat-icon-button color="primary"-->
+<!--                  (click)='onAction(DialogMode.EDIT, entity, undefined)'>-->
+<!--            <span class="material-symbols-outlined">edit</span>-->
+<!--          </button>-->
+<!--          <button class="mat-small-icon-button" mat-icon-button color="warn"-->
+<!--                  (click)='onAction(DialogMode.DELETE, entity, undefined)'>-->
+<!--            <span class="material-symbols-outlined">delete</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="rb-table-extension-row" [@detailExpand]="entity === expandedElement ? 'expanded' : 'collapsed'">-->
+<!--        <rb-source-type-details [entity]='entity' [type]="DetailType.TABLE"></rb-source-type-details>-->
+<!--      </div>-->
+<!--    </div>-->
+    }
+  }
+</div>
+
+<div class="flex items-center px-4 text-sm">
+  <span *ngIf="!entities?.length" >{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>
+  <span *ngIf="entities?.length && !entitiesToShow?.length">{{ 'No item found with this filter' | translate }}</span>
+</div>
+
+@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {
+  <mat-paginator (page)="switchPage($event)"
+                 [length]="filteredAndSortedEntities.length"
+                 [pageSize]="page.pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 [pageIndex]="page.pageIndex"
+                 aria-label="Select page" />
+}

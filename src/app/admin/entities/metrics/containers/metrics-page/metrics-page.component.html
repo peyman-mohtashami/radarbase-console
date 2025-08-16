@@ -1,0 +1,92 @@
+<div class='p-4'>
+  <div class='flex flex-wrap justify-between gap-2 mb-4'>
+    <h2 class='m-0 font-bold flex items-center gap-2'>
+      <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">speed</span>
+      {{'ADMIN.metrics.title.plural' | translate }}
+      <span>({{'ADMIN.metrics.subTitle' | translate }})</span>
+    </h2>
+    <div class='flex gap-2 items-center ml-auto'>
+      <button type="button"
+              mat-stroked-button
+              color='primary'
+              (click)='refresh()'>
+        <mat-icon>sync</mat-icon>
+        <span class="font-bold">{{'ADMIN.metrics.refresh' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  <rb-loader *ngIf='loading'></rb-loader>
+
+  <mat-accordion *ngIf="!loading" class="text-sm">
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf='metrics'>
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.jvm.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-memory [jvmMemoryMetrics]="metrics.jvm"></rb-metrics-memory>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf='metrics'>
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.threads.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-threads [threads]="threads"></rb-metrics-threads>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf='metrics'>
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.processMetrics.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-system [systemMetrics]="metrics.processMetrics"></rb-metrics-system>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf="metrics && metrics.garbageCollector">
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.garbageCollector.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-garbage-collector [garbageCollectorMetrics]="metrics.garbageCollector">
+      </rb-metrics-garbage-collector>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf="metrics && metrics['http.server.requests']">
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.http.server.requests.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-request [requestMetrics]="metrics['http.server.requests']">
+      </rb-metrics-request>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf="metrics && metrics.services">
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.services.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-endpoints-requests [endpointsRequestsMetrics]="metrics.services">
+      </rb-metrics-endpoints-requests>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf="metrics && metrics.cache">
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.cache.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-cache [cacheMetrics]="metrics.cache">
+      </rb-metrics-cache>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
+                         *ngIf="metrics && metrics.databases && (metrics.databases | json) !== '{}'">
+      <mat-expansion-panel-header class="p-4!">
+        <mat-panel-title>{{'ADMIN.metrics.databases.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <rb-metrics-datasource [datasourceMetrics]="metrics.databases">
+      </rb-metrics-datasource>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</div>

@@ -1,0 +1,306 @@
+[
+    {
+        "field_name": "phq8_1",
+        "form_name": "phq8",
+        "section_header": "Wie oft fühlten Sie sich im Verlauf der letzten zwei Wochen durch die folgenden Beschwerden beeinträchtigt?",
+        "field_type": "radio",
+        "field_label": "1. Wenig Interesse oder Freude an Ihren Tätigkeiten",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_2",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "2. Niedergeschlagenheit, Schwermut oder Hoffnungslosigkeit",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_3",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "3. Schwierigkeiten ein- oder durchzuschlafen oder vermehrter Schlaf",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_4",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "4. Müdigkeit oder Gefühl, keine Energie zu haben",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_5",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "5. Verminderter Appetit oder übermäßiges Bedürfnis zu essen",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_6",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "6. Schlechte Meinung von sich selbst; Gefühl ein Versager zu sein oder die Familie enttäuscht zu haben",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_7",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "7. Schwierigkeiten, sich auf etwas zu konzentrieren, z.B. beim Zeitungslesen oder Fernsehen",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    },
+    {
+        "field_name": "phq8_8",
+        "form_name": "phq8",
+        "section_header": "",
+        "field_type": "radio",
+        "field_label": "8. Waren Ihre Bewegungen oder Ihre Sprache so verlangsamt, dass es auch anderen auffallen würde? Oder waren Sie im Gegenteil \"zappelig\" oder ruhelos und hatten dadurch einen stärkeren Bewegungsdrang als sonst?",
+        "select_choices_or_calculations": [
+            {
+                "code": "0",
+                "label": "Überhaupt nicht"
+            },
+            {
+                "code": "1",
+                "label": "An einzelnen Tagen"
+            },
+            {
+                "code": "2",
+                "label": "An mehr als der Hälfte der Tage"
+            },
+            {
+                "code": "3",
+                "label": "Beinahe jeden Tag"
+            }
+        ],
+        "field_note": "",
+        "text_validation_type_or_show_slider_number": "",
+        "text_validation_min": "",
+        "text_validation_max": "",
+        "identifier": "",
+        "branching_logic": "",
+        "required_field": "",
+        "custom_alignment": "",
+        "question_number": "",
+        "matrix_group_name": "phq8",
+        "matrix_ranking": "",
+        "field_annotation": "",
+        "evaluated_logic": ""
+    }
+]
