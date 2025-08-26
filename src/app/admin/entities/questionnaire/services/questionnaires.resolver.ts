@@ -9,8 +9,8 @@ import { filter, mergeMap } from "rxjs/operators";
 import { QuestionnaireService } from "./questionnaire.service";
 import { QueryParams } from "@ngrx/data";
 import { select, Store } from "@ngrx/store";
-import { project } from "../../../store/admin.selectors";
-import { AdminActions } from "../../../store/action.types";
+// import { project } from "../../../store/admin.selectors";
+// import { AdminActions } from "../../../store/action.types";
 import { AppClient } from "../../client/models/client";
 import { AppQuestionnaireBundle } from "../models/questionnaire";
 

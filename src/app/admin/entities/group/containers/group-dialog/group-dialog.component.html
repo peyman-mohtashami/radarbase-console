@@ -21,7 +21,8 @@
   <!--        </rb-detail-element>-->
         <rb-detail-element>
           <ng-container label>{{ 'ADMIN.group.projectName.label' | translate }}</ng-container>
-          <ng-container value>{{ (selectedProject$ | async)?.projectName || '-' }}</ng-container>
+<!--          <ng-container value>{{ (selectedProject$ | async)?.projectName || '-' }}</ng-container>-->
+          <ng-container value></ng-container>
         </rb-detail-element>
 
       </div>
@@ -68,7 +69,8 @@
         @if(floatLabel) {
           <mat-label>{{ 'ADMIN.group.projectName.label' | translate }}</mat-label>
         }
-        <input matInput disabled [value]="(selectedProject$ | async)?.projectName"/>
+<!--        <input matInput disabled [value]="(selectedProject$ | async)?.projectName"/>-->
+        <input matInput disabled [value]=""/>
       </mat-form-field>
     </form>
   }

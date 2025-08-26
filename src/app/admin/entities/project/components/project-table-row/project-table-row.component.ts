@@ -5,7 +5,7 @@ import {DialogMode} from "../../../../enums/dialog";
 import {TABLE_ANIMATION} from "../../../../animation";
 import {AppProject} from "../../models/project";
 import {PROPERTIES} from "../../config";
-import {MatCard, MatCardContent} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
 import {AsyncPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {ProjectStatusComponent} from "../project-status/project-status.component";
@@ -35,6 +35,7 @@ import {ActionsComponent} from "../actions/actions.component";
     LocalDateComponent,
     ActionsComponent,
     MatCardContent,
+    MatCardHeader,
   ]
 })
 export class ProjectTableRowComponent {

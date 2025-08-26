@@ -4,7 +4,7 @@ import {TableElement} from "../../../models/table.model";
 import {NgClass} from "@angular/common";
 
 @Component({
-  selector: ' rb-detail-element',
+  selector: 'rb-detail-element',
   templateUrl: './detail-element.component.html',
   imports: [
     NgClass

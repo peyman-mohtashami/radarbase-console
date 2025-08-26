@@ -4,32 +4,33 @@ import {
   ActivatedRouteSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
+// import { Store } from '@ngrx/store';
 import { AppProject } from "../models/project";
 import {ProjectService} from "./project.service";
-import {AdminActions} from "../../../store/action.types";
-import {tap} from "rxjs/operators";
+// import {AdminActions} from "../../../store/action.types";
+// import {tap} from "rxjs/operators";
 
 @Injectable({ providedIn: 'root' })
 export class ProjectResolver implements Resolve<AppProject> {
   constructor(
     // private router: Router,
     private entityService: ProjectService,
-    private store: Store
+    // private store: Store
   ) {
-    console.log(20, "ProjectResolver constructor")
+    // console.log(20, "ProjectResolver constructor")
   }
 
   resolve(
     route: ActivatedRouteSnapshot,
   ): Observable<AppProject> | Promise<AppProject> | AppProject {
-    return this.entityService.getByKey(route.params['id']).pipe(
-        tap((entity) => {
-          this.store.dispatch(
-            AdminActions.projectSelected({ selectedProject: entity })
-          );
-        })
-    );
+    return this.entityService.getByKey(route.params['id'])
+    // return this.entityService.getByKey(route.params['id']).pipe(
+    //     tap((entity) => {
+    //       this.store.dispatch(
+    //         AdminActions.projectSelected({ selectedProject: entity })
+    //       );
+    //     })
+    // );
 
     // console.log(20, "ProjectResolver resolve")
     //

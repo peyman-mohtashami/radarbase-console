@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Location, NgIf} from '@angular/common';
+import {JsonPipe, Location} from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -12,24 +12,22 @@ import { ENTITY_NAME } from '../../../../enums/entities';
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
-  StaticBreadcrumbComponent
-} from "../../../../components/base-entity-page/static-breadcrumb/static-breadcrumb.component";
-import {
   DetailsPageHeaderComponent
 } from "../../../../components/base-details/details-page-header/details-page-header.component";
 import {SourceTypeDetailsComponent} from "../../components/source-type-details/source-type-details.component";
 import {SourceTypeService} from "../../services/sourceType.service";
+import {BreadcrumbComponent} from '../../../../components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'rb-source-type-page',
   templateUrl: './source-type-page.component.html',
   imports: [
     LoaderComponent,
-    NgIf,
     TranslatePipe,
-    StaticBreadcrumbComponent,
     DetailsPageHeaderComponent,
-    SourceTypeDetailsComponent
+    SourceTypeDetailsComponent,
+    BreadcrumbComponent,
+    JsonPipe
   ]
 })
 export class SourceTypePageComponent extends BaseEntityPage<

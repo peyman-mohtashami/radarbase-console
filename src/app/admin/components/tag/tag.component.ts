@@ -14,6 +14,8 @@ import {NgClass} from "@angular/common";
   ]
 })
 export class TagComponent {
+
+  // @HostBinding('class') @Input() class = '';
   @HostBinding('class') @Input() class = '';
 
   @Input() colorClass?: string;

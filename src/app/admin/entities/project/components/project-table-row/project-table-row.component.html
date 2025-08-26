@@ -94,9 +94,32 @@
   <mat-card appearance="outlined" class="cursor-pointer flex items-start justify-start h-full"
             [class]="updated() === entity().id ? 'bg-green-100!' : ''"
             [routerLink]='[entity().name]'>
-    <mat-card-content class="p-0! w-full">
+<!--    <mat-card-header class="w-full">-->
+<!--      Hello-->
+<!--      <div class="px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">-->
+<!--        <div-->
+<!--          class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">-->
+<!--          <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>-->
+<!--          <span class='text-xs'>{{ entity().organization.name }}</span>-->
+<!--        </div>-->
+<!--        @if (configFields['projectStatus'] !== false) {-->
+<!--          <rb-project-status class="" [projectStatus]="entity()['projectStatus']"/>-->
+<!--        }-->
+<!--      </div>-->
+<!--      <div class=" flex gap-2 items-center justify-between">-->
+<!--        <div-->
+<!--          class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">-->
+<!--          <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>-->
+<!--          <span class='text-xs'>{{ entity().organization.name }}</span>-->
+<!--        </div>-->
+<!--        @if (configFields['projectStatus'] !== false) {-->
+<!--          <rb-project-status class="" [projectStatus]="entity()['projectStatus']"/>-->
+<!--        }-->
+<!--      </div>-->
 
-      <div class="px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
+<!--    </mat-card-header>-->
+    <mat-card-content class="p-0! w-full">
+      <div class="rounded-t-[4px] px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
         <div
           class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">
           <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>

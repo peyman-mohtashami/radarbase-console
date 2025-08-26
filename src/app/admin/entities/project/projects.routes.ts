@@ -18,8 +18,8 @@ export const projectRoutes: Routes = [
     component: ImplEntitiesPageComponent,
     resolve: {
       entities: ProjectsResolver,
-      organizations: OrganizationsResolver,
-      sourceTypes: SourceTypesResolver,
+      // organizations: OrganizationsResolver,
+      // sourceTypes: SourceTypesResolver,
     },
     data: {
       entityName: 'project',
@@ -38,50 +38,50 @@ export const projectRoutes: Routes = [
       sourceTypes: SourceTypesResolver,
     },
     children: [
-      {
-        path: '',
-        redirectTo: 'subjects',
-        pathMatch: 'full',
-      },
-      {
-        path: 'subjects',
-        loadChildren: () =>
-          import('../subject/subject.routes').then((m) => m.subjectRoutes),
-        pathMatch: 'full',
-      },
       // {
-      //   path: 'subjects-authorizer',
-      //   loadChildren: () =>
-      //     import('../subject-authorizer/subject-authorizer.module').then(
-      //       (m) => m.SubjectAuthorizerModule
-      //     ),
+      //   path: '',
+      //   redirectTo: 'subjects',
+      //   pathMatch: 'full',
       // },
-      {
-        path: 'sources',
-        loadChildren: () =>
-          import('../source/source.routes').then((m) => m.sourceRoutes),
-      },
-      {
-        path: 'groups',
-        loadChildren: () =>
-          import('../group/group.routes').then((m) => m.groupRoutes),
-      },
-      {
-        path: 'users',
-        loadChildren: () =>
-          import('../user/user.routes').then((m) => m.userRoutes),
-      },
       // {
-      //   path: 'clients',
+      //   path: 'subjects',
       //   loadChildren: () =>
-      //     import('../client/client.module').then((m) => m.ClientModule),
+      //     import('../subject/subject.routes').then((m) => m.subjectRoutes),
+      //   pathMatch: 'full',
       // },
-      {
-        path: 'app-configs',
-        loadChildren: () =>
-          import('../client/client.routes').then((m) => m.clientRoutes),
-        data: {appConfig: true}
-      },
+      // // {
+      // //   path: 'subjects-authorizer',
+      // //   loadChildren: () =>
+      // //     import('../subject-authorizer/subject-authorizer.module').then(
+      // //       (m) => m.SubjectAuthorizerModule
+      // //     ),
+      // // },
+      // {
+      //   path: 'sources',
+      //   loadChildren: () =>
+      //     import('../source/source.routes').then((m) => m.sourceRoutes),
+      // },
+      // {
+      //   path: 'groups',
+      //   loadChildren: () =>
+      //     import('../group/group.routes').then((m) => m.groupRoutes),
+      // },
+      // {
+      //   path: 'users',
+      //   loadChildren: () =>
+      //     import('../user/user.routes').then((m) => m.userRoutes),
+      // },
+      // // {
+      // //   path: 'clients',
+      // //   loadChildren: () =>
+      // //     import('../client/client.module').then((m) => m.ClientModule),
+      // // },
+      // {
+      //   path: 'app-configs',
+      //   loadChildren: () =>
+      //     import('../client/client.routes').then((m) => m.clientRoutes),
+      //   data: {appConfig: true}
+      // },
       {
         path: 'details',
         component: ProjectDetailsPageComponent,

@@ -9,9 +9,9 @@ import { QueryParams } from '@ngrx/data';
 
 import { ProtocolService } from './protocol.service';
 import { select, Store } from "@ngrx/store";
-import { project } from "../../../store/admin.selectors";
+// import { project } from "../../../store/admin.selectors";
 import { filter, mergeMap } from "rxjs/operators";
-import { AdminActions } from "../../../store/action.types";
+// import { AdminActions } from "../../../store/action.types";
 import { AppClient } from "../../client/models/client";
 import { AppProtocol } from "../models/protocol";
 
@@ -31,20 +31,20 @@ export class ProtocolsResolver implements Resolve<AppProtocol[]> {
     | AppProtocol[] {
     console.log(8, "ProtocolsResolver resolve")
 
-    this.store.dispatch(
-      AdminActions.clientSelected({ selectedClient: {clientId: "aRMT"} as AppClient })
-    );
+    // this.store.dispatch(
+    //   AdminActions.clientSelected({ selectedClient: {clientId: "aRMT"} as AppClient })
+    // );
 
     const params: QueryParams = { ...route.queryParams };
 
-    const project$ = this.store.pipe(
-      select(project),
-      filter(project => project !== undefined)
-    );
-
-    return project$.pipe(
-      mergeMap(() => this.entityService.getWithQuery(params)),
-      tap(entities => console.log(8, "ProtocolsResolver resolve entities", entities)),
-    )
+    // const project$ = this.store.pipe(
+    //   select(project),
+    //   filter(project => project !== undefined)
+    // );
+    return this.entityService.getWithQuery(params);
+    // return project$.pipe(
+    //   mergeMap(() => this.entityService.getWithQuery(params)),
+    //   tap(entities => console.log(8, "ProtocolsResolver resolve entities", entities)),
+    // )
   }
 }

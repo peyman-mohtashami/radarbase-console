@@ -9,15 +9,15 @@
   color utility to any element that depends on these defaults.
 */
 
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
+//@layer base {
+//  *,
+//  ::after,
+//  ::before,
+//  ::backdrop,
+//  ::file-selector-button {
+//    border-color: var(--color-gray-200, currentcolor);
+//  }
+//}
 
 @layer utilities {
   .rb-table {
@@ -67,30 +67,9 @@
     @apply text-white! bg-linear-to-r! from-secondary! to-primary! disabled:opacity-50!;
   }
 
-  rb-sidebar-nav mat-expansion-panel {
-    /*@apply text-neutral-300! bg-black/10! hover:bg-black/20! my-1!;*/
-    @apply hover:bg-black/20!;
-  }
-  rb-sidebar-nav mat-expansion-panel-header {
-    /*@apply py-2! bg-transparent! h-auto!;*/
-    @apply py-2! h-auto!;
-  }
-  rb-sidebar-nav mat-nav-list {
-    @apply p-0!;
-  }
-  /*rb-sidebar-nav mat-list-item {*/
-  /*  @apply px-0! py-2! rounded-sm! transition-all! hover:text-primary-color! dark:hover:text-primary-dark-color!;*/
-  /*}*/
-  rb-sidebar-nav mat-list-item {
-    @apply px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary!;
-  }
-  /*rb-sidebar-nav .routerLinkActive {*/
-  /*  @apply bg-linear-to-r! from-primary-color-500! to-accent-color-500! dark:bg-primary-dark-color-400! [&>span>span]:text-white! dark:from-primary-dark-color-500! dark:to-accent-dark-color-500!;*/
-  /*}*/
+  //==========
 
-  /*rb-sidebar-nav .routerLinkActive {*/
-  /*  @apply bg-linear-to-r! from-primary! to-secondary! [&>span>span]:text-white!;*/
-  /*}*/
+  //================
 
   .mat-mdc-dialog-content {
     @apply max-h-none!;

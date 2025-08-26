@@ -1,11 +1,11 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import { AppOrganization } from "../../models/organization";
 import {ENTITIES} from "../../../../consts/entities";
 import {ROLES} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
-import {BreadcrumbComponent} from "../../../../components/base-entity-page/breadcrumb/breadcrumb.component";
+import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {Location} from "@angular/common";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 import {ActionsComponent} from "../../components/actions/actions.component";
@@ -14,6 +14,7 @@ import {BaseEntityPage} from "../../../../components/base-entity-page/base-entit
 import {OrganizationDialogComponent} from "../organization-dialog/organization-dialog.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {OrganizationService} from "../../services/organization.service";
+import {takeUntil} from 'rxjs/operators';
 
 export interface ILink {
   path: string;
@@ -34,13 +35,17 @@ export interface ILink {
     RouterOutlet,
   ]
 })
+// export class OrganizationPageComponent {}
+
 export class OrganizationPageComponent
   extends BaseEntityPage<AppOrganization, OrganizationDialogComponent>
-  implements OnDestroy
+  implements OnDestroy, OnInit
 {
 
   protected readonly ENTITIES = ENTITIES;
   protected readonly ROLES = ROLES;
+
+  override name = 'organization';
 
   entities: AppOrganization[] = this.activatedRoute.snapshot.data['entities'];
 
@@ -50,7 +55,7 @@ export class OrganizationPageComponent
     { path: 'details', label: 'Details' },
   ];
 
-  activePath?: string ;
+  activePath?: string;
 
   constructor(
     router: Router,
@@ -60,7 +65,16 @@ export class OrganizationPageComponent
     entityService: OrganizationService,
   ) {
     super(router, activatedRoute, dialog, location, entityService);
+    // console.log('Class: OrganizationPageComponent, Function: constructor, Line 63  this.activatedRoute.firstChild?.snapshot.url[0].path' ,  this.activatedRoute.firstChild?.snapshot.url[0].path);
+    console.log('Class: OrganizationPageComponent, Function: constructor, Line 69 this.activatedRoute.firstChild?.snapshot' , this.activatedRoute.firstChild?.snapshot);
+    // this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
   }
+
+  ngOnInit() {
+    this.init();
+    this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
+  }
+
 
   ngOnDestroy(): void {
     this.destroy();

@@ -7,7 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
 import { AppGroup } from "../../models/group";
 import { Store } from "@ngrx/store";
-import { project } from "../../../../store/admin.selectors";
+// import { project } from "../../../../store/admin.selectors";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
 import {
@@ -55,7 +55,7 @@ export class GroupDialogComponent
 
   entities;// = this.data.entities;
 
-  selectedProject$ = this.store?.select(project);
+  // selectedProject$ = this.store?.select(project);
 
   constructor(
     router: Router,

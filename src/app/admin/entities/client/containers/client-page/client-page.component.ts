@@ -7,18 +7,15 @@ import { DialogMode } from '../../../../enums/dialog';
 import { ClientDialogComponent } from '../client-dialog/client-dialog.component';
 // import { ClientEntityService } from '../../store/services/client.entity.service';
 import { BaseEntityPage } from '../../../../components/base-entity-page/base-entity-page';
-import { AdminActions } from "../../../../store/action.types";
+// import { AdminActions } from "../../../../store/action.types";
 import { select, Store } from "@ngrx/store";
-import { project } from "../../../../store/admin.selectors";
+// import { project } from "../../../../store/admin.selectors";
 import { map } from "rxjs/operators";
 import { AppClient } from "../../models/client";
 import { ENTITY_NAME } from '../../../../enums/entities';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {
-  StaticBreadcrumbComponent
-} from "../../../../components/base-entity-page/static-breadcrumb/static-breadcrumb.component";
 import {MatAccordion, MatExpansionPanel} from "@angular/material/expansion";
 import {ClientDetailsComponent} from "../../components/client-details/client-details.component";
 import {MatFormField} from "@angular/material/input";
@@ -32,8 +29,6 @@ import {ClientService} from "../../services/client.service";
     LoaderComponent,
     NgIf,
     TranslatePipe,
-    StaticBreadcrumbComponent,
-    AsyncPipe,
     MatFormField,
     ReactiveFormsModule,
     MatSelect,
@@ -60,10 +55,10 @@ export class ClientPageComponent
   })
 
   panelOpenState = false;
-  inGlobalScope$ = this.store.pipe(
-    select(project),
-    map(project => !project)
-  )
+  // inGlobalScope$ = this.store.pipe(
+  //   select(project),
+  //   map(project => !project)
+  // )
 
   constructor(
     router: Router,
@@ -76,22 +71,22 @@ export class ClientPageComponent
   }
 
   ngOnInit() {
-    this.store.dispatch(
-      AdminActions.clientSelected({
-        selectedClient: this.entity,
-      })
-    );
-    this.store.dispatch(
-      AdminActions.clientConfigCategorySelected({
-        selectedClientConfigCategory: 'general',
-      })
-    );
+    // this.store.dispatch(
+    //   AdminActions.clientSelected({
+    //     selectedClient: this.entity,
+    //   })
+    // );
+    // this.store.dispatch(
+    //   AdminActions.clientConfigCategorySelected({
+    //     selectedClientConfigCategory: 'general',
+    //   })
+    // );
     const category = this.activatedRoute.firstChild?.snapshot.params["category"];
     if(category){
       this.form?.patchValue({category})
     }
     this.form.valueChanges.subscribe((value) => {
-      this.store.dispatch(AdminActions.clientConfigCategorySelected({selectedClientConfigCategory: value.category}))
+      // this.store.dispatch(AdminActions.clientConfigCategorySelected({selectedClientConfigCategory: value.category}))
       this.router.navigate([value.category], {relativeTo: this.activatedRoute}).then();
     });
 

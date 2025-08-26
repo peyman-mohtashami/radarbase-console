@@ -5,6 +5,7 @@ import {ENTITIES} from "../../../consts/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {RbPermissionDirective} from "../../../../core/auth/directives/ng-permission.directive";
 import {MatButton, MatIconButton} from "@angular/material/button";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'rb-entities-page-header',
@@ -32,12 +33,19 @@ export class EntitiesPageHeaderComponent {
   action = output<any>();
   gridListToggled = output<boolean>();
 
-  onAction(event: any){
-    this.action.emit(event);
-  }
+  constructor(public router: Router, public route: ActivatedRoute) { }
+
+  // onAction(event: any){
+  //   this.action.emit(event);
+  // }
 
   toggleGridListView() {
     this.isGridView = !this.isGridView;
     this.gridListToggled.emit(this.isGridView);
   }
+
+  // onClick() {
+  //   console.log('Class: EntitiesPageHeaderComponent, Function: onClick, Line 48 ' , );
+  //   this.router.navigate(['add'], { relativeTo: this.route, queryParamsHandling: 'preserve' })
+  // }
 }

@@ -19,7 +19,7 @@ import {MatIconButton} from "@angular/material/button";
     TranslatePipe,
     MatCard,
     MatCardContent,
-    MatIconButton
+    MatIconButton,
   ]
 })
 export class DetailsPageHeaderComponent {
@@ -53,5 +53,4 @@ export class DetailsPageHeaderComponent {
   onAction(event: {mode: DialogMode; entity: any}){
     this.action.emit(event);
   }
-
 }

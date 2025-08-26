@@ -13,7 +13,7 @@ import {TableType} from "../../../enums/table";
 import {FormFieldType} from "../../../models/dialog.model";
 import {FilterItem, TableElement} from "../../../models/table.model";
 import {Store} from "@ngrx/store";
-import {AdminActions} from "../../../store/action.types";
+// import {AdminActions} from "../../../store/action.types";
 import {DialogMode} from "../../../enums/dialog";
 import {BehaviorSubject, combineLatest, Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
@@ -286,6 +286,49 @@ export class ImplEntitiesPageComponent
   }
 
   init(): void {
+    this.activatedRoute.fragment
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(fragment => {
+        console.log('----Class: ImplEntitiesPageComponent, Function: , Line 263 fragment' , fragment);
+        if (!fragment) return;
+
+        const fragmentItems = fragment.split('/');
+        console.log('Class: ImplEntitiesPageComponent, Function: , Line 296 fragmentItems' , fragmentItems);
+        console.log('Class: ImplEntitiesPageComponent, Function: , Line 297 this.name' , this.name);
+        const actionType = fragmentItems[1];
+        const actionEntity = fragmentItems[2];
+        const actionId = fragmentItems[3];
+
+        if (actionEntity === this.name) {
+          if (actionType === 'add') {
+            this.openDialog(DialogMode.ADD);
+          } else if (actionType === 'edit') {
+            // const id = fragment.split('/')[2];
+            const entity = this.entities.find(e => e['id'] == actionId);
+            this.openDialog(DialogMode.EDIT, entity);
+          } else if (actionType === 'delete') {
+            // const id = fragment.split('/')[2];
+            // console.log('Class: ImplEntitiesPageComponent, Function: , Line 274 id', id);
+            // console.log('Class: ImplEntitiesPageComponent, Function: , Line 275 this.entities', this.entities);
+            const entity = this.entities.find(e => {
+              // console.log('Class: ImplEntitiesPageComponent, Function: , Line 277 e ', e, e['id'], id, e['id'] == id);
+              return e['id'] == actionId
+            });
+            console.log('Class: ImplEntitiesPageComponent, Function: , Line 276 entity', entity);
+            this.openDialog(DialogMode.DELETE, entity);
+          }
+        }
+      });
+    // this.activatedRoute.firstChild?.params.subscribe(params => {
+    //   if (this.activatedRoute.firstChild?.routeConfig?.path === 'add') {
+    //     this.openDialog(DialogMode.ADD);
+    //   } else if (this.activatedRoute.firstChild?.routeConfig?.path === 'edit/:id') {
+    //     // this.openDialog(params['id']);
+    //   }
+    // });
+
+
+
     if (this.type === TableType.GET_ALL_FROM_STORE) {
       this.subscribeToStoreEntities();
     }
@@ -308,6 +351,30 @@ export class ImplEntitiesPageComponent
       this.loading = false;
     }
   }
+
+  // init(): void {
+  //   if (this.type === TableType.GET_ALL_FROM_STORE) {
+  //     this.subscribeToStoreEntities();
+  //   }
+  //   if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL ) {
+  //     //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+  //     this.filteredAndSortedEntities = this.entities;
+  //     this.entitiesToShow = this.filteredAndSortedEntities;
+  //     this.total = this.getTotal();
+  //     // console.log('Class: BaseEntitiesTwoPage, Function: init, Line 100 ' , );
+  //     this.loading = false;
+  //     this.subscribeToEntities();
+  //   } else {
+  //     //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+  //     //! apply filter, sort, page
+  //     this.filteredAndSortedEntities = this.entities;
+  //     this.applyFilter();
+  //     this.applySort();
+  //     this.applyPage();
+  //     // this.entitiesToShow = this.filteredAndSortedEntities.slice(this.page.pageIndex*this.page.pageSize, (this.page.pageIndex+1)*this.page.pageSize)
+  //     this.loading = false;
+  //   }
+  // }
 
   ngOnInit() {
     this.init()
@@ -419,9 +486,9 @@ export class ImplEntitiesPageComponent
 
   openDialog(mode: DialogMode, entity?: any, extra?: any) {
     const dialogRef = this.getDialogRef(mode, entity, extra);
-    this.applyStateChangesToUrlQueryParams({
-      [mode]: entity ? this.getEntityName(entity) : 'new',
-    });
+    // this.applyStateChangesToUrlQueryParams({
+    //   [mode]: entity ? this.getEntityName(entity) : 'new',
+    // });
 
     const dialogActionSubscription =
       dialogRef.componentInstance.actionTriggered.subscribe({
@@ -446,7 +513,11 @@ export class ImplEntitiesPageComponent
               error: (err) => this.onError(err, dialogRef),
             });
           } else if (value.action === 'close') {
-            this.applyStateChangesToUrlQueryParams({ [mode]: null });
+            // this.applyStateChangesToUrlQueryParams({ [mode]: null });
+            this.router.navigate([], {
+              relativeTo: this.activatedRoute,
+              queryParamsHandling: 'preserve'
+            });
           }
         },
       });
@@ -479,6 +550,7 @@ export class ImplEntitiesPageComponent
         replaceUrl: true,
         queryParams: queryParams,
         queryParamsHandling: 'merge',
+        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
       })
       .then();
   }

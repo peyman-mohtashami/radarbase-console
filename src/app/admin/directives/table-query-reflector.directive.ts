@@ -74,34 +74,34 @@ export class TableQueryReflectorDirective implements OnInit {
     if(this._page && this._sort) {
       this.activeQueryParams.emit({page: this._page, sort: this._sort});
     }
-    this.checkActiveDialogQuery();
+    // this.checkActiveDialogQuery();
   }
 
-  private checkActiveDialogQuery(): void {
-    console.log('Class: TableQueryReflectorDirective, Function: checkActiveDialogQuery, Line 81 ' , );
-    const queryParams = this.activatedRoute.snapshot.queryParams;
-    if (queryParams[DialogMode.ADD] === 'new') {
-      return this.dialogQueryParams.emit({ mode: DialogMode.ADD });
-    }
-    if (queryParams[DialogMode.EDIT]) {
-      return this.dialogQueryParams.emit({
-        mode: DialogMode.EDIT,
-        id: queryParams[DialogMode.EDIT],
-      });
-    }
-    if (queryParams[DialogMode.DELETE]) {
-      return this.dialogQueryParams.emit({
-        mode: DialogMode.DELETE,
-        id: queryParams[DialogMode.DELETE],
-      });
-    }
-    if (queryParams[DialogMode.VIEW]) {
-      return this.dialogQueryParams.emit({
-        mode: DialogMode.VIEW,
-        id: queryParams[DialogMode.VIEW],
-      });
-    }
-  }
+  // private checkActiveDialogQuery(): void {
+  //   console.log('Class: TableQueryReflectorDirective, Function: checkActiveDialogQuery, Line 81 ' , );
+  //   const queryParams = this.activatedRoute.snapshot.queryParams;
+  //   if (queryParams[DialogMode.ADD] === 'new') {
+  //     return this.dialogQueryParams.emit({ mode: DialogMode.ADD });
+  //   }
+  //   if (queryParams[DialogMode.EDIT]) {
+  //     return this.dialogQueryParams.emit({
+  //       mode: DialogMode.EDIT,
+  //       id: queryParams[DialogMode.EDIT],
+  //     });
+  //   }
+  //   if (queryParams[DialogMode.DELETE]) {
+  //     return this.dialogQueryParams.emit({
+  //       mode: DialogMode.DELETE,
+  //       id: queryParams[DialogMode.DELETE],
+  //     });
+  //   }
+  //   if (queryParams[DialogMode.VIEW]) {
+  //     return this.dialogQueryParams.emit({
+  //       mode: DialogMode.VIEW,
+  //       id: queryParams[DialogMode.VIEW],
+  //     });
+  //   }
+  // }
 
   private checkActivePageQuery(): void {
     const { pageSize, pageIndex } = this.activatedRoute.snapshot.queryParams;
@@ -161,6 +161,7 @@ export class TableQueryReflectorDirective implements OnInit {
         replaceUrl: true,
         queryParams: queryParams,
         queryParamsHandling: 'merge',
+        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
       })
       .then();
   }

@@ -24,7 +24,7 @@
         <ng-template #matNavList>
           <mat-nav-list dense>
             @for (nav of navGroupItem.navList; track nav) {
-              <div class="border-t border-neutral-500 w-full" *rbPermission='nav.permission'>
+              <div class="border-t border-on-tertiary/50 w-full" *rbPermission='nav.permission'>
                 @if (!nav.external) {
                   <mat-list-item class="h-auto!"
                                  [routerLink]='nav.link'

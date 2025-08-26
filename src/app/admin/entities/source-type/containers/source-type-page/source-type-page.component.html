@@ -1,7 +1,9 @@
-<rb-loader *ngIf='loading' [loadingText]='"loading" | translate' />
+@if (loading) {
+  <rb-loader [loadingText]='"loading" | translate' />
+}
 
-<rb-static-breadcrumb [entityName]="ENTITY_NAME.sourceType" [entity]="entity" />
-
+<rb-breadcrumb />
+{{entity | json}}
 <rb-details-page-header [entity]="entity"
                         [entityName]="ENTITY_NAME.sourceType"
                         (action)="onAction($event.mode, $event.entity)">

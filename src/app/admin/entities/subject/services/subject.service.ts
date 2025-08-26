@@ -6,7 +6,7 @@ import { Moment } from 'moment';
 import moment from 'moment/moment';
 import { BaseEntityService } from '../../../services/base.entity.service';
 import { Store } from '@ngrx/store';
-import { project } from '../../../store/admin.selectors';
+// import { project } from '../../../store/admin.selectors';
 import { map, tap } from 'rxjs/operators';
 import { QueryParams } from '@ngrx/data';
 import { AppSubject } from "../models/subject";
@@ -21,16 +21,16 @@ export class SubjectService extends BaseEntityService<
   override resourceUrl = 'api/subjects';
   resourceUrlGetWithQuery = '';
 
-  project?: RadarProject | null;
+  // project?: RadarProject | null;
 
   constructor(http: HttpClient, private store: Store) {
     super(http);
-    this.store.select(project).subscribe((project) => {
-      this.project = project;
-      if (project) {
-        this.resourceUrlGetWithQuery = `api/projects/${project.projectName}/subjects`;
-      }
-    });
+    // this.store.select(project).subscribe((project) => {
+    //   this.project = project;
+    //   if (project) {
+    //     this.resourceUrlGetWithQuery = `api/projects/${project.projectName}/subjects`;
+    //   }
+    // });
   }
 
   override getWithQuery(
@@ -91,7 +91,7 @@ export class SubjectService extends BaseEntityService<
     const url =
       'api/projects/' +
       // encodeURIComponent(projectName) +
-      this.project?.projectName +
+      // this.project?.projectName +
       '/groups/' +
       encodeURIComponent(groupName) +
       '/subjects';
@@ -173,7 +173,7 @@ export class SubjectService extends BaseEntityService<
     return {
       ...entity,
       group: entity.group || undefined,
-      project: this.project || undefined,
+      // project: this.project || undefined,
     };
   }
 }

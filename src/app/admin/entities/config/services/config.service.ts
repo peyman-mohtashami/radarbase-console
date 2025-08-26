@@ -10,7 +10,7 @@ import {
 import { BaseEntityService } from '../../../services/base.entity.service';
 import { select, Store } from "@ngrx/store";
 import { filter, map } from "rxjs/operators";
-import { client, clientConfigCategory, project } from "../../../store/admin.selectors";
+// import { client, clientConfigCategory, project } from "../../../store/admin.selectors";
 import { AppClient } from "../../client/models/client";
 import { AppProject } from "../../project/models/project";
 import {AppConfig} from "../models/config";
@@ -42,18 +42,18 @@ export class ConfigService extends BaseEntityService<
 
   constructor(http: HttpClient, private store: Store) {
     super(http);
-    this.store.pipe(
-      select(project),
-      filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
-    ).subscribe((project) => {
-      this.project = project;
-    });
-    this.store.pipe(
-      select(client),
-      filter(client => !!client) as OperatorFunction<AppClient | null |  undefined, AppClient>
-    ).subscribe((client) => {
-      this.client = client;
-    });
+    // this.store.pipe(
+    //   select(project),
+    //   filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
+    // ).subscribe((project) => {
+    //   this.project = project;
+    // });
+    // this.store.pipe(
+    //   select(client),
+    //   filter(client => !!client) as OperatorFunction<AppClient | null |  undefined, AppClient>
+    // ).subscribe((client) => {
+    //   this.client = client;
+    // });
     // this.store.pipe(
     //   select(clientConfigCategory)
     // ).subscribe((category) => {

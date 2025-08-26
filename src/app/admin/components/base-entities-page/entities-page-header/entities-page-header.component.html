@@ -21,15 +21,24 @@
     }
     <ng-container *rbPermission="permission()">
       @if (enableAddButton()) {
-        <button (click)='onAction(DialogMode.ADD)'
+        <button (click)="router.navigate([], {relativeTo: route, queryParamsHandling: 'preserve', fragment: `/add/${entityName()}`})"
                 mat-stroked-button
                 color="primary"
                 type="button">
-          <span class="font-bold flex items-center gap-2">
-            <span class="material-symbols-outlined">add</span>
-            {{ 'ADMIN.' + entityName() + '.create' | translate }}
-          </span>
+            <span class="font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined">add</span>
+              {{ 'ADMIN.' + entityName() + '.create' | translate }}
+            </span>
         </button>
+<!--        <button (click)='onAction(DialogMode.ADD)'-->
+<!--                mat-stroked-button-->
+<!--                color="primary"-->
+<!--                type="button">-->
+<!--          <span class="font-bold flex items-center gap-2">-->
+<!--            <span class="material-symbols-outlined">add</span>-->
+<!--            {{ 'ADMIN.' + entityName() + '.create' | translate }}-->
+<!--          </span>-->
+<!--        </button>-->
       }
     </ng-container>
   </div>

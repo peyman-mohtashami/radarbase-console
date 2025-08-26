@@ -11,7 +11,7 @@ import {
   getProjectConfiguration,
 } from '../../config/mock/mock-configs';
 import { select, Store } from "@ngrx/store";
-import { project } from "../../../store/admin.selectors";
+// import { project } from "../../../store/admin.selectors";
 import { AppProject } from "../../project/models/project";
 import { AppQuestionnaireBundle, toAppQuestionnaireBundle, toRadarQuestionnaireBundle } from "../models/questionnaire";
 import {appData, data} from "../mock-app-config/data";
@@ -24,7 +24,7 @@ export class QuestionnaireService extends BaseEntityService<any, any> {
 //   AppQuestionnaireBundle
 // > {
   // entities?: RadarConfigBundle;
-  project: RadarProject | null = null;
+  // project: RadarProject | null = null;
   override total = 0;
 
   override toAppModel = toAppQuestionnaireBundle;
@@ -33,12 +33,12 @@ export class QuestionnaireService extends BaseEntityService<any, any> {
 
   constructor(http: HttpClient, private store: Store) {
     super(http);
-    this.store.pipe(
-      select(project),
-      filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
-    ).subscribe((project) => {
-      this.project = project;
-    });
+    // this.store.pipe(
+    //   select(project),
+    //   filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
+    // ).subscribe((project) => {
+    //   this.project = project;
+    // });
   }
 
   override getTotal(): number {

@@ -1,6 +1,7 @@
 <rb-breadcrumb />
 
-<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-background dark:bg-background-dark'>
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
+<!--  bg-background dark:bg-background-dark-->
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
     <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['organization'].icon }}</span>
     {{entity.name }}
@@ -18,9 +19,10 @@
     <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
          mat-tab-nav-bar
          mat-stretch-tabs="false"
-         mat-align-tabs="start"
          [tabPanel]="tabPanel">
+<!--      mat-align-tabs="start"-->
       @for (link of links; track link) {
+<!--        {{link.path}} / {{activePath}}-->
         <a mat-tab-link
            (click)="activePath = link.path"
            [active]="link.path === activePath"

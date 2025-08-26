@@ -1,8 +1,8 @@
 <rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>
 
-<rb-static-breadcrumb *ngIf="inGlobalScope$ | async"
-                      [entityName]="ENTITY_NAME.client" [entity]="entity">
-</rb-static-breadcrumb>
+<!--<rb-static-breadcrumb *ngIf="inGlobalScope$ | async"-->
+<!--                      [entityName]="ENTITY_NAME.client" [entity]="entity">-->
+<!--</rb-static-breadcrumb>-->
 
 <form *ngIf="form" class="pt-4 px-4 bg-white" [formGroup]='form' novalidate>
     <mat-form-field *ngIf="entity.clientId === 'pRMT'"

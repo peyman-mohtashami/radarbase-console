@@ -12,13 +12,16 @@
              [class.shrink-0]="!!property.width">
           @switch (property.name) {
             @case ('name') {
+<!--              <a-->
+<!--                [routerLink]='["/admin/source-types", entity()["producer"], entity().model, entity()["catalogVersion"]]'>-->
               <a
-                [routerLink]='["/admin/source-types", entity()["producer"], entity().model, entity()["catalogVersion"]]'>
+                [routerLink]='["/admin/source-types", entity().name]'>
                 <span class='font-bold text-primary-color'>
-                  {{ entity()["producer"] }}/{{ entity()["model"] }}/{{ entity()["catalogVersion"] }}
+                  {{entity().name || '-'}}
+<!--                  {{ entity()["producer"] }}/{{ entity()["model"] }}/{{ entity()["catalogVersion"] }}-->
                 </span>
               </a>
-              <p class="text-neutral-500 dark:text-neutral-300">{{ entity.name }}</p>
+              <p class="text-neutral-500 dark:text-neutral-300">{{ entity().name }}</p>
             }
             @case ('sourceTypeScope') {
               <rb-source-type-scope [sourceTypeScope]="entity()['sourceTypeScope']"/>

@@ -7,6 +7,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
 import { DialogMode } from '../../enums/dialog';
 import { IBaseEntityService } from '../../services/base-entity.service.interface';
+import {takeUntil} from 'rxjs/operators';
+import {OnInit} from '@angular/core';
 
 export abstract class BaseEntityPage<
   T extends { [key: string]: any },
@@ -23,6 +25,8 @@ export abstract class BaseEntityPage<
 
   _destroy$: Subject<void> = new Subject<void>();
 
+  name: string = '';
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -31,6 +35,47 @@ export abstract class BaseEntityPage<
     public entityService: IBaseEntityService<T>
   ) {
     this.entity = this.activatedRoute.snapshot.data['entity'];
+  }
+
+  init(): void {
+    this.activatedRoute.fragment
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(fragment => {
+        if (!fragment) return;
+
+        const fragmentItems = fragment.split('/');
+        console.log('Class: BaseEntityPage, Function: , Line 44 fragmentItems' , fragmentItems, this.name);
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 296 fragmentItems', fragmentItems);
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 297 this.name', this.name);
+        const actionType = fragmentItems[1];
+        const actionEntity = fragmentItems[2];
+        const actionId = fragmentItems[3];
+        console.log('Class: BaseEntityPage, Function: , Line 50 actionType, actionEntity, actionId' , actionType, actionEntity, actionId);
+
+        if (actionEntity === this.name) {
+        // if (actionType === 'add') {
+        //   this.openDialog(DialogMode.ADD);
+        // } else if (actionType === 'edit') {
+        if (actionType === 'edit') {
+        console.log('Class: BaseEntityPage, Function: , Line 57 ' , );
+        // const id = fragment.split('/')[2];
+        // const entity = this.entities.find(e => e['id'] == actionId);
+        this.openDialog(DialogMode.EDIT, this.entity);
+        // this.entityService.openDialog(DialogMode.EDIT, this.entity);
+      } else if (actionType === 'delete') {
+        // const id = fragment.split('/')[2];
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 274 id', id);
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 275 this.entities', this.entities);
+        // const entity = this.entities.find(e => {
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 277 e ', e, e['id'], id, e['id'] == id);
+        // return e['id'] == actionId
+        // });
+        // console.log('Class: ImplEntitiesPageComponent, Function: , Line 276 entity', entity);
+        this.openDialog(DialogMode.DELETE, this.entity);
+        // this.entityService.openDialog(DialogMode.DELETE, this.entity);
+      }
+      }
+    });
   }
 
   destroy() {

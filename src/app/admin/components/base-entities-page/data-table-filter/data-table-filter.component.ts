@@ -242,6 +242,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
         replaceUrl: true,
         queryParams: queryParams,
         queryParamsHandling: 'merge',
+        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
       })
       .then();
   }

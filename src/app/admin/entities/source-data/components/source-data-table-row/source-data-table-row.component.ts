@@ -15,6 +15,7 @@ import {AsyncPipe} from "@angular/common";
 import {entitiesConfig} from "../../../../../core/config/store/config.selectors";
 import {map} from "rxjs/operators";
 import {Store} from "@ngrx/store";
+import {Actions} from '../actions/actions';
 
 @Component({
   selector: 'rb-source-data-table-row',
@@ -27,7 +28,8 @@ import {Store} from "@ngrx/store";
     SourceDataProcessingStateComponent,
     MatIconButton,
     SourceDataDetailsComponent,
-    AsyncPipe
+    AsyncPipe,
+    Actions
   ]
 })
 export class SourceDataTableRowComponent {

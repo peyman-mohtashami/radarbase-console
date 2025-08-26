@@ -27,12 +27,19 @@ export const sourceTypeRoutes: Routes = [
     },
   },
   {
-    path: ':producer/:model/:version',
+    path: ':name',
     component: SourceTypePageComponent,
     resolve: {
       entity: SourceTypeResolver,
     },
   },
+  // {
+  //   path: ':producer/:model/:version',
+  //   component: SourceTypePageComponent,
+  //   resolve: {
+  //     entity: SourceTypeResolver,
+  //   },
+  // },
   {
     path: '**',
     redirectTo: '',

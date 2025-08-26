@@ -3,8 +3,8 @@
                          [enableAddButton]="!data['disableAddButton']"
                          [isGridView]="gridViewEnabled ? gridView : undefined"
                          [permission]="[{role: ROLES.SYS_ADMIN}]"
-                         (action)="onAction(DialogMode.ADD)"
                          (gridListToggled)="gridView = !gridView">
+<!--                         (action)="onAction(DialogMode.ADD)"-->
   @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
                           [filters]='filters'

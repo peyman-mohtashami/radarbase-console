@@ -9,7 +9,7 @@ import { QueryParams } from '@ngrx/data';
 
 import { ConfigService } from './config.service';
 import { select, Store } from "@ngrx/store";
-import { client, project } from "../../../store/admin.selectors";
+// import { client, project } from "../../../store/admin.selectors";
 import { filter, mergeMap } from "rxjs/operators";
 import {AppConfig} from "../models/config";
 

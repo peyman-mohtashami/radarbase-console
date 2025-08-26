@@ -11,7 +11,7 @@ import { QueryParams } from '@ngrx/data';
 // } from '../../config/mock/mock-configs';
 import { filter, map } from "rxjs/operators";
 import { select, Store } from "@ngrx/store";
-import { project } from "../../../store/admin.selectors";
+// import { project } from "../../../store/admin.selectors";
 import { AppProject } from "../../project/models/project";
 import {
   deleteGlobalProtocol,
@@ -40,12 +40,12 @@ export class ProtocolService extends BaseEntityService<
 
   constructor(http: HttpClient, private store: Store) {
     super(http);
-    this.store.pipe(
-      select(project),
-      filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
-    ).subscribe((project) => {
-      this.project = project;
-    });
+    // this.store.pipe(
+    //   select(project),
+    //   filter(project => project !== undefined) as OperatorFunction<AppProject | null |  undefined, AppProject | null>
+    // ).subscribe((project) => {
+    //   this.project = project;
+    // });
   }
 
   override getTotal(): number {

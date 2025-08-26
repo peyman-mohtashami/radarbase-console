@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {Location, NgIf} from '@angular/common';
+import {Location} from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
-// import { UserEntityService } from '../../store/services/user.entity.service';
 import { AuthService } from '../../../../../core/auth/services/auth.service';
 import { DialogMode } from '../../../../enums/dialog';
 import { BaseEntityPage } from '../../../../components/base-entity-page/base-entity-page';
@@ -17,26 +16,23 @@ import { ENTITY_NAME } from '../../../../enums/entities';
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
-  StaticBreadcrumbComponent
-} from "../../../../components/base-entity-page/static-breadcrumb/static-breadcrumb.component";
-import {
   DetailsPageHeaderComponent
 } from "../../../../components/base-details/details-page-header/details-page-header.component";
 import {ActivateComponent} from "../../components/activate/activate.component";
 import {UserDetailsComponent} from "../../components/user-details/user-details.component";
 import {UserService} from "../../services/user.service";
+import {BreadcrumbComponent} from '../../../../components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'rb-user-page',
   templateUrl: './user-page.component.html',
   imports: [
     LoaderComponent,
-    NgIf,
     TranslatePipe,
-    StaticBreadcrumbComponent,
     DetailsPageHeaderComponent,
     ActivateComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    BreadcrumbComponent
   ]
 })
 export class UserPageComponent
@@ -85,17 +81,31 @@ export class UserPageComponent
     mode: DialogMode,
     entity: AppUser
   ): MatDialogRef<UserDialogComponent> {
-    return this.dialog.open(UserDialogComponent, {
-      data: {
-        mode,
-        entity,
-        entities: this.entities,
-        projects: this.projects,
-        organizations: this.organizations,
-      },
-      panelClass: ['scrollable', 'full-width-dialog'],
-      disableClose: true,
-    });
+    return this.dialog.open(UserDialogComponent,
+      {
+        data: { mode, entity, projects: this.projects, organizations: this.organizations},
+        //entities: this.entities },
+        panelClass: 'tailwind-slide-panel',
+        width: '50%',
+        height: '100vh',
+        position: { right: '0' },
+        hasBackdrop: true,
+        disableClose: true,
+        autoFocus: false,
+        restoreFocus: false
+      }
+      // {
+    //   data: {
+    //     mode,
+    //     entity,
+    //     entities: this.entities,
+    //     projects: this.projects,
+    //     organizations: this.organizations,
+    //   },
+    //   panelClass: ['scrollable', 'full-width-dialog'],
+    //   disableClose: true,
+    // }
+    );
   }
 
   override navigateOnDeleteSuccess() {

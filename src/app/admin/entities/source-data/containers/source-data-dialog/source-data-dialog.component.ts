@@ -19,7 +19,7 @@ import {
 } from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {ErrorMessageComponent} from "../../../../../core/error/components/message/error-message.component";
 import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatLabel, MatSelect} from "@angular/material/select";
@@ -39,7 +39,6 @@ import {ProcessingState} from '../../../../../shared/models/radar-source-data.mo
     TranslatePipe,
     MatLabel,
     MatInput,
-    NgIf,
     MatSelectAutocompleteComponent,
     MatSelect,
     MatOption,
@@ -69,9 +68,6 @@ export class SourceDataDialogComponent extends BaseDialogComponent<
   ProcessingState = ProcessingState;
 
   sourceTypesOptions: RadarOption[];
-  // = this.data.sourceTypes.sort((a, b) =>
-  //   a.name.localeCompare(b.name)
-  // );
 
   constructor(
     router: Router,

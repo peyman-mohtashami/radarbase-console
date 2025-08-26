@@ -12,8 +12,8 @@ import { Store } from '@ngrx/store';
 import { AppProject } from "../../models/project";
 import { AppOrganization } from "../../../organization/models/organization";
 import {ENTITIES} from "../../../../consts/entities";
-import {project} from "../../../../store/admin.selectors";
-import {BreadcrumbComponent} from "../../../../components/base-entity-page/breadcrumb/breadcrumb.component";
+// import {project} from "../../../../store/admin.selectors";
+import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
@@ -62,7 +62,7 @@ export class ProjectPageComponent
   private store = inject(Store)
 
   // selectedOrganization$ = this.store.select(organization);
-  selectedProject$ = this.store.select(project);
+  // selectedProject$ = this.store.select(project);
 
   constructor(
     router: Router,

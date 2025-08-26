@@ -9,7 +9,7 @@ import { SubjectDialogComponent } from '../subject-dialog/subject-dialog.compone
 import { DialogMode } from '../../../../enums/dialog';
 import { GroupService } from '../../../group/services/group.service';
 import { Store } from '@ngrx/store';
-import { AdminActions } from '../../../../store/action.types';
+// import { AdminActions } from '../../../../store/action.types';
 // import { BaseEntityPage } from '../../../../components/base-entity-page/base-entity-page';
 import {ENTITIES} from "../../../../consts/entities";
 import {BaseEntityPageComponent} from "../../../../components/base-entity-page/base-entity-page.component";
@@ -17,7 +17,7 @@ import {AppProject} from "../../../project/models/project";
 import {ProjectDialogComponent} from "../../../project/containers/project-dialog/project-dialog.component";
 import {AppSubject} from "../../models/subject";
 import {ILink} from "../../../organization/containers/organization-page/organization-page.component";
-import {BreadcrumbComponent} from "../../../../components/base-entity-page/breadcrumb/breadcrumb.component";
+import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 

@@ -14,14 +14,14 @@ import {ProjectService} from "./project.service";
 export class ProjectsResolver implements Resolve<AppProject[]> {
   // constructor(private entityService: ProjectEntityService) {
   constructor(private entityService: ProjectService) {
-    console.log(2, "ProjectsResolver constructor")
+    // console.log(2, "ProjectsResolver constructor")
   }
 
   resolve(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     route: ActivatedRouteSnapshot,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    state: RouterStateSnapshot
+    // state: RouterStateSnapshot
   ):
     | Observable<AppProject[]>
     | Promise<AppProject[]>
