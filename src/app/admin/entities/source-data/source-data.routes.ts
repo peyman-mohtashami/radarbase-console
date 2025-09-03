@@ -4,16 +4,14 @@ import {SourcesDataResolver} from "./services/sources-data.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {SourceDataPageComponent} from "./containers/source-data-page/source-data-page.component";
 import {SourceDataResolver} from "./services/source-data.resolver";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, TableElements} from "./config";
 import {RADAR_ROLES} from '../../../shared/models/auth.model';
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const sourceDataRoutes: Routes = [
   {
     path: '',
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: SourcesDataResolver,
       sourceTypes: SourceTypesResolver,

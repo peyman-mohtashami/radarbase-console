@@ -4,7 +4,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import { DateAdapter } from '@angular/material/core';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { Validator } from "../../../../../shared/utils/validators";
 import { AppProject } from "../../../project/models/project";
 import { AppGroup } from "../../../group/models/group";
@@ -90,7 +90,7 @@ export class ConfigDialogComponent
     console.log(this.entity);
     console.log(this.form?.value);
 
-    this.error = false;
+    this.error.set(false); // = false;
     this.isLoading = true;
     this.actionTriggered.emit({
       action: this.mode,

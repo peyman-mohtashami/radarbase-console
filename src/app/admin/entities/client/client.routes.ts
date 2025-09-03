@@ -2,19 +2,15 @@ import {Routes} from "@angular/router";
 import {ClientsResolver} from "./services/clients.resolver";
 import {ClientPageComponent} from "./containers/client-page/client-page.component";
 import {ClientResolver} from "./services/client.resolver";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {PROPERTIES} from "./config";
 import {filters} from "./config";
 import {ClientsSelectPageComponent} from "./containers/clients-select-page/clients-select-page.component";
-// import {DummyComponent} from "../config/components/dummy/dummy.component";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const clientRoutes: Routes = [
   {
     path: '',
-    // component: ClientsPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: ClientsResolver,
     },

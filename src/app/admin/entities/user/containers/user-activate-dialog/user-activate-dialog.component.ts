@@ -8,7 +8,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppUser } from "../../models/user";
 import { AppProject } from "../../../project/models/project";
 import { AppOrganization } from "../../../organization/models/organization";
@@ -133,7 +133,7 @@ export class UserActivateDialogComponent
   // }
 
   sendActivationEmail() {
-    this.error = false;
+    this.error.set(false);// = false;
     this.isLoading = true;
     if (this.entity.id) {
       this.actionTriggered.emit({ action: this.mode, entity: this.entity });

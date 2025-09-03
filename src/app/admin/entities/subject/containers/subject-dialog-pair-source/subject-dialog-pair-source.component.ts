@@ -10,7 +10,7 @@ import {
 
 import { SourceService } from '../../../source/services/source.service';
 import { DialogMode } from '../../../../enums/dialog';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppSource } from "../../../source/models/source";
 import {TranslatePipe} from "@ngx-translate/core";

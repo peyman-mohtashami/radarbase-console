@@ -5,19 +5,21 @@ import {debounceTime, distinctUntilChanged, skip, switchMap, takeUntil,} from 'r
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SelectionModel} from '@angular/cdk/collections';
 
-import {DialogMode} from '../../enums/dialog';
-import {BaseDialogComponent} from '../base-dialog/base-dialog.component';
-import {FilterItem, TableElement, TableType} from "../../models/table.model";
-import {IBaseEntityService} from '../../services/base-entity.service.interface';
-import {DetailType} from '../../enums/detail-type';
-import {ENTITIES} from '../../consts/entities';
-import {RbSort} from "../../directives/table-query-reflector.directive";
+import {DialogMode} from '../enums/dialog';
+import {BaseDialogComponent} from './base-dialog.component';
+import {FilterItem, TableElement,
+  // TableType
+} from "../models/table.model";
+import {IBaseEntityService} from '../services/base-entity.service.interface';
+import {DetailType} from '../enums/detail-type';
+import {ENTITIES} from '../consts/entities';
+import {RbSort} from "../directives/table-query-reflector.directive";
 import {PageEvent} from "@angular/material/paginator";
-import {FilterEvent} from "./data-table-filter/data-table-filter.component";
-import {ROLES} from "../../enums/entities";
-import {AppOrganization} from "../../entities/organization/models/organization";
-import {AppProject} from "../../entities/project/models/project";
-import {AppUser} from "../../entities/user/models/user";
+import {FilterEvent} from "../components/common-entities-page/data-table-filter/data-table-filter.component";
+import {ROLES} from "../enums/entities";
+import {AppOrganization} from "../entities/organization/models/organization";
+import {AppProject} from "../entities/project/models/project";
+import {AppUser} from "../entities/user/models/user";
 
 export abstract class BaseEntitiesPage<
   T extends { [key: string]: any },
@@ -26,7 +28,7 @@ export abstract class BaseEntitiesPage<
   protected readonly ENTITIES = ENTITIES;
   // DialogComponent?: U
 
-  type: TableType = TableType.GET_ALL_FROM_STORE;
+  // type: TableType = TableType.GET_ALL_FROM_STORE;
 
   DialogMode = DialogMode;
 
@@ -104,10 +106,10 @@ export abstract class BaseEntitiesPage<
   }
 
   init(): void {
-    if (this.type === TableType.GET_ALL_FROM_STORE) {
-      this.subscribeToStoreEntities();
-    }
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_ALL_FROM_STORE) {
+    //   this.subscribeToStoreEntities();
+    // }
+    // if (this.type === TableType.GET_WITH_QUERY) {
       //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
       this.filteredAndSortedEntities = this.entities;
       this.entitiesToShow = this.filteredAndSortedEntities;
@@ -115,16 +117,16 @@ export abstract class BaseEntitiesPage<
       // console.log('Class: BaseEntitiesTwoPage, Function: init, Line 100 ' , );
       this.loading = false;
       this.subscribeToEntities();
-    } else {
-      //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
-      //! apply filter, sort, page
-      this.filteredAndSortedEntities = this.entities;
-      this.applyFilter();
-      this.applySort();
-      this.applyPage();
-      // this.entitiesToShow = this.filteredAndSortedEntities.slice(this.page.pageIndex*this.page.pageSize, (this.page.pageIndex+1)*this.page.pageSize)
-      this.loading = false;
-    }
+    // } else {
+    //   //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+    //   //! apply filter, sort, page
+    //   this.filteredAndSortedEntities = this.entities;
+    //   this.applyFilter();
+    //   this.applySort();
+    //   this.applyPage();
+    //   // this.entitiesToShow = this.filteredAndSortedEntities.slice(this.page.pageIndex*this.page.pageSize, (this.page.pageIndex+1)*this.page.pageSize)
+    //   this.loading = false;
+    // }
   }
 
   destroy(): void {
@@ -262,9 +264,9 @@ export abstract class BaseEntitiesPage<
   }
 
   onSuccess(mode: string, dialogRef: MatDialogRef<U>, entity: T): void {
-    if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL) {
+    // if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL) {
       this.updateTrigger$.next(entity['id']?.toString() || '0');
-    }
+    // }
     this.applyStateChangesToUrlQueryParams({ [mode]: null });
     dialogRef.close();
     console.log('Class: BaseEntitiesPage, Function: onSuccess, Line 253 ' , );
@@ -288,9 +290,9 @@ export abstract class BaseEntitiesPage<
       .then();
   }
 
-  trackId(index: number, item: T): string {
-    return `${item['id']}`;
-  }
+  // trackId(index: number, item: T): string {
+  //   return `${item['id']}`;
+  // }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -299,41 +301,41 @@ export abstract class BaseEntitiesPage<
     return numSelected === numRows;
   }
 
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-    // this.selection.select(...this.dataSource.data);
-    this.selection.select(...this.entities); //this.dataSource.data);
-  }
+  // masterToggle() {
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //     return;
+  //   }
+  //   // this.selection.select(...this.dataSource.data);
+  //   this.selection.select(...this.entities); //this.dataSource.data);
+  // }
 
-  checkboxLabel(row?: T): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row['position'] + 1
-    }`;
-  }
-
-  subscribeToStoreEntities(): void {
-    this.entityService.entities$?.pipe(
-      takeUntil(this._destroy$),
-      skip(1)
-    ).subscribe({
-        next: (value) => {
-          this.entities = value;
-          this.filteredAndSortedEntities = this.entities;
-          //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
-          this.applyFilter();
-          this.applySort();
-          this.applyPage();
-          console.log('Class: BaseEntitiesTwoPage, Function: next, Line 312 ' , );
-          this.loading = false;
-        },
-      });
-  }
+  // checkboxLabel(row?: T): string {
+  //   if (!row) {
+  //     return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+  //   }
+  //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+  //     row['position'] + 1
+  //   }`;
+  // }
+  //
+  // subscribeToStoreEntities(): void {
+  //   this.entityService.entities$?.pipe(
+  //     takeUntil(this._destroy$),
+  //     skip(1)
+  //   ).subscribe({
+  //       next: (value) => {
+  //         this.entities = value;
+  //         this.filteredAndSortedEntities = this.entities;
+  //         //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+  //         this.applyFilter();
+  //         this.applySort();
+  //         this.applyPage();
+  //         console.log('Class: BaseEntitiesTwoPage, Function: next, Line 312 ' , );
+  //         this.loading = false;
+  //       },
+  //     });
+  // }
 
   applyFilter(){
     console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 335 this.filterEvent' , this.filterEvent, Object.entries(this.filterEvent));
@@ -407,16 +409,16 @@ export abstract class BaseEntitiesPage<
     console.log('Class: BaseEntitiesPage, Function: handleFilterChange, Line 378 ' , );
 
     this.filterEvent = event;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.filter$.next(event);
-    } else {
-      this.loading = true;
-      this.filteredAndSortedEntities = this.entities;
-      this.applyFilter();
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.filteredAndSortedEntities = this.entities;
+    //   this.applyFilter();
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   // handlePageChange(){
@@ -435,13 +437,13 @@ export abstract class BaseEntitiesPage<
 
     // const {pageIndex, pageSize} = page
     this.page = page; //{pageIndex, pageSize} //: page., sortOrderpage as RbPage;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.page$.next(this.page);
-    } else {
-      this.loading = true;
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   switchSort(event: TableElement) {
@@ -455,28 +457,28 @@ export abstract class BaseEntitiesPage<
       this.sort = {sortField: event.name, sortOrder: 'asc'};
     }
     console.log('!Class: BaseEntitiesTwoPage, Function: switchSort, Line 414 ' , this.sort);
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.sort$.next(this.sort);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
     this.sort = event.sort;
     this.page = event.page;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.sort$.next(this.sort);
       this.page$.next(this.page);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
 
     // if (this.type === TableType.GET_WITH_QUERY) {
     //   this.page$.next(this.page);
@@ -487,19 +489,19 @@ export abstract class BaseEntitiesPage<
     // }
   }
 
-  handleSortChange(sort: RbSort){
-    console.log('!Class: BaseEntitiesTwoPage, Function: handleSortChange, Line 418 ' , sort);
-
-    this.sort = sort;
-    if (this.type === TableType.GET_WITH_QUERY) {
-      this.sort$.next(this.sort);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
-  }
+  // handleSortChange(sort: RbSort){
+  //   console.log('!Class: BaseEntitiesTwoPage, Function: handleSortChange, Line 418 ' , sort);
+  //
+  //   this.sort = sort;
+  //   // if (this.type === TableType.GET_WITH_QUERY) {
+  //     this.sort$.next(this.sort);
+  //   // } else {
+  //   //   this.loading = true;
+  //   //   this.applySort();
+  //   //   this.applyPage();
+  //   //   this.loading = false;
+  //   // }
+  // }
 
   onFilterEnabledChanged($event: boolean) {
     console.log('Class: BaseEntitiesPage, Function: onFilterEnabledChanged, Line 476 ' , );
@@ -550,9 +552,9 @@ export abstract class BaseEntitiesPage<
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   delete(entity: T): Observable<string | number> {
-    if (this.type === TableType.GET_ALL_FROM_STORE) {
-      return this.entityService.delete(`${entity['name']},${entity['id']}`);
-    }
+    // if (this.type === TableType.GET_ALL_FROM_STORE) {
+    //   return this.entityService.delete(`${entity['name']},${entity['id']}`);
+    // }
     return this.entityService.delete(entity['name']);
     // throw new Error('BaseListPageComponent "delete" method not implemented');
   }
@@ -565,15 +567,15 @@ export abstract class BaseEntitiesPage<
     // );
   }
 
-  isOrganization(entity: any): entity is AppOrganization {
-    return entity.type === 'organization'; // or some other discriminator
-  }
-
-  isProject(entity: any): entity is AppProject {
-    return entity.type === 'project';
-  }
-
-  isUser(entity: any): entity is AppUser {
-    return entity.type === 'user';
-  }
+  // isOrganization(entity: any): entity is AppOrganization {
+  //   return entity.type === 'organization'; // or some other discriminator
+  // }
+  //
+  // isProject(entity: any): entity is AppProject {
+  //   return entity.type === 'project';
+  // }
+  //
+  // isUser(entity: any): entity is AppUser {
+  //   return entity.type === 'user';
+  // }
 }

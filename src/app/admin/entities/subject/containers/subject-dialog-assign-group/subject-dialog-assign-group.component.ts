@@ -9,7 +9,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppGroup } from "../../../group/models/group";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -74,7 +74,7 @@ export class SubjectDialogAssignGroupComponent
   }
 
   override save(): void {
-    this.error = false;
+    this.error.set(false); // = false;
     this.isLoading = true;
     this.actionTriggered.emit({
       action: this.mode,

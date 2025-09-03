@@ -1,5 +1,51 @@
 import {FilterItem, TableElement} from "../../models/table.model";
 import {FormFieldType} from "../../models/dialog.model";
+import {ProcessingState} from '../../../shared/models/radar-source-data.model';
+
+export const FIELDS: any[] = [
+  {name: "id", auto: true, nonEditable: true, type: 'text'},
+  {name: "producer", type: 'text', validators: {requiredValidator: true, normalTextValidator: true}},
+  {name: "model", type: 'text', validators: {requiredValidator: true, normalTextValidator: true}},
+  {name: "catalogVersion", type: 'text', validators: {requiredValidator: true, normalTextValidator: true}},
+  {name: "sourceTypeScope", type: 'simpleSelect', validators: {requiredValidator: true},
+    options: [
+      {id: 0, name: 'ACTIVE'},
+      {id: 1, name: "PASSIVE"},
+      // {id: 2, name: ProcessingState.RADAR},
+      // {id: 3, name: ProcessingState.VENDOR},
+      // {id: 4, name: ProcessingState.UNKNOWN}
+    ]
+  },
+  {name: "canRegisterDynamically", type: 'slideToggle', hint: 'ADMIN.sourceType.canRegisterDynamically.hint'},
+  {name: "name", type: 'text'},
+  {name: "description", type: 'textarea'},
+  {name: "assessmentType", type: 'text'},
+  {name: "appProvider", type: 'text'},
+  // {name: "sourceType", type: 'select', optionsName: "sourceTypes", validators: {requiredValidator: true}},
+  // {name: "sourceTypeScope", type: 'simpleSelect',
+  //   options: [
+  //     {id: 0, name: ProcessingState.RAW},
+  //     {id: 1, name: ProcessingState.DERIVED},
+  //     {id: 2, name: ProcessingState.RADAR},
+  //     {id: 3, name: ProcessingState.VENDOR},
+  //     {id: 4, name: ProcessingState.UNKNOWN}
+  //   ]
+  // },
+
+];
+
+// override form = new FormGroup({
+//   id: new FormControl({ value: undefined, disabled: true }),
+//   producer: new FormControl("", [Validator.requiredValidator, Validator.normalTextValidator]),
+//   model: new FormControl("", [Validator.requiredValidator, Validator.normalTextValidator]),
+//   catalogVersion: new FormControl("", [Validator.requiredValidator, Validator.normalTextValidator]),
+//   sourceTypeScope: new FormControl("", [Validator.requiredValidator]),
+//   canRegisterDynamically: new FormControl(false),
+//   name: new FormControl(""),
+//   description: new FormControl("", [Validator.longTextValidator]),
+//   assessmentType: new FormControl(""),
+//   appProvider: new FormControl(""),
+// });
 
 export const PROPERTIES: TableElement[] = [
   { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true },

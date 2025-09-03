@@ -4,7 +4,7 @@ import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@ang
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import { Validator } from '../../../../../shared/utils/validators';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppOrganization } from "../../models/organization";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";

@@ -6,16 +6,14 @@ import {OrganizationResolver} from "./services/organization.resolver";
 import {
   OrganizationDetailsPageComponent
 } from "./containers/organization-details-page/organization-details-page.component";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, TableElements} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const organizationRoutes: Routes = [
   {
     path: '',
     // component: OrganizationsPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: { entities: OrganizationsResolver },
     data: {
       entityName: 'organization',

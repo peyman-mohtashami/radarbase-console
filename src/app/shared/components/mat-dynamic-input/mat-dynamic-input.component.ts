@@ -7,17 +7,18 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  AbstractControl,
   // AbstractControl,
   ControlValueAccessor,
   FormControl,
   // NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, ReactiveFormsModule,
+  NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn, Validators,
   // Validator,
 } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import {MatFormField, MatHint, MatOption, MatSelect, MatSelectTrigger, MatSuffix} from '@angular/material/select';
-import {ValidatorError, ValidatorHint} from '../../utils/validators';
+import {Validator, ValidatorError, ValidatorHint} from '../../utils/validators';
 import {MatChipListbox, MatChipOption} from "@angular/material/chips";
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
@@ -73,12 +74,12 @@ export interface RadarOption {
     MatInput,
     MatSlideToggle,
     MatSuffix,
-    NgIf,
+    // NgIf,
     ToDatePipe,
     DatePipe,
     // DynamicInputComponent,
     MatSelectAutocompleteComponent,
-    JsonPipe,
+    // JsonPipe,
   ],
   // standalone: false
 })
@@ -128,7 +129,14 @@ export class MatDynamicInputComponent
     // if(this.multiple){
     //   this.form = new FormControl<RadarOption[]>([]);
     // }else {
-      this.form = new FormControl("");
+    const validators: ValidatorFn[] = [];
+    if (this.field()['validators']?.['requiredValidator']) {
+      validators.push(Validator.requiredValidator);
+    }
+    if (this.field()['validators']?.['normalTextValidator']) {
+      validators.push(Validator.normalTextValidator);
+    }
+    this.form = new FormControl("", [...validators]);
     // }
     // this.filteredMulti$.next(this.options.slice());
 
@@ -231,34 +239,34 @@ export class MatDynamicInputComponent
     }
   }
 
-  // validate(control: AbstractControl) {
-  //   // TODO
-  //   if (this.form.valid) {
-  //     return null;
-  //   }
-  //
-  //   const errors: any = {};
-  //
-  //   // errors = this.addControlErrors(errors, "addressLine1");
-  //   // errors = this.addControlErrors(errors, "addressLine2");
-  //   // errors = this.addControlErrors(errors, "zipCode");
-  //   // errors = this.addControlErrors(errors, "city");
-  //
-  //   return errors;
-  // }
-  //
-  // // TODO
-  //
-  // addControlErrors(allErrors: any, controlName: string) {
-  //   const errors = { ...allErrors };
-  //
-  //   const controlErrors = this.form.get(controlName)?.errors;
-  //
-  //   if (controlErrors) {
-  //     errors[controlName] = controlErrors;
-  //   }
-  //
-  //   return errors;
-  // }
+  validate(control: AbstractControl) {
+    // TODO
+    if (this.form.valid) {
+      return null;
+    }
+
+    const errors: any = {};
+
+    // errors = this.addControlErrors(errors, "addressLine1");
+    // errors = this.addControlErrors(errors, "addressLine2");
+    // errors = this.addControlErrors(errors, "zipCode");
+    // errors = this.addControlErrors(errors, "city");
+
+    return errors;
+  }
+
+  // TODO
+
+  addControlErrors(allErrors: any, controlName: string) {
+    const errors = { ...allErrors };
+
+    const controlErrors = this.form.get(controlName)?.errors;
+
+    if (controlErrors) {
+      errors[controlName] = controlErrors;
+    }
+
+    return errors;
+  }
   protected readonly ValidatorHint = ValidatorHint;
 }

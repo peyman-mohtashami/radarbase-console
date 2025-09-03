@@ -1,22 +1,30 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-
-import { BaseEntityService } from '../../../services/base.entity.service';
-import { AppSourceData } from "../models/source-data";
+import {Injectable} from '@angular/core';
+import {BaseEntityService} from '../../../services/base.entity.service';
+import {AppSourceData} from "../models/source-data";
 import {RadarSourceData} from '../../../../shared/models/radar-source-data.model';
-import {DialogMode} from '../../../enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+// import {TableType} from '../../../models/table.model';
+import {DialogMode} from '../../../enums/dialog';
 import {SourceDataDialogComponent} from '../containers/source-data-dialog/source-data-dialog.component';
-import {TableType} from '../../../enums/table';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
-@Injectable({ providedIn: 'root' })
+export interface DialogData { mode: DialogMode, entity?: AppSourceData, extra?: any }
+
+@Injectable({providedIn: 'root'})
 export class SourceDataService extends BaseEntityService<
   RadarSourceData,
   AppSourceData
 > {
-  public override resourceUrl = 'api/source-data';
 
-  constructor(http: HttpClient, public dialog: MatDialog,) {
+  override resourceUrl = 'api/source-data';
+  // type = TableType.GET_WITH_QUERY;
+
+  constructor(
+    http: HttpClient,
+    private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
     super(http);
   }
 
@@ -27,71 +35,92 @@ export class SourceDataService extends BaseEntityService<
     };
   }
 
-  /*private openDialog(mode: DialogMode, entity: AppSourceData) {
-    const dialogRef = this.getDialogRef(mode, entity);
+  override openDialog(dialogData: DialogData) {
+    const dialogRef = this.getDialogRef(dialogData);
 
     const dialogActionSubscription =
       dialogRef.componentInstance.actionTriggered.subscribe({
-        next: (value: { action: DialogMode | string; entity: AppSourceData }) => {
-          if (value.action === DialogMode.EDIT) {
-            this.dialogUpdate(value.entity, dialogRef);
-          } else if (value.action === DialogMode.DELETE) {
-            this.dialogDelete(value.entity, dialogRef);
+        next: ({action, entity}: { action: DialogMode | string; entity: any }) => {
+          console.log('Class: SourceDataService, Function: next, Line 44 action' , action);
+          switch (action) {
+            case DialogMode.EDIT:
+              this.update(entity).subscribe({
+                next: () => this.onSuccess(dialogRef, entity),
+                error: (err) => this.onError(err, dialogRef),
+              });
+              break;
+            case DialogMode.ADD:
+              this.add(entity).subscribe({
+                  next: (res) => this.onSuccess(dialogRef, res),
+                  error: (err) => this.onError(err, dialogRef),
+                });
+              break;
+            case DialogMode.DELETE:
+              this.delete(entity['name']).subscribe({
+                next: () => this.onSuccess(dialogRef, entity),
+                error: (err) => this.onError(err, dialogRef),
+              });
+              break;
+            case 'close':
+              this.router.navigate([], {
+                relativeTo: this.activatedRoute,
+                queryParamsHandling: 'preserve'
+              }).then(() => {
+                // dialogRef.componentInstance.close()
+              });
+              // this.router.navigate([], {
+              //   relativeTo: this.activatedRoute,
+              //   queryParamsHandling: 'preserve'
+              // }).then();
+              // break;
           }
         },
       });
     dialogRef.afterClosed().subscribe(() => {
+      console.log('Class: SourceDataService, Function: , Line 80 ' , );
       dialogActionSubscription.unsubscribe();
     });
   }
 
-  private getDialogRef(
-    mode: DialogMode,
-    entity: AppSourceData
-  ): MatDialogRef<SourceDataDialogComponent> {
+  onSuccess(dialogRef: MatDialogRef<any>, entity: AppSourceData): void {
+    // if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL) {
+      this.updateTrigger$.next(`${entity?.['id'] ?? '0'}`);
+    // }
 
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve'
+    }).then(() => {
+      dialogRef.componentInstance.close()
+    });
+
+    this.updated.set(`${entity['id']}`);// = undefined;
+    // this.updated = entity['id'];
+    setTimeout(() => {
+      this.updated.set(undefined);// = undefined;
+    }, 1000);
+  }
+
+  onError(error: HttpErrorResponse, dialogRef: MatDialogRef<any>) {
+    console.log('Class: SourceDataService, Function: onError, Line 97 ' , );
+    dialogRef.componentInstance.errorHappened(error);
+  }
+
+  getDialogRef(data: DialogData): MatDialogRef<SourceDataDialogComponent> {
     return this.dialog.open(SourceDataDialogComponent,
       {
-        data: { mode, entity, sourceTypes: this.sourceTypes}, //entities: this.entities },
+        data: data,
         panelClass: 'tailwind-slide-panel',
         width: '50%',
         height: '100vh',
-        position: { right: '0' },
+        position: {right: '0'},
         hasBackdrop: true,
         disableClose: true,
         autoFocus: false,
         restoreFocus: false
       }
-      // {
-      //   data: { mode, entity, sourceTypes: this.sourceTypes },
-      //   panelClass: ['w-full', 'sm:w-1/2'],
-      //   disableClose: true,
-      // }
     );
   }
-
-  dialogUpdate(entity: AppSourceData, dialogRef: MatDialogRef<SourceDataDialogComponent>) {
-    this.update(entity).subscribe({
-      next: (_entity) => this.onUpdateSuccess(_entity, dialogRef),
-      error: (err) => this.onError(err, dialogRef),
-    });
-  }
-
-  onSuccess(mode: string, dialogRef: MatDialogRef<any>, entity: any): void {
-    if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL) {
-      console.log('Class: ImplEntitiesPageComponent, Function: onSuccess, Line 416 ' , );
-      this.updateTrigger$.next(entity['id']?.toString() || '0');
-    }
-    this.applyStateChangesToUrlQueryParams({ [mode]: null });
-    dialogRef.close();
-    console.log('Class: BaseEntitiesPage, Function: onSuccess, Line 253 ' , );
-    this.updated = entity['id'];
-    setTimeout(() => {
-      this.updated = undefined;
-    }, 1000);
-  }
-
-  onError(error: HttpErrorResponse, dialogRef: MatDialogRef<any>) {
-    dialogRef.componentInstance.errorHappened(error);
-  }*/
 }
+
+

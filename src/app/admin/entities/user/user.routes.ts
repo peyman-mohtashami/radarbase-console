@@ -7,16 +7,14 @@ import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {UserPageComponent} from "./containers/user-page/user-page.component";
 import {UserResolver} from "./services/user.resolver";
 import {ProjectsResolver} from "../project/services/projects.resolver";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, PROPERTIES} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const userRoutes: Routes = [
   {
     path: '',
     // component: UsersPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: UsersResolver,
       projects: ProjectsResolver,

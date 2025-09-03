@@ -7,7 +7,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import {AppConfig} from "../../models/config";
 import {ErrorMessageComponent} from "../../../../../core/error/components/message/error-message.component";
 import {NgIf} from "@angular/common";
@@ -62,7 +62,7 @@ export class ConfigPublishDialogComponent
   }
 
   publish() {
-    this.error = false;
+    this.error.set(false); // = false;
     this.isLoading = true;
     if (this.entity){
       this.actionTriggered.emit({ action: this.mode, entity: this.entity });

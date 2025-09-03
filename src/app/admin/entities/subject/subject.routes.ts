@@ -10,16 +10,14 @@ import {SubjectDetailsPageComponent} from "./containers/subject-details-page/sub
 import {SubjectDownloadPageComponent} from "./containers/subject-download-page/subject-download-page.component";
 import {SubjectDataPageComponent} from "./containers/subject-data-page/subject-data-page.component";
 import {SubjectCompliancePageComponent} from "./containers/subject-compliance-page/subject-compliance-page.component";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, PROPERTIES} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const subjectRoutes: Routes = [
   {
     path: '',
     // component: SubjectsPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: SubjectsResolver,
       projects: ProjectsResolver,

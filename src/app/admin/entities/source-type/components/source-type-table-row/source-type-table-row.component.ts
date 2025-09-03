@@ -20,6 +20,8 @@ import {Store} from "@ngrx/store";
 import {AsyncPipe} from "@angular/common";
 import {TagComponent} from "../../../../components/tag/tag.component";
 import {SourceTypeScope} from '../../../../../shared/models/radar-source-type.model';
+// import {ActionsComponent} from '../../../source-data/components/actions/actions.component';
+import {ActionsComponent} from '../actions/actions.component';
 
 @Component({
   selector: 'rb-source-type-table-row',
@@ -33,7 +35,8 @@ import {SourceTypeScope} from '../../../../../shared/models/radar-source-type.mo
     MatIconButton,
     SourceTypeDetailsComponent,
     AsyncPipe,
-    TagComponent
+    TagComponent,
+    ActionsComponent,
   ]
 })
 export class SourceTypeTableRowComponent {

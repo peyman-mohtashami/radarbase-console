@@ -2,6 +2,9 @@ import {ConfigType, FormFieldType} from "../../models/dialog.model";
 // import {ProjectStatus} from "@rb/models";
 import {FilterItem, TableElement} from "../../models/table.model";
 import {ProjectStatus} from '../../../shared/models/radar-project.model';
+import {ProcessingState} from '../../../shared/models/radar-source-data.model';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Validator} from '../../../shared/utils/validators';
 
 export const PROPERTIES: TableElement[] = [
   { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true},
@@ -19,31 +22,31 @@ export const PROPERTIES: TableElement[] = [
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
 ];
 
-
-export const config: ConfigType = {
-  form: [
-    {name: "id", type: "text", disabled: true, notInCreate: true},
-    {name: "login", type: "text", required: true, hint: true, validators: {requiredValidator: true, normalTextValidator: true, duplicateValidator: true}},
-    {name: "firstName", type: "text", hint: true, validators: {normalTextValidator: true}},
-    {name: "lastName", type: "text", hint: true, validators: {normalTextValidator: true}},
-    {name: "email", type: "text", hint: true, validators: {normalTextValidator: true}},
-    // {name: "location", type: "text", required: true, validators: {requiredValidator: true, normalTextValidator: true}},
-    // {name: "organizationName", type: "text", validators: {normalTextValidator: true}},
-    // {name: "organization", type: "singleSelect", label: "ADMIN.project.organization.label", required: true, validators: {requiredValidator: true}},
-    {name: "langKey", type: "simpleSelect", validators: {}, options: [{value: ProjectStatus.PLANNING, label: "ADMIN.project.projectStatus.PLANNING"}, {value: ProjectStatus.ONGOING, label: "ADMIN.project.projectStatus.ONGOING"}, {value: ProjectStatus.ENDED, label: "ADMIN.project.projectStatus.ENDED"}]},
-    // {name: "startDate", type: "date", validators: {}, minDate: new Date(2000, 0, 1), maxDate: new Date(2050, 0, 1)},
-    // {name: "endDate", type: "date", validators: {}, minDate: new Date(2000, 0, 1), maxDate: new Date(2050, 0, 1)},
-    // {name: "sourceTypes", type: "multiSelect", label: "ADMIN.project.sourceTypes.label", validators: {}},
-    {name: "roles", type: "group", validators: {}, groupFields: [
-        {name: "sysAdmin", label: "ROLE_SYS_ADMIN", type: "slideToggle", validators: {}},
-        {name: "organizationAdmin", label: "ROLE_ORGANIZATION_ADMIN", type: "slideToggle", validators: {}},
-        {name: "organizations", type: "multiSelect", label: "ADMIN.organization.title.plural", validators: {}},
-        {name: "projectAdmin",  label: "ROLE_PROJECT_ADMIN", type: "slideToggle", validators: {}},
-        {name: "projects", type: "multiSelect", label: "ADMIN.project.title.plural", validators: {}},
-      ]
-    },
-  ]
-};
+//
+// export const config: ConfigType = {
+//   form: [
+//     {name: "id", type: "text", disabled: true, notInCreate: true},
+//     {name: "login", type: "text", required: true, hint: true, validators: {requiredValidator: true, normalTextValidator: true, duplicateValidator: true}},
+//     {name: "firstName", type: "text", hint: true, validators: {normalTextValidator: true}},
+//     {name: "lastName", type: "text", hint: true, validators: {normalTextValidator: true}},
+//     {name: "email", type: "text", hint: true, validators: {normalTextValidator: true}},
+//     // {name: "location", type: "text", required: true, validators: {requiredValidator: true, normalTextValidator: true}},
+//     // {name: "organizationName", type: "text", validators: {normalTextValidator: true}},
+//     // {name: "organization", type: "singleSelect", label: "ADMIN.project.organization.label", required: true, validators: {requiredValidator: true}},
+//     {name: "langKey", type: "simpleSelect", validators: {}, options: [{value: ProjectStatus.PLANNING, label: "ADMIN.project.projectStatus.PLANNING"}, {value: ProjectStatus.ONGOING, label: "ADMIN.project.projectStatus.ONGOING"}, {value: ProjectStatus.ENDED, label: "ADMIN.project.projectStatus.ENDED"}]},
+//     // {name: "startDate", type: "date", validators: {}, minDate: new Date(2000, 0, 1), maxDate: new Date(2050, 0, 1)},
+//     // {name: "endDate", type: "date", validators: {}, minDate: new Date(2000, 0, 1), maxDate: new Date(2050, 0, 1)},
+//     // {name: "sourceTypes", type: "multiSelect", label: "ADMIN.project.sourceTypes.label", validators: {}},
+//     {name: "roles", type: "group", validators: {}, groupFields: [
+//         {name: "sysAdmin", label: "ROLE_SYS_ADMIN", type: "slideToggle", validators: {}},
+//         {name: "organizationAdmin", label: "ROLE_ORGANIZATION_ADMIN", type: "slideToggle", validators: {}},
+//         {name: "organizations", type: "multiSelect", label: "ADMIN.organization.title.plural", validators: {}},
+//         {name: "projectAdmin",  label: "ROLE_PROJECT_ADMIN", type: "slideToggle", validators: {}},
+//         {name: "projects", type: "multiSelect", label: "ADMIN.project.title.plural", validators: {}},
+//       ]
+//     },
+//   ]
+// };
 
 export const filters: FilterItem[] = [
   {

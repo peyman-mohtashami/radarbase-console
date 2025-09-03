@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../base/base-dialog.component';
 import { DialogMode } from '../../enums/dialog';
 
 @Component({

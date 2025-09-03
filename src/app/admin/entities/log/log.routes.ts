@@ -1,16 +1,14 @@
 import {Routes} from "@angular/router";
 // import {LogsPageComponent} from "./containers/logs-page/logs-page.component";
 import {LogsResolver} from "./services/logs.resolver";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {PROPERTIES} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const logRoutes: Routes = [
   {
     path: '',
     // component: LogsPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: LogsResolver,
     },

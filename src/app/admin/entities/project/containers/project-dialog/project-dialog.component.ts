@@ -5,7 +5,7 @@ import {DateAdapter, MatOption} from "@angular/material/core";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
 
 import { Validator } from "../../../../../shared/utils/validators";
-import { BaseDialogComponent } from "../../../../components/base-dialog/base-dialog.component";
+import { BaseDialogComponent } from "../../../../base/base-dialog.component";
 import { AppProject } from "../../models/project";
 import { AppOrganization } from "../../../organization/models/organization";
 import { AppSourceType } from "../../../source-type/models/source-type";
@@ -227,7 +227,7 @@ export class ProjectDialogComponent
   protected readonly DetailType = DetailType;
 
   override save(): void {
-    this.error = false;
+    this.error.set(false); // = false;
     this.isLoading = true;
     console.log('Class: SubjectDialogComponent, Function: save, Line 200 this.form.value' , this.form.value);
     const modifiedFormValue: any = {}; //{ ...this.form.value };

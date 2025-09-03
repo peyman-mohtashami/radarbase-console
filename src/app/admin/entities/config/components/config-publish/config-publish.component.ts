@@ -33,7 +33,7 @@ export class ConfigPublishComponent {
 
 
   publish(entities: AppConfig[]) {
-    return this.entityService.publish(entities);
+    return this.entityService.publish1(entities);
   }
 
   private openDialog(entity: AppConfig[]) {

@@ -13,7 +13,7 @@ import {
 
 
 import { ClientPairService } from '../../../client/services/client-pair.service';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppClient } from "../../../client/models/client";
 import {PROPERTIES} from "../../config";

@@ -4,7 +4,7 @@ import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@ang
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import { Validator } from '../../../../../shared/utils/validators';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 // import { LocaleService } from "../../../../../core/locale/services/locale.service";
 import { AppUser } from "../../models/user";
 import { AppProject } from "../../../project/models/project";
@@ -48,10 +48,10 @@ import {Language} from '../../../../../shared/models/locale.model';
     MatSelectAutocompleteComponent,
     ErrorMessageComponent,
     DialogActionsComponent,
-    NgIf,
-    MatSelect,
-    MatOption,
-    NgForOf,
+    // NgIf,
+    // MatSelect,
+    // MatOption,
+    // NgForOf,
     MatInput
   ]
 })
@@ -77,16 +77,16 @@ export class UserDialogComponent
     }),
   });
 
-  entities;// = this.data.entities;
-  projects;// = this.data.projects;
-  projectOptions;// = this.data.projects.map((project) => ({
+  // entities;// = this.data.entities;
+  // projects;// = this.data.projects;
+  // projectOptions;// = this.data.projects.map((project) => ({
     // ...project,
     // name: project.projectName,
   // }));
-  organizations;// = this.data.organizations;
-  organizationOptions;// = this.data.organizations;
+  // organizations;// = this.data.organizations;
+  // organizationOptions;// = this.data.organizations;
   // languages = this.data.languages;
-  locale$ = this.store?.select(locale);
+  // locale$ = this.store?.select(locale);
   // locale$ = this.localeService?.locale$;
   // filteredServerSideProjects: ReplaySubject<RadarProjectDef[]> = new ReplaySubject<
   //   RadarProjectDef[]
@@ -101,21 +101,22 @@ export class UserDialogComponent
     public override data: {
       mode: string;
       entity: AppUser;
-      entities: AppUser[];
-      projects: AppProject[];
-      organizations: AppOrganization[];
-      languages: Language[];
+      extra: any;
+      // entities: AppUser[];
+      // projects: AppProject[];
+      // organizations: AppOrganization[];
+      // languages: Language[];
     }
   ) {
     super(router, dialogRef, data, store);
-    this.entities = this.data.entities;
-    this.projects = this.data.projects;
-    this.projectOptions = this.data.projects.map((project) => ({
-      ...project,
-      name: project.projectName,
-    }));
-    this.organizations = this.data.organizations;
-    this.organizationOptions = this.data.organizations;
+    // this.entities = this.data.extra.entities;
+    // this.projects = this.data.extra.projects;
+    // this.projectOptions = (this.data.extra.projects as AppProject[]).map((project) => ({
+    //   ...project,
+    //   name: project.projectName,
+    // }));
+    // // this.organizations = this.data.extra.organizations;
+    // this.organizationOptions = this.data.extra.organizations;
   }
 
   override ngOnInit() {
@@ -129,16 +130,20 @@ export class UserDialogComponent
   }
 
   private duplicateLoginValidator = (control: AbstractControl) => {
-    return this.entities?.find(
-      (entity) =>
-        control.value === entity.login && this.entity?.login !== entity.login
-    )
-      ? { duplicate: true }
+    return (this.data.extra.entities as AppUser[])?.find((entity) =>
+      control.value === entity.login && this.entity?.login !== entity.login
+    ) ? { duplicate: true }
       : null;
+    // return this.entities?.find(
+    //   (entity) =>
+    //     control.value === entity.login && this.entity?.login !== entity.login
+    // )
+    //   ? { duplicate: true }
+    //   : null;
   };
 
   private duplicateEmailValidator = (control: AbstractControl) => {
-    return this.entities?.find(
+    return (this.data.extra.entities as AppUser[])?.find(
       (entity) =>
         control.value === entity.email && this.entity?.email !== entity.email
     )

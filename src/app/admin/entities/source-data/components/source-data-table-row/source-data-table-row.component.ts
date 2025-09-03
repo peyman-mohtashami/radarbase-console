@@ -15,7 +15,7 @@ import {AsyncPipe} from "@angular/common";
 import {entitiesConfig} from "../../../../../core/config/store/config.selectors";
 import {map} from "rxjs/operators";
 import {Store} from "@ngrx/store";
-import {Actions} from '../actions/actions';
+import {ActionsComponent} from '../actions/actions.component';
 
 @Component({
   selector: 'rb-source-data-table-row',
@@ -29,7 +29,7 @@ import {Actions} from '../actions/actions';
     MatIconButton,
     SourceDataDetailsComponent,
     AsyncPipe,
-    Actions
+    ActionsComponent
   ]
 })
 export class SourceDataTableRowComponent {
@@ -50,12 +50,6 @@ export class SourceDataTableRowComponent {
   config$ = this.store?.select(entitiesConfig).pipe(
     map(config => config?.[ENTITY_NAME.sourceData]?.fields ?? {})
   )
-
-  // constructor(private store: Store) {}
-
-  onAction(mode: DialogMode, entity: AppSourceData) {
-    this.actionEvent.emit({mode, entity});
-  }
 
   onExpansionClick(event: MouseEvent) {
     event.stopPropagation();

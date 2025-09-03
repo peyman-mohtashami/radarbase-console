@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { BaseDialogComponent } from '../base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../base/base-dialog.component';
 import { DialogMode } from '../../enums/dialog';
 import { IBaseEntityService } from '../../services/base-entity.service.interface';
 import {takeUntil} from 'rxjs/operators';
@@ -60,7 +60,7 @@ export abstract class BaseEntityPage<
         console.log('Class: BaseEntityPage, Function: , Line 57 ' , );
         // const id = fragment.split('/')[2];
         // const entity = this.entities.find(e => e['id'] == actionId);
-        this.openDialog(DialogMode.EDIT, this.entity);
+        this.entityService.openDialog({mode: DialogMode.EDIT, entity: this.entity});
         // this.entityService.openDialog(DialogMode.EDIT, this.entity);
       } else if (actionType === 'delete') {
         // const id = fragment.split('/')[2];
@@ -71,7 +71,7 @@ export abstract class BaseEntityPage<
         // return e['id'] == actionId
         // });
         // console.log('Class: ImplEntitiesPageComponent, Function: , Line 276 entity', entity);
-        this.openDialog(DialogMode.DELETE, this.entity);
+        this.entityService.openDialog({mode: DialogMode.DELETE, entity: this.entity});
         // this.entityService.openDialog(DialogMode.DELETE, this.entity);
       }
       }
@@ -84,26 +84,26 @@ export abstract class BaseEntityPage<
   }
 
   onAction(mode: DialogMode, entity: T): void {
-    return this.openDialog(mode, entity);
+    // return this.openDialog(mode, entity);
   }
 
-  private openDialog(mode: DialogMode, entity: T) {
-    const dialogRef = this.getDialogRef(mode, entity);
-
-    const dialogActionSubscription =
-      dialogRef.componentInstance.actionTriggered.subscribe({
-        next: (value: { action: DialogMode | string; entity: T }) => {
-          if (value.action === DialogMode.EDIT) {
-            this.update(value.entity, dialogRef);
-          } else if (value.action === DialogMode.DELETE) {
-            this.delete(value.entity, dialogRef);
-          }
-        },
-      });
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
+  // private openDialog(mode: DialogMode, entity: T) {
+  //   const dialogRef = this.getDialogRef(mode, entity);
+  //
+  //   const dialogActionSubscription =
+  //     dialogRef.componentInstance.actionTriggered.subscribe({
+  //       next: (value: { action: DialogMode | string; entity: T }) => {
+  //         if (value.action === DialogMode.EDIT) {
+  //           this.update(value.entity, dialogRef);
+  //         } else if (value.action === DialogMode.DELETE) {
+  //           this.delete(value.entity, dialogRef);
+  //         }
+  //       },
+  //     });
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     dialogActionSubscription.unsubscribe();
+  //   });
+  // }
 
   onUpdateSuccess(entity: T, dialogRef: MatDialogRef<U>): void {
     this.entity = entity;
@@ -115,7 +115,7 @@ export abstract class BaseEntityPage<
     dialogRef.componentInstance.errorHappened(error);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getDialogRef(mode: DialogMode, entity: T): MatDialogRef<U> {
     throw new Error('BaseDetailsPage "getDialogRef" method not implemented');
   }

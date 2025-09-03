@@ -5,7 +5,7 @@ import {
   Inject,
   OnDestroy,
   OnInit,
-  Output,
+  Output, signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -18,12 +18,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   ValidatorError,
   ValidatorHint,
-} from '../../../shared/utils/validators';
-import { DialogMode } from '../../enums/dialog';
+} from '../../shared/utils/validators';
+import { DialogMode } from '../enums/dialog';
 import {Store} from "@ngrx/store";
-import {locale} from "../../../core/locale/store/locale.selectors";
-import {instanceConfig} from "../../../core/config/store/config.selectors";
-import {ENTITY_NAME} from "../../enums/entities";
+import {locale} from "../../core/locale/store/locale.selectors";
+import {instanceConfig} from "../../core/config/store/config.selectors";
+import {ENTITY_NAME} from "../enums/entities";
 
 @Component({
     selector: 'rb-base-dialog',
@@ -37,7 +37,8 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   DialogMode = DialogMode;
 
   isLoading = false;
-  error = false;
+  // error = false;
+  error = signal(false);
 
   mode: DialogMode;
   entity: T;
@@ -90,7 +91,7 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
     this.form?.valueChanges
       .pipe(takeUntil(this.subscription$))
       .subscribe(() => {
-        this.error = false;
+        this.error.set(false); // = false;
       });
 
     this.store?.select(locale)
@@ -115,8 +116,10 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   }
 
   onAction($event: string) {
+    console.log('Class: BaseDialogComponent, Function: onAction, Line 119 $event' , $event);
     switch ($event) {
       case 'close':
+        console.log('Class: BaseDialogComponent, Function: onAction, Line 122 ' , );
         this.close();
         break;
       case 'delete':
@@ -129,7 +132,7 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   }
 
   save(): void {
-    this.error = false;
+    this.error.set(false); //= false;
     this.isLoading = true;
     console.log('Class: BaseDialogComponent, Function: save, Line 132 this.entity' , this.entity);
     console.log('Class: BaseDialogComponent, Function: save, Line 133 this.form?.value' , this.form?.value);
@@ -140,7 +143,7 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   }
 
   delete(): void {
-    this.error = false;
+    this.error.set(false);// = false;
     this.isLoading = true;
     if (this.entity) {
       this.actionTriggered.emit({ action: this.mode, entity: this.entity });
@@ -148,8 +151,9 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   }
 
   errorHappened(error: HttpErrorResponse): void {
+    console.log('Class: BaseDialogComponent, Function: errorHappened, Line 151 error' , error);
     this.isLoading = false;
-    this.error = true;
+    this.error.set(true); // = true;
   }
 
   ngAfterViewInit() {
@@ -160,12 +164,15 @@ export class BaseDialogComponent<T extends { [key: string]: any }, U>
   }
 
   close() {
+    console.log('Class: BaseDialogComponent, Function: close, Line 167 ' , );
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
 
     setTimeout(() => {
+      console.log('Class: BaseDialogComponent, Function: , Line 173 ' , );
       this.actionTriggered.emit({ action: 'close' });
+    //   this.actionTriggered.emit({ action: 'close' });
       this.dialogRef.close();
     }, 300);
   }

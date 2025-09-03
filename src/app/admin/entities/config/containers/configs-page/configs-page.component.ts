@@ -5,13 +5,15 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { DialogMode } from '../../../../enums/dialog';
 import { ConfigDialogComponent } from '../config-dialog/config-dialog.component';
-import { FilterItem, TableType } from '../../../../models/table.model';
+import { FilterItem,
+  // TableType
+} from '../../../../models/table.model';
 import { ConfigService } from '../../services/config.service';
 // import { QueryParams } from '@ngrx/data';
 import { Observable, of } from 'rxjs';
 import { DialogConfig } from '@angular/cdk/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {BaseEntitiesPage} from "../../../../components/base-entities-page/base-entities-page";
+import {BaseEntitiesPage} from "../../../../base/base-entities-page";
 import {PROPERTIES} from "../../config";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {TABLE_ANIMATION} from "../../../../animation";
@@ -20,12 +22,12 @@ import {AppConfig} from "../../models/config";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
   EntitiesPageHeaderComponent
-} from "../../../../components/base-entities-page/entities-page-header/entities-page-header.component";
+} from "../../../../components/common-entities-page/entities-page-header/entities-page-header.component";
 import {JsonPipe, NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 import {ConfigPublishComponent} from "../../components/config-publish/config-publish.component";
 import {
   DataTableFilterComponent
-} from "../../../../components/base-entities-page/data-table-filter/data-table-filter.component";
+} from "../../../../components/common-entities-page/data-table-filter/data-table-filter.component";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TableQueryReflectorDirective} from "../../../../directives/table-query-reflector.directive";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -76,7 +78,7 @@ export class ConfigsPageComponent
   name = ENTITY_NAME.config
   protected readonly PROPERTIES = PROPERTIES;
 
-  override type = TableType.GET_ALL;
+  // override type = TableType.GET_ALL;
 
   override entities: AppConfig[] = [];
 
@@ -279,14 +281,14 @@ export class ConfigsPageComponent
     dialogRef: MatDialogRef<DialogConfig>,
     entity: AppConfig
   ): void {
-    if (
-      this.type === TableType.GET_WITH_QUERY ||
-      this.type === TableType.GET_ALL
-    ) {
-      // this.updateTrigger$.next(entity['id']?.toString() || '0');
-
-      // this.dataSource.data = this.entities;
-    }
+    // if (
+    //   this.type === TableType.GET_WITH_QUERY ||
+    //   this.type === TableType.GET_ALL
+    // ) {
+    //   // this.updateTrigger$.next(entity['id']?.toString() || '0');
+    //
+    //   // this.dataSource.data = this.entities;
+    // }
     this.applyStateChangesToUrlQueryParams({ [mode]: null });
     dialogRef.close();
     // this.updated = entity['id'];

@@ -2,20 +2,21 @@ import {Injectable, signal} from '@angular/core';
 import { Params } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 // import { QueryParams } from '@ngrx/data';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 // import { Store } from '@ngrx/store';
-import { IBaseEntityService } from './base-entity.service.interface';
+import {IBaseEntityService} from './base-entity.service.interface';
 import {AppBaseModel} from '../../shared/models/base.model';
 import {QueryParams} from '@ngrx/data';
+import {Store} from '@ngrx/store';
+import {DialogMode} from '../enums/dialog';
 // import { EntityActionOptions } from "@ngrx/data/src/actions/entity-action";
 
 export const DEFAULT_PAGE_SIZE = 50;
 
 @Injectable()
 export abstract class EntityService<RadarModel, AppModel extends AppBaseModel>
-  implements IBaseEntityService<AppModel>
-{
+  implements IBaseEntityService<AppModel> {
   protected readonly _entities = signal<AppModel[]>([]);
   // protected readonly _loading = signal(false);
   // protected readonly _error = signal<string | null>(null);
@@ -24,7 +25,18 @@ export abstract class EntityService<RadarModel, AppModel extends AppBaseModel>
   // readonly loading = this._loading.asReadonly();
   // readonly error = this._error.asReadonly();
 
-  protected constructor(protected http: HttpClient, private endpoint: string) {}
+  protected constructor(protected http: HttpClient, private endpoint: string) {
+  }
+
+  updateTrigger$: BehaviorSubject<string> = new BehaviorSubject<string>('init');
+  updated = signal(undefined);
+
+  entities$?: Observable<AppModel[]> | Store<AppModel[]> | undefined;
+  publish?: ((configs: AppModel[]) => Observable<AppModel[]>) | undefined;
+
+  openDialog(data: {mode: DialogMode, entity?: any, data?: any, extra?: any}): void {
+      throw new Error('Method not implemented.');
+  }
 
   /** Fetch all entities once (cached) */
   getAll(force = false): Observable<AppModel[]> {

@@ -18,7 +18,7 @@ import {
   ValidatorHint,
   ValidatorError, Validator
 } from "../../../../../shared/utils/validators";
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppUser } from "../../models/user";
 import {JsonPipe, NgIf} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -108,7 +108,7 @@ export class RoleDialogComponent
   }
 
   override save(): void {
-    this.error = false;
+    this.error.set(false); // = false;
     this.isLoading = true;
     this.actionTriggered.emit({
       action: this.mode,

@@ -178,7 +178,7 @@ export class ConfigService extends BaseEntityService<
     return _configs;
   }
 
-  publish(configs: AppConfig[]): Observable<AppConfig[]>{
+  publish1(configs: AppConfig[]): Observable<AppConfig[]>{
     let configBundle: RadarConfigBundle;
     if (this.client) {
       if (this.project) {

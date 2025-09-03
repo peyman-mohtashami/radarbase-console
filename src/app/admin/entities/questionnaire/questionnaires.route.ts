@@ -1,15 +1,13 @@
 import {Routes} from "@angular/router";
 import {QuestionnairesResolver} from "./services/questionnaires.resolver";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, PROPERTIES} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const questionnaireRoutes: Routes = [
   {
     path: '',
     // component: QuestionnairesPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     data: {
       entityName: 'questionnaire',
       // config: config,

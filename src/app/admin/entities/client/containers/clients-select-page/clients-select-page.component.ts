@@ -7,13 +7,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ClientDialogComponent } from '../client-dialog/client-dialog.component';
 import { FormFieldType } from '../../../../models/dialog.model';
-import { FilterItem, TableType } from '../../../../models/table.model';
+// import { FilterItem, TableType } from '../../../../models/table.model';
 import { DialogMode } from '../../../../enums/dialog';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 // import { AdminActions } from "../../../../store/action.types";
 import { Store } from "@ngrx/store";
 import { AppClient } from "../../models/client";
-import {BaseEntitiesPage} from "../../../../components/base-entities-page/base-entities-page";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/input";
 import {MatLabel, MatSelect} from "@angular/material/select";

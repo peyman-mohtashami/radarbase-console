@@ -1,23 +1,33 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import { Params } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { QueryParams } from '@ngrx/data';
-import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { IBaseEntityService } from './base-entity.service.interface';
+import { BehaviorSubject, Observable} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {IBaseEntityService} from './base-entity.service.interface';
+import {DialogMode} from '../enums/dialog';
 // import { EntityActionOptions } from "@ngrx/data/src/actions/entity-action";
 
 export const DEFAULT_PAGE_SIZE = 50;
 
 @Injectable()
 export abstract class BaseEntityService<RadarModel, AppModel>
-  implements IBaseEntityService<AppModel>
-{
-  public resourceUrl = '';
+  implements IBaseEntityService<AppModel> {
+
+  resourceUrl = '';
   protected total = 0;
 
+  updateTrigger$: BehaviorSubject<string> = new BehaviorSubject<string>('init');
+  updated: WritableSignal<string | undefined> = signal(undefined);
+
   protected constructor(public http: HttpClient) {}
+
+  publish?: ((configs: AppModel[]) => Observable<AppModel[]>) | undefined;
+
+  openDialog(data: {mode: DialogMode, entity?: any, data?: any, extra?: any}): void {
+      throw new Error('Method not implemented.');
+  }
 
   entities$?: Observable<AppModel[]> | Store<AppModel[]>;
 
@@ -86,8 +96,11 @@ export abstract class BaseEntityService<RadarModel, AppModel>
   delete(key: number | string): Observable<number | string> {
     console.log('Class: BaseEntityService, Function: delete, Line 87 key' , key);
     console.log('Class: BaseEntityService, Function: delete, Line 88 `${this.resourceUrl}/${encodeURIComponent(key)}`' , `${this.resourceUrl}/${encodeURIComponent(key)}`);
+    // return this.http.delete<number | string>(
+    //   `${this.resourceUrl}/${encodeURIComponent(key)}`
+    // );
     return this.http.delete<number | string>(
-      `${this.resourceUrl}/${encodeURIComponent(key)}`
+      `${this.resourceUrl}/${key}`
     );
   }
 

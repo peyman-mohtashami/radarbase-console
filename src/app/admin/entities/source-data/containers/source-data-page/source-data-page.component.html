@@ -4,61 +4,20 @@
 
 <rb-breadcrumb />
 
-<!--<rb-details-page-header [entity]="entity"-->
-<!--                        [entityName]="ENTITY_NAME.sourceData"-->
-<!--                        (action)="onAction($event.mode, $event.entity)">-->
-<!--  <rb-source-data-details [entity]='entity'/>-->
-<!--</rb-details-page-header>-->
-
-
-<!--@if (entityName && entity) {-->
-  <div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
-    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
-    <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">
-      {{ ENTITIES["sourceData"].icon }}
-    </span>
-      {{ entity.name }}
-    </h2>
-    <div class='flex gap-1 ml-auto'>
-      <!--    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>-->
-      <!--      <rb-actions [entity]="entity" (action)="onAction({mode: $event.mode, entity})" />-->
-      <!--    </ng-container>-->
-      <app-actions [entity]="entity" [isExpanded]="false"/>
-
-<!--      <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>-->
-<!--        <ng-content select="[extraButton]" />-->
-<!--        <button mat-icon-button class="tiny"-->
-<!--                [matMenuTriggerFor]="menu"-->
-<!--                (click)="$event.stopPropagation();">-->
-<!--          <span class="font-bold! material-symbols-outlined text-xl!">more_vert</span>-->
-<!--        </button>-->
-<!--        <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">-->
-<!--          <button class="hover:text-primary! hover:bg-transparent! transition-all"-->
-<!--                  mat-menu-item-->
-<!--                  (click)='onAction({mode: DialogMode.EDIT, entity})'>-->
-<!--              <span class="flex items-center gap-2">-->
-<!--                <span class="text-xl! text-primary material-symbols-outlined font-bold!">edit</span>-->
-<!--                <span>{{ 'ADMIN.organization.edit' | translate }}</span>-->
-<!--              </span>-->
-<!--          </button>-->
-<!--          <button class="hover:text-red-500 hover:bg-transparent! transition-all"-->
-<!--                  mat-menu-item-->
-<!--                  (click)='onAction({mode: DialogMode.DELETE, entity})'>-->
-<!--              <span class="flex items-center gap-2">-->
-<!--                <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>-->
-<!--                <span>{{ 'ADMIN.organization.delete' | translate }}</span>-->
-<!--              </span>-->
-<!--          </button>-->
-<!--          <ng-content select="[extraMenuButton]" />-->
-<!--        </mat-menu>-->
-<!--      </ng-container>-->
-    </div>
+<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+  <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">
+    {{ ENTITIES["sourceData"].icon }}
+  </span>
+    {{ entity.name }}
+  </h2>
+  <div class='flex gap-1 ml-auto'>
+    <app-actions [entity]="entity" [isExpanded]="false"/>
   </div>
-<!--}-->
+</div>
 
 <mat-card class="m-4 p-4 text-sm border">
   <mat-card-content>
-<!--    <ng-content />-->
     <rb-source-data-details [entity]='entity'/>
   </mat-card-content>
 </mat-card>

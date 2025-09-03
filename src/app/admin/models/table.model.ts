@@ -9,12 +9,12 @@ export interface FilterItem {
   type: FormFieldType;
   options?: { value: string | boolean | number; label: string }[];
 }
-
-export enum TableType {
-  'GET_ALL',
-  'GET_WITH_QUERY',
-  'GET_ALL_FROM_STORE',
-}
+//
+// export enum TableType {
+//   'GET_ALL',
+//   'GET_WITH_QUERY',
+//   'GET_ALL_FROM_STORE',
+// }
 
 export interface TableElement {
   name: string;

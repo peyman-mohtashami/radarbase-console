@@ -6,7 +6,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import {DateAdapter, MatOption} from '@angular/material/core';
 import { LANGUAGES } from './languages';
 // import { LocaleService } from '../../../../../core/locale/services/locale.service';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { Validator } from '../../../../../shared/utils/validators';
 import { AppProtocol, toAppProtocol, toRadarProtocol } from "../../models/protocol";
 import { AppQuestionnaire } from "../../../questionnaire/models/questionnaire";

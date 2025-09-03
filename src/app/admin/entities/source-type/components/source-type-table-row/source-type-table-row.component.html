@@ -31,20 +31,21 @@
             }
             @case ("actions") {
               <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">
-        <span class="material-symbols-outlined text-xl!">
-          {{ expanded ? 'expand_less' : 'expand_more' }}
-        </span>
+                <span class="material-symbols-outlined text-xl!">
+                  {{ expanded ? 'expand_less' : 'expand_more' }}
+                </span>
               </button>
-              <button class="tiny"
-                      mat-icon-button color="primary"
-                      (click)='onAction(DialogMode.EDIT, entity())'>
-                <span class="material-symbols-outlined text-xl!">edit</span>
-              </button>
-              <button class="tiny"
-                      mat-icon-button color="warn"
-                      (click)='onAction(DialogMode.DELETE, entity())'>
-                <span class="material-symbols-outlined text-xl!">delete</span>
-              </button>
+              <app-actions [entity]="entity()" [isExpanded]="true"/>
+<!--              <button class="tiny"-->
+<!--                      mat-icon-button color="primary"-->
+<!--                      (click)='onAction(DialogMode.EDIT, entity())'>-->
+<!--                <span class="material-symbols-outlined text-xl!">edit</span>-->
+<!--              </button>-->
+<!--              <button class="tiny"-->
+<!--                      mat-icon-button color="warn"-->
+<!--                      (click)='onAction(DialogMode.DELETE, entity())'>-->
+<!--                <span class="material-symbols-outlined text-xl!">delete</span>-->
+<!--              </button>-->
             }
             @default {
               {{ entity()[property.name] || '-' }}

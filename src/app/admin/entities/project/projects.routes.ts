@@ -6,16 +6,14 @@ import {SourceTypesResolver} from "../source-type/services/sourceTypes.resolver"
 import {ProjectPageComponent} from "./containers/project-page/project-page.component";
 import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
-import {
-  ImplEntitiesPageComponent
-} from "../../components/base-entities-page/impl-entities-page/impl-entities-page.component";
 import {filters, PROPERTIES} from "./config";
+import {CommonEntitiesPageComponent} from '../../components/common-entities-page/common-entities-page.component';
 
 export const projectRoutes: Routes = [
   {
     path: "",
     // component: ProjectsPageComponent,
-    component: ImplEntitiesPageComponent,
+    component: CommonEntitiesPageComponent,
     resolve: {
       entities: ProjectsResolver,
       // organizations: OrganizationsResolver,

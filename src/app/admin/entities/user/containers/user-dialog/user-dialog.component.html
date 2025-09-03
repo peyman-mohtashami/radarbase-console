@@ -38,7 +38,6 @@
           <mat-label>{{ 'ADMIN.user.login.label' | translate }}</mat-label>
         }
         <input matInput formControlName='login' required>
-<!--        @if (form.controls.login?.errors; as errors) {-->
           @if (form.controls.login?.errors?.['duplicate']) {
             <mat-error>{{ "ADMIN.user.login.duplicate" | translate }}</mat-error>
           }
@@ -50,7 +49,6 @@
               {{ ValidatorError.requiredValidator | translate: { value: ('ADMIN.user.login.label' | translate) } }}
             </mat-error>
           }
-<!--        }-->
       </mat-form-field>
 
       @if(!floatLabel) {
@@ -97,7 +95,6 @@
         <mat-label>{{ 'ADMIN.user.email.label' | translate }}</mat-label>
         }
         <input matInput formControlName='email' required/>
-<!--        @if (form.controls.email?.errors; as errors) {-->
           @if (form.controls.email?.errors?.['duplicate']) {
             <mat-error>{{ "ADMIN.user.email.duplicate" }}</mat-error>
           }
@@ -109,24 +106,23 @@
               {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.user.email.label' | translate } }}
             </mat-error>
           }
-<!--        }-->
       </mat-form-field>
 
-      @if (configFields?.['langKey'] === undefined || configFields?.['langKey'] === true) {
-      @if(!floatLabel) {
-        <label for="langKey" class="text-sm">{{ 'ADMIN.user.langKey.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.user.langKey.label' | translate }}</mat-label>
-        }
-        <mat-select formControlName='langKey'>
-          <mat-option *ngFor='let language of (locale$ | async)?.languages' [value]='language.code'>{{language.label}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      }
+<!--      @if (configFields?.['langKey'] === undefined || configFields?.['langKey'] === true) {-->
+<!--      @if(!floatLabel) {-->
+<!--        <label for="langKey" class="text-sm">{{ 'ADMIN.user.langKey.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance='outline'-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.user.langKey.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <mat-select formControlName='langKey'>-->
+<!--          <mat-option *ngFor='let language of (locale$ | async)?.languages' [value]='language.code'>{{language.label}}</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--      }-->
 
       @if(!floatLabel) {
         <label for="_roles" class="text-sm">{{ 'ADMIN.user.roles.label' | translate }}</label>
@@ -147,7 +143,7 @@
               @if (form.controls._roles.controls._organizationAdmin?.value) {
                 <rb-mat-select-autocomplete formControlName='_organizations'
                                             [legend]='"ADMIN.organization.title.plural" | translate'
-                                            [options]='organizationOptions'
+                                            [options]='data.extra.organizations'
                                             [label]='"ADMIN.organization.title.plural" | translate'
                                             [multiple]="true" />
                 }
@@ -163,7 +159,7 @@
               @if (form.controls._roles.controls._projectAdmin?.value) {
                 <rb-mat-select-autocomplete formControlName='_projects'
                                             [legend]='"ADMIN.project.title.plural" | translate'
-                                            [options]='projectOptions'
+                                            [options]='data.extra.projects'
                                             [label]='"ADMIN.project.title.plural" | translate'
                                             [multiple]="true" />
                 }
@@ -175,8 +171,9 @@
   }
 </mat-dialog-content>
 
-
-<rb-message *ngIf='error' />
+@if (error()) {
+  <rb-message />
+}
 <rb-dialog-actions [mode]='mode'
                    [form]='form'
                    (actionTriggered)='onAction($event)' />

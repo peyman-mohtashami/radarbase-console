@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import {DateAdapter, MatOption} from '@angular/material/core';
 
 // import { LocaleService } from '../../../../../core/locale/services/locale.service';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppGroup } from "../../../group/models/group";
 import {Store} from "@ngrx/store";
@@ -217,7 +217,7 @@ export class SubjectDialogComponent
   // }
 
   override save(): void {
-    this.error = false;
+    this.error.set(false);// = false;
     this.isLoading = true;
     console.log('Class: SubjectDialogComponent, Function: save, Line 200 this.form.value' , this.form.value);
     const modifiedFormValue: any = {}; //{ ...this.form.value };

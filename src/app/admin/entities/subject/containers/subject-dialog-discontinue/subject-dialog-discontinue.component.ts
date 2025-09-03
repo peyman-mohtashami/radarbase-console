@@ -8,7 +8,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppProject } from "../../../project/models/project";
 import { AppGroup } from "../../../group/models/group";
@@ -78,7 +78,7 @@ export class SubjectDialogDiscontinueComponent
   }
 
   override delete(): void {
-    this.error = false;
+    this.error.set(false);// = false;
     this.isLoading = true;
     if (this.entity) {
       this.actionTriggered.emit({ action: this.mode, entity: this.entity });
@@ -89,7 +89,7 @@ export class SubjectDialogDiscontinueComponent
     console.log(this.form?.value);
     new Date(this.form?.value.dateOfBirth);
 
-    this.error = false;
+    this.error.set(false);// = false;
     this.isLoading = true;
     this.actionTriggered.emit({
       action: this.mode,

@@ -38,7 +38,7 @@ export class UserTableRowComponent {
   protected readonly PROPERTIES = PROPERTIES;
   protected readonly DialogMode = DialogMode;
 
-  updated = input<string | number>()
+  updated = input<string | number | null>()
   entity = input.required<AppUser>()
 
   private store = inject(Store)

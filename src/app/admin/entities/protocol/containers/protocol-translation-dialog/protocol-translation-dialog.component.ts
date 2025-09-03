@@ -7,7 +7,7 @@ import {DateAdapter, MatOption} from '@angular/material/core';
 
 import { LANGUAGES } from './languages';
 // import { LocaleService } from '../../../../../core/locale/services/locale.service';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppProtocol } from "../../models/protocol";
 import {Store} from "@ngrx/store";
 import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";

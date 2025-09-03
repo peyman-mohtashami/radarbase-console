@@ -9,7 +9,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import { Validator } from '../../../../../shared/utils/validators';
 import {DateAdapter, MatOption} from '@angular/material/core';
 import { LANGUAGES } from '../../../protocol/containers/protocol-dialog/languages';
-import { BaseDialogComponent } from '../../../../components/base-dialog/base-dialog.component';
+import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppQuestion, AppQuestionnaire, AppQuestionnaireBundle } from "../../models/questionnaire";
 import { Store } from '@ngrx/store';
 import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";

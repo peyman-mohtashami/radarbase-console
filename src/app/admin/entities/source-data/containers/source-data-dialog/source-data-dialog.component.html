@@ -1,160 +1,191 @@
-<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='close()' />
+<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='onAction("close")' />
 
 @let configFields = (config$ | async)?.['fields'] ?? {};
 
 <mat-dialog-content>
-  @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
+  @if (data.mode === DialogMode.VIEW || data.mode === DialogMode.DELETE) {
     <rb-dialog-body-description [mode]="mode" [label]="'Source Data'"
                                 [entityName]="entity.sourceDataName" />
   }
-
-  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+<!--<pre>-->
+<!--  {{data.data|json}}-->
+<!--</pre>-->
+  @if (data.mode === DialogMode.ADD || data.mode === DialogMode.EDIT) {
     <form [formGroup]="form" novalidate autocomplete="off">
-      @if (mode !== DialogMode.ADD) {
-        @if(!floatLabel) {
-          <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.id.label' | translate }}</label>
-        }
-        <mat-form-field subscriptSizing="fixed"
-                        appearance="outline"
-                        [floatLabel]='floatLabel ? "always" : "auto"'>
-          @if(floatLabel) {
-            <mat-label>{{ 'ADMIN.sourceData.id.label' | translate }}</mat-label>
-          }
-          <input matInput formControlName='id' />
-        </mat-form-field>
-      }
+      @for (field of _fields; track field.name) {
+        @if (!field.auto || data.mode !== DialogMode.ADD) {
+<!--          {{data.data["sourceTypes"] | json}}-->
+<!--          {{field.optionsName | json}}-->
+<!--          {{data[field.optionsName] | json}}-->
+          @let options = field.options ?? (field.optionsName ? data.extra[field.optionsName] : []);
+<!--          {{options | json}}-->
+          <rb-mat-dynamic-input  [entityName]="name"
+                                 [field]="field"
+                                 [formControlName]="field.name"
+                                 [options]="options" />
+<!--                                 [options]="[]"-->
+<!--          [options]="data[field.optionsName] ?? []"-->
 
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.id.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.sourceDataType.label' | translate }}</mat-label>
+            <!--                                 [options]="field.optionsName ? data[field.optionsName] : []" />-->
         }
-        <input matInput formControlName='sourceDataType' required
-               id="search-source-data-type" autocomplete="off" data-lpignore="true"/>
-        <mat-error *ngIf="form.controls.sourceDataType?.errors?.['pattern']">
-          {{ValidatorError.normalTextValidator}}
-        </mat-error>
-        <mat-error *ngIf="form.controls.sourceDataType?.errors?.['required']">
-          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceData.sourceDataType.label' | translate } }}
-        </mat-error>
-      </mat-form-field>
-
-      <rb-mat-select-autocomplete formControlName='sourceType'
-                                  [legend]="'ADMIN.sourceData.sourceType.label' | translate "
-                                  [options]='sourceTypesOptions'
-                                  [label]="'ADMIN.sourceData.sourceType.label' | translate "
-                                  [required]="true" [floatLabel]="floatLabel">
-      </rb-mat-select-autocomplete>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.sourceDataName.label' | translate }}</label>
       }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.sourceDataName.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='sourceDataName' required
-               id="search-source-data-name" autocomplete="off" data-lpignore="true" />
-        <mat-error *ngIf="form.controls.sourceDataName?.errors?.['required']">
-          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceData.sourceDataName.label' | translate } }}
-        </mat-error>
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.processingState.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.processingState.label' | translate }}</mat-label>
-        }
-        <mat-select formControlName='processingState'>
-          <mat-option [value]='ProcessingState.RAW'>{{ 'ADMIN.sourceData.processingState.RAW' | translate }}</mat-option>
-          <mat-option [value]='ProcessingState.DERIVED'>{{ 'ADMIN.sourceData.processingState.DERIVED' | translate }}</mat-option>
-          <mat-option [value]='ProcessingState.VENDOR'>{{ 'ADMIN.sourceData.processingState.VENDOR' | translate }}</mat-option>
-          <mat-option [value]='ProcessingState.RADAR'>{{ 'ADMIN.sourceData.processingState.RADAR' | translate }}</mat-option>
-          <mat-option [value]='ProcessingState.UNKNOWN'>{{ 'ADMIN.sourceData.processingState.UNKNOWN' | translate }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.topic.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.topic.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='topic'
-               id="search-topic" autocomplete="off" data-lpignore="true"/>
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.keySchema.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.keySchema.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='keySchema'
-               id="search-key-schema" autocomplete="off" data-lpignore="true"/>
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.valueSchema.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.valueSchema.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='valueSchema'
-               id="search-value-schema" autocomplete="off" data-lpignore="true" />
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.frequency.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.frequency.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='frequency'
-               id="search-frequency" autocomplete="off" data-lpignore="true" />
-      </mat-form-field>
-
-      @if(!floatLabel) {
-        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.unit.label' | translate }}</label>
-      }
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline"
-                      [floatLabel]='floatLabel ? "always" : "auto"'>
-        @if(floatLabel) {
-          <mat-label>{{ 'ADMIN.sourceData.unit.label' | translate }}</mat-label>
-        }
-        <input matInput formControlName='unit'
-               id="search-unit" autocomplete="off" data-lpignore="true" />
-      </mat-form-field>
     </form>
   }
+
+<!--  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {-->
+<!--    <form [formGroup]="form" novalidate autocomplete="off">-->
+<!--      @if (mode !== DialogMode.ADD) {-->
+<!--        @if(!floatLabel) {-->
+<!--          <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.id.label' | translate }}</label>-->
+<!--        }-->
+<!--        <mat-form-field subscriptSizing="fixed"-->
+<!--                        appearance="outline"-->
+<!--                        [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--          @if(floatLabel) {-->
+<!--            <mat-label>{{ 'ADMIN.sourceData.id.label' | translate }}</mat-label>-->
+<!--          }-->
+<!--          <input matInput formControlName='id' />-->
+<!--        </mat-form-field>-->
+<!--      }-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.id.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.sourceDataType.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='sourceDataType' required-->
+<!--               id="search-source-data-type" autocomplete="off" data-lpignore="true"/>-->
+<!--        @if (form.controls.sourceDataType?.errors?.['pattern']) {-->
+<!--          <mat-error>{{ValidatorError.normalTextValidator}}</mat-error>-->
+<!--        }-->
+<!--        @if (form.controls.sourceDataType?.errors?.['required']) {-->
+<!--          <mat-error>-->
+<!--            {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceData.sourceDataType.label' | translate } }}-->
+<!--          </mat-error>-->
+<!--        }-->
+<!--      </mat-form-field>-->
+
+<!--      <rb-mat-select-autocomplete formControlName='sourceType'-->
+<!--                                  [legend]="'ADMIN.sourceData.sourceType.label' | translate "-->
+<!--                                  [options]='sourceTypesOptions'-->
+<!--                                  [label]="'ADMIN.sourceData.sourceType.label' | translate "-->
+<!--                                  [required]="true" [floatLabel]="floatLabel">-->
+<!--      </rb-mat-select-autocomplete>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.sourceDataName.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.sourceDataName.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='sourceDataName' required-->
+<!--               id="search-source-data-name" autocomplete="off" data-lpignore="true" />-->
+<!--        @if (form.controls.sourceDataName?.errors?.['required']) {-->
+<!--        <mat-error>-->
+<!--          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceData.sourceDataName.label' | translate } }}-->
+<!--        </mat-error>-->
+<!--        }-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.processingState.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.processingState.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <mat-select formControlName='processingState'>-->
+<!--          <mat-option [value]='ProcessingState.RAW'>{{ 'ADMIN.sourceData.processingState.RAW' | translate }}</mat-option>-->
+<!--          <mat-option [value]='ProcessingState.DERIVED'>{{ 'ADMIN.sourceData.processingState.DERIVED' | translate }}</mat-option>-->
+<!--          <mat-option [value]='ProcessingState.VENDOR'>{{ 'ADMIN.sourceData.processingState.VENDOR' | translate }}</mat-option>-->
+<!--          <mat-option [value]='ProcessingState.RADAR'>{{ 'ADMIN.sourceData.processingState.RADAR' | translate }}</mat-option>-->
+<!--          <mat-option [value]='ProcessingState.UNKNOWN'>{{ 'ADMIN.sourceData.processingState.UNKNOWN' | translate }}</mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.topic.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.topic.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='topic'-->
+<!--               id="search-topic" autocomplete="off" data-lpignore="true"/>-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.keySchema.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.keySchema.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='keySchema'-->
+<!--               id="search-key-schema" autocomplete="off" data-lpignore="true"/>-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.valueSchema.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.valueSchema.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='valueSchema'-->
+<!--               id="search-value-schema" autocomplete="off" data-lpignore="true" />-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.frequency.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.frequency.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='frequency'-->
+<!--               id="search-frequency" autocomplete="off" data-lpignore="true" />-->
+<!--      </mat-form-field>-->
+
+<!--      @if(!floatLabel) {-->
+<!--        <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.unit.label' | translate }}</label>-->
+<!--      }-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline"-->
+<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
+<!--        @if(floatLabel) {-->
+<!--          <mat-label>{{ 'ADMIN.sourceData.unit.label' | translate }}</mat-label>-->
+<!--        }-->
+<!--        <input matInput formControlName='unit'-->
+<!--               id="search-unit" autocomplete="off" data-lpignore="true" />-->
+<!--      </mat-form-field>-->
+<!--    </form>-->
+<!--  }-->
 </mat-dialog-content>
 
-@if (error) {
+{{error() | json}}
+@if (error()) {
+  {{error()}}
   <rb-message />
 }
+
 <rb-dialog-actions [mode]='mode'
                    [form]='form'
                    (actionTriggered)='onAction($event)' />

@@ -4,7 +4,7 @@
                          [isGridView]="gridViewEnabled ? gridView : undefined"
                          [permission]="[{role: ROLES.SYS_ADMIN}]"
                          (gridListToggled)="gridView = !gridView">
-<!--                         (action)="onAction(DialogMode.ADD)"-->
+<!--                         (action)="onAction(DialogMode.ADD)">-->
   @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
                           [filters]='filters'
@@ -29,10 +29,10 @@
        [page]="page"
        [sort]="sort"
        [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
-       (activeQueryParams)="handleActiveQueryChange($event)"
-       (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">
+       (activeQueryParams)="handleActiveQueryChange($event)">
+<!--       (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
 
-    @if(!gridView && entitiesToShow.length) {
+    @if(!gridView && entitiesToShow().length) {
       <div class="rb-table-header mat-app-background">
         @for (property of tableProperties; track property.name) {
           @if (tp[property.name] !== false) {
@@ -69,100 +69,94 @@
       </div>
     }
 
+<!--    name = {{name}} / entitiesToShow = {{entitiesToShow()}} /-->
 <!--    <div [class]="!gridView ? 'rb-table' : 'grid-container'"-->
 <!--         rbTableQueryReflector-->
 <!--         [page]="page"-->
 <!--         [sort]="sort"-->
 <!--         [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"-->
-<!--         (activeQueryParams)="handleActiveQueryChange($event)"-->
+<!--         (activeQueryParams)="handleActiveQueryChange($event)">-->
 <!--         (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
-    @if (entitiesToShow) {
-      @for (entity of entitiesToShow; track entity.id) {
+    @if (entitiesToShow()?.length) {
+      @for (entity of entitiesToShow(); track entity.id) {
         @switch (name) {
-          @case ('organization') {
-            <rb-organization-table-row [entity]="entity"
-                                       [updated]="updated"
-                                       (actionEvent)="onAction($event.mode, $event.entity, undefined)"
-                                       [gridView]="gridView"/>
-<!--                                       [expandedElement]="expandedElement"-->
-          }
-          @case ('project') {
-            <rb-project-table-row [entity]="entity"
-                                  [updated]="updated"
-                                  [gridView]="gridView"
-                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" />
-          }
+<!--          @case ('organization') {-->
+<!--            <rb-organization-table-row [entity]="entity"-->
+<!--                                       (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
+<!--                                       [gridView]="gridView"/>-->
+<!--&lt;!&ndash;                                       [updated]="entityService.updated()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                       [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('project') {-->
+<!--            <rb-project-table-row [entity]="entity"-->
+<!--                                  [gridView]="gridView"-->
+<!--                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" />-->
+<!--&lt;!&ndash;                                  [updated]="entityService.updated()"&ndash;&gt;-->
+<!--          }-->
           @case ('user') {
             <rb-user-table-row [entity]="entity"
-                                  [updated]="updated"
-                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
+                               [updated]="entityService.updated()" />
+<!--                               (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
 <!--                                  [expandedElement]="expandedElement"-->
           }
           @case ('sourceType') {
             <rb-source-type-table-row [entity]="entity"
-                                      [updated]="updated"
-                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
+                                      [updated]="entityService.updated()" />
+<!--                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
           }
           @case ('sourceData') {
+<!--          &#45;&#45;{{entityService.updated()}} &#45;&#45;-->
             <rb-source-data-table-row [entity]="entity"
-                               [updated]="updated"
-                               (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
+                                      [updated]="entityService.updated()" />
+<!--                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
             <!--                                  [expandedElement]="expandedElement"-->
           }
           @case ('client') {
             <rb-client-table-row [entity]="entity"
-                                      [updated]="updated"
-                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
+                                 [updated]="entityService.updated()" />
+<!--                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
             <!--                                  [expandedElement]="expandedElement"-->
           }
-          @case ('subject') {
-            <rb-subject-table-row [entity]="entity"
-                                  [updated]="updated"
-                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" [selection]="selection"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('group') {
-            <rb-group-table-row [entity]="entity"
-                                      [updated]="updated"
-                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('source') {
-            <rb-source-table-row [entity]="entity"
-                                      [updated]="updated"
-                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('audit') {
-            <rb-audit-table-row [entity]="entity"
-                                 [updated]="updated"
-                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('log') {
-            <rb-log-table-row [entity]="entity"
-                                 [updated]="updated"
-                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('revision') {
-            <rb-revision-table-row [entity]="entity"
-                              [updated]="updated"
-                              (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('questionnaire') {
-            <rb-questionnaire-table-row [entity]="entity"
-                                 [updated]="updated"
-                                 (actionEvent)="onAction($event.mode, $event.entity, undefined, undefined, $event.language)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-          @case ('protocol') {
-            <rb-protocol-table-row [entity]="entity"
-                                        [updated]="updated"
-                                        (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
+<!--          @case ('subject') {-->
+<!--            <rb-subject-table-row [entity]="entity"-->
+<!--                                  [updated]="entityService.updated()"                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" [selection]="selection"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('group') {-->
+<!--            <rb-group-table-row [entity]="entity"-->
+<!--                                [updated]="entityService.updated()"                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('source') {-->
+<!--            <rb-source-table-row [entity]="entity"-->
+<!--                                 [updated]="entityService.updated()"                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('audit') {-->
+<!--            <rb-audit-table-row [entity]="entity"-->
+<!--                                [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('log') {-->
+<!--            <rb-log-table-row [entity]="entity"-->
+<!--                              [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('revision') {-->
+<!--            <rb-revision-table-row [entity]="entity"-->
+<!--                                   [updated]="entityService.updated()"                              (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('questionnaire') {-->
+<!--            <rb-questionnaire-table-row [entity]="entity"-->
+<!--                                        [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined, undefined, $event.language)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('protocol') {-->
+<!--            <rb-protocol-table-row [entity]="entity"-->
+<!--                                   [updated]="entityService.updated()"                                        (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
+<!--          }-->
         }
       }
     }
@@ -194,7 +188,7 @@
   @if (!entities?.length) {
     <span>{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>
   }
-  @if (entities?.length && !entitiesToShow?.length) {
+  @if (entities?.length && !entitiesToShow()?.length) {
     <span>{{ 'No item found with this filter' | translate }}</span>
   }
 </div>
