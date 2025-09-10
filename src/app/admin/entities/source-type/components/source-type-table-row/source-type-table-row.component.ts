@@ -3,7 +3,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {ENTITY_NAME, ROLES} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
 import {TABLE_ANIMATION} from "../../../../animation";
-import {AppSourceType} from "../../models/source-type";
+import {AppSourceType, SourceTypeScope} from "../../models/source-type";
 import { PROPERTIES} from "../../config";
 
 import {MatCard} from "@angular/material/card";
@@ -19,7 +19,6 @@ import {map} from "rxjs/operators";
 import {Store} from "@ngrx/store";
 import {AsyncPipe} from "@angular/common";
 import {TagComponent} from "../../../../components/tag/tag.component";
-import {SourceTypeScope} from '../../../../../shared/models/radar-source-type.model';
 // import {ActionsComponent} from '../../../source-data/components/actions/actions.component';
 import {ActionsComponent} from '../actions/actions.component';
 

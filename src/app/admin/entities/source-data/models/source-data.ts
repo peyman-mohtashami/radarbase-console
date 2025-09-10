@@ -1,6 +1,30 @@
-import {RadarSourceData} from '../../../../shared/models/radar-source-data.model';
-import {AppBaseModel} from '../../../../shared/models/base.model';
-import {RadarSourceType} from '../../../../shared/models/radar-source-type.model';
-import {RadarProject} from '../../../../shared/models/radar-project.model';
+import {RadarSourceType} from '../../source-type/models/source-type';
 
-export type AppSourceData =  RadarSourceData & AppBaseModel & Record<string, number | string | boolean | RadarSourceType | RadarProject | undefined>;
+export interface RadarSourceData extends Record<string, any> {
+  dataClass?: string;
+  enabled?: boolean;
+  frequency?: string;
+  id: number | string;
+  keySchema?: string;
+  processingState?: ProcessingState;
+  provider?: string;
+  sourceDataName: string;
+  sourceDataType?: string;
+  sourceType?: RadarSourceType;
+  topic?: string;
+  unit?: string;
+  valueSchema?: string;
+}
+
+export interface AppSourceData extends RadarSourceData {
+  name: string;
+}
+
+export enum ProcessingState {
+  RAW = 'RAW',
+  DERIVED = 'DERIVED',
+  VENDOR = 'VENDOR',
+  RADAR = 'RADAR',
+  UNKNOWN = 'UNKNOWN',
+}
+

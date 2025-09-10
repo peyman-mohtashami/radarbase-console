@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JsonPipe, Location} from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -17,6 +17,11 @@ import {
 import {SourceTypeDetailsComponent} from "../../components/source-type-details/source-type-details.component";
 import {SourceTypeService} from "../../services/sourceType.service";
 import {BreadcrumbComponent} from '../../../../components/breadcrumb/breadcrumb.component';
+import {Subject} from 'rxjs';
+import {IBaseEntityService} from '../../../../services/base-entity.service.interface';
+import {takeUntil} from 'rxjs/operators';
+import {HttpErrorResponse} from '@angular/common/http';
+import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
 
 @Component({
   selector: 'rb-source-type-page',
@@ -30,34 +35,77 @@ import {BreadcrumbComponent} from '../../../../components/breadcrumb/breadcrumb.
     JsonPipe
   ]
 })
-export class SourceTypePageComponent extends BaseEntityPage<
-  AppSourceType,
-  SourceTypeDialogComponent
-> {
+export class SourceTypePageComponent implements OnInit, OnDestroy {
+//   extends
+// } BaseEntityPage<
+//   AppSourceType,
+//   SourceTypeDialogComponent
+// > {
   protected readonly ENTITY_NAME = ENTITY_NAME;
+  protected readonly DialogMode = DialogMode;
+  entity: AppSourceType; // = this.activatedRoute.snapshot.data['entity'];
+  name: string = '';
+  loading = false;
+  error?: string;
+  _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    router: Router,
+    private router: Router,
     dialog: MatDialog,
-    activatedRoute: ActivatedRoute,
-    location: Location,
-    entityService: SourceTypeService, //SourceTypeEntityService
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private entityDialogService: SourceTypeDialogService, //SourceTypeEntityService
   ) {
-    super(router, activatedRoute, dialog, location, entityService);
+    this.entity = this.activatedRoute.snapshot.data['entity'];
   }
 
-  override getDialogRef(
-    mode: DialogMode,
-    entity: AppSourceType
-  ): MatDialogRef<SourceTypeDialogComponent> {
-    return this.dialog.open(SourceTypeDialogComponent, {
-      data: { mode, entity },
-      panelClass: ['w-full', 'sm:w-1/2'],
-      disableClose: true,
-    });
+  ngOnInit(): void {
+    this.activatedRoute.fragment
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(fragment => {
+        if (!fragment) return;
+
+        const fragmentItems = fragment.split('/');
+
+        const actionType = fragmentItems[1];
+        const actionEntity = fragmentItems[2];
+        const actionId = fragmentItems[3];
+
+        if (actionEntity === ENTITY_NAME.sourceType) {
+          if (actionType === 'edit') {
+            this.entityDialogService.openDialog(DialogMode.EDIT, this.entity);
+          } else if (actionType === 'delete') {
+            this.entityDialogService.openDialog(DialogMode.DELETE, this.entity);
+          }
+        }
+      });
   }
 
-  override navigateOnUpdateSuccess(entity: AppSourceType) {
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  onAction(mode: DialogMode, entity: AppSourceType): void {
+    return this.entityDialogService.openDialog(mode, entity);
+  }
+
+  // onUpdateSuccess(entity: T, dialogRef: MatDialogRef<U>): void {
+  //   this.entity = entity;
+  //   this.navigateOnUpdateSuccess(entity);
+  //   dialogRef.close();
+  // }
+  //
+  // onError(error: HttpErrorResponse, dialogRef: MatDialogRef<U>) {
+  //   dialogRef.componentInstance.errorHappened(error);
+  // }
+
+  onBack() {
+    this.location.back();
+  }
+
+
+  navigateOnUpdateSuccess(entity: AppSourceType) {
     //! name
     this.router
       .navigate([
@@ -70,7 +118,7 @@ export class SourceTypePageComponent extends BaseEntityPage<
       .then();
   }
 
-  override navigateOnDeleteSuccess() {
+  navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'source-types']).then();
   }
 }

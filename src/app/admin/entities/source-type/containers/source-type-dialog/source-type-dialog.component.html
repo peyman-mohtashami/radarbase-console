@@ -1,201 +1,225 @@
-<rb-dialog-title [mode]='mode' [name]="name" (closeClicked)='close()' />
+<rb-dialog-title [mode]='data.mode'
+                 [name]="ENTITY_NAME.sourceType"
+                 (closeClicked)='close()' />
 
 @let configFields = (config$ | async)?.['fields'] ?? {};
 
 <mat-dialog-content>
-  @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
-    <rb-dialog-body-description [mode]="mode" [label]="'Source Type'"
-                                [entityName]="entity.producer+'_'+entity.model+'_'+entity.catalogVersion"/>
+  @if (data.mode === DialogMode.VIEW || data.mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="data.mode"
+                                [label]="'Source Type'"
+                                [entityName]="data.entity.producer+'_'+ data.entity.model+'_'+ data.entity.catalogVersion"/>
   }
 
-  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+  @if (data.mode === DialogMode.ADD || data.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate autocomplete="off">
-      @for (field of _fields; track field.name) {
-        @if (!field.auto || data.mode !== DialogMode.ADD) {
-          <!--          {{data.data["sourceTypes"] | json}}-->
-            <!--          {{field.optionsName | json}}-->
-            <!--          {{data[field.optionsName] | json}}-->
-          @let options = field.options ?? (field.optionsName ? data.extra[field.optionsName] : []);
-          <!--          {{options | json}}-->
-          <rb-mat-dynamic-input  [entityName]="name"
-                                 [field]="field"
-                                 [formControlName]="field.name"
-                                 [options]="options" />
-          <!--                                 [options]="[]"-->
-            <!--          [options]="data[field.optionsName] ?? []"-->
+<!--      @for (field of _fields; track field.name) {-->
+<!--        @if (!field.auto || data.mode !== DialogMode.ADD) {-->
+<!--          &lt;!&ndash;          {{data.data["sourceTypes"] | json}}&ndash;&gt;-->
+<!--            &lt;!&ndash;          {{field.optionsName | json}}&ndash;&gt;-->
+<!--            &lt;!&ndash;          {{data[field.optionsName] | json}}&ndash;&gt;-->
+<!--          @let options = field.options ?? (field.optionsName ? data.extra[field.optionsName] : []);-->
+<!--          &lt;!&ndash;          {{options | json}}&ndash;&gt;-->
+<!--          <rb-mat-dynamic-input  [entityName]="name"-->
+<!--                                 [field]="field"-->
+<!--                                 [formControlName]="field.name"-->
+<!--                                 [options]="options" />-->
+<!--          &lt;!&ndash;                                 [options]="[]"&ndash;&gt;-->
+<!--            &lt;!&ndash;          [options]="data[field.optionsName] ?? []"&ndash;&gt;-->
 
-            <!--                                 [options]="field.optionsName ? data[field.optionsName] : []" />-->
+<!--            &lt;!&ndash;                                 [options]="field.optionsName ? data[field.optionsName] : []" />&ndash;&gt;-->
+<!--        }-->
+<!--      }-->
+      @if (data.mode !== DialogMode.ADD) {
+        @if(!floatLabel) {
+          <label for="id" class="text-sm">{{ 'ADMIN.sourceType.id.label' | translate }}</label>
         }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+            <mat-label>{{ 'ADMIN.sourceType.id.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='id' required
+                 id="search-id" autocomplete="off" data-lpignore="true" />
+        </mat-form-field>
       }
-<!--      @if (mode !== DialogMode.ADD) {-->
-<!--        @if(!floatLabel) {-->
-<!--          <label for="id" class="text-sm">{{ 'ADMIN.sourceType.id.label' | translate }}</label>-->
-<!--        }-->
-<!--        <mat-form-field subscriptSizing="fixed"-->
-<!--                        appearance='outline'-->
-<!--                        [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--          @if(floatLabel) {-->
-<!--            <mat-label>{{ 'ADMIN.sourceType.id.label' | translate }}</mat-label>-->
-<!--          }-->
-<!--          <input matInput formControlName='id' required-->
-<!--                 id="search-id" autocomplete="off" data-lpignore="true" />-->
-<!--        </mat-form-field>-->
-<!--      }-->
 
-<!--      @if(!floatLabel) {-->
-<!--        <label for="producer" class="text-sm">{{ 'ADMIN.sourceType.producer.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.producer.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='producer' required-->
-<!--               id="search-producer" autocomplete="off" data-lpignore="true"/>-->
-<!--        <mat-error *ngIf="form.controls.producer?.errors?.['duplicate']">-->
-<!--          {{ 'ADMIN.sourceType.producer.duplicate' | translate }}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.producer?.errors?.['pattern']">-->
-<!--          {{ValidatorError.normalTextValidator}}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.producer?.errors?.['required']">-->
-<!--          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.producer.label' | translate } }}-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
+      @if(!floatLabel) {
+        <label for="producer" class="text-sm">{{ 'ADMIN.sourceType.producer.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.producer.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='producer' required
+               id="search-producer" autocomplete="off" data-lpignore="true"/>
+        @if (form.controls.producer?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ 'ADMIN.sourceType.producer.duplicate' | translate }}
+            }
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.producer.label' | translate } }}
+            }
+          </mat-error>
+        }
 
-<!--      @if(!floatLabel) {-->
-<!--        <label for="model" class="text-sm">{{ 'ADMIN.sourceType.model.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.model.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='model' required-->
-<!--               id="search-model" autocomplete="off" data-lpignore="true"/>-->
-<!--        <mat-error *ngIf="form.controls.model?.errors?.['duplicate']">-->
-<!--          {{ 'ADMIN.sourceType.id.label' | translate }}{{ "Source Type (Producer, model and catalog version) exists" }}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.model?.errors?.['pattern']">-->
-<!--          {{ValidatorError.normalTextValidator}}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.model?.errors?.['required']">-->
-<!--          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.model.label' | translate } }}-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
+      </mat-form-field>
 
-<!--      @if(!floatLabel) {-->
-<!--        <label for="catalogVersion" class="text-sm">{{ 'ADMIN.sourceType.catalogVersion.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.catalogVersion.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='catalogVersion' required-->
-<!--               id="search-catalog-version" autocomplete="off" data-lpignore="true"/>-->
-<!--        <mat-error *ngIf="form.controls.catalogVersion?.errors?.['duplicate']">-->
-<!--          {{ 'ADMIN.sourceType.id.label' | translate }}{{ "Source Type (Producer, model and catalog version) exists" }}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.catalogVersion?.errors?.['pattern']">-->
-<!--          {{ValidatorError.normalTextValidator}}-->
-<!--        </mat-error>-->
-<!--        <mat-error *ngIf="form.controls.catalogVersion?.errors?.['required']">-->
-<!--          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.catalogVersion.label' | translate } }}-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
+      @if(!floatLabel) {
+        <label for="model" class="text-sm">{{ 'ADMIN.sourceType.model.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.model.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='model' required
+               id="search-model" autocomplete="off" data-lpignore="true"/>
+        @if (form.controls.model?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ 'ADMIN.sourceType.model.duplicate' | translate }}
+            }
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.model.label' | translate } }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-<!--      @if(!floatLabel) {-->
-<!--        <label for="sourceTypeScope" class="text-sm">{{ 'ADMIN.sourceType.sourceTypeScope.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.sourceTypeScope.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <mat-select formControlName='sourceTypeScope' required>-->
-<!--          <mat-option [value]="'PASSIVE'">{{ 'ADMIN.sourceType.sourceTypeScope.PASSIVE' | translate }}</mat-option>-->
-<!--          <mat-option [value]="'ACTIVE'">{{ 'ADMIN.sourceType.sourceTypeScope.ACTIVE' | translate }}</mat-option>-->
-<!--        </mat-select>-->
-<!--        <mat-error *ngIf="form.controls.sourceTypeScope?.errors?.['required']">-->
-<!--          {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.sourceTypeScope.label' | translate} }}-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
+      @if(!floatLabel) {
+        <label for="catalogVersion" class="text-sm">{{ 'ADMIN.sourceType.catalogVersion.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.catalogVersion.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='catalogVersion' required
+               id="search-catalog-version" autocomplete="off" data-lpignore="true"/>
+        @if (form.controls.catalogVersion?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ 'ADMIN.sourceType.catalogVersion.duplicate' | translate }}
+            }
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.catalogVersion.label' | translate } }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-<!--      <mat-slide-toggle color="primary" formControlName='canRegisterDynamically'>-->
-<!--        {{ 'ADMIN.sourceType.canRegisterDynamically.label' | translate }}-->
-<!--      </mat-slide-toggle>-->
-<!--      <p class="text-xs -mt-3 mb-4">-->
-<!--        {{ 'ADMIN.sourceType.canRegisterDynamically.hint' | translate }}-->
-<!--      </p>-->
+      @if(!floatLabel) {
+        <label for="sourceTypeScope" class="text-sm">{{ 'ADMIN.sourceType.sourceTypeScope.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.sourceTypeScope.label' | translate }}</mat-label>
+        }
+        <mat-select formControlName='sourceTypeScope' required>
+          <mat-option [value]="'PASSIVE'">{{ 'ADMIN.sourceType.sourceTypeScope.PASSIVE' | translate }}</mat-option>
+          <mat-option [value]="'ACTIVE'">{{ 'ADMIN.sourceType.sourceTypeScope.ACTIVE' | translate }}</mat-option>
+        </mat-select>
+        @if (form.controls.sourceTypeScope?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.sourceType.sourceTypeScope.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
 
-<!--      @if (configFields?.['name'] === undefined || configFields?.['name'] === true) {-->
-<!--        @if(!floatLabel) {-->
-<!--        <label for="name" class="text-sm">{{ 'ADMIN.sourceType.name.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.name.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='name'-->
-<!--               id="search-source-type-name" autocomplete="off" data-lpignore="true"/>-->
-<!--      </mat-form-field>-->
-<!--      }-->
+      <mat-slide-toggle color="primary" formControlName='canRegisterDynamically'>
+        {{ 'ADMIN.sourceType.canRegisterDynamically.label' | translate }}
+      </mat-slide-toggle>
+      <p class="text-xs -mt-3 mb-4">
+        {{ 'ADMIN.sourceType.canRegisterDynamically.hint' | translate }}
+      </p>
 
-<!--      @if (configFields?.['description'] === undefined || configFields?.['description'] === true) {-->
-<!--        @if(!floatLabel) {-->
-<!--        <label for="description" class="text-sm">{{ 'ADMIN.sourceType.description.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.description.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>-->
-<!--        <mat-hint align="start">{{ValidatorHint.longTextValidator}}</mat-hint>-->
-<!--        <mat-hint align="end">{{description.value.length}} / 255</mat-hint>-->
-<!--        <mat-error *ngIf="form.controls.description?.errors?.['pattern']">-->
-<!--          {{ValidatorError.longTextValidator}}-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
-<!--      }-->
+      @if (configFields?.['name'] === undefined || configFields?.['name'] === true) {
+        @if(!floatLabel) {
+        <label for="name" class="text-sm">{{ 'ADMIN.sourceType.name.label' | translate }}</label>
+      }
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'
+                      [floatLabel]='floatLabel ? "always" : "auto"'>
+        @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.name.label' | translate }}</mat-label>
+        }
+        <input matInput formControlName='name'
+               id="search-source-type-name" autocomplete="off" data-lpignore="true"/>
+      </mat-form-field>
+      }
 
-<!--      @if (configFields?.['assessmentType'] === undefined || configFields?.['assessmentType'] === true) {-->
-<!--        @if(!floatLabel) {-->
-<!--        <label for="assessmentType" class="text-sm">{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--          <mat-label>{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='assessmentType'-->
-<!--               id="search-assessment-type" autocomplete="off" data-lpignore="true"/>-->
-<!--      </mat-form-field>-->
-<!--      }-->
+      @if (configFields?.['description'] === undefined || configFields?.['description'] === true) {
+        @if(!floatLabel) {
+          <label for="description" class="text-sm">{{ 'ADMIN.sourceType.description.label' | translate }}</label>
+        }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+            <mat-label>{{ 'ADMIN.sourceType.description.label' | translate }}</mat-label>
+          }
+          <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <mat-hint align="start">{{ValidatorHint.longTextValidator}}</mat-hint>
+          <mat-hint align="end">{{description.value.length}} / 255</mat-hint>
+          @if (form.controls.description?.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ValidatorError.longTextValidator}}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
 
-<!--      @if (configFields?.['appProvider'] === undefined || configFields?.['appProvider'] === true) {-->
-<!--        @if(!floatLabel) {-->
-<!--        <label for="appProvider" class="text-sm">{{ 'ADMIN.sourceType.appProvider.label' | translate }}</label>-->
-<!--      }-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      [floatLabel]='floatLabel ? "always" : "auto"'>-->
-<!--        @if(floatLabel) {-->
-<!--        <mat-label>{{ 'ADMIN.sourceType.appProvider.label' | translate }}</mat-label>-->
-<!--        }-->
-<!--        <input matInput formControlName='appProvider'-->
-<!--               id="search-app-provider" autocomplete="off" data-lpignore="true"/>-->
-<!--      </mat-form-field>-->
-<!--      }-->
+      @if (configFields?.['assessmentType'] === undefined || configFields?.['assessmentType'] === true) {
+        @if(!floatLabel) {
+          <label for="assessmentType" class="text-sm">{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</label>
+        }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+            <mat-label>{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='assessmentType'
+                 id="search-assessment-type" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
+
+      @if (configFields?.['appProvider'] === undefined || configFields?.['appProvider'] === true) {
+        @if(!floatLabel) {
+          <label for="appProvider" class="text-sm">{{ 'ADMIN.sourceType.appProvider.label' | translate }}</label>
+        }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.sourceType.appProvider.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='appProvider'
+                 id="search-app-provider" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
     </form>
   }
 </mat-dialog-content>
@@ -207,7 +231,7 @@
   <rb-message />
 }
 
-<rb-dialog-actions [mode]='mode'
+<rb-dialog-actions [mode]='data.mode'
                    [form]='form'
                    (actionTriggered)='onAction($event)' />
 

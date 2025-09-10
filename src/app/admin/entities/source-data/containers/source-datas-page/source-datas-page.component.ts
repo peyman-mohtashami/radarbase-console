@@ -1,133 +1,43 @@
 import {Component, inject, OnDestroy, OnInit, signal, computed, WritableSignal} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-// import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {debounceTime, distinctUntilChanged, map, skip, switchMap, takeUntil} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {TABLE_ANIMATION} from "../../animation";
-import {EntitiesPageHeaderComponent} from "./entities-page-header/entities-page-header.component";
-import {DataTableFilterComponent, FilterEvent} from "./data-table-filter/data-table-filter.component";
-import {RbSort, TableQueryReflectorDirective} from "../../directives/table-query-reflector.directive";
-import {TableType} from "../../enums/table";
-// import {FormFieldType} from "../../models/dialog.model";
-import {FilterItem, TableElement} from "../../models/table.model";
 import {Store} from "@ngrx/store";
-// import {AdminActions} from "../../../store/action.types";
-import {DialogMode} from "../../enums/dialog";
 import {BehaviorSubject, combineLatest, Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {IBaseEntityService} from "../../services/base-entity.service.interface";
-// import {HttpErrorResponse} from "@angular/common/http";
-// import {AppOrganization} from "../../entities/organization/models/organization";
-// import {AppProject} from "../../entities/project/models/project";
-// import {AppUser} from "../../entities/user/models/user";
-import {ENTITIES} from "../../consts/entities";
-import {DetailType} from "../../enums/detail-type";
-import {ROLES} from "../../enums/entities";
-// import {
-//   OrganizationCardComponent
-// } from "../../../entities/organization/components/organization-card/organization-card.component";
-// import {OrganizationService} from "../../entities/organization/services/organization.service";
-// import {
-//   ProjectTableRowComponent
-// } from "../../entities/project/components/project-table-row/project-table-row.component";
-// import {ProjectCardComponent} from "../../../entities/project/components/project-card/project-card.component";
-// import {UserTableRowComponent} from "../../entities/user/components/user-table-row/user-table-row.component";
-import {
-  SourceDataTableRowComponent
-} from "../../entities/source-data/components/source-data-table-row/source-data-table-row.component";
-// import {
-//   SourceTypeTableRowComponent
-// } from "../../entities/source-type/components/source-type-table-row/source-type-table-row.component";
-// import {GroupTableRowComponent} from "../../entities/group/components/group-table-row/group-table-row.component";
-// import {
-//   SubjectTableRowComponent
-// } from "../../entities/subject/components/subject-table-row/subject-table-row.component";
-// import {SourceTableRowComponent} from "../../entities/source/components/source-table-row/source-table-row.component";
-// import {AuditTableRowComponent} from "../../entities/audit/components/audit-table-row/audit-table-row.component";
-// import {LogTableRowComponent} from "../../entities/log/components/log-table-row/log-table-row.component";
-// import {ClientTableRowComponent} from "../../entities/client/components/client-table-row/client-table-row.component";
-// import {
-//   OrganizationDialogComponent
-// } from "../../entities/organization/containers/organization-dialog/organization-dialog.component";
-// import {ProjectDialogComponent} from "../../entities/project/containers/project-dialog/project-dialog.component";
-// import {UserDialogComponent} from "../../entities/user/containers/user-dialog/user-dialog.component";
-// import {
-//   SourceDataDialogComponent
-// } from "../../entities/source-data/containers/source-data-dialog/source-data-dialog.component";
-// import {
-//   SourceTypeDialogComponent
-// } from "../../entities/source-type/containers/source-type-dialog/source-type-dialog.component";
-// import {GroupDialogComponent} from "../../entities/group/containers/group-dialog/group-dialog.component";
-// import {SubjectDialogComponent} from "../../entities/subject/containers/subject-dialog/subject-dialog.component";
-// import {SourceDialogComponent} from "../../entities/source/containers/source-dialog/source-dialog.component";
-// import {ClientDialogComponent} from "../../entities/client/containers/client-dialog/client-dialog.component";
-// import {BaseDialogComponent} from "../../base/base-dialog.component";
-// import {ProjectService} from "../../entities/project/services/project.service";
-// import {UserService} from "../../entities/user/services/user.service";
-import {SourceDataService} from "../../entities/source-data/services/source-data.service";
-// import {SourceTypeService} from "../../entities/source-type/services/sourceType.service";
-// import {GroupService} from "../../entities/group/services/group.service";
-// import {SubjectService} from "../../entities/subject/services/subject.service";
-// import {SourceService} from "../../entities/source/services/source.service";
-// import {ClientService} from "../../entities/client/services/client.service";
-// import {AuditService} from "../../entities/audit/services/audit.service";
-// import {LogService} from "../../entities/log/services/log.service";
 import {AsyncPipe, JsonPipe, KeyValuePipe} from "@angular/common";
-import {instanceConfig} from "../../../core/config/store/config.selectors";
 import {MatCheckbox} from "@angular/material/checkbox";
-// import {
-//   RevisionTableRowComponent
-// } from "../../entities/revision/components/revision-table-row/revision-table-row.component";
-// import {
-//   OrganizationTableRowComponent
-// } from "../../entities/organization/components/organization-table-row/organization-table-row.component";
-// import {
-//   QuestionnaireTableRowComponent
-// } from "../../entities/questionnaire/components/questionnaire-table-row/questionnaire-table-row.component";
-// import {
-//   QuestionnaireDialogComponent
-// } from "../../entities/questionnaire/containers/questionnaire-dialog/questionnaire-dialog.component";
-// import {QuestionnaireService} from "../../entities/questionnaire/services/questionnaire.service";
-// import {ProtocolService} from "../../entities/protocol/services/protocol.service";
-// import {ProtocolDialogComponent} from "../../entities/protocol/containers/protocol-dialog/protocol-dialog.component";
-// import {
-//   ProtocolTableRowComponent
-// } from "../../entities/protocol/components/protocol-table-row/protocol-table-row.component";
-import {LoaderComponent} from '../../../shared/components/loader/loader.component';
-import {toSignal} from "@angular/core/rxjs-interop";
-
-// Define a mapping type
-// type EntityMap = {
-//   project: AppProject;
-//   organization: AppOrganization;
-// };
-
-// Define a key that narrows the type
-// type EntityName = keyof EntityMap; // "project" | "organization"
-
-
-// class EntityManager<K extends EntityName> {
-//   entities: EntityMap[K][] = [];
-//
-//   constructor(public entityName: K) {}
-//
-//   add(entity: EntityMap[K]) {
-//     this.entities.push(entity);
-//   }
-//
-//   getAll(): EntityMap[K][] {
-//     return this.entities;
-//   }
-// }
-
-// export type EntityType = AppProject | AppOrganization | AppUser;
-
+import { TABLE_ANIMATION } from '../../../../animation';
+import {
+  EntitiesPageHeaderComponent
+} from '../../../../components/common-entities-page/entities-page-header/entities-page-header.component';
+import {
+  DataTableFilterComponent,
+  FilterEvent
+} from '../../../../components/common-entities-page/data-table-filter/data-table-filter.component';
+import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
+import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
+import {FilterItem, TableElement} from '../../../../models/table.model';
+import { TableType } from '../../../../enums/table';
+import {IBaseEntityService} from '../../../../services/base-entity.service.interface';
+import {SourceDataService} from '../../services/source-data.service';
+import {instanceConfig} from '../../../../../core/config/store/config.selectors';
+import {ENTITIES} from '../../../../consts/entities';
+import {DialogMode} from '../../../../enums/dialog';
+import {DetailType} from '../../../../enums/detail-type';
+import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {HttpErrorResponse} from '@angular/common/http';
+import {SourceDataDialogComponent} from '../source-data-dialog/source-data-dialog.component';
+import {SourceDataDialogService} from '../../services/source-data-dialog.service';
+import {AppSourceData} from '../../models/source-data';
 
 @Component({
   selector: 'rb-entities-page',
   // templateUrl: '../../../../components/entities-page/entities-page.component.html',
-  templateUrl: './common-entities-page.component.html',
+  templateUrl: './source-datas-page.component.html',
   animations: TABLE_ANIMATION,
   imports: [
     EntitiesPageHeaderComponent,
@@ -149,9 +59,9 @@ import {toSignal} from "@angular/core/rxjs-interop";
     // AuditTableRowComponent,
     // LogTableRowComponent,
     // ClientTableRowComponent,
-    KeyValuePipe,
+    // KeyValuePipe,
     AsyncPipe,
-    JsonPipe,
+    // JsonPipe,
     MatCheckbox,
     // RevisionTableRowComponent,
     // QuestionnaireTableRowComponent,
@@ -159,28 +69,24 @@ import {toSignal} from "@angular/core/rxjs-interop";
     // QuestionnaireTableRowComponent,
   ]
 })
-export class CommonEntitiesPageComponent
-  // extends BaseEntitiesPage<AppOrganization, OrganizationDialogComponent>
-  implements OnInit, OnDestroy {
+export class SourceDatasPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITIES = ENTITIES;
-  // DialogComponent?: U
   protected readonly DialogMode = DialogMode;
-  protected readonly DetailType = DetailType;
+  // protected readonly DetailType = DetailType;
+  protected readonly ENTITY_NAME = ENTITY_NAME;
+
 
   data;
 
-  name;
-
-  // tableProperties: Record<string, TableElement> = this.activatedRoute.snapshot.data['config']['tableFields'] || {};
   tableProperties: TableElement[];
   filters: FilterItem[];
 
-  // type: TableType = TableType.GET_ALL_FROM_STORE;
-  type: TableType;
+  // type: TableType;
 
-  loading = true;
+  // loading = true;
+  loading = signal(true);
 
-  entities: any[];
+  entities: AppSourceData[];
   filteredAndSortedEntities: any[]; // = this.entities;
   entitiesToShow: WritableSignal<any[]> = signal<any[]>([]); //T[] = [];
 
@@ -214,7 +120,7 @@ export class CommonEntitiesPageComponent
 
   pageSizeOptions = [5, 10, 20, 50, 100];
 
-  // updated?: number | string;
+  updated?: number | string;
 
   filterEnabled = false;
 
@@ -234,7 +140,7 @@ export class CommonEntitiesPageComponent
 
   protected readonly ROLES = ROLES;
 
-  entityService!: IBaseEntityService<any>
+  // entityService!: IBaseEntityService<any>
 
   config$;
 
@@ -242,12 +148,15 @@ export class CommonEntitiesPageComponent
     // private router: Router,
     private activatedRoute: ActivatedRoute,
     private store: Store,
+    // private dialog: MatDialog,
+    private entityService: SourceDataService,
+    private dialogService: SourceDataDialogService
   ) {
-    const SERVICES: Record<string, any> = {
+    // const SERVICES: Record<string, any> = {
       // organization: OrganizationService,
       // project: ProjectService,
       // user: UserService,
-      sourceData: SourceDataService,
+      // sourceData: SourceDataService,
       // sourceType: SourceTypeService,
       // group: GroupService,
       // subject: SubjectService,
@@ -257,15 +166,15 @@ export class CommonEntitiesPageComponent
       // log: LogService,
       // questionnaire: QuestionnaireService,
       // protocol: ProtocolService,
-    }
-    this.name = this.activatedRoute.snapshot.data['entityName'] || 'entity';
-    this.entityService = inject(SERVICES[this.name]); //inject(SERVICES[this.name] || OrganizationService);
+    // }
+    // this.name = this.activatedRoute.snapshot.data['entityName'] || 'entity';
+    // this.entityService = inject(SERVICES[this.name]); //inject(SERVICES[this.name] || OrganizationService);
     this.data = this.activatedRoute.snapshot.data;
 
 
     this.tableProperties = this.activatedRoute.snapshot.data['tableProperties'] || [];
     this.filters = this.activatedRoute.snapshot.data['filters'] || [];
-    this.type = this.activatedRoute.snapshot.data['type'] || TableType.GET_ALL;//.GET_ALL_FROM_STORE;
+    // this.type = this.activatedRoute.snapshot.data['type'] || TableType.GET_ALL;//.GET_ALL_FROM_STORE;
     this.entities = this.activatedRoute.snapshot.data['entities']; //.filter((i: any) => !i['name'].startsWith("@DEL_") );
     this.gridViewEnabled = this.activatedRoute.snapshot.data['gridViewEnabled'] ?? false;
     this.gridView = this.gridViewEnabled; // && this.activatedRoute.snapshot.data['gridView'] ?? false;
@@ -284,58 +193,49 @@ export class CommonEntitiesPageComponent
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        console.log('----Class: ImplEntitiesPageComponent, Function: , Line 263 fragment' , fragment);
         if (!fragment) return;
 
         const fragmentItems = fragment.split('/');
-        console.log('Class: ImplEntitiesPageComponent, Function: , Line 296 fragmentItems' , fragmentItems);
-        console.log('Class: ImplEntitiesPageComponent, Function: , Line 297 this.name' , this.name);
+
         const actionType = fragmentItems[1];
         const actionEntity = fragmentItems[2];
         const actionId = fragmentItems[3];
 
-        if (actionEntity === this.name) {
+        if (actionEntity === 'sourceData') {
           if (actionType === 'add') {
-            this.entityService.openDialog({mode: DialogMode.ADD, extra: this.data});//: this.data});
+            this.dialogService.openDialog(DialogMode.ADD, undefined, this.data);
           } else if (actionType === 'edit') {
-            // const id = fragment.split('/')[2];
-            const entity = this.entities.find(e => e['id'] == actionId);
-            this.entityService.openDialog({mode: DialogMode.EDIT, entity, extra: this.data});
+            const entity = this.entities.find(e => e.id == actionId);
+            this.dialogService.openDialog(DialogMode.EDIT, entity, this.data);
           } else if (actionType === 'delete') {
-            // const id = fragment.split('/')[2];
-            // console.log('Class: ImplEntitiesPageComponent, Function: , Line 274 id', id);
-            // console.log('Class: ImplEntitiesPageComponent, Function: , Line 275 this.entities', this.entities);
-            const entity = this.entities.find(e => {
-              // console.log('Class: ImplEntitiesPageComponent, Function: , Line 277 e ', e, e['id'], id, e['id'] == id);
-              return e['id'] == actionId
-            });
-            console.log('Class: ImplEntitiesPageComponent, Function: , Line 276 entity', entity);
-            this.entityService.openDialog({mode: DialogMode.DELETE, entity, extra: this.data});
+            const entity = this.entities.find(e => e.id == actionId);
+            this.dialogService.openDialog(DialogMode.DELETE, entity, this.data);
           }
         }
       });
   }
 
   fetchEntities() {
-    if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL ) {
+    // if (this.type === TableType.GET_WITH_QUERY || this.type === TableType.GET_ALL ) {
       //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
       this.filteredAndSortedEntities = this.entities;
       console.log('this.entitiesToShow Class: CommonEntitiesPageComponent, Function: init, Line 339 this.entitiesToShow' , this.entitiesToShow);
       this.entitiesToShow.set(this.filteredAndSortedEntities);
       // this.total = this.getTotal();
       // console.log('Class: BaseEntitiesTwoPage, Function: init, Line 100 ' , );
-      this.loading = false;
+      // this.loading = false;
+      this.loading.set(false);
       this.subscribeToEntities();
-    } else {
-      //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
-      //! apply filter, sort, page
-      this.filteredAndSortedEntities = this.entities;
-      this.applyFilter();
-      this.applySort();
-      this.applyPage();
-      // this.entitiesToShow = this.filteredAndSortedEntities.slice(this.page.pageIndex*this.page.pageSize, (this.page.pageIndex+1)*this.page.pageSize)
-      this.loading = false;
-    }
+    // } else {
+    //   //! this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+    //   //! apply filter, sort, page
+    //   this.filteredAndSortedEntities = this.entities;
+    //   this.applyFilter();
+    //   this.applySort();
+    //   this.applyPage();
+    //   // this.entitiesToShow = this.filteredAndSortedEntities.slice(this.page.pageIndex*this.page.pageSize, (this.page.pageIndex+1)*this.page.pageSize)
+    //   this.loading = false;
+    // }
   }
 
   // init(): void {
@@ -420,7 +320,8 @@ export class CommonEntitiesPageComponent
           console.log('Class: BaseEntitiesTwoPage, Function: next, Line 147 ' , );
           this.selection.clear();
           // setTimeout(() => {
-            this.loading = false;
+          this.loading.set(false);
+            // this.loading = false;
             // this.entities = value;
             console.log('this.entitiesToShow Class: CommonEntitiesPageComponent, Function: next, Line 427 ' , this.entitiesToShow );
             this.entitiesToShow.set(value);
@@ -457,36 +358,36 @@ export class CommonEntitiesPageComponent
   }
 
   // // onAction(mode: DialogMode, entity?: T, entityName?: string, e?: Event, extra?: any): void {
-  // onAction(mode: DialogMode, entity?: any, entityName?: string, e?: Event, extra?: any): void {
-  //   console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 373 entity' , entity);
-  //   console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 374 entityName' , entityName);
-  //   console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 375 mode' , mode);
-  //   console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 373 extra' , extra);
-  //   console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 377 e' , e);
-  //   e?.stopPropagation();
-  //
-  //   // if (entity) {
-  //   //   return this.openDialog(mode, entity, extra);
-  //   // }
-  //   //
-  //   // if (entityName) {
-  //   //   const _entity = this.entities?.find(
-  //   //     (e) => this.getEntityName(e) === entityName
-  //   //   );
-  //   //   if (_entity) {
-  //   //     return this.openDialog(mode, _entity, extra);
-  //   //   }
-  //   // }
-  //   //
-  //   // if (entityName) {
-  //   //   this.getByKey(entityName).subscribe({
-  //   //     next: (_entity) => this.openDialog(mode, _entity),
-  //   //     error: (err) => console.log(err),
-  //   //   });
-  //   // } else {
-  //   //   this.openDialog(mode);
-  //   // }
-  // }
+  onAction(mode: DialogMode, entity?: any, entityName?: string, e?: Event, extra?: any): void {
+    console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 373 entity' , entity);
+    console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 374 entityName' , entityName);
+    console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 375 mode' , mode);
+    console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 373 extra' , extra);
+    console.log('Class: ImplEntitiesPageComponent, Function: onAction, Line 377 e' , e);
+    e?.stopPropagation();
+
+    if (entity) {
+      return this.dialogService.openDialog(mode, entity, extra);
+    }
+
+    if (entityName) {
+      const _entity = this.entities?.find(
+        (e) => this.getEntityName(e) === entityName
+      );
+      if (_entity) {
+        return this.dialogService.openDialog(mode, _entity, extra);
+      }
+    }
+
+    if (entityName) {
+      this.getByKey(entityName).subscribe({
+        next: (_entity) => this.dialogService.openDialog(mode, _entity),
+        error: (err) => console.log(err),
+      });
+    } else {
+      this.dialogService.openDialog(mode);
+    }
+  }
 
   // openDialog(mode: DialogMode, entity?: any, extra?: any) {
   //   const dialogRef = this.getDialogRef(mode, entity, extra);
@@ -558,10 +459,10 @@ export class CommonEntitiesPageComponent
   //     })
   //     .then();
   // }
-  //
-  trackId(index: number, item: any): string {
-    return `${item['id']}`;
-  }
+
+  // trackId(index: number, item: any): string {
+  //   return `${item['id']}`;
+  // }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -606,90 +507,90 @@ export class CommonEntitiesPageComponent
   //   });
   // }
 
-  applyFilter(){
-    console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 335 this.filterEvent' , this.filterEvent, Object.entries(this.filterEvent));
-    // this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
-    for (const [key, value] of Object.entries(this.filterEvent)) {
-      console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 447 key, value' , key, value);
-      if(value) {
-        if (key.startsWith('search')) {
-          console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 340 ',);
-          const filters = key
-            .replace(/search\s*:\s*/i, "") // remove "search:" with optional spaces
-            .split(",")                    // split by comma
-            .map(s => s.trim())            // trim each value
-            .filter(Boolean);
-          console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 346 filters', filters);
-          this.filteredAndSortedEntities = this.filteredAndSortedEntities.filter(entity => {
-            for (const filter of filters) {
-              if (entity[filter]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1) {
-                console.log('Class: BaseEntitiesPage, Function: , Line 350 ',);
-                return true;
-              }
-            }
-            console.log('Class: BaseEntitiesPage, Function: , Line 354 ',);
-            return false
-
-            // return entity[key]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1;
-          })
-        }
-      }
-
-      if(value) {
-        this.filteredAndSortedEntities = this.filteredAndSortedEntities.filter(entity => {
-          return entity[key]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1;
-        })
-      }
-    }
-    // const filterName = Object.keys(filter)[0];
-    // console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 445 name', filterName);
-    // const filterValue = filter[filterName];
-    // if(filterValue) {
-    //   console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 446 this.entities', this.entities);
-    //   this.entitiesToShow = this.entities.filter(entity => {
-    //     return entity[filterName].toString().toLowerCase().indexOf(filterValue.toLowerCase()) !== -1;
-    //   })
-    //
-    //
-    //   console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 448 this.entitiesToShow', this.entitiesToShow);
-    //   return;
-    //   // this.dataSource.filter = JSON.stringify(e);
-    // }
-    // this.entitiesToShow = this.entities
-  }
-
-  applySort(){
-    const {sortField, sortOrder} = this.sort;
-    const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    this.filteredAndSortedEntities = this.filteredAndSortedEntities.sort((a, b) => {
-      const sorted = collator.compare(a[sortField], b[sortField]);
-      return sortOrder === 'asc' ? sorted : -1 * sorted;
-    })
-  }
-
-  applyPage() {
-    const { pageIndex, pageSize } = this.page;
-    const startIndex = +pageSize * +pageIndex;
-    const endIndex = +pageSize * (+pageIndex + 1);
-    console.log('this.entitiesToShow Class: CommonEntitiesPageComponent, Function: applyPage, Line 674 this.entitiesToShow' , this.entitiesToShow);
-    this.entitiesToShow.set(this.filteredAndSortedEntities.slice(startIndex, endIndex))
-  }
+  // applyFilter(){
+  //   console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 335 this.filterEvent' , this.filterEvent, Object.entries(this.filterEvent));
+  //   // this.filteredAndSortedEntities = this.entities.filter((i: any) => !i['name'].startsWith("@DEL_") );
+  //   for (const [key, value] of Object.entries(this.filterEvent)) {
+  //     console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 447 key, value' , key, value);
+  //     if(value) {
+  //       if (key.startsWith('search')) {
+  //         console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 340 ',);
+  //         const filters = key
+  //           .replace(/search\s*:\s*/i, "") // remove "search:" with optional spaces
+  //           .split(",")                    // split by comma
+  //           .map(s => s.trim())            // trim each value
+  //           .filter(Boolean);
+  //         console.log('Class: BaseEntitiesPage, Function: applyFilter, Line 346 filters', filters);
+  //         this.filteredAndSortedEntities = this.filteredAndSortedEntities.filter(entity => {
+  //           for (const filter of filters) {
+  //             if (entity[filter]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1) {
+  //               console.log('Class: BaseEntitiesPage, Function: , Line 350 ',);
+  //               return true;
+  //             }
+  //           }
+  //           console.log('Class: BaseEntitiesPage, Function: , Line 354 ',);
+  //           return false
+  //
+  //           // return entity[key]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1;
+  //         })
+  //       }
+  //     }
+  //
+  //     if(value) {
+  //       this.filteredAndSortedEntities = this.filteredAndSortedEntities.filter(entity => {
+  //         return entity[key]?.toString()?.toLowerCase()?.indexOf(value?.toLowerCase()) !== -1;
+  //       })
+  //     }
+  //   }
+  //   // const filterName = Object.keys(filter)[0];
+  //   // console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 445 name', filterName);
+  //   // const filterValue = filter[filterName];
+  //   // if(filterValue) {
+  //   //   console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 446 this.entities', this.entities);
+  //   //   this.entitiesToShow = this.entities.filter(entity => {
+  //   //     return entity[filterName].toString().toLowerCase().indexOf(filterValue.toLowerCase()) !== -1;
+  //   //   })
+  //   //
+  //   //
+  //   //   console.log('Class: BaseEntitiesTwoPage, Function: applyFilter, Line 448 this.entitiesToShow', this.entitiesToShow);
+  //   //   return;
+  //   //   // this.dataSource.filter = JSON.stringify(e);
+  //   // }
+  //   // this.entitiesToShow = this.entities
+  // }
+  //
+  // applySort(){
+  //   const {sortField, sortOrder} = this.sort;
+  //   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
+  //   this.filteredAndSortedEntities = this.filteredAndSortedEntities.sort((a, b) => {
+  //     const sorted = collator.compare(a[sortField], b[sortField]);
+  //     return sortOrder === 'asc' ? sorted : -1 * sorted;
+  //   })
+  // }
+  //
+  // applyPage() {
+  //   const { pageIndex, pageSize } = this.page;
+  //   const startIndex = +pageSize * +pageIndex;
+  //   const endIndex = +pageSize * (+pageIndex + 1);
+  //   console.log('this.entitiesToShow Class: CommonEntitiesPageComponent, Function: applyPage, Line 674 this.entitiesToShow' , this.entitiesToShow);
+  //   this.entitiesToShow.set(this.filteredAndSortedEntities.slice(startIndex, endIndex))
+  // }
 
   handleFilterChange(event: FilterEvent){
     console.log('Class: BaseEntitiesPage, Function: handleFilterChange, Line 378 ' , );
 
     this.filterEvent = event;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       console.log('Class: ImplEntitiesPageComponent, Function: handleFilterChange, Line 561 event' , event);
       this.filter$.next(event);
-    } else {
-      this.loading = true;
-      this.filteredAndSortedEntities = this.entities;
-      this.applyFilter();
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.filteredAndSortedEntities = this.entities;
+    //   this.applyFilter();
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   // handlePageChange(){
@@ -708,13 +609,13 @@ export class CommonEntitiesPageComponent
 
     // const {pageIndex, pageSize} = page
     this.page = page; //{pageIndex, pageSize} //: page., sortOrderpage as RbPage;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.page$.next(this.page);
-    } else {
-      this.loading = true;
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   switchSort(event: TableElement) {
@@ -728,28 +629,28 @@ export class CommonEntitiesPageComponent
       this.sort = {sortField: event.name, sortOrder: 'asc'};
     }
     console.log('!Class: BaseEntitiesTwoPage, Function: switchSort, Line 414 ' , this.sort);
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.sort$.next(this.sort);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
     this.sort = event.sort;
     this.page = event.page;
-    if (this.type === TableType.GET_WITH_QUERY) {
+    // if (this.type === TableType.GET_WITH_QUERY) {
       this.sort$.next(this.sort);
       this.page$.next(this.page);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
+    // } else {
+    //   this.loading = true;
+    //   this.applySort();
+    //   this.applyPage();
+    //   this.loading = false;
+    // }
 
     // if (this.type === TableType.GET_WITH_QUERY) {
     //   this.page$.next(this.page);
@@ -760,50 +661,50 @@ export class CommonEntitiesPageComponent
     // }
   }
 
-  handleSortChange(sort: RbSort){
-    console.log('!Class: BaseEntitiesTwoPage, Function: handleSortChange, Line 418 ' , sort);
-
-    this.sort = sort;
-    if (this.type === TableType.GET_WITH_QUERY) {
-      this.sort$.next(this.sort);
-    } else {
-      this.loading = true;
-      this.applySort();
-      this.applyPage();
-      this.loading = false;
-    }
-  }
+  // handleSortChange(sort: RbSort){
+  //   console.log('!Class: BaseEntitiesTwoPage, Function: handleSortChange, Line 418 ' , sort);
+  //
+  //   this.sort = sort;
+  //   // if (this.type === TableType.GET_WITH_QUERY) {
+  //     this.sort$.next(this.sort);
+  //   // } else {
+  //   //   this.loading = true;
+  //   //   this.applySort();
+  //   //   this.applyPage();
+  //   //   this.loading = false;
+  //   // }
+  // }
 
   onFilterEnabledChanged($event: boolean) {
     console.log('Class: BaseEntitiesPage, Function: onFilterEnabledChanged, Line 476 ' , );
     this.filterEnabled = $event;
   }
 
-  getTotal(): number {
-    return this.entityService.getTotal() || 0;
-    // throw new Error('BaseListPageComponent "getTotal" method not implemented');
-  }
+  // getTotal(): number {
+  //   return this.entityService.getTotal() || 0;
+  //   // throw new Error('BaseListPageComponent "getTotal" method not implemented');
+  // }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // getDialogRef(mode: DialogMode, entity?: any, extra?: any): MatDialogRef<any> {
   //   // throw new Error(
   //   //   'BaseListPageComponent "getDialogRef" method not implemented'
   //   // );
   //
-  //   const DIALOG_COMPONENTS: Record<string, any> = {
-  //     organization: OrganizationDialogComponent,
-  //     project: ProjectDialogComponent,
-  //     user: UserDialogComponent,
-  //     sourceData: SourceDataDialogComponent,
-  //     sourceType: SourceTypeDialogComponent,
-  //     group: GroupDialogComponent,
-  //     subject: SubjectDialogComponent,
-  //     source: SourceDialogComponent,
-  //     client: ClientDialogComponent,
-  //     questionnaire: QuestionnaireDialogComponent,
-  //     protocol: ProtocolDialogComponent,
-  //   }
-  //   return this.dialog.open(DIALOG_COMPONENTS[this.name], {
+  //   // const DIALOG_COMPONENTS: Record<string, any> = {
+  //   //   organization: OrganizationDialogComponent,
+  //   //   project: ProjectDialogComponent,
+  //   //   user: UserDialogComponent,
+  //   //   sourceData: SourceDataDialogComponent,
+  //   //   sourceType: SourceTypeDialogComponent,
+  //   //   group: GroupDialogComponent,
+  //   //   subject: SubjectDialogComponent,
+  //   //   source: SourceDialogComponent,
+  //   //   client: ClientDialogComponent,
+  //   //   questionnaire: QuestionnaireDialogComponent,
+  //   //   protocol: ProtocolDialogComponent,
+  //   // }
+  //   return this.dialog.open(SourceDataDialogComponent, {
   //     data: { mode, entity, ...this.data, extra}, //entities: this.entities },
   //     panelClass: 'tailwind-slide-panel',
   //     width: '50%',
@@ -830,37 +731,37 @@ export class CommonEntitiesPageComponent
     // return this.entityService.getByKey(entityName);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  update(entity: any): Observable<any> {
-    return this.entityService.update(entity);
-    // throw new Error('BaseListPageComponent "update" method not implemented');
-    // return this.entityService.update(entity);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  add(entity: any): Observable<any> {
-    console.log(555);
-    return this.entityService.add(entity);
-    // throw new Error('BaseListPageComponent "add" method not implemented');
-    // return this.entityService.add(entity)
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  delete(entity: any): Observable<string | number> {
-    if (this.type === TableType.GET_ALL_FROM_STORE) {
-      return this.entityService.delete(`${entity['name']},${entity['id']}`);
-    }
-    return this.entityService.delete(entity['name']);
-    // throw new Error('BaseListPageComponent "delete" method not implemented');
-  }
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // update(entity: any): Observable<any> {
+  //   return this.entityService.update(entity);
+  //   // throw new Error('BaseListPageComponent "update" method not implemented');
+  //   // return this.entityService.update(entity);
+  // }
+  //
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // add(entity: any): Observable<any> {
+  //   console.log(555);
+  //   return this.entityService.add(entity);
+  //   // throw new Error('BaseListPageComponent "add" method not implemented');
+  //   // return this.entityService.add(entity)
+  // }
+  //
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // delete(entity: any): Observable<string | number> {
+  //   if (this.type === TableType.GET_ALL_FROM_STORE) {
+  //     return this.entityService.delete(`${entity['name']},${entity['id']}`);
+  //   }
+  //   return this.entityService.delete(entity['name']);
+  //   // throw new Error('BaseListPageComponent "delete" method not implemented');
+  // }
 
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // getEntityName(entity: any): string {
-  //   return entity['name'];
-  //   // throw new Error(
-  //   //   'BaseListPageComponent "getEntityName" method not implemented'
-  //   // );
-  // }
+  getEntityName(entity: any): string {
+    return entity['name'];
+    // throw new Error(
+    //   'BaseListPageComponent "getEntityName" method not implemented'
+    // );
+  }
   //
   // isOrganization(entity: any): entity is AppOrganization {
   //   return entity.type === 'organization'; // or some other discriminator

@@ -12,11 +12,11 @@ export class SourceTypesResolver implements Resolve<AppSourceType[]> {
   constructor(private entityService: SourceTypeService) {}
 
   resolve(
-    route: ActivatedRouteSnapshot,
+    // route: ActivatedRouteSnapshot,
   ):
     | Observable<AppSourceType[]>
     | Promise<AppSourceType[]>
     | AppSourceType[] {
-    return this.entityService.getWithQuery(route.queryParams);
+    return this.entityService.getAll(); //getWithQuery(route.queryParams);
   }
 }

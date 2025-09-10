@@ -1,13 +1,13 @@
-@if (loading) {
-  <rb-loader [loadingText]='"loading" | translate' />
-}
+<!--@if (loading) {-->
+<!--  <rb-loader [loadingText]='"loading" | translate' />-->
+<!--}-->
 
 <rb-breadcrumb />
 
 <div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
   <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">
-    {{ ENTITIES["sourceData"].icon }}
+    {{ ENTITIES.sourceData.icon }}
   </span>
     {{ entity.name }}
   </h2>

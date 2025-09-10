@@ -1,6 +1,6 @@
 import {Component, input} from "@angular/core";
 import {TagComponent} from "../../../../components/tag/tag.component";
-import {SourceTypeScope} from '../../../../../shared/models/radar-source-type.model';
+import {SourceTypeScope} from '../../models/source-type';
 
 @Component({
   selector: 'rb-source-type-scope',

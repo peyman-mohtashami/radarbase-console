@@ -1,6 +1,6 @@
 // import { BaseDef } from './base.model';
-import { RadarSourceType } from './radar-source-type.model';
 import { RadarProject } from './radar-project.model';
+import {RadarSourceType} from '../../admin/entities/source-type/models/source-type';
 
 export interface RadarSource {
   id: number | string;

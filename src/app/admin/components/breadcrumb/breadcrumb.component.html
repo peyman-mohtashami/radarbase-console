@@ -1,12 +1,16 @@
 <nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">
   <div class='flex flex-wrap gap-2 items-center'>
-    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer" rbBackButton>chevron_left</span>
+    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"
+          rbBackButton>
+      chevron_left
+    </span>
+
     @for (breadcrumb of breadcrumbs; track breadcrumb; let even = $even; let last = $last) {
       @if (even) {
-        <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!"  mat-flat-button
+        <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
                 [routerLink]="[]">
           <span class="flex items-center gap-1">
-            <span class="material-symbols-outlined text-lg" matPrefix>{{breadcrumb.icon}}</span>
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ breadcrumb.icon }}</span>
             <span>{{ `ADMIN.${breadcrumb.name}.title.plural` | translate }}</span>
           </span>
         </button>

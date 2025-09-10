@@ -3,6 +3,7 @@ export enum DialogMode {
   VIEW = 'view',
   EDIT = 'edit',
   DELETE = 'delete',
+  CLOSE = 'close',
 }
 
 export enum DialogCommand {

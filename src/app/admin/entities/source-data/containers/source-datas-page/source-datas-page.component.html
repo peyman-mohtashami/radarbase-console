@@ -1,5 +1,5 @@
 <rb-entities-page-header [showTitle]="true"
-                         [entityName]="name"
+                         [entityName]="ENTITY_NAME.sourceData"
                          [enableAddButton]="!data['disableAddButton']"
                          [isGridView]="gridViewEnabled ? gridView : undefined"
                          [permission]="[{role: ROLES.SYS_ADMIN}]"
@@ -14,11 +14,11 @@
   }
 </rb-entities-page-header>
 
-@if (loading) {
+@if (loading()) {
   <rb-loader />
 }
 
-@let tp = (config$ | async)?.entities?.[name]?.fields ?? {};
+@let tp = (config$ | async)?.entities?.[ENTITY_NAME.sourceData]?.fields ?? {};
 <!--&#45;&#45;{{tp | json}}-->
 <!--&#45;&#45;{{tableProperties | json}}&#45;&#45;-->
 <!--@if (!gridView) {-->
@@ -50,7 +50,7 @@
                    [class.flex-1]="!property.width"
                    [class.shrink-0]="!!property.width">
                 <button class="rb-table-head group" (click)="switchSort(property)">
-                  <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>
+                  <span>{{ 'ADMIN.sourceData.' + property.name + '.tableLabel' | translate }}</span>
                   @if (property.sortable) {
                     <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">
                       <span class="rb-sort-icon material-symbols-outlined">
@@ -79,7 +79,7 @@
 <!--         (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
     @if (entitiesToShow()?.length) {
       @for (entity of entitiesToShow(); track entity.id) {
-        @switch (name) {
+        @switch (ENTITY_NAME.sourceData) {
 <!--          @case ('organization') {-->
 <!--            <rb-organization-table-row [entity]="entity"-->
 <!--                                       (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
@@ -107,8 +107,8 @@
           @case ('sourceData') {
 <!--          &#45;&#45;{{entityService.updated()}} &#45;&#45;-->
             <rb-source-data-table-row [entity]="entity"
-                                      [updated]="entityService.updated()" />
-<!--                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
+                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
+<!--                                      [updated]="entityService.updated()" />-->
             <!--                                  [expandedElement]="expandedElement"-->
           }
 <!--          @case ('client') {-->
@@ -186,7 +186,7 @@
 
 <div class="flex items-center px-4 text-sm">
   @if (!entities?.length) {
-    <span>{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>
+    <span>{{ 'ADMIN.sourceData.noItemFound' | translate }}</span>
   }
   @if (entities?.length && !entitiesToShow()?.length) {
     <span>{{ 'No item found with this filter' | translate }}</span>

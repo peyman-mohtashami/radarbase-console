@@ -1,8 +1,8 @@
 // import { BaseDef } from './base.model';
 import { RadarGroup } from './radar-group.model';
 // import { RadarOrganizationDTO } from './radar-organization.model';
-import { RadarSourceType } from './radar-source-type.model';
 import { RadarOrganization } from "./radar-organization.model";
+import {RadarSourceType} from '../../admin/entities/source-type/models/source-type';
 
 // export interface RadarProjectDTO
 //   extends Record<
