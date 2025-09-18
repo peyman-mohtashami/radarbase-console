@@ -1,84 +1,56 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {JsonPipe, Location} from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, effect, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-
-import { SourceTypeDialogComponent } from '../source-type-dialog/source-type-dialog.component';
 import { DialogMode } from '../../../../enums/dialog';
-import { BaseEntityPage } from '../../../../components/base-entity-page/base-entity-page';
 import { AppSourceType } from "../../models/source-type";
 import { ENTITY_NAME } from '../../../../enums/entities';
-import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {
-  DetailsPageHeaderComponent
-} from "../../../../components/base-details/details-page-header/details-page-header.component";
-import {SourceTypeDetailsComponent} from "../../components/source-type-details/source-type-details.component";
-import {SourceTypeService} from "../../services/sourceType.service";
-import {BreadcrumbComponent} from '../../../../components/breadcrumb/breadcrumb.component';
 import {Subject} from 'rxjs';
-import {IBaseEntityService} from '../../../../services/base-entity.service.interface';
 import {takeUntil} from 'rxjs/operators';
-import {HttpErrorResponse} from '@angular/common/http';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
+import {ENTITIES} from '../../../../consts/entities';
+import {BackButtonDirective} from '../../../../directives/back-button.directive';
+import {MatButton} from '@angular/material/button';
+import {MatCard, MatCardContent} from '@angular/material/card';
+import {MatPrefix} from '@angular/material/input';
+import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
+import {ActionsComponent} from '../../components/actions/actions.component';
 
 @Component({
   selector: 'rb-source-type-page',
   templateUrl: './source-type-page.component.html',
   imports: [
-    LoaderComponent,
+    MatCard,
+    MatCardContent,
+    BackButtonDirective,
+    MatButton,
     TranslatePipe,
-    DetailsPageHeaderComponent,
+    RouterLink,
+    MatPrefix,
     SourceTypeDetailsComponent,
-    BreadcrumbComponent,
-    JsonPipe
+    ActionsComponent
   ]
 })
 export class SourceTypePageComponent implements OnInit, OnDestroy {
-//   extends
-// } BaseEntityPage<
-//   AppSourceType,
-//   SourceTypeDialogComponent
-// > {
   protected readonly ENTITY_NAME = ENTITY_NAME;
+  protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
-  entity: AppSourceType; // = this.activatedRoute.snapshot.data['entity'];
-  name: string = '';
-  loading = false;
-  error?: string;
-  _destroy$: Subject<void> = new Subject<void>();
+
+  entity$: WritableSignal<AppSourceType>;
+
+  private _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
-    dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private location: Location,
-    private entityDialogService: SourceTypeDialogService, //SourceTypeEntityService
+    private dialogService: SourceTypeDialogService,
   ) {
-    this.entity = this.activatedRoute.snapshot.data['entity'];
+    this.entity$ = signal(this.activatedRoute.snapshot.data['entity']);
+    this.initializeDialogEffect();
   }
 
   ngOnInit(): void {
-    this.activatedRoute.fragment
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(fragment => {
-        if (!fragment) return;
-
-        const fragmentItems = fragment.split('/');
-
-        const actionType = fragmentItems[1];
-        const actionEntity = fragmentItems[2];
-        const actionId = fragmentItems[3];
-
-        if (actionEntity === ENTITY_NAME.sourceType) {
-          if (actionType === 'edit') {
-            this.entityDialogService.openDialog(DialogMode.EDIT, this.entity);
-          } else if (actionType === 'delete') {
-            this.entityDialogService.openDialog(DialogMode.DELETE, this.entity);
-          }
-        }
-      });
+    this.handleDialogUrlFragment();
   }
 
   ngOnDestroy() {
@@ -86,27 +58,47 @@ export class SourceTypePageComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  onAction(mode: DialogMode, entity: AppSourceType): void {
-    return this.entityDialogService.openDialog(mode, entity);
+  private initializeDialogEffect() {
+    effect(() => {
+      const updated = this.dialogService.dialogUpdateEvent$();
+      if (updated) {
+        switch (updated.mode) {
+          case DialogMode.EDIT:
+            if (updated?.entity) {
+              this.entity$.set(updated.entity);
+            }
+            this.navigateOnUpdateSuccess(updated.entity);
+            break;
+          case DialogMode.DELETE:
+            this.navigateOnDeleteSuccess();
+            break;
+        }
+      }
+    })
   }
 
-  // onUpdateSuccess(entity: T, dialogRef: MatDialogRef<U>): void {
-  //   this.entity = entity;
-  //   this.navigateOnUpdateSuccess(entity);
-  //   dialogRef.close();
-  // }
-  //
-  // onError(error: HttpErrorResponse, dialogRef: MatDialogRef<U>) {
-  //   dialogRef.componentInstance.errorHappened(error);
-  // }
-
-  onBack() {
-    this.location.back();
+  private handleDialogUrlFragment() {
+    this.activatedRoute.fragment
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(fragment => {
+        if (fragment) this.processUrlFragment(fragment);
+      });
   }
 
+  private processUrlFragment(fragment: string) {
+    const [_, action, entityType] = fragment.split('/');
+    if (entityType === 'sourceType') {
+      switch(action) {
+        case 'edit':
+          this.dialogService.openDialog(DialogMode.EDIT, this.entity$());
+          break;
+        case 'delete':
+          this.dialogService.openDialog(DialogMode.DELETE, this.entity$());
+      }
+    }
+  }
 
   navigateOnUpdateSuccess(entity: AppSourceType) {
-    //! name
     this.router
       .navigate([
         '/admin',

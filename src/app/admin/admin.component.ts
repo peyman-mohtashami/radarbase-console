@@ -68,7 +68,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       ])
       .pipe(takeUntil(this._destroy$), shareReplay())
       .subscribe((result) => {
-        console.log('Class: AdminComponent, Function: , Line 71 result' , result);
         this.isHandset =
           result.breakpoints[Breakpoints.XSmall] ||
           result.breakpoints[Breakpoints.Small];

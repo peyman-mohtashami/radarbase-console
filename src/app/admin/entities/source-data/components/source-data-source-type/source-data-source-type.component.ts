@@ -10,5 +10,5 @@ import {RadarSourceType} from '../../../source-type/models/source-type';
   ]
 })
 export class SourceDataSourceTypeComponent {
-  sourceType = input<RadarSourceType>();
+  sourceType$ = input<RadarSourceType>();
 }

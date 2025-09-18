@@ -1,16 +1,22 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable, of} from 'rxjs';
 import {SourceTypeService} from './sourceType.service';
 import {AppSourceType} from '../models/source-type';
 import {SourceTypeDialogComponent} from '../containers/source-type-dialog/source-type-dialog.component';
 
+export interface UpdateTrigger {
+  mode: DialogMode;
+  entity: AppSourceType;
+}
+
 @Injectable({providedIn: 'root'})
 export class SourceTypeDialogService {
-  updateTrigger$ = new BehaviorSubject<string>('init');
+
+  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   constructor(
     private entityService: SourceTypeService,
@@ -19,70 +25,56 @@ export class SourceTypeDialogService {
     private dialog: MatDialog,
   ) {}
 
-  openDialog(mode: DialogMode, entity?: any, extra?: any) {
-    const dialogRef = this.getDialogRef(mode, entity, extra);
+  openDialog(mode: DialogMode, entity?: AppSourceType) {
+    if (mode !== DialogMode.ADD && !entity) {
+      this.clearFragmentUrl();
+      return;
+    }
 
-    const dialogActionSubscription =
-      dialogRef.componentInstance.actionTriggered.subscribe({
-        next: (value: { action: DialogMode | string; entity: any }) => {
-          if (value.action === DialogMode.EDIT) {
-            // this.updated = entity?.['id'];
-            this.update(value.entity).subscribe({
-              next: () => this.onSuccess(mode, dialogRef, value.entity),
-              error: (err) => this.onError(err, dialogRef),
-            });
-          } else if (value.action === DialogMode.ADD) {
-            this.add(value.entity)
-              .subscribe({
-                next: (res) => this.onSuccess(mode, dialogRef, res),
-                error: (err) => this.onError(err, dialogRef),
-              });
-          } else if (value.action === DialogMode.DELETE) {
-            this.delete(value.entity).subscribe({
-              next: () => this.onSuccess(mode, dialogRef, value.entity),
-              error: (err) => this.onError(err, dialogRef),
-            });
-          } else if (value.action === DialogMode.CLOSE) {
-            this.router.navigate([], {
-              relativeTo: this.activatedRoute,
-              queryParamsHandling: 'preserve'
-            }).then();
-          }
-        },
-      });
+    const dialogRef = this.createDialogRef(mode, entity);
+
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
+      next: (value: { action: DialogMode; entity: AppSourceType }) => {
+        this.processDialogAction(value.action, value.entity).subscribe({
+          next: (res) => {
+            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            dialogRef.close();
+          },
+          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+        });
+      }
+    });
+
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();
     });
   }
 
-  onSuccess(mode: string, dialogRef: MatDialogRef<any>, entity: any): void {
-    this.updateTrigger$.next(entity['id']?.toString() || '0');
-    this.applyStateChangesToUrlQueryParams({[mode]: null});
-    dialogRef.close();
-    // this.updated = entity['id'];
-    setTimeout(() => {
-      // this.updated = undefined;
-    }, 1000);
+  private processDialogAction(actionType: DialogMode, entity: AppSourceType): Observable<AppSourceType | void> {
+    switch (actionType) {
+      case DialogMode.ADD:
+        return this.entityService.add(entity);
+      case DialogMode.EDIT:
+        return this.entityService.update(entity);
+      case DialogMode.DELETE:
+        return this.entityService.delete(entity);
+      default:
+        this.clearFragmentUrl();
+        return of();
+    }
   }
 
-  onError(error: HttpErrorResponse, dialogRef: MatDialogRef<any>) {
-    dialogRef.componentInstance.errorHappened(error);
+  clearFragmentUrl() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined // Explicitly remove the fragment
+    }).then();
   }
 
-  applyStateChangesToUrlQueryParams(queryParams: Params): void {
-    this.router
-      .navigate([], {
-        replaceUrl: true,
-        queryParams: queryParams,
-        queryParamsHandling: 'merge',
-        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
-      })
-      .then();
-  }
-
-  getDialogRef(mode: DialogMode, entity?: AppSourceType, extra?: any): MatDialogRef<any> {
+  createDialogRef(mode: DialogMode, entity?: AppSourceType): MatDialogRef<SourceTypeDialogComponent> {
     return this.dialog.open(SourceTypeDialogComponent, {
-      data: {mode, entity, extra},
+      data: {mode, entity},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -93,49 +85,4 @@ export class SourceTypeDialogService {
       restoreFocus: false
     });
   }
-
-  update(entity: AppSourceType): Observable<AppSourceType> {
-    return this.entityService.update(entity);
-  }
-
-  add(entity: AppSourceType): Observable<AppSourceType> {
-    return this.entityService.add(entity);
-  }
-
-  delete(entity: AppSourceType): Observable<string | number> {
-    return this.entityService.delete(entity.name);
-  }
-
-  // handleDialogUrlFragment() {
-  //   this.activatedRoute.fragment
-  //     .pipe(takeUntil(this._destroy$))
-  //     .subscribe(fragment => {
-  //       if (!fragment) return;
-  //
-  //       const fragmentItems = fragment.split('/');
-  //
-  //       const actionType = fragmentItems[1];
-  //       const actionEntity = fragmentItems[2];
-  //       const actionId = fragmentItems[3];
-  //
-  //       if (actionEntity === 'sourceData') {
-  //         if (actionType === 'add') {
-  //           this.openDialog(DialogMode.ADD, this.data);
-  //         } else if (actionType === 'edit') {
-  //           const entity = this.entities.find(e => e['id'] == actionId);
-  //           this.openDialog(DialogMode.EDIT, entity, this.data);
-  //         } else if (actionType === 'delete') {
-  //           // const id = fragment.split('/')[2];
-  //           // console.log('Class: ImplEntitiesPageComponent, Function: , Line 274 id', id);
-  //           // console.log('Class: ImplEntitiesPageComponent, Function: , Line 275 this.entities', this.entities);
-  //           const entity = this.entities.find(e => {
-  //             // console.log('Class: ImplEntitiesPageComponent, Function: , Line 277 e ', e, e['id'], id, e['id'] == id);
-  //             return e['id'] == actionId
-  //           });
-  //           this.openDialog(DialogMode.DELETE, entity, this.data);
-  //         }
-  //       }
-  //     });
-  // }
-
 }

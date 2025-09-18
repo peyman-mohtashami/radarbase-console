@@ -550,10 +550,14 @@
       "plural": "Source Types"
     },
     "id": {
-      "tableLabel": "ID",
-      "label": "ID"
+      "tableLabel": "ID66",
+      "label": "ID66"
     },
     "name": {
+      "tableLabel": "Name",
+      "label": "Name"
+    },
+    "_name": {
       "tableLabel": "Name",
       "label": "Name"
     },

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
+import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppSourceType } from "../models/source-type";
 import {SourceTypeService} from "./sourceType.service";
@@ -11,12 +8,10 @@ import {SourceTypeService} from "./sourceType.service";
 export class SourceTypesResolver implements Resolve<AppSourceType[]> {
   constructor(private entityService: SourceTypeService) {}
 
-  resolve(
-    // route: ActivatedRouteSnapshot,
-  ):
+  resolve():
     | Observable<AppSourceType[]>
     | Promise<AppSourceType[]>
     | AppSourceType[] {
-    return this.entityService.getAll(); //getWithQuery(route.queryParams);
+    return this.entityService.getAll();
   }
 }

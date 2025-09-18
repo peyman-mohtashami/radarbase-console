@@ -48,11 +48,11 @@ export const adminRoutes: Routes = [
       //   loadChildren: () =>
       //     import('./entities/project/projects.routes').then((m) => m.projectRoutes),
       // },
-      // {
-      //   path: ROUTES.SOURCE_TYPES,
-      //   loadChildren: () =>
-      //     import('./entities/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
-      // },
+      {
+        path: ROUTES.SOURCE_TYPES,
+        loadChildren: () =>
+          import('./entities/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
+      },
       {
         path: ROUTES.SOURCE_DATA,
         loadChildren: () =>

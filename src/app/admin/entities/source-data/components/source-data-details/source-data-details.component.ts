@@ -24,8 +24,8 @@ export class SourceDataDetailsComponent {
   protected readonly TableElements = TableElements;
   protected readonly ENTITY_NAME = ENTITY_NAME;
 
-  entity = input.required<AppSourceData>();
-  config = input<Record<string, boolean>>({})
-  mode = input<DialogMode>();
-  type = input<DetailType>();
+  entity$ = input.required<AppSourceData>();
+  config$ = input<Record<string, boolean>>({})
+  mode$ = input<DialogMode>();
+  type$ = input<DetailType>();
 }

@@ -11,5 +11,5 @@ import {SourceTypeScope} from '../../models/source-type';
 })
 export class SourceTypeScopeComponent {
   protected readonly SourceTypeScope = SourceTypeScope;
-  sourceTypeScope = input<SourceTypeScope>()
+  sourceTypeScope$ = input<SourceTypeScope>()
 }

@@ -24,5 +24,6 @@ export interface TableElement {
   extensionClass?: string;
   classes?: string;
   showInDelete?: boolean;
+  editable?: boolean;
 }
 

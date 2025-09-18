@@ -1,20 +1,20 @@
 <rb-details [properties]="TableElements"
             [name]="ENTITY_NAME.sourceData"
-            [entity]="entity()"
-            [config]="config()"
-            [type]="type()"
+            [entity]="entity$()"
+            [config]="config$()"
+            [type]="type$()"
             [customTemplate]="detailsTemplate" />
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('sourceType') {
-      <rb-source-data-source-type [sourceType]="entity().sourceType"/>
+      <rb-source-data-source-type [sourceType$]="entity$().sourceType"/>
     }
     @case ('processingState') {
-      <rb-source-data-processing-state [processingState]="entity().processingState"/>
+      <rb-source-data-processing-state [processingState$]="entity$().processingState"/>
     }
     @default {
-      {{ entity()[property.name] }}
+      {{ entity$()[property.name] }}
     }
   }
 </ng-template>

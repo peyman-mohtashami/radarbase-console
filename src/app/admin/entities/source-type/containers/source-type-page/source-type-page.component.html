@@ -1,11 +1,34 @@
-@if (loading) {
-  <rb-loader [loadingText]='"loading" | translate' />
-}
+<nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">
+  <div class='flex flex-wrap gap-2 items-center'>
+    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"
+          rbBackButton>
+      chevron_left
+    </span>
+    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'source-types']">
+      <span class="flex items-center gap-1">
+        <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.sourceType.icon }}</span>
+        <span>{{ `ADMIN.sourceData.title.plural` | translate }}</span>
+      </span>
+    </button>
+    <span class="text-xs font-bold">{{`${entity$().producer}/${entity$().model}/${entity$().catalogVersion}`}}</span>
+  </div>
+</nav>
 
-<rb-breadcrumb />
-{{entity | json}}
-<rb-details-page-header [entity]="entity"
-                        [entityName]="ENTITY_NAME.sourceType"
-                        (action)="onAction($event.mode, $event.entity)">
-  <rb-source-type-details [entity]='entity' />
-</rb-details-page-header>
+<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+  <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">
+    {{ ENTITIES.sourceType.icon }}
+  </span>
+    {{`${entity$().producer}/${entity$().model}/${entity$().catalogVersion}`}}
+  </h2>
+  <div class='flex gap-1 ml-auto'>
+    <app-actions [entity$]="entity$()" [isExpanded$]="false"/>
+  </div>
+</div>
+
+<mat-card class="m-4 p-4 text-sm border">
+  <mat-card-content>
+    <rb-source-type-details [entity$]='entity$()'/>
+  </mat-card-content>
+</mat-card>

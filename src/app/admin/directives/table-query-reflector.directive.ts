@@ -105,7 +105,7 @@ export class TableQueryReflectorDirective implements OnInit {
 
   private checkActivePageQuery(): void {
     const { pageSize, pageIndex } = this.activatedRoute.snapshot.queryParams;
-    this._page = {pageIndex: pageIndex ?? 0, pageSize: pageSize ?? this.defaultPageSize, length: 0};
+    this._page = {pageIndex: +(pageIndex ?? 0), pageSize: +(pageSize ?? this.defaultPageSize), length: 0};
   }
 
   private checkActiveSortQuery(): void {

@@ -20,7 +20,7 @@ import {FilterItem} from "../../../models/table.model";
 import {locale} from "../../../../core/locale/store/locale.selectors";
 import {ValidatorError} from "../../../../shared/utils/validators";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatInput, MatSuffix} from "@angular/material/input";
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -29,12 +29,10 @@ import {
   MatDateRangePicker, MatEndDate, MatStartDate
 } from "@angular/material/datepicker";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
-import {MatChipListbox, MatChipOption} from "@angular/material/chips";
-// import {LocaleModule} from "../../../../core/locale/locale.module";
-import {MatLabel, MatSelect} from "@angular/material/select";
+import {MatChip, MatChipGrid, MatChipListbox, MatChipOption, MatChipRow, MatChipSet} from "@angular/material/chips";
+import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
-import {JsonPipe, NgForOf, NgIf} from "@angular/common";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {LocalDateComponent} from "../../../../core/locale/components/local-date/local-date.component";
 
 export interface FilterEvent {
@@ -62,13 +60,8 @@ export interface FilterEvent {
     MatFormField,
     MatChipListbox,
     MatChipOption,
-    // LocaleModule,
     MatIconButton,
-    NgIf,
-    NgForOf,
-    // MatLabel, MatHint,
-    // JsonPipe,
-    MatEndDate, MatStartDate, MatSuffix, LocalDateComponent,
+    MatEndDate, MatStartDate, MatSuffix, LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton,
   ]
 })
 export class DataTableFilterComponent implements OnInit, OnDestroy {

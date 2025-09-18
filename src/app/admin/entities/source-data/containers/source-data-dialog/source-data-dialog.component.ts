@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, effect, EventEmitter, Inject, OnInit, Output, signal} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
@@ -8,8 +17,7 @@ import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-ti
 import {
   DialogBodyDescriptionComponent
 } from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
-import {AsyncPipe, JsonPipe} from "@angular/common";
-import {ErrorMessageComponent} from "../../../../../core/error/components/message/error-message.component";
+import {AsyncPipe} from "@angular/common";
 import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatOption} from "@angular/material/core";
 import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
@@ -45,14 +53,12 @@ import {AppSourceType} from '../../../source-type/models/source-type';
     MatSelectAutocompleteComponent,
     MatSelect,
     MatOption,
-    ErrorMessageComponent,
     DialogActionsComponent,
     AsyncPipe,
-    JsonPipe,
     MatError,
   ]
 })
-export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, OnDestroy {
+export class SourceDataDialogComponent implements OnInit, AfterViewInit {
   protected readonly ProcessingState = ProcessingState;
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
@@ -77,8 +83,8 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
 
   sourceTypesOptions: RadarOption[] = [];
 
-  loading = signal(false);
-  error = signal(false);
+  loading$ = signal(false);
+  error$ = signal<HttpErrorResponse | null>(null);
 
   @Output()
   actionTriggered = new EventEmitter<{ action: DialogMode, entity?: AppSourceData }>();
@@ -88,8 +94,8 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
   config$?: Observable<Record<string, any>>;
 
   readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)), // Optional debounce for optimization
-    {initialValue: this.form.getRawValue()} // Provide the initial value from the form
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
   );
 
   // dateFormat = 'mm/dd/yyy';
@@ -97,7 +103,7 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
   constructor(
     private dialogRef: MatDialogRef<SourceDataDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: {
+    public dialogData: {
       mode: DialogMode;
       entity: AppSourceData;
       extra: any;
@@ -115,22 +121,16 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
     effect(() => {
       const formValue = this.formValueChanges();
       if (formValue) {
-        this.error.set(false);
+        this.error$.set(null);
       }
     });
-
-
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      console.log('Class: SourceDataDialogComponent, Function: , Line 127 this.data.extra' , this.data.extra);
-      this.sourceTypesOptions = (this.data.extra.sourceTypes as AppSourceType[]).sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-      console.log('Class: SourceDataDialogComponent, Function: , Line 131 this.sourceTypesOptions' , this.sourceTypesOptions);
-      this.form?.patchValue(this.data.entity);
-    }, 1000);
+    this.sourceTypesOptions = (this.dialogData.extra.sourceTypes as AppSourceType[]).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    this.form?.patchValue(this.dialogData.entity);
   }
 
   onAction($event: string) {
@@ -148,25 +148,25 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
   }
 
   save(): void {
-    this.error.set(false);
-    this.loading.set(true);
+    this.error$.set(null);
+    this.loading$.set(true);
     this.actionTriggered.emit({
-      action: this.data.mode,
-      entity: {...this.data.entity, ...this.form?.value},
+      action: this.dialogData.mode,
+      entity: {...this.dialogData.entity, ...this.form?.value},
     });
   }
 
   delete(): void {
-    this.error.set(false);
-    this.loading.set(true);
-    if (this.data.entity) {
-      this.actionTriggered.emit({action: this.data.mode, entity: this.data.entity});
+    this.error$.set(null);
+    this.loading$.set(true);
+    if (this.dialogData.entity) {
+      this.actionTriggered.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
     }
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(true);
+    this.loading$.set(false);
+    this.error$.set(error);
   }
 
   ngAfterViewInit() {
@@ -183,7 +183,6 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit { //}, O
 
     setTimeout(() => {
       this.actionTriggered.emit({action: DialogMode.CLOSE});
-      //   this.actionTriggered.emit({ action: 'close' });
       this.dialogRef.close();
     }, 300);
   }

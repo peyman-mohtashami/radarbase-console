@@ -11,5 +11,5 @@ import {TranslatePipe} from "@ngx-translate/core";
   ]
 })
 export class SourceTypeSourceRegistrationComponent {
-  canRegisterDynamically = input<boolean>();
+  canRegisterDynamically$ = input<boolean>();
 }

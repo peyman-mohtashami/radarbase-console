@@ -1,14 +1,14 @@
-<rb-dialog-title [mode]='data.mode'
+<rb-dialog-title [mode]='dialogData.mode'
                  [name]="ENTITY_NAME.sourceData"
                  (closeClicked)='onAction("close")' />
 
 @let configFields = (config$ | async)?.['fields'] ?? {};
 
 <mat-dialog-content>
-  @if (data.mode === DialogMode.VIEW || data.mode === DialogMode.DELETE) {
-    <rb-dialog-body-description [mode]="data.mode"
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="dialogData.mode"
                                 [label]="'Source Data'"
-                                [entityName]="data.entity.sourceDataName" />
+                                [entityName]="dialogData.entity.sourceDataName" />
   }
 <!--<pre>-->
 <!--  {{data.data|json}}-->
@@ -35,9 +35,9 @@
 <!--    </form>-->
 <!--  }-->
 
-  @if (data.mode === DialogMode.ADD || data.mode === DialogMode.EDIT) {
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]="form" novalidate autocomplete="off">
-      @if (data.mode !== DialogMode.ADD) {
+      @if (dialogData.mode !== DialogMode.ADD) {
         @if(!floatLabel) {
           <label for="clientId" class="text-sm">{{ 'ADMIN.sourceData.id.label' | translate }}</label>
         }
@@ -183,12 +183,12 @@
   }
 </mat-dialog-content>
 
-{{error() | json}}
-@if (error()) {
-  {{error()}}
-  <rb-message />
+@if (error$()) {
+  <div class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+      {{error$()?.error.errorCode | translate}}
+  </div>
 }
 
-<rb-dialog-actions [mode]='data.mode'
+<rb-dialog-actions [mode]='dialogData.mode'
                    [form]='form'
                    (actionTriggered)='onAction($event)' />

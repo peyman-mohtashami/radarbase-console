@@ -106,14 +106,10 @@ export class localeService {
    * @param language Language to register
    */
   registerCulture(language: Language): void {
-    console.log('Class: localeService, Function: registerCulture, Line 95 language' , language);
     const localeCode = language.locale;
-    console.log('Class: localeService, Function: registerCulture, Line 97 localeCode' , localeCode);
     if (!localeCode) return;
-    console.log('Class: localeService, Function: registerCulture, Line 98 localeCode' , localeCode);
 
     const localeId = localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
-    console.log('Class: localeService, Function: registerCulture, Line 102 localeId' , localeId);
     this.localeInitializer(localeId);
     this.dateAdapter.setLocale(localeId);
     this.switchLanguage(language).subscribe();

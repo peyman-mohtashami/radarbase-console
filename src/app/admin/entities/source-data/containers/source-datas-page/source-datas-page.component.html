@@ -1,205 +1,91 @@
 <rb-entities-page-header [showTitle]="true"
                          [entityName]="ENTITY_NAME.sourceData"
-                         [enableAddButton]="!data['disableAddButton']"
-                         [isGridView]="gridViewEnabled ? gridView : undefined"
-                         [permission]="[{role: ROLES.SYS_ADMIN}]"
-                         (gridListToggled)="gridView = !gridView">
-<!--                         (action)="onAction(DialogMode.ADD)">-->
-  @if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_FILTERS) {
+                         [enableAddButton]="true"
+                         [isGridView]="undefined"
+                         [permission]="[{role: ROLES.SYS_ADMIN}]">
+<!--                         GRID_VIEW_ENABLED ? gridView : undefined"-->
+<!--                         (gridListToggled)="gridView = !gridView">-->
+  @if (TABLE_FILTERS.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
-                          [filters]='filters'
+                          [filters]='TABLE_FILTERS'
                           [filterOpened]='isFilterOpened'
                           (filterChanged)='handleFilterChange($event)'
-                          (filterEnableChanged)="onFilterEnabledChanged($event)" />
+                          (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }
 </rb-entities-page-header>
 
-@if (loading()) {
-  <rb-loader />
+@if (loading$()) {
+  <rb-loader/>
 }
 
 @let tp = (config$ | async)?.entities?.[ENTITY_NAME.sourceData]?.fields ?? {};
-<!--&#45;&#45;{{tp | json}}-->
-<!--&#45;&#45;{{tableProperties | json}}&#45;&#45;-->
-<!--@if (!gridView) {-->
 
-<!--       [class]="gridView ? 'hidden!' : ''"-->
-  <div [class]="!gridView ? 'rb-table': 'grid-container'"
-       rbTableQueryReflector
-       [page]="page"
-       [sort]="sort"
-       [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
-       (activeQueryParams)="handleActiveQueryChange($event)">
-<!--       (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
+<!--<div [class]="!gridView ? 'rb-table': 'grid-container'"-->
+<div class="rb-table"
+     rbTableQueryReflector
+     [page]="page$()"
+     [sort]="sort$()"
+     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
+     (activeQueryParams)="handleActiveQueryChange($event)">
 
-    @if(!gridView && entitiesToShow().length) {
-      <div class="rb-table-header mat-app-background">
-        @for (property of tableProperties; track property.name) {
-          @if (tp[property.name] !== false) {
-            @if (property.name === 'checkbox') {
-              <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
-                   [class.flex-1]="!property.width"
-                   [class.shrink-0]="!!property.width">
+  @if (entitiesToShow$().length) {
+    <div class="rb-table-header mat-app-background">
+      @for (tableElement of TABLE_ELEMENTS; track tableElement.name) {
+        @if (tp[tableElement.name] !== false) {
+          @if (tableElement.name === 'checkbox') {
+            <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+                 [class.flex-1]="!tableElement.width"
+                 [class.shrink-0]="!!tableElement.width">
               <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            [aria-label]="checkboxLabel()" />
-              </div>
-            } @else {
-              <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
-                   [class.flex-1]="!property.width"
-                   [class.shrink-0]="!!property.width">
-                <button class="rb-table-head group" (click)="switchSort(property)">
-                  <span>{{ 'ADMIN.sourceData.' + property.name + '.tableLabel' | translate }}</span>
-                  @if (property.sortable) {
-                    <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">
+                            [aria-label]="checkboxLabel()"/>
+            </div>
+          } @else {
+            <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+                 [class.flex-1]="!tableElement.width"
+                 [class.shrink-0]="!!tableElement.width">
+              <button class="rb-table-head group" [class]="tableElement.sortable ? 'cursor-pointer': ''"
+                      (click)="switchSort(tableElement)">
+                <span>{{ 'ADMIN.sourceData.' + tableElement.name + '.tableLabel' | translate }}</span>
+                @if (tableElement.sortable) {
+                  <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableElement.name">
                       <span class="rb-sort-icon material-symbols-outlined">
-                        {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                        {{ sort$().sortField === tableElement.name && sort$().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
                       </span>
-                    </div>
-                  }
-                </button>
-              </div>
-            }
+                  </div>
+                }
+              </button>
+            </div>
           }
-        }
-<!--        <div class='w-28'>-->
-<!--          <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>-->
-<!--        </div>-->
-      </div>
-    }
-
-<!--    name = {{name}} / entitiesToShow = {{entitiesToShow()}} /-->
-<!--    <div [class]="!gridView ? 'rb-table' : 'grid-container'"-->
-<!--         rbTableQueryReflector-->
-<!--         [page]="page"-->
-<!--         [sort]="sort"-->
-<!--         [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"-->
-<!--         (activeQueryParams)="handleActiveQueryChange($event)">-->
-<!--         (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
-    @if (entitiesToShow()?.length) {
-      @for (entity of entitiesToShow(); track entity.id) {
-        @switch (ENTITY_NAME.sourceData) {
-<!--          @case ('organization') {-->
-<!--            <rb-organization-table-row [entity]="entity"-->
-<!--                                       (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
-<!--                                       [gridView]="gridView"/>-->
-<!--&lt;!&ndash;                                       [updated]="entityService.updated()"&ndash;&gt;-->
-<!--&lt;!&ndash;                                       [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('project') {-->
-<!--            <rb-project-table-row [entity]="entity"-->
-<!--                                  [gridView]="gridView"-->
-<!--                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" />-->
-<!--&lt;!&ndash;                                  [updated]="entityService.updated()"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('user') {-->
-<!--            <rb-user-table-row [entity]="entity"-->
-<!--                               [updated]="entityService.updated()" />-->
-<!--&lt;!&ndash;                               (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('sourceType') {-->
-<!--            <rb-source-type-table-row [entity]="entity"-->
-<!--                                      [updated]="entityService.updated()" />-->
-<!--&lt;!&ndash;                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>&ndash;&gt;-->
-<!--          }-->
-          @case ('sourceData') {
-<!--          &#45;&#45;{{entityService.updated()}} &#45;&#45;-->
-            <rb-source-data-table-row [entity]="entity"
-                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>
-<!--                                      [updated]="entityService.updated()" />-->
-            <!--                                  [expandedElement]="expandedElement"-->
-          }
-<!--          @case ('client') {-->
-<!--            <rb-client-table-row [entity]="entity"-->
-<!--                                 [updated]="entityService.updated()" />-->
-<!--&lt;!&ndash;                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>&ndash;&gt;-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('subject') {-->
-<!--            <rb-subject-table-row [entity]="entity"-->
-<!--                                  [updated]="entityService.updated()"                                  (actionEvent)="onAction($event.mode, $event.entity, undefined)" [selection]="selection"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('group') {-->
-<!--            <rb-group-table-row [entity]="entity"-->
-<!--                                [updated]="entityService.updated()"                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('source') {-->
-<!--            <rb-source-table-row [entity]="entity"-->
-<!--                                 [updated]="entityService.updated()"                                      (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('audit') {-->
-<!--            <rb-audit-table-row [entity]="entity"-->
-<!--                                [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('log') {-->
-<!--            <rb-log-table-row [entity]="entity"-->
-<!--                              [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('revision') {-->
-<!--            <rb-revision-table-row [entity]="entity"-->
-<!--                                   [updated]="entityService.updated()"                              (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('questionnaire') {-->
-<!--            <rb-questionnaire-table-row [entity]="entity"-->
-<!--                                        [updated]="entityService.updated()"                                 (actionEvent)="onAction($event.mode, $event.entity, undefined, undefined, $event.language)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('protocol') {-->
-<!--            <rb-protocol-table-row [entity]="entity"-->
-<!--                                   [updated]="entityService.updated()"                                        (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--            &lt;!&ndash;                                  [expandedElement]="expandedElement"&ndash;&gt;-->
-<!--          }-->
         }
       }
-    }
     </div>
-<!--  </div>-->
-<!--}-->
-<!--{{gridView}}-->
-<!--@if (entitiesToShow) {-->
-<!--&lt;!&ndash;  //} && gridView) {&ndash;&gt;-->
-<!--  <div class="grid-container" [class]="!gridView ? 'hidden!' : ''">-->
-<!--    @for (entity of entitiesToShow; track entity.id) {-->
-<!--      @switch (name) {-->
-<!--        @case ('organization') {-->
-<!--          <rb-organization-card [entity]="entity"-->
-<!--                                [updated]="updated"-->
-<!--                                (actionEvent)="onAction($event.mode, $event.entity)" />-->
-<!--        }-->
-<!--        @case ('project') {-->
-<!--          <rb-project-card [entity]="entity"-->
-<!--                                [updated]="updated"-->
-<!--                                (actionEvent)="onAction($event.mode, $event.entity)" />-->
-<!--        }-->
-<!--      }-->
-<!--    }-->
-<!--  </div>-->
-<!--}-->
+  }
+
+  @if (entitiesToShow$()?.length) {
+    @for (entity of entitiesToShow$(); track entity.id) {
+      <rb-source-data-table-row [entity$]="entity" />
+<!--                                [updated]="entityService.updated()"/>-->
+<!--                                (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
+    }
+  }
+</div>
 
 <div class="flex items-center px-4 text-sm">
-  @if (!entities?.length) {
+  @if (entityService.total === 0) {
     <span>{{ 'ADMIN.sourceData.noItemFound' | translate }}</span>
   }
-  @if (entities?.length && !entitiesToShow()?.length) {
+  @if (!entitiesToShow$()?.length) {
     <span>{{ 'No item found with this filter' | translate }}</span>
   }
 </div>
 
-<!--{{entities && entities.length > MIN_ENTITIES_FOR_PAGINATION}}-->
-<!--@if (filters.length && entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {-->
-  @if (entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {
+@if (entityService.total > MIN_ENTITIES_FOR_PAGINATION) {
   <mat-paginator (page)="switchPage($event)"
-                 [length]="filteredAndSortedEntities.length"
-                 [pageSize]="page.pageSize"
-                 [pageSizeOptions]="pageSizeOptions"
-                 [pageIndex]="page.pageIndex"
-                 aria-label="Select page" />
+                 [length]="entityService.total"
+                 [pageSize]="page$().pageSize"
+                 [pageSizeOptions]="PAGE_SIZE_OPTIONS"
+                 [pageIndex]="page$().pageIndex"
+                 aria-label="Select page"/>
 }

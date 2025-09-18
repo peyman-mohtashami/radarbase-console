@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from "@angular/core";
+import {Component, inject, input} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
 import {ENTITY_NAME, ROLES} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
@@ -29,21 +29,18 @@ import {ActionsComponent} from '../actions/actions.component';
     MatIconButton,
     SourceDataDetailsComponent,
     AsyncPipe,
-    ActionsComponent
+    ActionsComponent,
   ]
 })
 export class SourceDataTableRowComponent {
   protected readonly TableElements = TableElements;
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
-  protected readonly ROLES = ROLES;
 
-  updated = input()
-  entity = input.required<AppSourceData>();
+  updated$ = input()
+  entity$ = input.required<AppSourceData>();
 
   private store = inject(Store)
-
-  actionEvent = output<{mode: DialogMode, entity: AppSourceData}>()
 
   expanded = false;
 

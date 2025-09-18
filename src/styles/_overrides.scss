@@ -39,6 +39,9 @@ mat-option {
 .mat-mdc-paginator {
   @apply text-sm mt-2 bg-transparent
 }
+.mat-mdc-paginator .mdc-icon-button {
+  @apply flex
+}
 
 
 

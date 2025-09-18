@@ -13,7 +13,6 @@ import { StorageService } from '../../storage/services/storage.service';
 @Injectable({providedIn: 'root'})
 export class AuthInterceptor implements HttpInterceptor {
   constructor() {
-    console.log('Class: AuthInterceptor, Function: constructor, Line 16 ' , );
   }
 
   static addToken(request: HttpRequest<unknown>, token: string) {
@@ -28,14 +27,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log('Class: AuthInterceptor, Function: intercept, Line 27 ' , );
     const token = StorageService.getAccessToken();
-    console.log('Class: AuthInterceptor, Function: intercept, Line 29 token' , token);
     if (token) {
-      console.log('Class: AuthInterceptor, Function: intercept, Line 31 ' , );
       request = AuthInterceptor.addToken(request, token);
     }
-    console.log('Class: AuthInterceptor, Function: intercept, Line 34 ' , );
     return next.handle(request).pipe(catchError((error) => throwError(() => error)));
   }
 }

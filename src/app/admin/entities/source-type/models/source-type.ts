@@ -1,6 +1,6 @@
-import {RadarSourceData} from '../../../../shared/models/radar-source-data.model';
+import {RadarSourceData} from '../../source-data/models/source-data';
 
-export interface RadarSourceType extends Record<string, any> {
+export interface RadarSourceType extends Record<string, number | string | boolean | SourceTypeScope | RadarSourceData[] | undefined> {
   id: number | string;
   producer: string;
   model: string;
@@ -17,7 +17,7 @@ export interface RadarSourceType extends Record<string, any> {
 }
 
 export interface AppSourceType extends RadarSourceType {
-  name: string;
+  _name: string;
 }
 
 export enum SourceTypeScope {

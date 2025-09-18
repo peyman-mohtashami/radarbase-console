@@ -14,5 +14,5 @@ import {ProcessingState} from '../../../../../shared/models/radar-source-data.mo
 export class SourceDataProcessingStateComponent {
   protected readonly ProcessingState = ProcessingState;
 
-  processingState = input<ProcessingState>();
+  processingState$ = input<ProcessingState>();
 }

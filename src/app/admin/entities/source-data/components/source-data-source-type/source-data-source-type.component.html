@@ -1,4 +1,4 @@
-@if (sourceType(); as _sourceType) {
+@if (sourceType$(); as _sourceType) {
   <rb-tag class="bg-source-type-color text-white"
           [link]='["/admin/source-types", _sourceType.producer, _sourceType.model, _sourceType.catalogVersion]'>
     {{ _sourceType.producer }}_{{_sourceType.model}}_{{_sourceType.catalogVersion}}

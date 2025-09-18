@@ -1,8 +1,6 @@
 import {RadarSourceType} from '../../source-type/models/source-type';
 
-export interface RadarSourceData extends Record<string, any> {
-  dataClass?: string;
-  enabled?: boolean;
+export interface RadarSourceData extends Record<string, string | number | ProcessingState | RadarSourceType | undefined> {
   frequency?: string;
   id: number | string;
   keySchema?: string;

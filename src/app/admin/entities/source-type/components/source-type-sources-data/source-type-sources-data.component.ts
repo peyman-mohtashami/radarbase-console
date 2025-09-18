@@ -1,6 +1,6 @@
 import {Component, input} from "@angular/core";
 import {TagComponent} from "../../../../components/tag/tag.component";
-import {RadarSourceData} from '../../../../../shared/models/radar-source-data.model';
+import {RadarSourceData} from '../../../source-data/models/source-data';
 
 @Component({
   selector: 'rb-source-type-sources-data',
@@ -10,5 +10,5 @@ import {RadarSourceData} from '../../../../../shared/models/radar-source-data.mo
   ]
 })
 export class SourceTypeSourcesDataComponent {
-  sourcesData = input<RadarSourceData[]>()
+  sourcesData$ = input<RadarSourceData[]>()
 }

@@ -25,7 +25,6 @@ const authInitializerFn = (authService: AuthService) => {
 };
 
 export function provideAuth(): EnvironmentProviders {
-  console.log('provideAuth initialized');
 
   return makeEnvironmentProviders([
     provideRouter(authRoutes),
