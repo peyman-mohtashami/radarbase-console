@@ -27,7 +27,7 @@ import {MatError, MatLabel} from "@angular/material/form-field";
 
 export interface RadarOption {
   id: number | string;
-  name: string;
+  _name: string;
 }
 
 @Component({
@@ -146,7 +146,7 @@ export class MatSelectAutocompleteComponent
     }
     this.filteredMulti$.next(
       this.options().filter(
-        (option) => option.name.toLowerCase().indexOf(search) > -1
+        (option) => option._name.toLowerCase().indexOf(search) > -1
       )
     );
   }

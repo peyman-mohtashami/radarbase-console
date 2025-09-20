@@ -1,4 +1,4 @@
-import {Component, effect, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AppSourceData} from "../../models/source-data";
 
@@ -16,6 +16,7 @@ import {BackButtonDirective} from '../../../../directives/back-button.directive'
 import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
+import {SourceDataConfigService} from '../../services/source-data-config.service';
 
 @Component({
   selector: 'rb-source-data-page',
@@ -37,21 +38,33 @@ export class SourceDataPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
 
-  entity$: WritableSignal<AppSourceData>;
-  sourceTypes: AppSourceType[];
+  private configService = inject(SourceDataConfigService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private dialogService = inject(SourceDataDialogService);
 
-  _destroy$: Subject<void> = new Subject<void>();
+  entity$ = signal<AppSourceData>(this.activatedRoute.snapshot.data['entity']);
+  tableFields = this.configService.getTableFields();
+  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private dialogService: SourceDataDialogService,
-  ) {
-    this.entity$ = signal(this.activatedRoute.snapshot.data['entity']);
-    this.sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
+  private _destroy$: Subject<void> = new Subject<void>();
 
+  constructor() {
+    this.initializeDialogEffect();
+  }
+
+  ngOnInit(): void {
+    this.handleDialogUrlFragment();
+  }
+
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.updateTrigger$();
+      const updated = this.dialogService.dialogUpdateEvent$();
       if (updated) {
         switch (updated.mode) {
           case DialogMode.EDIT:
@@ -68,30 +81,26 @@ export class SourceDataPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(): void {
+  private handleDialogUrlFragment() {
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        if (!fragment) return;
-
-        const fragmentItems = fragment.split('/');
-
-        const actionType = fragmentItems[1];
-        const actionEntity = fragmentItems[2];
-
-        if (actionEntity === ENTITY_NAME.sourceData) {
-          if (actionType === 'edit') {
-            this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), {sourceTypes: this.sourceTypes});
-          } else if (actionType === 'delete') {
-            this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), {sourceTypes: this.sourceTypes});
-          }
-        }
+        if (fragment) this.processUrlFragment(fragment);
       });
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  private processUrlFragment(fragment: string) {
+    const [_, action, entityType] = fragment.split('/');
+    if (entityType === 'sourceData') {
+      switch(action) {
+        case 'edit':
+          this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.sourceTypes);
+          break;
+        case 'delete':
+          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.sourceTypes);
+          break;
+      }
+    }
   }
 
   navigateOnUpdateSuccess(entity: AppSourceData) {

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, effect, EventEmitter, Inject, OnInit, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import { AppSourceType } from "../../models/source-type";
@@ -18,6 +18,7 @@ import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
+import {SourceTypeConfigService} from '../../services/source-type-config.service';
 
 @Component({
   selector: 'rb-source-type-dialog',
@@ -39,10 +40,19 @@ import {MatOption} from '@angular/material/core';
   ]
 })
 export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
+  private configService = inject(SourceTypeConfigService);
+  private dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
+  public dialogData = inject(MAT_DIALOG_DATA) as {
+    mode: DialogMode;
+    entity: AppSourceType;
+  };
+
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
+
+  formFields = this.configService.getFormFields();
 
   form = new FormGroup({
     id: new FormControl<string | number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
@@ -63,22 +73,14 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   @Output()
   dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppSourceType }>();
 
-  readonly formValueChanges = toSignal(
+  private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.getRawValue()}
   );
 
-  constructor(
-    private dialogRef: MatDialogRef<SourceTypeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public dialogData: {
-      mode: DialogMode;
-      entity: AppSourceType;
-    }
-  ) {
+  constructor() {
     effect(() => {
-      const formValue = this.formValueChanges();
-      if (formValue) {
+      if (this.formValueChanges()) {
         this.error$.set(null);
       }
     });

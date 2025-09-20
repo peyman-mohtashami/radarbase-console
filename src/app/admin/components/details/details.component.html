@@ -1,6 +1,6 @@
 <div class="text-sm">
-  @for (property of properties(); track property.name) {
-    @if (config()?.[property.name] !== false) {
+  @for (property of tableFields(); track property.name) {
+<!--    @if (config()?.[property.name] !== false) {-->
       @if (property.name !== 'actions' && property.name !== 'checkbox') {
         <div
           class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'
@@ -15,6 +15,6 @@
           </span>
         </div>
       }
-    }
+<!--    }-->
   }
 </div>

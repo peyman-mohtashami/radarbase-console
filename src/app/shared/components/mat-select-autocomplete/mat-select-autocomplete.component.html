@@ -32,9 +32,9 @@
                              [placeholderLabel]="'Search ' + label() + ' ...'"
                              [noEntriesFoundLabel]="'No matching ' + label() + ' found'" />
     </mat-option>
-    @for (option of filteredMulti$ | async; track option.name) {
+    @for (option of filteredMulti$ | async; track option._name) {
       <mat-option [value]="option">
-        {{option.name}}
+        {{option._name}}
       </mat-option>
     }
   </mat-select>

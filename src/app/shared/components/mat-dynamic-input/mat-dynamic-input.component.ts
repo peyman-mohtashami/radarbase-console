@@ -35,7 +35,7 @@ import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-sel
 
 export interface RadarOption {
   id: number | string;
-  name: string;
+  _name: string;
 }
 
 @Component({
@@ -98,7 +98,7 @@ export class MatDynamicInputComponent
   _options = computed(() => {
     return this.options().map(o => {
       console.log('Class: MatDynamicInputComponent, Function: , Line 99 o' , o);
-      return {id: o.id, name: o.name}
+      return {id: o.id, _name: o._name}
     })
   })
 

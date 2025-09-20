@@ -2,8 +2,7 @@ import {
   AfterViewInit,
   Component,
   effect,
-  EventEmitter,
-  Inject,
+  EventEmitter, inject,
   OnInit,
   Output,
   signal,
@@ -21,22 +20,20 @@ import {AsyncPipe} from "@angular/common";
 import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatOption} from "@angular/material/core";
 import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {Store} from '@ngrx/store';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatLabel, MatSelect} from '@angular/material/select';
 import {
   MatSelectAutocompleteComponent
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {Observable} from 'rxjs';
-import {instanceConfig} from '../../../../../core/config/store/config.selectors';
-import {debounceTime, map} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../enums/dialog';
 import {ProcessingState} from '../../../../../shared/models/radar-source-data.model';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AppSourceType} from '../../../source-type/models/source-type';
+import {SourceDataConfigService} from '../../services/source-data-config.service';
 
 @Component({
   selector: 'rb-source-data-dialog',
@@ -65,6 +62,16 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit {
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
+  private configService = inject(SourceDataConfigService);
+  private dialogRef = inject(MatDialogRef<SourceDataDialogComponent>);
+  public dialogData = inject(MAT_DIALOG_DATA) as {
+    mode: DialogMode;
+    entity: AppSourceData;
+    sourceTypes: AppSourceType[];
+  };
+
+  formFields = this.configService.getFormFields();
+
   form = new FormGroup({
     id: new FormControl<string | number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
     sourceDataType: new FormControl<string>('', {
@@ -81,92 +88,31 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit {
     unit: new FormControl<string | undefined>('', {nonNullable: true}),
   });
 
-  sourceTypesOptions: RadarOption[] = [];
+  sourceTypesOptions: RadarOption[] = (this.dialogData.sourceTypes as AppSourceType[]).sort((a, b) =>
+    a._name.localeCompare(b._name)
+  );//.map(s => ({name: s._name, id: s.id}));
 
   loading$ = signal(false);
   error$ = signal<HttpErrorResponse | null>(null);
 
   @Output()
-  actionTriggered = new EventEmitter<{ action: DialogMode, entity?: AppSourceData }>();
-
-  floatLabel = false;
-
-  config$?: Observable<Record<string, any>>;
+  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppSourceData }>();
 
   readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.getRawValue()}
   );
 
-  // dateFormat = 'mm/dd/yyy';
-
-  constructor(
-    private dialogRef: MatDialogRef<SourceDataDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public dialogData: {
-      mode: DialogMode;
-      entity: AppSourceData;
-      extra: any;
-      // sourceTypes: AppSourceType[];
-    },
-    private store: Store,
-    // private dateAdapter: DateAdapter<any>
-  ) {
-    this.config$ = this.store?.select(instanceConfig).pipe(
-      map(config => {
-        return config.entities[ENTITY_NAME.sourceData]
-      })
-    );
-
+  constructor() {
     effect(() => {
-      const formValue = this.formValueChanges();
-      if (formValue) {
+      if (this.formValueChanges()) {
         this.error$.set(null);
       }
     });
   }
 
   ngOnInit() {
-    this.sourceTypesOptions = (this.dialogData.extra.sourceTypes as AppSourceType[]).sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
     this.form?.patchValue(this.dialogData.entity);
-  }
-
-  onAction($event: string) {
-    switch ($event) {
-      case 'close':
-        this.close();
-        break;
-      case 'delete':
-        this.delete();
-        break;
-      case 'save':
-        this.save();
-        break;
-    }
-  }
-
-  save(): void {
-    this.error$.set(null);
-    this.loading$.set(true);
-    this.actionTriggered.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value},
-    });
-  }
-
-  delete(): void {
-    this.error$.set(null);
-    this.loading$.set(true);
-    if (this.dialogData.entity) {
-      this.actionTriggered.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-    }
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
   }
 
   ngAfterViewInit() {
@@ -176,14 +122,47 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onAction($event: string) { //TODO DIALOG_ACTION
+    this.error$.set(null);
+    this.loading$.set(true);
+    switch ($event) {
+      case 'close':
+        this.close();
+        break;
+      case 'delete':
+        this.handleDeleteAction();
+        break;
+      case 'save':
+        this.handleSaveAction();
+        break;
+    }
+  }
+
+  private handleSaveAction(): void {
+    this.dialogActionEvent.emit({
+      action: this.dialogData.mode,
+      entity: {...this.dialogData.entity, ...this.form?.value},
+    });
+  }
+
+  private handleDeleteAction(): void {
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  }
+
   close() {
+    this.loading$.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
 
     setTimeout(() => {
-      this.actionTriggered.emit({action: DialogMode.CLOSE});
+      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
       this.dialogRef.close();
     }, 300);
+  }
+
+  errorHappened(error: HttpErrorResponse): void {
+    this.loading$.set(false);
+    this.error$.set(error);
   }
 }

@@ -1,4 +1,4 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -15,15 +15,12 @@ export interface UpdateTrigger {
 
 @Injectable({providedIn: 'root'})
 export class SourceTypeDialogService {
+  private entityService = inject(SourceTypeService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
 
   dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  constructor(
-    private entityService: SourceTypeService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog,
-  ) {}
 
   openDialog(mode: DialogMode, entity?: AppSourceType) {
     if (mode !== DialogMode.ADD && !entity) {

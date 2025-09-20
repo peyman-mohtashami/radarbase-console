@@ -1,9 +1,9 @@
-<rb-details [properties]="TableElements"
-            [name]="ENTITY_NAME.sourceType"
+<rb-details [name]="ENTITY_NAME.sourceType"
             [entity]="entity$()"
-            [config]="config$()"
+            [tableFields]="tableFields$()"
             [type]="type$()"
-            [customTemplate]="detailsTemplate" />
+            [customTemplate]="detailsTemplate"/>
+
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
@@ -20,5 +20,4 @@
       {{ entity$()[property.name] || "-" }}
     }
   }
-
 </ng-template>

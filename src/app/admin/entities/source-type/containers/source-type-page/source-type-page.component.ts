@@ -1,4 +1,4 @@
-import {Component, effect, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
@@ -15,6 +15,7 @@ import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
 import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
 import {ActionsComponent} from '../../components/actions/actions.component';
+import {SourceTypeConfigService} from '../../services/source-type-config.service';
 
 @Component({
   selector: 'rb-source-type-page',
@@ -32,20 +33,21 @@ import {ActionsComponent} from '../../components/actions/actions.component';
   ]
 })
 export class SourceTypePageComponent implements OnInit, OnDestroy {
+  private configService = inject(SourceTypeConfigService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private dialogService = inject(SourceTypeDialogService);
+
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
 
-  entity$: WritableSignal<AppSourceType>;
+  entity$ = signal<AppSourceType>(this.activatedRoute.snapshot.data['entity']);
+  tableFields = this.configService.getTableFields();
 
   private _destroy$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private dialogService: SourceTypeDialogService,
-  ) {
-    this.entity$ = signal(this.activatedRoute.snapshot.data['entity']);
+  constructor() {
     this.initializeDialogEffect();
   }
 

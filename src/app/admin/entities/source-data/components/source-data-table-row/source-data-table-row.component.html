@@ -1,48 +1,50 @@
-@let configFields = config$ | async;
 
 <mat-card class="rb-table-row" [class]="
-    (updated$() == entity$().id ? 'bg-green-100! ' : '') +
-    (expanded ? 'mb-2' : '')
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
-    @for (tableElement of TableElements; track tableElement.name) {
-      @if (configFields[tableElement.name] !== false) {
-        <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-             [class.flex-1]="!tableElement.width"
-             [class.shrink-0]="!!tableElement.width">
-          @switch (tableElement.name) {
-            @case ('sourceDataName') {
-              <a [routerLink]='["/admin/source-data", entity$()["sourceDataName"]]'>
-                <span class="font-bold text-primary">{{ entity$()["sourceDataName"] }}</span>
-              </a>
-              <p class="text-neutral-500 dark:text-neutral-300 font-bold">
-                <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity$()['topic'] || '-' }}
-              </p>
-            }
-            @case ('sourceType') {
-              <rb-source-data-source-type [sourceType$]="entity$()['sourceType']"/>
-            }
-            @case ('processingState') {
-              <rb-source-data-processing-state [processingState$]="entity$()['processingState']"/>
-            }
-            @case ("actions") {
-              <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('sourceDataName') {
+            <a [routerLink]='["/admin/source-data", entity$()["sourceDataName"]]'>
+              <span class="font-bold text-primary">{{ entity$()["sourceDataName"] }}</span>
+            </a>
+            <p class="text-neutral-500 dark:text-neutral-300 font-bold">
+              <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity$()['topic'] || '-' }}
+            </p>
+          }
+          @case ('sourceType') {
+            <rb-source-data-source-type [sourceType$]="entity$()['sourceType']"/>
+          }
+          @case ('processingState') {
+            <rb-source-data-processing-state [processingState$]="entity$()['processingState']"/>
+          }
+          @case ("actions") {
+            @if (true) {
+              <button mat-icon-button class="tiny {{extensionClass$()}}!" (click)="onExpansionClick($event)">
                 <span class="material-symbols-outlined">
-                  {{ expanded ? 'expand_less' : 'expand_more' }}
+                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
                 </span>
               </button>
-              <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
             }
-            @default {
-              {{ entity$()[tableElement.name] || '-' }}
-            }
+            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
           }
-        </div>
-      }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+      </div>
     }
   </div>
 
-  <div class="rb-table-extension-row" [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
-    <rb-source-data-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [config$]="configFields"/>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-source-data-details class="py-4"
+                            [entity$]='entity$()'
+                            [type$]="DetailType.TABLE"
+                            [tableFields$]="tableFields$()"/>
   </div>
 </mat-card>

@@ -38,7 +38,6 @@
             }
           </mat-error>
         }
-
       </mat-form-field>
 
       <label for="model" class="text-sm">{{ 'ADMIN.sourceType.model.label' | translate }} *</label>
@@ -104,41 +103,49 @@
         {{ 'ADMIN.sourceType.canRegisterDynamically.hint' | translate }}
       </p>
 
-      <label for="name" class="text-sm">{{ 'ADMIN.sourceType.name.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'>
-        <input matInput formControlName='name'
-               id="search-source-type-name" autocomplete="off" data-lpignore="true"/>
-      </mat-form-field>
+      @if (!formFields || formFields['name'] === undefined || formFields['name']) {
+        <label for="name" class="text-sm">{{ 'ADMIN.sourceType.name.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='name'
+                 id="search-source-type-name" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
 
-      <label for="description" class="text-sm">{{ 'ADMIN.sourceType.description.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'>
-        <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
-        <mat-hint align="start">{{ ValidatorHint.longTextValidator }}</mat-hint>
-        <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
-        @if (form.controls.description?.errors; as errors) {
-          <mat-error>
-            @if (errors?.['pattern']) {
-              {{ ValidatorError.longTextValidator }}
-            }
-          </mat-error>
-        }
-      </mat-form-field>
+      @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+        <label for="description" class="text-sm">{{ 'ADMIN.sourceType.description.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'>
+          <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <mat-hint align="start">{{ ValidatorHint.longTextValidator }}</mat-hint>
+          <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+          @if (form.controls.description?.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.longTextValidator }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
 
-      <label for="assessmentType" class="text-sm">{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'>
-        <input matInput formControlName='assessmentType'
-               id="search-assessment-type" autocomplete="off" data-lpignore="true"/>
-      </mat-form-field>
+      @if (!formFields || formFields['assessmentType'] === undefined || formFields['assessmentType']) {
+        <label for="assessmentType" class="text-sm">{{ 'ADMIN.sourceType.assessmentType.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='assessmentType'
+                 id="search-assessment-type" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
 
-      <label for="appProvider" class="text-sm">{{ 'ADMIN.sourceType.appProvider.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'>
-        <input matInput formControlName='appProvider'
-               id="search-app-provider" autocomplete="off" data-lpignore="true"/>
-      </mat-form-field>
+      @if (!formFields || formFields['appProvider'] === undefined || formFields['appProvider']) {
+        <label for="appProvider" class="text-sm">{{ 'ADMIN.sourceType.appProvider.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='appProvider'
+                 id="search-app-provider" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
     </form>
   }
 </mat-dialog-content>

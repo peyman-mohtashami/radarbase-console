@@ -5,9 +5,9 @@
                          [permission]="[{role: ROLES.SYS_ADMIN}]">
 <!--                         GRID_VIEW_ENABLED ? gridView : undefined"-->
 <!--                         (gridListToggled)="gridView = !gridView">-->
-  @if (TABLE_FILTERS.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
+  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
-                          [filters]='TABLE_FILTERS'
+                          [filters]='tableFilters'
                           [filterOpened]='isFilterOpened'
                           (filterChanged)='handleFilterChange($event)'
                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
@@ -18,7 +18,7 @@
   <rb-loader/>
 }
 
-@let tp = (config$ | async)?.entities?.[ENTITY_NAME.sourceData]?.fields ?? {};
+<!--@let tp = (config$ | async)?.entities?.[ENTITY_NAME.sourceData]?.fields ?? {};-->
 
 <!--<div [class]="!gridView ? 'rb-table': 'grid-container'"-->
 <div class="rb-table"
@@ -28,10 +28,10 @@
      [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
      (activeQueryParams)="handleActiveQueryChange($event)">
 
-  @if (entitiesToShow$().length) {
+  @if (visibleEntities$().length) {
     <div class="rb-table-header mat-app-background">
-      @for (tableElement of TABLE_ELEMENTS; track tableElement.name) {
-        @if (tp[tableElement.name] !== false) {
+      @for (tableElement of tableFields; track tableElement.name) {
+<!--        @if (tp[tableElement.name] !== false) {-->
           @if (tableElement.name === 'checkbox') {
             <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
                  [class.flex-1]="!tableElement.width"
@@ -58,14 +58,16 @@
               </button>
             </div>
           }
-        }
+<!--        }-->
       }
     </div>
   }
 
-  @if (entitiesToShow$()?.length) {
-    @for (entity of entitiesToShow$(); track entity.id) {
-      <rb-source-data-table-row [entity$]="entity" />
+  @if (visibleEntities$()?.length) {
+    @for (entity of visibleEntities$(); track entity.id) {
+      <rb-source-data-table-row [entity$]="entity"
+                                [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
+                                [tableFields$]="tableFields" [extensionClass$]="extensionClass$()"/>
 <!--                                [updated]="entityService.updated()"/>-->
 <!--                                (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
     }
@@ -76,7 +78,7 @@
   @if (entityService.total === 0) {
     <span>{{ 'ADMIN.sourceData.noItemFound' | translate }}</span>
   }
-  @if (!entitiesToShow$()?.length) {
+  @if (!visibleEntities$()?.length) {
     <span>{{ 'No item found with this filter' | translate }}</span>
   }
 </div>

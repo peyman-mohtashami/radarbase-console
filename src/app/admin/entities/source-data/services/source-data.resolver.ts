@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {
   Resolve,
   ActivatedRouteSnapshot,
@@ -10,7 +10,7 @@ import { AppSourceData } from "../models/source-data";
 
 @Injectable({ providedIn: 'root' })
 export class SourceDataResolver implements Resolve<AppSourceData> {
-  constructor(private entityService: SourceDataService) {}
+  private entityService = inject(SourceDataService);
 
   resolve(
     route: ActivatedRouteSnapshot,

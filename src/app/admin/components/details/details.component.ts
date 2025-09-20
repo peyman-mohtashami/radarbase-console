@@ -19,8 +19,9 @@ export class DetailsComponent {
 
   customTemplate = input<TemplateRef<any>>();
 
-  properties = input<TableElement[]>([])
-  config = input<Record<string, boolean>>({})
+  // properties = input<TableElement[]>([])
+  // config = input<Record<string, boolean>>({})
+  tableFields = input<TableElement[]>([]);
   name = input.required<ENTITY_NAME>();
 
   entity = input.required<any>();

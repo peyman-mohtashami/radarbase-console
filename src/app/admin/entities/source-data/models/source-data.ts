@@ -15,7 +15,7 @@ export interface RadarSourceData extends Record<string, string | number | Proces
 }
 
 export interface AppSourceData extends RadarSourceData {
-  name: string;
+  _name: string;
 }
 
 export enum ProcessingState {

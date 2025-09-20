@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 import {AppSourceType, RadarSourceType} from "../models/source-type";
@@ -8,9 +8,9 @@ import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SourceTypeService {
-  private readonly resourceUrl = 'api/source-types';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly resourceUrl = 'api/source-types';
 
   toAppModel(entity: RadarSourceType): AppSourceType {
     return {

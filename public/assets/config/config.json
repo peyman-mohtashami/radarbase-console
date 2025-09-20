@@ -138,12 +138,22 @@
         ]}
       ]
     },
-    "_sourceType": {
+    "sourceType": {
       "fields": {
-        "description": true,
-        "appProvider": true,
-        "assessmentType": true,
-        "name": true
+        "description": false,
+        "appProvider": false,
+        "assessmentType": false,
+        "name": false
+      }
+    },
+    "sourceData": {
+      "fields": {
+        "topic": false,
+        "processingState": false,
+        "keySchema": false,
+        "valueSchema": false,
+        "frequency": false,
+        "unit": false
       }
     }
   }

@@ -1,20 +1,28 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 import {AppSourceData, RadarSourceData} from "../models/source-data";
 import {Params} from '@angular/router';
-// import {DialogMode} from '../../../enums/dialog';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
-// export interface DialogData { mode: DialogMode, entity?: AppSourceData, extra?: any }
-
 @Injectable({providedIn: 'root'})
 export class SourceDataService {
-  resourceUrl = 'api/source-data';
+  private http = inject(HttpClient);
+
+  private readonly resourceUrl = 'api/source-data';
   total = 0;
 
-  constructor(private http: HttpClient) {}
+  private toAppModel(entity: RadarSourceData): AppSourceData {
+    return {
+      ...entity,
+      _name: entity.sourceDataName
+    };
+  }
+
+  private toRadarModel(entity: AppSourceData): RadarSourceData {
+    return { ...entity };
+  }
 
   getWithQuery(queryParams?: Params | string): Observable<AppSourceData[]> {
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
@@ -52,9 +60,9 @@ export class SourceDataService {
       .pipe(map((entity) => this.toAppModel(entity)));
   }
 
-  delete(key: number | string): Observable<number | string> {
-    return this.http.delete<number | string>(
-      `${this.resourceUrl}/${encodeURIComponent(key)}`
+  delete(entity: AppSourceData): Observable<void> {
+    return this.http.delete<void>(
+      `${this.resourceUrl}/${encodeURIComponent(entity._name)}`
     );
   }
 
@@ -81,22 +89,6 @@ export class SourceDataService {
     } else {
       params = params.append('sort', 'id' + ',' + 'desc');
     }
-    params = this.convertFilterParamsToHttpParams(params);
     return { params, parentEntityName: queryParams?.['parentEntityName'] };
-  }
-
-  private convertFilterParamsToHttpParams(params: HttpParams) {
-    return params;
-  }
-
-  private toAppModel(entity: RadarSourceData): AppSourceData {
-    return {
-      ...entity,
-      name: entity.sourceDataName
-    };
-  }
-
-  private toRadarModel(entity: AppSourceData): RadarSourceData {
-    return { ...entity }; // as unknown as RadarSourceData;
   }
 }

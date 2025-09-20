@@ -11,7 +11,7 @@
         <span>{{ `ADMIN.sourceData.title.plural` | translate }}</span>
       </span>
     </button>
-    <span class="text-xs font-bold">{{ entity$().name }}</span>
+    <span class="text-xs font-bold">{{ entity$()._name }}</span>
   </div>
 </nav>
 
@@ -29,6 +29,6 @@
 
 <mat-card class="m-4 p-4 text-sm border">
   <mat-card-content>
-    <rb-source-data-details [entity$]='entity$()'/>
+    <rb-source-data-details [entity$]='entity$()' [tableFields$]="tableFields"/>
   </mat-card-content>
 </mat-card>

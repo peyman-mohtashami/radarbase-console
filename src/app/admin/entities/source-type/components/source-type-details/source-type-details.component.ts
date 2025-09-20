@@ -1,5 +1,4 @@
 import {Component, input} from '@angular/core';
-
 import { AppSourceType } from "../../models/source-type";
 import {SourceTypeScopeComponent} from "../source-type-scope/source-type-scope.component";
 import {
@@ -10,7 +9,7 @@ import {ENTITY_NAME} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
 import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
-import { TableElements} from "../../config";
+import {TableElement} from '../../../../models/table.model';
 
 @Component({
   selector: 'rb-source-type-details',
@@ -24,11 +23,10 @@ import { TableElements} from "../../config";
 })
 export class SourceTypeDetailsComponent {
   protected readonly DetailType = DetailType;
-  protected readonly TableElements = TableElements;
   protected readonly ENTITY_NAME = ENTITY_NAME;
 
   entity$ = input.required<AppSourceType>();
-  config$ = input<Record<string, boolean>>({})
   mode$ = input<DialogMode>();
   type$ = input<DetailType>();
+  tableFields$ = input.required<TableElement[]>();
 }

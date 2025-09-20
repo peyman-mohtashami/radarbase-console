@@ -60,8 +60,8 @@
         }
         @case ('simpleSelect') {
           <mat-select [formControl]="form">
-            @for (option of _options(); track option.name) {
-              <mat-option [value]="option.name">{{ option.name | translate }}</mat-option>
+            @for (option of _options(); track option._name) {
+              <mat-option [value]="option._name">{{ option._name | translate }}</mat-option>
             }
           </mat-select>
         }

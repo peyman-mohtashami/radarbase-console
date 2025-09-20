@@ -1,12 +1,10 @@
-import {Component, effect, OnDestroy, OnInit, signal, untracked, WritableSignal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked, WritableSignal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntil} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Store} from "@ngrx/store";
 import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {AsyncPipe, JsonPipe} from "@angular/common";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {TABLE_ANIMATION} from '../../../../animation';
 import {
@@ -19,14 +17,14 @@ import {
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import {TableElement} from '../../../../models/table.model';
-import {instanceConfig} from '../../../../../core/config/store/config.selectors';
 import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
-import {filters, TableElements} from '../../config';
+// import {filters} from '../../config';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeTableRowComponent} from '../../components/source-type-table-row/source-type-table-row.component';
 import {SourceTypeService} from '../../services/sourceType.service';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
+import {SourceTypeConfigService} from '../../services/source-type-config.service';
 
 @Component({
   selector: 'rb-source-types-page',
@@ -40,9 +38,7 @@ import {SourceTypeDialogService} from '../../services/source-type-dialog.service
     TranslatePipe,
     MatPaginator,
     SourceTypeTableRowComponent,
-    AsyncPipe,
     MatCheckbox,
-    JsonPipe,
   ]
 })
 export class SourceTypesPageComponent implements OnInit, OnDestroy {
@@ -53,35 +49,36 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
   // protected readonly GRID_VIEW_ENABLED = false;
-  protected readonly TABLE_FILTERS = filters;
-  protected readonly TABLE_ELEMENTS = TableElements;
+  // protected readonly TABLE_FILTERS = filters;
 
-  entities$ = signal<AppSourceType[]>([]);
-  processedEntities$ = signal<AppSourceType[]>([])
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private entityService = inject(SourceTypeService);
+  private configService = inject(SourceTypeConfigService);
+  public dialogService = inject(SourceTypeDialogService);
+
+  tableFields = this.configService.getTableFields();
+  tableFilters = this.configService.getTableFilters();
+
+  entities$ = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['entities']);
+  processedEntities$ = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['entities']);
   visibleEntities$ = signal<AppSourceType[]>([]);
-  sourceTypes: AppSourceType[];
+  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
   page$: WritableSignal<PageEvent>;
   sort$: WritableSignal<RbSort>;
   filter$: WritableSignal<FilterEvent>;
 
   loading$ = signal(true);
+  extensionClass$ = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
   // gridView;
 
-  config$;
-
   private _destroy$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private entityService: SourceTypeService,
-    public dialogService: SourceTypeDialogService,
-    private store: Store,
-  ) {
+  constructor() {
     const { pageSize, pageIndex, sortField, sortOrder } = this.activatedRoute.snapshot.queryParams;
     this.page$ = signal({
       pageIndex: pageIndex ?? 0,
@@ -90,20 +87,21 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
     });
     this.sort$ = signal({sortField: sortField ?? 'id', sortOrder: sortOrder ?? 'desc'});
     this.filter$ = signal<FilterEvent>(
-      this.TABLE_FILTERS.reduce((map: { [key: string]: string | undefined }, filterItem) => {
+      this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
         return map;
       }, {})
     );
 
-    this.entities$.set(this.activatedRoute.snapshot.data['entities']);
-    this.processedEntities$.set(this.activatedRoute.snapshot.data['entities']);
-
-    this.sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
+    // this.entities$.set(this.activatedRoute.snapshot.data['entities']);
+    // this.processedEntities$.set(this.activatedRoute.snapshot.data['entities']);
+    //
+    // this.sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
     // this.gridView = this.GRID_VIEW_ENABLED;
-    this.config$ = this.store.select(instanceConfig)
 
     this.initializeDialogEffect();
+
+    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
@@ -115,6 +113,56 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
+
+  /**
+   * Determines the highest priority extension class from a list of table fields
+   * and maps it to its corresponding class string.
+   *
+   * @param tableFields - Array of table field objects containing an extensionClass property.
+   * @returns The CSS class string corresponding to the highest priority extension class.
+   */
+  private getHighestPriorityClass(tableFields: { extensionClass?: string }[]): string {
+    /**
+     * Maps extension class strings to their respective numeric representations.
+     */
+    const extensionClassMapper: Record<string, number> = {
+      'hidden': 0,
+      'block xs:hidden': 1,
+      'block sm:hidden': 2,
+      'block md:hidden': 3,
+      'block lg:hidden': 4,
+      'block xl:hidden': 5,
+      'block 2xl:hidden': 6,
+      'block 3xl:hidden': 7,
+      'block': 8,
+    };
+
+    /**
+     * Maps numeric extension class representations back to their corresponding class strings.
+     */
+    const numericToClassMapper: Record<number, string> = {
+      0: 'hidden',
+      1: 'block xs:hidden',
+      2: 'block sm:hidden',
+      3: 'block md:hidden',
+      4: 'block lg:hidden',
+      5: 'block xl:hidden',
+      6: 'block 2xl:hidden',
+      7: 'block 3xl:hidden',
+      8: 'block',
+    };
+
+    let highestPriority = 0;
+
+    tableFields.forEach(field => {
+      if (field.extensionClass && extensionClassMapper[field.extensionClass] !== undefined) {
+        highestPriority = Math.max(highestPriority, extensionClassMapper[field.extensionClass]);
+      }
+    });
+
+    return numericToClassMapper[highestPriority];
+  }
+
 
   private initializeDialogEffect() {
     effect(() => {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppSourceType } from "../models/source-type";
@@ -6,7 +6,7 @@ import {SourceTypeService} from "./sourceType.service";
 
 @Injectable({ providedIn: 'root' })
 export class SourceTypesResolver implements Resolve<AppSourceType[]> {
-  constructor(private entityService: SourceTypeService) {}
+  private entityService = inject(SourceTypeService);
 
   resolve():
     | Observable<AppSourceType[]>

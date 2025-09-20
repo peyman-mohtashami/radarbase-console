@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {
   Resolve,
   ActivatedRouteSnapshot,
@@ -10,7 +10,7 @@ import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class SourceTypeResolver implements Resolve<AppSourceType> {
-  constructor(private entityService: SourceTypeService) {}
+  private entityService = inject(SourceTypeService);
 
   resolve(
     route: ActivatedRouteSnapshot,

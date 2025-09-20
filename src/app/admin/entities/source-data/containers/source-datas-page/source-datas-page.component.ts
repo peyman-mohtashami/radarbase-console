@@ -1,12 +1,10 @@
-import {Component, OnDestroy, OnInit, signal, WritableSignal, effect, computed, untracked} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, effect, computed, untracked, inject} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {takeUntil} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {Store} from "@ngrx/store";
 import {Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {AsyncPipe} from "@angular/common";
 import {MatCheckbox} from "@angular/material/checkbox";
 import { TABLE_ANIMATION } from '../../../../animation';
 import {
@@ -21,13 +19,12 @@ import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
 import {TableElement} from '../../../../models/table.model';
 import {SourceDataService} from '../../services/source-data.service';
-import {instanceConfig} from '../../../../../core/config/store/config.selectors';
 import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
 import {AppSourceData} from '../../models/source-data';
-import {filters, TableElements} from '../../config';
 import {AppSourceType} from '../../../source-type/models/source-type';
+import {SourceDataConfigService} from '../../services/source-data-config.service';
 
 @Component({
   selector: 'rb-entities-page',
@@ -41,7 +38,6 @@ import {AppSourceType} from '../../../source-type/models/source-type';
     TranslatePipe,
     MatPaginator,
     SourceDataTableRowComponent,
-    AsyncPipe,
     MatCheckbox,
   ]
 })
@@ -53,29 +49,35 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
   // protected readonly GRID_VIEW_ENABLED = false;
-  protected readonly TABLE_FILTERS = filters;
-  protected readonly TABLE_ELEMENTS = TableElements;
 
-  entitiesToShow$: WritableSignal<AppSourceData[]> = signal<AppSourceData[]>([]);
-  sourceTypes: AppSourceType[];
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  public entityService = inject(SourceDataService);
+  private configService = inject(SourceDataConfigService);
+  public dialogService = inject(SourceDataDialogService);
+
+  tableFields = this.configService.getTableFields();
+  tableFilters = this.configService.getTableFilters();
+
+  visibleEntities$ = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['entities']);
+
+  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
   page$ = signal<PageEvent>({
-    pageIndex: 0,
-    pageSize: this.DEFAULT_PAGE_SIZE,
+    pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
+    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? this.DEFAULT_PAGE_SIZE,
     length: 0,
-  })
-
+  });
   sort$ = signal<RbSort>({
-    sortField: 'id',
-    sortOrder: 'desc',
-  })
-
+    sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
+    sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
+  });
   filter$ = signal<FilterEvent>(
-    this.TABLE_FILTERS.reduce((map: { [key: string]: string | undefined }, obj) => {
-      map[obj.name] = undefined;
+    this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
+      map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
       return map;
     }, {})
-  );
+  )
 
   previousParamsState$ = signal<{
     page: PageEvent;
@@ -103,29 +105,15 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
   });
 
   loading$ = signal(false);
+  extensionClass$ = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
   // gridView;
 
-  config$;
-
   _destroy$: Subject<void> = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    public entityService: SourceDataService,
-    private dialogService: SourceDataDialogService,
-    private store: Store,
-  ) {
-    this.entitiesToShow$.set(this.activatedRoute.snapshot.data['entities']);
-    this.sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
-
-    // this.gridView = this.GRID_VIEW_ENABLED;
-
-    this.config$ = this.store.select(instanceConfig)
-
+  constructor() {
     effect(() => {
       if (this.paramsChanged$()) {
         this.previousParamsState$.set({
@@ -138,52 +126,115 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
           next: value => {
             this.selection.clear();
             this.loading$.set(false);
-            this.entitiesToShow$.set(value);
+            this.visibleEntities$.set(value);
           }
         })
       }
     });
+    this.initializeDialogEffect();
 
+    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+  }
+
+
+  /**
+   * Determines the highest priority extension class from a list of table fields
+   * and maps it to its corresponding class string.
+   *
+   * @param tableFields - Array of table field objects containing an extensionClass property.
+   * @returns The CSS class string corresponding to the highest priority extension class.
+   */
+  private getHighestPriorityClass(tableFields: { extensionClass?: string }[]): string {
+    /**
+     * Maps extension class strings to their respective numeric representations.
+     */
+    const extensionClassMapper: Record<string, number> = {
+      'hidden': 0,
+      'block xs:hidden': 1,
+      'block sm:hidden': 2,
+      'block md:hidden': 3,
+      'block lg:hidden': 4,
+      'block xl:hidden': 5,
+      'block 2xl:hidden': 6,
+      'block 3xl:hidden': 7,
+      'block': 8,
+    };
+
+    /**
+     * Maps numeric extension class representations back to their corresponding class strings.
+     */
+    const numericToClassMapper: Record<number, string> = {
+      0: 'hidden',
+      1: 'block xs:hidden',
+      2: 'block sm:hidden',
+      3: 'block md:hidden',
+      4: 'block lg:hidden',
+      5: 'block xl:hidden',
+      6: 'block 2xl:hidden',
+      7: 'block 3xl:hidden',
+      8: 'block',
+    };
+
+    let highestPriority = 0;
+
+    tableFields.forEach(field => {
+      if (field.extensionClass && extensionClassMapper[field.extensionClass] !== undefined) {
+        highestPriority = Math.max(highestPriority, extensionClassMapper[field.extensionClass]);
+      }
+    });
+
+    return numericToClassMapper[highestPriority];
+  }
+
+
+  initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.updateTrigger$();
-      if (updated) {
-        switch (updated.mode) {
-          case DialogMode.ADD:
-            this.selection.clear();
-            this.loading$.set(false);
-            if (updated?.entity) {
-              const entitiesToShow = untracked(this.entitiesToShow$)
-              this.entitiesToShow$.set([updated.entity, ...entitiesToShow ]);
-            }
-            break;
-          case DialogMode.EDIT:
-            this.selection.clear();
-            this.loading$.set(false);
-            if (updated?.entity) {
-              const entitiesToShow = untracked(this.entitiesToShow$);
-              const updatedEntitiesToShow = entitiesToShow.map(e => {
-                if (e.id === updated.entity.id) {
-                  return updated.entity;
-                }
-                return e;
-              })
-              this.entitiesToShow$.set(updatedEntitiesToShow);
-            }
-            break;
-          case DialogMode.DELETE:
-            this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
-              next: value => {
-                this.selection.clear();
-                this.loading$.set(false);
-                this.entitiesToShow$.set(value);
-              }
-            })
-            break;
-        }
-        this.removeFragmentUrl()
+      const updated = this.dialogService.dialogUpdateEvent$();
+      if (updated) this.handleDialogUpdate(updated);
+    });
+  }
+
+  private handleDialogUpdate(updated: { mode: DialogMode, entity?: AppSourceData }) {
+    switch (updated.mode) {
+      case DialogMode.ADD:
+        this.addEntityToView(updated.entity);
+        break;
+      case DialogMode.EDIT:
+        this.updateEntityInView(updated.entity);
+        break;
+      case DialogMode.DELETE:
+        this.refreshEntities();
+        break;
+    }
+    this.removeFragmentUrl();
+    this.loading$.set(false);
+    this.selection.clear();
+  }
+
+  private addEntityToView(entity?: AppSourceData) {
+    if (entity) {
+      const visibleEntities = untracked(this.visibleEntities$);
+      this.visibleEntities$.set([entity, ...visibleEntities]);
+    }
+  }
+
+  private updateEntityInView(entity?: AppSourceData) {
+    if (entity) {
+      const updatedEntities = untracked(this.visibleEntities$).map(e => e.id === entity.id ? entity : e);
+      this.visibleEntities$.set(updatedEntities);
+    }
+  }
+
+  private refreshEntities() {
+    this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+      next: value => {
+        this.selection.clear();
+        this.loading$.set(false);
+        this.visibleEntities$.set(value);
       }
     });
   }
+
 
   removeFragmentUrl() {
     this.router.navigate([], {
@@ -193,30 +244,30 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
     }).then();
   }
 
-  handleDialogUrlFragment() {
+  private handleDialogUrlFragment() {
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        if (!fragment) return;
-
-        const fragmentItems = fragment.split('/');
-
-        const actionType = fragmentItems[1];
-        const actionEntity = fragmentItems[2];
-        const actionId = fragmentItems[3];
-
-        if (actionEntity === 'sourceData') {
-          if (actionType === 'add') {
-            this.dialogService.openDialog(DialogMode.ADD, undefined, {sourceTypes: this.sourceTypes});
-          } else if (actionType === 'edit') {
-            const entity = this.entitiesToShow$().find(e => e.id == actionId);
-            this.dialogService.openDialog(DialogMode.EDIT, entity, {sourceTypes: this.sourceTypes});
-          } else if (actionType === 'delete') {
-            const entity = this.entitiesToShow$().find(e => e.id == actionId);
-            this.dialogService.openDialog(DialogMode.DELETE, entity, {sourceTypes: this.sourceTypes});
-          }
-        }
+        if (fragment) this.processUrlFragment(fragment);
       });
+  }
+
+  private processUrlFragment(fragment: string) {
+    const [_, action, entityType, entityId] = fragment.split('/');
+    if (entityType === 'sourceData') {
+      const entity = this.visibleEntities$().find(e => e.id == entityId);
+      switch (action) {
+        case 'add':
+          this.dialogService.openDialog(DialogMode.ADD, undefined, this.sourceTypes);
+          break;
+        case 'edit':
+          if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.sourceTypes);
+          break;
+        case 'delete':
+          if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.sourceTypes);
+          break;
+      }
+    }
   }
 
   ngOnInit() {
@@ -251,28 +302,6 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
     return this.entityService.getWithQuery(params);
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.entitiesToShow$().length;
-    return numSelected === numRows;
-  }
-
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-    this.selection.select(...this.entitiesToShow$());
-  }
-
-  checkboxLabel(row?: any): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row['position'] + 1
-    }`;
-  }
 
   handleFilterChange(event: FilterEvent){
     this.filter$.set(event);
@@ -296,5 +325,24 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   onFilterEnabledChanged($event: boolean) {
     this.filterEnabled = $event;
+  }
+
+  /** Selection Helper Methods */
+  isAllSelected() {
+    return this.selection.selected.length === this.visibleEntities$().length;
+  }
+
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.selection.select(...this.visibleEntities$());
+    }
+  }
+
+  checkboxLabel(row?: any): string {
+    return row
+      ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
+      : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   }
 }
