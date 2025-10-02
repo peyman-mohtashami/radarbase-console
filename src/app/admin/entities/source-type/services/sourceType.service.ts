@@ -16,6 +16,7 @@ export class SourceTypeService {
     return {
       ...entity,
       _name: `${entity.producer}/${entity.model}/${entity.catalogVersion}`,
+      _search: `${entity.producer} ${entity.model} ${entity.catalogVersion} ${entity.description} ${entity.name}`,
     };
   }
 

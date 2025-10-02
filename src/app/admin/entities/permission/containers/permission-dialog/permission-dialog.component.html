@@ -1,0 +1,53 @@
+<rb-dialog-title [mode]='dialogData.mode'
+                 [name]="ENTITY_NAME.user"
+                 (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="dialogData.mode"
+                                [label]="'ADMIN.user.title.singular' | translate"
+                                [entityName]="dialogData.entity.login">
+      <!--      <rb-user-details [mode]='mode' [entity]='entity' [config]="configFields" />-->
+    </rb-dialog-body-description>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+      <label for="email" class="text-sm">{{ 'ADMIN.user.email.label' | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'>
+        <input matInput formControlName='email' required/>
+        @if (form.controls.email?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ "ADMIN.user.email.duplicate" }}
+            }
+            @if (errors?.['email']) {
+              {{ ValidatorError.emailValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate: {value: 'ADMIN.user.email.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+    </form>
+
+    <div>
+      @if (selectedUser$(); as user) {
+        {{user.login}} / {{user.firstName}} / ...
+      }
+    </div>
+  }
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ (error$()?.error.errorCode | translate) ?? (error$()?.error?.message | translate) }}
+  </div>
+}
+
+<rb-dialog-actions [mode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

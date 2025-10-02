@@ -1,0 +1,129 @@
+<rb-breadcrumb />
+
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
+  <!--  bg-background dark:bg-background-dark-->
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['organization'].icon }}</span>
+    {{entity$().projectName }}
+    <!--    {{(selectedOrganization$ | async)?.name }}-->
+  </h2>
+
+  <div class='flex gap-1 ml-auto'>
+    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity$().projectName}]'>
+      <app-actions [entity$]="entity$()" />
+    </ng-container>
+  </div>
+</div>
+
+<div class="m-4">
+  <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+       mat-tab-nav-bar
+       mat-stretch-tabs="false"
+       [tabPanel]="tabPanel">
+    <!--      mat-align-tabs="start"-->
+<!--    <a mat-tab-link-->
+<!--       [routerLink]="['/admin', 'organizations', entity$().organization.name, 'projects', entity$().projectName, 'subjects']">-->
+<!--      <h2 class='flex items-center gap-2 m-0 text-base font-bold'>-->
+<!--        Subjects-->
+<!--      </h2>-->
+<!--    </a>-->
+<!--    <a mat-tab-link-->
+<!--       [routerLink]="['/admin', 'organizations', entity$().organization.name, 'projects', entity$().projectName, 'details']">-->
+<!--      <h2 class='flex items-center gap-2 m-0 text-base font-bold'>-->
+<!--        Details-->
+<!--      </h2>-->
+<!--    </a>-->
+    @for (link of links; track link) {
+      <!--        {{link.path}} / {{activePath}}-->
+      <a mat-tab-link
+         (click)="activePath = link.path"
+         [active]="link.path === activePath"
+         [routerLink]="['/admin', 'organizations', entity$().organization.name, 'projects', entity$().projectName, link.path]">
+        <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+          {{ link.label }}
+        </h2>
+      </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel class="" >
+    <router-outlet />
+  </mat-tab-nav-panel>
+</div>
+
+<!--<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>-->
+
+<!--&lt;!&ndash;<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-neutral-50 dark:bg-neutral-700'>&ndash;&gt;-->
+<!--  <div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-background dark:bg-background-dark'>-->
+
+<!--&lt;!&ndash;<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 pb-4 pb-0 w-full bg-neutral-50 dark:bg-neutral-700'>&ndash;&gt;-->
+<!--  &lt;!&ndash;  bg-white dark:bg-neutral-700&ndash;&gt;-->
+<!--  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
+<!--    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['project'].icon }}</span>-->
+<!--&lt;!&ndash;    {{(selectedProject$ | async)?.name }}&ndash;&gt;-->
+<!--  </h2>-->
+<!--  &lt;!&ndash;  <ng-content select="[top-filter]"></ng-content>&ndash;&gt;-->
+<!--  <div class='flex gap-1 ml-auto'>-->
+<!--    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>-->
+<!--      <rb-actions [entity]="entity" (action)="onAction($event.mode, $event.entity)"></rb-actions>-->
+<!--    </ng-container>-->
+<!--  </div>-->
+<!--  &lt;!&ndash;  <div class="flex items-center gap-4">&ndash;&gt;-->
+<!--  &lt;!&ndash;    <ng-content select="[extra-buttons]"></ng-content>&ndash;&gt;-->
+
+<!--  &lt;!&ndash;    <button *ngIf="isGridView !== undefined" type='button'&ndash;&gt;-->
+<!--  &lt;!&ndash;            class="mat-large-icon-button"&ndash;&gt;-->
+<!--  &lt;!&ndash;            mat-icon-button&ndash;&gt;-->
+<!--  &lt;!&ndash;            color="primary"&ndash;&gt;-->
+<!--  &lt;!&ndash;            (click)="toggleGridListView()">&ndash;&gt;-->
+<!--  &lt;!&ndash;      <span class="material-symbols-outlined">{{isGridView ? "list" : "grid_view"}}</span>&ndash;&gt;-->
+<!--  &lt;!&ndash;    </button>&ndash;&gt;-->
+<!--  &lt;!&ndash;    <ng-container *rbPermission="permission">&ndash;&gt;-->
+<!--  &lt;!&ndash;      <button *ngIf="enableAddButton" (click)='onAction(DialogMode.ADD)'&ndash;&gt;-->
+<!--  &lt;!&ndash;              mat-stroked-button&ndash;&gt;-->
+<!--  &lt;!&ndash;              color="primary"&ndash;&gt;-->
+<!--  &lt;!&ndash;              type="button">&ndash;&gt;-->
+<!--  &lt;!&ndash;        <span class="material-symbols-outlined">add</span>&ndash;&gt;-->
+<!--  &lt;!&ndash;        {{ 'ADMIN.' + entityName + '.create' | translate }}&ndash;&gt;-->
+<!--  &lt;!&ndash;      </button>&ndash;&gt;-->
+<!--  &lt;!&ndash;    </ng-container>&ndash;&gt;-->
+<!--  &lt;!&ndash;  </div>&ndash;&gt;-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<mat-card class="m-4">&ndash;&gt;-->
+<!--&lt;!&ndash;  <mat-card-content>&ndash;&gt;-->
+<!--<div class="m-4">-->
+
+<!--    <nav-->
+<!--      class="border-b-2 border-neutral-200 dark:border-neutral-600"-->
+<!--      mat-tab-nav-bar-->
+<!--      mat-stretch-tabs="false"-->
+<!--      mat-align-tabs="start"-->
+<!--      [tabPanel]="tabPanel"-->
+<!--    >-->
+<!--      <a *ngFor="let link of links"-->
+<!--         class=""-->
+<!--         mat-tab-link-->
+<!--         (click)="activePath = link.path"-->
+<!--         [active]="link.path === activePath"-->
+<!--         [routerLink]="link.path"-->
+<!--      >-->
+<!--        &lt;!&ndash;        {{link | json}}&ndash;&gt;-->
+<!--        <h2 class='flex items-center gap-2 m-0 text-base font-bold '>-->
+<!--          &lt;!&ndash;          <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">&ndash;&gt;-->
+<!--          &lt;!&ndash;            folder&ndash;&gt;-->
+<!--          &lt;!&ndash;          </span>&ndash;&gt;-->
+<!--          {{ link.label }}-->
+<!--          &lt;!&ndash;          {{ 'ADMIN.' + entityName + '.title.plural' | translate }}&ndash;&gt;-->
+<!--        </h2>-->
+<!--        &lt;!&ndash;        <span class="font-bold">{{ link.label }}</span>&ndash;&gt;-->
+<!--      </a>-->
+<!--    </nav>-->
+<!--    <mat-tab-nav-panel #tabPanel class="" >-->
+<!--      <router-outlet />-->
+<!--      &lt;!&ndash;      (activate)="onActivate($event)"></router-outlet>&ndash;&gt;-->
+<!--    </mat-tab-nav-panel>-->
+
+<!--&lt;!&ndash;  </mat-card-content>&ndash;&gt;-->
+<!--&lt;!&ndash;</mat-card>&ndash;&gt;-->
+<!--&lt;!&ndash;<router-outlet ></router-outlet>&ndash;&gt;-->
+<!--</div>-->

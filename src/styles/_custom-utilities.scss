@@ -19,6 +19,7 @@
 //  }
 //}
 
+
 @layer utilities {
   .rb-table {
     @apply w-full text-sm relative px-4;
@@ -42,7 +43,7 @@
     @apply flex gap-4 items-center py-2 px-4;
   }
   .rb-table-extension-row {
-    @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];
+    @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];
   }
 
   .sticky-head thead {
@@ -90,6 +91,12 @@
     animation: slideOutRight 0.3s ease-out forwards;
     transform: translateX(100%);
   }
+
+  .border-highlight .mdc-text-field--outlined {
+    @apply border-indigo-500 ring-2 ring-indigo-200;
+  }
+
+
 }
 
 @keyframes slideInRight {

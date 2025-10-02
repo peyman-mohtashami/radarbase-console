@@ -56,7 +56,56 @@
     "organization": {
       "fields": {
         "location": true,
-        "description": true
+        "description": true,
+        "projects": true
+      }
+    },
+    "project": {
+      "fields": {
+        "location": true,
+        "description": true,
+        "startDate": true,
+        "endDate": true,
+        "projectStatus": true,
+        "sourceTypes": true,
+        "humanReadableProjectName": true,
+        "attributes": true,
+        "attributes.Privacy-policy-url": true,
+        "attributes.Work-package": true,
+        "attributes.Phase": true,
+        "attributes.External-project-url": true,
+        "attributes.External-project-id": true
+      }
+    },
+    "client": {
+      "fields": {
+        "resourceIds": true,
+        "authorizedGrantTypes": true,
+        "dynamic_registration": true,
+        "accessTokenValiditySeconds": true,
+        "refreshTokenValiditySeconds": true,
+        "scope": true,
+        "autoApproveScopes": true,
+        "registeredRedirectUri": true
+      }
+    },
+    "subject": {
+      "fields": {
+        "personName": true,
+        "externalId": true,
+        "externalLink": true,
+        "dateOfBirth": true,
+        "group": true,
+        "status": true,
+        "sources": true,
+        "attributes": true,
+        "attributes.participant_group": true,
+        "attributes.humanReadableIdentifier": true,
+        "enrollmentDate": true,
+        "createdBy": true,
+        "createdDate": true,
+        "lastModifiedBy": true,
+        "lastModifiedDate": true
       }
     },
     "_subject": {
@@ -95,7 +144,7 @@
         }
       }
     },
-    "subject": {
+    "___subject": {
       "fields": [
         {"name": "personName", "enabled": false},
         {"name": "externalId", "enabled": false, "required": true},
@@ -112,10 +161,16 @@
 
     "user": {
       "fields": {
+        "firstName": false,
+        "lastName": false,
+        "createdBy": false,
+        "createdDate": false,
+        "lastModifiedBy": false,
+        "lastModifiedDate": false,
         "langKey": false
       }
     },
-    "project": {
+    "_project": {
       "fields": [
         {"name": "humanReadableProjectName", "enabled": false},
         {"name": "startDate", "enabled": false},
@@ -140,20 +195,30 @@
     },
     "sourceType": {
       "fields": {
-        "description": false,
-        "appProvider": false,
-        "assessmentType": false,
-        "name": false
+        "description": true,
+        "appProvider": true,
+        "assessmentType": true,
+        "name": true,
+        "sourceTypeScope": true,
+        "canRegisterDynamically": true,
+        "sourceData": true
       }
     },
     "sourceData": {
       "fields": {
-        "topic": false,
-        "processingState": false,
-        "keySchema": false,
-        "valueSchema": false,
-        "frequency": false,
-        "unit": false
+        "topic": true,
+        "processingState": true,
+        "keySchema": true,
+        "valueSchema": true,
+        "frequency": true,
+        "unit": true
+      }
+    },
+    "source": {
+      "fields": {
+        "expectedSourceName": true,
+        "attributes": true,
+        "attributes.External-identifier": true
       }
     }
   }

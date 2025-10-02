@@ -23,7 +23,8 @@ export interface TableElement {
   tableClass?: string;
   extensionClass?: string;
   classes?: string;
-  showInDelete?: boolean;
   editable?: boolean;
+  showInSummary?: boolean;
+  showInDelete?: boolean; //!
 }
 

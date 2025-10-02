@@ -1,0 +1,138 @@
+<div class="p-4">
+  <div class="flex flex-wrap justify-between gap-2 mb-4">
+    <h2 class="m-0 font-bold flex items-center gap-2">
+      <mat-icon class="p-2 w-10! h-10! rounded-full bg-gray-200"
+                fontSet="material-icons-outlined">
+        speed
+      </mat-icon>
+      {{'ADMIN.metrics.threads.threadsDump' | translate }}
+    </h2>
+    <button mat-stroked-button color="primary">Back to Threads</button>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <button mat-stroked-button color="primary"
+            [class]="!threadStateFilter ? 'bg-primary-color-100!' : ''"
+            (click)="filterThreadState()">
+      {{'ADMIN.metrics.threads.all' | translate }}&nbsp;<span>{{ threadDumpAll }}</span>
+    </button>
+
+    <button mat-stroked-button color="primary"
+            [class]="threadStateFilter === ThreadState.Runnable ? 'bg-green-100! text-green-700!' : ''"
+            (click)="filterThreadState(ThreadState.Runnable)">
+      {{'ADMIN.metrics.threads.runnable' | translate }}&nbsp;<span>{{ threadDumpRunnable }}</span>
+    </button>
+
+    <button mat-stroked-button color="primary"
+            [class]="threadStateFilter === ThreadState.Waiting ? 'bg-blue-100! text-blue-700!' : ''"
+            (click)="filterThreadState(ThreadState.Waiting)">"
+      {{'ADMIN.metrics.threads.waiting' | translate }}&nbsp;
+      <span class="badge badge-pill badge-default">{{ threadDumpWaiting }}</span>
+    </button>
+
+    <button mat-stroked-button color="primary"
+            [class]="threadStateFilter === ThreadState.TimedWaiting ? 'bg-orange-100! text-orange-700!' : ''"
+            (click)="filterThreadState(ThreadState.TimedWaiting)">
+      {{'ADMIN.metrics.threads.timedWaiting' | translate }}
+      &nbsp;<span class="badge badge-pill badge-default">{{ threadDumpTimedWaiting }}</span>
+    </button>
+
+    <button mat-stroked-button color="primary"
+            [class]="threadStateFilter === ThreadState.Blocked ? 'bg-red-100! text-red-700!' : ''"
+            (click)="filterThreadState(ThreadState.Blocked)">
+      {{'ADMIN.metrics.threads.blocked' | translate }}&nbsp;
+      <span class="badge badge-pill badge-default">{{ threadDumpBlocked }}</span>
+    </button>
+  </div>
+
+  @for (thread of filteredThreads; track thread.threadName) {
+  <div class="my-4">
+    <mat-card class="p-4">
+      <div class="flex items-center mb-4 justify-between">
+        <div class="flex items-center gap-4">
+
+          @if (thread.threadState === ThreadState.Runnable) {
+          <rb-tag class="bg-green-100 text-green-700">
+            {{ thread.threadState }}
+          </rb-tag>
+          }
+
+          @if (thread.threadState === ThreadState.Waiting) {
+          <rb-tag class="bg-blue-100 text-blue-700">
+            {{ thread.threadState }}
+          </rb-tag>
+          }
+
+          @if (thread.threadState === ThreadState.TimedWaiting) {
+          <rb-tag class="bg-orange-100 text-orange-700">
+            {{ thread.threadState }}
+          </rb-tag>
+          }
+
+          @if (thread.threadState === ThreadState.Blocked) {
+          <rb-tag class="bg-red-100 text-red-700">
+            {{ thread.threadState }}
+          </rb-tag>
+          }
+
+          <span>
+            {{ thread.threadName }} ({{'ADMIN.metrics.threads.threadId' | translate }} {{ thread.threadId }})
+          </span>
+        </div>
+        <button mat-stroked-button color="primary"
+                (click)="thread.showThreadDump = !thread.showThreadDump">
+          <span [hidden]="thread.showThreadDump">
+            {{'ADMIN.metrics.threads.showStackTrace' | translate }}
+          </span>
+          <span [hidden]="!thread.showThreadDump">
+            {{'ADMIN.metrics.threads.hideStackTrace' | translate }}
+          </span>
+        </button>
+      </div>
+
+      <div class="mb-4 text-xs" [hidden]="!thread.showThreadDump">
+        @for (st of thread.stackTrace; track st.fileName) {
+        <div class="text-xs">
+          <samp class="break-words">
+            {{ st.className }}.{{ st.methodName }}(<code>{{ st.fileName }}:{{ st.lineNumber }}</code>)
+          </samp>
+        </div>
+        }
+      </div>
+
+      <div class="font-bold mb-2">
+        {{'ADMIN.metrics.threads.threadsDump' | translate }}: {{ thread.threadName }}
+      </div>
+
+      <div class="flex items-center text-sm border-b border-gray-500">
+        <div class="w-1/4">
+          {{'ADMIN.metrics.threads.blockedTime' | translate }}
+        </div>
+        <div class="w-1/4">
+          {{'ADMIN.metrics.threads.blockedCount' | translate }}
+        </div>
+        <div class="w-1/4">
+          {{'ADMIN.metrics.threads.waitedTime' | translate }}
+        </div>
+        <div class="w-1/4">
+          {{'ADMIN.metrics.threads.waitedCount' | translate }}
+        </div>
+      </div>
+      <div class="flex items-center text-sm border-b border-gray-500">
+        <div class="w-1/4">{{ thread.blockedTime }}</div>
+        <div class="w-1/4">{{ thread.blockedCount }}</div>
+        <div class="w-1/4">{{ thread.waitedTime }}</div>
+        <div class="w-1/4">{{ thread.waitedCount }}</div>
+      </div>
+      <div class="flex items-center text-sm gap-2">
+        <div class="">
+          {{'ADMIN.metrics.threads.lockName' | translate }}:
+        </div>
+        <div class="">
+          <code class="break-words">{{ thread.lockName || "-"}}</code>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  }
+</div>

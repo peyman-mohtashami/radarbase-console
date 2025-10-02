@@ -1,0 +1,120 @@
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('checkbox') {
+            <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                          (change)="$event ?  selection$().toggle(entity$()) : null"
+                          [checked]="selection$().isSelected(entity$())">
+              <!--                  [aria-label]="checkboxLabel(entity)">-->
+            </mat-checkbox>
+          }
+          @case ('login') {
+            <div class="flex flex-wrap gap-1 items-center">
+              <rb-subject-status [status]="entity$().status" [type]="DetailType.TABLE"/>
+              <a [routerLink]='[entity$().login]'>
+                <span class='font-bold text-primary dark:text-primary-dark'>{{ entity$().login }}</span>
+              </a>
+            </div>
+          }
+          @case ('externalId') {
+            <p>
+              <span class="text-gray-500">External ID: </span>
+              <span class="font-bold">
+              @if (entity$().externalId) {
+                @if (entity$().externalLink) {
+                  <a [href]='entity$().externalLink' target='_blank'>{{ entity$().externalId }}</a>
+                } @else {
+                  {{ entity$().externalId }}
+                }
+              } @else {
+                -
+              }
+            </span>
+            </p>
+            @if (!configFields$() || configFields$()['personName'] === undefined || configFields$()['personName']) {
+            <p><span class="text-gray-500">Name: </span><span
+              class="font-bold">{{ entity$().personName ?? '-' }}</span></p>
+            }
+            @if (!configFields$() || configFields$()['dateOfBirth'] === undefined || configFields$()['dateOfBirth']) {
+              <p><span class="text-gray-500">Date of birth: </span> <span class="font-bold"><rb-local-date
+              [date]="entity$().dateOfBirth" [format]="'longDate'"/></span></p>
+            }
+          }
+          @case ('dateOfBirth') {
+            <rb-local-date [date]="entity$().dateOfBirth" [format]="'mediumDate'"/>
+          }
+          @case ('group') {
+            <rb-subject-group [group]="entity$().group"/>
+          }
+          @case ('status') {
+            <rb-subject-status [status]="entity$().status"/>
+          }
+          @case ('sources') {
+<!--            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">-->
+<!--              @for (source of entity$().sources; track source.id) {-->
+<!--                <button (click)="openSourceDialog(entity$(), source, 0)">-->
+<!--                    <span>{{ source.sourceTypeProducer }}_{{ source.sourceTypeModel }}-->
+<!--                      _{{ source.sourceTypeCatalogVersion }}</span>-->
+<!--                </button>-->
+
+<!--                <rb-tag colorClass="bg-green-500 text-white">-->
+<!--                  CONNECTED-->
+<!--                </rb-tag>-->
+<!--                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">-->
+<!--              }-->
+
+<!--              @for (source of mockSources; let i = $index; track source) {-->
+<!--                <button (click)="openSourceDialog(entity$(), source, i)">-->
+<!--                  <span class="cursor-pointer text-primary-color-500 font-bold">{{ source.name }}</span>-->
+<!--                </button>-->
+<!--                <span class="material-symbols-outlined {{source.color}}"-->
+<!--                      [matTooltip]="source.status">{{ source.icon }}</span>-->
+
+<!--                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">-->
+<!--                &lt;!&ndash;                <img *ngIf="i === 0" src="assets/images/connectionStatusARMT{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40 bg-neutral-200">&ndash;&gt;-->
+<!--                  &lt;!&ndash;                <img *ngIf="i === 2" src="assets/images/connectionStatusFitbit{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40  bg-neutral-200">&ndash;&gt;-->
+<!--              }-->
+<!--            </div>-->
+          }
+          @case ('actions') {
+            <div class="flex flex-wrap gap-1 py-1">
+              <button mat-icon-button
+                      class="tiny block"
+                      [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
+                      [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
+                      [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
+                      [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
+                      [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
+                      [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
+                      [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                      (click)="onExpansionClick($event)">
+                  <span class="material-symbols-outlined text-xl!">
+                    {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                  </span>
+              </button>
+              <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+            </div>
+          }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-subject-details class="py-4"
+                        [entity$]='entity$()'
+                        [type$]="DetailType.TABLE"
+                        [tableFields$]="tableFields$()"/>
+  </div>
+</mat-card>
+

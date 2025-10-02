@@ -58,6 +58,7 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
+  configFields = this.configService.getFormFields();
 
   visibleEntities$ = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['entities']);
 
@@ -190,7 +191,7 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
   initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService.dialogUpdateEvent$();
-      if (updated) this.handleDialogUpdate(updated);
+      if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
 

@@ -1,0 +1,15 @@
+<!--<button mat-menu-item-->
+<!--        *ngIf='!entity["activated"]'-->
+<!--        [disabled]='!!entity["activated"]'-->
+<!--        (click)="activate(entity)">-->
+<!--  <span class="material-symbols-outlined">forward_to_inbox</span>-->
+<!--&lt;!&ndash;  <span>{{'ADMIN.user.sendActivationLink' | translate}}</span>&ndash;&gt;-->
+<!--</button>-->
+
+@if (!entity.activated) {
+  <button mat-icon-button color="primary" class="tiny"
+          [disabled]='!!entity["activated"]'
+          (click)="activate(entity)">
+    <span class="material-symbols-outlined text-xl! font-bold!">forward_to_inbox</span>
+  </button>
+}

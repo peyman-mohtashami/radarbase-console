@@ -14,7 +14,9 @@ import {Store} from "@ngrx/store";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {ProjectStatus} from '../../models/radar-project.model';
+import {ProjectStatus} from '../../../admin/entities/project/models/project';
+// import {ProjectStatus} from '../../../admin/entities/organization/models/organization';
+// import {ProjectStatus} from '../../models/radar-project.model';
 
 @Component({
   selector: 'rb-dynamic-input',

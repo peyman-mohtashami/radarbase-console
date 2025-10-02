@@ -45,13 +45,11 @@ import {SourceDataConfigService} from '../../services/source-data-config.service
     ReactiveFormsModule,
     MatFormField,
     TranslatePipe,
-    MatLabel,
     MatInput,
     MatSelectAutocompleteComponent,
     MatSelect,
     MatOption,
     DialogActionsComponent,
-    AsyncPipe,
     MatError,
   ]
 })

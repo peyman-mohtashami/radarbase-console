@@ -37,6 +37,8 @@ export class SourceTypeTableRowComponent {
   entity$ = input.required<AppSourceType>();
   entityUpdateTrigger$= input<UpdateTrigger>();
   tableFields$ = input.required<TableElement[]>();
+  configFields$ = input.required<Record<string, boolean>>();
+  extensionClass$ = input<string>();
 
   expanded$ = signal(false);
   updated$ = signal(false);

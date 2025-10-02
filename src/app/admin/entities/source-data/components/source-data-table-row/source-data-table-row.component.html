@@ -1,4 +1,3 @@
-
 <mat-card class="rb-table-row" [class]="
     (updated$() ? 'bg-green-100! ' : '') +
     (expanded$() ? 'mb-2' : '')
@@ -13,9 +12,11 @@
             <a [routerLink]='["/admin/source-data", entity$()["sourceDataName"]]'>
               <span class="font-bold text-primary">{{ entity$()["sourceDataName"] }}</span>
             </a>
-            <p class="text-neutral-500 dark:text-neutral-300 font-bold">
+            @if (!configFields$() || configFields$()['topic'] === undefined || configFields$()['topic']) {
+              <p class="text-neutral-500 dark:text-neutral-300 font-bold">
               <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity$()['topic'] || '-' }}
             </p>
+            }
           }
           @case ('sourceType') {
             <rb-source-data-source-type [sourceType$]="entity$()['sourceType']"/>
@@ -24,13 +25,20 @@
             <rb-source-data-processing-state [processingState$]="entity$()['processingState']"/>
           }
           @case ("actions") {
-            @if (true) {
-              <button mat-icon-button class="tiny {{extensionClass$()}}!" (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined">
-                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
-                </span>
-              </button>
-            }
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
+              <span class="material-symbols-outlined">
+                {{ expanded$() ? 'expand_less' : 'expand_more' }}
+              </span>
+            </button>
             <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
           }
           @default {

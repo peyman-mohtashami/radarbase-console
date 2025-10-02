@@ -1,6 +1,7 @@
 // import { BaseDef } from './base.model';
-import { RadarProject } from './radar-project.model';
-import { RadarOrganization } from './radar-organization.model';
+// import { RadarProject } from './radar-project.model';
+// import { RadarOrganization } from './radar-organization.model';
+import {RadarRole} from '../../admin/entities/user/models/user';
 
 export interface AuthOptionsModel {
   backendBaseUrl?: string;
@@ -48,18 +49,6 @@ export interface RadarRolePayload {
   organizationId?: number | null;
 }
 
-export interface RadarRole {
-  id?: number | string;
-  authorityName?: string;
-  projectId?: number | null;
-  projectName?: string | null;
-  organizationName?: string | null;
-  organizationId?: number | null;
-  project?: RadarProject;
-  organization?: RadarOrganization;
-  authority?: { name: string };
-  role?: string;
-}
 
 // export interface RadarRoleDTO {
 //   id?: number | string;

@@ -1,0 +1,16 @@
+@if (mode() === "MENU") {
+  <button class="hover:text-primary-color hover:bg-transparent! transition-all"
+          mat-menu-item
+          (click)='pairSource()'>
+          <span class="flex items-center gap-2">
+            <span class="text-xl text-primary-color-500 material-symbols-outlined font-bold">link</span>
+            <span>{{ 'Pair source' | translate }}</span>
+          </span>
+  </button>
+} @else {
+  <button class="tiny"
+          mat-icon-button color="primary"
+          (click)='pairSource()'>
+    <span class="text-xl! material-symbols-outlined font-bold">link</span>
+  </button>
+}

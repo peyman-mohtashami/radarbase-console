@@ -18,6 +18,7 @@ export interface RadarSourceType extends Record<string, number | string | boolea
 
 export interface AppSourceType extends RadarSourceType {
   _name: string;
+  _search?: string;
 }
 
 export enum SourceTypeScope {

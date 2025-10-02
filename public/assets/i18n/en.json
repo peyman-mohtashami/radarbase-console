@@ -270,13 +270,20 @@
         "tableLabel": "Registration",
         "label": "Dynamic Registration"
       },
+      "_dynamic_registration": {
+        "tableLabel": "Registration",
+        "label": "Dynamic Registration"
+      },
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add OAuth Client",
       "edit": "Edit",
       "delete": "Delete",
       "deleteMessage": "You are going to delete OAuth Client",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No OAuth Client Found"
+      "noItemFound": "No OAuth Client Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "database": {
       "title": {
@@ -461,7 +468,10 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete Organization",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Organization Found"
+      "noItemFound": "No Organization Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "project": {
       "title": {
@@ -538,7 +548,10 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete Project",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Project Found"
+      "noItemFound": "No Project Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "revision": {
       "title": {
@@ -557,7 +570,7 @@
         "tableLabel": "Modifications",
         "label": "Modifications"
       },
-      "auditor": {
+      "author": {
         "tableLabel": "Author",
         "label": "Author"
       },
@@ -786,7 +799,10 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete Source Type",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Source Type Found"
+      "noItemFound": "No Source Type Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "subject": {
       "title": {
@@ -1064,7 +1080,10 @@
       "sendActivationLink": "Send Activation Link",
       "deleteMessage": "You are going to delete User",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No User Found"
+      "noItemFound": "No User Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "role": {
       "title": {

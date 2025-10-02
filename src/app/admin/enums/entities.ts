@@ -13,6 +13,7 @@ export enum ENTITY_NAME {
   organization = "organization",
   project = "project",
   questionnaire = "questionnaire",
+  permission = 'permission',
   protocol = "protocol",
   revision = "revision",
   role = "role",

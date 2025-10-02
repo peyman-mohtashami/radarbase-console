@@ -134,3 +134,14 @@ rb-sidebar-nav {
 
 }
 
+.mat-form-field-appearance-outline.custom-outlined.mat-focused {
+  /* Change border color when the input is focused or has a value */
+  .mat-form-field-outline {
+    color: #1976d2; /* Change this to your desired color */
+    border-color: #1976d2; /* Matches the focus color */
+  }
+}
+
+.mat-form-field-appearance-outline.custom-outlined.mat-focused .mat-form-field-outline-thick {
+  border-color: #1976d2 !important; /* Ensures the thick outline matches */
+}

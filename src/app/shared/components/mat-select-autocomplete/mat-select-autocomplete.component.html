@@ -16,11 +16,11 @@
     @if (multiple()) {
       <mat-select-trigger>
         <mat-chip-listbox>
-          @for (selected of form?.value; track selected.name) {
+          @for (selected of form?.value; track selected._name) {
             <mat-chip-option [value]="selected"
                              [removable]="true"
                              (removed)="removeChip(selected)">
-              {{selected["name"]}}
+              {{selected["_name"]}}
               <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip-option>
           }

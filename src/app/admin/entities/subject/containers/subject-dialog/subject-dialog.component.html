@@ -1,0 +1,215 @@
+<div>
+  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      @if (dialogData.mode === DialogMode.EDIT) {
+        <span>{{ "SHARED.dialog.edit" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.VIEW) {
+        <span>{{ "SHARED.dialog.view" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.ADD) {
+        <span>{{ "SHARED.dialog.add" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.DELETE) {
+        <span>{{ "SHARED.dialog.delete" | translate }}</span>
+      }
+      <span> {{ "ADMIN.subject.title.singular" | translate }}</span>
+    </span>
+    <button mat-icon-button
+            (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </span>
+  </h2>
+</div>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      @if (dialogData.mode === DialogMode.DELETE) {
+        <div class="mt-8">
+          <p class="mb-4">
+            {{ "SHARED.dialog.deleteMessage" | translate }} {{ 'Subject' }}:
+            <strong>{{ dialogData.entity.login }}</strong>.
+          </p>
+          <rb-subject-details class="py-4"
+                              [entity$]='dialogData.entity'
+                              [type$]="DetailType.SUMMARY"
+                              [tableFields$]="tableFields"/>
+          <p class="mt-4">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        </div>
+      }
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]="form" novalidate>
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ 'ADMIN.subject.id.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='id' id="id-search" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+
+        <label for="login" class="text-sm">{{ 'ADMIN.subject.login.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='login' required/>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['personName'] === undefined || formFields['personName']) {
+        <label for="personName" class="text-sm">{{ 'ADMIN.subject.personName.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='personName' type="search"
+                 id="name-search" autocomplete="off" data-lpignore="true"/>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['dateOfBirth'] === undefined || formFields['dateOfBirth']) {
+        <label for="dateOfBirth" class="text-sm">{{ 'ADMIN.subject.dateOfBirth.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput [matDatepicker]="picker"
+                 formControlName='dateOfBirth'
+                 [placeholder]='"dateFormat"'>
+          <mat-datepicker-toggle matSuffix [for]="picker"/>
+          <mat-datepicker #picker/>
+          @if (form.controls.dateOfBirth?.errors; as errors) {
+            <mat-error>
+              @if (errors?.['matStartDateInvalid']) {
+                {{ 'ADMIN.subject.dateOfBirth.invalid' | translate }}
+              }
+              @if (errors?.['matDatepickerParse']) {
+                {{ 'ADMIN.subject.dateOfBirth.invalid' | translate }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['externalId'] === undefined || formFields['externalId']) {
+        <label for="id" class="text-sm">{{ 'ADMIN.subject.externalId.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='externalId'/>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['externalLink'] === undefined || formFields['externalLink']) {
+        <label for="externalLink" class="text-sm">{{ 'ADMIN.subject.externalLink.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='externalLink'/>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['group'] === undefined || formFields['group']) {
+        <label for="group" class="text-sm">{{ 'ADMIN.subject.group.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <mat-select formControlName='group'>
+            @for (group of dialogData.groups; track group.name) {
+              <mat-option [value]='group.name'>
+                {{ group.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+        <div formGroupName='attributes'>
+          <label for="attributes" class="text-sm">{{ 'ADMIN.subject.attributes.label' | translate }}</label>
+          <fieldset class="rounded-sm border px-4">
+            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {
+              <label for="humanReadableIdentifier"
+                     class="text-sm">{{ 'ADMIN.subject.attributes.humanReadableIdentifier' | translate }}</label>
+              <mat-form-field subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='humanReadableIdentifier'/>
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {
+
+              <label for="participant_group"
+                     class="text-sm">{{ 'ADMIN.subject.attributes.participant_group' | translate }}</label>
+              <mat-form-field subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='participant_group'/>
+              </mat-form-field>
+            }
+          </fieldset>
+
+        </div>
+      }
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error$()?.error.errorCode | translate }}
+  </div>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ 'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    @if (dialogData.mode === DialogMode.DELETE) {
+      <button [disabled]='loading$()'
+              (click)='onAction(dialogData.mode)'
+              color="warn"
+              mat-raised-button
+              type="button">
+        @if (loading$()) {
+          <mat-icon>
+            <mat-spinner diameter='20'></mat-spinner>
+          </mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @if (dialogData.mode === DialogMode.EDIT) {
+      <button [disabled]='!form?.valid || !form?.dirty || loading$()'
+              (click)='onAction(dialogData.mode)'
+              mat-raised-button
+              color="primary"
+              type="button">
+        @if (loading$()) {
+          <mat-icon>
+            <mat-spinner diameter='20'></mat-spinner>
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @if (dialogData.mode === DialogMode.ADD) {
+      <button [disabled]='!form?.valid || loading$()'
+              (click)='onAction(dialogData.mode)'
+              color="primary"
+              mat-raised-button
+              type="button">
+        @if (loading$()) {
+          <mat-icon>
+            <mat-spinner diameter='20'></mat-spinner>
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  </div>
+</div>

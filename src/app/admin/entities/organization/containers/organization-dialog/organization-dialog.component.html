@@ -1,0 +1,89 @@
+<rb-dialog-title [mode]='dialogData.mode'
+                 [name]="ENTITY_NAME.organization"
+                 (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="dialogData.mode"
+                                [label]="'Organization'"
+                                [entityName]="dialogData.entity.name"/>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ 'ADMIN.organization.id.label' | translate }}</label>
+        <mat-form-field appearance='outline'>
+          <input matInput formControlName='id'/>
+        </mat-form-field>
+      }
+
+      <label for="name" class="text-sm">Name *</label>
+      <mat-form-field class="mb-1! w-full small"
+                      subscriptSizing="fixed"
+                      appearance='outline'>
+        <input matInput id="name" autocomplete="off" data-lpignore="true"
+               formControlName='name'
+               required
+               type="text"/>
+        <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>
+
+        @if (form.controls.name?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ "Organization name exists" }}
+            }
+            @if (errors?.['pattern']) {
+              {{ValidatorError.normalTextValidator}}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+      @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+        <label for="location" class="text-sm">Location</label>
+        <mat-form-field class="mb-1! w-full small"
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput id="location" autocomplete="off" data-lpignore="true"
+                 formControlName='location'
+                 type="text"/>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+        <label for="description" class="text-sm">Description</label>
+        <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+          <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <mat-hint align="start">{{ValidatorHint.longTextValidator}}</mat-hint>
+          <mat-hint align="end">{{description.value.length}} / 255</mat-hint>
+
+          @if (form.controls.description?.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ValidatorError.longTextValidator}}
+              }
+              @if (errors?.['required']) {
+                {{ValidatorError.requiredValidator | translate: {value: 'ADMIN.organization.description.label' | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+        }
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error$()?.error.errorCode | translate }}
+  </div>
+}
+
+<rb-dialog-actions [mode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

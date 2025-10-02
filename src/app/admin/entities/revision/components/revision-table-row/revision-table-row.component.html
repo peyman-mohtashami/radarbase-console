@@ -1,0 +1,34 @@
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+            @case ('modifications') {
+              <rb-modification class="flex gap-2" [revision]="entity$()"/>
+            }
+            @case ('timestamp') {
+              <rb-local-date [date]="entity$()['timestamp']" [format]="'long'"/>
+            }
+            @case ('actions') {
+              <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">
+                <span class="material-symbols-outlined">
+                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                </span>
+              </button>
+            }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+          }
+        </div>
+    }
+  </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <!--  <rb-source-data-details class="py-4" [entity]='entity()' [type]="DetailType.TABLE"></rb-source-data-details>-->
+  </div>
+</mat-card>

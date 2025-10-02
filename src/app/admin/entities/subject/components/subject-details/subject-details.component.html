@@ -1,0 +1,76 @@
+<rb-details [name]="ENTITY_NAME.subject"
+            [entity]="entity$()"
+            [tableFields]="tableFields$()"
+            [type]="type$()"
+            [customTemplate]="detailsTemplate"/>
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('checkbox') {}
+    @case ('dateOfBirth') {
+      <rb-local-date [date]="entity$()['dateOfBirth']" [format]="'mediumDate'"/>
+    }
+    @case ('status') {
+      <rb-subject-status [type]="type$()" [status]="entity$()['status']"/>
+    }
+    @case ('group') {
+      <rb-subject-group [group]="entity$()['group']"/>
+    }
+    @case ('sources') {
+      @if (entity$().sources && entity$()?.sources?.length) {
+        @for (source of entity$().sources; track source.sourceName) {
+          <rb-tag colorClass='#d57f02'>{{ source.sourceName }}</rb-tag>
+        }
+      } @else {
+        -
+      }
+    }
+    @case ('attributes') {
+      <div>
+        @if (entity$().attributes && (entity$().attributes | keyvalue)?.length) {
+          @for (attribute of entity$().attributes | keyvalue; track attribute.key) {
+            <div>
+              {{ attribute.key }}: {{ attribute.value || '-' }}
+            </div>
+          }
+        } @else {
+          -
+        }
+      </div>
+    }
+    @case ('enrollmentDate') {
+      <rb-local-date [date]="entity$()['enrollmentDate']" [format]="'long'"/>
+    }
+    @case ('createdBy') {
+      @if (entity$().createdBy && entity$().createdBy !== 'system') {
+        <rb-tag colorClass='user-color'>
+          <a [routerLink]='["/admin/users", entity$().createdBy]'>
+            {{ entity$().createdBy || '-' }}
+          </a>
+        </rb-tag>
+      } @else {
+        <span class="uppercase">{{ entity$().createdBy || '-' }}</span>
+      }
+    }
+    @case ('createdDate') {
+      <rb-local-date [date]="entity$()['createdDate']" [format]="'long'"/>
+    }
+    @case ('lastModifiedBy') {
+      @if (entity$().lastModifiedBy && entity$().lastModifiedBy !== 'system') {
+        <rb-tag colorClass='user-color'>
+          <a [routerLink]='["/admin/users", entity$().lastModifiedBy]'>
+            {{ entity$().lastModifiedBy || '-' }}
+          </a>
+        </rb-tag>
+      } @else {
+        <span class="uppercase">{{ entity$().lastModifiedBy || '-' }}</span>
+      }
+    }
+    @case ('lastModifiedDate') {
+      <rb-local-date [date]="entity$()['lastModifiedDate']" [format]="'long'"/>
+    }
+    @default {
+      {{ entity$()[property.name] || '-' }}
+    }
+  }
+</ng-template>

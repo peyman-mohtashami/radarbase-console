@@ -1,0 +1,87 @@
+<rb-entities-page-header [showTitle]="true"
+                         [entityName]="ENTITY_NAME.source"
+                         [enableAddButton]="true"
+                         [isGridView]="undefined"
+                         [permission]="[{role: ROLES.SYS_ADMIN}]">
+  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
+    <rb-data-table-filter bottom-filter
+                          [filters]='tableFilters'
+                          [filterOpened]='isFilterOpened'
+                          (filterChanged)='handleFilterChange($event)'
+                          (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</rb-entities-page-header>
+
+@if (loading$()) {
+  <rb-loader/>
+}
+
+<div class="rb-table"
+     rbTableQueryReflector
+     [page]="page$()"
+     [sort]="sort$()"
+     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
+     (activeQueryParams)="handleActiveQueryChange($event)">
+
+  @if (visibleEntities$().length) {
+    <div class="rb-table-header mat-app-background">
+      @for (tableElement of tableFields; track tableElement.name) {
+        @if (tableElement.name === 'checkbox') {
+          <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+               [class.flex-1]="!tableElement.width"
+               [class.shrink-0]="!!tableElement.width">
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()"/>
+          </div>
+        } @else {
+          <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+               [class.flex-1]="!tableElement.width"
+               [class.shrink-0]="!!tableElement.width">
+            <button class="rb-table-head group" [class]="tableElement.sortable ? 'cursor-pointer': ''"
+                    (click)="switchSort(tableElement)">
+              <span>{{ 'ADMIN.source.' + tableElement.name + '.tableLabel' | translate }}</span>
+              @if (tableElement.sortable) {
+                <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableElement.name">
+                      <span class="rb-sort-icon material-symbols-outlined">
+                        {{ sort$().sortField === tableElement.name && sort$().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+                      </span>
+                </div>
+              }
+            </button>
+          </div>
+        }
+      }
+    </div>
+  }
+
+  @if (visibleEntities$()?.length) {
+    @for (entity of visibleEntities$(); track entity.id) {
+      <rb-source-table-row [entity$]="entity"
+                           [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
+                           [tableFields$]="tableFields"
+                           [extensionClass$]="extensionClass$()"
+                           [configFields$]="configFields"/>
+    }
+  }
+</div>
+
+<div class="flex items-center p-4 text-sm font-bold">
+  @if (entityService.total === 0) {
+    <span>{{ 'ADMIN.source.noItemFound' | translate }}</span>
+  } @else {
+    @if (!visibleEntities$()?.length) {
+      <span>{{ 'No item found with this filter' | translate }}</span>
+    }
+  }
+</div>
+
+@if (entityService.total > MIN_ENTITIES_FOR_PAGINATION) {
+  <mat-paginator (page)="switchPage($event)"
+                 [length]="entityService.total"
+                 [pageSize]="page$().pageSize"
+                 [pageSizeOptions]="PAGE_SIZE_OPTIONS"
+                 [pageIndex]="page$().pageIndex"
+                 aria-label="Select page"/>
+}

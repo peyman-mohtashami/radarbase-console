@@ -1,0 +1,24 @@
+@let _sourceTypes = sourceTypes$();
+
+@if (_sourceTypes && _sourceTypes?.length) {
+  <div class="flex items-center flex-wrap gap-2 mt-1">
+    @for (sourceType of showAll ? _sourceTypes : _sourceTypes?.slice(0, 5); track sourceType) {
+      <rb-tag class="bg-source-type-color text-white" colorClass="bg-source-type-color text-white"
+              [link]='["/admin/source-types", sourceType.producer, sourceType.model, sourceType.catalogVersion]'>
+        {{ sourceType.producer }}_{{ sourceType.model }}_{{ sourceType.catalogVersion }}
+      </rb-tag>
+    }
+
+    @if (_sourceTypes.length > 5) {
+      <rb-tag class="bg-primary text-white" colorClass="bg-primary text-white" (click)="toggleView($event, showAll)" style="cursor: pointer;">
+        @if (!showAll) {
+          View all {{_sourceTypes.length}} Source Types
+        } @else {
+          View less
+        }
+      </rb-tag>
+    }
+  </div>
+} @else {
+  -
+}

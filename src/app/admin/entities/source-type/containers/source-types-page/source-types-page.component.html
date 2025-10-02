@@ -62,7 +62,9 @@
     @for (entity of visibleEntities$(); track entity.id) {
       <rb-source-type-table-row [entity$]="entity"
                                 [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
-                                [tableFields$]="tableFields"/>
+                                [tableFields$]="tableFields"
+                                [extensionClass$]="extensionClass$()"
+                                [configFields$]="configFields"/>
     }
   }
 </div>

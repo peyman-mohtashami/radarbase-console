@@ -1,20 +1,18 @@
 <div class="text-sm">
   @for (property of tableFields(); track property.name) {
-<!--    @if (config()?.[property.name] !== false) {-->
-      @if (property.name !== 'actions' && property.name !== 'checkbox') {
-        <div
-          class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'
-          [class]="type() !== DetailType.TABLE ? '' : property?.extensionClass || ''">
-          <span class='shrink-0 w-full' [class]="type() === DetailType.TABLE ? 'sm:w-52' : ' sm:w-1/4'">
-            {{ "ADMIN." + name() + "."  + property.name + ".label" | translate }}
-          </span>
-          <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
-            @if (customTemplate()) {
-              <ng-container *ngTemplateOutlet="customTemplate()!; context: { $implicit: property }" />
-            }
-          </span>
-        </div>
-      }
-<!--    }-->
+    @if ((type() !== DetailType.SUMMARY || property.showInSummary === true) && property.name !== 'actions' && property.name !== 'checkbox') {
+      <div
+        class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'
+        [class]="type() !== DetailType.TABLE ? '' : property?.extensionClass || ''">
+        <span class='shrink-0 w-full' [class]="type() === DetailType.TABLE ? 'sm:w-52' : ' sm:w-1/4'">
+          {{ "ADMIN." + name() + "."  + property.name + ".label" | translate }}
+        </span>
+        <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
+          @if (customTemplate()) {
+            <ng-container *ngTemplateOutlet="customTemplate()!; context: { $implicit: property }" />
+          }
+        </span>
+      </div>
+    }
   }
 </div>

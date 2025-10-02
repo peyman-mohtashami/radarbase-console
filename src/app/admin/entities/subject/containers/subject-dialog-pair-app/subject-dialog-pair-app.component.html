@@ -1,0 +1,128 @@
+<div>
+  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+    <span class='inline-flex items-center justify-between w-full'>
+      <span class="text-lg">
+        <span>{{ 'ADMIN.subject.pairApp.title' | translate }}</span>
+      </span>
+      <span class="flex items-center justify-end gap-2">
+        @if (pairInfo$()) {
+          <button mat-icon-button color="primary"
+                  (click)='close()'>
+        <span class="material-symbols-outlined">print</span>
+      </button>
+        }
+        <button mat-icon-button
+                (click)='close()'>
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      </span>
+    </span>
+  </h2>
+</div>
+
+<mat-dialog-content>
+  @if (pairInfo$(); as pairInfo) {
+    <div class="flex justify-center">
+      <div class="">
+        <qr-code class="" [value]="pairInfo.tokenUrl" size="300" errorCorrectionLevel="M"/>
+      </div>
+    </div>
+    <rb-dialog-body-description>
+      <div class="text-sm [&_rb-detail-element:nth-child(even)>div]:bg-gray-100 p-2">
+        <rb-detail-element>
+          <ng-container label>{{ 'ADMIN.subject.pairApp.baseUrl' | translate }}</ng-container>
+          <ng-container value>{{ pairInfo.baseUrl || '-' }}</ng-container>
+        </rb-detail-element>
+        <rb-detail-element>
+          <ng-container label>{{ 'ADMIN.subject.pairApp.tokenName' | translate }}</ng-container>
+          <ng-container value>{{ pairInfo.tokenName || '-' }}</ng-container>
+        </rb-detail-element>
+        <rb-detail-element>
+          <ng-container label>{{ 'ADMIN.subject.pairApp.validUntil' | translate }}</ng-container>
+          <ng-container value>{{ (pairInfo.timesOutAt | date:'medium') || '-' }}</ng-container>
+        </rb-detail-element>
+        <rb-detail-element>
+          <ng-container label>{{ 'ADMIN.subject.pairApp.validity' | translate }}</ng-container>
+          <ng-container value>{{ (pairInfo.timeout / 1000 | dhms) || '-' }}</ng-container>
+        </rb-detail-element>
+      </div>
+    </rb-dialog-body-description>
+  }
+
+
+
+  <form [formGroup]="form" novalidate>
+    <label for="client"
+           class="text-sm">{{ 'ADMIN.subject.pairApp.client' | translate }}</label>
+    <mat-form-field class='w-full mb-4'
+                    subscriptSizing="dynamic"
+                    appearance="outline">
+      <mat-select formControlName='client'>
+        @for (client of clients$ | async; track client.clientId) {
+          <mat-option [value]='client'>
+            {{ client.clientId }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <rb-dialog-body-description>
+    <rb-subject-details class="py-4"
+                        [entity$]='dialogData.entity'
+                        [type$]="DetailType.SUMMARY"
+                        [tableFields$]="tableFields"/>
+  </rb-dialog-body-description>
+
+
+</mat-dialog-content>
+
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error$()?.error.errorCode | translate }}
+  </div>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='primary'
+            type='button'
+            class='close-button'
+            [mat-dialog-close]='true'
+            (click)='close()'>
+      {{ 'ADMIN.subject.pairApp.cancel' | translate }}
+    </button>
+  </div>
+  <div class='flex gap-2 justify-end'>
+    <button mat-raised-button
+            color='primary'
+            type='submit'
+            name='update'
+            [disabled]='!form.valid || !form.dirty || loading$()'
+            (click)='generateQRCode(false)'>
+      @if (loading$()) {
+        <mat-icon>
+          <mat-spinner diameter='20'/>
+        </mat-icon>
+      }
+      {{ 'ADMIN.subject.pairApp.generateQrCode' | translate }}
+    </button>
+
+    <button mat-raised-button
+            color='primary'
+            type='submit'
+            name='update'
+            [disabled]='!form.valid || !form.dirty || loading$()'
+            (click)='generateQRCode(true)'>
+      @if (loading$()) {
+        <mat-icon>
+          <mat-spinner diameter='20'/>
+        </mat-icon>
+      }
+      {{ 'ADMIN.subject.pairApp.generatePersistentQrCode' | translate }}
+    </button>
+  </div>
+</div>

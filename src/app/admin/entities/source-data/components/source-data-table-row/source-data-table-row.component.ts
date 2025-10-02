@@ -34,12 +34,11 @@ export class SourceDataTableRowComponent {
   entity$ = input.required<AppSourceData>();
   entityUpdateTrigger$= input<UpdateTrigger>();
   tableFields$ = input.required<TableElement[]>();
+  configFields$ = input.required<Record<string, boolean>>();
   extensionClass$ = input<string>();
 
   expanded$ = signal(false);
   updated$ = signal(false);
-
-
 
   constructor() {
     effect(() => {

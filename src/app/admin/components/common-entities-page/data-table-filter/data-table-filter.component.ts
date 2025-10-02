@@ -20,7 +20,7 @@ import {FilterItem} from "../../../models/table.model";
 import {locale} from "../../../../core/locale/store/locale.selectors";
 import {ValidatorError} from "../../../../shared/utils/validators";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from "@angular/material/input";
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -61,7 +61,7 @@ export interface FilterEvent {
     MatChipListbox,
     MatChipOption,
     MatIconButton,
-    MatEndDate, MatStartDate, MatSuffix, LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton,
+    MatEndDate, MatStartDate, MatSuffix, LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton, MatLabel, MatPrefix,
   ]
 })
 export class DataTableFilterComponent implements OnInit, OnDestroy {

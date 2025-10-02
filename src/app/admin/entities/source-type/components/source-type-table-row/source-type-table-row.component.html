@@ -15,7 +15,12 @@
                   {{ `${entity$().producer} [${entity$().model}] (${entity$().catalogVersion})` }}
                 </span>
             </a>
-            <p class="text-neutral-500 dark:text-neutral-300">{{ entity$().name }}</p>
+            @if (!configFields$() || configFields$()['name'] === undefined || configFields$()['name']) {
+              <p class="font-bold text-neutral-500 dark:text-neutral-300">{{ entity$().name }}</p>
+            }
+            @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {
+              <p>{{ entity$().description }}</p>
+            }
           }
           @case ('sourceTypeScope') {
             <rb-source-type-scope [sourceTypeScope$]="entity$()['sourceTypeScope']"/>
@@ -24,13 +29,31 @@
             <rb-source-type-source-registration [canRegisterDynamically$]="entity$()['canRegisterDynamically']"/>
           }
           @case ("actions") {
-            <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
                 <span class="material-symbols-outlined text-xl!">
                   {{ expanded$() ? 'expand_less' : 'expand_more' }}
                 </span>
             </button>
             <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+<!--            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>-->
           }
+<!--          @case ("actions") {-->
+<!--            <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">-->
+<!--                <span class="material-symbols-outlined text-xl!">-->
+<!--                  {{ expanded$() ? 'expand_less' : 'expand_more' }}-->
+<!--                </span>-->
+<!--            </button>-->
+<!--            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>-->
+<!--          }-->
           @default {
             {{ entity$()[tableElement.name] || '-' }}
           }

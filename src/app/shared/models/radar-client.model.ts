@@ -1,16 +1,16 @@
-export interface RadarClient {
-  clientId: string;
-  clientSecret?: string;
-  scope?: string[];
-  resourceIds: string[];
-  authorizedGrantTypes: string[];
-  autoApproveScopes?: string[];
-  accessTokenValiditySeconds?: number;
-  refreshTokenValiditySeconds?: number;
-  authorities?: string[];
-  additionalInformation: Record<string, string | boolean>;
-  registeredRedirectUri?: string[];
-}
+// export interface RadarClient {
+//   clientId: string;
+//   clientSecret?: string;
+//   scope?: string[];
+//   resourceIds: string[];
+//   authorizedGrantTypes: string[];
+//   autoApproveScopes?: string[];
+//   accessTokenValiditySeconds?: number;
+//   refreshTokenValiditySeconds?: number;
+//   authorities?: string[];
+//   additionalInformation: Record<string, string | boolean>;
+//   registeredRedirectUri?: string[];
+// }
 
 export interface RadarPairInfo {
   tokenName: string;

@@ -1,0 +1,39 @@
+<rb-breadcrumb />
+
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
+<!--  bg-background dark:bg-background-dark-->
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['organization'].icon }}</span>
+    {{entity$().name }}
+<!--    {{(selectedOrganization$ | async)?.name }}-->
+  </h2>
+
+  <div class='flex gap-1 ml-auto'>
+    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity$().name}]'>
+      <app-actions [entity$]="entity$()" />
+    </ng-container>
+  </div>
+</div>
+
+<div class="m-4">
+  <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+         mat-tab-nav-bar
+         mat-stretch-tabs="false"
+         [tabPanel]="tabPanel">
+<!--      mat-align-tabs="start"-->
+      @for (link of links; track link) {
+<!--        {{link.path}} / {{activePath}}-->
+        <a mat-tab-link
+           (click)="activePath = link.path"
+           [active]="link.path === activePath"
+           [routerLink]="link.path">
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            {{ link.label }}
+          </h2>
+        </a>
+      }
+    </nav>
+    <mat-tab-nav-panel #tabPanel class="" >
+        <router-outlet />
+    </mat-tab-nav-panel>
+</div>

@@ -1,0 +1,81 @@
+<rb-dialog-title [mode]='dialogData.mode'
+                 [name]="ENTITY_NAME.organization"
+                 (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <rb-dialog-body-description [mode]="dialogData.mode"
+                                [label]="'Group'"
+                                [entityName]="dialogData.entity.name"/>
+<!--    <rb-dialog-body-description [mode]="mode"-->
+<!--                                [label]="'Group'"-->
+<!--                                [entityName]="entity.name">-->
+<!--      <div class="text-sm border border-t-0 border-gray-200 [&_rb-detail-element:nth-child(even)>div]:bg-gray-100">-->
+<!--        <rb-detail-element>-->
+<!--          <ng-container label>{{ 'ADMIN.group.id.label' | translate }}</ng-container>-->
+<!--          <ng-container value>{{ entity.id || '-' }}</ng-container>-->
+<!--        </rb-detail-element>-->
+<!--        <rb-detail-element>-->
+<!--          <ng-container label>{{ 'ADMIN.group.name.label' | translate }}</ng-container>-->
+<!--          <ng-container value>{{ entity.name || '-' }}</ng-container>-->
+<!--        </rb-detail-element>-->
+
+<!--  &lt;!&ndash;        <rb-detail-element>&ndash;&gt;-->
+<!--  &lt;!&ndash;          <ng-container label>{{ 'ADMIN.group.projectName.label' | translate }}</ng-container>&ndash;&gt;-->
+<!--  &lt;!&ndash;          <ng-container value>{{ entity.projectName || '-' }}</ng-container>&ndash;&gt;-->
+<!--  &lt;!&ndash;        </rb-detail-element>&ndash;&gt;-->
+<!--        <rb-detail-element>-->
+<!--          <ng-container label>{{ 'ADMIN.group.projectName.label' | translate }}</ng-container>-->
+<!--&lt;!&ndash;          <ng-container value>{{ (selectedProject$ | async)?.projectName || '-' }}</ng-container>&ndash;&gt;-->
+<!--          <ng-container value></ng-container>-->
+<!--        </rb-detail-element>-->
+
+<!--      </div>-->
+<!--    </rb-dialog-body-description>-->
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ 'ADMIN.group.id.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline">
+          <input matInput formControlName='id' />
+        </mat-form-field>
+      }
+
+      <label for="name" class="text-sm">{{ 'ADMIN.group.name.label' | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance="outline">
+        <input matInput formControlName='name' required/>
+        @if (form.controls.name?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ "Group name exists" }}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate:{value: 'ADMIN.group.name.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+<!--      <label for="projectName" class="text-sm">{{ 'ADMIN.group.projectName.label' | translate }}</label>-->
+<!--      <mat-form-field subscriptSizing="fixed"-->
+<!--                      appearance="outline">-->
+<!--        <input matInput disabled [value]=""/>-->
+<!--      </mat-form-field>-->
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error$()?.error.errorCode | translate }}
+  </div>
+}
+
+<rb-dialog-actions [mode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

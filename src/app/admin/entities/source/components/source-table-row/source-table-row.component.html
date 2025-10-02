@@ -1,0 +1,56 @@
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('sourceName') {
+            <p class='font-bold'>{{ entity$().sourceName || '-' }}</p>
+            <p class=''>{{ entity$().sourceId || '-' }}</p>
+          }
+
+          @case ('sourceId') {
+            <p class=''>{{ entity$().sourceId || '-' }}</p>
+          }
+
+          @case ('sourceType') {
+            <rb-source-source-type [sourceType$]="entity$().sourceType" />
+          }
+
+          @case ('project') {
+            <rb-source-project [project$]="entity$().project" />
+          }
+
+          @case ('assigned') {
+            <rb-source-assigned [assigned$]="entity$().assigned" />
+          }
+
+          @case('actions') {
+            <button mat-icon-button class="tiny {{extensionClass$()}}!" (click)="onExpansionClick($event)">
+                <span class="material-symbols-outlined text-xl!">
+                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                </span>
+            </button>
+            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+          }
+
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+        </div>
+    }
+  </div>
+
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-source-details class="py-4"
+                             [entity$]='entity$()'
+                             [type$]="DetailType.TABLE"
+                             [tableFields$]="tableFields$()"/>
+  </div>
+</mat-card>
+

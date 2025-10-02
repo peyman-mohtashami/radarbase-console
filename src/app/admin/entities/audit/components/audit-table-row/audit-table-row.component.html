@@ -1,0 +1,49 @@
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('timestamp') {
+            <rb-local-date [date]="entity$()['timestamp']" [format]="'medium'"/>
+          }
+          @case ('data') {
+            <pre class="inline-block w-full overflow-x-auto whitespace-pre-wrap break-words">
+                  {{ (entity$().data | json) || '-' }}
+              </pre>
+          }
+          @case ("actions") {
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
+              <span class="material-symbols-outlined">
+                {{ expanded$() ? 'expand_less' : 'expand_more' }}
+              </span>
+            </button>
+          }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-audit-details class="py-4"
+                      [entity$]='entity$()'
+                      [type$]="DetailType.TABLE"
+                      [tableFields$]="tableFields$()"/>
+  </div>
+</mat-card>

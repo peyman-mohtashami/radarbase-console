@@ -1,0 +1,58 @@
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-green-100! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('login') {
+            <a [routerLink]='[entity$()["login"]]'>
+              <span class="font-bold text-primary dark:text-primary-dark">{{ entity$()["login"] }}</span>
+            </a>
+            @if (!configFields$() || configFields$()['firstName'] === undefined || configFields$()['firstName'] || configFields$()['lastName'] === undefined || configFields$()['lastName']) {
+              <p class="text-neutral-500 dark:text-neutral-300">{{entity$()['firstName']}} {{entity$()['lastName']}}</p>
+            }
+          }
+
+          @case('email') {
+            <span class="flex items-center gap-1">
+              <rb-user-activated [activated]="entity$()['activated']" />
+              <rb-activate [entity]="entity$()" />
+              <span>{{ entity$()['email'] || '-' }}</span>
+            </span>
+          }
+
+          @case('roles') {
+            <rb-user-roles [roles$]="entity$()['_roles']" />
+          }
+          @case ('actions') {
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
+              <span class="material-symbols-outlined">
+                {{ expanded$() ? 'expand_less' : 'expand_more' }}
+              </span>
+            </button>
+            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+          }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+      </div>
+    }
+  </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-user-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()"/>
+  </div>
+</mat-card>

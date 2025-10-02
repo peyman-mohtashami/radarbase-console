@@ -3,8 +3,6 @@
                          [enableAddButton]="true"
                          [isGridView]="undefined"
                          [permission]="[{role: ROLES.SYS_ADMIN}]">
-<!--                         GRID_VIEW_ENABLED ? gridView : undefined"-->
-<!--                         (gridListToggled)="gridView = !gridView">-->
   @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
                           [filters]='tableFilters'
@@ -18,9 +16,6 @@
   <rb-loader/>
 }
 
-<!--@let tp = (config$ | async)?.entities?.[ENTITY_NAME.sourceData]?.fields ?? {};-->
-
-<!--<div [class]="!gridView ? 'rb-table': 'grid-container'"-->
 <div class="rb-table"
      rbTableQueryReflector
      [page]="page$()"
@@ -31,7 +26,6 @@
   @if (visibleEntities$().length) {
     <div class="rb-table-header mat-app-background">
       @for (tableElement of tableFields; track tableElement.name) {
-<!--        @if (tp[tableElement.name] !== false) {-->
           @if (tableElement.name === 'checkbox') {
             <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
                  [class.flex-1]="!tableElement.width"
@@ -58,7 +52,6 @@
               </button>
             </div>
           }
-<!--        }-->
       }
     </div>
   }
@@ -67,9 +60,9 @@
     @for (entity of visibleEntities$(); track entity.id) {
       <rb-source-data-table-row [entity$]="entity"
                                 [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
-                                [tableFields$]="tableFields" [extensionClass$]="extensionClass$()"/>
-<!--                                [updated]="entityService.updated()"/>-->
-<!--                                (actionEvent)="onAction($event.mode, $event.entity, undefined)"-->
+                                [tableFields$]="tableFields"
+                                [extensionClass$]="extensionClass$()"
+                                [configFields$]="configFields"/>
     }
   }
 </div>
@@ -77,9 +70,10 @@
 <div class="flex items-center px-4 text-sm">
   @if (entityService.total === 0) {
     <span>{{ 'ADMIN.sourceData.noItemFound' | translate }}</span>
-  }
-  @if (!visibleEntities$()?.length) {
-    <span>{{ 'No item found with this filter' | translate }}</span>
+  } @else {
+    @if (!visibleEntities$()?.length) {
+      <span>{{ 'No item found with this filter' | translate }}</span>
+    }
   }
 </div>
 

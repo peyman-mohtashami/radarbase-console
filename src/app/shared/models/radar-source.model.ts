@@ -1,20 +1,22 @@
 // import { BaseDef } from './base.model';
-import { RadarProject } from './radar-project.model';
+// import { RadarProject } from './radar-project.model';
 import {RadarSourceType} from '../../admin/entities/source-type/models/source-type';
+import {RadarProject} from '../../admin/entities/project/models/project';
+// import {RadarProject} from '../../admin/entities/organization/models/organization';
 
-export interface RadarSource {
-  id: number | string;
-  sourceId: string;
-  sourceName: string;
-  expectedSourceName?: string;
-  assigned?: boolean;
-  sourceType?: RadarSourceType;
-  project?: RadarProject;
-  attributes?: Record<string, string>;
-  sourceTypeProducer?: string;
-  sourceTypeModel?: string;
-  sourceTypeCatalogVersion?: string;
-}
+// export interface RadarSource {
+//   id: number | string;
+//   sourceId: string;
+//   sourceName: string;
+//   expectedSourceName?: string;
+//   assigned?: boolean;
+//   sourceType?: RadarSourceType;
+//   project?: RadarProject;
+//   attributes?: Record<string, string>;
+//   sourceTypeProducer?: string;
+//   sourceTypeModel?: string;
+//   sourceTypeCatalogVersion?: string;
+// }
 
 // export interface RadarSourceDTO
 //   extends Record<

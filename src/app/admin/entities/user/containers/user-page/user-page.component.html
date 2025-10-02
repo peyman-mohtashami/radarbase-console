@@ -1,0 +1,43 @@
+<!--<rb-breadcrumb />-->
+<nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">
+  <div class='flex flex-wrap gap-2 items-center'>
+    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"
+          rbBackButton>
+      chevron_left
+    </span>
+    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'users']">
+      <span class="flex items-center gap-1">
+        <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.user.icon }}</span>
+        <span>{{ `ADMIN.user.title.plural` | translate }}</span>
+      </span>
+    </button>
+    <span class="text-xs font-bold">{{ entity$().login }}</span>
+  </div>
+</nav>
+
+<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+  <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">
+    {{ ENTITIES.user.icon }}
+  </span>
+    {{ entity$().login }}
+  </h2>
+  <div class='flex gap-1 ml-auto'>
+    <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+  </div>
+</div>
+
+<mat-card class="m-4 p-4 text-sm border">
+  <mat-card-content>
+    <rb-user-details [entity$]='entity$()' [tableFields$]="tableFields"/>
+  </mat-card-content>
+</mat-card>
+
+
+<!--<rb-details-page-header [entity]="entity" [entityName]="ENTITY_NAME.user"-->
+<!--                        (action)="onAction($event.mode, $event.entity)"-->
+<!--                        [buttons]="{delete: {disabled: deleteDisabled}}">-->
+<!--  <rb-activate extraButton [entity]="entity" />-->
+<!--  <rb-user-details [entity]='entity' />-->
+<!--</rb-details-page-header>-->

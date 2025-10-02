@@ -19,7 +19,6 @@ import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table
 import {TableElement} from '../../../../models/table.model';
 import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
-// import {filters} from '../../config';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeTableRowComponent} from '../../components/source-type-table-row/source-type-table-row.component';
 import {SourceTypeService} from '../../services/sourceType.service';
@@ -48,8 +47,6 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
   protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
-  // protected readonly GRID_VIEW_ENABLED = false;
-  // protected readonly TABLE_FILTERS = filters;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
@@ -59,6 +56,7 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
 
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
+  configFields = this.configService.getFormFields();
 
   entities$ = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['entities']);
   processedEntities$ = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['entities']);
@@ -74,7 +72,6 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
-  // gridView;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -93,20 +90,15 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
       }, {})
     );
 
-    // this.entities$.set(this.activatedRoute.snapshot.data['entities']);
-    // this.processedEntities$.set(this.activatedRoute.snapshot.data['entities']);
-    //
-    // this.sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
-    // this.gridView = this.GRID_VIEW_ENABLED;
-
     this.initializeDialogEffect();
 
     this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
-    this.handleDialogUrlFragment();
+    this.dialogService.dialogUpdateEvent$.set(undefined);
     this.applyFilter();
+    this.handleDialogUrlFragment();
   }
 
   ngOnDestroy() {
@@ -167,7 +159,7 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
   private initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService.dialogUpdateEvent$();
-      if (updated) this.handleDialogUpdate(updated);
+      if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
 
@@ -190,21 +182,26 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
 
   private addEntityToView(entity?: AppSourceType) {
     if (entity) {
-      const visibleEntities = untracked(this.visibleEntities$);
-      this.visibleEntities$.set([entity, ...visibleEntities]);
+      const entities = untracked(this.entities$);
+      this.entities$.set([entity, ...entities]);
+      this.applyFilter();
     }
   }
 
   private updateEntityInView(entity?: AppSourceType) {
     if (entity) {
-      const updatedEntities = untracked(this.visibleEntities$).map(e => e.id === entity.id ? entity : e);
-      this.visibleEntities$.set(updatedEntities);
+      const updatedEntities = untracked(this.entities$).map(e => e.id === entity.id ? entity : e);
+      this.entities$.set(updatedEntities);
+      this.applyFilter();
     }
   }
 
   private refreshEntities() {
     this.entityService.getAll().subscribe({
-      next: (entities) => this.visibleEntities$.set(entities)
+      next: (entities) => {
+        this.entities$.set(entities);
+        this.applyFilter();
+      }
     });
   }
 
@@ -307,26 +304,9 @@ export class SourceTypesPageComponent implements OnInit, OnDestroy {
     Object.entries(this.filter$()).forEach(([key, value]) => {
       if (!value) return;
 
-      // Handle "search:" prefixed keys
-      if (key.startsWith('search')) {
-        const filters = key
-          .replace(/search\s*:\s*/i, "")
-          .split(",")
-          .map((filter) => filter.trim())
-          .filter(Boolean);
-
-        filteredEntities = filteredEntities.filter((entity) =>
-          filters.some(
-            (filter) =>
-              entity[filter]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
-          )
-        );
-      } else {
-        // General key-based filtering
-        filteredEntities = filteredEntities.filter((entity) =>
-          entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
-        );
-      }
+      filteredEntities = filteredEntities.filter((entity) =>
+        entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
+      );
     });
 
     return filteredEntities;
