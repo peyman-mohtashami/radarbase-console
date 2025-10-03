@@ -46,9 +46,9 @@ export const adminRoutes: Routes = [
         path: 'organizations', //ROUTES.ORGANIZATIONS,
         loadChildren: () =>
           import('./entities/organization/organization.routes').then((m) => m.organizationRoutes),
-        resolve: {
-          entities: OrganizationsResolver
-        }
+        // resolve: {
+        //   entities: OrganizationsResolver
+        // }
       },
       {
         path: ROUTES.PROJECTS,

@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 
 import { SubjectService } from './subject.service';
 import { AppSubject } from "../models/subject";
+import {AppProject} from '../../project/models/project';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectsResolver implements Resolve<AppSubject[]> {
@@ -18,8 +19,7 @@ export class SubjectsResolver implements Resolve<AppSubject[]> {
     | Observable<AppSubject[]>
     | Promise<AppSubject[]>
     | AppSubject[] {
-    const projectName = route.parent?.parent?.params['projectId'];
-    console.log('Class: SubjectsResolver, Function: resolve, Line 22 projectName' , projectName);
-    return this.entityService.getWithQuery(projectName, route.queryParams)
+    const currentProject: AppProject = route.parent?.parent?.data['entity'];
+    return this.entityService.getWithQuery(currentProject.projectName, route.queryParams)
   }
 }

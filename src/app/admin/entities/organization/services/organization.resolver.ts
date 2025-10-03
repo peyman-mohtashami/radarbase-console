@@ -17,7 +17,7 @@ export class OrganizationResolver implements Resolve<AppOrganization> {
     return this.entityService.getAll().pipe(
       map(entities => {
         const entity = entities.find(entity =>
-          entity.name === route.params['organizationId'])
+          entity.name === route.paramMap.get('organizationId'))
         if (entity) {
           return entity;
         } else {

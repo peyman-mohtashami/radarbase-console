@@ -7,6 +7,7 @@ import { Observable } from "rxjs";
 
 import { AppSource } from "../models/source";
 import {SourceService} from './source.service';
+import {AppProject} from '../../project/models/project';
 
 @Injectable({ providedIn: 'root' })
 export class SourcesResolver implements Resolve<AppSource[]> {
@@ -18,7 +19,7 @@ export class SourcesResolver implements Resolve<AppSource[]> {
     | Observable<AppSource[]>
     | Promise<AppSource[]>
     | AppSource[] {
-    const projectName = route.parent?.parent?.params['projectId'];
-    return this.entityService.getWithQuery(projectName, route.queryParams)
+    const currentProject: AppProject = route.parent?.parent?.data['entity'];
+    return this.entityService.getWithQuery(currentProject.projectName, route.queryParams);
   }
 }

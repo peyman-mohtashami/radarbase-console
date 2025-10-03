@@ -49,7 +49,7 @@
     <p>No Source assigned</p>
   }
 
-  @for (source of sources$ | async; track source.id) {
+  @for (source of sources$(); track source.id) {
     <div class='detail-item'>
       <span class='label'>
         <mat-checkbox [(ngModel)]='source.assigned' />

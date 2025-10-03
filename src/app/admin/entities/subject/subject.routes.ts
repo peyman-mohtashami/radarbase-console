@@ -1,6 +1,5 @@
 import {Routes} from "@angular/router";
 import {SubjectsResolver} from "./services/subjects.resolver";
-import {ProjectsResolver} from "../project/services/projects.resolver";
 import {ClientsResolver} from "../client/services/clients.resolver";
 import {GroupsResolver} from "../group/services/groups.resolver";
 import {SubjectPageComponent} from "./containers/subject-page/subject-page.component";
@@ -17,7 +16,6 @@ export const subjectRoutes: Routes = [
     component: SubjectsPageComponent,
     resolve: {
       entities: SubjectsResolver,
-      // projects: ProjectsResolver,
       clients: ClientsResolver,
       groups: GroupsResolver,
     },
@@ -27,7 +25,6 @@ export const subjectRoutes: Routes = [
     component: SubjectPageComponent,
     resolve: {
       entity: SubjectResolver,
-      // projects: ProjectsResolver,
       clients: ClientsResolver,
       groups: GroupsResolver,
     },

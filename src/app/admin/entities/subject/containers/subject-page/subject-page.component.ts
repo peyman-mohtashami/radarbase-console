@@ -1,34 +1,39 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import {ENTITIES} from "../../../../consts/entities";
 import {ILink} from "../../../organization/containers/organization-page/organization-page.component";
-import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {OrganizationConfigService} from '../../../organization/services/organization-config.service';
-import {OrganizationDialogService} from '../../../organization/services/organization-dialog.service';
-import {AppOrganization} from '../../../organization/models/organization';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {DialogMode} from '../../../../enums/dialog';
 import {AppSubject} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {SubjectDialogMode} from '../../enums/dialog';
+import {MatButton} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatPrefix} from '@angular/material/input';
+import {AppProject} from '../../../project/models/project';
+import {ActionsComponent} from '../../components/actions/actions.component';
+import {AppOrganization} from '../../../organization/models/organization';
 
 @Component({
   selector: 'rb-subject-page',
   templateUrl: './subject-page.component.html',
   imports: [
-    BreadcrumbComponent,
     MatTabNav,
     MatTabLink,
     RouterLink,
     MatTabNavPanel,
     RouterOutlet,
-    RbPermissionDirective
+    RbPermissionDirective,
+    MatButton,
+    MatPrefix,
+    TranslatePipe,
+    ActionsComponent,
   ]
 })
 export class SubjectPageComponent implements OnInit, OnDestroy {
@@ -42,9 +47,6 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
 
-
-  // entities: AppOrganization[] = this.activatedRoute.snapshot.data['entities'];
-
   links: ILink[] = [
     { path: 'download', label: 'Download' },
     { path: 'data', label: 'Data' },
@@ -53,15 +55,12 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     { path: 'details', label: 'Details' },
   ];
 
-  // links: ILink[] = [
-  //   { path: 'projects', label: 'Projects' },
-  //   { path: 'users', label: 'Users' },
-  //   { path: 'details', label: 'Details' },
-  // ];
-
   activePath?: string;
 
   entity$ = signal<AppSubject>(this.activatedRoute.snapshot.data['entity']);
+  project?: AppProject = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
+  organization?: AppOrganization = this.activatedRoute.parent?.parent?.parent?.parent?.snapshot?.data['organization'];
+
   tableFields = this.configService.getTableFields();
 
   private _destroy$: Subject<void> = new Subject<void>();
@@ -83,20 +82,22 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   private initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService.dialogUpdateEvent$();
-      if (updated) {
-        switch (updated.mode) {
-          case SubjectDialogMode.EDIT:
-            if (updated?.entity) {
-              this.entity$.set(updated.entity);
-            }
-            this.navigateOnUpdateSuccess(updated.entity);
-            break;
-          case SubjectDialogMode.DELETE:
-            this.navigateOnDeleteSuccess();
-            break;
+      if (updated) untracked(() => this.handleDialogUpdate(updated));
+    });
+  }
+
+  private handleDialogUpdate(updated: { mode: SubjectDialogMode, entity: AppSubject }) {
+    switch (updated.mode) {
+      case SubjectDialogMode.EDIT:
+        if (updated?.entity) {
+          this.entity$.set(updated.entity);
         }
-      }
-    })
+        this.removeFragmentUrl();
+        break;
+      case SubjectDialogMode.DELETE:
+        this.navigateOnDeleteSuccess();
+        break;
+    }
   }
 
   private handleDialogUrlFragment() {
@@ -109,41 +110,47 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType] = fragment.split('/');
-    if (entityType === 'sourceType') {
+    if (entityType === 'subject') {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(SubjectDialogMode.EDIT, this.entity$());
+          this.dialogService.openDialog(SubjectDialogMode.EDIT, this.entity$(), this.project);
           break;
         case 'delete':
-          this.dialogService.openDialog(SubjectDialogMode.DELETE, this.entity$());
+          this.dialogService.openDialog(SubjectDialogMode.DELETE, this.entity$(), this.project);
       }
     }
   }
 
-
-
-
+  removeFragmentUrl() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined
+    }).then();
+  }
 
   navigateOnUpdateSuccess(entity: AppSubject) {
-    this.router
-      .navigate([
-        '/admin',
-        'organizations',
-        entity.login
-      ])
-      .then();
+    const lastSegment = this.activatedRoute.firstChild?.snapshot.url[this.activatedRoute.firstChild?.snapshot.url.length - 1].path;
+    this.router.navigate([
+      '/admin',
+      'organizations',
+      this.organization?.name,
+      'projects',
+      this.project?.projectName,
+      'subjects',
+      entity.login,
+      lastSegment
+    ], {fragment: undefined}).then();
   }
-
-  // navigateOnDeleteSuccess() {
-  //   this.router.navigate(['/admin', 'source-types']).then();
-  // }
-
 
   navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'organizations']).then();
+    this.router.navigate([
+      '/admin',
+      'organizations',
+      this.organization?.name,
+      'projects',
+      this.project?.projectName,
+      'subjects',
+    ], {fragment: undefined}).then();
   }
-
-  // override navigateOnUpdateSuccess(entity: AppOrganization) {}
-
-
 }

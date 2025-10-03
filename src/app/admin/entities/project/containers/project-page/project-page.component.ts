@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
 import {AppProject, ProjectStatus} from "../../models/project";
@@ -8,12 +8,16 @@ import {ENTITIES} from "../../../../consts/entities";
 import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
-import {Subject} from 'rxjs';
+import {filter, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {ActionsComponent} from '../../components/actions/actions.component';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {ProjectDialogService} from '../../services/project-dialog.service';
+import {BackButtonDirective} from '../../../../directives/back-button.directive';
+import {MatButton} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatPrefix} from '@angular/material/input';
 
 interface ILink {
   path: string;
@@ -32,6 +36,10 @@ interface ILink {
     MatTabNavPanel,
     RouterOutlet,
     ActionsComponent,
+    BackButtonDirective,
+    MatButton,
+    MatPrefix,
+    TranslatePipe,
   ]
 })
 export class ProjectPageComponent implements OnInit, OnDestroy {
@@ -54,7 +62,7 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     { path: 'subjects', label: 'Subjects' },
     { path: 'groups', label: 'Groups' },
     { path: 'sources', label: 'Sources' },
-    { path: 'app-configs/apps', label: 'App Configs' },
+    // { path: 'app-configs/apps', label: 'App Configs' },
     { path: 'users', label: 'Users' },
     { path: 'details', label: 'Details' },
   ];
@@ -64,6 +72,9 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   entity$ = signal<AppProject>(this.activatedRoute.snapshot.data['entity']);
   tableFields = this.configService.getTableFields();
 
+  // hasChildren = false;
+  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id']; //false;
+
   private _destroy$: Subject<void> = new Subject<void>();
 
   constructor() {
@@ -71,6 +82,24 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this._destroy$)
+    ).subscribe(() => {
+      // Check current route and its children
+      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.snapshot.params);
+      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.firstChild?.snapshot.params);
+      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.firstChild?.firstChild?.snapshot.params);
+      this.hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
+      // Or use paramMap for type-safe access
+      // const childParams = this.activatedRoute.firstChild?.snapshot?.paramMap;
+      // if (childParams) {
+      //   console.log('Child route params:', childParams.keys.map(key => ({
+      //     [key]: childParams.get(key)
+      //   })));
+      // }
+    });
+
     this.handleDialogUrlFragment();
     this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
   }

@@ -6,15 +6,11 @@ import {TABLE_ANIMATION} from "../../../../animation";
 import {AppSubject} from "../../models/subject";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatCard} from "@angular/material/card";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {SubjectStatusComponent} from "../subject-status/subject-status.component";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {SubjectGroupComponent} from "../subject-group/subject-group.component";
 import {TagComponent} from "../../../../components/tag/tag.component";
-// import {PairAppComponent} from "../pair-app/pair-app.component";
-// import {PairSourceComponent} from "../pair-source/pair-source.component";
-// import {DiscontinueComponent} from "../discontinue/discontinue.component";
 import {SubjectDetailsComponent} from "../subject-details/subject-details.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatIconButton} from "@angular/material/button";
@@ -35,11 +31,6 @@ import {SubjectDialogMode} from '../../enums/dialog';
     SubjectStatusComponent,
     LocalDateComponent,
     SubjectGroupComponent,
-    TagComponent,
-    MatTooltip,
-    // PairAppComponent,
-    // PairSourceComponent,
-    // DiscontinueComponent,
     SubjectDetailsComponent,
     MatIconButton,
     ActionsComponent,

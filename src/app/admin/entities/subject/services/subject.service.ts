@@ -24,7 +24,9 @@ export class SubjectService {
   }
 
   getWithQuery(projectName: string, queryParams?: Params | string): Observable<AppSubject[]> {
+    console.log('Class: SubjectService, Function: getWithQuery, Line 27 queryParams' , queryParams);
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
+    console.log('Class: SubjectService, Function: getWithQuery, Line 29 params' , params);
     return this.http.get<RadarSubject[]>(`api/projects/${projectName}/subjects`, {
       // return this.http.get<RadarSubject[]>(`api/subjects`, {
       params,
@@ -97,9 +99,9 @@ export class SubjectService {
     params: HttpParams,
     queryParams?: Params
   ) {
-    // if (queryParams?.['login'] && queryParams['login'] !== '') {
-    //   params = params.append('login', queryParams['login']);
-    // }
+    if (queryParams?.['login'] && queryParams['login'] !== '') {
+      params = params.append('login', queryParams['login']);
+    }
     if (queryParams?.['externalId'] && queryParams['externalId'] !== '') {
       params = params.append('externalId', queryParams['externalId']);
     }

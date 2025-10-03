@@ -38,7 +38,7 @@
                   {{ expanded$() ? 'expand_less' : 'expand_more' }}
                 </span>
               </button>
-              <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+              <app-organization-actions [entity$]="entity$()" [isExpanded$]="true"/>
             }
             @default {
               {{ entity$()[tableElement.name] || '-' }}
@@ -67,7 +67,7 @@
             class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">corporate_fare</span>
           <span class='text-base font-bold text-primary'>{{ entity$().name }}</span>
         </div>
-        <app-actions [entity$]="entity$()" [isExpanded$]="false"/>
+        <app-organization-actions [entity$]="entity$()" [isExpanded$]="false"/>
       </div>
       <div class="p-4">
         @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {

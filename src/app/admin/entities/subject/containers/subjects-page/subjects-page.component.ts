@@ -284,13 +284,12 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Class: SubjectsPageComponent, Function: ngOnInit, Line 287 ', this.activatedRoute.snapshot.data);
-    console.log('Class: SubjectsPageComponent, Function: ngOnInit, Line 287 ', this.activatedRoute.parent?.snapshot.data);
-    console.log('Class: SubjectsPageComponent, Function: ngOnInit, Line 287 ', this.activatedRoute.parent?.parent?.snapshot.data);
     this.dialogService.dialogUpdateEvent$.set(undefined);
-    // this.project = this.projects.find(p => p.projectName === this.projectName);
     if (!this.project) throw new Error('Project not found');
-    this.sourceTypes = this.project.sourceTypes?.map(s => ({...s, _name: `${s.producer}/${s.model}/${s.catalogVersion}`})) ?? [];
+    this.sourceTypes = this.project.sourceTypes?.map(s => ({
+      ...s,
+      _name: `${s.producer}/${s.model}/${s.catalogVersion}`
+    })) ?? [];
     this.handleDialogUrlFragment();
   }
 
@@ -319,12 +318,15 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
         }
       });
     }
-    // console.log('Class: SubjectsPageComponent, Function: loadEntities, Line 319 this.projectName' , this.projectName);
+    console.log('Class: SubjectsPageComponent, Function: loadEntities, Line 319 this.projectName', this.project.projectName);
+    console.log('Class: SubjectsPageComponent, Function: loadEntities, Line 319 this.projectName', this.project.projectName);
     return this.entityService.getWithQuery(this.project.projectName, params);
+    // return this.entityService.getWithQuery('radar', params);
   }
 
 
-  handleFilterChange(event: FilterEvent){
+  handleFilterChange(event: FilterEvent) {
+    console.log('Class: SubjectsPageComponent, Function: handleFilterChange, Line 329 event', event);
     this.filter$.set(event);
   }
 
@@ -339,7 +341,7 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
     this.sort$.set(sort);
   }
 
-  handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
+  handleActiveQueryChange(event: { page: PageEvent, sort: RbSort }) {
     this.sort$.set(event.sort);
     this.page$.set(event.page);
   }
@@ -367,3 +369,5 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
       : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   }
 }
+
+

@@ -15,7 +15,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 
-import { AppSubject } from "../../models/subject";
+import {AppSubject} from "../../models/subject";
 import {AppSource} from "../../../source/models/source";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
@@ -36,6 +36,8 @@ import {SubjectDetailsComponent} from '../../components/subject-details/subject-
 import {SourceService} from '../../../source/services/source.service';
 import {AsyncPipe} from '@angular/common';
 import {TagComponent} from '../../../../components/tag/tag.component';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {AppProject} from '../../../project/models/project';
 
 @Component({
   selector: 'rb-subject-dialog-pair-source',
@@ -64,7 +66,8 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: SubjectDialogMode;
     entity: AppSubject;
-    projectName: string;
+    project: AppProject;
+    // projectName: string;
   };
   private sourceService = inject(SourceService);
 
@@ -74,9 +77,17 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
   tableFields = this.configService.getTableFields();
 
-  sources$: Observable<AppSource[]> = this.sourceService.getWithQuery(this.dialogData.projectName).pipe(
-    map(sources => sources.filter(s => !s.assigned))
-  )
+  // sources$: Observable<AppSource[]> = this.sourceService.getWithQuery(this.dialogData.projectName).pipe(
+  //   map(sources => sources.filter(s => !s.assigned))
+  // )
+
+  sources$ = toSignal(
+    this.sourceService.getWithQuery(this.dialogData.project.projectName).pipe(
+      map(sources => sources.filter(s => !s.assigned))
+    ),
+    {initialValue: [] as AppSource[]}
+  );
+
 
   loading$ = signal(false);
   error$ = signal<HttpErrorResponse | null>(null);
@@ -84,7 +95,8 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     const dialogContainer = document.querySelector('.tailwind-slide-panel');
@@ -121,14 +133,32 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   //
   save() {
     this.loading$.set(false);
+    // console.log('Class: SubjectDialogPairSourceComponent, Function: save, Line 124 this.dialogData.entity.sources' , this.dialogData.entity.sources);
+    // console.log('Class: SubjectDialogPairSourceComponent, Function: save, Line 134 this.sources$()' , this.sources$());
+
+    const addedSources = this.sources$().filter(s => s.assigned).map(s => {
+      return {
+        id: s.id,
+        sourceTypeId: s.sourceType?.id,
+        sourceTypeProducer: s.sourceType?.producer,
+        sourceTypeModel: s.sourceType?.model,
+        sourceTypeCatalogVersion: s.sourceType?.catalogVersion,
+        expectedSourceName: s.expectedSourceName,
+        sourceId: s.sourceId,
+        sourceName: s.sourceName,
+        assigned: true,
+        attributes: s.attributes
+      }
+    });
     // const assignedSources = this.dialogData.entity.sources?.filter((s) => s.assigned);
     // const assignedSources2 = this.assignableSources?.filter((s) => s.assigned);
     // const assignedSources = assignedSources1?.concat(assignedSources2 || []);
-    // const subject = { ...this.dialogData.entity };
-    // subject.sources = assignedSources;
+    const subject = {...this.dialogData.entity, project: this.dialogData.project};
+    const assignedSources = subject.sources?.filter(s => s.assigned) ?? [];
+    subject.sources = [...assignedSources, ...addedSources];
+    console.log('Class: SubjectDialogPairSourceComponent, Function: save, Line 143 subject.sources', subject.sources);
     //
-    // this.dialogActionEvent.emit({ action: SubjectDialogMode.EDIT, entity: subject });
+    this.dialogActionEvent.emit({action: SubjectDialogMode.EDIT, entity: subject});
   }
-
-
 }
+

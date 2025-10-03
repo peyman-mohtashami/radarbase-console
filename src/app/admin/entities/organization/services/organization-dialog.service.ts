@@ -34,7 +34,8 @@ export class OrganizationDialogService {
       next: (value: { action: DialogMode; entity: AppOrganization }) => {
         this.processDialogAction(value.action, value.entity).subscribe({
           next: (res) => {
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            const entity = res ?? value.entity;
+            this.dialogUpdateEvent$.set({mode, entity: {...entity, projects: value.entity.projects}})
             dialogRef.close();
           },
           error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),

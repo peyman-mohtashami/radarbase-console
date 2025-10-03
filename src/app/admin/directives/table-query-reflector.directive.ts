@@ -155,14 +155,7 @@ export class TableQueryReflectorDirective implements OnInit {
   // }
 
   private applyStateChangesToUrlQueryParams(queryParams: Params): void {
-    // console.log('!Class: TableQueryReflectorDirective, Function: applyStateChangesToUrlQueryParams, Line 167 queryParams' , queryParams);
-    this.router
-      .navigate([], {
-        replaceUrl: true,
-        queryParams: queryParams,
-        queryParamsHandling: 'merge',
-        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
-      })
-      .then();
+    const currentUrlSegments = this.router.url.split('?')[0];
+    this.router.navigate([currentUrlSegments], {queryParams: queryParams}).then();
   }
 }

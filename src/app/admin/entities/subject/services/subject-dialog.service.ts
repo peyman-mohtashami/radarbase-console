@@ -43,6 +43,7 @@ export class SubjectDialogService {
       next: (value: { action: SubjectDialogMode; entity: AppSubject }) => {
         this.processDialogAction(value.action, value.entity).subscribe({
           next: (res) => {
+            console.log('Class: SubjectDialogService, Function: next, Line 46 res' , res);
             this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
             dialogRef.close();
           },
@@ -69,7 +70,7 @@ export class SubjectDialogService {
       case SubjectDialogMode.PAIR_APP:
         return this.entityService.discontinue(entity);
       case SubjectDialogMode.PAIR_SOURCE:
-        return this.entityService.discontinue(entity);
+        return this.entityService.update(entity);
       default:
         this.clearFragmentUrl();
         return of();
@@ -136,7 +137,7 @@ export class SubjectDialogService {
 
   createPairSourceDialogRef(mode: SubjectDialogMode, entity: AppSubject | undefined, project: AppProject | undefined) {
     return this.dialog.open(SubjectDialogPairSourceComponent, {
-      data: {mode, entity, projectName: project?.projectName},
+      data: {mode, entity, project: project},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -148,3 +149,5 @@ export class SubjectDialogService {
     });
   }
 }
+
+

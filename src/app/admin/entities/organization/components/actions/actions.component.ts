@@ -7,7 +7,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'app-actions',
+  selector: 'app-organization-actions',
   templateUrl: './actions.component.html',
   imports: [
     MatMenuTrigger,

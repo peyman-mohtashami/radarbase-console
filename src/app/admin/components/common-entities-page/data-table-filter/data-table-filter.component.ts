@@ -230,13 +230,15 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   }
 
   private applyStateChangesToUrlQueryParams(queryParams: Params): void {
-    this.router
-      .navigate([], {
-        replaceUrl: true,
-        queryParams: queryParams,
-        queryParamsHandling: 'merge',
-        fragment: this.activatedRoute.snapshot.fragment ?? undefined,
-      })
-      .then();
+    const currentUrlSegments = this.router.url.split('?')[0];
+    this.router.navigate([currentUrlSegments], {queryParams: queryParams}).then();
+    // this.router
+    //   .navigate([], {
+    //     replaceUrl: true,
+    //     queryParams: queryParams,
+    //     queryParamsHandling: 'merge',
+    //     fragment: this.activatedRoute.snapshot.fragment ?? undefined,
+    //   })
+    //   .then();
   }
 }

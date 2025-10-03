@@ -1,4 +1,36 @@
-<!--<rb-breadcrumb />-->
+<nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">
+  <div class='flex flex-wrap gap-2 items-center'>
+<!--    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"-->
+<!--          rbBackButton>-->
+<!--      chevron_left-->
+<!--    </span>-->
+    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'organizations']">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.organization.icon }}</span>
+            <span>{{ `ADMIN.organization.title.plural` | translate }}</span>
+          </span>
+    </button>
+    <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name ]">{{ organization?.name }}</a>
+    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.project.icon }}</span>
+            <span>{{ `ADMIN.project.title.plural` | translate }}</span>
+          </span>
+    </button>
+    <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">{{ project?.projectName }}</a>
+    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.subject.icon }}</span>
+            <span>{{ `ADMIN.subject.title.plural` | translate }}</span>
+          </span>
+    </button>
+    <span class="text-xs font-bold">{{ entity$().login }}</span>
+  </div>
+</nav>
+
 <div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-neutral-50 dark:bg-neutral-700'>
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
     <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['subject'].icon }}</span>
@@ -12,18 +44,12 @@
   </h2>
   <div class='flex gap-1 ml-auto'>
     <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity$().login}]'>
-<!--      <rb-actions [entity]="entity" (action)="onAction($event.mode, $event.entity)"></rb-actions>-->
+      <app-subject-actions [entity$]="entity$()" />
     </ng-container>
   </div>
 </div>
-<!--<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>-->
 
-<!--<div class='flex flex-wrap justify-between gap-2 p-4 bg-white'>-->
 <div class="m-4">
-
-<!--  <nav class="border-b pt-4 bg-white"-->
-<!--       mat-tab-nav-bar mat-stretch-tabs="false"-->
-<!--       mat-align-tabs="start" [backgroundColor]="undefined" [tabPanel]="tabPanel">-->
   <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
        mat-tab-nav-bar
        mat-stretch-tabs="false"

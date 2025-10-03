@@ -14,7 +14,7 @@ export class ProjectResolver implements Resolve<AppProject> {
   resolve(
     route: ActivatedRouteSnapshot,
   ): Observable<AppProject> | Promise<AppProject> | AppProject {
-    const projectId = route.paramMap.get('projectId');
+    const projectId = route.paramMap.get('id');
     return this.entityService.getByKey(projectId as string);
   }
 }

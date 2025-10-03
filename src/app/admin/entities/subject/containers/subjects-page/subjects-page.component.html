@@ -22,7 +22,6 @@
      [sort]="sort$()"
      [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
      (activeQueryParams)="handleActiveQueryChange($event)">
-
   @if (visibleEntities$().length) {
     <div class="rb-table-header mat-app-background">
       @for (tableElement of tableFields; track tableElement.name) {
@@ -57,7 +56,7 @@
   }
 
   @if (visibleEntities$()?.length) {
-    @for (entity of visibleEntities$(); track entity) {
+    @for (entity of visibleEntities$(); track entity.login) {
       <rb-subject-table-row [entity$]="entity"
                             [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
                             [tableFields$]="tableFields"

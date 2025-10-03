@@ -1,18 +1,20 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import { AppOrganization } from "../../models/organization";
 import {ENTITIES} from "../../../../consts/entities";
 import {ENTITY_NAME, ROLES} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
-import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {filter, Subject} from 'rxjs';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
 import {ActionsComponent} from '../../components/actions/actions.component';
+import {MatButton} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatPrefix} from '@angular/material/input';
 
 export interface ILink {
   path: string;
@@ -23,7 +25,6 @@ export interface ILink {
   selector: 'rb-organization-page',
   templateUrl: './organization-page.component.html',
   imports: [
-    BreadcrumbComponent,
     RbPermissionDirective,
     MatTabNav,
     MatTabLink,
@@ -31,10 +32,11 @@ export interface ILink {
     MatTabNavPanel,
     RouterOutlet,
     ActionsComponent,
+    MatButton,
+    MatPrefix,
+    TranslatePipe,
   ]
 })
-// export class OrganizationPageComponent {}
-
 export class OrganizationPageComponent implements OnInit, OnDestroy {
   private configService = inject(OrganizationConfigService);
   private router = inject(Router);
@@ -57,9 +59,10 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
 
   activePath?: string;
 
-  entity$ = signal<AppOrganization>(this.activatedRoute.snapshot.data['entity']);
+  entity$ = signal<AppOrganization>(this.activatedRoute.snapshot.data['organization']);
   tableFields = this.configService.getTableFields();
 
+  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id']; //false;
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -68,6 +71,13 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this._destroy$)
+    ).subscribe(() => {
+      this.hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
+    });
+
     this.handleDialogUrlFragment();
     this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
   }
@@ -80,20 +90,22 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
   private initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService.dialogUpdateEvent$();
-      if (updated) {
-        switch (updated.mode) {
-          case DialogMode.EDIT:
-            if (updated?.entity) {
-              this.entity$.set(updated.entity);
-            }
-            this.navigateOnUpdateSuccess(updated.entity);
-            break;
-          case DialogMode.DELETE:
-            this.navigateOnDeleteSuccess();
-            break;
+      if (updated) untracked(() => this.handleDialogUpdate(updated));
+    });
+  }
+
+  private handleDialogUpdate(updated: { mode: DialogMode, entity: AppOrganization }) {
+    switch (updated.mode) {
+      case DialogMode.EDIT:
+        if (updated?.entity) {
+          this.entity$.set(updated.entity);
         }
-      }
-    })
+        this.navigateOnUpdateSuccess(updated.entity);
+        break;
+      // case DialogMode.DELETE:
+      //   this.navigateOnDeleteSuccess();
+      //   break;
+    }
   }
 
   private handleDialogUrlFragment() {
@@ -111,30 +123,18 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
         case 'edit':
           this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.entities);
           break;
-        case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities);
+        // case 'delete':
+        //   this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities);
       }
     }
   }
 
   navigateOnUpdateSuccess(entity: AppOrganization) {
-    this.router
-      .navigate([
-        '/admin',
-        'organizations',
-        entity.name
-      ])
-      .then();
+    const lastSegment = this.activatedRoute.firstChild?.snapshot.url[this.activatedRoute.firstChild?.snapshot.url.length - 1].path;
+    this.router.navigate(['/admin', 'organizations', entity.name, lastSegment],{fragment: undefined}).then();
   }
 
   // navigateOnDeleteSuccess() {
-  //   this.router.navigate(['/admin', 'source-types']).then();
+  //   this.router.navigate(['/admin', 'organizations'], {fragment: undefined}).then();
   // }
-
-
-  navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'organizations']).then();
-  }
-
-  // override navigateOnUpdateSuccess(entity: AppOrganization) {}
 }
