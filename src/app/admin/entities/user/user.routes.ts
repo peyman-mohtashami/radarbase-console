@@ -21,15 +21,6 @@ export const userRoutes: Routes = [
       allowedRoles: ['ROLE_SYS_ADMIN'],
     },
   },
-  // {
-  //   path: 'roles',
-  //   component: RolesPageComponent,
-  //   resolve: {
-  //     entities: UsersResolver,
-  //     projects: ProjectsResolver,
-  //     organizations: OrganizationsResolver,
-  //   },
-  // },
   {
     path: ':id',
     component: UserPageComponent,

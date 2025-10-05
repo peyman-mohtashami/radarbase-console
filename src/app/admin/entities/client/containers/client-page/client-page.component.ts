@@ -16,6 +16,7 @@ import {BackButtonDirective} from '../../../../directives/back-button.directive'
 import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {ActionsComponent} from '../../components/actions/actions.component';
+import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
 
 @Component({
   selector: 'rb-client-page',
@@ -29,7 +30,8 @@ import {ActionsComponent} from '../../components/actions/actions.component';
     MatCard,
     MatCardContent,
     MatPrefix,
-    RouterLink
+    RouterLink,
+    ClientDetailsComponent
   ]
 })
 export class ClientPageComponent implements OnInit, OnDestroy {
@@ -90,7 +92,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType] = fragment.split('/');
-    if (entityType === 'sourceType') {
+    if (entityType === 'client') {
       switch(action) {
         case 'edit':
           this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.entities);
@@ -102,7 +104,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
   }
 
   navigateOnUpdateSuccess(entity: AppClient) {
-    this.router.navigate(['/admin', 'clients', entity.clientId, 'general']).then();
+    this.router.navigate(['/admin', 'clients', entity.clientId]).then();
   }
 
   navigateOnDeleteSuccess() {
@@ -113,50 +115,4 @@ export class ClientPageComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     category: new FormControl('general'),
   })
-
-  panelOpenState = false;
-
-  // ngOnInit() {
-  //   // this.store.dispatch(
-  //   //   AdminActions.clientSelected({
-  //   //     selectedClient: this.entity,
-  //   //   })
-  //   // );
-  //   // this.store.dispatch(
-  //   //   AdminActions.clientConfigCategorySelected({
-  //   //     selectedClientConfigCategory: 'general',
-  //   //   })
-  //   // );
-  //   const category = this.activatedRoute.firstChild?.snapshot.params["category"];
-  //   if(category){
-  //     this.form?.patchValue({category})
-  //   }
-  //   this.form.valueChanges.subscribe((value) => {
-  //     // this.store.dispatch(AdminActions.clientConfigCategorySelected({selectedClientConfigCategory: value.category}))
-  //     this.router.navigate([value.category], {relativeTo: this.activatedRoute}).then();
-  //   });
-  //
-  //   this.entityService.entities$?.subscribe({
-  //     next: (value) => {
-  //       const entity = value.find(
-  //         (v) => v.clientId === this.activatedRoute.snapshot.params['id']
-  //       );
-  //       if (entity) {
-  //         this.entity = entity;
-  //       }
-  //     },
-  //   });
-  // }
-
-  // override getDialogRef(
-  //   mode: DialogMode,
-  //   entity: AppClient
-  // ): MatDialogRef<ClientDialogComponent> {
-  //   return this.dialog.open(ClientDialogComponent, {
-  //     data: { mode, entity, entities: this.entities },
-  //     panelClass: ['w-full', 'sm:w-1/2'],
-  //     disableClose: true,
-  //   });
-  // }
-
 }

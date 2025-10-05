@@ -13,7 +13,7 @@
       <rb-source-data-processing-state [processingState$]="entity$().processingState"/>
     }
     @default {
-      {{ entity$()[property.name] }}
+      {{ entity$()[property.name] || '-' }}
     }
   }
 </ng-template>

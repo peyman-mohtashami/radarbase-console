@@ -1,5 +1,11 @@
-@if (activated()) {
-  <span class="material-symbols-outlined text-green-500">check</span>
+@if (activated$()) {
+  <span class="material-symbols-outlined text-green-600"
+        [matTooltip]="'ADMIN.user.activated.label' | translate ">
+    verified
+  </span>
 } @else {
-  <span class="material-symbols-outlined text-red-500">clear</span>
+  <span class="material-symbols-outlined text-red-600"
+        [matTooltip]="'ADMIN.user.notActivated.label' | translate">
+    verified_off
+  </span>
 }

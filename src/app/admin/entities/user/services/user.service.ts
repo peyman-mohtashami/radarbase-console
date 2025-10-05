@@ -5,7 +5,7 @@ import {AppRole, AppUser, RadarRole, RadarUser} from "../models/user";
 import {Observable} from "rxjs";
 import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({providedIn: 'root'})
 export class UserService {

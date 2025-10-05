@@ -70,16 +70,30 @@ export class ClientDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity: AppClient | undefined, entities: AppClient[]): MatDialogRef<ClientDialogComponent> {
-    return this.dialog.open(ClientDialogComponent, {
-      data: {mode, entity, entities},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(ClientDialogComponent, {
+          data: {mode, entity, entities},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(ClientDialogComponent, {
+          data: {mode, entity, entities},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+    }
+
+
   }
 }

@@ -8,30 +8,32 @@
   @switch (property.name) {
     @case ('email') {
       @if (entity$().email) {
-        <a [href]='"mailto:"+entity$().email' target='_blank'>
-          <span class="font-bold text-primary-color">{{ entity$().email || '-' }}</span>
-        </a>
+        <a class="underline" href="mailto:{{ entity$().email}}" target="_blank">{{ entity$().email || '-' }}</a>
       } @else {
         -
       }
     }
     @case ('activated') {
-      <rb-user-activated [activated]="entity$().activated" />
+      <span class="flex items-center gap-1">
+        <rb-user-activated class="inline-flex" [activated$]="entity$().activated" />
+        <rb-activate [entity$]="entity$()" />
+      </span>
+
     }
     @case ('langKey') {
-      {{ entity$()["langKey"]?.toUpperCase() || '-' }}
+      {{ entity$().langKey?.toUpperCase() || '-' }}
     }
     @case ('roles') {
       <rb-user-roles [roles$]="entity$()._roles" />
     }
     @case ('createdBy') {
-      <rb-user-created-by [createdBy]="entity$().createdBy" />
+      <rb-user-created-by [createdBy$]="entity$().createdBy" />
     }
     @case ('createdDate') {
       <rb-local-date [date]="entity$().createdDate" [format]="'long'" />
     }
     @case ('lastModifiedBy') {
-      <rb-user-created-by [createdBy]="entity$().lastModifiedBy" />
+      <rb-user-created-by [createdBy$]="entity$().lastModifiedBy" />
     }
     @case ('lastModifiedDate') {
       <rb-local-date [date]="entity$().lastModifiedDate" [format]="'long'" />

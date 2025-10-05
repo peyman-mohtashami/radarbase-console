@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import {AppGroup} from '../models/group';
 import {GroupService} from './group.service';
 import {GroupDialogComponent} from '../containers/group-dialog/group-dialog.component';
+import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -70,16 +71,30 @@ export class GroupDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity: AppGroup | undefined, entities: AppGroup[]): MatDialogRef<GroupDialogComponent> {
-    return this.dialog.open(GroupDialogComponent, {
-      data: {mode, entity, entities},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(GroupDialogComponent, {
+          data: {mode, entity, entities},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(GroupDialogComponent, {
+          data: {mode, entity, entities},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+    }
+
+
   }
 }

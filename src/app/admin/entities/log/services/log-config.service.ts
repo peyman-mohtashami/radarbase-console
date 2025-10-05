@@ -11,9 +11,7 @@ export const TableElements: TableElement[] = [
   {name: "name", width: "w-full md:w-1/2", tableClass: "block", extensionClass: "hidden", sortable: true},
 ];
 
-export const filters: FilterItem[] = [
-  // { name: '_search', label: 'ADMIN.organization.filters.search', type: FormFieldType.INPUT },
-]
+export const filters: FilterItem[] = []
 
 
 @Injectable({providedIn: 'root'})

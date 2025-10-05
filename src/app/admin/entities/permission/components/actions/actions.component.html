@@ -1,18 +1,10 @@
 @if (isExpanded$()) {
   <div class="flex items-center">
-<!--    @if (isAdded$()) {-->
-      <button class="tiny"
-              mat-icon-button color="warn"
-              (click)='onAction(DialogMode.DELETE)'>
-        <span class="material-symbols-outlined text-xl!">close</span>
-      </button>
-<!--    } @else {-->
-<!--      <button class="tiny"-->
-<!--              mat-icon-button color="primary"-->
-<!--              (click)='onAction(DialogMode.EDIT)'>-->
-<!--        <span class="material-symbols-outlined text-xl!">add</span>-->
-<!--      </button>-->
-<!--    }-->
+    <button class="tiny"
+            mat-icon-button color="warn"
+            (click)='onAction(DialogMode.DELETE)'>
+      <span class="material-symbols-outlined text-xl!">close</span>
+    </button>
   </div>
 } @else {
   <button mat-icon-button class="tiny"

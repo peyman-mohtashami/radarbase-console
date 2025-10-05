@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { DialogMode } from '../../../../enums/dialog';
 import { AppUser } from "../../models/user";
 import { ENTITY_NAME } from '../../../../enums/entities';
@@ -9,8 +9,6 @@ import {Subject} from 'rxjs';
 import {UserConfigService} from '../../services/user-config.service';
 import {UserDialogService} from '../../services/user-dialog.service';
 import {takeUntil} from 'rxjs/operators';
-import {BackButtonDirective} from '../../../../directives/back-button.directive';
-import {MatButton} from '@angular/material/button';
 import {ENTITIES} from '../../../../consts/entities';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
@@ -24,14 +22,11 @@ import {AppProject} from '../../../project/models/project';
   imports: [
     TranslatePipe,
     UserDetailsComponent,
-    BackButtonDirective,
-    MatButton,
     MatPrefix,
     ActionsComponent,
     MatCard,
     MatCardContent,
     MatPrefix,
-    RouterLink
   ]
 })
 export class UserPageComponent implements OnInit, OnDestroy {
@@ -113,6 +108,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
           break;
         case 'delete':
           this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities, this.projects, this.organizations);
+          break;
+        case 'activate':
+          this.dialogService.openDialog('activate', this.entity$(), this.entities, this.projects, this.organizations);
           break;
       }
     }

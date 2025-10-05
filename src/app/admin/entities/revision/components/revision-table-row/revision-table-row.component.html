@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -28,7 +28,5 @@
         </div>
     }
   </div>
-  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
-    <!--  <rb-source-data-details class="py-4" [entity]='entity()' [type]="DetailType.TABLE"></rb-source-data-details>-->
-  </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'"></div>
 </mat-card>

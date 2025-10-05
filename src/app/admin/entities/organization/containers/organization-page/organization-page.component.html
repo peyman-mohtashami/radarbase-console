@@ -1,32 +1,54 @@
 @if (!hasChildren) {
-  <!--<rb-breadcrumb />-->
-  <nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">
-    <div class='flex flex-wrap gap-2 items-center'>
-      <!--    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"-->
-      <!--          rbBackButton>-->
-      <!--      chevron_left-->
-      <!--    </span>-->
+<!--  <nav aria-label="breadcrumb" class="breadcrumbs px-4 py-2 flex flex-wrap items-center bg-white dark:bg-neutral-700'">-->
+<!--    <div class='flex flex-wrap gap-2 items-center'>-->
+<!--      &lt;!&ndash;    <span class="material-symbols-outlined bg-neutral-100 dark:bg-neutral-600 rounded-full cursor-pointer"&ndash;&gt;-->
+<!--      &lt;!&ndash;          rbBackButton>&ndash;&gt;-->
+<!--      &lt;!&ndash;      chevron_left&ndash;&gt;-->
+<!--      &lt;!&ndash;    </span>&ndash;&gt;-->
 
-      <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
-              [routerLink]="['/admin/organizations']">
-          <span class="flex items-center gap-1">
-            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.organization.icon }}</span>
-            <span>{{ `ADMIN.organization.title.plural` | translate }}</span>
-          </span>
-      </button>
-      <span class="text-xs font-bold">{{ entity$().name }}</span>
-    </div>
-  </nav>
+<!--      <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button-->
+<!--              [routerLink]="['/admin/organizations']">-->
+<!--          <span class="flex items-center gap-1">-->
+<!--            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.organization.icon }}</span>-->
+<!--            <span>{{ `ADMIN.organization.title.plural` | translate }}</span>-->
+<!--          </span>-->
+<!--      </button>-->
+<!--      <span class="text-xs font-bold">{{ entity$().name }}</span>-->
+<!--    </div>-->
+<!--  </nav>-->
 
 
   <div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
-    <!--  bg-background dark:bg-background-dark-->
-    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
-      <span
-        class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['organization'].icon }}</span>
-      {{ entity$().name }}
-      <!--    {{(selectedOrganization$ | async)?.name }}-->
-    </h2>
+<!--    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button-->
+<!--            [routerLink]="['/admin/organizations']">-->
+    <div class='flex flex-wrap gap-2 items-center'>
+          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
+            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITIES.organization.icon }}</span>
+            <span>{{ 'ADMIN.organization.title.singular' | translate }}</span>
+          </span>
+      <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+        <!--            <span class="z-10 p-2 w-10! h-10! rounded-full bg-organization-color dark:bg-neutral-600 material-symbols-outlined font-bold text-white">{{ ENTITIES['organization'].icon }}</span>-->
+        <!--            <span class="-ml-9 -mt-5 px-2 pl-7 py-1 rounded-full bg-organization-color dark:bg-neutral-600 font-bold text-white text-xs">Organization</span>-->
+        {{ entity$().name }}
+        <!--    {{(selectedOrganization$ | async)?.name }}-->
+      </h2>
+    </div>
+
+
+    <!--    </button>-->
+<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
+<!--      <span class="z-10 p-2 w-10! h-10! rounded-full bg-organization-color dark:bg-neutral-600 material-symbols-outlined font-bold text-white">{{ ENTITIES['organization'].icon }}</span>-->
+<!--      <span class="-ml-9 -mt-5 px-2 pl-7 py-1 rounded-full bg-organization-color dark:bg-neutral-600 font-bold text-white text-xs">Organization</span>-->
+<!--      {{ entity$().name }}-->
+<!--      &lt;!&ndash;    {{(selectedOrganization$ | async)?.name }}&ndash;&gt;-->
+<!--    </h2>-->
+
+
+<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
+<!--      <span class="p-2 w-10! h-10! rounded-full bg-organization-color dark:bg-neutral-600 material-symbols-outlined font-bold text-white">{{ ENTITIES['organization'].icon }}</span>-->
+<!--      {{ entity$().name }}-->
+<!--      &lt;!&ndash;    {{(selectedOrganization$ | async)?.name }}&ndash;&gt;-->
+<!--    </h2>-->
 
     <div class='flex gap-1 ml-auto'>
       <ng-container

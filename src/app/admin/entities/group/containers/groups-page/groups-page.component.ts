@@ -24,7 +24,6 @@ import {GroupService} from '../../services/group.service';
 import {GroupConfigService} from '../../services/group-config.service';
 import {GroupDialogService} from '../../services/group-dialog.service';
 import {AppGroup} from '../../models/group';
-import {JsonPipe} from '@angular/common';
 import {AppProject} from '../../../project/models/project';
 
 @Component({
@@ -40,7 +39,6 @@ import {AppProject} from '../../../project/models/project';
     MatPaginator,
     MatCheckbox,
     GroupTableRowComponent,
-    JsonPipe,
   ]
 })
 export class GroupsPageComponent implements OnInit, OnDestroy {
@@ -57,8 +55,7 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   private configService = inject(GroupConfigService);
   public dialogService = inject(GroupDialogService);
 
-  // projectName = this.activatedRoute.snapshot.parent?.parent?.params['projectId'];
-  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity']; //this.activatedRoute.parent?.snapshot.data['entity'];
+  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
 
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
@@ -101,7 +98,6 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Class: GroupsPageComponent, Function: ngOnInit, Line 104 this.project' , this.project);
     this.dialogService.dialogUpdateEvent$.set(undefined);
     this.applyFilter();
     this.handleDialogUrlFragment();

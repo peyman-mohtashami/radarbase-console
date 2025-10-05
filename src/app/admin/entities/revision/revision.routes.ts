@@ -10,4 +10,8 @@ export const revisionRoutes: Routes = [
       entities: RevisionsResolver,
     },
   },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];

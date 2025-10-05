@@ -9,6 +9,7 @@ import {AppUser} from '../models/user';
 import {AppProject} from '../../project/models/project';
 import {AppOrganization} from '../../organization/models/organization';
 import {PermissionDialogComponent} from '../containers/permission-dialog/permission-dialog.component';
+import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -72,16 +73,28 @@ export class PermissionDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity: AppUser | undefined, entities: AppUser[], project?: AppProject, organization?: AppOrganization): MatDialogRef<PermissionDialogComponent> {
-    return this.dialog.open(PermissionDialogComponent, {
-      data: {mode, entity, entities, project, organization},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(PermissionDialogComponent, {
+          data: {mode, entity, entities, project, organization},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(PermissionDialogComponent, {
+          data: {mode, entity, entities, project, organization},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+    }
   }
 }

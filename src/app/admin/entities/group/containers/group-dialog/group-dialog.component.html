@@ -7,31 +7,6 @@
     <rb-dialog-body-description [mode]="dialogData.mode"
                                 [label]="'Group'"
                                 [entityName]="dialogData.entity.name"/>
-<!--    <rb-dialog-body-description [mode]="mode"-->
-<!--                                [label]="'Group'"-->
-<!--                                [entityName]="entity.name">-->
-<!--      <div class="text-sm border border-t-0 border-gray-200 [&_rb-detail-element:nth-child(even)>div]:bg-gray-100">-->
-<!--        <rb-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.group.id.label' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ entity.id || '-' }}</ng-container>-->
-<!--        </rb-detail-element>-->
-<!--        <rb-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.group.name.label' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ entity.name || '-' }}</ng-container>-->
-<!--        </rb-detail-element>-->
-
-<!--  &lt;!&ndash;        <rb-detail-element>&ndash;&gt;-->
-<!--  &lt;!&ndash;          <ng-container label>{{ 'ADMIN.group.projectName.label' | translate }}</ng-container>&ndash;&gt;-->
-<!--  &lt;!&ndash;          <ng-container value>{{ entity.projectName || '-' }}</ng-container>&ndash;&gt;-->
-<!--  &lt;!&ndash;        </rb-detail-element>&ndash;&gt;-->
-<!--        <rb-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.group.projectName.label' | translate }}</ng-container>-->
-<!--&lt;!&ndash;          <ng-container value>{{ (selectedProject$ | async)?.projectName || '-' }}</ng-container>&ndash;&gt;-->
-<!--          <ng-container value></ng-container>-->
-<!--        </rb-detail-element>-->
-
-<!--      </div>-->
-<!--    </rb-dialog-body-description>-->
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -59,12 +34,6 @@
           </mat-error>
         }
       </mat-form-field>
-
-<!--      <label for="projectName" class="text-sm">{{ 'ADMIN.group.projectName.label' | translate }}</label>-->
-<!--      <mat-form-field subscriptSizing="fixed"-->
-<!--                      appearance="outline">-->
-<!--        <input matInput disabled [value]=""/>-->
-<!--      </mat-form-field>-->
     </form>
   }
 </mat-dialog-content>

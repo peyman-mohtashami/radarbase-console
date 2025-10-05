@@ -4,9 +4,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
-import {SourceTypeService} from './sourceType.service';
 import {AppSourceType} from '../models/source-type';
 import {SourceTypeDialogComponent} from '../containers/source-type-dialog/source-type-dialog.component';
+import {SourceTypeService} from './source-type.service';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -70,16 +70,28 @@ export class SourceTypeDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity?: AppSourceType): MatDialogRef<SourceTypeDialogComponent> {
-    return this.dialog.open(SourceTypeDialogComponent, {
-      data: {mode, entity},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(SourceTypeDialogComponent, {
+          data: {mode, entity},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(SourceTypeDialogComponent, {
+          data: {mode, entity},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+    }
   }
 }

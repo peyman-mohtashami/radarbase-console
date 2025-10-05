@@ -5,7 +5,6 @@ import {LoaderComponent} from "../../../../../shared/components/loader/loader.co
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {ProjectDetailsComponent} from "../../components/project-details/project-details.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {AsyncPipe} from "@angular/common";
 import {ProjectConfigService} from '../../services/project-config.service';
 
 @Component({
@@ -17,7 +16,6 @@ import {ProjectConfigService} from '../../services/project-config.service';
     MatCardContent,
     ProjectDetailsComponent,
     TranslatePipe,
-    AsyncPipe
   ]
 })
 export class ProjectDetailsPageComponent {

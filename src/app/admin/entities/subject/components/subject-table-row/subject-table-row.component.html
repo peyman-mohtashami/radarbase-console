@@ -18,8 +18,8 @@
           @case ('login') {
             <div class="flex flex-wrap gap-1 items-center">
               <rb-subject-status [status]="entity$().status" [type]="DetailType.TABLE"/>
-              <a [routerLink]='[entity$().login]'>
-                <span class='font-bold text-primary dark:text-primary-dark'>{{ entity$().login }}</span>
+              <a [routerLink]='[entity$().login]' class="underline font-bold text-primary dark:text-primary-dark">
+                <span class='' [matTooltip]="entity$().login">{{ entity$().login | truncate:14 }}</span>
               </a>
             </div>
           }
@@ -99,7 +99,7 @@
                     {{ expanded$() ? 'expand_less' : 'expand_more' }}
                   </span>
               </button>
-              <app-subject-actions [entity$]="entity$()" [isExpanded$]="true"/>
+              <app-subject-actions [entity$]="entity$()" [isExpanded$]="false"/>
             </div>
           }
           @default {

@@ -11,7 +11,7 @@ import {FormFieldType} from '../../../models/dialog.model';
 export const TableElements: TableElement[] = [
   {name: 'checkbox', width: 'w-12', tableClass: "block", extensionClass: "hidden", editable: true},
   { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true, editable: false},
-  { name: 'login', width: 'w-80', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false, showInSummary: true},
+  { name: 'login', width: 'w-48', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false, showInSummary: true},
   // { name: 'login', tableClass: "block", extensionClass: "hidden", sortable: true, showInDelete: true},
   { name: 'externalId', width: 'w-56', tableClass: "hidden 2xl:block", extensionClass: "block lg:hidden", sortable: true, editable: true, showInSummary: true},
   // { name: 'externalId', width: 'w-40', tableClass: "hidden", extensionClass: "block md:hidden", sortable: true, showInDelete: true},
@@ -30,7 +30,7 @@ export const TableElements: TableElement[] = [
   { name: 'createdDate', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'lastModifiedBy', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'lastModifiedDate', tableClass: "hidden", extensionClass: "block", editable: true},
-  {name: "actions", width: "w-32", tableClass: "flex flex-wrap", extensionClass: "hidden"},
+  {name: "actions", width: "w-20", tableClass: "flex flex-wrap", extensionClass: "hidden"},
 ];
 
 export const filters: FilterItem[] = [

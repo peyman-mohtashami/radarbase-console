@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -9,8 +9,8 @@
            [class.shrink-0]="!!tableElement.width">
         @switch (tableElement.name) {
           @case ('sourceName') {
-            <p class='font-bold'>{{ entity$().sourceName || '-' }}</p>
-            <p class=''>{{ entity$().sourceId || '-' }}</p>
+            <p class='font-bold text-primary'>{{ entity$().sourceName || '-' }}</p>
+            <p class='' [matTooltip]="entity$().sourceId">{{ entity$().sourceId | truncate:13 }}</p>
           }
 
           @case ('sourceId') {

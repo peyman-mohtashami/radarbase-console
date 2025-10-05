@@ -48,7 +48,6 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
   protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
-  // protected readonly GRID_VIEW_ENABLED = false;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
@@ -110,7 +109,6 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
-  // gridView;
 
   _destroy$: Subject<void> = new Subject<void>();
 
@@ -235,7 +233,6 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   removeFragmentUrl() {
     this.router.navigate([], {

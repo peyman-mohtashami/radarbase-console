@@ -12,7 +12,6 @@ import {filter, Subject} from 'rxjs';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
 import {ActionsComponent} from '../../components/actions/actions.component';
-import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 
@@ -32,7 +31,6 @@ export interface ILink {
     MatTabNavPanel,
     RouterOutlet,
     ActionsComponent,
-    MatButton,
     MatPrefix,
     TranslatePipe,
   ]

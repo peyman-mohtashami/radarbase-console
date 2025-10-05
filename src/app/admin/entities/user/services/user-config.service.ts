@@ -16,10 +16,10 @@ export const TableElements: TableElement[] = [
   { name: 'firstName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true},
   { name: 'lastName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true},
   { name: 'langKey', tableClass: "hidden", extensionClass: "block", editable: true },
-  { name: 'roles', width: 'w-64', tableClass: "hidden lg:block", extensionClass: "block lg:hidden", editable: false},
-  { name: 'createdBy', tableClass: "hidden", extensionClass: "block", editable: true },
+  { name: 'roles', width: 'w-64', tableClass: "hidden xl:block", extensionClass: "block xl:hidden", editable: false},
+  { name: 'createdBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'createdDate', tableClass: "hidden", extensionClass: "block", editable: true },
-  { name: 'lastModifiedBy', tableClass: "hidden", extensionClass: "block", editable: true },
+  { name: 'lastModifiedBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'lastModifiedDate', tableClass: "hidden", extensionClass: "block", editable: true },
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
 ];

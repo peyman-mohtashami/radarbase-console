@@ -19,6 +19,7 @@ import {UpdateTrigger} from '../../services/subject-dialog.service';
 import {ActionsComponent} from '../actions/actions.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectDialogMode} from '../../enums/dialog';
+import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
 
 @Component({
   selector: 'rb-subject-table-row',
@@ -34,6 +35,8 @@ import {SubjectDialogMode} from '../../enums/dialog';
     SubjectDetailsComponent,
     MatIconButton,
     ActionsComponent,
+    TruncatePipe,
+    MatTooltip,
   ]
 })
 export class SubjectTableRowComponent {

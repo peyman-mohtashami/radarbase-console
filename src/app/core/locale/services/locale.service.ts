@@ -18,6 +18,12 @@ import localeNl from '@angular/common/locales/nl';
 import localeFa from '@angular/common/locales/fa';
 import {Language} from '../../../shared/models/locale.model';
 
+// Ensure Moment locales are available for the MomentDateAdapter
+import moment from 'moment';
+import 'moment/locale/en-gb';
+import 'moment/locale/nl';
+import 'moment/locale/fa';
+
 @Injectable({providedIn: 'root'})
 export class localeService {
   private readonly store = inject(Store);
@@ -109,9 +115,15 @@ export class localeService {
     const localeCode = language.locale;
     if (!localeCode) return;
 
-    const localeId = localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
-    this.localeInitializer(localeId);
-    this.dateAdapter.setLocale(localeId);
+    // Angular i18n locale (for registerLocaleData and DateAdapter)
+    const angularLocaleId = localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
+    this.localeInitializer(angularLocaleId);
+    this.dateAdapter.setLocale(angularLocaleId);
+
+    // Ensure Moment uses the correct locale for the MomentDateAdapter
+    const momentLocaleId = angularLocaleId.toLowerCase(); // e.g., 'en-GB' -> 'en-gb'
+    moment.locale(momentLocaleId);
+
     this.switchLanguage(language).subscribe();
     // this.localeInitializer(localeId).then(() => {
     //   this.dateAdapter.setLocale(localeId);

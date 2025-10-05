@@ -21,9 +21,9 @@ import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeTableRowComponent} from '../../components/source-type-table-row/source-type-table-row.component';
-import {SourceTypeService} from '../../services/sourceType.service';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
+import {SourceTypeService} from '../../services/source-type.service';
 
 @Component({
   selector: 'rb-source-types-page',

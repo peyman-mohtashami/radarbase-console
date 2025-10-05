@@ -195,7 +195,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDialogUpdate(updated: { mode: DialogMode, entity?: AppUser }) {
+  private handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppUser }) {
     switch (updated.mode) {
       case DialogMode.ADD:
         this.addEntityToView(updated.entity);
@@ -266,6 +266,9 @@ export class UsersPageComponent implements OnInit, OnDestroy {
           break;
         case 'delete':
           if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.visibleEntities$(), this.projects, this.organizations);
+          break;
+        case 'activate':
+          if (entity) this.dialogService.openDialog('activate', entity, this.visibleEntities$(), this.projects, this.organizations);
           break;
       }
     }

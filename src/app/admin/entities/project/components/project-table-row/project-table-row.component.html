@@ -1,6 +1,6 @@
 @if (!gridView()) {
   <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
     <div class="rb-table-main-row">
@@ -10,24 +10,24 @@
              [class.shrink-0]="!!tableElement.width">
           @switch (tableElement.name) {
             @case ('projectName') {
-              <a [routerLink]='["/admin", "organizations", entity$().organization.name, "projects", entity$().projectName]'>
-                <span class='font-bold text-primary'>{{ entity$().projectName }}</span>
+              <a [routerLink]='["/admin", "organizations", entity$().organization.name, "projects", entity$().projectName]' class="font-bold text-primary underline">
+                <span class=''>{{ entity$().projectName }}</span>
               </a>
               @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {
                 <p class="">{{ entity$().description }}</p>
               }
             }
             @case ('startDate') {
-              <rb-local-date [date]="entity$()['startDate']" [format]="'mediumDate'"/>
+              <rb-local-date [date]="entity$().startDate" [format]="'mediumDate'"/>
             }
             @case ('endDate') {
-              <rb-local-date [date]="entity$()['endDate']" [format]="'mediumDate'"/>
+              <rb-local-date [date]="entity$().endDate" [format]="'mediumDate'"/>
             }
             @case ('projectStatus') {
-              <rb-project-status [projectStatus$]="entity$()['projectStatus']"/>
+              <rb-project-status [projectStatus$]="entity$().projectStatus"/>
             }
             @case ('sourceTypes') {
-              <rb-project-source-types [sourceTypes$]="entity$()['sourceTypes']"/>
+              <rb-project-source-types [sourceTypes$]="entity$().sourceTypes"/>
             }
             @case ("actions") {
               <button mat-icon-button
@@ -67,7 +67,7 @@
 } @else {
   <mat-card appearance="outlined"
             class="cursor-pointer flex items-start justify-start h-full"
-            [class]="updated$() ? 'bg-green-100! ' : ''"
+            [class]="updated$() ? 'bg-primary/5! ' : ''"
             [routerLink]='["/admin", "organizations", entity$().organization.name, "projects", entity$()._name]'>
     <mat-card-content class="p-0! w-full">
       <div class="rounded-t-[4px] px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
@@ -77,7 +77,7 @@
           <span class='text-xs'>{{ entity$().organization.name }}</span>
         </div>
         @if (!configFields$() || configFields$()['projectStatus'] === undefined || configFields$()['projectStatus']) {
-          <rb-project-status class="" [projectStatus$]="entity$()['projectStatus']"/>
+          <rb-project-status class="" [projectStatus$]="entity$().projectStatus"/>
         }
       </div>
 
@@ -96,10 +96,10 @@
         @if (!configFields$() || configFields$()['startDate'] === undefined || configFields$()['startDate']) {
           <div class="text-sm flex mt-4 gap-4 items-center text-gray-500 dark:text-gray-300">
             <span class="material-symbols-outlined text-xl shrink-0">date_range</span>
-            @if (entity$()['startDate'] || entity$()['endDate']) {
-              <rb-local-date [date]="entity$()['startDate']" [format]="'mediumDate'"/>
+            @if (entity$().startDate || entity$().endDate) {
+              <rb-local-date [date]="entity$().startDate" [format]="'mediumDate'"/>
               <span> - </span>
-              <rb-local-date [date]="entity$()['endDate']" [format]="'mediumDate'"/>
+              <rb-local-date [date]="entity$().endDate" [format]="'mediumDate'"/>
             } @else {
               Dates not set.
             }
@@ -109,9 +109,9 @@
       @if (!configFields$() || configFields$()['sourceTypes'] === undefined || configFields$()['sourceTypes']) {
         <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
           <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Source Types
-            ({{ entity$()['sourceTypes']?.length ?? 0 }})
+            ({{ entity$().sourceTypes?.length ?? 0 }})
           </div>
-          <rb-project-source-types [sourceTypes$]="entity$()['sourceTypes']"/>
+          <rb-project-source-types [sourceTypes$]="entity$().sourceTypes"/>
         </div>
       }
     </mat-card-content>

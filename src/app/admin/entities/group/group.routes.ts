@@ -10,4 +10,8 @@ export const groupRoutes: Routes = [
       entities: GroupsResolver,
     },
   },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];

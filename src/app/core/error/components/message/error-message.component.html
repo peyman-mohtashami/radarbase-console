@@ -1,15 +1,8 @@
-<!--&#45;&#45;{{errors$ | async}}&#45;&#45;-->
 @let errors = errors$ | async;
---{{errors | json}}--
 @if (errors) {
-<!--<ng-container *ngIf="(errors$ | async) as errors">-->
-<!--    {{errors | json}}-->
   <div class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
     @for(error of errors.message; track error) {
-<!--    <div>-->
       {{error | translate}}
-<!--    </div>-->
     }
   </div>
-<!--</ng-container>-->
 }

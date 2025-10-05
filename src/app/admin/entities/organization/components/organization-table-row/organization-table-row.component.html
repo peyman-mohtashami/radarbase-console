@@ -1,6 +1,6 @@
 @if (!gridView()) {
   <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
     <div class="rb-table-main-row">
@@ -10,8 +10,8 @@
              [class.shrink-0]="!!tableElement.width">
           @switch (tableElement.name) {
             @case ('name') {
-              <a [routerLink]='[entity$().name]'>
-                <span class='font-bold text-primary dark:text-primary-dark'>{{ entity$().name }}</span>
+              <a [routerLink]='[entity$().name]' class="underline font-bold text-primary dark:text-primary-dark">
+                <span class=''>{{ entity$().name }}</span>
               </a>
               @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {
                 <p>{{ entity$().description }}</p>
@@ -58,7 +58,7 @@
 } @else {
   <mat-card appearance="outlined"
             class="cursor-pointer flex items-start justify-start h-full"
-            [class]="updated$() ? 'bg-green-100! ' : ''"
+            [class]="updated$() ? 'bg-primary/5! ' : ''"
             [routerLink]='[entity$().name]'>
     <mat-card-content class="p-0! w-full">
       <div class="p-4 flex items-center justify-between gap-2 w-full">

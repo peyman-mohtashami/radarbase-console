@@ -2,10 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 import {AppAudit, RadarAudit} from "../models/audit";
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({ providedIn: 'root' })
 export class AuditService {
@@ -65,6 +65,7 @@ export class AuditService {
     } else {
       params = params.append('sort', 'id' + ',' + 'desc');
     }
+    params = this.convertFilterParamsToHttpParams(params, queryParams);
     return { params, parentEntityName: queryParams?.['parentEntityName'] };
   }
 

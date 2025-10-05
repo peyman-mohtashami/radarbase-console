@@ -11,6 +11,14 @@
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>
+      @if (!dialogData.organization && !dialogData.entity.organization) {
+        <rb-mat-select-autocomplete formControlName='organization'
+                                    [legend]="('ADMIN.project.organization.label' | translate) + ' *'"
+                                    [options]='dialogData.organizations'
+                                    [label]="('ADMIN.project.organization.label' | translate) + ' *'"
+                                    [multiple]="false"
+                                    [required]="true"/>
+      }
 
       @if (dialogData.mode !== DialogMode.ADD) {
         <label for="id" class="text-sm">{{ 'ADMIN.project.id.label' | translate }}</label>
@@ -21,7 +29,7 @@
         </mat-form-field>
       }
 
-      <label for="projectName" class="text-sm">{{ 'ADMIN.project.projectName.label' | translate }}</label>
+      <label for="projectName" class="text-sm">{{ 'ADMIN.project.projectName.label' | translate }} *</label>
       <mat-form-field class='small-input w-full'
                       subscriptSizing="fixed"
                       appearance='outline'>
@@ -114,12 +122,7 @@
         </mat-form-field>
       }
 
-      <rb-mat-select-autocomplete formControlName='organization'
-                                  [legend]="'ADMIN.project.organization.label' | translate"
-                                  [options]='dialogData.organizations'
-                                  [label]="'ADMIN.project.organization.label' | translate"
-                                  [multiple]="false"
-                                  [required]="true"/>
+
 
       @if (!formFields || formFields['projectStatus'] === undefined || formFields['projectStatus']) {
         <label for="projectStatus" class="text-sm">{{ 'ADMIN.project.projectStatus.label' | translate }}</label>

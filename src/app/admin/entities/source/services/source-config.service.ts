@@ -6,7 +6,6 @@ import {map} from 'rxjs/operators';
 import {ENTITY_NAME} from '../../../enums/entities';
 import {ConfigState} from '../../../../core/config/models/config.model';
 import {FilterItem, TableElement} from '../../../models/table.model';
-import {FormFieldType} from '../../../models/dialog.model';
 
 export const TableElements: TableElement[] = [
   { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true, editable: false },

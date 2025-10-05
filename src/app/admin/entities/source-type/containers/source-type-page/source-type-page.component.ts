@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
 import { AppSourceType } from "../../models/source-type";
@@ -9,8 +9,6 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
 import {ENTITIES} from '../../../../consts/entities';
-import {BackButtonDirective} from '../../../../directives/back-button.directive';
-import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
 import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
@@ -23,10 +21,7 @@ import {SourceTypeConfigService} from '../../services/source-type-config.service
   imports: [
     MatCard,
     MatCardContent,
-    BackButtonDirective,
-    MatButton,
     TranslatePipe,
-    RouterLink,
     MatPrefix,
     SourceTypeDetailsComponent,
     ActionsComponent

@@ -1,11 +1,9 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal, untracked, WritableSignal} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {takeUntil} from "rxjs/operators";
+import {Component, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {MatCheckbox} from "@angular/material/checkbox";
 import {TABLE_ANIMATION} from '../../../../animation';
 import {
   EntitiesPageHeaderComponent
@@ -17,19 +15,10 @@ import {
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import {TableElement} from '../../../../models/table.model';
-import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
-import {OrganizationConfigService} from '../../../organization/services/organization-config.service';
 import {LogConfigService} from '../../services/log-config.service';
-import {LogService} from '../../services/log.service';
 import {AppLog} from '../../models/log';
-import {
-  OrganizationDetailsComponent
-} from '../../../organization/components/organization-details/organization-details.component';
 import {DetailType} from '../../../../enums/detail-type';
-import {
-  OrganizationTableRowComponent
-} from '../../../organization/components/organization-table-row/organization-table-row.component';
 import {LogTableRowComponent} from '../../components/log-table-row/log-table-row.component';
 
 @Component({
@@ -43,26 +32,20 @@ import {LogTableRowComponent} from '../../components/log-table-row/log-table-row
     TableQueryReflectorDirective,
     TranslatePipe,
     MatPaginator,
-    MatCheckbox,
-    OrganizationDetailsComponent,
-    OrganizationTableRowComponent,
     LogTableRowComponent,
   ]
 })
 export class LogsPageComponent implements OnInit, OnDestroy {
+  protected readonly DetailType = DetailType;
   protected readonly DEFAULT_PAGE_SIZE = 20;
   protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
   protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
   protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
   protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
-  protected readonly GRID_VIEW_ENABLED = true;
 
-  private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private entityService = inject(LogService);
   private configService = inject(LogConfigService);
-  // public dialogService = inject(OrganizationDialogService);
 
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
@@ -71,7 +54,6 @@ export class LogsPageComponent implements OnInit, OnDestroy {
   entities$ = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
   processedEntities$ = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
   visibleEntities$ = signal<AppLog[]>([]);
-  // sourceTypes: AppOrganization[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
   page$: WritableSignal<PageEvent>;
   sort$: WritableSignal<RbSort>;
@@ -101,15 +83,11 @@ export class LogsPageComponent implements OnInit, OnDestroy {
       }, {})
     );
 
-    // this.initializeDialogEffect();
-
     this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
-    // this.dialogService.dialogUpdateEvent$.set(undefined);
     this.applyFilter();
-    // this.handleDialogUrlFragment();
   }
 
   ngOnDestroy() {
@@ -166,89 +144,6 @@ export class LogsPageComponent implements OnInit, OnDestroy {
     return numericToClassMapper[highestPriority];
   }
 
-
-  // private initializeDialogEffect() {
-  //   // effect(() => {
-  //   //   const updated = this.dialogService.dialogUpdateEvent$();
-  //   //   if (updated) untracked(() => this.handleDialogUpdate(updated));
-  //   // });
-  // }
-
-  // private handleDialogUpdate(updated: { mode: DialogMode, entity?: AppOrganization }) {
-  //   switch (updated.mode) {
-  //     case DialogMode.ADD:
-  //       this.addEntityToView(updated?.entity);
-  //       break;
-  //     case DialogMode.EDIT:
-  //       this.updateEntityInView(updated?.entity);
-  //       break;
-  //     case DialogMode.DELETE:
-  //       this.refreshEntities();
-  //       break;
-  //   }
-  //   this.removeFragmentUrl();
-  //   this.loading$.set(false);
-  //   this.selection.clear();
-  // }
-
-  // private addEntityToView(entity?: AppOrganization) {
-  //   if (entity) {
-  //     const entities = untracked(this.entities$);
-  //     this.entities$.set([entity, ...entities]);
-  //     this.applyFilter();
-  //   }
-  // }
-  //
-  // private updateEntityInView(entity?: AppOrganization) {
-  //   if (entity) {
-  //     const updatedEntities = untracked(this.entities$).map(e => e.id === entity.id ? entity : e);
-  //     this.entities$.set(updatedEntities);
-  //     this.applyFilter();
-  //   }
-  // }
-  //
-  // private refreshEntities() {
-  //   this.entityService.getAll().subscribe({
-  //     next: (entities) => {
-  //       this.entities$.set(entities);
-  //       this.applyFilter();
-  //     }
-  //   });
-  // }
-
-  // private handleDialogUrlFragment() {
-  //   this.activatedRoute.fragment
-  //     .pipe(takeUntil(this._destroy$))
-  //     .subscribe(fragment => {
-  //       if (fragment) this.processUrlFragment(fragment);
-  //     });
-  // }
-
-  // private processUrlFragment(fragment: string) {
-  //   const [_, action, entityType, entityId] = fragment.split('/');
-  //   if (entityType === 'organization') {
-  //     const entity = this.visibleEntities$().find(e => e.id == entityId);
-  //     switch (action) {
-  //       case 'add':
-  //         this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities$());
-  //         break;
-  //       case 'edit':
-  //         if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.entities$());
-  //         break;
-  //       case 'delete':
-  //         if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.entities$());
-  //         break;
-  //     }
-  //   }
-  // }
-
-  // removeFragmentUrl() {
-  //   this.router.navigate([], {
-  //     relativeTo: this.activatedRoute,
-  //     queryParamsHandling: 'preserve',
-  //     fragment: undefined
-  //   }).then();
-  // }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
     this.sort$.set(event.sort);
@@ -321,24 +216,4 @@ export class LogsPageComponent implements OnInit, OnDestroy {
 
     return filteredEntities;
   }
-
-  /** Selection Helper Methods */
-  // isAllSelected() {
-  //   return this.selection.selected.length === this.visibleEntities$().length;
-  // }
-  //
-  // masterToggle() {
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //   } else {
-  //     this.selection.select(...this.visibleEntities$());
-  //   }
-  // }
-  //
-  // checkboxLabel(row?: any): string {
-  //   return row
-  //     ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
-  //     : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-  // }
-  protected readonly DetailType = DetailType;
 }

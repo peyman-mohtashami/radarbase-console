@@ -8,13 +8,6 @@
                                 [entityName]="dialogData.entity.clientId"/>
   }
 
-  @if (dialogData.mode === DialogMode.DELETE) {
-    <div>
-      <p>{{ 'ADMIN.client.deleteMessage' | translate }}: <strong>{{dialogData.entity.clientId}}</strong>.</p>
-      <p>{{ 'ADMIN.client.deleteConfirmationMessage' | translate }}</p>
-    </div>
-  }
-
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>
 
@@ -134,7 +127,6 @@
         <mat-slide-toggle formControlName='dynamic_registration' color="primary">
           {{ 'ADMIN.client.dynamic_registration.label' | translate }}
         </mat-slide-toggle>
-        <!--      <p class="rb-hint">{{ 'ADMIN.client.enableEmptySecret.hint' | translate }}</p>-->
       </div>
 
       <label for="registeredRedirectUri" class="text-sm">{{ 'ADMIN.client.registeredRedirectUri.label' | translate }}</label>

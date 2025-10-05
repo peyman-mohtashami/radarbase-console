@@ -9,5 +9,5 @@ import {TagComponent} from "../../../../components/tag/tag.component";
   ]
 })
 export class UserCreatedByComponent {
-  createdBy = input<string>();
+  createdBy$ = input<string>();
 }

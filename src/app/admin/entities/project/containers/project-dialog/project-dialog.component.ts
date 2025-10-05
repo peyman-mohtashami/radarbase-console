@@ -14,7 +14,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {debounceTime, takeUntil} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {DialogMode} from '../../../../enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
@@ -61,6 +61,7 @@ export class ProjectDialogComponent implements OnInit, AfterViewInit {
     mode: DialogMode;
     entity: AppProject;
     entities: AppProject[];
+    organization: RadarOrganization;
     organizations: AppOrganization[];
     sourceTypes: AppSourceType[];
   };
@@ -80,7 +81,7 @@ export class ProjectDialogComponent implements OnInit, AfterViewInit {
     description: new FormControl<string | undefined>('', {validators: [Validator.longTextValidator], nonNullable: true}),
     location: new FormControl<string | undefined>('', {nonNullable: true, validators: [Validator.normalTextValidator]}),
     organizationName: new FormControl<string | undefined>({value: '', disabled: true}, {nonNullable: true}),
-    organization: new FormControl<RadarOrganization | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
+    organization: new FormControl<RadarOrganization | undefined>(this.dialogData.organization ?? this.dialogData.entity?.organization, {nonNullable: true, validators: [Validator.requiredValidator]}),
     projectStatus: new FormControl<ProjectStatus | undefined>(undefined, {nonNullable: true}),
     startDate: new FormControl<string | undefined>('', {nonNullable: true}),
     endDate: new FormControl<string | undefined>('', {nonNullable: true}),
@@ -119,6 +120,7 @@ export class ProjectDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('Class: ProjectDialogComponent, Function: ngOnInit, Line 122 ' , this.dialogData);
     this.store?.select(locale)
       // ?.getLocale()
       // .pipe(takeUntil(this.subscription$))

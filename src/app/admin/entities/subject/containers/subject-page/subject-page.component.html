@@ -11,7 +11,9 @@
             <span>{{ `ADMIN.organization.title.plural` | translate }}</span>
           </span>
     </button>
+    <span class="material-symbols-outlined text-lg">chevron_right</span>
     <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name ]">{{ organization?.name }}</a>
+<!--    <span class=" text-lg">|</span>-->
     <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
             [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">
           <span class="flex items-center gap-1">
@@ -19,29 +21,49 @@
             <span>{{ `ADMIN.project.title.plural` | translate }}</span>
           </span>
     </button>
+    <span class="material-symbols-outlined text-lg">chevron_right</span>
     <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">{{ project?.projectName }}</a>
-    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
-            [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">
-          <span class="flex items-center gap-1">
-            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.subject.icon }}</span>
-            <span>{{ `ADMIN.subject.title.plural` | translate }}</span>
-          </span>
-    </button>
-    <span class="text-xs font-bold">{{ entity$().login }}</span>
+<!--    <button class="small-button bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button-->
+<!--            [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">-->
+<!--          <span class="flex items-center gap-1">-->
+<!--            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITIES.subject.icon }}</span>-->
+<!--            <span>{{ `ADMIN.subject.title.plural` | translate }}</span>-->
+<!--          </span>-->
+<!--    </button>-->
+<!--    <span class="text-xs font-bold">{{ entity$().login }}</span>-->
   </div>
 </nav>
 
 <div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-neutral-50 dark:bg-neutral-700'>
-  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
-    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['subject'].icon }}</span>
-    @if (entity$().externalId) {
-      <span>{{entity$().externalId}}</span>
-    }
-    @if (entity$().personName) {
-      <span>[{{entity$().personName}}]</span>
-    }
-    {{entity$().login}}
-  </h2>
+  <div class='flex flex-wrap gap-2 items-center'>
+          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
+            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITIES.organization.icon }}</span>
+            <span>{{ 'ADMIN.subject.title.singular' | translate }}</span>
+          </span>
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+      <!--            <span class="z-10 p-2 w-10! h-10! rounded-full bg-organization-color dark:bg-neutral-600 material-symbols-outlined font-bold text-white">{{ ENTITIES['organization'].icon }}</span>-->
+      <!--            <span class="-ml-9 -mt-5 px-2 pl-7 py-1 rounded-full bg-organization-color dark:bg-neutral-600 font-bold text-white text-xs">Organization</span>-->
+<!--      {{ entity$().name }}-->
+          @if (entity$().externalId) {
+            <span>{{entity$().externalId}}</span>
+          }
+          @if (entity$().personName) {
+            <span>[{{entity$().personName}}]</span>
+          }
+          {{entity$().login}}
+      <!--    {{(selectedOrganization$ | async)?.name }}-->
+    </h2>
+  </div>
+<!--  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
+<!--    <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES['subject'].icon }}</span>-->
+<!--    @if (entity$().externalId) {-->
+<!--      <span>{{entity$().externalId}}</span>-->
+<!--    }-->
+<!--    @if (entity$().personName) {-->
+<!--      <span>[{{entity$().personName}}]</span>-->
+<!--    }-->
+<!--    {{entity$().login}}-->
+<!--  </h2>-->
   <div class='flex gap-1 ml-auto'>
     <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity$().login}]'>
       <app-subject-actions [entity$]="entity$()" />

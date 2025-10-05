@@ -60,14 +60,11 @@ export class PermissionsPageComponent implements OnInit, OnDestroy {
 
   entities$ = signal<AppUser[]>(this.activatedRoute.snapshot.data['entities']);
   usersWithPermission$ = signal<AppUser[]>([]);
-  processedEntities$ = signal<AppUser[]>([]);//this.activatedRoute.snapshot.data['entities']);
+  processedEntities$ = signal<AppUser[]>([]);
   visibleEntities$ = signal<AppUser[]>([]);
 
-  // projects: AppProject[] = this.activatedRoute.snapshot.data['projects'];
-  // organizations: AppOrganization[] = this.activatedRoute.snapshot.parent?.parent?.data['organization']; //this.activatedRoute.snapshot.data['organizations'];
-
-  currentOrganization?: AppOrganization = this.activatedRoute.snapshot.parent?.parent?.data['organization'];
-  currentProject?: AppProject;
+  currentOrganization?: AppOrganization = this.activatedRoute.snapshot.parent?.parent?.data['organization'] ?? this.activatedRoute.snapshot.parent?.parent?.parent?.parent?.data['organization'];
+  currentProject?: AppProject = this.activatedRoute.snapshot.parent?.parent?.data['entity']
 
   page$: WritableSignal<PageEvent>;
   sort$: WritableSignal<RbSort>;
@@ -82,7 +79,6 @@ export class PermissionsPageComponent implements OnInit, OnDestroy {
   private _destroy$: Subject<void> = new Subject<void>();
 
   constructor() {
-    // this.setCurrentOrganizationOrProject();
 
     const usersWithPermission = this.getUsersWithPermission(this.entities$());
     this.usersWithPermission$.set(usersWithPermission);
@@ -106,17 +102,6 @@ export class PermissionsPageComponent implements OnInit, OnDestroy {
 
     this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
   }
-
-  // private setCurrentOrganizationOrProject(): void {
-  //   const path = this.activatedRoute.snapshot.parent?.parent?.parent?.routeConfig?.path;
-  //   if (path === 'organizations') {
-  //     const organizationName = this.activatedRoute.snapshot.parent?.parent?.params['id'];
-  //     this.currentOrganization = this.organizations.filter(org => org.name === organizationName)?.[0];
-  //   } else if (path === 'projects') {
-  //     const projectName = this.activatedRoute.snapshot.parent?.parent?.params['id'];
-  //     this.currentProject = this.projects.filter(project => project.projectName === projectName)?.[0];
-  //   }
-  // }
 
   private getUsersWithPermission(entities: AppUser[]): AppUser[] {
     return entities.filter(e => {
@@ -144,9 +129,6 @@ export class PermissionsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Class: PermissionsPageComponent, Function: ngOnInit, Line 147 ' , this.activatedRoute.snapshot.data);
-    console.log('Class: PermissionsPageComponent, Function: ngOnInit, Line 147 ' , this.activatedRoute.snapshot.parent?.data);
-    console.log('Class: PermissionsPageComponent, Function: ngOnInit, Line 147 ' , this.activatedRoute.snapshot.parent?.parent?.data);
     this.dialogService.dialogUpdateEvent$.set(undefined);
     this.applyFilter();
     this.handleDialogUrlFragment();
@@ -330,7 +312,6 @@ export class PermissionsPageComponent implements OnInit, OnDestroy {
   }
 
   private getFilteredEntities(): AppUser[] {
-    // let filteredEntities = [...this.entities$()];
     let filteredEntities = [...this.usersWithPermission$()];
 
     Object.entries(this.filter$()).forEach(([key, value]) => {

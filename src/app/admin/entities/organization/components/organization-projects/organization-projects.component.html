@@ -3,18 +3,21 @@
 @if (_projects && _projects?.length) {
   <div class="flex items-center flex-wrap gap-2 mt-1">
     @for (project of showAll ? _projects : _projects?.slice(0, 5); track project.projectName) {
-      <rb-tag class="bg-project-color text-white" colorClass="bg-project-color text-white"
+      <rb-tag class="bg-primary/10 text-primary"
               [link]="['/admin/organizations', organization(), 'projects', project['projectName']]">
         {{project["projectName"]}}
       </rb-tag>
     }
 
     @if (_projects.length > 5) {
-      <rb-tag class="bg-primary text-white" colorClass="bg-primary text-white" (click)="toggleView($event, showAll)" style="cursor: pointer;">
+      @if (!showAll) {
+      <span>...</span>
+      }
+      <rb-tag class="border bg-white text-primary" (click)="toggleView($event, showAll)" style="cursor: pointer;">
         @if (!showAll) {
-          View all {{_projects.length}} projects
+          {{ 'ADMIN.organization.viewAll' | translate: {count: _projects.length} }}
         } @else {
-          View less
+          {{ 'ADMIN.organization.viewLess' | translate}}
         }
       </rb-tag>
     }

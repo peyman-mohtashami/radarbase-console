@@ -1,16 +1,11 @@
 import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppUser} from "../../models/user";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../enums/dialog';
@@ -21,21 +16,26 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {DetailType} from '../../../../enums/detail-type';
+import {MatIcon} from '@angular/material/icon';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'rb-permission-dialog',
   templateUrl: './permission-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     TranslatePipe,
     ReactiveFormsModule,
     MatFormField,
     MatError,
-    DialogActionsComponent,
     MatInput,
-
+    MatDialogTitle,
+    MatIconButton,
+    MatButton,
+    MatIcon,
+    MatProgressSpinner,
   ]
 })
 export class PermissionDialogComponent implements OnInit, AfterViewInit {
@@ -77,7 +77,6 @@ export class PermissionDialogComponent implements OnInit, AfterViewInit {
     effect(() => {
       if (this.formValueChanges()) {
         this.error$.set(null);
-        console.log('Class: UserDialogComponent, Function: , Line 108 this.form.value' , this.form.value);
         const email = this.form.value.email;
         this.selectedUser$.set(this.dialogData.entities.find(e => e.email === email || e.login === email));
 
@@ -166,4 +165,6 @@ export class PermissionDialogComponent implements OnInit, AfterViewInit {
     this.loading$.set(false);
     this.error$.set(error);
   }
+
+  protected readonly DetailType = DetailType;
 }

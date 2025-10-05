@@ -64,10 +64,7 @@ export class SourcesPageComponent implements OnInit, OnDestroy {
 
   sourceTypes: AppSourceType[] = [];
 
-  // projects: AppProject[] = this.activatedRoute.snapshot.data['projects'];
-  // projectName: string = this.activatedRoute.snapshot.parent?.parent?.params['projectId'];
-  // project?: AppProject;
-  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity']; //this.activatedRoute.parent?.snapshot.data['entity'];
+  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
 
 
   page$ = signal<PageEvent>({
@@ -276,7 +273,6 @@ export class SourcesPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.project = this.projects.find(p => p.projectName === this.projectName);
     if (!this.project) throw new Error('Project not found');
     this.sourceTypes = this.project.sourceTypes?.map(s => ({...s, _name: `${s.producer}/${s.model}/${s.catalogVersion}`})) ?? [];
     this.handleDialogUrlFragment();

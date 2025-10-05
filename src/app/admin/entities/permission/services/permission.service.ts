@@ -5,8 +5,7 @@ import {AppRole, AppUser, RadarRole, RadarUser} from "../models/user";
 import {Observable} from "rxjs";
 import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
-import {ROLES} from '../../../enums/entities';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({providedIn: 'root'})
 export class PermissionService {
@@ -84,26 +83,26 @@ export class PermissionService {
       );
   }
 
-  getWithQuery(queryParams?: Params | string): Observable<AppUser[]> {
-    const {params} = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarUser[]>(this.resourceUrl, {
-      params,
-      observe: 'response',
-    }).pipe(
-      tap(
-        (res) => {
-          this.total = +(
-            res.headers.get('x-total-count') ||
-            res.body?.length.toString() ||
-            '0'
-          )
-        }
-      ),
-      map((res) => {
-        return (res.body || []).map((entity) => this.toAppModel(entity));
-      })
-    );
-  }
+  // getWithQuery(queryParams?: Params | string): Observable<AppUser[]> {
+  //   const {params} = this.convertParamsToHttpParams(queryParams as Params);
+  //   return this.http.get<RadarUser[]>(this.resourceUrl, {
+  //     params,
+  //     observe: 'response',
+  //   }).pipe(
+  //     tap(
+  //       (res) => {
+  //         this.total = +(
+  //           res.headers.get('x-total-count') ||
+  //           res.body?.length.toString() ||
+  //           '0'
+  //         )
+  //       }
+  //     ),
+  //     map((res) => {
+  //       return (res.body || []).map((entity) => this.toAppModel(entity));
+  //     })
+  //   );
+  // }
 
   add(entity: AppUser): Observable<AppUser> {
     return this.http.post<RadarUser>(this.resourceUrl, this.toRadarModel(entity))
@@ -126,47 +125,43 @@ export class PermissionService {
     );
   }
 
-  private convertParamsToHttpParams(queryParams: Params): {
-    params: HttpParams;
-    parentEntityName: string;
-  } {
-    let params = new HttpParams();
-    params = params.append(
-      'size',
-      queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
-    );
-    params = params.append('page', queryParams?.['pageIndex'] || '0');
-    if (
-      queryParams?.['sortField'] &&
-      queryParams['sortField'] !== '' &&
-      queryParams?.['sortOrder'] &&
-      queryParams['sortOrder'] !== ''
-    ) {
-      params = params.append(
-        'sort',
-        queryParams['sortField'] + ',' + queryParams['sortOrder']
-      );
-    } else {
-      params = params.append('sort', 'id' + ',' + 'desc');
-    }
-    params = this.convertFilterParamsToHttpParams(params, queryParams);
-    return {params, parentEntityName: queryParams?.['parentEntityName']};
-  }
+  // private convertParamsToHttpParams(queryParams: Params): {
+  //   params: HttpParams;
+  //   parentEntityName: string;
+  // } {
+  //   let params = new HttpParams();
+  //   params = params.append(
+  //     'size',
+  //     queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
+  //   );
+  //   params = params.append('page', queryParams?.['pageIndex'] || '0');
+  //   if (
+  //     queryParams?.['sortField'] &&
+  //     queryParams['sortField'] !== '' &&
+  //     queryParams?.['sortOrder'] &&
+  //     queryParams['sortOrder'] !== ''
+  //   ) {
+  //     params = params.append(
+  //       'sort',
+  //       queryParams['sortField'] + ',' + queryParams['sortOrder']
+  //     );
+  //   } else {
+  //     params = params.append('sort', 'id' + ',' + 'desc');
+  //   }
+  //   // params = this.convertFilterParamsToHttpParams(params, queryParams);
+  //   return {params, parentEntityName: queryParams?.['parentEntityName']};
+  // }
 
-  private convertFilterParamsToHttpParams(
-    params: HttpParams,
-    queryParams?: Params
-  ) {
-    if (queryParams?.['login'] && queryParams['login'] !== '') {
-      params = params.append('login', queryParams['login']);
-    }
-    if (queryParams?.['email'] && queryParams['email'] !== '') {
-      params = params.append('email', queryParams['email']);
-    }
-    return params;
-  }
-
-  sendActivationEmail(entity: AppUser): Observable<void> {
-    return this.http.post<void>('api/account/reset-activation/init', entity.login);
-  }
+  // private convertFilterParamsToHttpParams(
+  //   params: HttpParams,
+  //   queryParams?: Params
+  // ) {
+  //   if (queryParams?.['login'] && queryParams['login'] !== '') {
+  //     params = params.append('login', queryParams['login']);
+  //   }
+  //   if (queryParams?.['email'] && queryParams['email'] !== '') {
+  //     params = params.append('email', queryParams['email']);
+  //   }
+  //   return params;
+  // }
 }

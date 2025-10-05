@@ -69,17 +69,16 @@
 
 
                 @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
-                  <mat-form-field class="m-0! small"
+                  <mat-form-field class="small-input"
                                   appearance="outline"
-                                  floatLabel="auto"
-                                  subscriptSizing="dynamic">
-                  <mat-date-range-input [rangePicker]="rangePicker">
-                    <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
-                    <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
-                  </mat-date-range-input>
+                                  subscriptSizing="fixed">
+                    <mat-date-range-input [rangePicker]="rangePicker">
+                      <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
+                      <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
+                    <mat-date-range-picker #rangePicker/>
                   </mat-form-field>
-                  <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
-                <mat-date-range-picker #rangePicker/>
                 }
 
 <!--                @if (filter.type === FilterType.RANGE_PICKER) {-->

@@ -10,17 +10,6 @@
                           (filterChanged)='switchFilter($event)'
                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }
-<!--  <div extra-buttons>-->
-<!--    <button (click)="router.navigate([], {relativeTo: activatedRoute, queryParamsHandling: 'preserve', fragment: `/add/permission`})"-->
-<!--            mat-stroked-button-->
-<!--            color="primary"-->
-<!--            type="button">-->
-<!--            <span class="font-bold flex items-center gap-2">-->
-<!--              <span class="material-symbols-outlined">add</span>-->
-<!--              {{ 'ADMIN.permission.create' | translate }}-->
-<!--            </span>-->
-<!--    </button>-->
-<!--  </div>-->
 </rb-entities-page-header>
 
 @if (loading$()) {
@@ -67,14 +56,14 @@
       }
     </div>
   }
-
   @if (visibleEntities$()?.length) {
     @for (entity of visibleEntities$(); track entity.id) {
       <rb-permission-table-row [entity$]="entity"
                                [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
                                [tableFields$]="tableFields"
                                [extensionClass$]="extensionClass$()"
-                               [configFields$]="configFields" [organizationName$]="currentOrganization?.name" [projectName$]="currentProject?.projectName" />
+                               [configFields$]="configFields" [organizationName$]="currentOrganization?.name" [projectName$]="currentProject?.projectName"
+                               class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]" />
     }
   }
 </div>

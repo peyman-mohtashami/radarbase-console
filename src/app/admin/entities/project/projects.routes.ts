@@ -1,10 +1,11 @@
 import {Routes} from "@angular/router";
 import {ProjectsResolver} from "./services/projects.resolver";
-import {SourceTypesResolver} from "../source-type/services/sourceTypes.resolver";
 import {ProjectPageComponent} from "./containers/project-page/project-page.component";
 import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
 import { ProjectsPageComponent } from "./containers/projects-page/projects-page.component";
+import {OrganizationsResolver} from '../organization/services/organizations.resolver';
+import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
 
 export const projectRoutes: Routes = [
   {
@@ -13,6 +14,7 @@ export const projectRoutes: Routes = [
     resolve: {
       entities: ProjectsResolver,
       sourceTypes: SourceTypesResolver,
+      organizations: OrganizationsResolver,
     },
   },
   {
@@ -73,4 +75,8 @@ export const projectRoutes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];

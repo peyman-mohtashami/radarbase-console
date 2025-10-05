@@ -8,7 +8,6 @@ import {ModificationComponent} from "../modifications/modification.component";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {MatIconButton} from "@angular/material/button";
 import {TableElement} from '../../../../models/table.model';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'rb-revision-table-row',
@@ -19,7 +18,6 @@ import {JsonPipe} from '@angular/common';
     ModificationComponent,
     LocalDateComponent,
     MatIconButton,
-    JsonPipe,
   ]
 })
 export class RevisionTableRowComponent {

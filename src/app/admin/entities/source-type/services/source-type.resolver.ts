@@ -5,8 +5,8 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppSourceType } from "../models/source-type";
-import {SourceTypeService} from "./sourceType.service";
 import {map} from 'rxjs/operators';
+import {SourceTypeService} from './source-type.service';
 
 @Injectable({ providedIn: 'root' })
 export class SourceTypeResolver implements Resolve<AppSourceType> {

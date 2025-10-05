@@ -2,10 +2,9 @@ import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/cor
 import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
-import {AppProject, ProjectStatus} from "../../models/project";
+import {AppProject} from "../../models/project";
 import { AppOrganization } from "../../../organization/models/organization";
 import {ENTITIES} from "../../../../consts/entities";
-import {BreadcrumbComponent} from "../../../../components/breadcrumb/breadcrumb.component";
 import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {filter, Subject} from 'rxjs';
@@ -14,7 +13,6 @@ import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {ActionsComponent} from '../../components/actions/actions.component';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {ProjectDialogService} from '../../services/project-dialog.service';
-import {BackButtonDirective} from '../../../../directives/back-button.directive';
 import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
@@ -28,7 +26,6 @@ interface ILink {
   selector: 'rb-project-page',
   templateUrl: './project-page.component.html',
   imports: [
-    BreadcrumbComponent,
     RbPermissionDirective,
     MatTabNav,
     MatTabLink,
@@ -36,7 +33,6 @@ interface ILink {
     MatTabNavPanel,
     RouterOutlet,
     ActionsComponent,
-    BackButtonDirective,
     MatButton,
     MatPrefix,
     TranslatePipe,
@@ -52,10 +48,9 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
-  protected readonly ProjectStatus = ProjectStatus;
 
   entities: AppProject[] = this.activatedRoute.snapshot.data['entities'];
-  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizations'];
+  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['entities'];
   sourceTypes = this.activatedRoute.snapshot.data['sourceTypes'];
 
   links: ILink[] = [
@@ -72,7 +67,6 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   entity$ = signal<AppProject>(this.activatedRoute.snapshot.data['entity']);
   tableFields = this.configService.getTableFields();
 
-  // hasChildren = false;
   hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id']; //false;
 
   private _destroy$: Subject<void> = new Subject<void>();
@@ -87,9 +81,6 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
       takeUntil(this._destroy$)
     ).subscribe(() => {
       // Check current route and its children
-      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.snapshot.params);
-      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.firstChild?.snapshot.params);
-      console.log('Class: ProjectPageComponent, Function: , Line 77 ' , this.activatedRoute.firstChild?.firstChild?.snapshot.params);
       this.hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
       // Or use paramMap for type-safe access
       // const childParams = this.activatedRoute.firstChild?.snapshot?.paramMap;
@@ -141,10 +132,10 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     if (entityType === 'project') {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.entities, this.organizations, this.sourceTypes);
+          this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.entities, undefined, this.organizations, this.sourceTypes);
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities, this.organizations, this.sourceTypes);
+          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities, undefined, this.organizations, this.sourceTypes);
       }
     }
   }
@@ -153,49 +144,9 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     this.router
       .navigate(['/admin', 'projects', entity.projectName, 'subjects'])
       .then();
-    // this.router
-    //   .navigate([
-    //     '/admin',
-    //     'organizations',
-    //     entity.name
-    //   ])
-    //   .then();
   }
-
-  // navigateOnDeleteSuccess() {
-  //   this.router.navigate(['/admin', 'source-types']).then();
-  // }
-
 
   navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'organizations']).then();
   }
-
-  // override navigateOnUpdateSuccess(entity: AppOrganization) {}
-
-
-  // selectedOrganization$ = this.store.select(organization);
-  // selectedProject$ = this.store.select(project);
-
-
-
-
-
-  // override update(
-  //   entity: AppProject,
-  //   dialogRef: MatDialogRef<ProjectDialogComponent>
-  // ) {
-  //   this.entityService.update(entity).subscribe({
-  //     next: (_entity) => this.onSuccess(_entity, dialogRef),
-  //     error: (err) => this.onError(err, dialogRef),
-  //   });
-  // }
-  //
-  // override navigate(entity: AppProject) {
-  //   this.router
-  //     .navigate(['/admin', 'projects', entity.projectName, 'subjects'])
-  //     .then();
-  // }
-
-
 }

@@ -10,4 +10,8 @@ export const auditRoutes: Routes = [
       entities: AuditResolver,
     },
   },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];

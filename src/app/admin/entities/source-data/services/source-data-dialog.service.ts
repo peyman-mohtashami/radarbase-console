@@ -8,6 +8,8 @@ import {SourceDataService} from './source-data.service';
 import {SourceDataDialogComponent} from '../containers/source-data-dialog/source-data-dialog.component';
 import {AppSourceData} from '../models/source-data';
 import {AppSourceType} from '../../source-type/models/source-type';
+import {UserActivateDialogComponent} from '../../user/containers/user-activate-dialog/user-activate-dialog.component';
+import {UserDialogComponent} from '../../user/containers/user-dialog/user-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -71,16 +73,29 @@ export class SourceDataDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity: AppSourceData | undefined, sourceTypes: AppSourceType[]): MatDialogRef<SourceDataDialogComponent> {
-    return this.dialog.open(SourceDataDialogComponent, {
-      data: {mode, entity, sourceTypes},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(SourceDataDialogComponent, {
+          data: {mode, entity, sourceTypes},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(SourceDataDialogComponent, {
+          data: {mode, entity, sourceTypes},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+
+    }
   }
 }

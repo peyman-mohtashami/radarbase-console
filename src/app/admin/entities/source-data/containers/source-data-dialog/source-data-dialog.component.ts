@@ -16,13 +16,12 @@ import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-ti
 import {
   DialogBodyDescriptionComponent
 } from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
-import {AsyncPipe} from "@angular/common";
 import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatOption} from "@angular/material/core";
 import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatLabel, MatSelect} from '@angular/material/select';
+import {MatSelect} from '@angular/material/select';
 import {
   MatSelectAutocompleteComponent
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
@@ -88,7 +87,7 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit {
 
   sourceTypesOptions: RadarOption[] = (this.dialogData.sourceTypes as AppSourceType[]).sort((a, b) =>
     a._name.localeCompare(b._name)
-  );//.map(s => ({name: s._name, id: s.id}));
+  );
 
   loading$ = signal(false);
   error$ = signal<HttpErrorResponse | null>(null);

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
 import { Moment } from 'moment';
 import moment from 'moment/moment';
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {

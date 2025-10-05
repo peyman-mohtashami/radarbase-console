@@ -1,7 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import {AppOrganization, RadarOrganization} from '../../organization/models/organization';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AppLog, RadarLog} from '../models/log';
@@ -20,11 +19,6 @@ export class LogService {
     };
   }
 
-  // toRadarModel(entity: AppLog): RadarLog {
-  //   const radarOrganization: RadarOrganization = {...entity, _name: undefined};
-  //   return { ...radarOrganization };
-  // }
-
   getAll(): Observable<AppLog[]> {
     return this.http.get<RadarLog[]>(this.resourceUrl)
       .pipe(
@@ -33,5 +27,4 @@ export class LogService {
         )
       );
   }
-
 }

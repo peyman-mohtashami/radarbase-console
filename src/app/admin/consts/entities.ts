@@ -32,5 +32,7 @@ export const ENTITIES: Record<ENTITY_NAME, {name: ENTITY_NAME, icon: string; rou
   // [ENTITY_NAME.grafana]: {name: ENTITY_NAME.grafana, icon: "open_in_new", route: "/admin/users"},
   [ENTITY_NAME.website]: {name: ENTITY_NAME.website, icon: "public", route: "/admin/users"},
   [ENTITY_NAME.wiki]: {name: ENTITY_NAME.wiki, icon: "menu_book", route: "/admin/users"},
-  [ENTITY_NAME.permission]: {name: ENTITY_NAME.permission, icon: "security", route: ""},
+  [ENTITY_NAME.permission]: {name: ENTITY_NAME.permission, icon: "person", route: ""},
 }
+
+export const DEFAULT_PAGE_SIZE = 50;

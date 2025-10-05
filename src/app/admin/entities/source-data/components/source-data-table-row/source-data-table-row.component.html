@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -9,20 +9,20 @@
            [class.shrink-0]="!!tableElement.width">
         @switch (tableElement.name) {
           @case ('sourceDataName') {
-            <a [routerLink]='["/admin/source-data", entity$()["sourceDataName"]]'>
-              <span class="font-bold text-primary">{{ entity$()["sourceDataName"] }}</span>
+            <a [routerLink]='["/admin/source-data", entity$().sourceDataName]' class="underline font-bold text-primary dark:text-primary-dark">
+              <span>{{ entity$().sourceDataName }}</span>
             </a>
             @if (!configFields$() || configFields$()['topic'] === undefined || configFields$()['topic']) {
               <p class="text-neutral-500 dark:text-neutral-300 font-bold">
-              <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity$()['topic'] || '-' }}
+              <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity$().topic || '-' }}
             </p>
             }
           }
           @case ('sourceType') {
-            <rb-source-data-source-type [sourceType$]="entity$()['sourceType']"/>
+            <rb-source-data-source-type [sourceType$]="entity$().sourceType"/>
           }
           @case ('processingState') {
-            <rb-source-data-processing-state [processingState$]="entity$()['processingState']"/>
+            <rb-source-data-processing-state [processingState$]="entity$().processingState"/>
           }
           @case ("actions") {
             <button mat-icon-button

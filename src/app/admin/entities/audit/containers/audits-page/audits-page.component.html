@@ -3,7 +3,8 @@
                          [enableAddButton]="false"
                          [isGridView]="undefined"
                          [permission]="[{role: ROLES.SYS_ADMIN}]">
-  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
+  <!--  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {-->
+  @if (tableFilters.length) {
     <rb-data-table-filter bottom-filter
                           [filters]='tableFilters'
                           [filterOpened]='isFilterOpened'
@@ -51,21 +52,22 @@
   @if (visibleEntities$()?.length) {
     @for (entity of visibleEntities$(); track entity.timestamp) {
       <rb-audit-table-row [entity$]="entity"
-                                [tableFields$]="tableFields"
-                                [extensionClass$]="extensionClass$()"
-                                [configFields$]="configFields"/>
+                          [tableFields$]="tableFields"
+                          [extensionClass$]="extensionClass$()"
+                          [configFields$]="configFields"
+                          class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
     }
   }
 </div>
 
 <div class="flex items-center px-4 text-sm">
-  @if (entityService.total === 0) {
-    <span>{{ 'ADMIN.audit.noItemFound' | translate }}</span>
-  } @else {
-    @if (!visibleEntities$()?.length) {
-      <span>{{ 'No item found with this filter' | translate }}</span>
-    }
+  <!--  @if (entityService.total === 0) {-->
+  <!--    <span>{{ 'ADMIN.audit.noItemFound' | translate }}</span>-->
+  <!--  } @else {-->
+  @if (!visibleEntities$()?.length) {
+    <span>{{ 'No item found with this filter' | translate }}</span>
   }
+  <!--  }-->
 </div>
 
 @if (entityService.total > MIN_ENTITIES_FOR_PAGINATION) {

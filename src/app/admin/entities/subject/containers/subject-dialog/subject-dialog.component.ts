@@ -38,6 +38,8 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {DetailType} from '../../../../enums/detail-type';
+import {locale} from '../../../../../core/locale/store/locale.selectors';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'rb-subject-dialog',
@@ -68,6 +70,7 @@ import {DetailType} from '../../../../enums/detail-type';
   ]
 })
 export class SubjectDialogComponent implements OnInit, AfterViewInit {
+  private store = inject(Store);
   private configService = inject(SubjectConfigService);
   private dialogRef = inject(MatDialogRef<SubjectDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
@@ -106,6 +109,8 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
 
+  dateFormat = 'mm/dd/yyy';
+
   private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.getRawValue()}
@@ -120,6 +125,14 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.store?.select(locale)
+      // ?.getLocale()
+      // .pipe(takeUntil(this.subscription$))
+      .subscribe((locale) => {
+        // this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
+        this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
+      });
+
     // this.form.controls.name.addValidators(this.duplicateValidator);
     this.form.patchValue(this.dialogData.entity);
   }

@@ -4,16 +4,14 @@ import {DialogMode} from "../../../../enums/dialog";
 import {AppUser} from "../../models/user";
 import {TABLE_ANIMATION} from "../../../../animation";
 import {MatCard} from "@angular/material/card";
-// import {RouterLink} from "@angular/router";
 import {MatIconButton} from "@angular/material/button";
-// import {UserDetailsComponent} from "../user-details/user-details.component";
-import {UserActivatedComponent} from "../user-activated/user-activated.component";
-// import {ActivateComponent} from "../activate/activate.component";
-// import {UserRolesComponent} from "../user-roles/user-roles.component";
 import {TableElement} from '../../../../models/table.model';
 import {ActionsComponent} from '../actions/actions.component';
 import {UpdateTrigger} from '../../services/permission-dialog.service';
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
+import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
+import {ActivateComponent} from '../../../user/components/activate/activate.component';
+import {UserDetailsComponent} from '../../../user/components/user-details/user-details.component';
 
 @Component({
   selector: 'rb-permission-table-row',
@@ -21,14 +19,12 @@ import {PermissionRolesComponent} from '../permission-roles/permission-roles.com
   animations: TABLE_ANIMATION,
   imports: [
     MatCard,
-    // RouterLink,
     MatIconButton,
-    // UserDetailsComponent,
     UserActivatedComponent,
-    // ActivateComponent,
-    // UserRolesComponent,
     ActionsComponent,
     PermissionRolesComponent,
+    ActivateComponent,
+    UserDetailsComponent,
   ]
 })
 export class PermissionTableRowComponent {

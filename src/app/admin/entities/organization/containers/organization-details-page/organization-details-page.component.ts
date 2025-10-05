@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppOrganization } from "../../models/organization";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
@@ -20,7 +20,7 @@ import {DialogMode} from '../../../../enums/dialog';
     OrganizationDetailsComponent
   ]
 })
-export class OrganizationDetailsPageComponent {//implements OnInit {
+export class OrganizationDetailsPageComponent {
   private activatedRoute = inject(ActivatedRoute);
   private configService = inject(OrganizationConfigService);
   private dialogService = inject(OrganizationDialogService);
@@ -38,15 +38,9 @@ export class OrganizationDetailsPageComponent {//implements OnInit {
             if (updated?.entity) {
               this.entity$.set(updated.entity);
             }
-            // this.navigateOnUpdateSuccess(updated.entity);
             break;
-          // case DialogMode.DELETE:
-          //   this.navigateOnDeleteSuccess();
-          //   break;
         }
       }
     });
   }
-
-
 }

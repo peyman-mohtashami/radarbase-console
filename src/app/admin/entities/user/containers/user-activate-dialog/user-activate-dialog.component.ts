@@ -1,25 +1,28 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  signal
+} from '@angular/core';
 
-import { Router } from '@angular/router';
 import {
   MAT_DIALOG_DATA,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppUser } from "../../models/user";
-// import { AppProject } from "../../../project/models/project";
-// import { AppOrganization } from "../../../organization/models/organization";
-import {Store} from "@ngrx/store";
 import {TranslatePipe} from "@ngx-translate/core";
-import {UserDetailsComponent} from "../../components/user-details/user-details.component";
-import {ErrorMessageComponent} from "../../../../../core/error/components/message/error-message.component";
-import {NgIf} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {UserDialogService} from '../../services/user-dialog.service';
+import {AppProject} from '../../../project/models/project';
+import {AppOrganization} from '../../../organization/models/organization';
+import {HttpErrorResponse} from '@angular/common/http';
+import {DialogMode} from '../../../../enums/dialog';
 
 @Component({
   selector: 'rb-user-activate-dialog',
@@ -27,116 +30,61 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   imports: [
     MatDialogTitle,
     MatIconButton,
-    MatDialogClose,
     MatIcon,
     TranslatePipe,
     MatDialogContent,
-    UserDetailsComponent,
-    ErrorMessageComponent,
-    NgIf,
     MatButton,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
   ]
 })
-export class UserActivateDialogComponent
-  extends BaseDialogComponent<AppUser, UserActivateDialogComponent>
-  implements OnInit, OnDestroy
-{
-  constructor(
-    router: Router,
-    store: Store,
-    dialogRef: MatDialogRef<UserActivateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public override data: {
-      mode: string;
-      entity: AppUser;
-      // projects: AppProject[];
-      // organizations: AppOrganization[];
-    }
-  ) {
-    super(router, dialogRef, data);
+export class UserActivateDialogComponent implements AfterViewInit {
+  private dialogRef = inject(MatDialogRef<UserDialogService>);
+  public dialogData = inject(MAT_DIALOG_DATA) as {
+    mode: DialogMode | string;
+    entity: AppUser;
+    entities: AppUser[];
+    projects: AppProject[];
+    organizations: AppOrganization[];
+  };
+
+  loading$ = signal(false);
+  error$ = signal<HttpErrorResponse | null>(null);
+
+  @Output()
+  dialogActionEvent = new EventEmitter<{ action: DialogMode | string, entity?: AppUser }>();
+
+  ngAfterViewInit() {
+    const container = document.querySelector('.tailwind-slide-panel');
+    setTimeout(() => {
+      container?.classList.add('dialog-enter-active');
+    });
   }
 
-  override ngOnInit() {
-    super.ngOnInit();
+  onAction() {
+    this.error$.set(null);
+    this.loading$.set(true);
+    this.handleActivateAction();
   }
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
+  private handleActivateAction(): void {
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
   }
 
-  // override initForm(): void {
-  //   //
-  // }
+  close() {
+    this.loading$.set(false);
+    const container = document.querySelector('.tailwind-slide-panel');
+    container?.classList.remove('dialog-enter-active');
+    container?.classList.add('dialog-exit-active');
 
-  override save(): void {
-    console.log(this.form?.value);
-    this.isLoading = true;
-    // const formRoles = this.form?.value.roles;
-    // const roles = [];
-    // if(formRoles.sysAdmin) {
-    //   roles.push({
-    //     authorityName: 'ROLE_SYS_ADMIN',
-    //     projectName: null,
-    //     projectId: null,
-    //     organizationName: null,
-    //     organizationId: null,
-    //   });
-    // }
-    // if(formRoles.organizationAdmin){
-    //   formRoles.organizations.forEach((organizationName: string) => {
-    //     const organizationId = this.organizations.filter(item => item.name === organizationName)[0].id;
-    //     roles.push({
-    //       authorityName: 'ROLE_ORGANIZATION_ADMIN',
-    //       projectName: null,
-    //       projectId: null,
-    //       organizationName,
-    //       organizationId
-    //     });
-    //   });
-    // }
-    // if(formRoles.projectAdmin){
-    //   formRoles.projects.map((projectName: string) => {
-    //     const projectId = this.projects.filter(item => item.projectName === projectName)[0].id
-    //     roles.push({
-    //       authorityName: 'ROLE_PROJECT_ADMIN',
-    //       projectName,
-    //       projectId,
-    //       organizationName: null,
-    //       organizationId: null
-    //     });
-    //   });
-    // }
-    // console.log(roles);
-    // // const roles = this.form?.value.roles.map((role: any) => {
-    // //     return {
-    // //       authorityName: role.authorityName,
-    // //       projectName: role.project?.projectName,
-    // //       projectId: role.project?.id,
-    // //       organizationName: role.organization?.name,
-    // //       organizationId: role.organization?.id
-    // //     };
-    // //   }
-    // // )
-    // const user = { ...this.entity, ...this.form?.value, roles}
-    const user = { ...this.entity };
-    this.actionTriggered.emit({ action: this.mode, entity: user });
+    setTimeout(() => {
+      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
+      this.dialogRef.close();
+    }, 300);
   }
 
-  // save(): void {
-  //   console.log(this.form?.value)
-  //   this.error = undefined;
-  //   this.isLoading = true;
-  //   this.formChanged = false;
-  //   this.actionTriggered.emit({action: this.mode, entity: {...this.entity, ...this.form?.value}})
-  // }
-
-  sendActivationEmail() {
-    this.error.set(false);// = false;
-    this.isLoading = true;
-    if (this.entity.id) {
-      this.actionTriggered.emit({ action: this.mode, entity: this.entity });
-    }
+  errorHappened(error: HttpErrorResponse): void {
+    this.loading$.set(false);
+    this.error$.set(error);
   }
 }

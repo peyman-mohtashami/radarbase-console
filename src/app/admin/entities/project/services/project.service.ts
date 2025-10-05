@@ -1,10 +1,8 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {AppProject, RadarProject} from "../models/project";
-import {Params} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
@@ -33,34 +31,12 @@ export class ProjectService {
       );
   }
 
-  // getWithQuery(queryParams?: Params | string): Observable<AppProject[]> {
-  //   const { params } = this.convertParamsToHttpParams(queryParams as Params);
-  //   return this.http.get<RadarProject[]>(this.resourceUrl, {
-  //     params,
-  //     observe: 'response',
-  //   }).pipe(
-  //     tap(
-  //       (res) => {
-  //         this.total = +(
-  //           res.headers.get('x-total-count') ||
-  //           res.body?.length.toString() ||
-  //           '0'
-  //         )
-  //       }
-  //     ),
-  //     map((res) => {
-  //       return (res.body || []).map((entity) => this.toAppModel(entity));
-  //     })
-  //   );
-  // }
-
   add(entity: AppProject): Observable<AppProject> {
     return this.http.post<RadarProject>(this.resourceUrl, this.toRadarModel(entity))
       .pipe(map((entity) => this.toAppModel(entity)));
   }
 
   getByKey(key: number | string): Observable<AppProject> {
-    console.log('!!!Class: ProjectService, Function: getByKey, Line 63 ' , key);
     return this.http.get<RadarProject>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
       .pipe(map((entity) => this.toAppModel(entity)));
   }
@@ -75,30 +51,4 @@ export class ProjectService {
       `${this.resourceUrl}/${encodeURIComponent(entity._name)}`
     );
   }
-
-  // private convertParamsToHttpParams(queryParams: Params): {
-  //   params: HttpParams;
-  //   parentEntityName: string;
-  // } {
-  //   let params = new HttpParams();
-  //   params = params.append(
-  //     'size',
-  //     queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
-  //   );
-  //   params = params.append('page', queryParams?.['pageIndex'] || '0');
-  //   if (
-  //     queryParams?.['sortField'] &&
-  //     queryParams['sortField'] !== '' &&
-  //     queryParams?.['sortOrder'] &&
-  //     queryParams['sortOrder'] !== ''
-  //   ) {
-  //     params = params.append(
-  //       'sort',
-  //       queryParams['sortField'] + ',' + queryParams['sortOrder']
-  //     );
-  //   } else {
-  //     params = params.append('sort', 'id' + ',' + 'desc');
-  //   }
-  //   return { params, parentEntityName: queryParams?.['parentEntityName'] };
-  // }
 }

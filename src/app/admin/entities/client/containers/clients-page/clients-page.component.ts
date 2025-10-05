@@ -24,9 +24,6 @@ import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
 import {AppClient} from '../../models/client';
 import {ClientTableRowComponent} from '../../components/client-table-row/client-table-row.component';
-import {
-  OrganizationTableRowComponent
-} from '../../../organization/components/organization-table-row/organization-table-row.component';
 
 @Component({
   selector: 'rb-clients-page',
@@ -209,11 +206,9 @@ export class ClientsPageComponent implements OnInit, OnDestroy {
   }
 
   private handleDialogUrlFragment() {
-    console.log('Class: ClientsPageComponent, Function: handleDialogUrlFragment, Line 208 ' , );
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        console.log('Class: ClientsPageComponent, Function: , Line 212 fragment' , fragment);
         if (fragment) this.processUrlFragment(fragment);
       });
   }
@@ -222,7 +217,6 @@ export class ClientsPageComponent implements OnInit, OnDestroy {
     const [_, action, entityType, entityId] = fragment.split('/');
     if (entityType === 'client') {
       const entity = this.visibleEntities$().find(e => e.clientId == entityId);
-      console.log('Class: ClientsPageComponent, Function: processUrlFragment, Line 219 entity' , entity);
       switch (action) {
         case 'add':
           this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities$());
@@ -309,27 +303,9 @@ export class ClientsPageComponent implements OnInit, OnDestroy {
 
     Object.entries(this.filter$()).forEach(([key, value]) => {
       if (!value) return;
-
-      // Handle "search:" prefixed keys
-      if (key.startsWith('search')) {
-        const filters = key
-          .replace(/search\s*:\s*/i, "")
-          .split(",")
-          .map((filter) => filter.trim())
-          .filter(Boolean);
-
-        filteredEntities = filteredEntities.filter((entity) =>
-          filters.some(
-            (filter) =>
-              entity[filter]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
-          )
-        );
-      } else {
-        // General key-based filtering
-        filteredEntities = filteredEntities.filter((entity) =>
-          entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
-        );
-      }
+      filteredEntities = filteredEntities.filter((entity) =>
+        entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
+      );
     });
 
     return filteredEntities;

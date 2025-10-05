@@ -1,20 +1,20 @@
 @switch (processingState$()) {
   @case(ProcessingState.VENDOR) {
-    <rb-tag class="bg-green-500 text-white">{{ ProcessingState.VENDOR }}</rb-tag>
+    <rb-tag class="bg-primary/50 text-white">{{ ProcessingState.VENDOR }}</rb-tag>
   }
   @case (ProcessingState.RAW) {
-    <rb-tag class="bg-red-500 text-white">{{ ProcessingState.RAW }}</rb-tag>
+    <rb-tag class="bg-secondary text-white">{{ ProcessingState.RAW }}</rb-tag>
   }
   @case (ProcessingState.RADAR) {
-    <rb-tag class="bg-orange-500 text-white">{{ ProcessingState.RADAR }}</rb-tag>
+    <rb-tag class="bg-primary text-white">{{ ProcessingState.RADAR }}</rb-tag>
   }
   @case (ProcessingState.DERIVED) {
-    <rb-tag class="bg-pink-500 text-white">{{ ProcessingState.DERIVED }}</rb-tag>
+    <rb-tag class="bg-secondary/10 text-primary">{{ ProcessingState.DERIVED }}</rb-tag>
   }
   @case (ProcessingState.UNKNOWN) {
-    <rb-tag class="bg-teal-500 text-white">{{ ProcessingState.UNKNOWN }}</rb-tag>
+    <rb-tag class="bg-primary/10 text-primary">{{ ProcessingState.UNKNOWN }}</rb-tag>
   }
   @default {
-    <rb-tag class="bg-gray-500 text-white">{{ 'ADMIN.sourceData.processingState.NOT_STATED' | translate }}</rb-tag>
+    <rb-tag class="bg-gray-200 text-gray-800">{{ 'ADMIN.sourceData.processingState.NOT_STATED' | translate }}</rb-tag>
   }
 }

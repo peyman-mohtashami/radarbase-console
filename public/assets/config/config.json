@@ -1,6 +1,30 @@
 {
   "theme": {
+    "__light": {
+      "primary": "#e91e63",
+      "on-primary": "#ffffff",
+      "accent": "#673ab7",
+      "on-accent": "#ffffff",
+      "tertiary": "#673ab7",
+      "on-tertiary": "#ffffff"
+    },
+    "___light": {
+      "primary": "#004F6E",
+      "on-primary": "#ffffff",
+      "accent": "#22A2C9",
+      "on-accent": "#ffffff",
+      "tertiary": "#4F6E00",
+      "on-tertiary": "#ffffff"
+    },
     "light": {
+      "primary": "#004F6E",
+      "on-primary": "#ffffff",
+      "accent": "#22A2C9",
+      "on-accent": "#ffffff",
+      "tertiary": "#004F6E",
+      "on-tertiary": "#ffffff"
+    },
+    "_light": {
       "primary": "#22A2C9",
       "on-primary": "#ffffff",
       "accent": "#004F6E",
@@ -158,15 +182,14 @@
         {"name": "lastInjectionDate", "type": "date", "required": false, "validators": {}, "minDate": "01-01-2023", "maxDate": "01-01-2026"}
       ]
     },
-
     "user": {
       "fields": {
-        "firstName": false,
-        "lastName": false,
-        "createdBy": false,
-        "createdDate": false,
-        "lastModifiedBy": false,
-        "lastModifiedDate": false,
+        "firstName": true,
+        "lastName": true,
+        "createdBy": true,
+        "createdDate": true,
+        "lastModifiedBy": true,
+        "lastModifiedDate": true,
         "langKey": false
       }
     },

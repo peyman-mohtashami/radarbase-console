@@ -128,7 +128,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       case 403:
         return [error.error.message, error.error.description, '403'];
       case 401:
-        return []; //["ADMIN.error.loginRequired"]; //["You are not logged in or your session expired."];
+        return this.generateCustomErrorMessage(error);//[]; //["ADMIN.error.loginRequired"]; //["You are not logged in or your session expired."];
       case 440:
         return ['ERROR.sessionExpired'];
       default:
@@ -141,6 +141,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   }
 
   protected generateCustomErrorMessage(error: HttpErrorResponse): string[] {
+    console.log('Class: GlobalErrorHandler, Function: generateCustomErrorMessage, Line 144 error' , error);
     const managementPortalError = error.headers.get(
       'x-managementportalapp-error'
     );
@@ -148,24 +149,11 @@ export class GlobalErrorHandler implements ErrorHandler {
       'x-managementportalapp-params'
     );
     if (managementPortalError && managementPortalParams) {
+      console.log('Class: GlobalErrorHandler, Function: generateCustomErrorMessage, Line 152 ' , );
       return [`ERROR.${managementPortalParams}.${managementPortalError}`];
     } else {
-      console.log(error);
-      if (error.error?.error) {
-        return ['ERROR.' + error.error?.error];
-      } else {
-        if (error.error) {
-          return [
-            'ERROR.' +
-            (error.error?.message ||
-              error.error?.error_description ||
-              error.error?.statusText ||
-              error.message),
-          ];
-        } else {
-          return ['ERROR.' + error.status];
-        }
-      }
+      console.log('Class: GlobalErrorHandler, Function: generateCustomErrorMessage, Line 155 ' , );
+      return ['ERROR.' + (error.error.error || error.error.message || error.error.error_description || error.error.statusText || error.message || (error as any).error_description || error.error)];
     }
   }
 }

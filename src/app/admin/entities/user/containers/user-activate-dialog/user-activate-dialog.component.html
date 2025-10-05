@@ -1,58 +1,48 @@
-<div mat-dialog-title>
-  <div class='dialog-title-wrapper'>
-    <div>
-      <p>{{ 'ADMIN.user.activate.title' | translate }}</p>
-    </div>
-    <button mat-icon-button
-            class='close-button'
-            [mat-dialog-close]='true'
-            (click)='close()'>
-      <mat-icon class='close-icon'>close</mat-icon>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      <span>{{ 'ADMIN.user.activate.title' | translate }}</span>
+    </span>
+    <button mat-icon-button (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </span>
+</h2>
+
+<mat-dialog-content>
+  <div class='mb-4 text-base'>
+    <p class="mt-4">{{ 'ADMIN.user.activate.message' | translate: {user: dialogData.entity.login, email: dialogData.entity.email} }}</p>
+  </div>
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ (error$()?.error.errorCode | translate) ?? (error$()?.error?.message | translate) }}
+  </div>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <button (click)='onAction()'
+            [disabled]='loading$()'
+            mat-raised-button
+            color="primary"
+            type="button">
+      @if (loading$()) {
+        <mat-icon><mat-spinner diameter='20' /></mat-icon>
+      }
+      {{ "ADMIN.user.activate.send" | translate }}
     </button>
   </div>
 </div>
 
-<ng-container>
-  <mat-dialog-content>
-    <div class='dialog-page-desc'>
-<!--      <rb-user-details [mode]='DialogMode.DELETE'-->
-<!--                       [entity]='entity'>-->
-<!--      </rb-user-details>-->
-    </div>
-    <p>
-      {{ 'ADMIN.user.activate.message' | translate: {user: entity.login, email: entity.email} }}
-    </p>
-  </mat-dialog-content>
-
-  <div>
-    <rb-message *ngIf='error'></rb-message>
-    <div class='action-buttons-container'>
-      <div class='action-buttons-container-left'>
-        <button mat-stroked-button
-                color='primary'
-                type='button'
-                class='close-button'
-                [mat-dialog-close]='true'
-                (click)='close()'>
-          {{ 'ADMIN.user.activate.cancel' | translate }}
-        </button>
-      </div>
-      <div class='action-buttons-container-right'>
-        <button mat-raised-button
-                color='accent'
-                [disabled]='isLoading'
-                (click)='sendActivationEmail()'>
-          <ng-container *ngIf='isLoading'>
-            <mat-icon>
-              <mat-spinner diameter='20'></mat-spinner>
-            </mat-icon>
-            {{ 'ADMIN.user.activate.sending' | translate }}
-          </ng-container>
-          <ng-container *ngIf='!isLoading'>
-            {{ 'ADMIN.user.activate.send' | translate }}
-          </ng-container>
-        </button>
-      </div>
-    </div>
-  </div>
-</ng-container>

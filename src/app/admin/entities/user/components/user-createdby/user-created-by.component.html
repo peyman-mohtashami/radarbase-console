@@ -1,9 +1,9 @@
-@if (createdBy() && createdBy() !== 'system') {
-  <rb-tag [link]='["/admin/users", createdBy()]' class="bg-user-color-500 text-white">
-    {{ createdBy() || '-' }}
+@if (createdBy$() && createdBy$() !== 'system') {
+  <rb-tag [link]='["/admin/users", createdBy$()]' class="bg-user-color-500 text-white">
+    {{ createdBy$() || '-' }}
   </rb-tag>
 } @else {
   <span class="uppercase">
-  {{ createdBy() || '-' }}
+  {{ createdBy$() || '-' }}
 </span>
 }

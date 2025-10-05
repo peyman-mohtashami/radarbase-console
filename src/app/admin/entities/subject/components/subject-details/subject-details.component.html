@@ -19,7 +19,7 @@
     @case ('sources') {
       @if (entity$().sources && entity$()?.sources?.length) {
         @for (source of entity$().sources; track source.sourceName) {
-          <rb-tag colorClass='#d57f02'>{{ source.sourceName }}</rb-tag>
+          <rb-tag class="bg-primary/10 text-primary">{{ source.sourceName }}</rb-tag>
         }
       } @else {
         -

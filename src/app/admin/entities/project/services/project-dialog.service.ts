@@ -7,7 +7,7 @@ import {Observable, of} from 'rxjs';
 import {AppProject} from '../models/project';
 import {ProjectService} from './project.service';
 import {ProjectDialogComponent} from '../containers/project-dialog/project-dialog.component';
-import {AppOrganization} from '../../organization/models/organization';
+import {AppOrganization, RadarOrganization} from '../../organization/models/organization';
 import {AppSourceType} from '../../source-type/models/source-type';
 
 export interface UpdateTrigger {
@@ -24,13 +24,13 @@ export class ProjectDialogService {
 
   dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
-  openDialog(mode: DialogMode, entity: AppProject | undefined, entities: AppProject[], organizations: AppOrganization[], sourceTypes: AppSourceType[]) {
+  openDialog(mode: DialogMode, entity: AppProject | undefined, entities: AppProject[], organization: RadarOrganization | undefined, organizations: AppOrganization[], sourceTypes: AppSourceType[]) {
     if (mode !== DialogMode.ADD && !entity) {
       this.clearFragmentUrl();
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, entity, entities, organizations, sourceTypes);
+    const dialogRef = this.createDialogRef(mode, entity, entities, organization, organizations, sourceTypes);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
       next: (value: { action: DialogMode; entity: AppProject }) => {
@@ -71,9 +71,9 @@ export class ProjectDialogService {
     }).then();
   }
 
-  createDialogRef(mode: DialogMode, entity: AppProject | undefined, entities: AppProject[], organizations: AppOrganization[], sourceTypes: AppSourceType[]): MatDialogRef<ProjectDialogComponent> {
+  createDialogRef(mode: DialogMode, entity: AppProject | undefined, entities: AppProject[], organization: RadarOrganization | undefined, organizations: AppOrganization[], sourceTypes: AppSourceType[]): MatDialogRef<ProjectDialogComponent> {
     return this.dialog.open(ProjectDialogComponent, {
-      data: {mode, entity, entities, organizations, sourceTypes},
+      data: {mode, entity, entities, organization, organizations, sourceTypes},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',

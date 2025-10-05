@@ -4,9 +4,6 @@ import {roleGuard} from "../core/auth/guards/role.guard";
 import {RADAR_ROLES} from '../shared/models/auth.model';
 import {ProjectsPageComponent} from './entities/project/containers/projects-page/projects-page.component';
 // import {ProjectsResolver} from './entities/project/services/projects.resolver';
-import {OrganizationsResolver} from './entities/organization/services/organizations.resolver';
-import {SourceTypesResolver} from './entities/source-type/services/sourceTypes.resolver';
-// import { RADAR_ROLES } from "@rb/models";
 
 
 export enum ROUTES {

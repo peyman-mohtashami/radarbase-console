@@ -27,32 +27,32 @@
   @if (!gridView && entities$().length) {
     <div class="rb-table-header mat-app-background">
       @for (tableField of tableFields; track tableField.name) {
-          @if (tableField.name === 'checkbox') {
-            <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
-                 [class.flex-1]="!tableField.width"
-                 [class.shrink-0]="!!tableField.width">
-              <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                            [aria-label]="checkboxLabel()"/>
-            </div>
-          } @else {
-            <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
-                 [class.flex-1]="!tableField.width"
-                 [class.shrink-0]="!!tableField.width">
-              <button class="rb-table-head group" [class]="tableField.sortable ? 'cursor-pointer': ''"
-                      (click)="switchSort(tableField)">
-                <span>{{ 'ADMIN.organization.' + tableField.name + '.tableLabel' | translate }}</span>
-                @if (tableField.sortable) {
-                  <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableField.name">
+        @if (tableField.name === 'checkbox') {
+          <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
+               [class.flex-1]="!tableField.width"
+               [class.shrink-0]="!!tableField.width">
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()"/>
+          </div>
+        } @else {
+          <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
+               [class.flex-1]="!tableField.width"
+               [class.shrink-0]="!!tableField.width">
+            <button class="rb-table-head group" [class]="tableField.sortable ? 'cursor-pointer': ''"
+                    (click)="switchSort(tableField)">
+              <span>{{ 'ADMIN.organization.' + tableField.name + '.tableLabel' | translate }}</span>
+              @if (tableField.sortable) {
+                <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableField.name">
                       <span class="rb-sort-icon material-symbols-outlined">
                         {{ sort$().sortField === tableField.name && sort$().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
                       </span>
-                  </div>
-                }
-              </button>
-            </div>
-          }
+                </div>
+              }
+            </button>
+          </div>
+        }
       }
     </div>
   }
@@ -64,7 +64,8 @@
                                  [tableFields$]="tableFields"
                                  [gridView]="gridView"
                                  [extensionClass$]="extensionClass$()"
-                                 [configFields$]="configFields" />
+                                 [configFields$]="configFields"
+                                 class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
     }
   }
 </div>

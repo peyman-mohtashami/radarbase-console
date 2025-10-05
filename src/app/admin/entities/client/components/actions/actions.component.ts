@@ -13,7 +13,7 @@ import {AppClient} from '../../models/client';
     MatMenu,
     MatMenuItem,
     TranslatePipe,
-    MatMenuTrigger
+    MatMenuTrigger,
   ],
   templateUrl: './actions.component.html',
 })

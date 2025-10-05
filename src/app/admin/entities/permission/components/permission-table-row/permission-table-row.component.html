@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -9,24 +9,22 @@
            [class.shrink-0]="!!tableElement.width">
         @switch (tableElement.name) {
           @case ('login') {
-<!--            <a [routerLink]='[entity$()["login"]]'>-->
-              <span class="font-bold text-primary dark:text-primary-dark">{{ entity$()["login"] }}</span>
-<!--            </a>-->
+              <span class="font-bold text-primary dark:text-primary-dark">{{ entity$().login }}</span>
             @if (!configFields$() || configFields$()['firstName'] === undefined || configFields$()['firstName'] || configFields$()['lastName'] === undefined || configFields$()['lastName']) {
-              <p class="text-neutral-500 dark:text-neutral-300">{{entity$()['firstName']}} {{entity$()['lastName']}}</p>
+              <p class="text-neutral-500 dark:text-neutral-300">{{entity$().firstName}} {{entity$().lastName}}</p>
             }
           }
 
           @case('email') {
             <span class="flex items-center gap-1">
-              <rb-user-activated [activated]="entity$()['activated']" />
-<!--              <rb-activate [entity]="entity$()" />-->
-              <span>{{ entity$()['email'] || '-' }}</span>
+              <rb-user-activated class="inline-flex" [activated$]="entity$().activated" />
+              <rb-activate [entity$]="entity$()" />
+              <a class="underline" href="mailto:{{ entity$().email}}" target="_blank">{{ entity$().email || '-' }}</a>
             </span>
           }
 
           @case('roles') {
-            <rb-permission-roles [roles$]="entity$()['_roles']" [organization$]="organizationName$()" [project$]="projectName$()" />
+            <rb-permission-roles [roles$]="entity$()._roles" [organization$]="organizationName$()" [project$]="projectName$()" />
           }
           @case ('actions') {
             <button mat-icon-button
@@ -52,7 +50,7 @@
       </div>
     }
   </div>
-<!--  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">-->
-<!--    <rb-user-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()"/>-->
-<!--  </div>-->
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+    <rb-user-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()"/>
+  </div>
 </mat-card>

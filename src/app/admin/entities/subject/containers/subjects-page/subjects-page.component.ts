@@ -27,6 +27,9 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {AppSubject} from '../../models/subject';
 import {SubjectTableRowComponent} from '../../components/subject-table-row/subject-table-row.component';
 import {SubjectDialogMode} from '../../enums/dialog';
+import {
+  OrganizationTableRowComponent
+} from '../../../organization/components/organization-table-row/organization-table-row.component';
 
 @Component({
   selector: 'rb-subjects-page',
@@ -41,6 +44,7 @@ import {SubjectDialogMode} from '../../enums/dialog';
     TableQueryReflectorDirective,
     TranslatePipe,
     SubjectTableRowComponent,
+    OrganizationTableRowComponent,
   ]
 })
 export class SubjectsPageComponent implements OnInit, OnDestroy {

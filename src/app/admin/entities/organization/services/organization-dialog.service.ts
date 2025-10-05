@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import {AppOrganization} from '../models/organization';
 import {OrganizationService} from './organization.service';
 import {OrganizationDialogComponent} from '../containers/organization-dialog/organization-dialog.component';
+import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -71,16 +72,29 @@ export class OrganizationDialogService {
   }
 
   createDialogRef(mode: DialogMode, entity: AppOrganization | undefined, entities: AppOrganization[]): MatDialogRef<OrganizationDialogComponent> {
-    return this.dialog.open(OrganizationDialogComponent, {
-      data: {mode, entity, entities},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
+    switch (mode) {
+      case DialogMode.DELETE:
+        return this.dialog.open(OrganizationDialogComponent, {
+          data: {mode, entity, entities},
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(OrganizationDialogComponent, {
+          data: {mode, entity, entities},
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+    }
+
   }
 }

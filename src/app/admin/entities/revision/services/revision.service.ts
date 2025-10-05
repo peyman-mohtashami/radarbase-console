@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 import {Params} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {AppRevision, RadarRevision} from '../models/revision';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({ providedIn: 'root' })
 export class RevisionService {
@@ -17,10 +17,6 @@ export class RevisionService {
 
   private toAppModel(entity: RadarRevision): AppRevision {
     return { ...entity, _name: entity.entity, _search: `${entity.author} ${entity.changes} ${entity.revisionType}` };
-  }
-
-  private toRadarModel(entity: AppRevision): RadarRevision {
-    return { ...entity };
   }
 
   getWithQuery(queryParams?: Params | string): Observable<AppRevision[]> {
@@ -70,16 +66,16 @@ export class RevisionService {
     return { params, parentEntityName: queryParams?.['parentEntityName'] };
   }
 
-  convertFilterParamsToHttpParams(
-    params: HttpParams,
-    queryParams?: Params
-  ) {
-    if (queryParams?.['toDate'] && queryParams['toDate'] !== '') {
-      params = params.append('toDate', queryParams['toDate']);
-    }
-    if (queryParams?.['fromDate'] && queryParams['fromDate'] !== '') {
-      params = params.append('fromDate', queryParams['fromDate']);
-    }
-    return params;
-  }
+  // convertFilterParamsToHttpParams(
+  //   params: HttpParams,
+  //   queryParams?: Params
+  // ) {
+  //   if (queryParams?.['toDate'] && queryParams['toDate'] !== '') {
+  //     params = params.append('toDate', queryParams['toDate']);
+  //   }
+  //   if (queryParams?.['fromDate'] && queryParams['fromDate'] !== '') {
+  //     params = params.append('fromDate', queryParams['fromDate']);
+  //   }
+  //   return params;
+  // }
 }

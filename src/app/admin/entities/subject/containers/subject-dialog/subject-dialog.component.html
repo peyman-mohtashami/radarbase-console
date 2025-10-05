@@ -74,7 +74,7 @@
                         appearance="outline">
           <input matInput [matDatepicker]="picker"
                  formControlName='dateOfBirth'
-                 [placeholder]='"dateFormat"'>
+                 [placeholder]='dateFormat'>
           <mat-datepicker-toggle matSuffix [for]="picker"/>
           <mat-datepicker #picker/>
           @if (form.controls.dateOfBirth?.errors; as errors) {

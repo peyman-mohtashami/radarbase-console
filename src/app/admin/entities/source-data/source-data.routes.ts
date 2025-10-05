@@ -5,7 +5,7 @@ import {SourceDataPageComponent} from "./containers/source-data-page/source-data
 import {SourceDataResolver} from "./services/source-data.resolver";
 import {RADAR_ROLES} from '../../../shared/models/auth.model';
 import {SourceDatasPageComponent} from './containers/source-datas-page/source-datas-page.component';
-import {SourceTypesResolver} from '../source-type/services/sourceTypes.resolver';
+import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
 
 export const sourceDataRoutes: Routes = [
   {
@@ -27,5 +27,9 @@ export const sourceDataRoutes: Routes = [
       entity: SourceDataResolver,
       sourceTypes: SourceTypesResolver,
     },
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

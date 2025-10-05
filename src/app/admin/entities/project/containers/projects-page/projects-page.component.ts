@@ -64,6 +64,7 @@ export class ProjectsPageComponent implements OnInit, OnDestroy {
   entities$ = signal<AppProject[]>(this.activatedRoute.snapshot.data['entities']);
   processedEntities$ = signal<AppProject[]>(this.activatedRoute.snapshot.data['entities']);
   visibleEntities$ = signal<AppProject[]>([]);
+  organization: AppOrganization = this.activatedRoute.parent?.parent?.snapshot.data['organization'];
   organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizations'];
   sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
@@ -224,13 +225,13 @@ export class ProjectsPageComponent implements OnInit, OnDestroy {
       const entity = this.visibleEntities$().find(e => e.id == entityId);
       switch (action) {
         case 'add':
-          this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities$(), this.organizations, this.sourceTypes);
+          this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities$(), this.organization, this.organizations, this.sourceTypes);
           break;
         case 'edit':
-          if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.entities$(), this.organizations, this.sourceTypes);
+          if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.entities$(), entity.organization, this.organizations, this.sourceTypes);
           break;
         case 'delete':
-          if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.entities$(), this.organizations, this.sourceTypes);
+          if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.entities$(), entity.organization, this.organizations, this.sourceTypes);
           break;
       }
     }

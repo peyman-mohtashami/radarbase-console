@@ -9,12 +9,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {TableElement} from '../../../../models/table.model';
-import {
-  SourceDataProcessingStateComponent
-} from '../../../source-data/components/source-data-processing-state/source-data-processing-state.component';
-import {
-  SourceDataSourceTypeComponent
-} from '../../../source-data/components/source-data-source-type/source-data-source-type.component';
+import {ActivateComponent} from '../activate/activate.component';
 
 @Component({
   selector: 'rb-user-details',
@@ -25,8 +20,7 @@ import {
     UserCreatedByComponent,
     LocalDateComponent,
     DetailsComponent,
-    SourceDataProcessingStateComponent,
-    SourceDataSourceTypeComponent,
+    ActivateComponent,
   ]
 })
 export class UserDetailsComponent {

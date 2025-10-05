@@ -8,15 +8,13 @@ import {SourceAssignedComponent} from "../source-assigned/source-assigned.compon
 import {SourceProjectComponent} from "../source-project/source-project.component";
 import {SourceSourceTypeComponent} from "../source-source-type/source-source-type.component";
 import {MatIconButton} from "@angular/material/button";
-import {AsyncPipe} from "@angular/common";
 import {SourceDetailsComponent} from "../source-details/source-details.component";
 import {TableElement} from '../../../../models/table.model';
 import {AppSource} from '../../models/source';
 import {UpdateTrigger} from '../../services/source-dialog.service';
 import {ActionsComponent} from '../actions/actions.component';
-import {
-  OrganizationDetailsComponent
-} from '../../../organization/components/organization-details/organization-details.component';
+import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'rb-source-table-row',
@@ -28,10 +26,10 @@ import {
     SourceProjectComponent,
     SourceSourceTypeComponent,
     MatIconButton,
-    AsyncPipe,
     SourceDetailsComponent,
     ActionsComponent,
-    OrganizationDetailsComponent,
+    TruncatePipe,
+    MatTooltip,
   ]
 })
 export class SourceTableRowComponent {

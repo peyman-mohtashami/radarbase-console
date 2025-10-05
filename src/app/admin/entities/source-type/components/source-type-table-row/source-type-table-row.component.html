@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -10,8 +10,9 @@
         @switch (tableElement.name) {
           @case ('_name') {
             <a
-              [routerLink]='["/admin/source-types", entity$().producer, entity$().model, entity$().catalogVersion]'>
-                <span class='font-bold text-primary'>
+              [routerLink]='["/admin/source-types", entity$().producer, entity$().model, entity$().catalogVersion]'
+              class="underline font-bold text-primary">
+                <span>
                   {{ `${entity$().producer} [${entity$().model}] (${entity$().catalogVersion})` }}
                 </span>
             </a>
@@ -44,16 +45,7 @@
                 </span>
             </button>
             <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
-<!--            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>-->
           }
-<!--          @case ("actions") {-->
-<!--            <button mat-icon-button class="tiny" (click)="onExpansionClick($event)">-->
-<!--                <span class="material-symbols-outlined text-xl!">-->
-<!--                  {{ expanded$() ? 'expand_less' : 'expand_more' }}-->
-<!--                </span>-->
-<!--            </button>-->
-<!--            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>-->
-<!--          }-->
           @default {
             {{ entity$()[tableElement.name] || '-' }}
           }

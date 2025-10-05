@@ -462,6 +462,8 @@
         "tableLabel": "Projects",
         "label": "Projects"
       },
+      "viewAll": "View all {{count}} projects",
+      "viewLess": "View less",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Organization",
       "edit": "Edit",
@@ -469,6 +471,109 @@
       "deleteMessage": "You are going to delete Organization",
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No Organization Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "permission": {
+      "title": {
+        "singular": "User",
+        "plural": "Users"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "Login",
+        "label": "Login",
+        "duplicate": "Login exists"
+      },
+      "email": {
+        "tableLabel": "Email",
+        "label": "Email",
+        "duplicate": "Email exists"
+      },
+      "search": {
+        "tableLabel": "Search",
+        "label": "Search by login or email"
+      },
+      "firstName": {
+        "tableLabel": "First Name",
+        "label": "First Name"
+      },
+      "lastName": {
+        "tableLabel": "Last Name",
+        "label": "Last Name"
+      },
+      "activated": {
+        "tableLabel": "Activated",
+        "label": "Activated"
+      },
+      "roles": {
+        "tableLabel": "Roles",
+        "label": "Roles",
+        "hasPermission": "Has Permission",
+        "doesntHavePermission": "Doesn't Have Permission"
+      },
+      "langKey": {
+        "tableLabel": "Language",
+        "label": "Language"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "lastModifiedBy": {
+        "tableLabel": "Last Modified By",
+        "label": "Last Modified By"
+      },
+      "lastModifiedDate": {
+        "tableLabel": "Last Modified Date",
+        "label": "Last Modified Date"
+      },
+      "authority": {
+        "tableLabel": "Authority"
+      },
+      "projectOrOrganization": {
+        "tableLabel": "Organization Or Project"
+      },
+      "activate": {
+        "title": "Confirm sending activation link",
+        "message": "Are you sure you want to resend activation link for User {{user}} to {{email}}?",
+        "send": "Send",
+        "sending": "Sending",
+        "cancel": "Cancel"
+      },
+      "role": {
+        "add": {
+          "title": "Add User Role",
+          "message": "You are going to add this User as {{role}} for {{entityName}}",
+          "adding": "Adding Role ...",
+          "add": "Add Role"
+        },
+        "remove": {
+          "title": "Remove User Role",
+          "message": "You are going to remove this User as {{role}} for {{entityName}}",
+          "removing": "Removing Role ...",
+          "remove": "Remove Role"
+        },
+        "confirmationMessage": "Are you sure?",
+        "no": "No"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add User",
+      "edit": "Edit",
+      "remove": "Remove User",
+      "sendActivationLink": "Send Activation Link",
+      "removeMessage": "You are going to remove User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No User Found",
+      "noUserFound": "No user found with the provided email or login.",
       "filters": {
         "search": "Search"
       }
@@ -542,6 +647,8 @@
         "externalProjectId": "External Project ID",
         "privacyPolicyUrl": "Privacy Policy URL"
       },
+      "viewAll": "View all {{count}} source types",
+      "viewLess": "View less",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Project",
       "edit": "Edit",
@@ -1017,6 +1124,10 @@
       "activated": {
         "tableLabel": "Activated",
         "label": "Activated"
+      },
+      "notActivated": {
+        "tableLabel": "Not Activated",
+        "label": "Not Activated"
       },
       "roles": {
         "tableLabel": "Roles",

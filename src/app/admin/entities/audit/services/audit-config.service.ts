@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {ENTITY_NAME} from '../../../enums/entities';
 import {ConfigState} from '../../../../core/config/models/config.model';
 import {FilterItem, TableElement} from '../../../models/table.model';
+import {FormFieldType} from '../../../models/dialog.model';
 
 export const TableElements: TableElement[] = [
   {name: "timestamp", tableClass: "block", extensionClass: "hidden", sortable: false},
@@ -15,7 +16,15 @@ export const TableElements: TableElement[] = [
   {name: "actions", width: "w-14", tableClass: "flex xl:hidden!", extensionClass: "hidden"},
 ];
 
-export const filters: FilterItem[] = [];
+export const filters: FilterItem[] = [
+  {
+    name: '',
+    advanced: false,
+    names: ['fromDate', 'toDate'],
+    label: 'ADMIN.audit.filters.date',
+    type: FormFieldType.RANGE_PICKER,
+  },
+];
 
 @Injectable({providedIn: 'root'})
 export class AuditConfigService {

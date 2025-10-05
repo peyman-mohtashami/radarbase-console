@@ -21,7 +21,6 @@ import {RevisionConfigService} from '../../services/revision-config.service';
 import {AppRevision} from '../../models/revision';
 import {RevisionTableRowComponent} from '../../components/revision-table-row/revision-table-row.component';
 import {TagComponent} from '../../../../components/tag/tag.component';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'rb-entities-page',
@@ -36,7 +35,6 @@ import {JsonPipe} from '@angular/common';
     MatPaginator,
     RevisionTableRowComponent,
     TagComponent,
-    JsonPipe,
   ]
 })
 export class RevisionsPageComponent implements OnInit, OnDestroy {

@@ -1,12 +1,12 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import {map, tap} from 'rxjs/operators';
 import {AppSource, RadarSource} from "../models/source";
 import {Params} from '@angular/router';
-import {DEFAULT_PAGE_SIZE} from '../../../services/base.entity.service';
 import {AppProject} from '../../project/models/project';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 
 @Injectable({ providedIn: 'root' })
 export class SourceService {
@@ -91,8 +91,4 @@ export class SourceService {
     }
     return { params, parentEntityName: queryParams?.['parentEntityName'] };
   }
-
-  // setProject(projectName: string) {
-  //   this.projectName$.set(projectName);
-  // }
 }

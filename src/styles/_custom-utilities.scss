@@ -40,7 +40,7 @@
   /*  @apply shadow-sm rounded-sm bg-white dark:bg-neutral-700 my-1 hover:drop-shadow-sm transition-all;*/
   /*}*/
   .rb-table-main-row {
-    @apply flex gap-4 items-center py-2 px-4;
+    @apply flex gap-4 items-center py-2 px-4 border-t border-t-neutral-300 dark:border-neutral-500;
   }
   .rb-table-extension-row {
     @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];
