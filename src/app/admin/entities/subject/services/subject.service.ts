@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
-import { Moment } from 'moment';
+// import { Moment } from 'moment';
 import moment from 'moment/moment';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
@@ -28,7 +28,6 @@ export class SubjectService {
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
     console.log('Class: SubjectService, Function: getWithQuery, Line 29 params' , params);
     return this.http.get<RadarSubject[]>(`api/projects/${projectName}/subjects`, {
-      // return this.http.get<RadarSubject[]>(`api/subjects`, {
       params,
       observe: 'response',
     }).pipe(
@@ -113,8 +112,7 @@ export class SubjectService {
       queryParams['dateOfBirth.is'] &&
       queryParams['dateOfBirth.is'] !== ''
     ) {
-      const newDate: Moment = moment(queryParams['dateOfBirth.is']);
-      // console.log(newDate.isValid())
+      // const newDate: Moment = moment(queryParams['dateOfBirth.is']);
       if (moment(queryParams['dateOfBirth.is']).isValid()) {
         params = params.append('dateOfBirth.is', queryParams['dateOfBirth.is']);
       }
@@ -153,59 +151,13 @@ export class SubjectService {
   }
 
   addSubjectsToGroup(
-    // projectName: string,
+    projectName: string,
     groupName: string,
     subjects: { login?: string; id?: number }[]
   ) {
     const url =
-      'api/projects/' +
-      // encodeURIComponent(projectName) +
-      // this.project?.projectName +
-      '/groups/' +
-      encodeURIComponent(groupName) +
-      '/subjects';
-    // this.resourceUrl(projectName, groupName);
+      `api/projects/${projectName}/groups/${encodeURIComponent(groupName)}/subjects`;
     const body = [{ op: 'add', value: subjects }];
-    return this.http.patch(url, body);
+    return this.http.patch<void>(url, body);
   }
-
-
-  // resourceUrlGetWithQuery = '';
-
-
-
-
-  // findForRevision(
-  //   login: string,
-  //   revisionNb: number
-  // ): Observable<AppSubject> {
-  //   return this.http.get<AppSubject>(
-  //     `${this.resourceUrl}/${encodeURIComponent(login)}/revisions/${revisionNb}`
-  //   );
-  // }
-
-
-
-  // queryAllByProject(projectName: string): Observable<RadarSubjectDef[]> {
-  //   const url = `${this.projectResourceUrl}/${projectName}/subjects`;
-  //   return this.http.get<RadarSubjectDef[]>(url, {
-  //     // params: createRequestOption({ ...paginationParams, ...filterParams }),
-  //     // observe: 'response',
-  //   });
-  // }
-
-
-  // override getResourceUrl(projectName?: string): string {
-  //   // console.log('getResourceUrl', projectName);
-  //   if (projectName) {
-  //     return `api/projects/${projectName}/subjects`;
-  //   } else {
-  //     return `api/subjects`;
-  //   }
-  // }
-
-
-
-//!
-
 }

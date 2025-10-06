@@ -62,7 +62,7 @@ export class SubjectTableRowComponent {
       if (!updateTrigger) return;
 
       const {mode, entity} = updateTrigger;
-      if (entity.id !== this.entity$().id) return;
+      if (entity && entity.id !== this.entity$().id) return;
       if (mode === SubjectDialogMode.ADD || mode === SubjectDialogMode.EDIT) {
         this.updated$.set(true);
         setTimeout(() => {

@@ -9,9 +9,3 @@ export enum SubjectDialogMode {
   PAIR_SOURCE = 'pair_source',
   CLOSE = 'close'
 }
-
-// export enum DialogCommand {
-//   UPDATED = 'updated',
-//   DELETED = 'deleted',
-//   ERROR = 'error',
-// }

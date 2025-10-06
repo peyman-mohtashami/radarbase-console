@@ -50,7 +50,6 @@ import {DetailType} from '../../../../enums/detail-type';
   templateUrl: './subject-dialog-pair-app.component.html',
   imports: [
     MatDialogContent,
-    QrCodeModule,
     DialogBodyDescriptionComponent,
     DetailElementComponent,
     TranslatePipe,
@@ -64,7 +63,6 @@ import {DetailType} from '../../../../enums/detail-type';
     MatIconButton,
     MatDialogTitle,
     MatFormField,
-    // MatLabel,
     MatSelect,
     MatOption,
     SubjectDetailsComponent,

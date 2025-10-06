@@ -1,31 +1,3 @@
-// export interface RestSourceUser {
-//      id?: string;
-//      userId: string;
-//      projectId: string;
-//      externalId?: string;
-//      serviceUserId?: string;
-//      sourceId?: string;
-//      startDate?: string;
-//      endDate?: string;
-//      sourceType: string;
-//      isAuthorized?: boolean;
-//      registrationCreatedAt?: string;
-//      hasValidToken?: boolean;
-//      timesReset?: number;
-//      version?: string;
-// }
-
-// export interface RestSourceUsers {
-//      users: RestSourceUser[];
-//      metadata: Page;
-// }
-
-// export interface Page {
-//      pageNumber: number;
-//      pageSize: number;
-//      totalElements: number;
-// }
-
 export interface RestSourceUserRequest {
   projectId?: string;
   userId: string;

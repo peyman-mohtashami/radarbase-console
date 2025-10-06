@@ -15,7 +15,6 @@ import {
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import {TableElement} from '../../../../models/table.model';
-import {DialogMode} from '../../../../enums/dialog';
 import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -27,9 +26,8 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {AppSubject} from '../../models/subject';
 import {SubjectTableRowComponent} from '../../components/subject-table-row/subject-table-row.component';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {
-  OrganizationTableRowComponent
-} from '../../../organization/components/organization-table-row/organization-table-row.component';
+import {AssignGroupComponent} from '../../components/assign-group/assign-group.component';
+import {AppGroup} from '../../../group/models/group';
 
 @Component({
   selector: 'rb-subjects-page',
@@ -44,7 +42,7 @@ import {
     TableQueryReflectorDirective,
     TranslatePipe,
     SubjectTableRowComponent,
-    OrganizationTableRowComponent,
+    AssignGroupComponent,
   ]
 })
 export class SubjectsPageComponent implements OnInit, OnDestroy {
@@ -69,9 +67,8 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
 
   sourceTypes: AppSourceType[] = [];
 
-  // projects: AppProject[] = this.activatedRoute.parent?.snapshot.data['projects'];
-  // projectName: string = this.activatedRoute.parent?.snapshot?.params['projectId'];
-  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity']; //this.activatedRoute.parent?.snapshot.data['entity'];
+  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
+  groups: AppGroup[] = this.activatedRoute.snapshot.data['groups'];
 
   page$ = signal<PageEvent>({
     pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
@@ -232,6 +229,9 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
       case SubjectDialogMode.DELETE:
         this.refreshEntities();
         break;
+      case SubjectDialogMode.ASSIGN_GROUP:
+        this.refreshEntities();
+        break;
     }
     this.removeFragmentUrl();
     this.loading$.set(false);
@@ -322,15 +322,11 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
         }
       });
     }
-    console.log('Class: SubjectsPageComponent, Function: loadEntities, Line 319 this.projectName', this.project.projectName);
-    console.log('Class: SubjectsPageComponent, Function: loadEntities, Line 319 this.projectName', this.project.projectName);
     return this.entityService.getWithQuery(this.project.projectName, params);
-    // return this.entityService.getWithQuery('radar', params);
   }
 
 
   handleFilterChange(event: FilterEvent) {
-    console.log('Class: SubjectsPageComponent, Function: handleFilterChange, Line 329 event', event);
     this.filter$.set(event);
   }
 

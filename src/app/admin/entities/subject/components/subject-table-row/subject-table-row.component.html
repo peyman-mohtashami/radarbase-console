@@ -51,7 +51,7 @@
             <rb-local-date [date]="entity$().dateOfBirth" [format]="'mediumDate'"/>
           }
           @case ('group') {
-            <rb-subject-group [group]="entity$().group"/>
+            <rb-subject-group [group$]="entity$().group"/>
           }
           @case ('status') {
             <rb-subject-status [status]="entity$().status"/>

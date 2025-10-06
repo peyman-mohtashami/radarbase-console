@@ -38,15 +38,16 @@ import {DetailType} from '../../../../enums/detail-type';
   ]
 })
 export class SubjectDialogDiscontinueComponent implements AfterViewInit {
-  private configService = inject(SubjectConfigService);
+  protected readonly DetailType = DetailType;
+  protected readonly DialogMode = SubjectDialogMode;
 
+  private configService = inject(SubjectConfigService);
   private dialogRef = inject(MatDialogRef<SubjectDialogDiscontinueComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     entity: AppSubject;
     project: AppProject;
   };
 
-  protected readonly DialogMode = SubjectDialogMode;
   tableFields = this.configService.getTableFields();
 
   loading$ = signal(false);
@@ -98,6 +99,4 @@ export class SubjectDialogDiscontinueComponent implements AfterViewInit {
     this.loading$.set(false);
     this.error$.set(error);
   }
-
-  protected readonly DetailType = DetailType;
 }

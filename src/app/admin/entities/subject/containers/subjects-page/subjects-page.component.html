@@ -16,6 +16,7 @@
   <rb-loader/>
 }
 
+<rb-assign-group [selection$]="selection" [groups$]="groups" [project$]="project"/>
 <div class="rb-table"
      rbTableQueryReflector
      [page]="page$()"
@@ -68,7 +69,7 @@
   }
 </div>
 
-<div class="flex items-center px-4 text-sm font-bold">
+<div class="flex items-center p-4 text-sm font-bold">
   @if (entityService.total === 0) {
     <span>{{ 'ADMIN.subject.noItemFound' | translate }}</span>
   } @else {

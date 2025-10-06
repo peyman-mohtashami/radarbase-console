@@ -14,7 +14,7 @@
       <rb-subject-status [type]="type$()" [status]="entity$()['status']"/>
     }
     @case ('group') {
-      <rb-subject-group [group]="entity$()['group']"/>
+      <rb-subject-group [group$]="entity$()['group']"/>
     }
     @case ('sources') {
       @if (entity$().sources && entity$()?.sources?.length) {

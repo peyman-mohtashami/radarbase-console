@@ -1,5 +1,13 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+  signal
+} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
@@ -9,17 +17,23 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 
-import { BaseDialogComponent } from '../../../../base/base-dialog.component';
 import { AppSubject } from "../../models/subject";
 import { AppGroup } from "../../../group/models/group";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
   MatSelectAutocompleteComponent
 } from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
-import {ErrorMessageComponent} from "../../../../../core/error/components/message/error-message.component";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {SubjectConfigService} from '../../services/subject-config.service';
+import {SubjectDialogMode} from '../../enums/dialog';
+import {HttpErrorResponse} from '@angular/common/http';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {debounceTime} from 'rxjs/operators';
+import {ENTITY_NAME} from '../../../../enums/entities';
+import {DetailType} from '../../../../enums/detail-type';
+import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 
 @Component({
   selector: 'rb-subject-dialog-assign-group-dialog',
@@ -31,54 +45,88 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatDialogContent,
     ReactiveFormsModule,
     MatSelectAutocompleteComponent,
-    ErrorMessageComponent,
     MatButton,
     MatDialogClose,
     MatIcon,
     MatProgressSpinner
   ]
 })
-export class SubjectDialogAssignGroupComponent
-  extends BaseDialogComponent<
-    AppSubject,
-    SubjectDialogAssignGroupComponent
-  >
-  implements OnInit, OnDestroy
-{
-  override form = new FormGroup({
-    group: new FormControl("")
+export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit {
+  private configService = inject(SubjectConfigService);
+  private dialogRef = inject(MatDialogRef<SubjectDialogAssignGroupComponent>);
+  public dialogData = inject(MAT_DIALOG_DATA) as {
+    mode: string;
+    entity: AppSubject;
+    groups: AppGroup[];
+  };
+
+  protected readonly ENTITY_NAME = ENTITY_NAME;
+  protected readonly DialogMode = SubjectDialogMode;
+  protected readonly DetailType = DetailType;
+  protected readonly ValidatorHint = ValidatorHint;
+  protected readonly ValidatorError = ValidatorError;
+
+  tableFields = this.configService.getTableFields();
+  formFields = this.configService.getFormFields();
+
+  form = new FormGroup({
+    group: new FormControl<AppGroup | undefined>(undefined, {nonNullable: true})
   });
 
-  groups; // = this.data.groups;
+  loading$ = signal(false);
+  error$ = signal<HttpErrorResponse | null>(null);
 
-  constructor(
-    router: Router,
-    dialogRef: MatDialogRef<SubjectDialogAssignGroupComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public override data: {
-      mode: string;
-      entity: AppSubject;
-      groups: AppGroup[];
-    }
-  ) {
-    super(router, dialogRef, data);
-    this.groups = this.data.groups;
-  }
+  @Output()
+  dialogActionEvent = new EventEmitter<{ group?: AppGroup }>();
 
-  override ngOnInit() {
-    super.ngOnInit();
-  }
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
 
-  override ngOnDestroy() {
-    super.ngOnDestroy();
-  }
-
-  override save(): void {
-    this.error.set(false); // = false;
-    this.isLoading = true;
-    this.actionTriggered.emit({
-      action: this.mode,
-      groupName: this.form?.value.group,
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges()) {
+        this.error$.set(null);
+      }
     });
+  }
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    const dialogContainer = document.querySelector('.tailwind-slide-panel');
+    setTimeout(() => {
+      dialogContainer?.classList.add('dialog-enter-active');
+    });
+  }
+
+  onAction() { //TODO DIALOG_ACTION
+    this.error$.set(null);
+    this.loading$.set(true);
+    this.handleAssignAction();
+  }
+
+  private handleAssignAction(): void {
+    this.dialogActionEvent.emit({
+      group: this.form?.value.group,
+    });
+  }
+
+  close() {
+    this.loading$.set(false);
+    const container = document.querySelector('.tailwind-slide-panel');
+    container?.classList.remove('dialog-enter-active');
+    container?.classList.add('dialog-exit-active');
+
+    setTimeout(() => {
+      this.dialogActionEvent.emit({});
+      this.dialogRef.close();
+    }, 300);
+  }
+
+  errorHappened(error: HttpErrorResponse): void {
+    this.loading$.set(false);
+    this.error$.set(error);
   }
 }

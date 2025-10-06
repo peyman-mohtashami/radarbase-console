@@ -86,7 +86,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDialogUpdate(updated: { mode: SubjectDialogMode, entity: AppSubject }) {
+  private handleDialogUpdate(updated: { mode: SubjectDialogMode, entity?: AppSubject }) {
     switch (updated.mode) {
       case SubjectDialogMode.EDIT:
         if (updated?.entity) {

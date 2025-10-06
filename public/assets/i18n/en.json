@@ -997,6 +997,7 @@
         "assign": "Assign"
       },
       "discontinue": {
+        "buttonLabel": "Discontinue",
         "title": "Confirm discontinue operation",
         "message": "",
         "discontinue": "Discontinue",
@@ -1004,6 +1005,7 @@
         "no": "No"
       },
       "pairApp": {
+        "buttonLabel": "Pair App",
         "title": "Pair an Application",
         "client": "Application",
         "baseUrl": "Base URL",
@@ -1015,6 +1017,7 @@
         "generatePersistentQrCode": "Generate Persistent QR Code"
       },
       "pairSource": {
+        "buttonLabel": "Pair Source",
         "title": "Assign or Remove sources",
         "noItemAvailable": "No Source Available",
         "cancel": "Cancel",

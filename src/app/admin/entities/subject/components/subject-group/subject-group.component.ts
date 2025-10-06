@@ -9,5 +9,5 @@ import {TagComponent} from "../../../../components/tag/tag.component";
   ]
 })
 export class SubjectGroupComponent {
-  group = input<string>()
+  group$ = input<string>()
 }

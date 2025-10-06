@@ -1,5 +1,4 @@
 @if (isExpanded$()) {
-<!--  <div class="flex items-center">-->
     <button class="tiny"
             mat-icon-button color="primary" [matTooltip]="'Edit'"
             (click)='onAction(DialogMode.EDIT)'>
@@ -15,8 +14,6 @@
       <span class="text-xl! material-symbols-outlined font-bold"
             [class]="entity$().status === 'DISCONTINUED' ? 'text-gray-300': 'text-yellow-500'">stop_circle</span>
     </button>
-<!--  </div>-->
-<!--  <div class="flex items-center">-->
 
     <button class="tiny" mat-icon-button color="primary"
             [matTooltip]="'Pair Source'" (click)='onAction(DialogMode.PAIR_SOURCE)'>
@@ -26,7 +23,6 @@
             [matTooltip]="'Pair App'" (click)='onAction(DialogMode.PAIR_APP)'>
       <span class="text-xl! material-symbols-outlined font-bold">qr_code</span>
     </button>
-<!--  </div>-->
 } @else {
   <button mat-icon-button class="tiny"
           [matMenuTriggerFor]="menu"
@@ -55,7 +51,7 @@
             (click)='onAction(DialogMode.DISCONTINUE)'>
       <span class="flex items-center gap-2">
                   <span class="text-xl! text-yellow-600 material-symbols-outlined font-bold!">stop_circle</span>
-                  <span>{{ 'ADMIN.subject.discontinue' | translate }}</span>
+                  <span>{{ 'ADMIN.subject.discontinue.buttonLabel' | translate }}</span>
                 </span>
     </button>
     <button class="hover:text-primary hover:bg-transparent! transition-all"
@@ -63,7 +59,7 @@
             (click)='onAction(DialogMode.PAIR_SOURCE)'>
       <span class="flex items-center gap-2">
                   <span class="text-xl! text-primary material-symbols-outlined font-bold!">link</span>
-                  <span>{{ 'ADMIN.subject.pairSource' | translate }}</span>
+                  <span>{{ 'ADMIN.subject.pairSource.buttonLabel' | translate }}</span>
                 </span>
     </button>
     <button class="hover:text-primary hover:bg-transparent! transition-all"
@@ -71,16 +67,8 @@
             (click)='onAction(DialogMode.DISCONTINUE)'>
       <span class="flex items-center gap-2">
                   <span class="text-xl! text-primary material-symbols-outlined font-bold!">qr_code</span>
-                  <span>{{ 'ADMIN.subject.pairApp' | translate }}</span>
+                  <span>{{ 'ADMIN.subject.pairApp.buttonLabel' | translate }}</span>
                 </span>
     </button>
-<!--    <button class="tiny" mat-icon-button color="primary"-->
-<!--            [matTooltip]="'Pair Source'" (click)='onAction(DialogMode.PAIR_SOURCE)'>-->
-<!--      <span class="text-xl! material-symbols-outlined font-bold">link</span>-->
-<!--    </button>-->
-<!--    <button class="tiny" mat-icon-button color="primary"-->
-<!--            [matTooltip]="'Pair App'" (click)='onAction(DialogMode.PAIR_APP)'>-->
-<!--      <span class="text-xl! material-symbols-outlined font-bold">qr_code</span>-->
-<!--    </button>-->
   </mat-menu>
 }
