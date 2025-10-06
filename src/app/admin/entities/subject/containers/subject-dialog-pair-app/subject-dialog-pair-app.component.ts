@@ -20,7 +20,7 @@ import {
 
 import { AppSubject } from "../../models/subject";
 import { AppClient } from "../../../client/models/client";
-import {QrCodeModule} from "ng-qrcode";
+import {QrCodeComponent, QrCodeModule} from "ng-qrcode";
 import {
   DialogBodyDescriptionComponent
 } from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
@@ -66,7 +66,8 @@ import {DetailType} from '../../../../enums/detail-type';
     MatSelect,
     MatOption,
     SubjectDetailsComponent,
-    AsyncPipe
+    AsyncPipe,
+    QrCodeComponent
   ]
 })
 export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
