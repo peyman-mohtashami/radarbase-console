@@ -2,21 +2,18 @@ import {Routes} from "@angular/router";
 import {AdminComponent} from "./admin.component";
 import {roleGuard} from "../core/auth/guards/role.guard";
 import {RADAR_ROLES} from '../shared/models/auth.model';
-import {ProjectsPageComponent} from './entities/project/containers/projects-page/projects-page.component';
-// import {ProjectsResolver} from './entities/project/services/projects.resolver';
-
 
 export enum ROUTES {
   ORGANIZATIONS = 'organizations',
   PROJECTS = 'projects',
   SOURCE_TYPES = 'source-types',
   SOURCE_DATA = 'source-data',
-  SUBJECTS = 'subjects',
+  // SUBJECTS = 'subjects',
   USERS = 'users',
   CLIENTS = 'clients',
-  APP_CONFIGS = 'global-configs',
-  QUESTIONNAIRES = 'questionnaires',
-  PROTOCOLS = 'protocols',
+  // APP_CONFIGS = 'global-configs',
+  // QUESTIONNAIRES = 'questionnaires',
+  // PROTOCOLS = 'protocols',
   LOGS = 'logs',
   REVISIONS = 'revisions',
   AUDITS = 'audits',
@@ -29,32 +26,20 @@ export const adminRoutes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      // {
-      //   path: '',
-      //   redirectTo: ROUTES.ORGANIZATIONS,
-      //   pathMatch: 'full',
-      // },
-      {path: 'profile', loadComponent: () => import('../core/auth/containers/profile-page/profile-page.component').then((c) => c.ProfilePageComponent)},
+      {
+        path: 'profile',
+        loadComponent: () => import('../core/auth/containers/profile-page/profile-page.component').then((c) => c.ProfilePageComponent)},
       {
         path: 'change-password',
         loadComponent: () => import('../core/auth/containers/password-page/password-page.component').then((c) => c.PasswordPageComponent),
       },
       {
-        path: 'organizations', //ROUTES.ORGANIZATIONS,
+        path: ROUTES.ORGANIZATIONS,
         loadChildren: () =>
           import('./entities/organization/organization.routes').then((m) => m.organizationRoutes),
-        // resolve: {
-        //   entities: OrganizationsResolver
-        // }
       },
       {
         path: ROUTES.PROJECTS,
-        // component: ProjectsPageComponent,
-        // resolve: {
-        //   entities: ProjectsResolver,
-        //   organizations: OrganizationsResolver,
-        //   sourceTypes: SourceTypesResolver,
-        // },
         loadChildren: () =>
           import('./entities/project/projects.routes').then((m) => m.projectRoutes),
       },
@@ -75,10 +60,7 @@ export const adminRoutes: Routes = [
       },
       {
         path: ROUTES.CLIENTS,
-        loadChildren: () =>
-          import('./entities/client/client.routes').then((m) => m.clientRoutes),
-        // canActivate: [roleGuard],
-        // data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
+        loadChildren: () => import('./entities/client/client.routes').then((m) => m.clientRoutes),
       },
       // // {
       // //   path: ROUTES.APP_CONFIGS,
@@ -112,45 +94,34 @@ export const adminRoutes: Routes = [
       // //
       {
         path: ROUTES.LOGS,
-        loadChildren: () =>
-          import('./entities/log/log.routes').then((m) => m.logRoutes),
+        loadChildren: () => import('./entities/log/log.routes').then((m) => m.logRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: ROUTES.REVISIONS,
-        loadChildren: () =>
-          import('./entities/revision/revision.routes').then(
-            (m) => m.revisionRoutes
-          ),
+        loadChildren: () => import('./entities/revision/revision.routes').then((m) => m.revisionRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: ROUTES.AUDITS,
-        loadChildren: () =>
-          import('./entities/audit/audit.routes').then((m) => m.auditRoutes),
+        loadChildren: () => import('./entities/audit/audit.routes').then((m) => m.auditRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: ROUTES.METRICS,
-        loadChildren: () =>
-          import('./entities/metrics/metrics.routes').then(
-            (m) => m.metricsRoutes
-          ),
+        loadChildren: () => import('./entities/metrics/metrics.routes').then((m) => m.metricsRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: ROUTES.HEALTH,
-        loadChildren: () =>
-          import('./entities/health/health.routes').then((m) => m.healthRoutes),
+        loadChildren: () => import('./entities/health/health.routes').then((m) => m.healthRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
     ],
   }
 ];
-
-

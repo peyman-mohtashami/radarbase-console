@@ -5,9 +5,3 @@ export enum DialogMode {
   DELETE = 'delete',
   CLOSE = 'close',
 }
-
-export enum DialogCommand {
-  UPDATED = 'updated',
-  DELETED = 'deleted',
-  ERROR = 'error',
-}

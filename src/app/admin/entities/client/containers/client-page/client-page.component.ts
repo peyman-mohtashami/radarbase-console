@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
 import {takeUntil} from "rxjs/operators";
@@ -12,8 +12,6 @@ import {Subject} from 'rxjs';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
 import {ENTITIES} from '../../../../consts/entities';
-import {BackButtonDirective} from '../../../../directives/back-button.directive';
-import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {ActionsComponent} from '../../components/actions/actions.component';
 import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
@@ -25,12 +23,9 @@ import {ClientDetailsComponent} from '../../components/client-details/client-det
     TranslatePipe,
     ReactiveFormsModule,
     ActionsComponent,
-    BackButtonDirective,
-    MatButton,
     MatCard,
     MatCardContent,
     MatPrefix,
-    RouterLink,
     ClientDetailsComponent
   ]
 })

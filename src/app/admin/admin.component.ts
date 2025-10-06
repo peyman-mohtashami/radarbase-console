@@ -24,7 +24,6 @@ import {LoaderComponent} from "../shared/components/loader/loader.component";
   imports: [
     SidebarNavComponent,
     FooterComponent,
-    LoaderComponent,
     RouterOutlet,
     MatDrawer,
     MatDrawerContent,
@@ -39,8 +38,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   isHandset = false;
   isMenuOpened = true;
 
-  // selectedOrganization$ = this.store.select(organization).pipe(delay(0));
-  // selectedProject$ = this.store.select(project).pipe(delay(0));
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -75,10 +72,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     this.router.events.pipe(takeUntil(this._destroy$), delay(0)).subscribe({
       next: (event) => {
-        // console.log('Class: AppComponent, Function: next, Line 96 event' , event);
-        // if (this.isHandset) {
-        //   this.drawer?.close().then();
-        // }
         switch (true) {
           case event instanceof NavigationStart: {
             // console.log('Class: AppComponent, Function: next, Line 102 ' , (event as NavigationStart).url);
