@@ -10,8 +10,6 @@ import {UiEffects} from "./store/ui.effects";
 import {provideConfig} from "./config/provideConfig";
 import {provideError} from "./error/provideError";
 import {provideLocale} from "./locale/provideLocale";
-// import {provideNotification} from "./rb-notification/provideNotification";
-// import {provideMessage} from "./rb-message/provideMessage";
 
 function configInitializerFn(configService: ConfigService, themeService: ThemeService) {
   return async () => {
@@ -28,8 +26,6 @@ export function provideCore() {
     provideConfig(),
     provideError(),
     provideLocale(),
-    // provideNotification(),
-    // provideMessage(),
 
     provideAppInitializer(() => {
       const initializerFn = configInitializerFn(

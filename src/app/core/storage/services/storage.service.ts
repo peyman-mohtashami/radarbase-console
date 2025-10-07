@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {AuthResponse, ManagementPortalUser, TokenData} from '../../../shared/models/auth.model';
-
-// import {AuthResponse, ManagementPortalUser, TokenData} from '@rb/models';
+import {ManagementPortalUser, TokenData} from '../../../shared/models/auth.model';
 
 export enum AuthStorageItem {
   ACCESS_TOKEN = 'accessToken',
@@ -13,10 +11,10 @@ export enum AuthStorageItem {
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
-  static setAuthResponse(authResponse: AuthResponse): void {
-    this.setAccessToken(authResponse.access_token);
-    this.setRefreshToken(authResponse.refresh_token);
-  }
+  // static setAuthResponse(authResponse: AuthResponse): void {
+  //   this.setAccessToken(authResponse.access_token);
+  //   this.setRefreshToken(authResponse.refresh_token);
+  // }
 
   static setAuthTokenData(tokenData: TokenData): void {
     this.setAccessToken(tokenData.access_token);
@@ -40,9 +38,9 @@ export class StorageService {
     localStorage.removeItem(AuthStorageItem.ACCESS_TOKEN);
   }
 
-  static getRefreshToken(): string {
-    return <string>localStorage.getItem(AuthStorageItem.REFRESH_TOKEN);
-  }
+  // static getRefreshToken(): string {
+  //   return <string>localStorage.getItem(AuthStorageItem.REFRESH_TOKEN);
+  // }
 
   static setRefreshToken(token: string): void {
     localStorage.setItem(AuthStorageItem.REFRESH_TOKEN, token);
@@ -61,9 +59,9 @@ export class StorageService {
     localStorage.setItem(AuthStorageItem.USER, JSON.stringify(user));
   }
 
-  static clearUser(): void {
-    localStorage.removeItem(AuthStorageItem.USER);
-  }
+  // static clearUser(): void {
+  //   localStorage.removeItem(AuthStorageItem.USER);
+  // }
 
   static getLastLocation(): string {
     return <string>localStorage.getItem(AuthStorageItem.LAST_LOCATION);
