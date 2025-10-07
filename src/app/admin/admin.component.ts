@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { delay, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
-// import { organization, project } from './store/admin.selectors';
 import { isMenuOpen } from '../core/store/ui.selectors';
 import {MatDrawer, MatDrawerContainer, MatDrawerContent} from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -16,7 +15,6 @@ import { shareReplay } from 'rxjs/operators';
 import {StorageService} from "../core/storage/services/storage.service";
 import {SidebarNavComponent} from "./components/sidebar-nav/sidebar-nav.component";
 import {FooterComponent} from "../shared/components/footer/footer.component";
-import {LoaderComponent} from "../shared/components/loader/loader.component";
 
 @Component({
   selector: 'rb-admin',

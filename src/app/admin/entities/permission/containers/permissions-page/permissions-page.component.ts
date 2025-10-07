@@ -7,13 +7,6 @@ import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatCheckbox} from "@angular/material/checkbox";
 import { TABLE_ANIMATION } from '../../../../animation';
-import {
-  EntitiesPageHeaderComponent
-} from '../../../../components/common-entities-page/entities-page-header/entities-page-header.component';
-import {
-  DataTableFilterComponent,
-  FilterEvent
-} from '../../../../components/common-entities-page/data-table-filter/data-table-filter.component';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import {TableElement} from '../../../../models/table.model';
@@ -25,6 +18,11 @@ import {AppUser} from '../../models/user';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {PermissionTableRowComponent} from '../../components/permission-table-row/permission-table-row.component';
+import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {
+  DataTableFilterComponent,
+  FilterEvent
+} from '../../../../components/data-table-filter/data-table-filter.component';
 
 @Component({
   selector: 'rb-permissions-page',

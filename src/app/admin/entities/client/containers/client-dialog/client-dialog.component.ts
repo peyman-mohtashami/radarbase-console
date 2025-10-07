@@ -5,22 +5,22 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppClient} from "../../models/client";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {DhmsPipe} from "../../../../pipes/dhms.pipe";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatButton} from "@angular/material/button";
 import {SourceTypeConfigService} from '../../../source-type/services/source-type-config.service';
 import {DialogMode} from '../../../../enums/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-client-dialog',

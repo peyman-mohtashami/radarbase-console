@@ -5,13 +5,6 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {TABLE_ANIMATION} from '../../../../animation';
-import {
-  EntitiesPageHeaderComponent
-} from '../../../../components/common-entities-page/entities-page-header/entities-page-header.component';
-import {
-  DataTableFilterComponent,
-  FilterEvent
-} from '../../../../components/common-entities-page/data-table-filter/data-table-filter.component';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import {TableElement} from '../../../../models/table.model';
@@ -26,6 +19,11 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {SourceTableRowComponent} from '../../components/source-table-row/source-table-row.component';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {AppProject} from '../../../project/models/project';
+import {
+  DataTableFilterComponent,
+  FilterEvent
+} from '../../../../components/data-table-filter/data-table-filter.component';
+import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 
 @Component({
   selector: 'rb-sources-page',

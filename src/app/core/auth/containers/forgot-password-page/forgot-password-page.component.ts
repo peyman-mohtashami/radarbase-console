@@ -1,10 +1,10 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
-import { Validator, ValidatorError } from '../../../../shared/utils/validators';
-import { ProfileService } from '../../services/profile.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Validator, ValidatorError} from '../../../../shared/utils/validators';
+import {ProfileService} from '../../services/profile.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
@@ -66,13 +66,13 @@ export class ForgotPasswordPageComponent implements OnInit, OnDestroy {
     if (email) {
       this.profileService.requestResetPassword(email).subscribe({
         next: () => {
-          console.log('Class: ForgotPasswordPageComponent, Function: next, Line 69 ' , );
+          console.log('Class: ForgotPasswordPageComponent, Function: next, Line 69 ',);
           this.success = true;
           this.error = false;
           this.isLoading = false;
         },
         error: (error) => {
-          console.log('Class: ForgotPasswordPageComponent, Function: error, Line 75 ' , );
+          console.log('Class: ForgotPasswordPageComponent, Function: error, Line 75 ',);
           this.error = true;
           this.success = false;
           this.isLoading = false;

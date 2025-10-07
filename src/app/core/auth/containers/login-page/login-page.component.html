@@ -1,7 +1,7 @@
 <rb-auth-card>
   <ng-container header>{{ 'CORE.AUTH.LOGIN_PAGE.title' | translate }}</ng-container>
   <ng-container body>
-    <p class="mb-4">{{'CORE.AUTH.LOGIN_PAGE.subtitle' | translate}}</p>
+    <p class="mb-4">{{ 'CORE.AUTH.LOGIN_PAGE.subtitle' | translate }}</p>
     <form [formGroup]="form" novalidate autocomplete="on">
       <label for="username" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.username' | translate }} *</label>
       <mat-form-field class="mb-1! w-full small"
@@ -14,13 +14,15 @@
                type="text"/>
         @if (form.controls.username?.errors?.['required']) {
           <mat-error>
-            {{ValidatorError.requiredValidator | translate:
-            {value: 'CORE.AUTH.LOGIN_PAGE.username' | translate} }}
+            {{
+              ValidatorError.requiredValidator | translate:
+                {value: 'CORE.AUTH.LOGIN_PAGE.username' | translate}
+            }}
           </mat-error>
         }
       </mat-form-field>
 
-      <label for="password" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.password' | translate}} *</label>
+      <label for="password" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.password' | translate }} *</label>
       <mat-form-field subscriptSizing="fixed" class="w-full small"
                       appearance='outline'
                       floatLabel='auto'>
@@ -29,15 +31,17 @@
                required
                type="password"/>
         @if (form.controls.password?.errors?.['required']) {
-        <mat-error>
-          {{ValidatorError.requiredValidator | translate:
-          {value: 'CORE.AUTH.LOGIN_PAGE.password' | translate} }}
-        </mat-error>
+          <mat-error>
+            {{
+              ValidatorError.requiredValidator | translate:
+                {value: 'CORE.AUTH.LOGIN_PAGE.password' | translate}
+            }}
+          </mat-error>
         }
       </mat-form-field>
 
       @if (error || stateError) {
-        <rb-message />
+        <rb-message/>
       }
 
       <button mat-raised-button
@@ -48,9 +52,9 @@
               [disabled]='!form.valid || !form.dirty || isLoading'
               (click)='loginHandler()'>
         @if (isLoading) {
-        <mat-icon>
-          <mat-spinner diameter='20'></mat-spinner>
-        </mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'></mat-spinner>
+          </mat-icon>
         }
         {{ 'CORE.AUTH.LOGIN_PAGE.loginButtonPasswordGrant' | translate }}
       </button>

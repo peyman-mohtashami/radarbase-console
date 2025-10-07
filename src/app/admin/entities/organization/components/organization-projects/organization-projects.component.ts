@@ -1,7 +1,7 @@
 import {Component, input} from "@angular/core";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {AppProject, RadarProject} from '../../../project/models/project';
 import {TranslatePipe} from '@ngx-translate/core';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 
 @Component({

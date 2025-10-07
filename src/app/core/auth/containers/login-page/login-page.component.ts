@@ -5,7 +5,6 @@ import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {first, takeUntil} from "rxjs/operators";
-// import {CredentialAuthRequest} from "@rb/models";
 import {StorageService} from "../../../storage/services/storage.service";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -47,29 +46,12 @@ export class LoginPageComponent implements OnInit {
     // remember: this.fb.control(false),
   })
 
-  // form = this.fb.group({
-  //   username: ["", [Validator.requiredValidator]],
-  //   password: ["", [Validator.requiredValidator]],
-  // });
-  //
-  // controls = {
-  //   username: this.form.get("username"),
-  //   password: this.form.get("password"),
-  //   // remember: this.form.get("remember"),
-  // };
-
   isLoading = false;
   stateError = false;
   error = false;
 
 
   _destroy$: Subject<void> = new Subject<void>();
-
-  // constructor(
-  //   private router: Router,
-  //   private authService: AuthService,
-  //   private fb: FormBuilder
-  // ) {}
 
   ngOnInit(): void {
     this.stateError = !!history.state?.['error'];

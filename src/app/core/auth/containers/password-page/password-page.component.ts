@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule,
   ValidatorFn
 } from "@angular/forms";
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ProfileService } from '../../services/profile.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {ProfileService} from '../../services/profile.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/select";
@@ -45,8 +45,6 @@ export class PasswordPageComponent implements OnInit, OnDestroy {
   error = false;
   success = false;
 
-  // user$?: Observable<ManagementPortalUser | undefined>;
-
   hidePassword = true;
   hideConfirmPassword = true;
 
@@ -63,28 +61,15 @@ export class PasswordPageComponent implements OnInit, OnDestroy {
     validators: [MatchPasswordValidator('password', 'confirmPassword')]
   });
 
-  // form = this.fb.group({
-  //   password: ["", [Validator.requiredValidator, PasswordStrengthValidator]],
-  //   confirmPassword: ["", [Validator.requiredValidator]],
-  // },{
-  //   validators: [MatchPasswordValidator('password', 'confirmPassword')],
-  // });
-  //
-  // controls = {
-  //   password: this.form.get("password"),
-  //   confirmPassword: this.form.get("confirmPassword"),
-  // };
-
   _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    // this.user$ = this.profileService.getUser();
-
     this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
       this.error = false;
       this.success = false;
@@ -123,7 +108,7 @@ export function PasswordStrengthValidator(control: AbstractControl) {
   if (measureStrength(control.value)) {
     return null;
   }
-  return { passwordStrengthValidator: true };
+  return {passwordStrengthValidator: true};
 }
 
 export function measureStrength(p?: string): boolean {
@@ -143,9 +128,9 @@ export function MatchPasswordValidator(
   return (control: AbstractControl) => {
     const password = control.get(controlName);
     const confirmPassword = control.get(matchingControlName);
-    if(password && confirmPassword){
+    if (password && confirmPassword) {
       if (password.value !== confirmPassword.value) {
-        confirmPassword.setErrors({ confirmPasswordValidator: true });
+        confirmPassword.setErrors({confirmPasswordValidator: true});
       } else {
         confirmPassword.setErrors(null);
       }

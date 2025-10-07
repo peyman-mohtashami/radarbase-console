@@ -9,8 +9,6 @@ import { AuthActions } from "../store/action.types";
 import { user } from "../store/auth.selectors";
 import {ManagementPortalUser} from '../../../shared/models/auth.model';
 
-// import { ManagementPortalUser } from "@rb/models";
-
 @Injectable({providedIn: 'root'})
 export class ProfileService {
   constructor(

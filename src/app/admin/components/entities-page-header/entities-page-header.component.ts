@@ -1,11 +1,11 @@
 import {Component, Input, input, output} from "@angular/core";
-import {ENTITY_NAME} from "../../../enums/entities";
-import {DialogMode} from "../../../enums/dialog";
-import {ENTITIES} from "../../../consts/entities";
 import {TranslatePipe} from "@ngx-translate/core";
-import {RbPermissionDirective} from "../../../../core/auth/directives/ng-permission.directive";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
+import {RbPermissionDirective} from '../../../core/auth/directives/ng-permission.directive';
+import {ENTITY_NAME} from '../../enums/entities';
+import {DialogMode} from '../../enums/dialog';
+import {ENTITIES} from '../../consts/entities';
 
 @Component({
   selector: 'rb-entities-page-header',
@@ -22,10 +22,10 @@ export class EntitiesPageHeaderComponent {
   protected readonly DialogMode = DialogMode;
   protected readonly ENTITIES = ENTITIES;
 
-  showTitle = input<boolean>(true);
-  entityName = input.required<ENTITY_NAME>();
-  enableAddButton = input<boolean>(true);
-  permission = input<any>();
+  showTitle$ = input<boolean>(true);
+  entityName$ = input.required<ENTITY_NAME>();
+  enableAddButton$ = input<boolean>(true);
+  permission$ = input<any>();
 
   //TODO
   @Input() isGridView?: boolean; // = input<boolean>();
@@ -35,17 +35,8 @@ export class EntitiesPageHeaderComponent {
 
   constructor(public router: Router, public route: ActivatedRoute) { }
 
-  // onAction(event: any){
-  //   this.action.emit(event);
-  // }
-
   toggleGridListView() {
     this.isGridView = !this.isGridView;
     this.gridListToggled.emit(this.isGridView);
   }
-
-  // onClick() {
-  //   console.log('Class: EntitiesPageHeaderComponent, Function: onClick, Line 48 ' , );
-  //   this.router.navigate(['add'], { relativeTo: this.route, queryParamsHandling: 'preserve' })
-  // }
 }

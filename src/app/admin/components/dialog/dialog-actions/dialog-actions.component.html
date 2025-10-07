@@ -1,0 +1,59 @@
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ mode$() !== DialogMode.DELETE ?
+          ('SHARED.dialog.cancel' | translate) :
+          ('SHARED.dialog.no' | translate) }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <ng-content />
+    @if (mode$() === DialogMode.DELETE) {
+      <button [disabled]='isLoading'
+              (click)='delete()'
+              color="warn"
+              mat-raised-button
+              type="button">
+        @if (isLoading) {
+          <mat-icon>
+            <mat-spinner diameter='20' />
+          </mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @if (mode$() === DialogMode.EDIT) {
+      <button [disabled]='!form$()?.valid || !form$()?.dirty || isLoading'
+              (click)='save()'
+              mat-raised-button
+              color="primary"
+              type="button">
+        @if (isLoading) {
+          <mat-icon>
+            <mat-spinner diameter='20' />
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @if (mode$() === DialogMode.ADD) {
+      <button [disabled]='!form$()?.valid || isLoading'
+              (click)='save()'
+              color="primary"
+              mat-raised-button
+              type="button">
+        @if (isLoading) {
+          <mat-icon>
+            <mat-spinner diameter='20' />
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  </div>
+</div>

@@ -5,10 +5,6 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import { AppOrganization } from "../../models/organization";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
 import {HttpErrorResponse} from '@angular/common/http';
@@ -16,7 +12,11 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
 import {DialogMode} from '../../../../enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
-import {DialogActionsComponent} from '../../../../components/base-dialog/dialog-actions/dialog-actions.component';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-organization-dialog',

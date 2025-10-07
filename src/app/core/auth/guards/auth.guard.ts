@@ -3,9 +3,9 @@ import {
   Router,
   NavigationExtras,
 } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
-import {AuthService } from "../services/auth.service";
+import {AuthService} from "../services/auth.service";
 
 export const authGuard = () => {
   const authService = inject(AuthService);

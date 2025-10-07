@@ -15,11 +15,6 @@ import {MatOption} from '@angular/material/core';
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {debounceTime} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatSelect, MatSuffix} from "@angular/material/select";
@@ -40,6 +35,11 @@ import {SubjectDetailsComponent} from '../../components/subject-details/subject-
 import {DetailType} from '../../../../enums/detail-type';
 import {locale} from '../../../../../core/locale/store/locale.selectors';
 import {Store} from '@ngrx/store';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 
 @Component({
   selector: 'rb-subject-dialog',

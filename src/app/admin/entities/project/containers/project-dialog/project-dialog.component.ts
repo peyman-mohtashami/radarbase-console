@@ -6,12 +6,7 @@ import {Validator, ValidatorError, ValidatorHint} from "../../../../../shared/ut
 import {AppProject, ProjectStatus} from "../../models/project";
 import {AppOrganization, RadarOrganization} from "../../../organization/models/organization";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
@@ -26,6 +21,11 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
 import {locale} from '../../../../../core/locale/store/locale.selectors';
 import {Store} from '@ngrx/store';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-project-dialog',

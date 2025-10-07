@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricsService } from '../../services/metrics.service';
 import {TranslatePipe} from "@ngx-translate/core";
-import {NgClass} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatCard} from "@angular/material/card";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {MatIcon} from "@angular/material/icon";
 import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.model';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-metrics-threads-details',
   templateUrl: './metrics-threads-details.component.html',
   imports: [
     TranslatePipe,
-    NgClass,
     MatButton,
     MatIcon,
     MatCard,

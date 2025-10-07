@@ -30,7 +30,7 @@ export class AuthEffects {
     this.logoutSuccessPasswordGrant$ = createEffect(
       () =>
         this.actions$.pipe(
-          ofType(AuthActions.logoutSuccessPasswordGrant), //, AuthActions.logoutOnUnauthorized),
+          ofType(AuthActions.logoutSuccessPasswordGrant),
           tap(() => {
             this.router.navigate(['/login']).then();
           })

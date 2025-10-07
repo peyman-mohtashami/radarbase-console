@@ -1,15 +1,13 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import { Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
-
-// import {ManagementPortalUser} from '@rb/models';
+import {Subject} from 'rxjs';
+import {first, takeUntil} from 'rxjs/operators';
 import {
   Validator,
   ValidatorHint,
   ValidatorError,
 } from '../../../../shared/utils/validators';
-import { ProfileService } from '../../services/profile.service';
+import {ProfileService} from '../../services/profile.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatHint, MatInput} from "@angular/material/input";
@@ -56,7 +54,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   user?: ManagementPortalUser;
 
   form = new FormGroup({
-    login: new FormControl({ value: '', disabled: true }),
+    login: new FormControl({value: '', disabled: true}),
     firstName: new FormControl('', [Validator.normalTextValidator]),
     lastName: new FormControl('', [Validator.normalTextValidator]),
     email: new FormControl('', [Validator.requiredValidator, Validator.emailValidator]),
@@ -70,7 +68,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe({
         next: (user) => {
-          if(user){
+          if (user) {
             this.user = user as ManagementPortalUser;
             this.form.patchValue(user as ManagementPortalUser);
           }

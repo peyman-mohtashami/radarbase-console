@@ -5,18 +5,18 @@ import { HealthService } from '../../services/health.service';
 import { ENTITY_NAME } from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
-import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
+import {KeyValuePipe} from "@angular/common";
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
-import {TagComponent} from "../../../../components/tag/tag.component";
-import {DetailElementComponent} from "../../../../components/base-details/detail-element/detail-element.component";
 import {MatButton} from "@angular/material/button";
 import {FileSizePipe} from "../../../../pipes/file-size.pipe";
 import {RadarHealth} from '../../../../../shared/models/radar-health.model';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
   selector: 'rb-health-check',

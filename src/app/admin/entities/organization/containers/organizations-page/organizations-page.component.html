@@ -1,9 +1,9 @@
-<rb-entities-page-header [showTitle]="true"
-                         [entityName]="ENTITY_NAME.organization"
-                         [enableAddButton]="true"
+<rb-entities-page-header [showTitle$]="true"
+                         [entityName$]="ENTITY_NAME.organization"
+                         [enableAddButton$]="true"
                          [isGridView]="GRID_VIEW_ENABLED ? gridView : undefined"
                          (gridListToggled)="gridView = !gridView"
-                         [permission]="[{role: ROLES.SYS_ADMIN}]">
+                         [permission$]="[{role: ROLES.SYS_ADMIN}]">
   @if (tableFilters.length && entities$().length > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
                           [filters]='tableFilters'

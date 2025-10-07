@@ -15,10 +15,6 @@ import moment from 'moment/moment';
 import {DateAdapter, MatOption} from '@angular/material/core';
 
 import {Store} from "@ngrx/store";
-import {FormFieldType} from "../../../models/dialog.model";
-import {FilterItem} from "../../../models/table.model";
-import {locale} from "../../../../core/locale/store/locale.selectors";
-import {ValidatorError} from "../../../../shared/utils/validators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from "@angular/material/input";
 import {
@@ -33,7 +29,11 @@ import {MatChip, MatChipGrid, MatChipListbox, MatChipOption, MatChipRow, MatChip
 import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {LocalDateComponent} from "../../../../core/locale/components/local-date/local-date.component";
+import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
+import {ValidatorError} from '../../../shared/utils/validators';
+import {FormFieldType} from '../../models/dialog.model';
+import {FilterItem} from '../../models/table.model';
+import {locale} from '../../../core/locale/store/locale.selectors';
 
 export interface FilterEvent {
   [key: string]: string | null | undefined;
@@ -58,10 +58,12 @@ export interface FilterEvent {
     MatMenuTrigger,
     MatMenu,
     MatFormField,
-    MatChipListbox,
-    MatChipOption,
+    // MatChipListbox,
+    // MatChipOption,
     MatIconButton,
-    MatEndDate, MatStartDate, MatSuffix, LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton, MatLabel, MatPrefix,
+    MatEndDate, MatStartDate, MatSuffix,
+    // LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton, MatLabel,
+    MatPrefix,
   ]
 })
 export class DataTableFilterComponent implements OnInit, OnDestroy {

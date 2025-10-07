@@ -18,9 +18,6 @@ import {
 import {AppSubject} from "../../models/subject";
 import {AppSource} from "../../../source/models/source";
 import {TranslatePipe} from "@ngx-translate/core";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -28,16 +25,17 @@ import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DetailType} from '../../../../enums/detail-type';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {SourceService} from '../../../source/services/source.service';
-import {AsyncPipe} from '@angular/common';
-import {TagComponent} from '../../../../components/tag/tag.component';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AppProject} from '../../../project/models/project';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-subject-dialog-pair-source',
@@ -55,7 +53,6 @@ import {AppProject} from '../../../project/models/project';
     MatIcon,
     MatProgressSpinner,
     SubjectDetailsComponent,
-    AsyncPipe,
     ReactiveFormsModule,
     TagComponent,
   ]

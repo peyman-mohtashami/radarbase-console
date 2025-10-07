@@ -1,18 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, input, Output} from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import {DialogMode} from "../../../enums/dialog";
-import {MatDialogClose} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 
-
 @Component({
   selector: 'rb-dialog-actions',
   templateUrl: './dialog-actions.component.html',
   imports: [
-    MatDialogClose,
     MatButton,
     TranslatePipe,
     MatButton,
@@ -21,16 +18,15 @@ import {MatIcon} from "@angular/material/icon";
   ]
 })
 export class DialogActionsComponent {
-  DialogMode = DialogMode;
+  protected readonly DialogMode = DialogMode;
 
-  isLoading = false;
-
-  @Input() mode?: DialogMode;
-  @Input() label?: {singular: string; plural: string;}
+  mode$ = input<DialogMode>();
+  label$ = input<{singular: string; plural: string;}>();
+  form$ = input<UntypedFormGroup>();
 
   @Output() actionTriggered = new EventEmitter();
 
-  @Input() form?: UntypedFormGroup;
+  isLoading = false;
 
   close() {
     this.actionTriggered.emit('close');

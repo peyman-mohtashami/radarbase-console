@@ -14,12 +14,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppUser} from "../../models/user";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../enums/dialog';
@@ -34,6 +29,11 @@ import {
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-users-dialog',

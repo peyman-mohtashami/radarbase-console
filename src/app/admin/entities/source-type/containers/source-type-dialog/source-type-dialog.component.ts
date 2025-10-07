@@ -3,11 +3,6 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import { AppSourceType } from "../../models/source-type";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
@@ -19,6 +14,11 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-source-type-dialog',

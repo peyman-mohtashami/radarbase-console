@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, input, Output} from '@angular/core';
 import {DialogMode} from "../../../enums/dialog";
 import {ENTITY_NAME} from "../../../enums/entities";
 import {MatDialogTitle} from "@angular/material/dialog";
@@ -15,12 +15,11 @@ import {MatIconButton} from "@angular/material/button";
   ]
 })
 export class DialogTitleComponent {
-  DialogMode = DialogMode;
+  protected readonly DialogMode = DialogMode;
 
-  @Input() mode?: DialogMode;
-  @Input() name?: ENTITY_NAME;
-
-  @Input() label?: { singular: string; plural: string };
+  mode$ = input<DialogMode>();
+  name$ = input<ENTITY_NAME>();
+  label$ = input<{ singular: string; plural: string }>();
 
   @Output() closeClicked = new EventEmitter();
 

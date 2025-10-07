@@ -1,0 +1,5 @@
+<div [class]="class" class="inline-block text-sm px-2 py-1 rounded-sm gap-1" [class.cursor-pointer]="!!link$()">
+  <a [routerLink]='link$()' class="flex items-center gap-1">
+    <ng-content />
+  </a>
+</div>

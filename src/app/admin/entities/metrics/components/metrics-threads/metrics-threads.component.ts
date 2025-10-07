@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import {DetailElementComponent} from "../../../../components/base-details/detail-element/detail-element.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {PercentPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.model';
+import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
   selector: 'rb-metrics-threads',

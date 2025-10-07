@@ -1,8 +1,8 @@
-<rb-entities-page-header [showTitle]="true"
-                         [entityName]="ENTITY_NAME.source"
-                         [enableAddButton]="true"
+<rb-entities-page-header [showTitle$]="true"
+                         [entityName$]="ENTITY_NAME.source"
+                         [enableAddButton$]="true"
                          [isGridView]="undefined"
-                         [permission]="[{role: ROLES.SYS_ADMIN}]">
+                         [permission$]="[{role: ROLES.SYS_ADMIN}]">
   @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
                           [filters]='tableFilters'

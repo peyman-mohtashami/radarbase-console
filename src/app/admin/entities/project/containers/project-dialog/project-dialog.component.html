@@ -1,12 +1,12 @@
-<rb-dialog-title [mode]='dialogData.mode'
-                 [name]="ENTITY_NAME.project"
+<rb-dialog-title [mode$]='dialogData.mode'
+                 [name$]="ENTITY_NAME.project"
                  (closeClicked)='close()'/>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <rb-dialog-body-description [mode]="dialogData.mode"
-                                [label]="'Project'"
-                                [entityName]="dialogData.entity.projectName"/>
+    <rb-dialog-body-description [mode$]="dialogData.mode"
+                                [label$]="'Project'"
+                                [entityName$]="dialogData.entity.projectName"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -312,6 +312,6 @@
   </div>
 }
 
-<rb-dialog-actions [mode]='dialogData.mode'
-                   [form]='form'
+<rb-dialog-actions [mode$]='dialogData.mode'
+                   [form$]='form'
                    (actionTriggered)='onAction($event)'/>

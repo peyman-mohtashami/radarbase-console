@@ -1,6 +1,6 @@
 import {Component, input} from "@angular/core";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {RadarProject} from '../../../project/models/project';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-source-project',

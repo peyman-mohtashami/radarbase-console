@@ -3,11 +3,6 @@ import { AuthState } from './reducers';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth')
 
-// export const isLoaded = createSelector(
-//   selectAuthState,
-//   auth => auth.loaded
-// )
-
 export const user = createSelector(
   selectAuthState,
   auth => auth.user

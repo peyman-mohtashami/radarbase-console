@@ -2,7 +2,7 @@
   <div class="flex flex-wrap gap-1 py-1">
     @for (sourceData of sourcesData$(); track sourceData.id) {
       <rb-tag class="bg-primary/10 text-primary"
-              [link]="['/admin/source-data', sourceData['sourceDataName']]">
+              [link$]="['/admin/source-data', sourceData['sourceDataName']]">
         {{sourceData["sourceDataName"]}}
       </rb-tag>
     }

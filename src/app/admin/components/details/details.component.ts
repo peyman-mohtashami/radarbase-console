@@ -17,10 +17,10 @@ import {NgTemplateOutlet} from "@angular/common";
 export class DetailsComponent {
   protected readonly DetailType = DetailType;
 
-  customTemplate = input<TemplateRef<any>>();
-  tableFields = input<TableElement[]>([]);
-  name = input.required<ENTITY_NAME>();
-  entity = input.required<any>();
-  mode = input<DialogMode>();
-  type = input<DetailType>();
+  customTemplate$ = input<TemplateRef<any>>();
+  tableFields$ = input<TableElement[]>([]);
+  name$ = input.required<ENTITY_NAME>();
+  entity$ = input.required<any>();
+  mode$ = input<DialogMode>();
+  type$ = input<DetailType>();
 }

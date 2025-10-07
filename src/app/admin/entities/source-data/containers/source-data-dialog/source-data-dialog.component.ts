@@ -10,13 +10,8 @@ import {
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
-import {AppSourceData} from "../../models/source-data";
+import {AppSourceData, ProcessingState} from "../../models/source-data";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatOption} from "@angular/material/core";
 import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
@@ -29,10 +24,14 @@ import {debounceTime} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../enums/dialog';
-import {ProcessingState} from '../../../../../shared/models/radar-source-data.model';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-source-data-dialog',

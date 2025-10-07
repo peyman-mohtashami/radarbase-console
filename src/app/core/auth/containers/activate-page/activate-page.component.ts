@@ -1,9 +1,9 @@
 import {Component, inject, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 
-import { ProfileService } from '../../services/profile.service';
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import {ProfileService} from '../../services/profile.service';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";

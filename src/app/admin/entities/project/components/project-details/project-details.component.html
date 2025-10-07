@@ -1,8 +1,8 @@
-<rb-details [name]="ENTITY_NAME.project"
-            [entity]="entity$()"
-            [tableFields]="tableFields$()"
-            [type]="type$()"
-            [customTemplate]="detailsTemplate"/>
+<rb-details [name$]="ENTITY_NAME.project"
+            [entity$]="entity$()"
+            [tableFields$]="tableFields$()"
+            [type$]="type$()"
+            [customTemplate$]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {

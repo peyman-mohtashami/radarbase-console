@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {DialogMode} from "../../../enums/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 
@@ -12,7 +12,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class DialogBodyDescriptionComponent {
   DialogMode = DialogMode;
 
-  @Input() mode?: DialogMode;
-  @Input() label?: string;
-  @Input() entityName?: string;
+  mode$ = input<DialogMode>();
+  label$ = input<string>();
+  entityName$ = input<string>();
 }

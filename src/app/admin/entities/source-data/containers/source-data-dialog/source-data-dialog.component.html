@@ -1,12 +1,12 @@
-<rb-dialog-title [mode]='dialogData.mode'
-                 [name]="ENTITY_NAME.sourceData"
+<rb-dialog-title [mode$]='dialogData.mode'
+                 [name$]="ENTITY_NAME.sourceData"
                  (closeClicked)='close()' />
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <rb-dialog-body-description [mode]="dialogData.mode"
-                                [label]="'Source Data'"
-                                [entityName]="dialogData.entity.sourceDataName" />
+    <rb-dialog-body-description [mode$]="dialogData.mode"
+                                [label$]="'Source Data'"
+                                [entityName$]="dialogData.entity.sourceDataName" />
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -121,6 +121,6 @@
   </div>
 }
 
-<rb-dialog-actions [mode]='dialogData.mode'
-                   [form]='form'
+<rb-dialog-actions [mode$]='dialogData.mode'
+                   [form$]='form'
                    (actionTriggered)='onAction($event)' />

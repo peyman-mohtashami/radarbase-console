@@ -9,9 +9,6 @@ import {
 import {AppSubject} from "../../models/subject";
 import {AppProject} from "../../../project/models/project";
 import {TranslatePipe} from "@ngx-translate/core";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -20,6 +17,9 @@ import {SubjectDetailsComponent} from '../../components/subject-details/subject-
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DetailType} from '../../../../enums/detail-type';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 
 @Component({
   selector: 'rb-subject-dialog-discontinue-dialog',

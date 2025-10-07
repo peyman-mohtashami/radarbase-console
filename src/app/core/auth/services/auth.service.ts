@@ -6,8 +6,8 @@ import {map} from "rxjs/operators";
 import {isLoggedIn, isLoggedOut, user} from "../store/auth.selectors";
 import {AuthState} from "../store/reducers";
 import {
-  AuthOptionsModel,
-  AuthResponse,
+  // AuthOptionsModel,
+  // AuthResponse,
   CredentialAuthRequest,
   ManagementPortalUser
 } from '../../../shared/models/auth.model';
@@ -22,10 +22,10 @@ export class AuthService {
     throw new Error('AuthService method not implemented');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  authenticateWithAuthCode(authCode: string): Observable<ManagementPortalUser> {
-    throw new Error('AuthService method not implemented');
-  }
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // authenticateWithAuthCode(authCode: string): Observable<ManagementPortalUser> {
+  //   throw new Error('AuthService method not implemented');
+  // }
 
   isAuthenticated(): Observable<boolean> {
     return this.store.select(isLoggedIn)
@@ -63,30 +63,30 @@ export class AuthService {
     throw new Error('AuthService method not implemented');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  requestAccessToken(authCode: string): Observable<AuthResponse> {
-    throw new Error('AuthService method not implemented');
-  }
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // requestAccessToken(authCode: string): Observable<AuthResponse> {
+  //   throw new Error('AuthService method not implemented');
+  // }
 
   logoutAuthCodeGrant(): void {
     throw new Error('AuthService method not implemented');
   }
 
-  logoutAuthCodeGrantAndNavigate(): void {
-    throw new Error('AuthService method not implemented');
-  }
+  // logoutAuthCodeGrantAndNavigate(): void {
+  //   throw new Error('AuthService method not implemented');
+  // }
 
   logoutPasswordGrant(): Observable<void> {
     throw new Error('AuthService method not implemented');
   }
 
-  refreshToken(): Observable<AuthResponse> {
-    throw new Error('AuthService method not implemented');
-  }
+  // refreshToken(): Observable<AuthResponse> {
+  //   throw new Error('AuthService method not implemented');
+  // }
 
-  getAuthOptions(): AuthOptionsModel {
-    throw new Error('AuthService method not implemented');
-  }
+  // getAuthOptions(): AuthOptionsModel {
+  //   throw new Error('AuthService method not implemented');
+  // }
 
   getUser(): Observable<ManagementPortalUser | null> {
     throw new Error('AuthService method not implemented');

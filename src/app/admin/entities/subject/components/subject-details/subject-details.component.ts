@@ -1,7 +1,6 @@
 import {Component, input} from '@angular/core';
 import { AppSubject } from "../../models/subject";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {KeyValuePipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {SubjectStatusComponent} from "../subject-status/subject-status.component";
@@ -11,6 +10,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {TableElement} from '../../../../models/table.model';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-subject-details',

@@ -21,10 +21,6 @@ import {
 import { AppSubject } from "../../models/subject";
 import { AppClient } from "../../../client/models/client";
 import {QrCodeComponent, QrCodeModule} from "ng-qrcode";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
-import {DetailElementComponent} from "../../../../components/base-details/detail-element/detail-element.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AsyncPipe, DatePipe} from "@angular/common";
 import {DhmsPipe} from "../../../../pipes/dhms.pipe";
@@ -38,12 +34,15 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {MatFormField, MatOption, MatSelect} from '@angular/material/select';
-import {MatLabel} from '@angular/material/form-field';
 import {ClientPairService} from '../../../client/services/client-pair.service';
 import {Observable, Subscription} from 'rxjs';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {ClientService} from '../../../client/services/client.service';
 import {DetailType} from '../../../../enums/detail-type';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
   selector: 'rb-subject-dialog-pair-app',

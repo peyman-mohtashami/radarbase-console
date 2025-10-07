@@ -14,13 +14,8 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 
 import { AppGroup } from "../../models/group";
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {MatError} from "@angular/material/form-field";
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -28,6 +23,11 @@ import {debounceTime} from 'rxjs/operators';
 import {DialogMode} from '../../../../enums/dialog';
 import {GroupConfigService} from '../../services/group-config.service';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-organization-dialog',
@@ -40,7 +40,8 @@ import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validat
     ReactiveFormsModule,
     MatFormField,
     MatInput,
-    DialogActionsComponent, MatError
+    DialogActionsComponent,
+    MatError
   ]
 })
 export class GroupDialogComponent implements OnInit, AfterViewInit {

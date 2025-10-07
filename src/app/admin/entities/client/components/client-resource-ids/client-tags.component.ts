@@ -1,6 +1,6 @@
 import {Component, input} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
-import {TagComponent} from "../../../../components/tag/tag.component";
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-client-tags',

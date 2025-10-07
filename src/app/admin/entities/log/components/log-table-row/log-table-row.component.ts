@@ -7,7 +7,7 @@ import {AppLog} from "../../models/log";
 import {MatCard} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {TableElement} from '../../../../models/table.model';
-import {TagComponent} from '../../../../components/tag/tag.component';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-log-table-row',

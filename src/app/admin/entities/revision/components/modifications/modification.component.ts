@@ -1,9 +1,9 @@
 import {Component, input} from '@angular/core';
 import { AppRevision } from "../../models/revision";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {KeyValuePipe} from "@angular/common";
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-modification',

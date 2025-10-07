@@ -1,7 +1,7 @@
 import {Component, input} from "@angular/core";
-import {TagComponent} from "../../../../components/tag/tag.component";
 import {RadarSourceType} from '../../../source-type/models/source-type';
 import {TranslatePipe} from '@ngx-translate/core';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-project-source-types',

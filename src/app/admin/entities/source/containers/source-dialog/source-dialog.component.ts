@@ -17,13 +17,8 @@ import {
   MatSelectAutocompleteComponent,
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {ENTITY_NAME} from "../../../../enums/entities";
-import {DialogTitleComponent} from "../../../../components/base-dialog/dialog-title/dialog-title.component";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../components/base-dialog/dialog-body-description/dialog-body-description.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput} from "@angular/material/input";
-import {DialogActionsComponent} from "../../../../components/base-dialog/dialog-actions/dialog-actions.component";
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
@@ -32,6 +27,11 @@ import {SourceDialogService} from '../../services/source-dialog.service';
 import {DialogMode} from '../../../../enums/dialog';
 import {AppSource} from '../../models/source';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
+import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-source-dialog',

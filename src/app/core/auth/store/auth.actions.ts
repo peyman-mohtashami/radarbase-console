@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import {ManagementPortalUser} from '../../../shared/models/auth.model';
-// import { ManagementPortalUser } from "@rb/models";
 
 export const loginOnStartUp = createAction(
   '[Auth: AuthService #init] Set User on Startup (Login)',
