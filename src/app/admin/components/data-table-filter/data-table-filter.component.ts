@@ -10,8 +10,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { Moment } from 'moment';
-import moment from 'moment/moment';
+// import { Moment } from 'moment';
+// import moment from 'moment/moment';
 import {DateAdapter, MatOption} from '@angular/material/core';
 
 import {Store} from "@ngrx/store";
@@ -34,6 +34,7 @@ import {ValidatorError} from '../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
 import {locale} from '../../../core/locale/store/locale.selectors';
+import {isValid, parse} from 'date-fns';
 
 export interface FilterEvent {
   [key: string]: string | null | undefined;
@@ -192,30 +193,48 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
         const filterValueFrom =
           this.activatedRoute.snapshot.queryParams[filter.names[0]];
         if (filterValueFrom) {
-          const newDateFrom: Moment = moment(filterValueFrom);
-          if (newDateFrom.isValid()) {
+          // const newDateFrom: Moment = moment(filterValueFrom);
+          const parsedDateFrom = parse(filterValueFrom, 'yyyy-MM-dd', new Date());
+          if (isValid(parsedDateFrom)) {
+
+          // if (newDateFrom.isValid()) {
             noFilter = false;
-            this.form?.get([filter.names[0]])?.setValue(newDateFrom);
+            this.form?.get([filter.names[0]])?.setValue(parsedDateFrom);
+
+            // this.form?.get([filter.names[0]])?.setValue(newDateFrom);
           }
         }
         const filterValueTo =
           this.activatedRoute.snapshot.queryParams[filter.names[1]];
         if (filterValueTo) {
-          const newDateTo: Moment = moment(filterValueTo);
-          if (newDateTo.isValid()) {
+          const parsedDateTo = parse(filterValueTo, 'yyyy-MM-dd', new Date());
+
+          // const newDateTo: Moment = moment(filterValueTo);
+          if (isValid(parsedDateTo)) {
             noFilter = false;
-            this.form?.get([filter.names[1]])?.setValue(newDateTo);
+            this.form?.get([filter.names[1]])?.setValue(parsedDateTo);
           }
+
+          // if (newDateTo.isValid()) {
+          //   noFilter = false;
+          //   this.form?.get([filter.names[1]])?.setValue(newDateTo);
+          // }
         }
       } else if (filter.type === FormFieldType.DATEPICKER) {
         const filterValue =
           this.activatedRoute.snapshot.queryParams[filter.name];
         if (filterValue) {
-          const newDate: Moment = moment(filterValue);
-          if (newDate.isValid()) {
+          const parsedDate = parse(filterValue, 'yyyy-MM-dd', new Date());
+          if (isValid(parsedDate)) {
             noFilter = false;
-            this.form?.get([filter.name])?.setValue(newDate);
+            this.form?.get([filter.name])?.setValue(parsedDate);
           }
+
+          // const newDate: Moment = moment(filterValue);
+          // if (newDate.isValid()) {
+          //   noFilter = false;
+          //   this.form?.get([filter.name])?.setValue(newDate);
+          // }
         }
       } else {
         const filterValue =

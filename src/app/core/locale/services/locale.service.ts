@@ -5,7 +5,6 @@ import {select, Store} from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 
-// import { Language } from '@rb/models';
 import { LocaleActions } from '../store/action.types';
 import { LocaleStorageItem } from '../enums/locale-storage-item';
 import {locale} from "../store/locale.selectors";
@@ -17,12 +16,8 @@ import localeEnGb from '@angular/common/locales/en-GB';
 import localeNl from '@angular/common/locales/nl';
 import localeFa from '@angular/common/locales/fa';
 import {Language} from '../../../shared/models/locale.model';
-
-// Ensure Moment locales are available for the MomentDateAdapter
-import moment from 'moment';
-import 'moment/locale/en-gb';
-import 'moment/locale/nl';
-import 'moment/locale/fa';
+import {Locale} from 'date-fns';
+import {enGB, nl, faIR} from 'date-fns/locale';
 
 @Injectable({providedIn: 'root'})
 export class localeService {
@@ -42,9 +37,17 @@ export class localeService {
     fa: localeFa,
   };
 
+  // Map Angular locale codes to date-fns locales
+  private dateFnsLocaleMap: Record<string, Locale> = {
+    'en-GB': enGB,
+    'nl': nl,
+    'fa': faIR,
+  };
+
+
   /**
    * Initializes available locales and sets the app's default locale.
-   * Uses `localeConfig` from store and initializes culture settings.
+   * Uses `localeConfig` from the store and initializes culture settings.
    */
   init(): Observable<Language[]> {
     return this.store.select(localeConfig).pipe(
@@ -85,7 +88,8 @@ export class localeService {
     // Set to localStorage if not already stored
     if (!storedLang) {
       localStorage.setItem(LocaleStorageItem.LOCALE, selectedLang);
-      this.translate.setDefaultLang(selectedLang);
+      this.translate.addLangs([selectedLang]);
+      this.translate.use(selectedLang);
     }
 
     return languages.find(lang => lang.code === selectedLang) || languages[0];
@@ -118,20 +122,16 @@ export class localeService {
     // Angular i18n locale (for registerLocaleData and DateAdapter)
     const angularLocaleId = localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
     this.localeInitializer(angularLocaleId);
-    this.dateAdapter.setLocale(angularLocaleId);
 
-    // Ensure Moment uses the correct locale for the MomentDateAdapter
-    const momentLocaleId = angularLocaleId.toLowerCase(); // e.g., 'en-GB' -> 'en-gb'
-    moment.locale(momentLocaleId);
+    // Set date-fns locale for the DateAdapter
+    const dateFnsLocale = this.dateFnsLocaleMap[angularLocaleId];
+    if (dateFnsLocale) {
+      this.dateAdapter.setLocale(dateFnsLocale);
+    } else {
+      console.warn(`date-fns locale for ${angularLocaleId} not found`);
+    }
 
     this.switchLanguage(language).subscribe();
-    // this.localeInitializer(localeId).then(() => {
-    //   this.dateAdapter.setLocale(localeId);
-    //   this.switchLanguage(language).subscribe();
-    // });
-    // this.dateAdapter.setLocale(localeId);
-
-    // this.switchLanguage(language).subscribe(); // auto-trigger language switch
   }
 
   /**
@@ -147,7 +147,7 @@ export class localeService {
     );
   }
 
-  localeInitializer(localeId: string): void {
+  private localeInitializer(localeId: string): void {
     const localeData = (this.localeMap)[localeId];
     if (localeData) {
       registerLocaleData(localeData);
@@ -155,13 +155,4 @@ export class localeService {
       console.warn(`Locale ${localeId} not found`);
     }
   }
-
-  // private async localeInitializer(localeId: string): Promise<void> {
-  //   const module = await import(
-  //     /* webpackInclude: /(en-GB|en|nl|fa)\.mjs$/ */
-  //       `@angular/common/locales/${localeId}.mjs`
-  //     // `@/../node_modules/@angular/common/locales/${localeId}.mjs`
-  //     );
-  //   registerLocaleData(module.default);
-  // }
 }

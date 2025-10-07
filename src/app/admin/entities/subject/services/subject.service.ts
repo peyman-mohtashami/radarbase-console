@@ -2,11 +2,11 @@ import {inject, Injectable} from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
-// import { Moment } from 'moment';
-import moment from 'moment/moment';
+// import moment from 'moment/moment';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
 import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {isValid, parse} from 'date-fns';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
@@ -113,7 +113,8 @@ export class SubjectService {
       queryParams['dateOfBirth.is'] !== ''
     ) {
       // const newDate: Moment = moment(queryParams['dateOfBirth.is']);
-      if (moment(queryParams['dateOfBirth.is']).isValid()) {
+      if (isValid(parse(queryParams['dateOfBirth.is'], 'yyyy-MM-dd', new Date()))) {
+        // if (moment(queryParams['dateOfBirth.is']).isValid()) {
         params = params.append('dateOfBirth.is', queryParams['dateOfBirth.is']);
       }
     }
