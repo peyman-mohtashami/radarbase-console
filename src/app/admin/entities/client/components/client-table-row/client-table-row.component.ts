@@ -4,7 +4,6 @@ import {DialogMode} from "../../../../enums/dialog";
 import {TABLE_ANIMATION} from "../../../../animation";
 import {MatCard} from "@angular/material/card";
 import {RouterLink} from "@angular/router";
-import {DhmsPipe} from "../../../../pipes/dhms.pipe";
 import {ClientDetailsComponent} from "../client-details/client-details.component";
 import {MatIconButton} from "@angular/material/button";
 import {TableElement} from '../../../../models/table.model';
@@ -12,6 +11,7 @@ import {AppClient} from '../../models/client';
 import {ActionsComponent} from '../actions/actions.component';
 import {UpdateTrigger} from '../../services/client-dialog.service';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
   selector: 'rb-client-table-row',

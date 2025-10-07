@@ -3,12 +3,12 @@ import {Component, input} from '@angular/core';
 import { AppClient } from "../../models/client";
 import {ClientTagsComponent} from "../client-resource-ids/client-tags.component";
 import {MatIcon} from "@angular/material/icon";
-import {DhmsPipe} from "../../../../pipes/dhms.pipe";
 import {DialogMode} from "../../../../enums/dialog";
 import {DetailType} from "../../../../enums/detail-type";
 import {ENTITY_NAME} from "../../../../enums/entities";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {TableElement} from '../../../../models/table.model';
+import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
   selector: 'rb-client-details',

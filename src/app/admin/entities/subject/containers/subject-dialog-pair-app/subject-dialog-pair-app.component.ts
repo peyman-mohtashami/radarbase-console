@@ -23,7 +23,6 @@ import { AppClient } from "../../../client/models/client";
 import {QrCodeComponent, QrCodeModule} from "ng-qrcode";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AsyncPipe, DatePipe} from "@angular/common";
-import {DhmsPipe} from "../../../../pipes/dhms.pipe";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -43,6 +42,7 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
+import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
   selector: 'rb-subject-dialog-pair-app',

@@ -13,10 +13,10 @@ import {
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
 import {MatButton} from "@angular/material/button";
-import {FileSizePipe} from "../../../../pipes/file-size.pipe";
 import {RadarHealth} from '../../../../../shared/models/radar-health.model';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
+import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
 
 @Component({
   selector: 'rb-health-check',
@@ -31,7 +31,8 @@ import {DetailElementComponent} from '../../../../components/detail-element/deta
     TagComponent,
     DetailElementComponent,
     KeyValuePipe,
-    FileSizePipe, MatExpansionPanelHeader
+    FileSizePipe,
+    MatExpansionPanelHeader
   ]
 })
 export class HealthCheckComponent implements OnInit {

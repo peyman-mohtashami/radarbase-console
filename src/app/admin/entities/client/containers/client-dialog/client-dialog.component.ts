@@ -9,7 +9,6 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
-import {DhmsPipe} from "../../../../pipes/dhms.pipe";
 import {MatButton} from "@angular/material/button";
 import {SourceTypeConfigService} from '../../../source-type/services/source-type-config.service';
 import {DialogMode} from '../../../../enums/dialog';
@@ -21,6 +20,7 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
   selector: 'rb-client-dialog',

@@ -60,7 +60,6 @@ export interface RadarOption {
     NgxMatSelectSearchModule,
     AsyncPipe,
   ],
-  // standalone: false
 })
 export class MatSelectAutocompleteComponent
   implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy //, Validator
@@ -73,16 +72,6 @@ export class MatSelectAutocompleteComponent
   multiple = input<boolean>(false)
   required = input<boolean>(false)
   floatLabel = input<boolean>(false)
-
-  // @Input() legend?: string;
-  // @Input() label?: string;
-
-  // @Input() options: RadarOption[] = [];
-
-  // @Input() multiple = false;
-  // @Input() required = false;
-  //
-  // @Input() floatLabel = false;
 
   form: any; // = new FormControl<RadarOption[]>([]);
 
