@@ -1,11 +1,10 @@
-@if (filters?.length) {
+@if (filters$()?.length) {
   <div class='mb-2 rounded-sm px-0 mt-0'>
     @if (form) {
       <form [formGroup]="form" novalidate autocomplete="off" class='w-full flex gap-1 justify-between'>
         <div
           class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 text-base items-stretch">
-          <!--          <div class="flex gap-1 flex-wrap w-full">-->
-          @for (filter of filters; track filter) {
+          @for (filter of filters$(); track filter) {
             @if (!filter.advanced) {
                 @if (filter.type === FilterType.SELECT) {
                   <mat-form-field class="m-0! small"
@@ -90,17 +89,17 @@
         </div>
         @if (advancedFilterEnabled) {
           <div class="shrink-0">
-            <button class="flex gap-1 justify-center items-center bg-neutral-300 border-neutral-300 border-2 rounded-full px-1 py-1 text-base font-bold text-neutral-700
+            <button class="flex gap-1 justify-center items-center bg-neutral-200 border-neutral-300 border-2 rounded-full px-1 py-1 text-base font-bold text-neutral-700
                     transition duration-150 ease-in-out font-feature-default"
                     type="button"
                     [matMenuTriggerFor]="advancedFilter">
               <span class="material-symbols-outlined text-lg font-bold">filter_alt</span>
-              <span class="text-sm">Advanced Filter</span>
+<!--              <span class="text-sm">Advanced Filter</span>-->
               <span class="material-symbols-outlined text-lg font-bold">expand_more</span>
             </button>
             <mat-menu #advancedFilter="matMenu">
               <div class="text-sm p-4">
-                @for (filter of filters; track filter) {
+                @for (filter of filters$(); track filter) {
                   @if (filter.advanced) {
                     <div class="mb-4">
                       <span
@@ -176,119 +175,77 @@
     }
   </div>
 }
-<!--<mat-chip-listbox class='text-sm! mb-2 items-center px-0' aria-label="Filter selection">-->
-<!--  <mat-chip-option class="bg-accent-color! dark:bg-accent-dark-color!"-->
-<!--                   color="accent">-->
-<!--    Hello:-->
 
-<!--  </mat-chip-option>-->
-<!--</mat-chip-listbox>-->
+<div class='text-sm! text-white! mb-2 items-center px-0 flex gap-2'>
+  @for (filter of filters$(); track filter.name) {
+    @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
+      @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {
+        <rb-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="!bg-accent-color! dark:bg-accent-dark-color! relative">-->
+          {{ filter.label | translate }}
+          @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {
+            ({{ "SHARED.filter.from" | translate }}):
+            <rb-local-date [date]="fromValue" [format]="'mediumDate'"></rb-local-date>
+          }
+          @if (form?.controls?.[filter.names[1]]?.value; as toValue) {
+              ({{ "SHARED.filter.to" | translate }}):
+            <rb-local-date [date]="toValue" [format]="'mediumDate'"></rb-local-date>
+          }
+          <button (click)='removeFilter(filter)'>
+            <mat-icon>cancel</mat-icon>
+          </button>
+<!--        </div>-->
+        </rb-tag>
+      }
+    }
 
-<!--<mat-chip-listbox class='text-sm! text-white! mb-2 items-center px-0' aria-label="Filter selection">-->
-<!--  @for (filter of filters; track filter.name) {-->
-<!--    &lt;!&ndash;  <ng-container *ngFor='let filter of filters || []'>&ndash;&gt;-->
-<!--    @if (filter.type === FilterType.RANGE_PICKER && filter.names) {-->
-<!--      &lt;!&ndash;    <ng-container *ngIf='filter.type === FilterType.RANGE_PICKER && filter.names'>&ndash;&gt;-->
-<!--      @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {-->
-<!--        <mat-chip-option class="!bg-accent-color! dark:bg-accent-dark-color! relative"-->
-<!--                         color="accent">-->
-<!--          &lt;!&ndash;      <mat-chip-option class="bg-primary-color-200  relative" *ngIf='form?.get([filter.names[0]])?.value || form?.get([filter.names[1]])?.value'&ndash;&gt;-->
-<!--          &lt;!&ndash;                       color="accent"&ndash;&gt;-->
-<!--          &lt;!&ndash;                       selected>&ndash;&gt;-->
-<!--          {{ filter.label | translate }}-->
-<!--          &lt;!&ndash;        <ng-container *ngIf='form?.get([filter.names[0]])?.value as fromValue'>&ndash;&gt;-->
-<!--          @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {-->
-<!--            &lt;!&ndash;          <ng-container *ngIf='form?.controls?.[filter.names[0]]?.value as fromValue'>&ndash;&gt;-->
-<!--              ({{ "SHARED.filter.from" | translate }}):-->
-<!--            <rb-local-date [date]="fromValue" [format]="'mediumDate'"></rb-local-date>-->
-<!--            &lt;!&ndash;        </ng-container>&ndash;&gt;-->
-<!--          }-->
-<!--          &lt;!&ndash;        <ng-container *ngIf='form?.get([filter.names[1]])?.value as toValue'>&ndash;&gt;-->
-<!--          @if (form?.controls?.[filter.names[1]]?.value; as toValue) {-->
-<!--            &lt;!&ndash;        <ng-container *ngIf='form?.controls?.[filter.names[1]]?.value as toValue'>&ndash;&gt;-->
-<!--              ({{ "SHARED.filter.to" | translate }}):-->
-<!--            <rb-local-date [date]="toValue" [format]="'mediumDate'"></rb-local-date>-->
-<!--            &lt;!&ndash;        </ng-container>&ndash;&gt;-->
-<!--          }-->
-
-<!--          <button matChipRemove (click)='removeFilter(filter)'>-->
-<!--            <mat-icon>cancel</mat-icon>-->
-<!--          </button>-->
-<!--        </mat-chip-option>-->
-<!--      }-->
-<!--      &lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--    }-->
-
-<!--    @if (filter.type === FilterType.DATEPICKER) {-->
-<!--      &lt;!&ndash;    <ng-container *ngIf='filter.type === FilterType.DATEPICKER'>&ndash;&gt;-->
-<!--        &lt;!&ndash;      <mat-chip-option class="bg-primary-color-200 " *ngIf='form?.get([filter.name])?.value as value'&ndash;&gt;-->
-<!--        &lt;!&ndash;                       color="accent"&ndash;&gt;-->
-<!--        &lt;!&ndash;                       selected>&ndash;&gt;-->
-<!--      @if (form?.controls?.[filter.name]?.value; as value) {-->
-<!--        <mat-chip-option class="bg-accent-color! dark:bg-accent-dark-color!"-->
-<!--                         color="accent">-->
-<!--          {{ filter.label | translate }}:-->
-<!--          <rb-local-date [date]="value" [format]="'mediumDate'"></rb-local-date>-->
-<!--          <button matChipRemove (click)='removeFilter(filter)'>-->
-<!--            <mat-icon>cancel</mat-icon>-->
-<!--          </button>-->
-<!--        </mat-chip-option>-->
-<!--      }-->
-<!--      &lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--    }-->
-<!--    &lt;!&ndash;<div class="w-96 h-96 bg-accent-dark-color"></div>&ndash;&gt;-->
-<!--    @if (filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER) {-->
-<!--        &lt;!&ndash;    <ng-container *ngIf='filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER'>&ndash;&gt;-->
-<!--      @if (form?.controls?.[filter.name]?.value; as value) {-->
-
-<!--        <mat-chip-option class="bg-primary! flex items-center" [selectable]="false"-->
-<!--                         color="primary">-->
-<!--          &lt;!&ndash;                       class="text-white! bg-accent-color-500! dark:bg-accent-dark-color-500!"&ndash;&gt;-->
-<!--          &lt;!&ndash;      <mat-chip-option class="bg-primary-color-200"&ndash;&gt;-->
-<!--          &lt;!&ndash;                       *ngIf='form?.get(filter.name)?.value as value'&ndash;&gt;-->
-<!--          &lt;!&ndash;                       color="accent"&ndash;&gt;-->
-<!--          &lt;!&ndash;                       selected>&ndash;&gt;-->
-<!--          @if (filter.type === FilterType.SELECT) {-->
-<!--            &lt;!&ndash;        <ng-container *ngIf='filter.type === FilterType.SELECT'>&ndash;&gt;-->
-<!--            @for (option of filter?.options; track option.value) {-->
-<!--              &lt;!&ndash;          <ng-container *ngFor='let option of filter?.options || []'>&ndash;&gt;-->
-<!--              @if (option.value.toString() === value) {-->
-<!--                &lt;!&ndash;            <ng-container *ngIf='option.value.toString() === value'>&ndash;&gt;-->
-<!--                {{ filter.label | translate }}: {{ option.label | translate }}-->
-<!--                <button matChipRemove (click)='removeFilter(filter)'>-->
-<!--                  <mat-icon>cancel</mat-icon>-->
-<!--                </button>-->
-<!--                &lt;!&ndash;            </ng-container>&ndash;&gt;-->
-<!--              }-->
-<!--              &lt;!&ndash;          </ng-container>&ndash;&gt;-->
-<!--            }-->
-<!--            &lt;!&ndash;        </ng-container>&ndash;&gt;-->
-<!--          } @else {-->
-<!--            &lt;!&ndash;          @if (filter.type !== FilterType.SELECT) {&ndash;&gt;-->
-<!--              &lt;!&ndash;        <ng-container *ngIf='filter.type !== FilterType.SELECT'>&ndash;&gt;-->
-<!--            {{ filter.label | translate }}: {{ value | translate }}-->
-<!--            <button matChipRemove (click)='removeFilter(filter)'>-->
-<!--              <mat-icon>cancel</mat-icon>-->
-<!--            </button>-->
-<!--            &lt;!&ndash;        </ng-container>&ndash;&gt;-->
-<!--          }-->
-
-<!--        </mat-chip-option>-->
-<!--      }-->
-<!--      &lt;!&ndash;    </ng-container>&ndash;&gt;-->
-<!--    }-->
-<!--    &lt;!&ndash;  </ng-container>&ndash;&gt;-->
-<!--  }-->
-<!--  @if (filterEnabled) {-->
-<!--    <button mat-icon-button-->
-<!--            color='warn'-->
-<!--            class='shrink-0 filter-reset-button'-->
-<!--            [disabled]='!filterEnabled'-->
-<!--            (click)='resetFilters()'>-->
-<!--      <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>-->
-<!--    </button>-->
-<!--  }-->
-<!--</mat-chip-listbox>-->
+    @if (filter.type === FilterType.DATEPICKER) {
+      @if (form?.controls?.[filter.name]?.value; as value) {
+        <rb-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="bg-accent-color! dark:bg-accent-dark-color!">-->
+          {{ filter.label | translate }}:
+          <rb-local-date [date]="value" [format]="'mediumDate'"></rb-local-date>
+          <button (click)='removeFilter(filter)'>
+            <mat-icon>cancel</mat-icon>
+          </button>
+<!--        </div>-->
+        </rb-tag>
+      }
+    }
+    @if (filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER) {
+      @if (form?.controls?.[filter.name]?.value; as value) {
+        <rb-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="bg-primary! flex items-center">-->
+          @if (filter.type === FilterType.SELECT) {
+            @for (option of filter?.options; track option.value) {
+              @if (option.value.toString() === value) {
+                {{ filter.label | translate }}: {{ option.label | translate }}
+                <button (click)='removeFilter(filter)'>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              }
+            }
+          } @else {
+            {{ filter.label | translate }}: {{ value | translate }}
+            <button (click)='removeFilter(filter)'>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          }
+<!--        </div>-->
+        </rb-tag>
+      }
+    }
+  }
+  @if (filterEnabled) {
+    <button mat-icon-button
+            color='warn'
+            class='shrink-0 filter-reset-button'
+            [disabled]='!filterEnabled'
+            (click)='resetFilters()'>
+      <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>
+    </button>
+  }
+</div>
 
 
 <!--=================================-->

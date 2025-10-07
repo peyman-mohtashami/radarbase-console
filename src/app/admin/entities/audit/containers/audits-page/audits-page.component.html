@@ -6,8 +6,8 @@
   <!--  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {-->
   @if (tableFilters.length) {
     <rb-data-table-filter bottom-filter
-                          [filters]='tableFilters'
-                          [filterOpened]='isFilterOpened'
+                          [filters$]='tableFilters'
+                          [filterOpened$]='isFilterOpened'
                           (filterChanged)='handleFilterChange($event)'
                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }

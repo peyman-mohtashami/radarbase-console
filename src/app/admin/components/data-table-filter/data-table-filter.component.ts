@@ -1,22 +1,20 @@
 import {
   Component,
-  EventEmitter,
-  Input,
+  inject,
+  input,
   OnDestroy,
   OnInit,
-  Output,
+  output,
 } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-// import { Moment } from 'moment';
-// import moment from 'moment/moment';
+import {Subject} from 'rxjs';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import {DateAdapter, MatOption} from '@angular/material/core';
 
 import {Store} from "@ngrx/store";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput, MatLabel, MatPrefix, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -25,16 +23,16 @@ import {
   MatDateRangePicker, MatEndDate, MatStartDate
 } from "@angular/material/datepicker";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
-import {MatChip, MatChipGrid, MatChipListbox, MatChipOption, MatChipRow, MatChipSet} from "@angular/material/chips";
 import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
+import {MatIconButton} from "@angular/material/button";
 import {ValidatorError} from '../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
 import {locale} from '../../../core/locale/store/locale.selectors';
 import {isValid, parse} from 'date-fns';
+import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
+import {TagComponent} from '../../../shared/components/tag/tag.component';
 
 export interface FilterEvent {
   [key: string]: string | null | undefined;
@@ -59,60 +57,50 @@ export interface FilterEvent {
     MatMenuTrigger,
     MatMenu,
     MatFormField,
-    // MatChipListbox,
-    // MatChipOption,
     MatIconButton,
-    MatEndDate, MatStartDate, MatSuffix,
-    // LocalDateComponent, MatChipSet, MatChip, MatChipGrid, MatChipRow, MatButton, MatLabel,
+    MatEndDate,
+    MatStartDate,
+    MatSuffix,
     MatPrefix,
+    LocalDateComponent,
+    TagComponent,
   ]
 })
 export class DataTableFilterComponent implements OnInit, OnDestroy {
   protected readonly ValidatorError = ValidatorError;
+  protected readonly FilterType = FormFieldType;
 
-  FilterType = FormFieldType;
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private store = inject(Store);
+  private dateAdapter = inject(DateAdapter<any>);
 
-  @Output() filterChanged: EventEmitter<FilterEvent> =
-    new EventEmitter<FilterEvent>();
+  filters$ = input<FilterItem[]>([]);
+  filterOpened$ = input<boolean>(true);
 
-  @Output() filterEnableChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  @Input() filters?: FilterItem[];
+  filterChanged = output<FilterEvent>();
+  filterEnableChanged = output<boolean>();
 
   form?: FormGroup;
 
   filterEnabled = false;
 
-  _destroy$: Subject<void> = new Subject<void>();
-
-  _isFilterOpened = true;
-  @Input() set filterOpened(value: boolean) {
-    this._isFilterOpened = value;
-  }
-
   dateFormat = 'mm/dd/yyy';
   advancedFilterEnabled = false;
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private store: Store,
-    private dateAdapter?: DateAdapter<any>
-  ) {}
+  _destroy$: Subject<void> = new Subject<void>();
 
   ngOnInit(): void {
-    this.advancedFilterEnabled = !!this.filters?.find(
-      (filter) => filter.advanced
-    );
+    this.advancedFilterEnabled = !!this.filters$()?.find(filter => filter.advanced);
 
     this.store.select(locale).pipe(
       takeUntil(this._destroy$)
     ).subscribe((locale) => {
-        this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
-        this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
+      this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
+      this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
     });
 
-    const filterGroup = this.filters?.reduce(
+    const filterGroup = this.filters$()?.reduce(
       (acc: { [key: string]: FormControl }, filterItem: FilterItem) => {
         if (
           filterItem.type === FormFieldType.RANGE_PICKER &&
@@ -132,8 +120,8 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
     this.form?.valueChanges
       .pipe(debounceTime(300), takeUntil(this._destroy$))
       .subscribe(() => {
-        const formValue = { ...this.form?.value };
-        this.filters?.map((filter) => {
+        const formValue = {...this.form?.value};
+        this.filters$()?.map((filter) => {
           if (filter.type === FormFieldType.DATEPICKER && filter.name) {
             if (formValue[filter.name]) {
               formValue[filter.name] =
@@ -188,20 +176,15 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   private checkActiveFilterQuery(): void {
     // todo patch or set
     let noFilter = true;
-    this.filters?.map((filter) => {
+    this.filters$()?.map((filter) => {
       if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
         const filterValueFrom =
           this.activatedRoute.snapshot.queryParams[filter.names[0]];
         if (filterValueFrom) {
-          // const newDateFrom: Moment = moment(filterValueFrom);
           const parsedDateFrom = parse(filterValueFrom, 'yyyy-MM-dd', new Date());
           if (isValid(parsedDateFrom)) {
-
-          // if (newDateFrom.isValid()) {
             noFilter = false;
             this.form?.get([filter.names[0]])?.setValue(parsedDateFrom);
-
-            // this.form?.get([filter.names[0]])?.setValue(newDateFrom);
           }
         }
         const filterValueTo =
@@ -209,16 +192,10 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
         if (filterValueTo) {
           const parsedDateTo = parse(filterValueTo, 'yyyy-MM-dd', new Date());
 
-          // const newDateTo: Moment = moment(filterValueTo);
           if (isValid(parsedDateTo)) {
             noFilter = false;
             this.form?.get([filter.names[1]])?.setValue(parsedDateTo);
           }
-
-          // if (newDateTo.isValid()) {
-          //   noFilter = false;
-          //   this.form?.get([filter.names[1]])?.setValue(newDateTo);
-          // }
         }
       } else if (filter.type === FormFieldType.DATEPICKER) {
         const filterValue =
@@ -229,12 +206,6 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
             noFilter = false;
             this.form?.get([filter.name])?.setValue(parsedDate);
           }
-
-          // const newDate: Moment = moment(filterValue);
-          // if (newDate.isValid()) {
-          //   noFilter = false;
-          //   this.form?.get([filter.name])?.setValue(newDate);
-          // }
         }
       } else {
         const filterValue =
@@ -253,13 +224,5 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   private applyStateChangesToUrlQueryParams(queryParams: Params): void {
     const currentUrlSegments = this.router.url.split('?')[0];
     this.router.navigate([currentUrlSegments], {queryParams: queryParams}).then();
-    // this.router
-    //   .navigate([], {
-    //     replaceUrl: true,
-    //     queryParams: queryParams,
-    //     queryParamsHandling: 'merge',
-    //     fragment: this.activatedRoute.snapshot.fragment ?? undefined,
-    //   })
-    //   .then();
   }
 }

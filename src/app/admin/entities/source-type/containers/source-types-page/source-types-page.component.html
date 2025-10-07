@@ -7,8 +7,8 @@
   <!--                         (gridListToggled)="gridView = !gridView">-->
   @if (tableFilters.length && entities$().length > MIN_ENTITIES_FOR_FILTERS) {
     <rb-data-table-filter bottom-filter
-                          [filters]='tableFilters'
-                          [filterOpened]='isFilterOpened'
+                          [filters$]='tableFilters'
+                          [filterOpened$]='isFilterOpened'
                           (filterChanged)='switchFilter($event)'
                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }

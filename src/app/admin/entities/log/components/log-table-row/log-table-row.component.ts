@@ -33,7 +33,15 @@ export class LogTableRowComponent {
   updated$ = signal(false);
   gridView = input<boolean>(false);
 
-  updateAction(appLog: AppLog, trace: string) {
-    //TODO
+  updateAction(log: AppLog, level: string) {
+  //   const updatedLog = {
+  //     id: log.id,
+  //     name: log.name,
+  //     level,
+  //   };
+  //   this.update(updatedLog).subscribe({
+  //     next: () => this.updateTrigger$.next(updatedLog.name || '0'),
+  //     error: (err) => console.log(err),
+  //   });
   }
 }

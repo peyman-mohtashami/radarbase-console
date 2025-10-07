@@ -1,13 +1,7 @@
-import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { DialogMode } from "../enums/dialog";
+import {Directive, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import {DialogMode} from "../enums/dialog";
 import {PageEvent} from "@angular/material/paginator";
-
-// export interface RbPage {
-//   pageIndex: number;
-//   pageSize: number;
-//   // length: number;
-// }
 
 export type RbSortOrder = 'asc' | 'desc' | '';
 
@@ -27,7 +21,7 @@ export interface DialogQuery {
 }
 
 @Directive({
-    selector: '[rbTableQueryReflector]',
+  selector: '[rbTableQueryReflector]',
 })
 export class TableQueryReflectorDirective implements OnInit {
   _page?: PageEvent;
@@ -52,7 +46,7 @@ export class TableQueryReflectorDirective implements OnInit {
   }
 
   @Input() defaultPageSize = 20;
-  @Input() defaultSort = { sortField: 'id', sortOrder: 'desc' };
+  @Input() defaultSort = {sortField: 'id', sortOrder: 'desc'};
 
   // @Output() pageChanged: EventEmitter<PageEvent> = new EventEmitter<PageEvent>(); //!
   // @Output() sortChanged: EventEmitter<RbSort> = new EventEmitter<RbSort>(); //!
@@ -61,7 +55,8 @@ export class TableQueryReflectorDirective implements OnInit {
 
   @Output() dialogQueryParams: EventEmitter<DialogQuery> = new EventEmitter<DialogQuery>();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     // this.listenToStateChangeEvents();
@@ -71,7 +66,7 @@ export class TableQueryReflectorDirective implements OnInit {
   private checkActiveQuery(): void {
     this.checkActiveSortQuery();
     this.checkActivePageQuery();
-    if(this._page && this._sort) {
+    if (this._page && this._sort) {
       this.activeQueryParams.emit({page: this._page, sort: this._sort});
     }
     // this.checkActiveDialogQuery();
@@ -104,13 +99,16 @@ export class TableQueryReflectorDirective implements OnInit {
   // }
 
   private checkActivePageQuery(): void {
-    const { pageSize, pageIndex } = this.activatedRoute.snapshot.queryParams;
+    const {pageSize, pageIndex} = this.activatedRoute.snapshot.queryParams;
     this._page = {pageIndex: +(pageIndex ?? 0), pageSize: +(pageSize ?? this.defaultPageSize), length: 0};
   }
 
   private checkActiveSortQuery(): void {
-    const { sortField, sortOrder } = this.activatedRoute.snapshot.queryParams;
-    this._sort = {sortField: sortField ?? this.defaultSort.sortField, sortOrder: sortOrder ?? this.defaultSort.sortOrder};
+    const {sortField, sortOrder} = this.activatedRoute.snapshot.queryParams;
+    this._sort = {
+      sortField: sortField ?? this.defaultSort.sortField,
+      sortOrder: sortOrder ?? this.defaultSort.sortOrder
+    };
   }
 
   // private listenToStateChangeEvents(): void {
@@ -155,7 +153,11 @@ export class TableQueryReflectorDirective implements OnInit {
   // }
 
   private applyStateChangesToUrlQueryParams(queryParams: Params): void {
-    const currentUrlSegments = this.router.url.split('?')[0];
-    this.router.navigate([currentUrlSegments], {queryParams: queryParams}).then();
+    this.router.navigate([], {
+      replaceUrl: true,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+      fragment: this.activatedRoute.snapshot.fragment ?? undefined,
+    }).then();
   }
 }
