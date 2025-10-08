@@ -42,6 +42,10 @@ export const organizationRoutes: Routes = [
         path: 'details',
         component: OrganizationDetailsPageComponent,
       },
+      {
+        path: '**',
+        redirectTo: 'projects',
+      }
     ],
   }
 ];

@@ -51,6 +51,6 @@
     }
   </div>
   <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
-    <rb-user-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()"/>
+    <rb-permission-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()" [organizationName$]="organizationName$()" [projectName$]="projectName$()"/>
   </div>
 </mat-card>

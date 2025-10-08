@@ -122,6 +122,10 @@ export const adminRoutes: Routes = [
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
+      {
+        path: '**',
+        redirectTo: ROUTES.PROJECTS,
+      }
     ],
   }
 ];

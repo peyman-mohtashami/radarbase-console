@@ -1,27 +1,27 @@
 <div class="flex flex-wrap gap-1">
-@if (roles$(); as roles) {
-  @if (roles["_sysAdmin"]) {
-    <rb-tag class="bg-primary text-white">SYS_ADMIN</rb-tag>
-  }
+  @if (roles$(); as roles) {
+    @if (roles["_sysAdmin"]) {
+      <rb-tag class="bg-primary text-white">SYS_ADMIN</rb-tag>
+    }
 
-  @if(roles["_organizationAdmin"]) {
-    @for (organization of roles['_organizations']; track organization.id) {
-      @if (organization["name"] === organization$()) {
-      <rb-tag class="bg-secondary text-white">
-        ORGANIZATION_ADMIN: {{organization["name"]}}
-      </rb-tag>
+    @if (roles["_organizationAdmin"]) {
+      @for (organization of roles['_organizations']; track organization.id) {
+        @if (organization["name"] === organization$()) {
+          <rb-tag class="bg-secondary text-white">
+            ORGANIZATION_ADMIN: {{ organization["name"] }}
+          </rb-tag>
+        }
+      }
+    }
+
+    @if (roles["_projectAdmin"]) {
+      @for (project of roles['_projects']; track project.id) {
+        @if (project["name"] === project$()) {
+          <rb-tag class="bg-tertiary text-white">
+            PROJECT_ADMIN: {{ project["name"] }}
+          </rb-tag>
+        }
       }
     }
   }
-
-  @if (roles["_projectAdmin"]) {
-    @for (project of roles['_projects']; track project.id) {
-      @if (project["name"] === project$()) {
-      <rb-tag class="bg-tertiary text-white">
-        PROJECT_ADMIN: {{project["name"]}}
-      </rb-tag>
-      }
-    }
-  }
-}
 </div>

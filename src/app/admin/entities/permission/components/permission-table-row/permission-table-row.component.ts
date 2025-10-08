@@ -12,6 +12,7 @@ import {PermissionRolesComponent} from '../permission-roles/permission-roles.com
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
 import {ActivateComponent} from '../../../user/components/activate/activate.component';
 import {UserDetailsComponent} from '../../../user/components/user-details/user-details.component';
+import {PermissionDetailsComponent} from '../permission-details/permission-details.component';
 
 @Component({
   selector: 'rb-permission-table-row',
@@ -25,6 +26,7 @@ import {UserDetailsComponent} from '../../../user/components/user-details/user-d
     PermissionRolesComponent,
     ActivateComponent,
     UserDetailsComponent,
+    PermissionDetailsComponent,
   ]
 })
 export class PermissionTableRowComponent {

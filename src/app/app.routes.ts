@@ -8,5 +8,5 @@ export const routes: Routes = [
       import('./admin/admin.routes').then((m) => m.adminRoutes),
     canActivate: [authGuard],
   },
-  // { path: '**', redirectTo: 'admin' },
+  { path: '**', redirectTo: 'admin' },
 ];
