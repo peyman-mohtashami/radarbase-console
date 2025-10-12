@@ -83,6 +83,11 @@ export class SubjectConfigService {
       map((c: ConfigState) => c.entities[ENTITY_NAME.subject]?.['fields'])
     ), { initialValue: {} });
 
+  extraFields$ = toSignal(
+    this.store.select(instanceConfig).pipe(
+      map((c: ConfigState) => c.entities[ENTITY_NAME.subject]?.['extraFields'])
+    ), { initialValue: {} });
+
   getFormFields(): Record<string, boolean> {
     return this.config$();
   }
@@ -99,5 +104,9 @@ export class SubjectConfigService {
 
   getTableFilters() {
     return filters.filter(f => this.config$()?.[f.name] !== false);
+  }
+
+  getExtraFields() {
+    return this.extraFields$();
   }
 }

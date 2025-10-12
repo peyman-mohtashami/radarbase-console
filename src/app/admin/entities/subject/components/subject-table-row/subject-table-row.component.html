@@ -57,6 +57,9 @@
             <rb-subject-status [status]="entity$().status"/>
           }
           @case ('sources') {
+            @for (source of entity$().sources; track source.id) {
+              <rb-tag class="bg-primary/10 text-primary">{{source.sourceName}}</rb-tag>
+            }
 <!--            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">-->
 <!--              @for (source of entity$().sources; track source.id) {-->
 <!--                <button (click)="openSourceDialog(entity$(), source, 0)">-->

@@ -19,6 +19,8 @@ import {ActionsComponent} from '../actions/actions.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
+import {JsonPipe} from '@angular/common';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'rb-subject-table-row',
@@ -36,6 +38,8 @@ import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
     ActionsComponent,
     TruncatePipe,
     MatTooltip,
+    JsonPipe,
+    TagComponent,
   ]
 })
 export class SubjectTableRowComponent {

@@ -20,13 +20,14 @@
                                 [options]="_options()" [required]="field().validators.requiredValidator" />
   }
   @default {
-    @if(!floatLabel()) {
+<!--    @if(!floatLabel()) {-->
       <label [for]="field.name" class="text-sm">{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</label>
-    }
-    <mat-form-field appearance='outline' [floatLabel]='floatLabel() ? "always" : "auto"'>
-      @if(floatLabel()) {
-        <mat-label>{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</mat-label>
-      }
+<!--    }-->
+    <mat-form-field appearance='outline'>
+<!--    [floatLabel]='floatLabel() ? "always" : "auto"'>-->
+<!--      @if(floatLabel()) {-->
+<!--        <mat-label>{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</mat-label>-->
+<!--      }-->
 
       @switch (field().type) {
         @case ('text') {
@@ -55,8 +56,8 @@
                  [formControl]="form"
                  [min]="field().minDate | toDate" [max]="field().maxDate | toDate"
                  [placeholder]="dateFormat" />
-          <mat-datepicker-toggle matSuffix [for]='datePicker'></mat-datepicker-toggle>
-          <mat-datepicker #datePicker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]='datePicker' />
+          <mat-datepicker #datePicker/>
         }
         @case ('simpleSelect') {
           <mat-select [formControl]="form">

@@ -213,8 +213,125 @@ html {
   --mat-app-elevation-shadow-level-24: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12)
 }
 
+// AUTOCOMPLETE XXX
+html {
+  //container-shape // md-sys-shape, corner-extra-small
+  //container-elevation-shadow // token-definition.hardcode(elevation.get-box-shadow(2), $exclude-hardcoded)
+  //background-color // md-sys-color, surface-container
+
+  --mat-autocomplete-container-shape: 4px;
+  --mat-autocomplete-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  --mat-autocomplete-background-color: var(--rb-background); //white
+}
+
+// BADGE XXX
+html {
+  //--mat-badge-container-offset //, -12px 0
+  //--mat-badge-container-overlap-offset, -12px
+  //--mat-badge-container-padding = 0 4px
+  //--mat-badge-container-shape, var(--mat-sys-corner-full));
+  //--mat-badge-container-size, 16px
+  //--mat-badge-large-size-container-offset, -12px 0
+  //--mat-badge-large-size-container-overlap-offset, -12px
+  //--mat-badge-large-size-container-padding, 0 4px
+  //--mat-badge-large-size-container-size, 16px
+  //--mat-badge-legacy-container-size // unset
+  //--mat-badge-legacy-large-size-container-size, unset
+  //--mat-badge-legacy-large-size-container-size
+  //--mat-badge-legacy-small-size-container-size // unset
+  //--mat-badge-small-size-container-offset // -6px 0
+  //--mat-badge-small-size-container-overlap-offset, -6px
+  //--mat-badge-small-size-container-padding // 0
+  //--mat-badge-small-size-container-size // 6px
+  //--mat-badge-background-color, var(--mat-sys-error)
+  ////disabled-state-background-color
+  ////disabled-state-text-color
+  //--mat-badge-text-color, var(--mat-sys-on-error)
+  //--mat-badge-large-size-line-height, 16px
+  //--mat-badge-large-size-text-size, var(--mat-sys-label-small-size)
+  //--mat-badge-line-height // 16px
+  //--mat-badge-small-size-line-height // 6px
+  //--mat-badge-small-size-text-size // 0
+  //--mat-badge-text-font, var(--mat-sys-label-small-font));
+  //--mat-badge-text-size // --mat-sys-label-small-size
+  //--mat-badge-text-weight, var(--mat-sys-label-small-weight));
+
+
+  --mat-badge-container-shape: 50%;
+  --mat-badge-container-size: unset;
+  --mat-badge-small-size-container-size: unset;
+  --mat-badge-large-size-container-size: unset;
+  --mat-badge-legacy-container-size: 22px;
+  --mat-badge-legacy-small-size-container-size: 16px;
+  --mat-badge-legacy-large-size-container-size: 28px;
+  --mat-badge-container-offset: -11px 0;
+  --mat-badge-small-size-container-offset: -8px 0;
+  --mat-badge-large-size-container-offset: -14px 0;
+  --mat-badge-container-overlap-offset: -11px;
+  --mat-badge-small-size-container-overlap-offset: -8px;
+  --mat-badge-large-size-container-overlap-offset: -14px;
+  --mat-badge-container-padding: 0;
+  --mat-badge-small-size-container-padding: 0;
+  --mat-badge-large-size-container-padding: 0;
+  --mat-badge-background-color: rgba(var(--rb-primary-rgb), 1); /*#673ab7;*/
+  --mat-badge-text-color: rgba(var(--rb-on-primary-rgb), 1); /*white;*/
+  --mat-badge-disabled-state-background-color: #b9b9b9;
+  --mat-badge-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38); //rgba(0, 0, 0, 0.38);
+
+  .mat-badge-accent {
+    --mat-badge-background-color: rgba(var(--rb-accent-rgb), 1); /*#ffd740;*/
+    --mat-badge-text-color: rgba(0, 0, 0, 0.87)
+  }
+
+  .mat-badge-warn {
+    --mat-badge-background-color: #f44336;
+    --mat-badge-text-color: white
+  }
+
+  /*  --mat-badge-text-font: Roboto, sans-serif;*/
+  /*  --mat-badge-line-height: 22px;*/
+  /*  --mat-badge-text-size: 12px;*/
+  /*  --mat-badge-text-weight: 600;*/
+  /*  --mat-badge-small-size-text-size: 9px;*/
+  /*  --mat-badge-small-size-line-height: 16px;*/
+  /*  --mat-badge-large-size-text-size: 24px;*/
+  /*  --mat-badge-large-size-line-height: 28px*/
+}
+
+// BOTTOM SHEET +
+html {
+  //--mat-bottom-sheet-container-shape, 28px
+  //--mat-bottom-sheet-container-text-color, var(--mat-sys-on-surface)
+  //--mat-bottom-sheet-container-background-color, var(--mat-sys-surface-container-low)
+  //--mat-bottom-sheet-container-text-font, var(--mat-sys-body-large-font)
+  //--mat-bottom-sheet-container-text-line-height, var(--mat-sys-body-large-line-height)
+  //--mat-bottom-sheet-container-text-size, var(--mat-sys-body-large-size)
+  //--mat-bottom-sheet-container-text-tracking, var(--mat-sys-body-large-tracking)
+  //--mat-bottom-sheet-container-text-weight, var(--mat-sys-body-large-weight)
+
+
+  --mat-bottom-sheet-container-shape: 4px;
+  --mat-bottom-sheet-container-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
+  --mat-bottom-sheet-container-background-color: var(--rb-background); //white
+  /*  --mat-bottom-sheet-container-text-font: Roboto, sans-serif;*/
+  /*  --mat-bottom-sheet-container-text-line-height: 20px;*/
+  /*  --mat-bottom-sheet-container-text-size: 14px;*/
+  /*  --mat-bottom-sheet-container-text-tracking: 0.0178571429em;*/
+  /*  --mat-bottom-sheet-container-text-weight: 400*/
+}
+
 // OPTIONS (OK-FIXED)
 html {
+  //--mat-option-focus-state-layer-color //, color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent));
+  //--mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--mat-option-selected-state-label-text-color, var(--mat-sys-on-secondary-container));
+  //  --mat-pseudo-checkbox-full-unselected-icon-color, var(--mat-sys-on-surface-variant));
+  //    --mat-option-label-text-color, var(--mat-sys-on-surface));
+  //    --mat-option-label-text-font, var(--mat-sys-label-large-font));
+  //    --mat-option-label-text-line-height, var(--mat-sys-label-large-line-height));
+  //    --mat-option-label-text-size, var(--mat-sys-body-large-size));
+  //    --mat-option-label-text-tracking, var(--mat-sys-label-large-tracking));
+  //    --mat-option-label-text-weight, var(--mat-sys-body-large-weight));
+
   --mat-option-selected-state-label-text-color: rgba(var(--rb-primary-rgb), 1); /*#673ab7*/
   --mat-option-label-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
   --mat-option-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04); //rgba(0, 0, 0, 0.04);
@@ -330,8 +447,31 @@ html {
 //  }
 //}
 
-// CARD (OK-FIXED)
+// CARD (OK-FIXED) checked!
 html {
+  //--mat-card-elevated-container-shape // --mat-sys-corner-medium
+  //--mat-card-filled-container-shape
+  //--mat-card-outlined-container-shape // --mat-sys-corner-medium
+  //--mat-card-outlined-outline-width // 1px
+  //--mat-card-elevated-container-color // --mat-sys-surface-container-low
+  //--mat-card-elevated-container-elevation // --mat-sys-level1
+  //--mat-card-filled-container-color
+  //--mat-card-filled-container-elevation
+  //--mat-card-outlined-container-color //--mat-sys-surface
+  //--mat-card-outlined-container-elevation // --mat-sys-level0
+  //--mat-card-outlined-outline-color // --mat-sys-outline-variant
+  //--mat-card-subtitle-text-color // --mat-sys-on-surface
+  //--mat-card-subtitle-text-font // --mat-sys-title-medium-font
+  //--mat-card-subtitle-text-line-height // --mat-sys-title-medium-line-height
+  //--mat-card-subtitle-text-size // --mat-sys-title-medium-size
+  //--mat-card-subtitle-text-tracking // --mat-sys-title-medium-tracking
+  //--mat-card-subtitle-text-weight // --mat-sys-title-medium-weight
+  //--mat-card-title-text-font // --mat-sys-title-large-font
+  //--mat-card-title-text-line-height // --mat-sys-title-large-line-height
+  //--mat-card-title-text-size // --mat-sys-title-large-size
+  //--mat-card-title-text-tracking // --mat-sys-title-large-tracking
+  //--mat-card-title-text-weight // --mat-sys-title-large-weight
+
   --mat-card-elevated-container-shape: 4px;
   --mat-card-outlined-container-shape: 4px;
   --mat-card-filled-container-shape: 4px;
@@ -345,8 +485,14 @@ html {
   --mat-card-subtitle-text-color: rgba(var(--rb-foreground-rgb), 0.54); //rgba(0, 0, 0, 0.54);
 }
 
-// PROGRESS BAR
+// PROGRESS BAR - checked
 html {
+  //--mat-progress-active-indicator-height // 4px
+  //--mat-progress-track-height // 4px
+  //--mat-progress-track-shape // --mat-sys-corner-none
+  //--mat-progress-active-indicator-color // --mat-sys-primary
+  //--mat-progress-track-color // --mat-sys-surface-variant
+
   --mdc-linear-progress-active-indicator-height: 4px;
   --mdc-linear-progress-track-height: 4px;
   --mdc-linear-progress-track-shape: 0;
@@ -366,8 +512,17 @@ html {
   }
 }
 
-// TOOLTIP
+// TOOLTIP - checked
 html {
+  //--mat-tooltip-container-color // --mat-sys-inverse-surface
+  //--mat-tooltip-container-shape // --mat-sys-corner-extra-small
+  //--mat-tooltip-supporting-text-color // --mat-sys-inverse-on-surface
+  //--mat-tooltip-supporting-text-font // --mat-sys-body-small-font
+  //--mat-tooltip-supporting-text-line-height // --mat-sys-body-small-line-height
+  //--mat-tooltip-supporting-text-size // --mat-sys-body-small-size
+  //--mat-tooltip-supporting-text-tracking // --mat-sys-body-small-tracking
+  //--mat-tooltip-supporting-text-weight // --mat-sys-body-small-weight
+
   --mdc-plain-tooltip-container-shape: 4px;
   --mdc-plain-tooltip-supporting-text-line-height: 16px;
   --mdc-plain-tooltip-container-color: var(--rb-accent);// #616161;
@@ -429,6 +584,95 @@ html {
 
 // FORM FIELD (OK)
 html {
+  //filled-active-indicator-height
+  //filled-focus-active-indicator-height
+  //filled-container-shape
+  //outlined-outline-width
+  //outlined-focus-outline-width
+  //outlined-container-shape
+  //disabled-input-text-placeholder-color
+  //disabled-leading-icon-color
+  //disabled-select-arrow-color
+  //disabled-trailing-icon-color
+  //enabled-select-arrow-color
+  //error-focus-trailing-icon-color
+  //error-hover-trailing-icon-color
+  //error-text-color
+  //error-trailing-icon-color
+  //filled-active-indicator-color
+  //filled-caret-color
+  //filled-container-color
+  //filled-disabled-active-indicator-color
+  //filled-disabled-container-color
+  //filled-disabled-input-text-color
+  //filled-disabled-label-text-color
+  //filled-error-active-indicator-color
+  //filled-error-caret-color
+  //filled-error-focus-active-indicator-color
+  //filled-error-focus-label-text-color
+  //filled-error-hover-active-indicator-color
+  //filled-error-hover-label-text-color
+  //filled-error-label-text-color
+  //filled-focus-active-indicator-color
+  //filled-focus-label-text-color
+  //filled-hover-active-indicator-color
+  //filled-hover-label-text-color
+  //filled-input-text-color
+  //filled-input-text-placeholder-color
+  //filled-label-text-color
+  //focus-select-arrow-color
+  //focus-state-layer-opacity
+  //hover-state-layer-opacity
+  //leading-icon-color
+  //outlined-caret-color
+  //outlined-disabled-input-text-color
+  //outlined-disabled-label-text-color
+  //outlined-disabled-outline-color
+  //outlined-error-caret-color
+  //outlined-error-focus-label-text-color
+  //outlined-error-focus-outline-color
+  //outlined-error-hover-label-text-color
+  //outlined-error-hover-outline-color
+  //outlined-error-label-text-color
+  //outlined-error-outline-color
+  //outlined-focus-label-text-color
+  //outlined-focus-outline-color
+  //outlined-hover-label-text-color
+  //outlined-hover-outline-color
+  //outlined-input-text-color
+  //outlined-input-text-placeholder-color
+  //outlined-label-text-color
+  //outlined-outline-color
+  //select-disabled-option-text-color
+  //select-option-text-color
+  //state-layer-color
+  //trailing-icon-color
+  //container-text-font
+  //container-text-line-height
+  //container-text-size
+  //container-text-tracking
+  //container-text-weight
+  //subscript-text-font
+  //subscript-text-line-height
+  //subscript-text-size
+  //subscript-text-tracking
+  //subscript-text-weight
+  //outlined-label-text-font
+  //outlined-label-text-size
+  //outlined-label-text-tracking
+  //outlined-label-text-weight
+  //filled-label-text-font
+  //filled-label-text-size
+  //filled-label-text-tracking
+  //filled-label-text-weight
+  //outlined-label-text-populated-size
+  //container-height
+  //filled-label-display
+  //container-vertical-padding
+  //filled-with-label-container-padding-top
+  //filled-with-label-container-padding-bottom
+
+
   --mat-form-field-filled-active-indicator-height: 1px;
   --mat-form-field-filled-focus-active-indicator-height: 2px;
   --mat-form-field-filled-container-shape: 4px;
@@ -594,6 +838,22 @@ html {
 
 // SELECT (OK)
 html {
+  //container-elevation-shadow
+  //panel-background-color
+  //enabled-trigger-text-color
+  //disabled-trigger-text-color
+  //placeholder-text-color
+  //enabled-arrow-color
+  //disabled-arrow-color
+  //focused-arrow-color
+  //invalid-arrow-color
+  //trigger-text-font
+  //trigger-text-line-height
+  //trigger-text-size
+  //trigger-text-tracking
+  //trigger-text-weight
+  //arrow-transform
+
   --mat-select-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 
   --mat-select-panel-background-color: var(--rb-background); //white;
@@ -630,15 +890,34 @@ html {
   --mat-select-arrow-transform: translateY(-8px);
 }
 
-// AUTOCOMPLETE (OK)
-html {
-  --mat-autocomplete-container-shape: 4px;
-  --mat-autocomplete-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  --mat-autocomplete-background-color: var(--rb-background); //white
-}
+
 
 // DIALOG (OK)
 html {
+  //actions-alignment
+  //actions-padding
+  //container-elevation-shadow
+  //container-max-width
+  //container-min-width
+  //container-shape
+  //container-small-max-width
+  //content-padding
+  //headline-padding
+  //with-actions-content-padding
+  //container-color
+  //subhead-color
+  //supporting-text-color
+  //subhead-font
+  //subhead-line-height
+  //subhead-size
+  //subhead-tracking
+  //subhead-weight
+  //supporting-text-font
+  //supporting-text-line-height
+  //supporting-text-size
+  //supporting-text-tracking
+  //supporting-text-weight
+
   --mat-dialog-container-shape: 4px;
   --mat-dialog-container-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
   --mat-dialog-container-max-width: 80vw;
@@ -684,6 +963,54 @@ html {
 
 // CHIP
 html {
+  //container-shape-radius
+  //disabled-container-opacity
+  //elevated-container-color
+  //flat-selected-outline-width
+  //outline-width
+  //trailing-action-focus-opacity
+  //trailing-action-opacity
+  //with-avatar-avatar-shape-radius
+  //with-avatar-avatar-size
+  //with-avatar-disabled-avatar-opacity
+  //with-icon-disabled-icon-opacity
+  //with-icon-icon-size
+  //with-trailing-icon-disabled-trailing-icon-opacity
+  //disabled-label-text-color
+  //disabled-outline-color
+  //elevated-selected-container-color
+  //flat-disabled-selected-container-color
+  //focus-outline-color
+  //focus-state-layer-color
+  //focus-state-layer-opacity
+  //hover-state-layer-color
+  //hover-state-layer-opacity
+  //label-text-color
+  //outline-color
+  //selected-disabled-trailing-icon-color
+  //selected-focus-state-layer-color
+  //selected-focus-state-layer-opacity
+  //selected-hover-state-layer-color
+  //selected-hover-state-layer-opacity
+  //selected-label-text-color
+  //selected-trailing-action-state-layer-color
+  //selected-trailing-icon-color
+  //trailing-action-focus-state-layer-opacity
+  //trailing-action-hover-state-layer-opacity
+  //trailing-action-state-layer-color
+  //with-icon-disabled-icon-color
+  //with-icon-icon-color
+  //with-icon-selected-icon-color
+  //with-trailing-icon-disabled-trailing-icon-color
+  //with-trailing-icon-trailing-icon-color
+  //elevated-disabled-container-color
+  //label-text-font
+  //label-text-line-height
+  //label-text-size
+  //label-text-tracking
+  //label-text-weight
+  //container-height
+
   .mat-mdc-standard-chip {
     --mdc-chip-container-shape-radius: 16px;
     --mdc-chip-with-avatar-avatar-shape-radius: 14px;
@@ -807,6 +1134,90 @@ html {
 
 // SWITCH
 html {
+  //disabled-selected-handle-opacity
+  //disabled-selected-icon-opacity
+  //disabled-track-opacity
+  //disabled-unselected-handle-opacity
+  //disabled-unselected-icon-opacity
+  //disabled-unselected-track-outline-width
+  //handle-shape
+  //hidden-track-opacity
+  //hidden-track-transition
+  //pressed-handle-size
+  //selected-handle-horizontal-margin
+  //selected-handle-size
+  //selected-icon-size
+  //selected-pressed-handle-horizontal-margin
+  //selected-track-outline-color
+  //selected-track-outline-width
+  //selected-with-icon-handle-horizontal-margin
+  //state-layer-size
+  //track-height
+  //track-outline-width
+  //track-shape
+  //track-width
+  //unselected-handle-horizontal-margin
+  //unselected-handle-size
+  //unselected-icon-size
+  //unselected-pressed-handle-horizontal-margin
+  //unselected-with-icon-handle-horizontal-margin
+  //visible-track-opacity
+  //visible-track-transition
+  //with-icon-handle-size
+  //handle-width
+  //handle-height
+  //touch-target-size
+  //disabled-label-text-color
+  //disabled-selected-handle-color
+  //disabled-selected-icon-color
+  //disabled-selected-track-color
+  //disabled-unselected-handle-color
+  //disabled-unselected-icon-color
+  //disabled-unselected-track-color
+  //disabled-unselected-track-outline-color
+  //label-text-color
+  //selected-focus-handle-color
+  //selected-focus-state-layer-color
+  //selected-focus-state-layer-opacity
+  //selected-focus-track-color
+  //selected-handle-color
+  //selected-hover-handle-color
+  //selected-hover-state-layer-color
+  //selected-hover-state-layer-opacity
+  //selected-hover-track-color
+  //selected-icon-color
+  //selected-pressed-handle-color
+  //selected-pressed-state-layer-color
+  //selected-pressed-state-layer-opacity
+  //selected-pressed-track-color
+  //selected-track-color
+  //track-outline-color
+  //unselected-focus-handle-color
+  //unselected-focus-state-layer-color
+  //unselected-focus-state-layer-opacity
+  //unselected-focus-track-color
+  //unselected-handle-color
+  //unselected-hover-handle-color
+  //unselected-hover-state-layer-color
+  //unselected-hover-state-layer-opacity
+  //unselected-hover-track-color
+  //unselected-icon-color
+  //unselected-pressed-handle-color
+  //unselected-pressed-state-layer-color
+  //unselected-pressed-state-layer-opacity
+  //unselected-pressed-track-color
+  //unselected-track-color
+  //handle-surface-color
+  //handle-elevation-shadow
+  //disabled-handle-elevation-shadow
+  //label-text-font
+  //label-text-line-height
+  //label-text-size
+  //label-text-tracking
+  //label-text-weight
+  //touch-target-display
+
+
   --mat-slide-toggle-disabled-handle-opacity: 0.38;
   --mat-slide-toggle-disabled-selected-handle-opacity: 0.38;
   --mat-slide-toggle-disabled-selected-icon-opacity: 0.38;
@@ -1067,6 +1478,31 @@ html {
 
 // RADIO
 html {
+  //disabled-unselected-icon-opacity
+  //disabled-selected-icon-opacity
+  //touch-target-size
+  //checked-ripple-color
+  //disabled-label-color
+  //disabled-selected-icon-color
+  //disabled-unselected-icon-color
+  //label-text-color
+  //ripple-color
+  //selected-focus-icon-color
+  //selected-hover-icon-color
+  //selected-icon-color
+  //selected-pressed-icon-color
+  //unselected-focus-icon-color
+  //unselected-hover-icon-color
+  //unselected-icon-color
+  //unselected-pressed-icon-color
+  //label-text-font
+  //label-text-line-height
+  //label-text-size
+  //label-text-tracking
+  //label-text-weight
+  //touch-target-display
+  //state-layer-size
+
   --mdc-radio-disabled-selected-icon-opacity: 0.38;
   --mdc-radio-disabled-unselected-icon-opacity: 0.38;
   --mdc-radio-state-layer-size: 40px;
@@ -1132,6 +1568,51 @@ html {
 
 // SLIDER (OK)
 html {
+  //value-indicator-opacity
+  //value-indicator-padding
+  //value-indicator-width
+  //value-indicator-height
+  //value-indicator-caret-display
+  //value-indicator-border-radius
+  //value-indicator-text-transform
+  //value-indicator-container-transform
+  //active-track-height
+  //handle-height
+  //handle-width
+  //inactive-track-height
+  //with-overlap-handle-outline-width
+  //with-tick-marks-active-container-opacity
+  //with-tick-marks-container-size
+  //with-tick-marks-inactive-container-opacity
+  //value-indicator-transform-origin
+  //active-track-color
+  //active-track-shape
+  //disabled-active-track-color
+  //disabled-handle-color
+  //disabled-inactive-track-color
+  //focus-handle-color
+  //focus-state-layer-color
+  //handle-color
+  //handle-elevation
+  //handle-shape
+  //hover-handle-color
+  //hover-state-layer-color
+  //inactive-track-color
+  //inactive-track-shape
+  //label-container-color
+  //label-label-text-color
+  //ripple-color
+  //with-overlap-handle-outline-color
+  //with-tick-marks-active-container-color
+  //with-tick-marks-container-shape
+  //with-tick-marks-disabled-container-color
+  //with-tick-marks-inactive-container-color
+  //label-label-text-font
+  //label-label-text-line-height
+  //label-label-text-size
+  //label-label-text-tracking
+  //label-label-text-weight
+
   --mdc-slider-active-track-height: 6px;
   --mdc-slider-active-track-shape: 9999px;
   --mdc-slider-handle-height: 20px;
@@ -1211,31 +1692,106 @@ html {
 
 // MENU (OK)
 html {
-  --mat-menu-container-shape: 4px;
-  --mat-menu-divider-bottom-spacing: 0;
-  --mat-menu-divider-top-spacing: 0;
-  --mat-menu-item-spacing: 16px;
-  --mat-menu-item-icon-size: 24px;
-  --mat-menu-item-leading-spacing: 16px;
-  --mat-menu-item-trailing-spacing: 16px;
-  --mat-menu-item-with-icon-leading-spacing: 16px;
-  --mat-menu-item-with-icon-trailing-spacing: 16px;
-  --mat-menu-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  --mat-menu-item-label-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
-  --mat-menu-item-icon-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
-  --mat-menu-item-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04); //rgba(0, 0, 0, 0.04);
-  --mat-menu-item-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04); //rgba(0, 0, 0, 0.04);
-  --mat-menu-container-color: var(--rb-background); //white;
-  --mat-menu-divider-color: rgba(var(--rb-foreground-rgb), 0.12); //rgba(0, 0, 0, 0.12)
-  /*  --mat-menu-item-label-text-font: Roboto, sans-serif;*/
-  /*  --mat-menu-item-label-text-size: 16px;*/
-  /*  --mat-menu-item-label-text-tracking: 0.03125em;*/
-  /*  --mat-menu-item-label-text-line-height: 24px;*/
-  /*  --mat-menu-item-label-text-weight: 400*/
+  //divider-bottom-spacing
+  //divider-top-spacing
+  //item-icon-size
+  //item-spacing
+  //item-leading-spacing
+  //item-trailing-spacing
+  //item-with-icon-leading-spacing
+  //item-with-icon-trailing-spacing
+  //container-shape
+  //divider-color
+  //item-label-text-color
+  //item-icon-color
+  //item-hover-state-layer-color
+  //item-focus-state-layer-color
+  //container-color
+  //container-elevation-shadow
+  //item-label-text-font
+  //item-label-text-line-height
+  //item-label-text-size
+  //item-label-text-tracking
+  //item-label-text-weight
+
+  --mat-menu-container-shape: 4px; // --mat-sys-corner-extra-small = 4px
+  --mat-menu-divider-bottom-spacing: 0; // 8px ?
+  --mat-menu-divider-top-spacing: 0; // 8px ?
+  --mat-menu-item-spacing: 16px; //12px
+  --mat-menu-item-icon-size: 24px; //24px
+  --mat-menu-item-leading-spacing: 16px; //12px
+  --mat-menu-item-trailing-spacing: 16px; //12px
+  --mat-menu-item-with-icon-leading-spacing: 16px; //12px
+  --mat-menu-item-with-icon-trailing-spacing: 16px; //12px
+  --mat-menu-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); //no fallback
+  --mat-menu-item-label-text-color: rgba(var(--rb-foreground-rgb), 0.87); // --mat-sys-on-surface
+  --mat-menu-item-icon-color: rgba(var(--rb-foreground-rgb), 0.87); // --mat-sys-on-surface-variant
+  --mat-menu-item-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04); // --mat-sys-on-surface ! color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent)
+  --mat-menu-item-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04); // --mat-sys-on-surface ! color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent)
+  --mat-menu-container-color: var(--rb-background); // --mat-sys-surface-container = #efedf0
+  --mat-menu-divider-color: rgba(var(--rb-foreground-rgb), 0.12); //--mat-sys-surface-variant ?
+  /*  --mat-menu-item-label-text-font: Roboto, sans-serif;*/ //--mat-sys-label-large-font
+  /*  --mat-menu-item-label-text-size: 16px;*/ //--mat-sys-label-large-size
+  /*  --mat-menu-item-label-text-tracking: 0.03125em;*/ //--mat-sys-label-large-tracking
+  /*  --mat-menu-item-label-text-line-height: 24px;*/ //--mat-sys-label-large-line-height
+  /*  --mat-menu-item-label-text-weight: 400*/ //--mat-sys-label-large-weight
 }
 
 // LIST
 html {
+  //active-indicator-color
+  //active-indicator-shape
+  //list-item-container-color
+  //list-item-container-shape
+  //list-item-disabled-label-text-color
+  //list-item-disabled-label-text-opacity
+  //list-item-disabled-leading-icon-color
+  //list-item-disabled-leading-icon-opacity
+  //list-item-disabled-state-layer-color
+  //list-item-disabled-state-layer-opacity
+  //list-item-disabled-trailing-icon-color
+  //list-item-disabled-trailing-icon-opacity
+  //list-item-focus-label-text-color
+  //list-item-focus-state-layer-color
+  //list-item-focus-state-layer-opacity
+  //list-item-hover-label-text-color
+  //list-item-hover-state-layer-color
+  //list-item-hover-state-layer-opacity
+  //list-item-label-text-color
+  //list-item-leading-avatar-color
+  //list-item-leading-avatar-shape
+  //list-item-leading-avatar-size
+  //list-item-leading-icon-color
+  //list-item-leading-icon-size
+  //list-item-selected-trailing-icon-color
+  //list-item-supporting-text-color
+  //list-item-trailing-icon-color
+  //list-item-trailing-icon-size
+  //list-item-trailing-supporting-text-color
+  //list-item-selected-container-color
+  //list-item-hover-leading-icon-color
+  //list-item-hover-trailing-icon-color
+  //list-item-label-text-font
+  //list-item-label-text-line-height
+  //list-item-label-text-size
+  //list-item-label-text-tracking
+  //list-item-label-text-weight
+  //list-item-supporting-text-font
+  //list-item-supporting-text-line-height
+  //list-item-supporting-text-size
+  //list-item-supporting-text-tracking
+  //list-item-supporting-text-weight
+  //list-item-trailing-supporting-text-font
+  //list-item-trailing-supporting-text-line-height
+  //list-item-trailing-supporting-text-size
+  //list-item-trailing-supporting-text-tracking
+  //list-item-trailing-supporting-text-weight
+  //list-item-leading-icon-start-space
+  //list-item-leading-icon-end-space
+  //list-item-one-line-container-height
+  //list-item-two-line-container-height
+  //list-item-three-line-container-height
+
   --mdc-list-list-item-container-shape: 0;
   --mdc-list-list-item-leading-avatar-shape: 50%;
   --mdc-list-list-item-container-color: transparent;
@@ -1476,6 +2032,23 @@ html {
 
 // Paginator (OK)
 html {
+  //page-size-select-width
+  //page-size-select-touch-target-height
+  //container-text-color
+  //container-background-color
+  //disabled-icon-color
+  //enabled-icon-color
+  //container-text-font
+  //container-text-line-height
+  //container-text-size
+  //container-text-tracking
+  //container-text-weight
+  //select-trigger-text-size
+  //container-size
+  //form-field-container-height
+  //form-field-container-vertical-padding
+  //touch-target-display
+
   //--mat-paginator-container-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
   //--mat-paginator-container-background-color: var(--rb-app-background); //white;
   //--mat-paginator-enabled-icon-color: rgba(var(--rb-foreground-rgb), 0.54); //rgba(0, 0, 0, 0.54);
@@ -1492,8 +2065,36 @@ html {
   //--mat-paginator-select-trigger-text-size: 12px;
 }
 
-// Tabs (OK)
+// Tabs (OK) - checked !
 html {
+  //--mat-tab-active-indicator-height // 2px
+  //--mat-tab-active-indicator-shape // 0
+  //--mat-tab-divider-height // 1px
+  //--mat-tab-active-focus-indicator-color
+  //--mat-tab-active-focus-label-text-color
+  //--mat-tab-active-hover-indicator-color
+  //--mat-tab-active-hover-label-text-color // --mat-sys-on-surface
+  //--mat-tab-active-indicator-color // --mat-sys-primary
+  //--mat-tab-active-label-text-color // --mat-sys-on-surface
+  //--mat-tab-active-ripple-color // --mat-sys-on-surface
+  //--mat-tab-divider-color // --mat-sys-surface-variant
+  //--mat-tab-inactive-focus-label-text-color
+  //--mat-tab-inactive-hover-label-text-color
+  //--mat-tab-active-label-text-color // --mat-sys-on-surface
+  //--mat-tab-inactive-ripple-color
+  //--mat-tab-pagination-icon-color // --mat-sys-on-surface
+  //--mat-tab-disabled-ripple-color
+  //--mat-tab-background-color
+  //--mat-tab-foreground-color
+  //--mat-tab-label-text-font // --mat-sys-title-small-font
+  //--mat-tab-label-text-line-height // --mat-sys-title-small-line-height
+  //--mat-tab-label-text-size // --mat-sys-title-small-size
+  //--mat-tab-label-text-tracking // --mat-sys-title-small-tracking
+  //--mat-tab-label-text-weight // --mat-sys-title-small-weight
+  //--mat-tab-container-height // 48px
+  //
+  //--mat-tab-animation-duration // 250ms
+
   --mat-tab-container-height: 48px; //-> 48px
   --mat-tab-divider-color: transparent; //-> --mat-sys-surface-variant
   --mat-tab-divider-height: 0; //-> 1px
@@ -1826,6 +2427,123 @@ html {
 
 // BUTTONS (OK)
 html {
+  //filled-container-shape
+  //filled-horizontal-padding
+  //filled-icon-offset
+  //filled-icon-spacing
+  //filled-label-text-transform
+  //filled-touch-target-size
+  //outlined-container-shape
+  //outlined-horizontal-padding
+  //outlined-icon-offset
+  //outlined-icon-spacing
+  //outlined-outline-width
+  //outlined-label-text-transform
+  //outlined-touch-target-size
+  //protected-container-shape
+  //protected-horizontal-padding
+  //protected-icon-offset
+  //protected-icon-spacing
+  //protected-label-text-transform
+  //protected-touch-target-size
+  //text-container-shape
+  //text-horizontal-padding
+  //text-icon-offset
+  //text-icon-spacing
+  //text-with-icon-horizontal-padding
+  //text-label-text-transform
+  //text-touch-target-size
+  //tonal-container-shape
+  //tonal-horizontal-padding
+  //tonal-icon-offset
+  //tonal-icon-spacing
+  //tonal-label-text-transform
+  //tonal-touch-target-size
+  //filled-container-color
+  //filled-disabled-container-color
+  //filled-disabled-label-text-color
+  //filled-disabled-state-layer-color
+  //filled-focus-state-layer-opacity
+  //filled-hover-state-layer-opacity
+  //filled-label-text-color
+  //filled-pressed-state-layer-opacity
+  //filled-ripple-color
+  //filled-state-layer-color
+  //outlined-disabled-label-text-color
+  //outlined-disabled-outline-color
+  //outlined-disabled-state-layer-color
+  //outlined-focus-state-layer-opacity
+  //outlined-hover-state-layer-opacity
+  //outlined-label-text-color
+  //outlined-outline-color
+  //outlined-pressed-state-layer-opacity
+  //outlined-ripple-color
+  //outlined-state-layer-color
+  //protected-container-color
+  //protected-container-elevation-shadow
+  //protected-disabled-container-color
+  //protected-disabled-container-elevation-shadow
+  //protected-disabled-label-text-color
+  //protected-disabled-state-layer-color
+  //protected-focus-container-elevation-shadow
+  //protected-focus-state-layer-opacity
+  //protected-hover-container-elevation-shadow
+  //protected-hover-state-layer-opacity
+  //protected-label-text-color
+  //protected-pressed-container-elevation-shadow
+  //protected-pressed-state-layer-opacity
+  //protected-ripple-color
+  //protected-state-layer-color
+  //text-disabled-label-text-color
+  //text-disabled-state-layer-color
+  //text-focus-state-layer-opacity
+  //text-hover-state-layer-opacity
+  //text-label-text-color
+  //text-pressed-state-layer-opacity
+  //text-ripple-color
+  //text-state-layer-color
+  //tonal-container-color
+  //tonal-disabled-container-color
+  //tonal-disabled-label-text-color
+  //tonal-disabled-state-layer-color
+  //tonal-focus-state-layer-opacity
+  //tonal-hover-state-layer-opacity
+  //tonal-label-text-color
+  //tonal-pressed-state-layer-opacity
+  //tonal-ripple-color
+  //tonal-state-layer-color
+  //filled-label-text-font
+  //filled-label-text-size
+  //filled-label-text-tracking
+  //filled-label-text-weight
+  //outlined-label-text-font
+  //outlined-label-text-size
+  //outlined-label-text-tracking
+  //outlined-label-text-weight
+  //protected-label-text-font
+  //protected-label-text-size
+  //protected-label-text-tracking
+  //protected-label-text-weight
+  //text-label-text-font
+  //text-label-text-size
+  //text-label-text-tracking
+  //text-label-text-weight
+  //tonal-label-text-font
+  //tonal-label-text-size
+  //tonal-label-text-tracking
+  //tonal-label-text-weight
+  //filled-touch-target-display
+  //filled-container-height
+  //outlined-container-height
+  //outlined-touch-target-display
+  //protected-touch-target-display
+  //protected-container-height
+  //text-touch-target-display
+  //text-container-height
+  //tonal-container-height
+  //tonal-touch-target-display
+
+
   --mat-button-filled-container-shape: 4px;
   --mat-button-filled-horizontal-padding: 16px;
   --mat-button-filled-icon-offset: -4px;
@@ -2205,6 +2923,21 @@ html {
 
 // ICON BUTTONS (OK)
 html {
+  //icon-size
+  //container-shape
+  //touch-target-size
+  //disabled-icon-color
+  //disabled-state-layer-color
+  //focus-state-layer-opacity
+  //hover-state-layer-opacity
+  //icon-color
+  //pressed-state-layer-opacity
+  //ripple-color
+  //state-layer-color
+  //touch-target-display
+  //state-layer-size
+
+
   --mat-icon-button-icon-size: 24px;
   --mat-icon-button-container-shape: 50%
 }
@@ -2321,6 +3054,52 @@ html {
 // FAB (OK)
 
 html {
+  //container-shape
+  //extended-container-height
+  //extended-container-shape
+  //small-container-shape
+  //touch-target-display
+  //touch-target-size
+  //small-touch-target-size
+  //container-color
+  //container-elevation-shadow
+  //disabled-state-container-color
+  //disabled-state-foreground-color
+  //extended-container-elevation-shadow
+  //extended-focus-container-elevation-shadow
+  //extended-hover-container-elevation-shadow
+  //extended-pressed-container-elevation-shadow
+  //focus-container-elevation-shadow
+  //focus-state-layer-opacity
+  //foreground-color
+  //hover-container-elevation-shadow
+  //hover-state-layer-opacity
+  //pressed-container-elevation-shadow
+  //pressed-state-layer-opacity
+  //ripple-color
+  //small-container-color
+  //small-container-elevation-shadow
+  //small-disabled-state-container-color
+  //small-disabled-state-foreground-color
+  //small-focus-container-elevation-shadow
+  //small-focus-state-layer-opacity
+  //small-foreground-color
+  //small-hover-container-elevation-shadow
+  //small-hover-state-layer-opacity
+  //small-pressed-container-elevation-shadow
+  //small-pressed-state-layer-opacity
+  //small-ripple-color
+  //small-state-layer-color
+  //state-layer-color
+  //disabled-state-layer-color
+  //small-disabled-state-layer-color
+  //extended-label-text-font
+  //extended-label-text-size
+  //extended-label-text-tracking
+  //extended-label-text-weight
+  //small-touch-target-display
+  //touch-target-display
+
   --mat-fab-container-elevation-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   --mat-fab-container-shape: 50%;
   --mat-fab-extended-container-elevation-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
@@ -2515,6 +3294,15 @@ html {
 
 // SNACK BAR
 html {
+  //container-shape
+  //button-color
+  //container-color
+  //supporting-text-color
+  //supporting-text-font
+  //supporting-text-line-height
+  //supporting-text-size
+  //supporting-text-weight
+
   --mat-snack-bar-container-shape: 4px
 }
 
@@ -2545,6 +3333,31 @@ html {
 
 // TABLE (OK)
 html {
+  //row-item-outline-width
+  //background-color
+  //header-headline-color
+  //row-item-label-text-color
+  //row-item-outline-color
+  //header-headline-font
+  //header-headline-line-height
+  //header-headline-size
+  //header-headline-tracking
+  //header-headline-weight
+  //row-item-label-text-font
+  //row-item-label-text-line-height
+  //row-item-label-text-size
+  //row-item-label-text-tracking
+  //row-item-label-text-weight
+  //footer-supporting-text-font
+  //footer-supporting-text-line-height
+  //footer-supporting-text-size
+  //footer-supporting-text-tracking
+  //footer-supporting-text-weight
+  //header-container-height
+  //footer-container-height
+  //row-item-container-height
+
+
   --mat-table-row-item-outline-width: 1px;
   --mat-table-background-color: var(--rb-background); //white;
   --mat-table-header-headline-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
@@ -2572,6 +3385,12 @@ html {
 
 // PROGRESS BAR (OK)
 html {
+  //active-indicator-height
+  //track-height
+  //track-shape
+  //active-indicator-color
+  //track-color
+
   --mdc-circular-progress-active-indicator-width: 4px;
   --mdc-circular-progress-size: 48px;
   --mdc-circular-progress-active-indicator-color: rgba(var(--rb-primary-rgb), 1); /*#673ab7*/
@@ -2584,63 +3403,48 @@ html {
   }
 }
 
-// BADGE
-html {
-  --mat-badge-container-shape: 50%;
-  --mat-badge-container-size: unset;
-  --mat-badge-small-size-container-size: unset;
-  --mat-badge-large-size-container-size: unset;
-  --mat-badge-legacy-container-size: 22px;
-  --mat-badge-legacy-small-size-container-size: 16px;
-  --mat-badge-legacy-large-size-container-size: 28px;
-  --mat-badge-container-offset: -11px 0;
-  --mat-badge-small-size-container-offset: -8px 0;
-  --mat-badge-large-size-container-offset: -14px 0;
-  --mat-badge-container-overlap-offset: -11px;
-  --mat-badge-small-size-container-overlap-offset: -8px;
-  --mat-badge-large-size-container-overlap-offset: -14px;
-  --mat-badge-container-padding: 0;
-  --mat-badge-small-size-container-padding: 0;
-  --mat-badge-large-size-container-padding: 0;
-  --mat-badge-background-color: rgba(var(--rb-primary-rgb), 1); /*#673ab7;*/
-  --mat-badge-text-color: rgba(var(--rb-on-primary-rgb), 1); /*white;*/
-  --mat-badge-disabled-state-background-color: #b9b9b9;
-  --mat-badge-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38); //rgba(0, 0, 0, 0.38);
 
-  .mat-badge-accent {
-    --mat-badge-background-color: rgba(var(--rb-accent-rgb), 1); /*#ffd740;*/
-    --mat-badge-text-color: rgba(0, 0, 0, 0.87)
-  }
 
-  .mat-badge-warn {
-    --mat-badge-background-color: #f44336;
-    --mat-badge-text-color: white
-  }
-
-  /*  --mat-badge-text-font: Roboto, sans-serif;*/
-  /*  --mat-badge-line-height: 22px;*/
-  /*  --mat-badge-text-size: 12px;*/
-  /*  --mat-badge-text-weight: 600;*/
-  /*  --mat-badge-small-size-text-size: 9px;*/
-  /*  --mat-badge-small-size-line-height: 16px;*/
-  /*  --mat-badge-large-size-text-size: 24px;*/
-  /*  --mat-badge-large-size-line-height: 28px*/
-}
-
-// BOTTOM SHEET (OK)
-html {
-  --mat-bottom-sheet-container-shape: 4px;
-  --mat-bottom-sheet-container-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
-  --mat-bottom-sheet-container-background-color: var(--rb-background); //white
-  /*  --mat-bottom-sheet-container-text-font: Roboto, sans-serif;*/
-  /*  --mat-bottom-sheet-container-text-line-height: 20px;*/
-  /*  --mat-bottom-sheet-container-text-size: 14px;*/
-  /*  --mat-bottom-sheet-container-text-tracking: 0.0178571429em;*/
-  /*  --mat-bottom-sheet-container-text-weight: 400*/
-}
 
 // BUTTON TOGGLE
 html {
+  //focus-state-layer-opacity
+  //hover-state-layer-opacity
+  //shape
+  //legacy-shape
+  //legacy-selected-state-text-color
+  //legacy-focus-state-layer-opacity
+  //legacy-height
+  //background-color
+  //disabled-selected-state-background-color
+  //disabled-selected-state-text-color
+  //disabled-state-background-color
+  //disabled-state-text-color
+  //divider-color
+  //selected-state-background-color
+  //selected-state-text-color
+  //state-layer-color
+  //text-color
+  //legacy-disabled-selected-state-background-color
+  //legacy-disabled-state-background-color
+  //legacy-disabled-state-text-color
+  //legacy-selected-state-background-color
+  //legacy-selected-state-text-color
+  //legacy-state-layer-color
+  //legacy-text-color
+  //label-text-font
+  //label-text-line-height
+  //label-text-size
+  //label-text-tracking
+  //label-text-weight
+  //legacy-label-text-font
+  //legacy-label-text-line-height
+  //legacy-label-text-size
+  //legacy-label-text-tracking
+  //legacy-label-text-weight
+  //height
+
+
   --mat-legacy-button-toggle-height: 36px;
   --mat-legacy-button-toggle-shape: 2px;
   --mat-legacy-button-toggle-focus-state-layer-opacity: 1;
@@ -2679,6 +3483,49 @@ html {
 
 // DATE PICKER (OK)
 html {
+  //calendar-container-elevation-shadow
+  //calendar-container-shape
+  //calendar-container-touch-elevation-shadow
+  //calendar-container-touch-shape
+  //calendar-body-label-text-color
+  //calendar-container-background-color
+  //calendar-container-text-color
+  //calendar-date-disabled-state-text-color
+  //calendar-date-focus-state-background-color
+  //calendar-date-hover-state-background-color
+  //calendar-date-in-comparison-range-state-background-color
+  //calendar-date-in-overlap-range-selected-state-background-color
+  //calendar-date-in-overlap-range-state-background-color
+  //calendar-date-in-range-state-background-color
+  //calendar-date-outline-color
+  //calendar-date-preview-state-outline-color
+  //calendar-date-selected-disabled-state-background-color
+  //calendar-date-selected-state-background-color
+  //calendar-date-selected-state-text-color
+  //calendar-date-text-color
+  //calendar-date-today-disabled-state-outline-color
+  //calendar-date-today-outline-color
+  //calendar-date-today-selected-state-outline-color
+  //calendar-header-divider-color
+  //calendar-header-text-color
+  //calendar-navigation-button-icon-color
+  //calendar-period-button-icon-color
+  //calendar-period-button-text-color
+  //range-input-disabled-state-separator-color
+  //range-input-disabled-state-text-color
+  //range-input-separator-color
+  //toggle-active-state-icon-color
+  //toggle-icon-color
+  //calendar-body-label-text-size
+  //calendar-body-label-text-weight
+  //calendar-header-text-size
+  //calendar-header-text-weight
+  //calendar-period-button-text-size
+  //calendar-period-button-text-weight
+  //calendar-text-font
+  //calendar-text-size
+
+
   --mat-datepicker-calendar-container-shape: 4px;
   --mat-datepicker-calendar-container-touch-shape: 4px;
   --mat-datepicker-calendar-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
@@ -2770,12 +3617,41 @@ html {
 
 // DIVIDER (OK)
 html {
+  //width
+  //color
+
   --mat-divider-width: 1px;
   --mat-divider-color: rgba(var(--rb-foreground-rgb), 0.12); //rgba(0, 0, 0, 0.12)
 }
 
 // EXPANSION PANEL (OK)
 html {
+  //container-shape
+  //header-indicator-display
+  //legacy-header-indicator-display
+  //container-elevation-shadow
+  //actions-divider-color
+  //container-background-color
+  //container-text-color
+  //header-description-color
+  //header-disabled-state-text-color
+  //header-focus-state-layer-color
+  //header-hover-state-layer-color
+  //header-indicator-color
+  //header-text-color
+  //container-text-font
+  //container-text-line-height
+  //container-text-size
+  //container-text-tracking
+  //container-text-weight
+  //header-text-font
+  //header-text-line-height
+  //header-text-size
+  //header-text-tracking
+  //header-text-weight
+  //header-collapsed-state-height
+  //header-expanded-state-height
+
   --mat-expansion-container-shape: 4px;
   --mat-expansion-container-elevation-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   --mat-expansion-legacy-header-indicator-display: inline-block;
@@ -2837,6 +3713,11 @@ html {
 
 // GRID LIST (OK)
 html {
+  //tile-header-primary-text-size
+  //tile-header-secondary-text-size
+  //tile-footer-primary-text-size
+  //tile-footer-secondary-text-size
+  //
   --mat-grid-list-tile-header-primary-text-size: 14px;
   --mat-grid-list-tile-header-secondary-text-size: 12px;
   --mat-grid-list-tile-footer-primary-text-size: 14px;
@@ -2845,6 +3726,8 @@ html {
 
 // ICON (OK)
 html {
+  //color
+
   --mat-icon-color: inherit;
   .mat-icon .mat-primary {
     --mat-icon-color: rgba(var(--rb-primary-rgb), 1);
@@ -2874,6 +3757,35 @@ html {
 
 // STEPPER (OK)
 html {
+  //header-error-state-icon-background-color
+  //header-focus-state-layer-shape
+  //header-hover-state-layer-shape
+  //container-color
+  //header-done-state-icon-background-color
+  //header-done-state-icon-foreground-color
+  //header-edit-state-icon-background-color
+  //header-edit-state-icon-foreground-color
+  //header-error-state-icon-foreground-color
+  //header-error-state-label-text-color
+  //header-focus-state-layer-color
+  //header-hover-state-layer-color
+  //header-icon-background-color
+  //header-icon-foreground-color
+  //header-label-text-color
+  //header-optional-label-text-color
+  //header-selected-state-icon-background-color
+  //header-selected-state-icon-foreground-color
+  //header-selected-state-label-text-color
+  //line-color
+  //container-text-font
+  //header-label-text-font
+  //header-label-text-size
+  //header-label-text-weight
+  //header-error-state-label-text-size
+  //header-selected-state-label-text-size
+  //header-selected-state-label-text-weight
+  //header-height
+
   --mat-stepper-header-icon-foreground-color: white;
   --mat-stepper-header-selected-state-icon-background-color: rgba(var(--rb-primary-rgb), 1); /*#673ab7*/;
   --mat-stepper-header-selected-state-icon-foreground-color: white;
@@ -2923,11 +3835,24 @@ html {
 
 // SORT ARROW (OK)
 html {
+  //arrow-color
+
   --mat-sort-arrow-color: rgb(117.3, 117.3, 117.3)
 }
 
-//TOOLBAR
+//TOOLBAR - checked
 html {
+  //--mat-toolbar-container-background-color //--mat-sys-surface
+  //--mat-toolbar-container-text-color //--mat-sys-on-surface
+  //--mat-toolbar-title-text-font // --mat-sys-title-large-font
+  //--mat-toolbar-title-text-line-height //--mat-sys-title-large-line-height
+  //--mat-toolbar-title-text-size //--mat-sys-title-large-size
+  //--mat-toolbar-title-text-tracking //--mat-sys-title-large-tracking
+  //--mat-toolbar-title-text-weight //--mat-sys-title-large-weight
+  //--mat-toolbar-standard-height // 64px
+  //--mat-toolbar-mobile-height // 56px
+
+
   --mat-toolbar-container-background-color: whitesmoke;
   --mat-toolbar-container-text-color: rgba(var(--rb-foreground-rgb), 0.87); //rgba(0, 0, 0, 0.87);
 
@@ -2956,6 +3881,13 @@ html {
 
 // TREE (OK)
 html {
+  //container-background-color
+  //node-text-color
+  //node-text-font
+  //node-text-size
+  //node-text-weight
+  //node-min-height
+
   --mat-tree-container-background-color: var(--rb-background);
   --mat-tree-node-text-color: var(--rb-foreground-rgb); //rgba(0, 0, 0, 0.87);
   --mat-tree-node-min-height: 48px
@@ -2966,6 +3898,10 @@ html {
 
 // TIME PICKER (OK)
 html {
+  //container-shape
+  //container-background-color
+  //container-elevation-shadow
+  //
   --mat-timepicker-container-shape: 4px;
   --mat-timepicker-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   --mat-timepicker-container-background-color: var(--rb-background);

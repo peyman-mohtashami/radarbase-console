@@ -145,3 +145,16 @@ rb-sidebar-nav {
 .mat-form-field-appearance-outline.custom-outlined.mat-focused .mat-form-field-outline-thick {
   border-color: #1976d2 !important; /* Ensures the thick outline matches */
 }
+
+.mat-mdc-form-field-flex {
+  align-items: center !important;
+}
+
+.mat-mdc-form-field.small.no-subscript {
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  //--mat-form-field-container-vertical-padding: 0;
+  //--mdc-filled-text-field-container-padding: 0;
+}

@@ -40,6 +40,7 @@ import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/d
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 
 @Component({
   selector: 'rb-subject-dialog',
@@ -67,6 +68,7 @@ import {
     MatIconButton,
     MatSuffix,
     SubjectDetailsComponent,
+    MatDynamicInputComponent,
   ]
 })
 export class SubjectDialogComponent implements OnInit, AfterViewInit {
@@ -88,6 +90,7 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
 
   tableFields = this.configService.getTableFields();
   formFields = this.configService.getFormFields();
+  extraFields = this.configService.getExtraFields();
 
   form = new FormGroup({
     id: new FormControl<string | number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
@@ -133,6 +136,18 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
         this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
       });
 
+    this.extraFields.forEach((field: any) => {
+      this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));
+    });
+    // const extraFieldsControls = this.extraFields.reduce((acc: any, cur: any) => {
+    //   acc[cur.name] = new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true});
+    //   return acc;
+    // }, {});
+    //
+    // console.log('Class: SubjectDialogComponent, Function: ngOnInit, Line 142 extraFieldsControls' , extraFieldsControls);
+    // this.form.addControl()
+
+
     // this.form.controls.name.addValidators(this.duplicateValidator);
     this.form.patchValue(this.dialogData.entity);
   }
@@ -163,6 +178,7 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
 
   private handleSaveAction(): void {
     console.log('Class: SubjectDialogComponent, Function: handleSaveAction, Line 137 this.dialogData.entity' , this.dialogData.entity);
+    console.log('Class: SubjectDialogComponent, Function: handleSaveAction, Line 181 this.form?.value' , this.form?.value);
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {...this.dialogData.entity, ...this.form?.value, project: this.dialogData.project}, // TODO if project is not set (DialogMode ADD)

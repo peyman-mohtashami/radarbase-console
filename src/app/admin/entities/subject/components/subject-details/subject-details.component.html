@@ -29,8 +29,8 @@
       <div>
         @if (entity$().attributes && (entity$().attributes | keyvalue)?.length) {
           @for (attribute of entity$().attributes | keyvalue; track attribute.key) {
-            <div>
-              {{ attribute.key }}: {{ attribute.value || '-' }}
+            <div class="flex flex-wrap gap-1 border-b border-neutral-200 py-1">
+              <span class="w-40">{{ attribute.key }}</span><span>{{ attribute.value || '-' }}</span>
             </div>
           }
         } @else {

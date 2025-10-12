@@ -14,6 +14,7 @@ import {MatPaginatorIntl} from "@angular/material/paginator";
 import {CustomMatPaginatorIntl} from "./services/custom-mat-paginator-intl";
 import {map} from "rxjs/operators";
 import {DateFnsAdapter, MAT_DATE_FNS_FORMATS} from '@angular/material-date-fns-adapter';
+import { enGB } from 'date-fns/locale';
 
 const localeInitializerFn = (localeService: localeService) => {
   return () => localeService.init().pipe(map(() => true));
@@ -27,6 +28,7 @@ export function provideLocale(): EnvironmentProviders {
       const initializerFn = localeInitializerFn(inject(localeService));
       return initializerFn();
     }),
+    { provide: MAT_DATE_LOCALE, useValue: enGB },
     {
       provide: DateAdapter,
       useClass: DateFnsAdapter,

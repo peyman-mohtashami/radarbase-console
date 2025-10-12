@@ -122,6 +122,10 @@
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
         <div formGroupName='attributes'>
+          @for (field of extraFields; track field.name) {
+            <rb-mat-dynamic-input [entityName]="ENTITY_NAME.subject" [field]="field" [formControlName]="field.name"/>
+          }
+
           <label for="attributes" class="text-sm">{{ 'ADMIN.subject.attributes.label' | translate }}</label>
           <fieldset class="rounded-sm border px-4">
             @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {

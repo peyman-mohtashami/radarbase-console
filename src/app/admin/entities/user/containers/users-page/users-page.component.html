@@ -3,7 +3,8 @@
                          [enableAddButton$]="true"
                          [isGridView]="undefined"
                          [permission$]="[{role: ROLES.SYS_ADMIN}]">
-  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {
+  @if (tableFilters.length) {
+<!--    && entityService.total > MIN_ENTITIES_FOR_FILTERS-->
     <rb-data-table-filter bottom-filter
                           [filters$]='tableFilters'
                           [filterOpened$]='isFilterOpened'

@@ -99,6 +99,19 @@ export class ManagementPortalAuthService extends AuthService {
     StorageService.clearAuth();
   }
 
+  override logoutPasswordGrant(): Observable<void> {
+    const url = 'api/logout';
+    return this.http.post<void>(url, { observe: 'body' }).pipe(
+      tap(() => {
+        if (!environment.cookies) {
+          StorageService.clearAuth();
+        }
+        this.store.dispatch(AuthActions.logoutSuccessPasswordGrant())
+        // this.router.navigate(['/login']).then();
+      })
+    );
+  }
+
   protected getTokenRequestParamsPasswordFlow(
     username: string,
     password: string

@@ -73,12 +73,12 @@ export interface RadarOption {
     MatHint,
     MatInput,
     MatSlideToggle,
-    MatSuffix,
     // NgIf,
     ToDatePipe,
     DatePipe,
     // DynamicInputComponent,
     MatSelectAutocompleteComponent,
+    MatSuffix
     // JsonPipe,
   ],
   // standalone: false
@@ -105,7 +105,7 @@ export class MatDynamicInputComponent
   // @Input() multiple = false;
   // @Input() required = false;
 
-  floatLabel = input<boolean>(false);
+  // floatLabel = input<boolean>(false);
 
   form: any; // = new FormControl<RadarOption[]>([]);
   // name = 'project'

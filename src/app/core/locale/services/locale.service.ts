@@ -17,7 +17,7 @@ import localeNl from '@angular/common/locales/nl';
 import localeFa from '@angular/common/locales/fa';
 import {Language} from '../../../shared/models/locale.model';
 import {Locale} from 'date-fns';
-import {enGB, nl, faIR} from 'date-fns/locale';
+import {enGB, enUS, nl, faIR} from 'date-fns/locale';
 
 @Injectable({providedIn: 'root'})
 export class localeService {
@@ -39,6 +39,7 @@ export class localeService {
 
   // Map Angular locale codes to date-fns locales
   private dateFnsLocaleMap: Record<string, Locale> = {
+    'en': enGB,
     'en-GB': enGB,
     'nl': nl,
     'fa': faIR,

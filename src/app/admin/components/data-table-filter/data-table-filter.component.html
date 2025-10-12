@@ -3,11 +3,11 @@
     @if (form) {
       <form [formGroup]="form" novalidate autocomplete="off" class='w-full flex gap-1 justify-between'>
         <div
-          class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 text-base items-stretch">
+          class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 text-base items-stretch">
           @for (filter of filters$(); track filter) {
             @if (!filter.advanced) {
                 @if (filter.type === FilterType.SELECT) {
-                  <mat-form-field class="m-0! small"
+                  <mat-form-field class="m-0! small no-subscript"
                                   appearance="outline"
                                   floatLabel="auto"
                                   subscriptSizing="dynamic">
@@ -25,7 +25,7 @@
                 }
 
                 @if (filter.type === FilterType.INPUT) {
-                  <mat-form-field class="m-0! small"
+                  <mat-form-field class="m-0! small no-subscript"
                                   [class.mat-focused]="form?.controls?.[filter.name]?.value"
 
 
@@ -105,15 +105,23 @@
                       <span
                         class="dark:text-white">{{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}
                         :</span>
-                      <mat-form-field appearance="outline"
-                                      floatLabel="always"
-                                      subscriptSizing="dynamic"
-                                      (click)="$event.stopPropagation()">
-                        <!--        <mat-label>-->
-                        <!--          {{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}-->
-                        <!--        </mat-label>-->
-                        @if (filter.type === FilterType.SELECT) {
-                          @if (filter.type === FilterType.SELECT) {
+                      @switch (filter.type) {
+                        @case (FilterType.INPUT) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
+                            <input [formControlName]='filter.name'
+                                   matInput
+                                   name='{{ filter.name }}'
+                                   placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.SELECT) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
                             <mat-select [formControlName]='filter.name'>
                               <mat-option [value]='""'>
                                 {{ 'SHARED.filter.all' | translate }}
@@ -124,46 +132,90 @@
                                 </mat-option>
                               }
                             </mat-select>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.DATEPICKER) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
+<!--                            <input [formControlName]="filter.name" matInput>-->
+                            <input [formControlName]='filter.name'
+                                   matInput
+                                   [matDatepicker]="filterDatePicker"
+                                   [placeholder]='dateFormat'>
+                            <mat-datepicker-toggle matSuffix [for]="filterDatePicker"/>
+                            <mat-datepicker #filterDatePicker/>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.RANGE_PICKER) {
+                          @if (filter.names) {
+                            <mat-form-field appearance="outline"
+                                            floatLabel="always"
+                                            subscriptSizing="dynamic"
+                                            (click)="$event.stopPropagation()">
+<!--                              <input [formControlName]='filter.names[0]'>-->
+                              <mat-date-range-input [rangePicker]="rangePicker">
+                                <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
+                                <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
+                              </mat-date-range-input>
+                              <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
+                              <mat-date-range-picker #rangePicker/>
+                            </mat-form-field>
                           }
                         }
+                      }
 
-                        <span class="material-symbols-outlined p-1.5! text-neutral-300" matPrefix>filter_alt</span>
-                        <!--              <mat-icon fontSet='material-icons-outlined'  matPrefix>filter_alt</mat-icon>-->
-                        @if (filter.type === FilterType.INPUT) {
-                          <input [formControlName]='filter.name'
-                                 matInput
-                                 name='{{ filter.name }}'
-                                 placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>
-                        }
-                        <!--        [placeholder]='filter.placeHolder? (filter.placeHolder | translate) : ""'>-->
+<!--                      <mat-form-field appearance="outline"-->
+<!--                                      floatLabel="always"-->
+<!--                                      subscriptSizing="dynamic"-->
+<!--                                      (click)="$event.stopPropagation()">-->
+<!--                        &lt;!&ndash;        <mat-label>&ndash;&gt;-->
+<!--                        &lt;!&ndash;          {{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}&ndash;&gt;-->
+<!--                        &lt;!&ndash;        </mat-label>&ndash;&gt;-->
+<!--                        @if (filter.type === FilterType.SELECT) {-->
+<!--                          @if (filter.type === FilterType.SELECT) {-->
+<!--                            <mat-select [formControlName]='filter.name'>-->
+<!--                              <mat-option [value]='""'>-->
+<!--                                {{ 'SHARED.filter.all' | translate }}-->
+<!--                              </mat-option>-->
+<!--                              @for (item of filter?.options; track item.value) {-->
+<!--                                <mat-option [value]='item.value.toString()'>-->
+<!--                                  {{ item.label | translate }}-->
+<!--                                </mat-option>-->
+<!--                              }-->
+<!--                            </mat-select>-->
+<!--                          }-->
+<!--                        }-->
 
-                        @if (filter.type === FilterType.DATEPICKER) {
-                          <input [formControlName]='filter.name'
-                                 matInput
-                                 [matDatepicker]="picker"
-                                 [placeholder]='dateFormat'>
-                        }
+<!--                        <span class="material-symbols-outlined p-1.5! text-neutral-300" matPrefix>filter_alt</span>-->
+<!--                        @if (filter.type === FilterType.INPUT) {-->
+<!--                          <input [formControlName]='filter.name'-->
+<!--                                 matInput-->
+<!--                                 name='{{ filter.name }}'-->
+<!--                                 placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>-->
+<!--                        }-->
 
-                        @if (filter.type === FilterType.DATEPICKER) {
-                          <mat-datepicker-toggle matSuffix [for]="picker"/>
-                        }
+<!--                        @if (filter.type === FilterType.DATEPICKER) {-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.name'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.name'&ndash;&gt;-->
+<!--&lt;!&ndash;                                 matInput&ndash;&gt;-->
+<!--&lt;!&ndash;                                 [matDatepicker]="filterDatePicker"&ndash;&gt;-->
+<!--&lt;!&ndash;                                 [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker-toggle matSuffix [for]="filterDatePicker"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker #filterDatePicker/>&ndash;&gt;-->
+<!--                        }-->
 
-                        <mat-datepicker #picker/>
-
-                        @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
-                          <mat-date-range-input [rangePicker]="rangePicker">
-                            <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
-                            <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
-                          </mat-date-range-input>
-                        }
-
-                        @if (filter.type === FilterType.RANGE_PICKER) {
-                          <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
-                        }
-
-                        <mat-date-range-picker #rangePicker/>
-
-                      </mat-form-field>
+<!--                        @if (filter.type === FilterType.RANGE_PICKER && filter.names) {-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.names[0]'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-date-range-input [rangePicker]="rangePicker">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          </mat-date-range-input>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker-toggle matSuffix [for]="rangePicker"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-date-range-picker #rangePicker/>&ndash;&gt;-->
+<!--                        }-->
+<!--                      </mat-form-field>-->
                     </div>
                   }
                 }
@@ -176,7 +228,7 @@
   </div>
 }
 
-<div class='text-sm! text-white! mb-2 items-center px-0 flex gap-2'>
+<div class='mb-4 text-sm! text-white! items-center px-0 flex gap-2'>
   @for (filter of filters$(); track filter.name) {
     @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
       @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {
@@ -239,7 +291,7 @@
   @if (filterEnabled) {
     <button mat-icon-button
             color='warn'
-            class='shrink-0 filter-reset-button'
+            class='shrink-0 filter-reset-button tiny'
             [disabled]='!filterEnabled'
             (click)='resetFilters()'>
       <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>

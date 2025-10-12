@@ -130,7 +130,11 @@
         "createdDate": true,
         "lastModifiedBy": true,
         "lastModifiedDate": true
-      }
+      },
+      "extraFields": [
+        {"name": "email", "type": "text", "validators": {}},
+        {"name": "lastInjectionDate", "type": "date", "validators": {}, "minDate": "01-01-2023", "maxDate": "01-01-2026"}
+      ]
     },
     "_subject": {
       "fields": {
