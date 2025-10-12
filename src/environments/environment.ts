@@ -3,9 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { NgxLoggerLevel } from "ngx-logger";
+import packageJson from '../../package.json';
 
 export const environment = {
   production: false,
+  version: packageJson.version,
   // BASE_HREF: '/rest-sources/authorizer/',
   BASE_HREF: '/management-portal/',
   // base url of the rest-sources authorizer app

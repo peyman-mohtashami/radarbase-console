@@ -1,5 +1,6 @@
 import {Component, input} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'rb-footer',
@@ -10,4 +11,5 @@ import {TranslatePipe} from "@ngx-translate/core";
 })
 export class FooterComponent {
   isMenuOpen$ = input<boolean>(true)
+  readonly version = environment.version;
 }
