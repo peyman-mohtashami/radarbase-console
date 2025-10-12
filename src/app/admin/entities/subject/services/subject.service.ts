@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
-// import moment from 'moment/moment';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
 import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
@@ -24,9 +23,7 @@ export class SubjectService {
   }
 
   getWithQuery(projectName: string, queryParams?: Params | string): Observable<AppSubject[]> {
-    console.log('Class: SubjectService, Function: getWithQuery, Line 27 queryParams' , queryParams);
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
-    console.log('Class: SubjectService, Function: getWithQuery, Line 29 params' , params);
     return this.http.get<RadarSubject[]>(`api/projects/${projectName}/subjects`, {
       params,
       observe: 'response',
@@ -112,9 +109,7 @@ export class SubjectService {
       queryParams['dateOfBirth.is'] &&
       queryParams['dateOfBirth.is'] !== ''
     ) {
-      // const newDate: Moment = moment(queryParams['dateOfBirth.is']);
       if (isValid(parse(queryParams['dateOfBirth.is'], 'yyyy-MM-dd', new Date()))) {
-        // if (moment(queryParams['dateOfBirth.is']).isValid()) {
         params = params.append('dateOfBirth.is', queryParams['dateOfBirth.is']);
       }
     }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {ToolbarComponent} from './shared/components/toolbar/toolbar.component';
 
 @Component({
@@ -10,4 +10,5 @@ import {ToolbarComponent} from './shared/components/toolbar/toolbar.component';
     ToolbarComponent,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+}

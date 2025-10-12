@@ -18,7 +18,6 @@ import {provideCore} from './core/provideCore';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {metaReducers, reducers} from './store/reducers';
 
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -53,12 +52,8 @@ export const appConfig: ApplicationConfig = {
         level: NgxLoggerLevel.DEBUG,
         // serverLogLevel: NgxLoggerLevel.ERROR
       }),
-      //     CoreModule,
-      //     SharedModule,
-      //     AdminModule
     ),
     provideCore(),
-    //provideAdmin(),
     provideRouter(routes)
   ]
 };

@@ -1,18 +1,14 @@
 import {
   AfterViewInit,
   Component, input,
-  Input,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import {
-  // AbstractControl,
   ControlValueAccessor,
   FormControl,
-  // NG_VALIDATORS,
   NG_VALUE_ACCESSOR, ReactiveFormsModule,
-  // Validator,
 } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';

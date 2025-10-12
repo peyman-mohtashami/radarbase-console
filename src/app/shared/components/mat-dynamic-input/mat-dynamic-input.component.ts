@@ -1,37 +1,27 @@
 import {
-  AfterViewInit,
   Component, computed, input,
-  Input,
   OnDestroy,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import {
   AbstractControl,
-  // AbstractControl,
   ControlValueAccessor,
   FormControl,
-  // NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn, Validators,
-  // Validator,
+  NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,
 } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import {MatFormField, MatHint, MatOption, MatSelect, MatSelectTrigger, MatSuffix} from '@angular/material/select';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {MatFormField, MatHint, MatOption, MatSelect, MatSuffix} from '@angular/material/select';
 import {Validator, ValidatorError, ValidatorHint} from '../../utils/validators';
-import {MatChipListbox, MatChipOption} from "@angular/material/chips";
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
-import {AsyncPipe, DatePipe, JsonPipe, NgIf} from "@angular/common";
-import {MatIcon} from "@angular/material/icon";
+import {DatePipe} from "@angular/common";
 import {MatError, MatLabel} from "@angular/material/form-field";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInput} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ToDatePipe} from "../../pipes/to-date.pipe";
-import {DynamicInputComponent} from "../dynamic-input/dynamic-input.component";
 import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
-// import {boolean} from "@rspack/core/compiled/zod";
 
 export interface RadarOption {
   id: number | string;
@@ -55,33 +45,23 @@ export interface RadarOption {
   ],
   imports: [
     MatFormField,
-    MatLabel,
-    // MatSelectTrigger,
     MatError,
     MatSelect,
-    // MatChipListbox,
-    // MatChipOption,
-    // MatIcon,
     TranslatePipe,
     ReactiveFormsModule,
     MatOption,
     NgxMatSelectSearchModule,
-    // AsyncPipe,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
     MatHint,
     MatInput,
     MatSlideToggle,
-    // NgIf,
     ToDatePipe,
     DatePipe,
-    // DynamicInputComponent,
     MatSelectAutocompleteComponent,
     MatSuffix
-    // JsonPipe,
   ],
-  // standalone: false
 })
 export class MatDynamicInputComponent
   implements ControlValueAccessor, OnInit, OnDestroy //, Validator AfterViewInit

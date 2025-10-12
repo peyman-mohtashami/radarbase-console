@@ -1,0 +1,51 @@
+<rb-dialog-title [mode]='mode' [name]="ENTITY_NAME.config" (closeClicked)='close()'/>
+
+@if (form) {
+  <!--<ng-container *ngIf='form'>-->
+  <mat-dialog-content>
+    @if (mode === DialogMode.VIEW || mode === DialogMode.DELETE) {
+      <rb-dialog-body-description [mode]="mode" [label]="'ADMIN.config.title.singular' | translate"
+                                  [entityName]="entity.name">
+        <rb-config-details [mode]='mode' [entity]='entity'/>
+      </rb-dialog-body-description>
+    }
+
+  @if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
+      <!--    <ng-container *ngIf="mode === DialogMode.ADD || mode === DialogMode.EDIT">-->
+      <form [formGroup]="form" novalidate>
+      @if(!floatLabel) {
+        <label for="name" class="text-sm">{{ 'ADMIN.config.name.label' | translate }}</label>
+      }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline"
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.config.name.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='name' required/>
+        </mat-form-field>
+
+      @if(!floatLabel) {
+        <label for="name" class="text-sm">Value</label>
+      }
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="outline"
+                        [floatLabel]='floatLabel ? "always" : "auto"'>
+          @if(floatLabel) {
+          <mat-label>{{ 'ADMIN.config.value.label' | translate }}</mat-label>
+          }
+          <input matInput formControlName='value'/>
+        </mat-form-field>
+      </form>
+      <!--    </ng-container>-->
+    }
+  </mat-dialog-content>
+}
+<!--<div>-->
+@if (error()) {
+  <rb-message/>
+}
+
+<rb-dialog-actions [mode]='mode' [form]='form' (actionTriggered)='onAction($event)'/>
+<!--</div>-->
+<!--</ng-container>-->
