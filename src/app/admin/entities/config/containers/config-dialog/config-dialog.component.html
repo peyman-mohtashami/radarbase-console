@@ -1,0 +1,40 @@
+<rb-dialog-title [mode$]='dialogData.mode'
+                 [name$]="ENTITY_NAME.config"
+                 (closeClicked)='close()'/>
+<!--{{dialogData | json}}-->
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+<!--    <rb-config-details [mode]='mode' [entity]='entity'/>-->
+    <rb-dialog-body-description [mode$]="dialogData.mode"
+                                [label$]="'Config'"
+                                [entityName$]="dialogData.entity._name">
+    </rb-dialog-body-description>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]="form" novalidate>
+      <label for="name" class="text-sm">{{ 'ADMIN.config.name.label' | translate }}</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance="outline">
+        <input matInput formControlName='name' required/>
+      </mat-form-field>
+
+      <label for="name" class="text-sm">Value</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance="outline">
+        <input matInput formControlName='value'/>
+      </mat-form-field>
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error$()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error$()?.error.errorCode | translate }}
+  </div>
+}
+
+<rb-dialog-actions [mode$]='dialogData.mode'
+                   [form$]='form'
+                   (actionTriggered)='onAction($event)'/>

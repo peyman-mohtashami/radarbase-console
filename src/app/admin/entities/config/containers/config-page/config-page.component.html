@@ -1,0 +1,76 @@
+<!--<rb-loader *ngIf="loading"-->
+<!--           [loadingText]='"loading" | translate'>-->
+<!--</rb-loader>-->
+
+<!--<div class='details-page-container'>-->
+<!--&lt;!&ndash;  <rb-breadcrumb&ndash;&gt;-->
+<!--&lt;!&ndash;    [items]='[&ndash;&gt;-->
+<!--&lt;!&ndash;      {label: "ADMIN.organization.title.plural" | translate, path: "/admin/organizations/"},&ndash;&gt;-->
+
+<!--&lt;!&ndash;    ]'>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    {label: "ADMIN.organization.title.singular" | translate, name: organizationName, path: "/admin/organizations/" + organizationName},&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    {label: "ADMIN.project.title.singular" | translate, name: projectName, path: "/admin/projects/" + projectName},&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  </rb-breadcrumb>&ndash;&gt;-->
+
+<!--  <div class='details-page-header'>-->
+<!--    <h2 class='details-page-header-title subject-color-fg'>-->
+<!--      <mat-chip-option disableRipple class='label-chip subject-color'>-->
+<!--        <mat-icon fontSet='material-icons-outlined'>person_outline</mat-icon>-->
+<!--        {{'ADMIN.subject.title.singular' | translate }}-->
+<!--      </mat-chip-option>-->
+<!--      {{entity.name}}-->
+<!--    </h2>-->
+
+<!--    <div class='details-page-header-buttons-container'>-->
+<!--      <button mat-icon-button [matMenuTriggerFor]="menu" color='primary' aria-label="Example icon-button with a menu" (click)='$event.stopPropagation()'>-->
+<!--        <mat-icon class='subject-color-fg'>more_vert</mat-icon>-->
+<!--      </button>-->
+<!--      <mat-menu #menu="matMenu">-->
+<!--&lt;!&ndash;        <rb-pair-app [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-app>&ndash;&gt;-->
+<!--&lt;!&ndash;        <rb-pair-source [entity]="entity" [project]="project" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-pair-source>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;                (click)='pairApp(entity)'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='primary'>qr_code</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>Pair App</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <button mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;                (click)='pairSource(entity)'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='primary'>link</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>Pair Source</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--        <button-->
+<!--          mat-menu-item-->
+<!--          (click)='onAction(DialogMode.EDIT, entity)'>-->
+<!--          <mat-icon color='primary' fontSet='material-icons-outlined'>edit</mat-icon>-->
+<!--          <span>{{'ADMIN.subject.edit' | translate }}</span>-->
+<!--        </button>-->
+<!--        <button-->
+<!--          mat-menu-item-->
+<!--          [routerLink]='["revisions"]'>-->
+<!--          <mat-icon color='primary' fontSet='material-icons-outlined'>history</mat-icon>-->
+<!--          <span>{{'ADMIN.subject.history' | translate }}</span>-->
+<!--        </button>-->
+<!--&lt;!&ndash;        <rb-discontinue [entity]="entity" [projects]="projects" [projectName]="projectName" [clients]="clients" (updateTrigger)="triggerUpdate($event)"></rb-discontinue>&ndash;&gt;-->
+<!--        &lt;!&ndash;        <button mat-menu-item&ndash;&gt;-->
+<!--&lt;!&ndash;                (click)='discontinue(entity)'>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-icon color='accent' fontSet="material-icons-outlined">stop_circle</mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          <span>Discontinue</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        </button>&ndash;&gt;-->
+<!--        <button-->
+<!--          mat-menu-item-->
+<!--          (click)='onAction(DialogMode.DELETE, entity)'>-->
+<!--          <mat-icon color='warn' fontSet='material-icons-outlined'>delete</mat-icon>-->
+<!--          <span>{{'ADMIN.subject.delete' | translate }}</span>-->
+<!--        </button>-->
+<!--      </mat-menu>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <router-outlet></router-outlet>-->
+
+<!--  <div class='details-page-content'>-->
+<!--    <rb-config-details [entity]='entity'></rb-config-details>-->
+<!--  </div>-->
+<!--</div>-->
+

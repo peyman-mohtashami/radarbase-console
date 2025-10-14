@@ -1,22 +1,67 @@
-<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
-  <div class='flex flex-wrap gap-2 items-center'>
+<!--<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>-->
+<!--  <div class='flex flex-wrap gap-2 items-center'>-->
+<!--          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">-->
+<!--            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITIES.client.icon }}</span>-->
+<!--            <span>{{ 'ADMIN.client.title.singular' | translate }}</span>-->
+<!--          </span>-->
+<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>-->
+<!--      {{`${entity$().clientId}`}}-->
+<!--    </h2>-->
+<!--  </div>-->
+<!--  <div class='flex gap-1 ml-auto'>-->
+<!--    <app-actions [entity$]="entity$()" [isExpanded$]="true"/>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<mat-card class="m-4 p-4 text-sm border">-->
+<!--  <mat-card-content>-->
+<!--    <rb-client-details [entity$]='entity$()' [tableFields$]="tableFields" />-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->
+
+
+@if (!hasChildren) {
+  <div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
+    <div class='flex flex-wrap gap-2 items-center'>
           <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
             <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITIES.client.icon }}</span>
             <span>{{ 'ADMIN.client.title.singular' | translate }}</span>
           </span>
-    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
-      {{`${entity$().clientId}`}}
-    </h2>
+      <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+        {{ entity$().clientId }}
+      </h2>
+    </div>
+
+    <div class='flex gap-1 ml-auto'>
+      <ng-container
+        *rbPermission='[{role: "ROLE_SYS_ADMIN"}]'>
+        <app-actions [entity$]="entity$()"/>
+      </ng-container>
+    </div>
   </div>
-  <div class='flex gap-1 ml-auto'>
-    <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
-  </div>
+}
+
+<div [class]="!hasChildren? 'm-4' : ''">
+<!--  @if (!hasChildren) {-->
+    <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+         mat-tab-nav-bar
+         mat-stretch-tabs="false"
+         [tabPanel]="tabPanel">
+      <!--      mat-align-tabs="start"-->
+      @for (link of links; track link) {
+        <!--        {{link.path}} / {{activePath}}-->
+        <a mat-tab-link
+           (click)="activePath = link.path"
+           [active]="link.path === activePath"
+           [routerLink]="link.path">
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            {{ link.label }}
+          </h2>
+        </a>
+      }
+    </nav>
+<!--  }-->
+  <mat-tab-nav-panel #tabPanel class="">
+    <router-outlet/>
+  </mat-tab-nav-panel>
 </div>
-
-<mat-card class="m-4 p-4 text-sm border">
-  <mat-card-content>
-    <rb-client-details [entity$]='entity$()' [tableFields$]="tableFields" />
-  </mat-card-content>
-</mat-card>
-
-

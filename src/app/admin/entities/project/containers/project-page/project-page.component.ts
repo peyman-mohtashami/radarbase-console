@@ -57,7 +57,7 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     { path: 'subjects', label: 'Subjects' },
     { path: 'groups', label: 'Groups' },
     { path: 'sources', label: 'Sources' },
-    // { path: 'app-configs/apps', label: 'App Configs' },
+    { path: 'app-config', label: 'App Config' },
     { path: 'users', label: 'Users' },
     { path: 'details', label: 'Details' },
   ];

@@ -1,5 +1,5 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 
 import { DialogMode } from '../../../../enums/dialog';
 import {takeUntil} from "rxjs/operators";
@@ -12,9 +12,10 @@ import {Subject} from 'rxjs';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
 import {ENTITIES} from '../../../../consts/entities';
-import {MatCard, MatCardContent} from '@angular/material/card';
+import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
+import {ILink} from '../../../organization/containers/organization-page/organization-page.component';
+import {RbPermissionDirective} from '../../../../../core/auth/directives/ng-permission.directive';
 import {ActionsComponent} from '../../components/actions/actions.component';
-import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
 
 @Component({
   selector: 'rb-client-page',
@@ -22,11 +23,14 @@ import {ClientDetailsComponent} from '../../components/client-details/client-det
   imports: [
     TranslatePipe,
     ReactiveFormsModule,
-    ActionsComponent,
-    MatCard,
-    MatCardContent,
     MatPrefix,
-    ClientDetailsComponent
+    MatTabLink,
+    MatTabNav,
+    MatTabNavPanel,
+    RouterOutlet,
+    RouterLink,
+    RbPermissionDirective,
+    ActionsComponent
   ]
 })
 export class ClientPageComponent implements OnInit, OnDestroy {
@@ -39,9 +43,18 @@ export class ClientPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
 
+  links: ILink[] = [
+    { path: 'configs', label: 'Configs' },
+    { path: 'details', label: 'Details' },
+  ];
+
+  activePath?: string;
+
   entity$ = signal<AppClient>(this.activatedRoute.snapshot.data['entity']);
   entities = this.activatedRoute.snapshot.data['entities'];
   tableFields = this.configService.getTableFields();
+
+  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id']; //false;
 
   private _destroy$: Subject<void> = new Subject<void>();
 

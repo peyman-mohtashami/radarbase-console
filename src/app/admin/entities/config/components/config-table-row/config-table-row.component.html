@@ -1,0 +1,46 @@
+<!--{{entity$() | json}}-->
+<mat-card class="rb-table-row" [class]="
+    (updated$() ? 'bg-orange-200! ' : '') +
+    (expanded$() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields$(); track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('value') {
+<!--            @if (projectId()) {-->
+              <div>
+                <!--              {{entity | json}}-->
+                <div class="font-bold">{{ entity$().value }}</div>
+                <!--              <div class="font-bold text-gray-400" *ngIf="entity['default']"><span class="uppercase font-bold text-neutral-400">Default</span> {{ entity["default"] || '-' }} (Default - {{ entity["scope"] || '-' }})</div>-->
+                @if (entity$().default) {
+                  <div class="font-bold text-gray-400">
+                    <span class="uppercase text-xs font-bold text-neutral-400">[Default]</span> {{ entity$().default || '-' }}
+                  </div>
+                } @else {
+                  <div class="font-bold text-neutral-600">No default value</div>
+                }
+                <!--              <div class="font-bold text-gray-400">Default ({{ entity["scope"] || '-' }}):</div>-->
+              </div>
+<!--            } @else {-->
+<!--              <span>{{ entity$().value }}</span>-->
+<!--            }-->
+          }
+          @case ('actions') {
+            <button mat-icon-button class="tiny {{extensionClass$()}}!" (click)="onExpansionClick($event)">
+                <span class="material-symbols-outlined text-xl!">
+                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                </span>
+            </button>
+            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>          }
+          @default {
+            {{ entity$()[tableElement.name] || '-' }}
+          }
+        }
+        </div>
+      }
+    </div>
+  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'"></div>
+</mat-card>

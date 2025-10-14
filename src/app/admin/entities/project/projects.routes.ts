@@ -63,12 +63,12 @@ export const projectRoutes: Routes = [
       // //   loadChildren: () =>
       // //     import('../client/client.module').then((m) => m.ClientModule),
       // // },
-      // {
-      //   path: 'app-configs',
-      //   loadChildren: () =>
-      //     import('../client/client.routes').then((m) => m.clientRoutes),
-      //   data: {appConfig: true}
-      // },
+      {
+        path: 'app-config',
+        loadChildren: () =>
+          import('../client/app-config.routes').then((m) => m.appConfigRoutes),
+        // data: {appConfig: true}
+      },
       {
         path: 'details',
         component: ProjectDetailsPageComponent,
