@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core";
 
 @Component({
-    selector: 'rb-subject-data-details-page',
+    selector: 'app-subject-data-details-page',
     templateUrl: './subject-data-details-page.component.html',
 })
 export class SubjectDataDetailsPageComponent  {

@@ -8,7 +8,7 @@ import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.mo
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
-  selector: 'rb-metrics-threads',
+  selector: 'app-metrics-threads',
   templateUrl: './metrics-threads.component.html',
   imports: [
     DetailElementComponent,

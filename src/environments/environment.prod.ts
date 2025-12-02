@@ -1,6 +1,5 @@
-import packageJson from '../../package.json';
-
 export const environment = {
   production: true,
-  version: packageJson.version,
+  version: "2.1.3",
+  localDeployment: false,
 };

@@ -1,0 +1,36 @@
+<div class="grid grid-cols-2 gap-4">
+  <div class="flex justify-between items-center">
+    <span class="font-bold">Questions</span>
+    <button type="button" mat-stroked-button color="primary" (click)="addQuestion()">
+      <mat-icon>add</mat-icon>
+      <span class="font-bold">Add Question</span>
+    </button>
+  </div>
+  <span class="justify-self-start self-center font-bold">Question Settings</span>
+  <div cdkDropList (cdkDropListDropped)="onDrop($event)">
+    @for (question of form.controls; let i = $index; track question) {
+      <app-question-list-item class="cursor-pointer"
+                              cdkDrag
+                              [index]="i"
+                              [questionFormControl]="question"
+                              [selectedQuestion]="questionnaireStateService.selectedQuestionIndex() === i"
+                              (click)="selectQuestion(i)"
+                              (remove)="removeQuestion(i)"/>
+    }
+  </div>
+
+  <div>
+    @for (question of form.controls; let i = $index; track question) {
+      <app-question-form-group class="block cursor-pointer opacity-0 h-0 overflow-hidden"
+                               [class]="questionnaireStateService.selectedQuestionIndex() === i ? 'opacity-100 h-auto' : 'opacity-0 h-0'"
+                               [formControl]="question"
+                               [questionIndex]="i"
+                               [languages]="languages()"/>
+    }
+    @if (questionnaireStateService.selectedQuestionIndex() === undefined) {
+      <div class="text-base text-gray-400">
+        Select a question to edit
+      </div>
+    }
+  </div>
+</div>

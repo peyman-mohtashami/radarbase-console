@@ -2,11 +2,9 @@ import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/cor
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppSourceData} from "../../models/source-data";
 
-import {ENTITY_NAME} from '../../../../enums/entities';
 import {SourceDataDetailsComponent} from "../../components/source-data-details/source-data-details.component";
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {ActionsComponent} from '../../components/actions/actions.component';
-import {ENTITIES} from '../../../../consts/entities';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {DialogMode} from '../../../../enums/dialog';
@@ -17,7 +15,7 @@ import {MatPrefix} from '@angular/material/input';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 
 @Component({
-  selector: 'rb-source-data-page',
+  selector: 'app-source-data-page',
   templateUrl: './source-data-page.component.html',
   imports: [
     SourceDataDetailsComponent,
@@ -29,18 +27,18 @@ import {SourceDataConfigService} from '../../services/source-data-config.service
   ]
 })
 export class SourceDataPageComponent implements OnInit, OnDestroy {
-  protected readonly ENTITY_NAME = ENTITY_NAME;
-  protected readonly ENTITIES = ENTITIES;
-  protected readonly DialogMode = DialogMode;
 
-  private configService = inject(SourceDataConfigService);
+  protected configService = inject(SourceDataConfigService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private dialogService = inject(SourceDataDialogService);
 
-  entity$ = signal<AppSourceData>(this.activatedRoute.snapshot.data['entity']);
-  tableFields = this.configService.getTableFields();
+  protected readonly DialogMode = DialogMode;
+
+  entityName = this.configService.getEntityMetadata().name;
+  entity = signal<AppSourceData>(this.activatedRoute.snapshot.data['entity']);
   sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
+  tableFields = this.configService.getTableFields();
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -59,12 +57,12 @@ export class SourceDataPageComponent implements OnInit, OnDestroy {
 
   private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) {
         switch (updated.mode) {
           case DialogMode.EDIT:
             if (updated?.entity) {
-              this.entity$.set(updated.entity);
+              this.entity.set(updated.entity);
             }
             this.navigateOnUpdateSuccess(updated.entity);
             break;
@@ -86,13 +84,13 @@ export class SourceDataPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType] = fragment.split('/');
-    if (entityType === 'sourceData') {
+    if (entityType === this.entityName) {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.sourceTypes);
+          this.dialogService.openDialog(DialogMode.EDIT, this.entity(), this.sourceTypes);
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.sourceTypes);
+          this.dialogService.openDialog(DialogMode.DELETE, this.entity(), this.sourceTypes);
           break;
       }
     }

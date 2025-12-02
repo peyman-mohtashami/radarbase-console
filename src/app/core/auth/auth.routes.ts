@@ -7,26 +7,26 @@ import {ActivatePageComponent} from "./containers/activate-page/activate-page.co
 
 export const authRoutes: Routes = [
   {
-    path: '',
-    redirectTo: 'login',
+    path: 'auth',
+    redirectTo: 'auth/login',
     pathMatch: 'full',
   },
   {
-    path: 'login',
+    path: 'auth/login',
     component: LoginPageComponent,
     canActivate: [guestGuard],
   },
   {
-    path: 'forgot-password',
+    path: 'auth/forgot-password',
     component: ForgotPasswordPageComponent,
     canActivate: [guestGuard],
   },
   {
-    path: 'reset-password',
+    path: 'auth/reset-password',
     component: ResetPasswordPageComponent,
   },
   {
-    path: 'activate-email',
+    path: 'auth/activate-email',
     component: ActivatePageComponent,
   },
 ];

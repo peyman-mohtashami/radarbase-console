@@ -5,7 +5,7 @@ import {Params} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {AppRevision, RadarRevision} from '../models/revision';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
 
 @Injectable({ providedIn: 'root' })
 export class RevisionService {

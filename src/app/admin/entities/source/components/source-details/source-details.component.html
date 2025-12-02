@@ -1,31 +1,31 @@
-<rb-details [name$]="ENTITY_NAME.source"
-             [entity$]="entity$()"
-             [tableFields$]="tableFields$()"
-             [type$]="type$()"
-             [customTemplate$]="detailsTemplate"/>
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+             [entity]="entity()"
+             [tableFields]="configService.getTableFields()"
+             [detailType]="detailType()"
+             [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('assigned') {
-      <rb-source-assigned [assigned$]="entity$().assigned"/>
+      <app-source-assigned [assigned]="entity().assigned"/>
     }
     @case ('sourceType') {
-      <rb-source-source-type [sourceType$]="entity$().sourceType"/>
+      <app-source-source-type [sourceType]="entity().sourceType"/>
     }
     @case ('attributes') {
-      @if (entity$().attributes) {
-        @for (attribute of entity$().attributes | keyvalue; track attribute.key) {
+      @if (entity().attributes) {
+        @for (attribute of entity().attributes | keyvalue; track attribute.key) {
           <div>
             {{ attribute.key }}: {{ attribute.value || '-' }}
           </div>
         }
       }
-      @if (!entity$().attributes || !(entity$().attributes | keyvalue)?.length) {
+      @if (!entity().attributes || !(entity().attributes | keyvalue)?.length) {
         -
       }
     }
     @default {
-      {{ entity$()[property.name] || '-' }}
+      {{ entity()[property.name] || '-' }}
     }
   }
 </ng-template>

@@ -1,13 +1,13 @@
-<rb-dialog-title [mode$]='dialogData.mode'
-                 [name$]="ENTITY_NAME.source"
+<app-dialog-title [dialogMode]='dialogData.mode'
+                 [entityMetadata]="configService.getEntityMetadata()"
                  (closeClicked)='close()'/>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <rb-dialog-body-description [mode$]="dialogData.mode"
-                                [label$]="'Source'"
-                                [entityName$]="dialogData.entity.sourceName">
-    </rb-dialog-body-description>
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                [label]="'Source'"
+                                [entityName]="dialogData.entity.sourceName">
+    </app-dialog-body-description>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -16,18 +16,16 @@
         <label for="id" class="text-sm">{{ 'ADMIN.source.id.label' | translate }}</label>
         <mat-form-field class='w-full'
                         subscriptSizing="fixed"
-                        appearance="outline">
+                        appearance="fill">
           <input matInput formControlName='id'
                  placeholder=''
                  required/>
         </mat-form-field>
-      }
 
-      @if (dialogData.mode !== DialogMode.ADD) {
         <label for="sourceId" class="text-sm">{{ 'ADMIN.source.sourceId.label' | translate }}</label>
         <mat-form-field class='w-full'
                         subscriptSizing="fixed"
-                        appearance="outline">
+                        appearance="fill">
           <input matInput formControlName='sourceId'
                  placeholder=''
                  required/>
@@ -41,7 +39,7 @@
         <input matInput formControlName='sourceName'
                placeholder=''
                required/>
-        @if (form.controls.sourceName?.errors; as errors) {
+        @if (form.controls.sourceName.errors; as errors) {
           <mat-error>
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator }}
@@ -61,7 +59,7 @@
                         appearance="outline">
           <input matInput formControlName='expectedSourceName'
                  placeholder=''/>
-          @if (form.controls.expectedSourceName?.errors; as errors) {
+          @if (form.controls.expectedSourceName.errors; as errors) {
             <mat-error>
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
@@ -71,7 +69,7 @@
         </mat-form-field>
       }
 
-      <rb-mat-select-autocomplete formControlName='sourceType'
+      <app-mat-select-autocomplete formControlName='sourceType'
                                   [legend]='"ADMIN.source.sourceType.label" | translate '
                                   [options]='dialogData.sourceTypes'
                                   [label]='("ADMIN.source.sourceType.label" | translate) + "*"'
@@ -89,7 +87,7 @@
                             subscriptSizing="fixed"
                             appearance='outline'>
               <input matInput formControlName='External-identifier'/>
-              @if (form.controls.attributes?.controls?.['External-identifier']?.errors; as errors) {
+              @if (form.controls.attributes.controls['External-identifier'].errors; as errors) {
                 <mat-error>
                   @if (errors?.['pattern']) {
                     {{ ValidatorError.normalTextValidator }}
@@ -111,6 +109,6 @@
   </div>
 }
 
-<rb-dialog-actions [mode$]='dialogData.mode'
-                   [form$]='form'
+<app-dialog-actions [dialogMode]='dialogData.mode'
+                   [form]='form'
                    (actionTriggered)='onAction($event)'/>

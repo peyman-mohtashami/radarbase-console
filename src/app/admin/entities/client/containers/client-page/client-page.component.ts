@@ -4,21 +4,20 @@ import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router'
 import { DialogMode } from '../../../../enums/dialog';
 import {takeUntil} from "rxjs/operators";
 import { AppClient } from "../../models/client";
-import { ENTITY_NAME } from '../../../../enums/entities';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPrefix} from "@angular/material/input";
 import {Subject} from 'rxjs';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
-import {ENTITIES} from '../../../../consts/entities';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
-import {ILink} from '../../../organization/containers/organization-page/organization-page.component';
-import {RbPermissionDirective} from '../../../../../core/auth/directives/ng-permission.directive';
+import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
 import {ActionsComponent} from '../../components/actions/actions.component';
+import {TabLink} from "../../../../models/tab-link";
+import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 
 @Component({
-  selector: 'rb-client-page',
+  selector: 'app-client-page',
   templateUrl: './client-page.component.html',
   imports: [
     TranslatePipe,
@@ -29,32 +28,32 @@ import {ActionsComponent} from '../../components/actions/actions.component';
     MatTabNavPanel,
     RouterOutlet,
     RouterLink,
-    RbPermissionDirective,
+    PermissionDirective,
     ActionsComponent
   ]
 })
 export class ClientPageComponent implements OnInit, OnDestroy {
-  private configService = inject(ClientConfigService);
+  protected configService = inject(ClientConfigService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private dialogService = inject(ClientDialogService);
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
-  protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
 
-  links: ILink[] = [
-    { path: 'configs', label: 'Configs' },
-    { path: 'details', label: 'Details' },
+  entityName = this.configService.getEntityMetadata().name;
+
+  links: TabLink[] = [
+    { path: 'configs', label: `ADMIN.${ENTITY_REGISTRY.config.name}.title.plural` },
+    { path: 'details', label: `ADMIN.${this.entityName}.details` },
   ];
 
   activePath?: string;
 
-  entity$ = signal<AppClient>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppClient>(this.activatedRoute.snapshot.data['entity']);
   entities = this.activatedRoute.snapshot.data['entities'];
   tableFields = this.configService.getTableFields();
 
-  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id']; //false;
+  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id'];
 
   private _destroy$: Subject<void> = new Subject<void>();
 
@@ -78,7 +77,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
         switch (updated.mode) {
           case DialogMode.EDIT:
             if (updated?.entity) {
-              this.entity$.set(updated.entity);
+              this.entity.set(updated.entity);
             }
             this.navigateOnUpdateSuccess(updated.entity);
             break;
@@ -100,13 +99,13 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType] = fragment.split('/');
-    if (entityType === 'client') {
+    if (entityType === this.entityName) {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity$(), this.entities);
+          this.dialogService.openDialog(DialogMode.EDIT, this.entity(), this.entities);
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity$(), this.entities);
+          this.dialogService.openDialog(DialogMode.DELETE, this.entity(), this.entities);
       }
     }
   }

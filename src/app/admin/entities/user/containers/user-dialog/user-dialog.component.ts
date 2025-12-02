@@ -13,7 +13,6 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppUser} from "../../models/user";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
@@ -25,7 +24,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
-  MatSelectAutocompleteComponent
+  MatSelectAutocompleteComponent, RadarOption
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
@@ -36,7 +35,7 @@ import {
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
-  selector: 'rb-users-dialog',
+  selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -53,12 +52,11 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
   ]
 })
 export class UserDialogComponent implements OnInit, AfterViewInit {
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
-  private configService = inject(UserConfigService);
+  protected configService = inject(UserConfigService);
   private dialogRef = inject(MatDialogRef<UserDialogService>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
@@ -71,18 +69,18 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
 
   form = new FormGroup({
-    id: new FormControl<string| number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
-    login: new FormControl<string | undefined>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
-    firstName: new FormControl<string | undefined>('', {nonNullable: true, validators: [Validator.normalTextValidator]}),
-    lastName: new FormControl<string | undefined>('', {nonNullable: true, validators: [Validator.normalTextValidator]}),
-    email: new FormControl<string | undefined>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.emailValidator]}),
-    langKey: new FormControl<string | undefined>('', {nonNullable: true}),
+    id: new FormControl<string| number>({ value: '', disabled: true }, {nonNullable: true}),
+    login: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
+    firstName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
+    lastName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
+    email: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.emailValidator]}),
+    langKey: new FormControl<string>(''),
     _roles: new FormGroup({
-      _sysAdmin: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-      _organizationAdmin: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-      _organizations: new FormControl<any | undefined>('', {nonNullable: true}),
-      _projectAdmin: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-      _projects: new FormControl<any | undefined>('', {nonNullable: true}),
+      _sysAdmin: new FormControl<boolean>(false),
+      _organizationAdmin: new FormControl<boolean>(false),
+      _organizations: new FormControl<RadarOption[]>([]),
+      _projectAdmin: new FormControl<boolean>(false),
+      _projects: new FormControl<RadarOption[]>([]),
     }),
   });
 
@@ -106,7 +104,7 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.form?.patchValue({...this.dialogData.entity});
+    this.form.patchValue(this.dialogData.entity);
   }
 
   ngAfterViewInit() {
@@ -133,7 +131,9 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
   }
 
   private handleSaveAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: {...this.dialogData.entity, ...this.form?.value}});
+    this.dialogActionEvent.emit({
+      action: this.dialogData.mode,
+      entity: {...this.dialogData.entity, ...this.form.getRawValue()}});
   }
 
   private handleDeleteAction(): void {

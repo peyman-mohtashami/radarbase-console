@@ -1,27 +1,20 @@
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import { user } from '../../../core/auth/store/auth.selectors';
-import { instanceConfig } from '../../../core/config/store/config.selectors';
-import { locale } from '../../../core/locale/store/locale.selectors';
-import { AuthActions } from '../../../core/auth/store/action.types';
-import { LocaleActions } from '../../../core/locale/store/action.types';
-import { UiActions } from '../../../core/store/action.types';
-import { isLightTheme } from '../../../core/store/ui.selectors';
+import {Component, inject, OnInit, output, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {AsyncPipe} from "@angular/common";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {LogoComponent} from "../logo/logo.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Language} from '../../models/locale.model';
+import {ThemeService} from "../../../core/theme/services/theme.service";
+import {LocaleService} from "../../../core/locale/services/locale.service";
+import {AuthService} from "../../../core/auth/services/auth.service";
+import {AppCustomizationService} from "../../../core/app-customization/services/app-customization.service";
 
 @Component({
   selector: 'rb-toolbar',
   templateUrl: './toolbar.component.html',
   imports: [
-    AsyncPipe,
     RouterLink,
     MatToolbar,
     MatToolbarRow,
@@ -34,27 +27,31 @@ import {Language} from '../../models/locale.model';
     TranslatePipe,
   ],
 })
-export class ToolbarComponent {
-  private store = inject(Store);
+export class ToolbarComponent implements OnInit {
+  authService = inject(AuthService);
+  themeService = inject(ThemeService);
+  localeService = inject(LocaleService);
+  appCustomizationService = inject(AppCustomizationService);
 
-  config$ = this.store.select(instanceConfig);
-  locale$ = this.store.select(locale);
-  user$ = this.store.select(user);
-  isLightTheme$ = this.store.select(isLightTheme);
+  menuStatus = output<boolean>();
+
+  isMenuOpen = signal<boolean>(localStorage.getItem('isMenuOpen') !== 'false');
+
+  ngOnInit() {
+    this.menuStatus.emit(this.isMenuOpen());
+  }
 
   logout(): void {
-    this.store.dispatch(AuthActions.logoutPasswordGrant());
+    this.authService.logout();
   }
 
   switchLanguage(currentLanguage: Language): void {
-    this.store.dispatch(LocaleActions.switchLanguage({ currentLanguage }));
+    this.localeService.switchLanguage(currentLanguage);
   }
 
   toggleMenu(): void {
-    this.store.dispatch(UiActions.toggleMenu());
-  }
-
-  toggleTheme() {
-    this.store.dispatch(UiActions.toggleTheme());
+    this.isMenuOpen.update(open => !open);
+    localStorage.setItem('isMenuOpen', this.isMenuOpen() ? 'true' : 'false');
+    this.menuStatus.emit(this.isMenuOpen());
   }
 }

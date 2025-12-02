@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, effect,
   inject,
   input,
   OnDestroy,
@@ -12,7 +12,6 @@ import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {DateAdapter, MatOption} from '@angular/material/core';
 
-import {Store} from "@ngrx/store";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
 import {
@@ -29,18 +28,18 @@ import {MatIconButton} from "@angular/material/button";
 import {ValidatorError} from '../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
-import {locale} from '../../../core/locale/store/locale.selectors';
 import {format, isValid, parse} from 'date-fns';
 import { enGB, nl, faIR } from 'date-fns/locale';
 import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
 import {TagComponent} from '../../../shared/components/tag/tag.component';
+import {LocaleService} from "../../../core/locale/services/locale.service";
 
 export interface FilterEvent {
   [key: string]: string | null | undefined;
 }
 
 @Component({
-  selector: 'rb-data-table-filter',
+  selector: 'app-data-table-filter',
   templateUrl: './data-table-filter.component.html',
   imports: [
     ReactiveFormsModule,
@@ -71,13 +70,13 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   protected readonly ValidatorError = ValidatorError;
   protected readonly FilterType = FormFieldType;
 
+  localeService = inject(LocaleService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private store = inject(Store);
   private dateAdapter = inject(DateAdapter<any>);
 
-  filters$ = input<FilterItem[]>([]);
-  filterOpened$ = input<boolean>(true);
+  filters = input<FilterItem[]>([]);
+  filterOpened = input<boolean>(true);
 
   filterChanged = output<FilterEvent>();
   filterEnableChanged = output<boolean>();
@@ -86,26 +85,24 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
 
   filterEnabled = false;
 
-  dateFormat = 'mm/dd/yyy';
   advancedFilterEnabled = false;
 
   _destroy$: Subject<void> = new Subject<void>();
 
-  ngOnInit(): void {
-    this.advancedFilterEnabled = !!this.filters$()?.find(filter => filter.advanced);
-
-    this.store.select(locale).pipe(
-      takeUntil(this._destroy$)
-    ).subscribe((state) => {
-      const rawLocale = state.currentLanguage?.locale;
+  constructor() {
+    effect(() => {
+      const rawLocale = this.localeService.currentLocale()?.locale;
       const angularLocaleId = rawLocale === 'en-GB' ? 'en-GB' : rawLocale?.substring(0,2);
       const dfLocaleMap: Record<string, any> = { 'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR };
       const dfLocale = angularLocaleId ? (dfLocaleMap[angularLocaleId] || enGB) : enGB;
       this.dateAdapter?.setLocale(dfLocale);
-      this.dateFormat = state.currentLanguage?.dateFormat || 'mm/dd/yyy';
     });
+  }
 
-    const filterGroup = this.filters$()?.reduce(
+  ngOnInit(): void {
+    this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
+
+    const filterGroup = this.filters()?.reduce(
       (acc: { [key: string]: FormControl }, filterItem: FilterItem) => {
         if (
           filterItem.type === FormFieldType.RANGE_PICKER &&
@@ -126,7 +123,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(300), takeUntil(this._destroy$))
       .subscribe(() => {
         const formValue = {...this.form?.value};
-        this.filters$()?.map((filter) => {
+        this.filters()?.map((filter) => {
           if (filter.type === FormFieldType.DATEPICKER && filter.name) {
             if (formValue[filter.name]) {
               formValue[filter.name] = format(formValue[filter.name], 'yyyy-MM-dd')
@@ -184,7 +181,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   private checkActiveFilterQuery(): void {
     // todo patch or set
     let noFilter = true;
-    this.filters$()?.map((filter) => {
+    this.filters()?.map((filter) => {
       if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
         const filterValueFrom =
           this.activatedRoute.snapshot.queryParams[filter.names[0]];
@@ -231,6 +228,10 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
 
   private applyStateChangesToUrlQueryParams(queryParams: Params): void {
     const currentUrlSegments = this.router.url.split('?')[0];
-    this.router.navigate([currentUrlSegments], {queryParams: queryParams}).then();
+    this.router.navigate([decodeURIComponent(currentUrlSegments)], {
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+      fragment: this.activatedRoute.snapshot.fragment ?? undefined,
+    }).then();
   }
 }

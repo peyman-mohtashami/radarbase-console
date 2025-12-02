@@ -1,5 +1,5 @@
 <p>Data Page</p>
-<!--<rb-loader *ngIf='loading' [loadingText]='"loading" | translate'></rb-loader>-->
+<!--<app-loader *ngIf='loading' [loadingText]='"loading" | translate'></app-loader>-->
 
 <!--&lt;!&ndash;<div class='flex flex-wrap justify-between gap-2 p-4 bg-white'>&ndash;&gt;-->
 <!--&lt;!&ndash;  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>&ndash;&gt;-->
@@ -7,7 +7,7 @@
 <!--&lt;!&ndash;    Details&ndash;&gt;-->
 <!--&lt;!&ndash;  </h2>&ndash;&gt;-->
 <!--&lt;!&ndash;  <div class='flex gap-1 ml-auto'>&ndash;&gt;-->
-<!--&lt;!&ndash;    <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>&ndash;&gt;-->
+<!--&lt;!&ndash;    <ng-container *showIfHasRole='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>&ndash;&gt;-->
 <!--&lt;!&ndash;      <button mat-icon-button&ndash;&gt;-->
 <!--&lt;!&ndash;              [matMenuTriggerFor]="menu"&ndash;&gt;-->
 <!--&lt;!&ndash;              (click)="$event.stopPropagation();">&ndash;&gt;-->
@@ -60,7 +60,7 @@
 <!--&lt;!&ndash;&lt;!&ndash;      </div>&ndash;&gt;&ndash;&gt;-->
 <!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
 <!--&lt;!&ndash;    <div class='flex gap-1 ml-auto'>&ndash;&gt;-->
-<!--&lt;!&ndash;      <ng-container *rbPermission='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>&ndash;&gt;-->
+<!--&lt;!&ndash;      <ng-container *showIfHasRole='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity.name}]'>&ndash;&gt;-->
 <!--&lt;!&ndash;        <button mat-icon-button&ndash;&gt;-->
 <!--&lt;!&ndash;                [matMenuTriggerFor]="menu"&ndash;&gt;-->
 <!--&lt;!&ndash;                color='primary'&ndash;&gt;-->
@@ -88,9 +88,9 @@
 <!--&lt;!&ndash;  &lt;!&ndash;  <router-outlet></router-outlet>&ndash;&gt;&ndash;&gt;-->
 <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-<!--&lt;!&ndash;<rb-loader *ngIf="loading"&ndash;&gt;-->
+<!--&lt;!&ndash;<app-loader *ngIf="loading"&ndash;&gt;-->
 <!--&lt;!&ndash;           [loadingText]='"loading" | translate'>&ndash;&gt;-->
-<!--&lt;!&ndash;</rb-loader>&ndash;&gt;-->
+<!--&lt;!&ndash;</app-loader>&ndash;&gt;-->
 
 <!--&lt;!&ndash;<div class="px-4">&ndash;&gt;-->
 <!--&lt;!&ndash;  &lt;!&ndash;  <rb-breadcrumb&ndash;&gt;&ndash;&gt;-->

@@ -1,90 +1,105 @@
-// Custom utility classes or helpers
+.mdc-notched-outline__notch {
+  border-right: none;
+}
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-
-//@layer base {
-//  *,
-//  ::after,
-//  ::before,
-//  ::backdrop,
-//  ::file-selector-button {
-//    border-color: var(--color-gray-200, currentcolor);
-//  }
-//}
-
+.mat-mdc-dialog-content {
+  max-height: none !important;
+}
 
 @layer utilities {
+  /*#region SCROLLBAR*/
+  /* Base scrollbar style*/
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: transparent; /*#00ff00;/*theme('colors.red.500');*/
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--rb-accent); /*theme('colors.yellow.500');*/
+    border-radius: 9999px;
+    /*border: 2px solid transparent;/*theme('colors.red.300');*/
+  }
+
+   /*Firefox*/
+  .scrollbar {
+    /*scrollbar-base-color: #8e24aa;*/
+    /*scrollbar-face-color: #0000ef;*/
+    /*scrollbar-track-color: #0f766e;*/
+    scrollbar-width: thin;
+    scrollbar-color: var(--rb-accent) transparent; /*#8e24aa; /*theme('colors.cyan.500') theme('colors.cyan.200');*/
+  }
+
+  /*Optional hover effect*/
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--rb-accent); /*theme('colors.orange.600');*/
+  }
+  /*#endregion*/
+
+  /*#region TABLE*/
   .rb-table {
     @apply w-full text-sm relative px-4;
   }
+
   .rb-table-header {
-    @apply sticky top-[72px] z-50 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark;
+    @apply sticky top-[72px] z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark;
   }
+
   .rb-table-head {
     @apply flex items-center gap-2;
   }
+
   .rb-table-sort {
     @apply group-hover:opacity-70 transition-opacity duration-500;
   }
+
   .rb-sort-icon {
     @apply w-3.5! h-3.5! text-base!;
   }
-  /*.rb-table-row {*/
-  /*  @apply shadow-sm rounded-sm bg-white dark:bg-neutral-700 my-1 hover:drop-shadow-sm transition-all;*/
-  /*}*/
+
   .rb-table-main-row {
     @apply flex gap-4 items-center py-2 px-4 border-t border-t-neutral-300 dark:border-neutral-500;
   }
+
+  /*.rb-table-extension-row {*/
+  /*  @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];*/
+  /*}*/
   .rb-table-extension-row {
-    @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];
+    @apply px-4 mt-0.5 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)] grid;
   }
 
-  .sticky-head thead {
-    @apply sticky top-0 z-50;
+  .rb-table-extension-row > * {
+    overflow: hidden;
+  }
+
+  .expand-in-anim {
+    animation: expand-in 0.3s ease-out forwards;
+  }
+
+  .expand-out-anim {
+    animation: expand-in 0.3s ease-out reverse;
   }
 
   .grid-container {
-    /*@apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 px-4 text-base;*/
     @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 px-4 text-base items-stretch;
   }
+  /*#endregion*/
 
-  .small-button {
-    @apply h-6! text-xs! font-bold! rounded-sm! bg-neutral-100!;
-  }
-  .rb-hint {
-    @apply text-xs leading-3 mb-4 -mt-3;
-  }
-  /*.gradient-btn {*/
-  /*  @apply text-white! bg-linear-to-r! from-accent-color-500! to-primary-color-500! dark:from-accent-dark-color-500! dark:to-primary-dark-color-500! disabled:opacity-50!;*/
-  /*}*/
-  .gradient-btn {
-    @apply text-white! bg-linear-to-r! from-secondary! to-primary! disabled:opacity-50!;
-  }
-
-  //==========
-
-  //================
-
-  .mat-mdc-dialog-content {
-    @apply max-h-none!;
-  }
-
+  /*#region SLIDE PANEL*/
   .tailwind-slide-panel {
     @apply fixed top-0 right-0 h-screen m-0 rounded-none bg-white shadow-lg overflow-hidden;
     transform: translateX(100%);
-    /*transition: transform 0.3s ease;*/
   }
 
   .dialog-enter-active {
     animation: slideInRight 0.3s ease-out forwards;
-    /*transform: translateX(0);*/
   }
 
   .dialog-exit-active {
@@ -92,36 +107,65 @@
     transform: translateX(100%);
   }
 
-  .border-highlight .mdc-text-field--outlined {
-    @apply border-indigo-500 ring-2 ring-indigo-200;
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
 
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  /*#endregion*/
 
+  /*#region FORM FIELD*/
+  .mat-mdc-form-field {
+    @apply w-full;
+  }
+
+  .mat-mdc-slide-toggle {
+    @apply text-sm mb-4
+  }
+
+  .mat-mdc-checkbox {
+    @apply text-sm
+  }
+
+  fieldset {
+    @apply mb-4 rounded border px-2
+  }
+
+  fieldset legend {
+    @apply text-sm
+  }
+
+  mat-hint {
+    @apply text-xs leading-3
+  }
+
+  .suffix .mat-mdc-form-field-infix {
+    display: flex;
+  }
+  /*#endregion*/
 }
 
-@keyframes slideInRight {
+@keyframes expand-in {
   from {
-    transform: translateX(100%);
+    grid-template-rows: 0fr;
   }
   to {
-    transform: translateX(0);
+    grid-template-rows: 1fr;
   }
 }
 
-@keyframes slideOutRight {
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(100%);
-  }
-}
-
-
-rb-tag {
-  @apply rounded-sm
-}
-
-.mdc-tooltip {
-  @apply text-white text-sm bg-secondary rounded-2xl;
+.input-select .mat-form-field-infix {
+  display: inherit;
 }

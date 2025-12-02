@@ -1,18 +1,16 @@
-import {Component, input, signal} from "@angular/core";
+import {Component, inject, input, signal} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
-import {ROLES} from "../../../../enums/entities";
+import {ROLES} from "../../../../../shared/enums/roles";
 import {DialogMode} from "../../../../enums/dialog";
-import {TABLE_ANIMATION} from "../../../../animation";
 import {AppLog} from "../../models/log";
 import {MatCard} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
-import {TableElement} from '../../../../models/table.model';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {LogConfigService} from "../../services/log-config.service";
 
 @Component({
-  selector: 'rb-log-table-row',
+  selector: 'app-log-table-row',
   templateUrl: './log-table-row.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     MatCard,
     TranslatePipe,
@@ -20,28 +18,19 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class LogTableRowComponent {
+  protected readonly ROLES = ROLES;
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
-  protected readonly ROLES = ROLES;
 
-  entity$ = input.required<AppLog>();
-  tableFields$ = input.required<TableElement[]>();
-  configFields$ = input.required<Record<string, boolean>>();
-  extensionClass$ = input<string>();
+  configService = inject(LogConfigService);
 
-  expanded$ = signal(false);
-  updated$ = signal(false);
-  gridView = input<boolean>(false);
+  entity = input.required<AppLog>();
+  extensionClass = input<string>();
+
+  expanded = signal(false);
+  updated = signal(false);
 
   updateAction(log: AppLog, level: string) {
-  //   const updatedLog = {
-  //     id: log.id,
-  //     name: log.name,
-  //     level,
-  //   };
-  //   this.update(updatedLog).subscribe({
-  //     next: () => this.updateTrigger$.next(updatedLog.name || '0'),
-  //     error: (err) => console.log(err),
-  //   });
+    //TODO
   }
 }

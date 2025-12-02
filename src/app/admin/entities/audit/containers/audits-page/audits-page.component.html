@@ -1,30 +1,28 @@
-<rb-entities-page-header [showTitle$]="true"
-                         [entityName$]="ENTITY_NAME.audit"
-                         [enableAddButton$]="false"
+<app-entities-page-header [showTitle]="true"
+                         [entityMetadata]="entityMetadata"
+                         [enableAddButton]="false"
                          [isGridView]="undefined"
-                         [permission$]="[{role: ROLES.SYS_ADMIN}]">
-  <!--  @if (tableFilters.length && entityService.total > MIN_ENTITIES_FOR_FILTERS) {-->
+                         [permission]="[{role: ROLES.SYS_ADMIN}]">
   @if (tableFilters.length) {
-    <rb-data-table-filter bottom-filter
-                          [filters$]='tableFilters'
-                          [filterOpened$]='isFilterOpened'
+    <app-data-table-filter bottom-filter
+                          [filters]='tableFilters'
+                          [filterOpened]='isFilterOpened'
                           (filterChanged)='handleFilterChange($event)'
                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }
-</rb-entities-page-header>
+</app-entities-page-header>
 
-@if (loading$()) {
-  <rb-loader/>
+@if (loading()) {
+  <app-loader/>
 }
 
 <div class="rb-table"
-     rbTableQueryReflector
-     [page]="page$()"
-     [sort]="sort$()"
-     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
+     tableQueryReflector
+     [page]="page()"
+     [sort]="sort()"
      (activeQueryParams)="handleActiveQueryChange($event)">
 
-  @if (visibleEntities$().length) {
+  @if (visibleEntities().length) {
     <div class="rb-table-header mat-app-background">
       @for (tableElement of tableFields; track tableElement.name) {
         @if (tableElement.name === 'checkbox') {
@@ -34,11 +32,11 @@
                [class.shrink-0]="!!tableElement.width">
             <button class="rb-table-head group" [class]="tableElement.sortable ? 'cursor-pointer': ''"
                     (click)="switchSort(tableElement)">
-              <span>{{ 'ADMIN.audit.' + tableElement.name + '.tableLabel' | translate }}</span>
+              <span>{{ `ADMIN.${entityMetadata.name}.${tableElement.name}.tableLabel` | translate }}</span>
               @if (tableElement.sortable) {
-                <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableElement.name">
+                <div class="rb-table-sort" [class.opacity-0]="sort().sortField !== tableElement.name">
                       <span class="rb-sort-icon material-symbols-outlined">
-                        {{ sort$().sortField === tableElement.name && sort$().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+                        {{ sort().sortField === tableElement.name && sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
                       </span>
                 </div>
               }
@@ -49,32 +47,26 @@
     </div>
   }
 
-  @if (visibleEntities$()?.length) {
-    @for (entity of visibleEntities$(); track entity.timestamp) {
-      <rb-audit-table-row [entity$]="entity"
-                          [tableFields$]="tableFields"
-                          [extensionClass$]="extensionClass$()"
-                          [configFields$]="configFields"
-                          class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
+  @if (visibleEntities().length) {
+    @for (entity of visibleEntities(); track entity.timestamp) {
+      <app-audit-table-row [entity]="entity"
+                           [extensionClass]="extensionClass()"
+                           class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
     }
   }
 </div>
 
 <div class="flex items-center px-4 text-sm">
-  <!--  @if (entityService.total === 0) {-->
-  <!--    <span>{{ 'ADMIN.audit.noItemFound' | translate }}</span>-->
-  <!--  } @else {-->
-  @if (!visibleEntities$()?.length) {
-    <span>{{ 'No item found with this filter' | translate }}</span>
+  @if (!visibleEntities().length) {
+    <span class="py-4">{{ `ADMIN.${entityMetadata.name}.noItemFoundWithTheFilter` | translate }}</span>
   }
-  <!--  }-->
 </div>
 
 @if (entityService.total > MIN_ENTITIES_FOR_PAGINATION) {
   <mat-paginator (page)="switchPage($event)"
                  [length]="entityService.total"
-                 [pageSize]="page$().pageSize"
+                 [pageSize]="page().pageSize"
                  [pageSizeOptions]="PAGE_SIZE_OPTIONS"
-                 [pageIndex]="page$().pageIndex"
+                 [pageIndex]="page().pageIndex"
                  aria-label="Select page"/>
 }

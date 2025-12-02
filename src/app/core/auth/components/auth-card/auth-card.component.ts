@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {BrandingComponent} from "../branding/branding.component";
 
 @Component({
-  selector: 'rb-auth-card',
+  selector: 'app-auth-card',
   templateUrl: './auth-card.component.html',
   imports: [
     MatCard,

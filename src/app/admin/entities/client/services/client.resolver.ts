@@ -6,6 +6,7 @@ import {
 import { Observable } from "rxjs";
 import { AppClient } from "../models/client";
 import {ClientService} from "./client.service";
+import {map} from "rxjs/operators";
 
 @Injectable({ providedIn: 'root' })
 export class ClientResolver implements Resolve<AppClient> {
@@ -14,6 +15,15 @@ export class ClientResolver implements Resolve<AppClient> {
   resolve(
     route: ActivatedRouteSnapshot,
   ): Observable<AppClient> | Promise<AppClient> | AppClient {
-    return this.entityService.getByKey(route.params['id']);
+    return this.entityService.getAll().pipe(
+      map(clients => {
+        const client = clients.find(client => client.clientId === route.params['id']);
+        if (client) {
+          return client;
+        } else {
+          throw new Error('Client not found');
+        }
+      })
+    )
   }
 }

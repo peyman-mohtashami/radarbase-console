@@ -2,20 +2,22 @@ import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import { AppClient } from "../../models/client";
-import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/input";
-import {MatLabel, MatSelect} from "@angular/material/select";
+import {MatSelect} from "@angular/material/select";
 import {MatOption} from "@angular/material/core";
+import {TranslatePipe} from "@ngx-translate/core";
+import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 
 @Component({
-  selector: 'rb-clients-select',
+  selector: 'app-clients-select',
   templateUrl: './clients-select-page.component.html',
   imports: [
     ReactiveFormsModule,
     MatFormField,
-    TranslatePipe,
     MatSelect,
-    MatOption, MatLabel, RouterOutlet,
+    MatOption,
+    RouterOutlet,
+    TranslatePipe,
   ]
 })
 export class ClientsSelectPageComponent implements OnInit, OnDestroy {
@@ -38,14 +40,14 @@ export class ClientsSelectPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form.controls.client.valueChanges.subscribe(value => {
-      console.log('Class: ClientsSelectPageComponent, Function: , Line 41 value' , value);
       if (value) {
         this.router.navigate([value], {relativeTo: this.activatedRoute} ).then();
-        // this.router.navigate([value]).then();
       }
     })
   }
 
   ngOnDestroy() {
   }
+
+  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 }

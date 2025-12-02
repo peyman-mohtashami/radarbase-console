@@ -14,14 +14,14 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" novalidate>
-    <rb-mat-select-autocomplete [options]="dialogData.groups" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
+    <app-mat-select-autocomplete [options]="dialogData.groups" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
   </form>
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 
@@ -41,9 +41,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading$()'
+            [disabled]='!form.valid || !form.dirty || loading()'
             (click)='onAction()'>
-      @if (loading$()) {
+      @if (loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
       {{'ADMIN.subject.assignGroup.assign' | translate }}

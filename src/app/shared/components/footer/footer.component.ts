@@ -3,13 +3,13 @@ import {TranslatePipe} from "@ngx-translate/core";
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'rb-footer',
+  selector: 'app-footer',
   templateUrl: './footer.component.html',
   imports: [
     TranslatePipe,
   ],
 })
 export class FooterComponent {
-  isMenuOpen$ = input<boolean>(true)
+  isMenuOpen = input<boolean>(true)
   readonly version = environment.version;
 }

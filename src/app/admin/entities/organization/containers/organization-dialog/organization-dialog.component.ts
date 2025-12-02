@@ -1,10 +1,9 @@
-import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, effect, inject, OnInit, output, signal} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import { AppOrganization } from "../../models/organization";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
 import {HttpErrorResponse} from '@angular/common/http';
@@ -16,10 +15,13 @@ import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/d
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {
+  DialogAction,
+  DialogActionsComponent
+} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
-  selector: 'rb-organization-dialog',
+  selector: 'app-organization-dialog',
   templateUrl: './organization-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -37,15 +39,14 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
   ]
 })
 export class OrganizationDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(OrganizationConfigService);
+  protected configService = inject(OrganizationConfigService);
   private dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppOrganization;
     entities: AppOrganization[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
@@ -53,17 +54,16 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
 
   form = new FormGroup({
-    id: new FormControl<string | number | undefined>({value: "", disabled: true}, {nonNullable: true}),
-    name: new FormControl<string | undefined>("", {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
-    description: new FormControl<string | undefined>("", {nonNullable: true}),
-    location: new FormControl<string | undefined>("", {nonNullable: true}),
+    id: new FormControl<string | number>({value: "", disabled: true}, {nonNullable: true}),
+    name: new FormControl<string>("", {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
+    description: new FormControl<string>("", {validators: [Validator.longTextValidator]}),
+    location: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppOrganization }>();
+  dialogActionEvent = output<{ action: DialogMode, entity?: AppOrganization }>();
 
   private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
@@ -73,7 +73,7 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -90,17 +90,17 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+  onAction($event: DialogAction) {
+    this.error.set(null);
+    this.loading.set(true);
     switch ($event) {
-      case 'close':
+      case DialogAction.CLOSE:
         this.close();
         break;
-      case 'delete':
+        case DialogAction.DELETE:
         this.handleDeleteAction();
         break;
-      case 'save':
+      case DialogAction.SAVE:
         this.handleSaveAction();
         break;
     }
@@ -109,7 +109,7 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
   private handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value},
+      entity: {...this.dialogData.entity, ...this.form.value},
     });
   }
 
@@ -118,7 +118,7 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -130,8 +130,8 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   private duplicateValidator = (control: AbstractControl) => {

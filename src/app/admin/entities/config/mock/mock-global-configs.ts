@@ -1,7 +1,8 @@
 // import { MOCK_PROTOCOLS } from '../../protocol/mock/data';
 // import { RadarConfigBundle } from './mock-configs';
 // import { RADAR_PILOT_TEST } from '../../protocol/mock/RADAR-Pilot-Test/protocol';
-import {RadarConfigBundle} from '../../../../shared/models/radar-config.model';
+
+import {RadarConfigBundle} from "../models/config";
 
 export const MOCK_GLOBAL_CONFIGS: Record<string, RadarConfigBundle> = {
   ManagementPortalapp: {
@@ -166,6 +167,11 @@ export const MOCK_GLOBAL_CONFIGS: Record<string, RadarConfigBundle> = {
     config: [
       { name: 'timeout', value: '1000' },
       { name: 'frequency', value: '10' },
+      { name: 'url', value: 'https://radar.com' },
+      { name: 'token', value: 'token' },
+      { name: 'project_id', value: '1' },
+      { name: 'user_id', value: '1' },
+      { name: 'user_name', value: 'user' },
     ],
   },
   radar_upload_backend: {

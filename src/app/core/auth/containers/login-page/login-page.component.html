@@ -1,4 +1,4 @@
-<rb-auth-card>
+<app-auth-card>
   <ng-container header>{{ 'CORE.AUTH.LOGIN_PAGE.title' | translate }}</ng-container>
   <ng-container body>
     <p class="mb-4">{{ 'CORE.AUTH.LOGIN_PAGE.subtitle' | translate }}</p>
@@ -12,7 +12,7 @@
                formControlName='username'
                required
                type="text"/>
-        @if (form.controls.username?.errors?.['required']) {
+        @if (form.controls.username.errors?.['required']) {
           <mat-error>
             {{
               ValidatorError.requiredValidator | translate:
@@ -30,7 +30,7 @@
                formControlName='password'
                required
                type="password"/>
-        @if (form.controls.password?.errors?.['required']) {
+        @if (form.controls.password.errors?.['required']) {
           <mat-error>
             {{
               ValidatorError.requiredValidator | translate:
@@ -40,8 +40,8 @@
         }
       </mat-form-field>
 
-      @if (error || stateError) {
-        <rb-message/>
+      @if (error() || stateError()) {
+        <app-message/>
       }
 
       <button mat-raised-button
@@ -49,9 +49,9 @@
               color='primary'
               type='submit'
               name='update'
-              [disabled]='!form.valid || !form.dirty || isLoading'
+              [disabled]='!form.valid || !form.dirty || loading()'
               (click)='loginHandler()'>
-        @if (isLoading) {
+        @if (loading()) {
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>
           </mat-icon>
@@ -59,10 +59,10 @@
         {{ 'CORE.AUTH.LOGIN_PAGE.loginButtonPasswordGrant' | translate }}
       </button>
 
-      <a class="text-primary dark:text-primary-dark" [routerLink]='["/forgot-password"]'>
+      <a class="text-primary dark:text-primary-dark" [routerLink]='["/auth/forgot-password"]'>
         {{ 'CORE.AUTH.LOGIN_PAGE.gotoForgotPassword' | translate }}
       </a>
     </form>
 
   </ng-container>
-</rb-auth-card>
+</app-auth-card>

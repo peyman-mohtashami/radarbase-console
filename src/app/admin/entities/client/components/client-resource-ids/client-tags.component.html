@@ -1,8 +1,8 @@
 <div class="flex flex-wrap gap-1 py-1">
   @for (tag of tags(); track tag) {
-    <rb-tag [class]="colorClass()">
+    <app-tag [class]="colorClass()">
       {{ tag }}
-    </rb-tag>
+    </app-tag>
   } @empty {
     -
   }

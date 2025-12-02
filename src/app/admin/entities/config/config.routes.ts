@@ -15,11 +15,4 @@ export const configRoutes: Routes = [
       entities: ConfigsResolver,
     },
   },
-  // {
-  //   path: ':id',
-  //   component: ConfigPageComponent,
-  //   resolve: {
-  //     entity: ConfigResolver,
-  //   },
-  // },
 ];

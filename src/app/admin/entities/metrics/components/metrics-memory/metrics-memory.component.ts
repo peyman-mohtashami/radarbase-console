@@ -6,7 +6,7 @@ import {JvmMetrics} from '../../../../../shared/models/radar-metrics.model';
 import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
 
 @Component({
-  selector: 'rb-metrics-memory',
+  selector: 'app-metrics-memory',
   templateUrl: './metrics-memory.component.html',
   imports: [
     FileSizePipe,

@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import {AppError} from "../models/error.model";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorService {
+  error = signal<AppError | null>(null);
+
   getClientMessage(error: Error): string[] {
     console.log(error);
     if (!navigator.onLine) {
@@ -55,31 +58,39 @@ export class ErrorService {
   }
 
   protected generateCustomErrorMessage(error: HttpErrorResponse): string[] {
+    console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 58 ' , );
     const managementPortalError = error.headers.get(
       'x-managementportalapp-error'
     );
     const managementPortalParams = error.headers.get(
       'x-managementportalapp-params'
     );
+    console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 65 ' , );
     if (managementPortalError && managementPortalParams) {
       return [`ERROR.${managementPortalParams}.${managementPortalError}`];
-    } else {
-      // console.log(error.error?.error);
-      if (error.error?.error) {
-        return ['ERROR.' + error.error?.error];
-      } else {
-        if (error.error) {
-          return [
-            'ERROR.' +
-              (error.error?.message ||
-                error.error?.error_description ||
-                error.error?.statusText ||
-                error.message),
-          ];
-        } else {
-          return ['ERROR.' + error.status];
-        }
-      }
     }
+    console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 69 ' , );
+    if (error.error?.error) {
+      return ['ERROR.' + error.error?.error];
+    }
+    console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 73 ' , );
+    if (error.error) {
+      console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 75 ' , [
+        'ERROR.' +
+        (error.error?.message ||
+          error.error?.error_description ||
+          error.error?.statusText ||
+          error.message),
+      ]);
+        return [
+          'ERROR.' +
+            (error.error?.message ||
+              error.error?.error_description ||
+              error.error?.statusText ||
+              error.message),
+        ];
+    }
+    console.log('Class: ErrorService, Function: generateCustomErrorMessage, Line 83 ' , );
+    return ['ERROR.' + error.status];
   }
 }

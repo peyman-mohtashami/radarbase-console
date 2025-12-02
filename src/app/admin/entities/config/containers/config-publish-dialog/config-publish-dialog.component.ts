@@ -20,14 +20,13 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpErrorResponse} from '@angular/common/http';
-import {ENTITY_NAME} from '../../../../enums/entities';
 import {DialogMode} from '../../../../enums/dialog';
 import {DetailType} from '../../../../enums/detail-type';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {ConfigConfigService} from '../../services/config-config.service';
 
 @Component({
-  selector: 'rb-config-publish-dialog',
+  selector: 'app-config-publish-dialog',
   templateUrl: './config-publish-dialog.component.html',
   imports: [
     MatDialogTitle,
@@ -48,7 +47,6 @@ export class ConfigPublishDialogComponent implements OnInit, AfterViewInit {
     entities: AppConfig[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
   protected readonly ValidatorHint = ValidatorHint;
@@ -57,8 +55,8 @@ export class ConfigPublishDialogComponent implements OnInit, AfterViewInit {
   tableFields = this.configService.getTableFields();
   formFields = this.configService.getFormFields();
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: DialogMode | string, entities?: AppConfig[] }>();
@@ -73,7 +71,7 @@ export class ConfigPublishDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -85,19 +83,19 @@ export class ConfigPublishDialogComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   publish() {
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     this.dialogActionEvent.emit({ action: 'publish', entities: this.dialogData.entities });
   }
 
   discard() {
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     this.dialogActionEvent.emit({ action: 'discard', entities: undefined });
   }
 }

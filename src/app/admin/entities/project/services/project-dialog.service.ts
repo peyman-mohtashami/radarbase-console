@@ -22,7 +22,7 @@ export class ProjectDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode, entity: AppProject | undefined, entities: AppProject[], organization: RadarOrganization | undefined, organizations: AppOrganization[], sourceTypes: AppSourceType[]) {
     if (mode !== DialogMode.ADD && !entity) {
@@ -36,7 +36,7 @@ export class ProjectDialogService {
       next: (value: { action: DialogMode; entity: AppProject }) => {
         this.processDialogAction(value.action, value.entity).subscribe({
           next: (res) => {
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            this.dialogUpdateEvent.set({mode, entity: res ?? value.entity})
             dialogRef.close();
           },
           error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),

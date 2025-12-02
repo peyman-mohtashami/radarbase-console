@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use './styles/tailwind-base.css';
 @use './styles/material-theme';
 @use './styles/custom-utilities';
-@use './styles/overrides';
+
+@import './styles/_tailwind-base.css';

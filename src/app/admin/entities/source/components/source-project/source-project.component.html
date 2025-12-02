@@ -1,6 +1,6 @@
-@let _project = project$();
+@let _project = project();
 @if (_project) {
-  <rb-tag class='bg-primary/10 text-primary'>{{ _project.projectName }}</rb-tag>
+  <app-tag class='bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark'>{{ _project.projectName }}</app-tag>
 } @else {
   -
 }

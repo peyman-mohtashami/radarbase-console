@@ -1,32 +1,30 @@
-import {Component, effect, input, signal} from "@angular/core";
+import {Component, effect, inject, input, signal} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
-import {ROLES} from "../../../../enums/entities";
+import {ROLES} from "../../../../../shared/enums/roles";
 import {DialogMode} from "../../../../enums/dialog";
-import {TABLE_ANIMATION} from "../../../../animation";
 import {AppProject} from "../../models/project";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {RouterLink} from "@angular/router";
 import {ProjectStatusComponent} from "../project-status/project-status.component";
 import {ProjectSourceTypesComponent} from "../project-source-types/project-source-types.component";
 import {ProjectDetailsComponent} from "../project-details/project-details.component";
-import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
+import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatIconButton} from "@angular/material/button";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {TableElement} from '../../../../models/table.model';
 import {ActionsComponent} from '../actions/actions.component';
 import {UpdateTrigger} from '../../services/project-dialog.service';
+import {ProjectConfigService} from "../../services/project-config.service";
 
 @Component({
-  selector: 'rb-project-table-row',
+  selector: 'app-project-table-row',
   templateUrl: './project-table-row.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     MatCard,
     RouterLink,
     ProjectStatusComponent,
     ProjectSourceTypesComponent,
     ProjectDetailsComponent,
-    RbPermissionDirective,
+    PermissionDirective,
     MatIconButton,
     LocalDateComponent,
     MatCardContent,
@@ -38,27 +36,27 @@ export class ProjectTableRowComponent {
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
 
-  entity$ = input.required<AppProject>();
-  entityUpdateTrigger$= input<UpdateTrigger>();
-  tableFields$ = input.required<TableElement[]>();
-  configFields$ = input.required<Record<string, boolean>>();
-  extensionClass$ = input<string>();
+  configService = inject(ProjectConfigService);
 
-  expanded$ = signal(false);
-  updated$ = signal(false);
+  entity = input.required<AppProject>();
+  entityUpdateTrigger= input<UpdateTrigger>();
+  extensionClass = input<string>();
   gridView = input<boolean>(false);
+
+  expanded = signal(false);
+  updated = signal(false);
 
   constructor() {
     effect(() => {
-      const updateTrigger = this.entityUpdateTrigger$();
+      const updateTrigger = this.entityUpdateTrigger();
       if (!updateTrigger) return;
 
       const {mode, entity} = updateTrigger;
-      if (entity.id !== this.entity$().id) return;
+      if (entity.id !== this.entity().id) return;
       if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
-        this.updated$.set(true);
+        this.updated.set(true);
         setTimeout(() => {
-          this.updated$.set(false);
+          this.updated.set(false);
         }, 1000);
       }
     });
@@ -66,6 +64,6 @@ export class ProjectTableRowComponent {
 
   onExpansionClick(event: MouseEvent) {
     event.stopPropagation();
-    this.expanded$.update((currentValue) => !currentValue);
+    this.expanded.update((currentValue) => !currentValue);
   }
 }

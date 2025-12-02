@@ -3,7 +3,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
-  selector: 'rb-loader',
+  selector: 'app-loader',
   templateUrl: './loader.component.html',
   imports: [
     MatProgressSpinner,
@@ -11,5 +11,5 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   ],
 })
 export class LoaderComponent {
-  loadingText$ = input<string>();
+  loadingText = input<string>();
 }

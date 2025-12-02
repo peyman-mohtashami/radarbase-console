@@ -3,7 +3,7 @@ import {SourceTypeScope} from '../../models/source-type';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-source-type-scope',
+  selector: 'app-source-type-scope',
   templateUrl: './source-type-scope.component.html',
   imports: [
     TagComponent,
@@ -11,5 +11,6 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 })
 export class SourceTypeScopeComponent {
   protected readonly SourceTypeScope = SourceTypeScope;
-  sourceTypeScope$ = input<SourceTypeScope>()
+
+  sourceTypeScope = input<SourceTypeScope | null>()
 }

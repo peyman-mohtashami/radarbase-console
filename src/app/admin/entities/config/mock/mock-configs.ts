@@ -1,7 +1,7 @@
 import { MOCK_GLOBAL_CONFIGS } from './mock-global-configs';
 import { MOCK_PROJECT_CONFIGS } from './mock-project-configs';
-import {AppConfig} from "../models/config";
-import {RadarConfigBundle} from '../../../../shared/models/radar-config.model';
+import {AppConfig, RadarConfigBundle} from "../models/config";
+import {MOCK_SUBJECT_CONFIGS} from "./mock-subject-configs";
 // import { RadarConfigBundleDTO, RadarConfigDTO } from "@rb/models";
 
 export function getGlobalConfiguration(clientId: string): RadarConfigBundle {
@@ -21,6 +21,17 @@ export function getProjectConfiguration(clientId: string, project: string): Rada
     MOCK_PROJECT_CONFIGS[project][clientId] || {
       clientId: clientId,
       scope: `project.${project}`,
+      config: [],
+    }
+  ));
+}
+
+export function getSubjectConfiguration(clientId: string, project: string, subjectId: string): RadarConfigBundle {
+  console.log(subjectId, project, clientId);
+  return JSON.parse(JSON.stringify(
+    MOCK_SUBJECT_CONFIGS[project]?.[subjectId]?.[clientId] || {
+      clientId: clientId,
+      scope: `user.${subjectId}`,
       config: [],
     }
   ));

@@ -1,10 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {Validator, ValidatorError} from "../../../../shared/utils/validators";
-import {Subject} from "rxjs";
 import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {first, takeUntil} from "rxjs/operators";
+import {first} from "rxjs/operators";
 import {StorageService} from "../../../storage/services/storage.service";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -16,9 +15,10 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {CredentialAuthRequest} from '../../../../shared/models/auth.model';
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'rb-login-page',
+  selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   imports: [
     AuthCardComponent,
@@ -46,22 +46,18 @@ export class LoginPageComponent implements OnInit {
     // remember: this.fb.control(false),
   })
 
-  isLoading = false;
-  stateError = false;
-  error = false;
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
+  stateError = signal(false);
 
-
-  _destroy$: Subject<void> = new Subject<void>();
 
   ngOnInit(): void {
-    this.stateError = !!history.state?.['error'];
-    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.error = false;
-    });
+    this.stateError.set(!!history.state?.['error']);
   }
 
   loginHandler(): void {
-    this.isLoading = true;
+    this.loading.set(true);
     this.login();
   }
 
@@ -72,15 +68,15 @@ export class LoginPageComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          this.error = false;
+          this.error.set(null);
           const lastLocation = StorageService.getLastLocation();
           this.router.navigateByUrl(lastLocation || '/admin').then(() => {
             StorageService.clearLastLocation();
           });
         },
         error: (error) => {
-          this.isLoading = false;
-          this.error = true;
+          this.loading.set(false);
+          this.error.set(error);
           throw error;
         },
       });

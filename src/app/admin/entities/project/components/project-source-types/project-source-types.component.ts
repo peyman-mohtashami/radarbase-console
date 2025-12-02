@@ -4,7 +4,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-project-source-types',
+  selector: 'app-project-source-types',
   templateUrl: './project-source-types.component.html',
   imports: [
     TagComponent,
@@ -12,7 +12,7 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class ProjectSourceTypesComponent {
-  sourceTypes$ = input<RadarSourceType[]>();
+  sourceTypes = input<RadarSourceType[] | null>();
 
   showAll = false;
 

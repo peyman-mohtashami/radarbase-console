@@ -33,10 +33,9 @@
             {{ "SHARED.dialog.deleteMessage" | translate }} {{ 'Subject' }}:
             <strong>{{ dialogData.entity.login }}</strong>.
           </p>
-          <rb-subject-details class="py-4"
-                              [entity$]='dialogData.entity'
-                              [type$]="DetailType.SUMMARY"
-                              [tableFields$]="tableFields"/>
+          <app-subject-details class="py-4"
+                              [entity]='dialogData.entity'
+                              [detailType]="DetailType.SUMMARY" />
           <p class="mt-4">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
         </div>
       }
@@ -48,13 +47,13 @@
       @if (dialogData.mode !== DialogMode.ADD) {
         <label for="id" class="text-sm">{{ 'ADMIN.subject.id.label' | translate }}</label>
         <mat-form-field subscriptSizing="fixed"
-                        appearance="outline">
+                        appearance="fill">
           <input matInput formControlName='id' id="id-search" autocomplete="off" data-lpignore="true"/>
         </mat-form-field>
 
         <label for="login" class="text-sm">{{ 'ADMIN.subject.login.label' | translate }}</label>
         <mat-form-field subscriptSizing="fixed"
-                        appearance="outline">
+                        appearance="fill">
           <input matInput formControlName='login' required/>
         </mat-form-field>
       }
@@ -74,10 +73,10 @@
                         appearance="outline">
           <input matInput [matDatepicker]="picker"
                  formControlName='dateOfBirth'
-                 [placeholder]='dateFormat'>
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
           <mat-datepicker-toggle matSuffix [for]="picker"/>
           <mat-datepicker #picker/>
-          @if (form.controls.dateOfBirth?.errors; as errors) {
+          @if (form.controls.dateOfBirth.errors; as errors) {
             <mat-error>
               @if (errors?.['matStartDateInvalid']) {
                 {{ 'ADMIN.subject.dateOfBirth.invalid' | translate }}
@@ -123,7 +122,7 @@
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
         <div formGroupName='attributes'>
           @for (field of extraFields; track field.name) {
-            <rb-mat-dynamic-input [entityName]="ENTITY_NAME.subject" [field]="field" [formControlName]="field.name"/>
+            <app-mat-dynamic-input [entityName]="configService.getEntityMetadata().name" [field]="field" [formControlName]="field.name"/>
           }
 
           <label for="attributes" class="text-sm">{{ 'ADMIN.subject.attributes.label' | translate }}</label>
@@ -178,17 +177,19 @@
               mat-raised-button
               type="button">
         @if (loading$()) {
+          <ng-container>
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>
           </mat-icon>
           {{ 'SHARED.dialog.deletingButton' | translate }}
+          </ng-container>
         } @else {
           {{ 'SHARED.dialog.yes' | translate }}
         }
       </button>
     }
     @if (dialogData.mode === DialogMode.EDIT) {
-      <button [disabled]='!form?.valid || !form?.dirty || loading$()'
+      <button [disabled]='!form.valid || !form.dirty || loading$()'
               (click)='onAction(dialogData.mode)'
               mat-raised-button
               color="primary"
@@ -202,7 +203,7 @@
       </button>
     }
     @if (dialogData.mode === DialogMode.ADD) {
-      <button [disabled]='!form?.valid || loading$()'
+      <button [disabled]='!form.valid || loading$()'
               (click)='onAction(dialogData.mode)'
               color="primary"
               mat-raised-button

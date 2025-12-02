@@ -3,7 +3,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-client-tags',
+  selector: 'app-client-tags',
   templateUrl: './client-tags.component.html',
   imports: [
     TagComponent,
@@ -11,6 +11,6 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 })
 export class ClientTagsComponent {
   colorClass = input<string>('')
-  tags = input<string[]>();
+  tags = input<string[] | null>();
   type = input<DetailType>();
 }

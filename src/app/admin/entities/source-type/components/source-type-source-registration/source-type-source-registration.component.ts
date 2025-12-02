@@ -3,7 +3,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-source-type-source-registration',
+  selector: 'app-source-type-source-registration',
   templateUrl: './source-type-source-registration.component.html',
   imports: [
     TagComponent,
@@ -11,5 +11,5 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class SourceTypeSourceRegistrationComponent {
-  canRegisterDynamically$ = input<boolean>();
+  canRegisterDynamically = input<boolean>();
 }

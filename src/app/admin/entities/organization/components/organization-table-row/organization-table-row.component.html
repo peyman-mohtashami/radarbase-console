@@ -1,91 +1,98 @@
+@let configFields = configService.getFormFields();
+@let tableFields = configService.getTableFields();
+
 @if (!gridView()) {
   <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-primary/5! ' : '') +
-    (expanded$() ? 'mb-2' : '')
+    (updated() ? 'bg-primary/5! dark:bg-primary-dark/5! ' : '') +
+    (expanded() ? 'mb-1' : '')
   ">
     <div class="rb-table-main-row">
-      @for (tableElement of tableFields$(); track tableElement.name) {
+      @for (tableElement of tableFields; track tableElement.name) {
         <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
              [class.flex-1]="!tableElement.width"
              [class.shrink-0]="!!tableElement.width">
           @switch (tableElement.name) {
             @case ('name') {
-              <a [routerLink]='[entity$().name]' class="underline font-bold text-primary dark:text-primary-dark">
-                <span class=''>{{ entity$().name }}</span>
+              <a [routerLink]='[entity().name]' class="underline font-bold text-primary dark:text-primary-dark">
+                <span class=''>{{ entity().name }}</span>
               </a>
-              @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {
-                <p>{{ entity$().description }}</p>
+              @if (!configFields || configFields['description'] === undefined || configFields['description']) {
+                <p>{{ entity().description }}</p>
               }
             }
             @case ('numberOfProjects') {
-              {{ entity$()['projects']?.length }}
+              {{ entity()['projects']?.length }}
             }
             @case ('projects') {
-              <rb-organization-projects [organization]="entity$()['name']" [projects]="entity$()['projects']"/>
+              <app-organization-projects [organization]="entity()['name']" [projects]="entity()['projects']"/>
             }
             @case ("actions") {
               <button mat-icon-button
                       class="tiny block"
-                      [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
-                      [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
-                      [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
-                      [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
-                      [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
-                      [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
-                      [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                      [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
+                      [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
+                      [class.md:hidden!]="extensionClass() === 'block md:hidden'"
+                      [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
+                      [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
+                      [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
+                      [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
                       (click)="onExpansionClick($event)">
                 <span class="material-symbols-outlined text-xl!">
-                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                  {{ expanded() ? 'expand_less' : 'expand_more' }}
                 </span>
               </button>
-              <app-organization-actions [entity$]="entity$()" [isExpanded$]="true"/>
+              <app-organization-actions
+                  *showIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'
+                  [entity]="entity()"
+                  [isExpanded]="true"/>
             }
             @default {
-              {{ entity$()[tableElement.name] || '-' }}
+              {{ entity()[tableElement.name] || '-' }}
             }
           }
         </div>
       }
     </div>
 
-    <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
-      <rb-organization-details class="py-4"
-                               [entity$]='entity$()'
-                               [type$]="DetailType.TABLE"
-                               [tableFields$]="tableFields$()"/>
-    </div>
+    @if (expanded()) {
+      <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+        <app-organization-details [entity]='entity()' [detailType]="DetailType.TABLE"/>
+      </div>
+    }
   </mat-card>
 } @else {
   <mat-card appearance="outlined"
             class="cursor-pointer flex items-start justify-start h-full"
-            [class]="updated$() ? 'bg-primary/5! ' : ''"
-            [routerLink]='[entity$().name]'>
+            [class]="updated() ? 'bg-primary/5! dark:bg-primary-dark/5! ' : ''"
+            [routerLink]='[entity().name]'>
     <mat-card-content class="p-0! w-full">
       <div class="p-4 flex items-center justify-between gap-2 w-full">
         <div class="flex items-center gap-2">
           <span
-            class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">corporate_fare</span>
-          <span class='text-base font-bold text-primary'>{{ entity$().name }}</span>
+              class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">corporate_fare</span>
+          <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity().name }}</span>
         </div>
-        <app-organization-actions [entity$]="entity$()" [isExpanded$]="false"/>
+        <app-organization-actions
+            *showIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'
+            [entity]="entity()" [isExpanded]="false"/>
       </div>
       <div class="p-4">
-        @if (!configFields$() || configFields$()['description'] === undefined || configFields$()['description']) {
-          <div class="text-sm text-gray-500 dark:text-gray-300">{{ entity$().description }}</div>
+        @if (!configFields || configFields['description'] === undefined || configFields['description']) {
+          <div class="text-sm text-gray-500 dark:text-gray-300">{{ entity().description }}</div>
         }
-        @if (!configFields$() || configFields$()['location'] === undefined || configFields$()['location']) {
+        @if (!configFields || configFields['location'] === undefined || configFields['location']) {
           <div class="text-sm mt-4 flex gap-2 items-center text-gray-500 dark:text-gray-300">
             <span class="material-symbols-outlined">place</span>
-            <span>{{ entity$().location }}</span>
+            <span>{{ entity().location || '-' }}</span>
           </div>
         }
       </div>
-      @if (!configFields$() || configFields$()['projects'] === undefined || configFields$()['projects']) {
-      <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
-        <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Projects ({{ entity$()['projects']?.length }})
+      @if (!configFields || configFields['projects'] === undefined || configFields['projects']) {
+        <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
+          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Projects ({{ entity()['projects']?.length }})
+          </div>
+          <app-organization-projects [organization]="entity()['name']" [projects]="entity()['projects']"/>
         </div>
-        <rb-organization-projects [organization]="entity$()['name']" [projects]="entity$()['projects']"/>
-      </div>
       }
     </mat-card-content>
   </mat-card>

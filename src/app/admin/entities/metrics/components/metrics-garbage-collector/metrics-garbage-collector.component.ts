@@ -6,7 +6,7 @@ import {GarbageCollector} from '../../../../../shared/models/radar-metrics.model
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
-  selector: 'rb-metrics-garbage-collector',
+  selector: 'app-metrics-garbage-collector',
   templateUrl: './metrics-garbage-collector.component.html',
   imports: [
     DetailElementComponent,

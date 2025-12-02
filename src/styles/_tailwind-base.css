@@ -1,19 +1,28 @@
+@import 'tailwindcss';
 /* Tailwind base + config */
 
-@import 'tailwindcss';
+/* Explicitly tell Tailwind where to look for class names in Angular templates and TS files */
+@source "../**/*.{html,ts}";
+/* Also scan SCSS for class names or @apply usage */
+@source "../**/*.scss";
 
-/*@source '../../../../node_modules/tw-elements/dist/js!**!*.js';*/
 
+/* Include any additional sources (for example, third-party components) as needed */
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --mat-sys-background: #ffffff;
-  --mat-sys-background-dark: #121212;
-  --mat-sys-primary-500: #6200ee;
+  --mat-sys-primary: #6200ee;
   --mat-sys-primary-dark: #ff0000;
+  --mat-sys-on-primary: #ff0000;
+  --mat-sys-on-primary-dark: #ff0000;
   --mat-sys-accent: #0f0;
   --mat-sys-accent-dark: #0f0;
+  --mat-sys-on-accent: #0f0;
+  --mat-sys-on-accent-dark: #0f0;
+  --mat-sys-tertiary: #00f;
   --mat-sys-tertiary-dark: #00f;
+  --mat-sys-on-tertiary: #00f;
+  --mat-sys-on-tertiary-dark: #00f;
 }
 
 @theme {
@@ -38,43 +47,31 @@
   --text-5xl: 3rem;
   --text-6xl: 4rem;
 
+  --color-app-background: var(--mat-sys-app-background);
+  --color-app-background-dark: var(--mat-sys-app-background-dark);
   --color-background: var(--mat-sys-background);
   --color-background-dark: var(--mat-sys-background-dark);
+  --color-foreground: var(--mat-sys-foreground);
+  --color-foreground-dark: var(--mat-sys-foreground-dark);
+
 
   --color-primary: var(--mat-sys-primary);
   --color-primary-dark: var(--mat-sys-primary-dark);
+  --color-on-primary: var(--mat-sys-on-primary);
+  --color-on-primary-dark: var(--mat-sys-on-primary-dark);
+
   --color-secondary: var(--mat-sys-accent);
   --color-secondary-dark: var(--mat-sys-accent-dark);
+  --color-on-secondary: var(--mat-sys-on-accent);
+  --color-on-secondary-dark: var(--mat-sys-on-accent-dark);
+
   --color-tertiary: var(--mat-sys-tertiary);
   --color-tertiary-dark: var(--mat-sys-tertiary-dark);
-
-  --color-on-primary: var(--mat-sys-on-primary);
-  --color-primary-container: var(--mat-sys-primary-container);
-  --color-on-primary-container: var(--mat-sys-on-primary-container);
-
-  --color-on-secondary: var(--mat-sys-on-secondary);
-  --color-secondary-container: var(--mat-sys-secondary-container);
-  --color-on-secondary-container: var(--mat-sys-on-secondary-container);
-
   --color-on-tertiary: var(--mat-sys-on-tertiary);
-  --color-tertiary-container: var(--mat-sys-tertiary-container);
-  --color-on-tertiary-container: var(--mat-sys-on-tertiary-container);
+  --color-on-tertiary-dark: var(--mat-sys-on-tertiary-dark);
 
   --color-error: var(--mat-sys-error);
   --color-on-error: var(--mat-sys-on-error);
-  --color-error-container: var(--mat-sys-error-container);
-  --color-on-error-container: var(--mat-sys-on-error-container);
-
-  --color-on-background: var(--mat-sys-on-background);
-  --color-surface: var(--mat-sys-surface);
-  --color-on-surface: var(--mat-sys-on-surface);
-  --color-surface-variant: var(--mat-sys-surface-variant);
-  --color-on-surface-variant: var(--mat-sys-on-surface-variant);
-  --color-inverse-surface: var(--mat-sys-inverse-surface);
-  --color-outline: var(--mat-sys-outline);
-  --color-outline-variant: var(--mat-sys-outline-variant);
-  /*--color-surface-container: var(--mat-sys-surface-container);*/
-  --color-surface-container-high: var(--mat-sys-surface-container-high);
 
   --color-project-color: #047857;
   --color-user-color: #6d28d9;
@@ -86,6 +83,5 @@
   --color-subject-color: #4338ca;
   --color-group-color: #b45309;
   --color-metrics-color: #334155;
-
 }
 

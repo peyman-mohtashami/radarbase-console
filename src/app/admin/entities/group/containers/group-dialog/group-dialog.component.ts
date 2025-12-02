@@ -13,7 +13,6 @@ import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@ang
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import { AppGroup } from "../../models/group";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
@@ -27,10 +26,13 @@ import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/d
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {
+  DialogAction,
+  DialogActionsComponent
+} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
-  selector: 'rb-organization-dialog',
+  selector: 'app-organization-dialog',
   templateUrl: './group-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -45,7 +47,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
   ]
 })
 export class GroupDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(GroupConfigService);
+  protected configService = inject(GroupConfigService);
   private dialogRef = inject(MatDialogRef<GroupDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
@@ -53,7 +55,6 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
     entities: AppGroup[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
@@ -61,12 +62,12 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
 
   form = new FormGroup({
-    id: new FormControl<string | number | undefined>({ value: undefined, disabled: true}, {nonNullable: true}),
-    name: new FormControl<string | undefined>('', {nonNullable: true}),
+    id: new FormControl<string | number>({ value: '', disabled: true}, {nonNullable: true}),
+    name: new FormControl<string>('', {nonNullable: true}),
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppGroup }>();
@@ -79,7 +80,7 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -96,17 +97,17 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+  onAction($event: DialogAction) {
+    this.error.set(null);
+    this.loading.set(true);
     switch ($event) {
-      case 'close':
+      case DialogAction.CLOSE:
         this.close();
         break;
-      case 'delete':
+      case DialogAction.DELETE:
         this.handleDeleteAction();
         break;
-      case 'save':
+      case DialogAction.SAVE:
         this.handleSaveAction();
         break;
     }
@@ -124,7 +125,7 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -136,8 +137,8 @@ export class GroupDialogComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   private duplicateValidator = (control: AbstractControl) => {

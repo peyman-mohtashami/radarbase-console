@@ -18,6 +18,7 @@ export class RevisionsResolver implements Resolve<AppRevision[]> {
     | Observable<AppRevision[]>
     | Promise<AppRevision[]>
     | AppRevision[] {
+    console.log('Class: RevisionsResolver, Function: resolve, Line 21 ' , );
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

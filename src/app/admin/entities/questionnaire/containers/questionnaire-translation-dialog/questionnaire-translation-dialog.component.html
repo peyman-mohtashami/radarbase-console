@@ -1,0 +1,135 @@
+<!--<app-dialog-title [dialogMode]='mode'-->
+<!--                 [label]='{singular: ("ADMIN.protocol.translateTitle.singular" | translate), plural: ("ADMIN.protocol.translateTitle.plural" | translate)}'-->
+<!--                 (closeClicked)='close()'>-->
+<!--</app-dialog-title>-->
+
+<!--<ng-container *ngIf='form'>-->
+<!--  <mat-dialog-content>-->
+<!--    <app-dialog-body-description *ngIf='mode === DialogMode.VIEW || mode === DialogMode.DELETE'>-->
+<!--      <rb-protocol-details [mode]='mode' [entity]='entity'></rb-protocol-details>-->
+<!--    </app-dialog-body-description>-->
+
+<!--    <ng-container *ngIf='mode === DialogMode.ADD || mode === DialogMode.EDIT'>-->
+<!--      <form [formGroup]='form' novalidate>-->
+<!--        <div class="flex justify-between items-start gap-4">-->
+<!--&lt;!&ndash;          {{entity.id}}/{{entity.name}}/{{language | json}} ({{language.code}})&ndash;&gt;-->
+<!--&lt;!&ndash;          *ngIf='mode !== DialogMode.ADD'&ndash;&gt;-->
+<!--          <mat-form-field class='small-input w-1/4'-->
+<!--                          subscriptSizing="dynamic"-->
+<!--                          appearance='outline'-->
+<!--                          floatLabel='always'>-->
+<!--            <mat-label>{{ 'ADMIN.project.id.label' | translate }}</mat-label>-->
+<!--            <input matInput formControlName='id'/>-->
+<!--          </mat-form-field>-->
+
+<!--          <mat-form-field class='small-input w-1/2'-->
+<!--                          subscriptSizing="dynamic"-->
+<!--                          appearance='outline'-->
+<!--                          floatLabel='always'>-->
+<!--            <mat-label>{{ 'ADMIN.questionnaire.name.label' | translate }}</mat-label>-->
+<!--            <input matInput formControlName='name' required/>-->
+<!--          </mat-form-field>-->
+
+<!--          <mat-form-field class='small-input w-1/4'-->
+<!--                          appearance='outline'-->
+<!--                          subscriptSizing="dynamic"-->
+<!--                          floatLabel='always'>-->
+<!--            <mat-label>Language</mat-label>-->
+<!--&lt;!&ndash;            <mat-hint align="start">{{ValidatorHint.normalTextValidator}}</mat-hint>&ndash;&gt;-->
+<!--            <mat-select formControlName='language'>-->
+<!--              <mat-option *ngFor="let language of LANGUAGES" [value]="language.code">{{language.name}}</mat-option>-->
+<!--            </mat-select>-->
+<!--&lt;!&ndash;            <mat-error *ngIf="form.get('defaultLanguage')?.errors?.['pattern'] && !form.get('defaultLanguage')?.hasError('required')">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{ValidatorError.normalTextValidator}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </mat-error>&ndash;&gt;-->
+<!--&lt;!&ndash;            <mat-error *ngIf="form.get('defaultLanguage')?.hasError('required')">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{ValidatorError.requiredValidator | translate: {value: 'defaultLanguage' } }}&ndash;&gt;-->
+<!--&lt;!&ndash;            </mat-error>&ndash;&gt;-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+<!--        <table class="w-full border-collapse">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th class="text-left bg-primary-color text-white border p-2">Name</th>-->
+<!--            <th class="text-left bg-primary-color text-white border p-2">Default ({{entity.defaultLanguage}})</th>-->
+<!--            <th class="text-left bg-primary-color text-white border p-2">Translation ({{language.code}})</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tr *ngIf="entity.customStartText.enabled">-->
+<!--            <td class="border px-2">Start Text</td>-->
+<!--            <td class="border px-2">{{entity.startText[entity.defaultLanguage]}}</td>-->
+<!--            <td class="border px-2" formGroupName="customStartText">-->
+<!--              <mat-form-field class='small-input w-full'-->
+<!--                              appearance='outline'-->
+<!--                              subscriptSizing="dynamic"-->
+<!--                              floatLabel='always'>-->
+<!--              <input matInput formControlName='startText' required/>-->
+<!--            </mat-form-field>-->
+<!--            </td>-->
+<!--          </tr>-->
+
+<!--          <tr *ngIf="entity.customEndText?.enabled">-->
+<!--            <td class="border px-2">End Text</td>-->
+<!--            <td class="border px-2">{{entity.endText[entity.defaultLanguage]}}</td>-->
+<!--            <td class="border px-2" formGroupName="customEndText">-->
+<!--              <mat-form-field class='small-input w-full'-->
+<!--                              appearance='outline'-->
+<!--                              subscriptSizing="dynamic"-->
+<!--                              floatLabel='always'>-->
+<!--                <input matInput formControlName='endText' required/>-->
+<!--              </mat-form-field>-->
+<!--            </td>-->
+<!--          </tr>-->
+
+<!--          <tr *ngIf="entity.customWarnText?.enabled">-->
+<!--            <td class="border px-2">Warn Text</td>-->
+<!--            <td class="border px-2">{{entity.warn[entity.defaultLanguage]}}</td>-->
+<!--            <td class="border px-2" formGroupName="customWarnText">-->
+<!--              <mat-form-field class='small-input w-full'-->
+<!--                              subscriptSizing="dynamic"-->
+<!--                              appearance='outline'-->
+<!--                              floatLabel='always'>-->
+<!--              <input matInput formControlName='warn' required/>-->
+<!--            </mat-form-field></td>-->
+<!--          </tr>-->
+
+<!--          <ng-container *ngIf="entity.customProtocol.notification?.enabled" formGroupName="customProtocol">-->
+<!--            <tr>-->
+<!--              <td class="border px-2">Notification Title</td>-->
+<!--              <td class="border px-2">{{entity.protocol.notification?.title?.[entity.defaultLanguage]}}</td>-->
+<!--              <td class="border px-2" formGroupName="notification">-->
+<!--                <mat-form-field class='small-input w-full'-->
+<!--                                subscriptSizing="dynamic"-->
+<!--                                appearance='outline'-->
+<!--                                floatLabel='always'>-->
+<!--                  <input matInput formControlName='title' required/>-->
+<!--                </mat-form-field></td>-->
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--              <td class="border px-2">Notification Text</td>-->
+<!--              <td class="border px-2">{{entity.protocol.notification?.text?.[entity.defaultLanguage]}}</td>-->
+<!--              <td class="border px-2" formGroupName="notification">-->
+<!--                <mat-form-field class='small-input w-full'-->
+<!--                                subscriptSizing="dynamic"-->
+<!--                                appearance='outline'-->
+<!--                                floatLabel='always'>-->
+<!--                  <input matInput formControlName='text' required/>-->
+<!--                </mat-form-field></td>-->
+<!--            </tr>-->
+<!--          </ng-container>-->
+
+<!--        </table>-->
+<!--      </form>-->
+<!--    </ng-container>-->
+<!--  </mat-dialog-content>-->
+
+<!--  <div>-->
+<!--    <rb-message *ngIf='error'></rb-message>-->
+<!--    <app-dialog-actions [mode]='mode'-->
+<!--                       [form]='form'-->
+<!--                       (actionTriggered)='onAction($event)'>-->
+<!--    </app-dialog-actions>-->
+<!--  </div>-->
+<!--</ng-container>-->

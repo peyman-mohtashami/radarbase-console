@@ -3,9 +3,8 @@ import {AppProject, RadarProject} from '../../../project/models/project';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
-
 @Component({
-  selector: 'rb-organization-projects',
+  selector: 'app-organization-projects',
   templateUrl: './organization-projects.component.html',
   imports: [
     TagComponent,
@@ -13,7 +12,7 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class OrganizationProjectsComponent {
-  projects = input<RadarProject[] | AppProject[]>()
+  projects = input<RadarProject[] | AppProject[] | null>()
   organization = input<string>()
 
   showAll = false;

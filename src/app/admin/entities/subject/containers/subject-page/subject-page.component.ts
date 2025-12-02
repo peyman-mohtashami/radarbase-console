@@ -1,13 +1,10 @@
 import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 
-import {ENTITIES} from "../../../../consts/entities";
-import {ILink} from "../../../organization/containers/organization-page/organization-page.component";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
-import {RbPermissionDirective} from "../../../../../core/auth/directives/ng-permission.directive";
+import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
 import {DialogMode} from '../../../../enums/dialog';
 import {AppSubject} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
@@ -19,9 +16,12 @@ import {MatPrefix} from '@angular/material/input';
 import {AppProject} from '../../../project/models/project';
 import {ActionsComponent} from '../../components/actions/actions.component';
 import {AppOrganization} from '../../../organization/models/organization';
+import {ROLES} from "../../../../../shared/enums/roles";
+import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
+import {TabLink} from "../../../../models/tab-link";
 
 @Component({
-  selector: 'rb-subject-page',
+  selector: 'app-subject-page',
   templateUrl: './subject-page.component.html',
   imports: [
     MatTabNav,
@@ -29,7 +29,7 @@ import {AppOrganization} from '../../../organization/models/organization';
     RouterLink,
     MatTabNavPanel,
     RouterOutlet,
-    RbPermissionDirective,
+    PermissionDirective,
     MatButton,
     MatPrefix,
     TranslatePipe,
@@ -42,22 +42,20 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
   private dialogService = inject(SubjectDialogService);
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
-  protected readonly ENTITIES = ENTITIES;
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
 
-  links: ILink[] = [
+  links: TabLink[] = [
     { path: 'download', label: 'Download' },
     { path: 'data', label: 'Data' },
     { path: 'compliance', label: 'Compliance' },
-    { path: 'app-configs', label: 'App Configs' },
+    { path: 'app-config', label: 'App Configs' },
     { path: 'details', label: 'Details' },
   ];
 
   activePath?: string;
 
-  entity$ = signal<AppSubject>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppSubject>(this.activatedRoute.snapshot.data['entity']);
   project?: AppProject = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
   organization?: AppOrganization = this.activatedRoute.parent?.parent?.parent?.parent?.snapshot?.data['organization'];
 
@@ -90,7 +88,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     switch (updated.mode) {
       case SubjectDialogMode.EDIT:
         if (updated?.entity) {
-          this.entity$.set(updated.entity);
+          this.entity.set(updated.entity);
         }
         this.removeFragmentUrl();
         break;
@@ -113,10 +111,10 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     if (entityType === 'subject') {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(SubjectDialogMode.EDIT, this.entity$(), this.project);
+          this.dialogService.openDialog(SubjectDialogMode.EDIT, this.entity(), this.project);
           break;
         case 'delete':
-          this.dialogService.openDialog(SubjectDialogMode.DELETE, this.entity$(), this.project);
+          this.dialogService.openDialog(SubjectDialogMode.DELETE, this.entity(), this.project);
       }
     }
   }
@@ -153,4 +151,6 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
       'subjects',
     ], {fragment: undefined}).then();
   }
+
+  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 }

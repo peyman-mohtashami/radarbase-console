@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppSubject} from '../../models/subject';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SubjectDialogMode} from '../../enums/dialog';
+import {SubjectConfigService} from "../../services/subject-config.service";
 
 @Component({
   selector: 'app-subject-actions',
@@ -22,17 +23,20 @@ import {SubjectDialogMode} from '../../enums/dialog';
 export class ActionsComponent {
   protected readonly DialogMode = SubjectDialogMode;
 
-  entity$ = input.required<AppSubject>();
-  isExpanded$ = input<boolean>(true);
+  entity = input.required<AppSubject>();
+  isExpanded = input<boolean>(true);
 
+  private configService = inject(SubjectConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
+  entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: SubjectDialogMode) {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/subject/${this.entity$().id}`
+      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
     }).then()
   }
 }

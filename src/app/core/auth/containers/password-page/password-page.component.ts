@@ -1,24 +1,25 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {
-  AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule,
+  AbstractControl, FormControl, FormGroup, ReactiveFormsModule,
   ValidatorFn
 } from "@angular/forms";
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {ProfileService} from '../../services/profile.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/select";
-import {MatError, MatLabel} from "@angular/material/form-field";
+import {MatError} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatInput} from "@angular/material/input";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {Validator, ValidatorError} from '../../../../shared/utils/validators';
+import {HttpErrorResponse} from "@angular/common/http";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'rb-password-page',
+  selector: 'app-password-page',
   templateUrl: './password-page.component.html',
   imports: [
     MatCard,
@@ -27,7 +28,6 @@ import {Validator, ValidatorError} from '../../../../shared/utils/validators';
     MatCardContent,
     ReactiveFormsModule,
     MatFormField,
-    MatLabel,
     MatIcon,
     MatError,
     MatButton,
@@ -38,12 +38,14 @@ import {Validator, ValidatorError} from '../../../../shared/utils/validators';
     ErrorMessageComponent
   ]
 })
-export class PasswordPageComponent implements OnInit, OnDestroy {
+export class PasswordPageComponent {
   protected readonly ValidatorError = ValidatorError;
 
-  isLoading = false;
-  error = false;
-  success = false;
+  private profileService = inject(ProfileService);
+
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
 
   hidePassword = true;
   hideConfirmPassword = true;
@@ -61,42 +63,35 @@ export class PasswordPageComponent implements OnInit, OnDestroy {
     validators: [MatchPasswordValidator('password', 'confirmPassword')]
   });
 
-  _destroy$: Subject<void> = new Subject<void>();
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
 
-  constructor(
-    private fb: FormBuilder,
-    private profileService: ProfileService
-  ) {
-  }
-
-  ngOnInit(): void {
-    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.error = false;
-      this.success = false;
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges()) {
+        this.error.set(null);
+      }
     });
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   update(): void {
-    this.isLoading = true;
-    this.success = false;
-    this.error = false;
+    this.loading.set(true);
+    this.success.set(false);
+    this.error.set(null);
     const password = this.form.controls.password?.value;
     if (password) {
       this.profileService.updatePassword(password).subscribe({
         next: () => {
-          this.success = true;
-          this.error = false;
-          this.isLoading = false;
+          this.success.set(true);
+          this.error.set(null);
+          this.loading.set(false);
         },
         error: (error) => {
-          this.error = true;
-          this.success = false;
-          this.isLoading = false;
+          this.error.set(error);
+          this.success.set(false);
+          this.loading.set(false);
           throw error
         },
       });

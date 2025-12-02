@@ -45,7 +45,7 @@ import {DetailElementComponent} from '../../../../components/detail-element/deta
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
-  selector: 'rb-subject-dialog-pair-app',
+  selector: 'app-subject-dialog-pair-app',
   templateUrl: './subject-dialog-pair-app.component.html',
   imports: [
     MatDialogContent,
@@ -89,7 +89,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
     map(clients => clients.filter(c => c.additionalInformation?.['dynamic_registration'] && c.additionalInformation?.['dynamic_registration'] === 'true'))
   )
 
-  pairInfo$ = signal<RadarPairInfo | undefined>(undefined)
+  pairInfo = signal<RadarPairInfo | undefined>(undefined)
 
   form = new FormGroup({
     id: new FormControl<string | number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
@@ -97,8 +97,8 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
     client: new FormControl<AppClient | undefined>(undefined, {nonNullable: true}),
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
@@ -111,7 +111,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -137,7 +137,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -149,8 +149,8 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   generateQRCode(persistent: boolean) {
@@ -162,13 +162,13 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
       .pipe(
         tap(() => {
           // delete old value
-          const pairInfo = this.pairInfo$();
+          const pairInfo = this.pairInfo();
           if (pairInfo && pairInfo.tokenName) {
             this.deleteToken(pairInfo.tokenName);
           }
         })
       )
-      .subscribe((pairInfo: RadarPairInfo | undefined) => (this.pairInfo$.set(pairInfo)));
+      .subscribe((pairInfo: RadarPairInfo | undefined) => (this.pairInfo.set(pairInfo)));
   }
 
   private deleteToken(tokenName: string): Subscription {

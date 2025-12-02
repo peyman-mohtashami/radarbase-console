@@ -3,7 +3,7 @@ import {DialogMode} from "../../../enums/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
-  selector: 'rb-dialog-body-description',
+  selector: 'app-dialog-body-description',
   templateUrl: './dialog-body-description.component.html',
   imports: [
     TranslatePipe
@@ -12,7 +12,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 export class DialogBodyDescriptionComponent {
   DialogMode = DialogMode;
 
-  mode$ = input<DialogMode>();
-  label$ = input<string>();
-  entityName$ = input<string>();
+  dialogMode = input<DialogMode>();
+  label = input<string>();
+  entityName = input<string>();
 }

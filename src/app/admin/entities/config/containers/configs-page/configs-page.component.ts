@@ -1,26 +1,19 @@
-import {Component, computed, effect, inject, OnDestroy, OnInit, signal, untracked, WritableSignal} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked, WritableSignal} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 import { DialogMode } from '../../../../enums/dialog';
 import {
-  FilterItem, TableElement,
-  // TableType
+  RbSort,
+  TableElement,
 } from '../../../../models/table.model';
 import { ConfigService } from '../../services/config.service';
-import {Observable, of, Subject} from 'rxjs';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {ENTITY_NAME, ROLES} from "../../../../enums/entities";
-import {TABLE_ANIMATION} from "../../../../animation";
+import {Subject} from 'rxjs';
 import {AppConfig} from "../../models/config";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-// import {ConfigPublishComponent} from "../../components/config-publish/config-publish.component";
+import {ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
-import {RbSort, TableQueryReflectorDirective} from "../../../../directives/table-query-reflector.directive";
+import {TableQueryReflectorDirective} from "../../../../directives/table-query-reflector.directive";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatOption} from "@angular/material/core";
-import {MatFormField} from "@angular/material/input";
-import {MatLabel, MatSelect} from "@angular/material/select";
 import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ConfigTableRowComponent} from "../../components/config-table-row/config-table-row.component";
@@ -35,69 +28,64 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
 import {AppClient} from "../../../client/models/client";
-import {JsonPipe} from "@angular/common";
 import {AppProject} from '../../../project/models/project';
-// import {ConfigPublishComponent} from "../../components/config-publish/config-publish.component";
+import {AppSubject} from "../../../subject/models/subject";
+import {ROLES} from "../../../../../shared/enums/roles";
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_FILTERS,
+  MIN_ENTITIES_FOR_PAGINATION,
+  PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'rb-configs-page',
+  selector: 'app-configs-page',
   templateUrl: './configs-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
-    // MatFormField,
-    // MatLabel,
-    // MatSelect,
-    // MatOption,
-    // MatFormField,
-    // ConfigPublishComponent,
     LoaderComponent,
     TableQueryReflectorDirective,
     TranslatePipe,
     MatPaginator,
     ReactiveFormsModule,
-    // MatButton,
     MatAnchor,
     ConfigTableRowComponent,
     EntitiesPageHeaderComponent,
     MatCheckbox,
     DataTableFilterComponent,
-    JsonPipe,
-    // ConfigPublishComponent,
-    MatButton
+    MatButton,
   ]
 })
 export class ConfigsPageComponent implements OnInit, OnDestroy {
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private entityService = inject(ConfigService);
-  private configService = inject(ConfigConfigService);
+  protected configService = inject(ConfigConfigService);
   public dialogService = inject(ConfigDialogService);
 
+  entityMetadata = this.configService.getEntityMetadata();
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   configFields = this.configService.getFormFields();
 
-  // entities: AppConfig = this.activatedRoute.snapshot.data['entities'];
-  entities$ = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
-  processedEntities$ = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
-  visibleEntities$ = signal<AppConfig[]>([]);
+  entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
+  processedEntities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppConfig[]>([]);
 
   currentClient: AppClient = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
-  currentProject: AppProject = this.activatedRoute.parent?.parent?.parent?.parent?.parent?.snapshot?.data['entity'];
+  currentProject: AppProject | undefined = undefined; //this.activatedRoute.parent?.parent?.parent?.parent?.parent?.snapshot?.data['entity'];
+  currentSubject: AppSubject | undefined = undefined; //this.activatedRoute.parent?.parent?.parent?.parent?.parent?.snapshot?.data['entity'];
 
-  page$: WritableSignal<PageEvent>;
-  sort$: WritableSignal<RbSort>;
-  filter$: WritableSignal<FilterEvent>;
+  page: WritableSignal<PageEvent>;
+  sort: WritableSignal<RbSort>;
+  filter: WritableSignal<FilterEvent>;
 
-  loading$ = signal(true);
-  extensionClass$ = signal('hidden');
+  loading = signal(true);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -106,13 +94,13 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     const { pageSize, pageIndex, sortField, sortOrder } = this.activatedRoute.snapshot.queryParams;
-    this.page$ = signal({
+    this.page = signal({
       pageIndex: pageIndex ?? 0,
-      pageSize: pageSize ?? this.DEFAULT_PAGE_SIZE,
+      pageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       length: 0,
     });
-    this.sort$ = signal({sortField: sortField ?? 'name', sortOrder: sortOrder ?? 'desc'});
-    this.filter$ = signal<FilterEvent>(
+    this.sort = signal({sortField: sortField ?? 'name', sortOrder: sortOrder ?? 'asc'});
+    this.filter = signal<FilterEvent>(
       this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
         return map;
@@ -121,56 +109,22 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
     this.initializeDialogEffect();
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
+    this.currentProject = this.activatedRoute.parent?.parent?.parent?.parent?.parent?.snapshot.data['entity'];
+    if (this.activatedRoute.parent?.parent?.parent?.parent?.parent?.parent?.snapshot.routeConfig?.path === 'subjects') {
+      this.currentSubject = this.activatedRoute.parent?.parent?.parent?.parent?.parent?.snapshot.data['entity'];
+      this.currentProject = this.activatedRoute.parent?.parent?.parent?.parent?.parent?.parent?.parent?.snapshot.data['entity'];
+    }
+
     this.activatedRoute.data.subscribe(data => {
-      this.entities$.set(data['entities']);
-      this.processedEntities$.set(data['entities']);
+      this.entities.set(data['entities']);
+      this.processedEntities.set(data['entities']);
       this.dialogService.dialogUpdateEvent$.set(undefined);
       this.applyFilter();
     })
-
-    console.log('Class: ConfigsPageComponent, Function: ngOnInit, Line 126 this.entities$()' , this.entities$());
-    //=======
-    // console.log('Class: ConfigsPageComponent, Function: ngOnInit, Line 152 this.clientId, this.projectName' , this.clientId, this.projectName);
-    // this.init();
-    // this.createExport();
-    // // this.form = this.fb.group({
-    // //   category: ['general'],
-    // // });
-    // if (this.clientId === 'pRMT' || this.clientId === 'aRMT') {
-    //   this.form = new FormGroup({
-    //     category: new FormControl('general')
-    //   })
-    // }
-    // this.form?.valueChanges.subscribe((value) => {
-    //   console.log('Class: ConfigsPageComponent, Function: , Line 164 value' , value);
-    //   this.queryParams = {'pageIndex': 0, 'pageSize': 20, 'category': value.category ?? 'general'};
-    //   // const queryParams = new HttpParams()
-    //   //   // .append('pageIndex', 0).append('pageSize', 20)
-    //   //   .appendAll({'pageIndex': 0, 'pageSize': 20, 'category': value.category ?? 'general'})
-    //   this.router.navigate([], {queryParams: this.queryParams, relativeTo: this.activatedRoute}).then();
-    //   this.page = {pageIndex: 0, pageSize: 20, length: 0};
-    //   if(value){
-    //     this.entityService
-    //       .getWithQuery(this.queryParams)
-    //       .subscribe((entities) => {
-    //         // console.log("***() ent", entities)
-    //         this.entities = entities;
-    //         this.filteredAndSortedEntities = this.entities;
-    //         this.applyFilter();
-    //         this.applySort();
-    //         this.applyPage();
-    //         this.createExport();
-    //         // this.entitiesToShow = entities
-    //       });
-    //   }
-    // });
-    //=======
-    // this.dialogService.dialogUpdateEvent$.set(undefined);
-    // this.applyFilter();
     this.handleDialogUrlFragment();
   }
 
@@ -232,13 +186,11 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   private initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService.dialogUpdateEvent$();
-      console.log('Class: ConfigsPageComponent, Function: , Line 219 ' , updated);
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
 
   private handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppConfig }) {
-    console.log('Class: ConfigsPageComponent, Function: handleDialogUpdate, Line 224 updated', updated);
     const {mode, entity} = updated;
     if (entity) {
       switch (mode) {
@@ -268,44 +220,35 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
       }
     }
     this.removeFragmentUrl();
-    this.loading$.set(false);
+    this.loading.set(false);
     this.selection.clear();
   }
 
   private addEntityToView(entity: AppConfig) {
-    // if (entity) {
-      const entities = untracked(this.entities$);
-      // const updatedEntities = untracked(this.updatedEntities$);
-      // this.updatedEntities$.set([entity, ...updatedEntities]);
-      this.entities$.set([entity, ...entities]);
+      const entities = untracked(this.entities);
+      this.entities.set([entity, ...entities]);
       this.applyFilter();
-    // }
   }
 
   private updateEntityInView(entity: AppConfig) {
-    // if (entity) {
-      // const updatedEntities = untracked(this.updatedEntities$);
-
-      const updatedEntities = untracked(this.entities$).map(e => e.id === entity.id ? entity : e);
-      this.entities$.set(updatedEntities);
+      const updatedEntities = untracked(this.entities).map(e => e.id === entity.id ? entity : e);
+      this.entities.set(updatedEntities);
       this.applyFilter();
-    // }
   }
 
   private removeEntityFromView(entity?: AppConfig) {
     if (entity) {
-      const entities = untracked(this.entities$);
+      const entities = untracked(this.entities);
       const updatedEntities = entities.filter(e => e.id !== entity.id);
-      // this.entities$.set([entity, ...entities]);
-      this.entities$.set(updatedEntities);
+      this.entities.set(updatedEntities);
       this.applyFilter();
     }
   }
 
   private refreshEntities() {
-    this.entityService.getAll(this.currentClient.clientId, this.currentProject.projectName).subscribe({
+    this.entityService.getAll(this.currentClient.clientId, this.currentProject?.projectName).subscribe({
       next: (entities) => {
-        this.entities$.set(entities);
+        this.entities.set(entities);
         this.applyFilter();
       }
     });
@@ -321,8 +264,8 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType, entityId] = fragment.split('/');
-    if (entityType === 'config') {
-      const entity = this.visibleEntities$().find(e => e.id == entityId);
+    if (entityType === this.entityMetadata.name) {
+      const entity = this.visibleEntities().find(e => e.id == entityId);
       switch (action) {
         case 'add':
           this.dialogService.openDialog(DialogMode.ADD, undefined);
@@ -338,7 +281,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   }
 
   onPublishDialogAction(mode: "discard" | "publish") {
-    return this.dialogService.openPublishDialog(mode, this.entities$());
+    return this.dialogService.openPublishDialog(mode, this.entities(), this.currentClient?.clientId, this.currentProject?.projectName, this.currentSubject?.login);
   }
 
   removeFragmentUrl() {
@@ -350,8 +293,8 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {
@@ -359,16 +302,16 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   }
 
   switchFilter(event: FilterEvent){
-    this.loading$.set(true);
-    this.filter$.set(event);
-    this.page$.set({...this.page$(), pageIndex: 0});
+    this.loading.set(true);
+    this.filter.set(event);
+    this.page.set({...this.page(), pageIndex: 0});
     this.applyFilter();
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
-    const currentSort = this.sort$();
-    this.sort$.set({
+    const currentSort = this.sort();
+    this.sort.set({
       sortField: event.name,
       sortOrder: currentSort?.sortOrder === 'asc' ? 'desc' : 'asc'
     });
@@ -376,42 +319,42 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
     this.applySortAndPagination();
   }
 
   private applySortAndPagination() {
     const sortedEntities = this.applySorting();
     const pagedEntities = this.applyPagination(sortedEntities);
-    this.visibleEntities$.set(pagedEntities);
-    this.loading$.set(false);
+    this.visibleEntities.set(pagedEntities);
+    this.loading.set(false);
   }
 
   private applySorting(): AppConfig[] {
-    const {sortField, sortOrder} = this.sort$();
+    const {sortField, sortOrder} = this.sort();
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    return this.processedEntities$().sort((a, b) => {
+    return this.processedEntities().sort((a, b) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
   }
 
   private applyPagination(entities: AppConfig[]): AppConfig[] {
-    const { pageSize, pageIndex } = this.page$();
+    const { pageSize, pageIndex } = this.page();
     const startIndex = pageSize * pageIndex;
     return entities.slice(startIndex, startIndex + pageSize);
   }
 
   applyFilter() {
     const filteredEntities = this.getFilteredEntities();
-    this.processedEntities$.set(filteredEntities);
+    this.processedEntities.set(filteredEntities);
     this.applySortAndPagination();
   }
 
   private getFilteredEntities(): AppConfig[] {
-    let filteredEntities = [...this.entities$()];
+    let filteredEntities = [...this.entities()];
 
-    Object.entries(this.filter$()).forEach(([key, value]) => {
+    Object.entries(this.filter()).forEach(([key, value]) => {
       if (!value) return;
 
       filteredEntities = filteredEntities.filter((entity) =>
@@ -424,14 +367,14 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
   /** Selection Helper Methods */
   isAllSelected() {
-    return this.selection.selected.length === this.visibleEntities$().length;
+    return this.selection.selected.length === this.visibleEntities().length;
   }
 
   masterToggle() {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.visibleEntities$());
+      this.selection.select(...this.visibleEntities());
     }
   }
 
@@ -452,127 +395,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
   }
 
-  // override add(entity: AppConfig): Observable<AppConfig> {
-  //   const e = { ...entity, id: entity.name, changed: true };
-  //   this.entities.push(e);
-  //   this.entitiesChanged();
-  //   this.updated = e['id'];
-  //   setTimeout(() => {
-  //     this.updated = undefined;
-  //   }, 1000);
-  //   // this.entitiesToShow.push(e);
-  //   this.checkIfChangeHappened(true);
-  //   return of(e);
-  // }
-  //
-  // override delete(entity: AppConfig): Observable<string | number> {
-  //   this.entities = this.entities.filter((e) => e.name !== entity.name);
-  //   this.entitiesChanged();
-  //   this.checkIfChangeHappened(true);
-  //   return of(entity.name);
-  // }
-  //
-  // override update(entity: AppConfig): Observable<AppConfig> {
-  //   console.log('Class: ConfigsPageComponent, Function: update, Line 188 entity' , entity);
-  //   const itemIndex = this.entities.findIndex(
-  //     (item) => {
-  //       console.log('Class: ConfigsPageComponent, Function: , Line 191 item' , item);
-  //       return item.id == entity.id
-  //     }
-  //   );
-  //   console.log('Class: ConfigsPageComponent, Function: update, Line 195 itemIndex' , itemIndex);
-  //   const e = { ...entity, changed: true };
-  //   this.entities[itemIndex] = e;
-  //   console.log('Class: ConfigsPageComponent, Function: update, Line 194 this.entities' , this.entities);
-  //   this.entitiesChanged();
-  //   this.updated = entity['id'];
-  //   setTimeout(() => {
-  //     this.updated = undefined;
-  //   }, 1000);
-  //   this.checkIfChangeHappened(true);
-  //   return of(e);
-  // }
+  protected showHistory() {
 
-  // checkIfChangeHappened(value: boolean) {
-  //   this.isChanged = value;
-  // }
-
-  // override onSuccess(
-  //   mode: string,
-  //   dialogRef: MatDialogRef<DialogConfig>,
-  //   entity: AppConfig
-  // ): void {
-  //   // if (
-  //   //   this.type === TableType.GET_WITH_QUERY ||
-  //   //   this.type === TableType.GET_ALL
-  //   // ) {
-  //   //   // this.updateTrigger$.next(entity['id']?.toString() || '0');
-  //   //
-  //   //   // this.dataSource.data = this.entities;
-  //   // }
-  //   this.applyStateChangesToUrlQueryParams({ [mode]: null });
-  //   dialogRef.close();
-  //   // this.updated = entity['id'];
-  //   setTimeout(() => {
-  //     this.updated = undefined;
-  //   }, 1000);
-  // }
-
-  // triggerUpdate($event: string) {
-  //   this.entities.map((entity) => (entity.changed = false));
-  //   this.checkIfChangeHappened(false);
-  //   // this.updateTrigger$.next($event);
-  //   this.entityService
-  //     .getWithQuery(this.queryParams)
-  //     .subscribe((entities) => {
-  //       // console.log("***() ent", entities)
-  //       this.entities = entities;
-  //       this.entitiesChanged();
-  //       // this.filteredAndSortedEntities = this.entities;
-  //       // this.applyFilter();
-  //       // this.applySort();
-  //       // this.applyPage();
-  //       // this.entitiesToShow = entities
-  //     });
-  // }
-
-  // onFileSelected(e: any) {
-  //   console.log('file changed');
-  //   this.file = e.target.files[0];
-  //   this.updateEntities(this.file);
-  // }
-  //
-  // updateEntities(file?: Blob) {
-  //   console.log('upload file');
-  //   const fileReader = new FileReader();
-  //   fileReader.onload = (e) => {
-  //     console.log(fileReader.result);
-  //     if (fileReader.result) {
-  //       try {
-  //         const entities: AppConfig[] = JSON.parse(
-  //           fileReader.result as string
-  //         );
-  //         this.entities = entities.map((entity) => ({
-  //           ...entity,
-  //           changed: true,
-  //         }));
-  //         this.checkIfChangeHappened(true);
-  //         // this.dataSource.data = this.entities;
-  //       } catch (error: unknown) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-  //   if (file) {
-  //     fileReader.readAsText(file);
-  //   }
-  // }
-
-  // private createExport() {
-  //   const configJson = JSON.stringify(this.entities, null, 2);
-  //   const blob = new Blob([configJson], { type: 'text/json' });
-  //   const uri = URL.createObjectURL(blob);
-  //   this.downloadJsonHref = this.sanitizer.bypassSecurityTrustUrl(uri);
-  // }
-
+  }
 }

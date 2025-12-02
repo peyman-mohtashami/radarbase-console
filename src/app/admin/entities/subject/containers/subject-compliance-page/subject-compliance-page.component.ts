@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'rb-subject-compliance-page',
+    selector: 'app-subject-compliance-page',
     templateUrl: './subject-compliance-page.component.html',
 })
 export class SubjectCompliancePageComponent {}

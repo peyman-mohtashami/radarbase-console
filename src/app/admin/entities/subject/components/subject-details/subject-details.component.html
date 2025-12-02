@@ -1,25 +1,25 @@
-<rb-details [name$]="ENTITY_NAME.subject"
-            [entity$]="entity$()"
-            [tableFields$]="tableFields$()"
-            [type$]="type$()"
-            [customTemplate$]="detailsTemplate"/>
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('checkbox') {}
     @case ('dateOfBirth') {
-      <rb-local-date [date]="entity$()['dateOfBirth']" [format]="'mediumDate'"/>
+      <app-local-date [date]="entity()['dateOfBirth']" [format]="'mediumDate'"/>
     }
     @case ('status') {
-      <rb-subject-status [type]="type$()" [status]="entity$()['status']"/>
+      <app-subject-status [detailType]="detailType()" [status]="entity()['status']"/>
     }
     @case ('group') {
-      <rb-subject-group [group$]="entity$()['group']"/>
+      <app-subject-group [group]="entity()['group']"/>
     }
     @case ('sources') {
-      @if (entity$().sources && entity$()?.sources?.length) {
-        @for (source of entity$().sources; track source.sourceName) {
-          <rb-tag class="bg-primary/10 text-primary">{{ source.sourceName }}</rb-tag>
+      @if (entity().sources && entity().sources?.length) {
+        @for (source of entity().sources; track source.sourceName) {
+          <app-tag class="bg-primary/10 text-primary">{{ source.sourceName }}</app-tag>
         }
       } @else {
         -
@@ -27,8 +27,8 @@
     }
     @case ('attributes') {
       <div>
-        @if (entity$().attributes && (entity$().attributes | keyvalue)?.length) {
-          @for (attribute of entity$().attributes | keyvalue; track attribute.key) {
+        @if (entity().attributes && (entity().attributes | keyvalue)?.length) {
+          @for (attribute of entity().attributes | keyvalue; track attribute.key) {
             <div class="flex flex-wrap gap-1 border-b border-neutral-200 py-1">
               <span class="w-40">{{ attribute.key }}</span><span>{{ attribute.value || '-' }}</span>
             </div>
@@ -39,38 +39,38 @@
       </div>
     }
     @case ('enrollmentDate') {
-      <rb-local-date [date]="entity$()['enrollmentDate']" [format]="'long'"/>
+      <app-local-date [date]="entity()['enrollmentDate']" [format]="'long'"/>
     }
     @case ('createdBy') {
-      @if (entity$().createdBy && entity$().createdBy !== 'system') {
-        <rb-tag colorClass='user-color'>
-          <a [routerLink]='["/admin/users", entity$().createdBy]'>
-            {{ entity$().createdBy || '-' }}
+      @if (entity().createdBy && entity().createdBy !== 'system') {
+        <app-tag>
+          <a [routerLink]='["/admin/users", entity().createdBy]'>
+            {{ entity().createdBy || '-' }}
           </a>
-        </rb-tag>
+        </app-tag>
       } @else {
-        <span class="uppercase">{{ entity$().createdBy || '-' }}</span>
+        <span class="uppercase">{{ entity().createdBy || '-' }}</span>
       }
     }
     @case ('createdDate') {
-      <rb-local-date [date]="entity$()['createdDate']" [format]="'long'"/>
+      <app-local-date [date]="entity()['createdDate']" [format]="'long'"/>
     }
     @case ('lastModifiedBy') {
-      @if (entity$().lastModifiedBy && entity$().lastModifiedBy !== 'system') {
-        <rb-tag colorClass='user-color'>
-          <a [routerLink]='["/admin/users", entity$().lastModifiedBy]'>
-            {{ entity$().lastModifiedBy || '-' }}
+      @if (entity().lastModifiedBy && entity().lastModifiedBy !== 'system') {
+        <app-tag>
+          <a [routerLink]='["/admin/users", entity().lastModifiedBy]'>
+            {{ entity().lastModifiedBy || '-' }}
           </a>
-        </rb-tag>
+        </app-tag>
       } @else {
-        <span class="uppercase">{{ entity$().lastModifiedBy || '-' }}</span>
+        <span class="uppercase">{{ entity().lastModifiedBy || '-' }}</span>
       }
     }
     @case ('lastModifiedDate') {
-      <rb-local-date [date]="entity$()['lastModifiedDate']" [format]="'long'"/>
+      <app-local-date [date]="entity()['lastModifiedDate']" [format]="'long'"/>
     }
     @default {
-      {{ entity$()[property.name] || '-' }}
+      {{ entity()[property.name] || '-' }}
     }
   }
 </ng-template>

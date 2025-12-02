@@ -6,8 +6,15 @@ import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 
+
+export enum DialogAction {
+  CLOSE = 'close',
+  SAVE = 'save',
+  DELETE = 'delete'
+}
+
 @Component({
-  selector: 'rb-dialog-actions',
+  selector: 'app-dialog-actions',
   templateUrl: './dialog-actions.component.html',
   imports: [
     MatButton,
@@ -20,23 +27,23 @@ import {MatIcon} from "@angular/material/icon";
 export class DialogActionsComponent {
   protected readonly DialogMode = DialogMode;
 
-  mode$ = input<DialogMode>();
-  label$ = input<{singular: string; plural: string;}>();
-  form$ = input<UntypedFormGroup>();
+  dialogMode = input<DialogMode>();
+  label = input<{singular: string; plural: string;}>();
+  form = input<UntypedFormGroup>();
 
-  @Output() actionTriggered = new EventEmitter();
+  @Output() actionTriggered = new EventEmitter<DialogAction>(); //TODO
 
   isLoading = false;
 
   close() {
-    this.actionTriggered.emit('close');
+    this.actionTriggered.emit(DialogAction.CLOSE);
   }
 
   delete() {
-    this.actionTriggered.emit('delete');
+    this.actionTriggered.emit(DialogAction.DELETE);
   }
 
   save() {
-    this.actionTriggered.emit('save');
+    this.actionTriggered.emit(DialogAction.SAVE);
   }
 }

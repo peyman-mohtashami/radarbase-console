@@ -1,32 +1,25 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { AppSourceType } from "../models/source-type";
-import {map} from 'rxjs/operators';
+import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AppSourceType} from "../models/source-type";
+import {catchError} from 'rxjs/operators';
 import {SourceTypeService} from './source-type.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class SourceTypeResolver implements Resolve<AppSourceType> {
   private entityService = inject(SourceTypeService);
+  private router = inject(Router);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppSourceType>
-    | Promise<AppSourceType>
-    | AppSourceType {
-    return this.entityService.getAll().pipe(
-      map(entities => {
-        const entity = entities.find(entity =>
-          entity.producer === route.params['producer'] && entity.model === route.params['model'] && entity.catalogVersion === route.params['version'])
-        if (entity) {
-          return entity;
-        } else {
-          throw new Error('Entity not found');
-        }
-      }));
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSourceType> {
+    const sourceTypeId = `${route.params['producer']}/${route.params['model']}/${route.params['version']}`;
+
+    return this.entityService.getByKey(sourceTypeId).pipe(
+      catchError(() => {
+        this.router.navigate(['/admin', 'source-types']).then(() => {
+          throw new Error(`ADMIN.sourceType.error.notFound`);
+        });
+        throw new Error();
+      })
+    );
   }
 }

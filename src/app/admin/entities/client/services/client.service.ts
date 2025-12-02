@@ -1,11 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-
 import {AppClient, RadarClient} from "../models/client";
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ClientService {
   private http = inject(HttpClient);
 
@@ -14,6 +13,7 @@ export class ClientService {
   toAppModel(entity: RadarClient): AppClient {
     return {
       ...entity,
+      // id: entity.clientId,
       _name: entity.clientId,
       _authorizedGrantTypes: entity.authorizedGrantTypes?.reduce((a: Record<string, boolean>, c: string) => {
         a[c] = true;
@@ -30,19 +30,18 @@ export class ClientService {
       authorizedGrantTypes: Object.keys(entity._authorizedGrantTypes ?? {}).filter(
         (k) => entity._authorizedGrantTypes[k]
       ),
-      scope: this.customSplit(entity?.scope),
+      scope: this.customSplit(entity.scope),
       authorities: this.customSplit(entity.authorities),
-      resourceIds: this.customSplit(entity?.resourceIds),
-      autoApproveScopes: this.customSplit(entity?.autoApproveScopes),
-      registeredRedirectUri: this.customSplit(entity?.registeredRedirectUri),
+      resourceIds: this.customSplit(entity.resourceIds),
+      autoApproveScopes: this.customSplit(entity.autoApproveScopes),
+      registeredRedirectUri: this.customSplit(entity.registeredRedirectUri),
       additionalInformation: {
         ...entity.additionalInformation,
-        dynamic_registration: entity._dynamic_registration === true ? 'true' : 'false',
       }
     };
   }
 
-  customSplit(str?: string | string[], token = ',') {
+  customSplit(str: string | string[] | null, token = ',') {
     if (!str) return [];
     if (Array.isArray(str)) return str;
     return str.split(token);
@@ -57,10 +56,10 @@ export class ClientService {
       );
   }
 
-  getByKey(key: number | string): Observable<AppClient> {
-    return this.http.get<RadarClient>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
+  // getByKey(key: number | string): Observable<AppClient> {
+  //   return this.http.get<RadarClient>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
+  //     .pipe(map((entity) => this.toAppModel(entity)));
+  // }
 
   add(entity: AppClient): Observable<AppClient> {
     return this.http.post<RadarClient>(this.resourceUrl, this.toRadarModel(entity))

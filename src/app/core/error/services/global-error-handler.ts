@@ -1,19 +1,19 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
+import {ErrorHandler, inject, Injectable, Injector} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorService } from './error.service';
 // import {NotificationActions} from "../../rb-notification/store/action.types";
-import {Store} from "@ngrx/store";
-import {LogService} from "../../log/services/log.service";
-import {ErrorDisplayType} from "../enums/error.enum";
+// import {Store} from "@ngrx/store";
+// import {LogService} from "../../log/services/log.service";
+// import {ErrorDisplayType} from "../enums/error.enum";
 import {AppError} from "../models/error.model";
-import {appClientErrorOccurred, appServerErrorOccurred} from "../store/error.actions";
+// import {appClientErrorOccurred, appServerErrorOccurred} from "../store/error.actions";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ErrorSnackbarComponent} from "../components/error-snackbar/error-snackbar.component";
 
 @Injectable({providedIn: 'root'})
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private store: Store, private snackBar: MatSnackBar,) {
-  }
+  errorService = inject(ErrorService);
+  snackBar = inject(MatSnackBar);
 
   handleError(error: Error | HttpErrorResponse): void {
     console.log('Class: GlobalErrorHandler, Function: handleError, Line 17 error' , error.name, error.message);
@@ -29,15 +29,25 @@ export class GlobalErrorHandler implements ErrorHandler {
         verticalPosition: 'bottom',
         panelClass: ['rb-error-snackbar'],
       });
-      this.store.dispatch(appClientErrorOccurred({error: appError}));
+      this.errorService.error.set(appError);
+      // this.store.dispatch(appClientErrorOccurred({error: appError}));
     } else {
       const m = this.extractServerErrorMessage(error)
       console.log('Class: GlobalErrorHandler, Function: handleError, Line 35 m' , m);
       appError = {
         message: m, //this.extractServerErrorMessage(error),
       };
+      if ([400, 500].includes((error as HttpErrorResponse).status)) {
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+          data: appError,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['rb-error-snackbar'],
+        });
+      }
       console.log('Class: GlobalErrorHandler, Function: handleError, Line 21 ', 'Server Error');
-      this.store.dispatch(appServerErrorOccurred({error: appError}));
+      this.errorService.error.set(appError);
+      // this.store.dispatch(appServerErrorOccurred({error: appError}));
     }
 
     // const displayType = ErrorDisplayType.Snackbar;

@@ -1,24 +1,24 @@
 import {RadarSourceData} from '../../source-data/models/source-data';
 
-export interface RadarSourceType extends Record<string, number | string | boolean | SourceTypeScope | RadarSourceData[] | undefined> {
+export interface RadarSourceType extends Record<string, any> {
   id: number | string;
   producer: string;
   model: string;
   catalogVersion: string;
-  sourceTypeScope?: SourceTypeScope;
+  sourceTypeScope: SourceTypeScope | null;
   sourceDataId?: number;
   sourceData?: RadarSourceData[];
   projectId?: number;
-  canRegisterDynamically: boolean;
-  name: string;
-  description?: string;
-  assessmentType?: string;
-  appProvider?: string;
+  canRegisterDynamically?: boolean;
+  name?: string | null;
+  description?: string | null;
+  assessmentType?: string | null;
+  appProvider?: string | null;
 }
 
 export interface AppSourceType extends RadarSourceType {
   _name: string;
-  _search?: string;
+  _search: string;
 }
 
 export enum SourceTypeScope {

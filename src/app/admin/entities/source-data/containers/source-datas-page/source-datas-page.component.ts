@@ -6,14 +6,13 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatCheckbox} from "@angular/material/checkbox";
-import { TABLE_ANIMATION } from '../../../../animation';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import {TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
-import {TableElement} from '../../../../models/table.model';
+import {RbSort, TableElement} from '../../../../models/table.model';
 import {SourceDataService} from '../../services/source-data.service';
 import {DialogMode} from '../../../../enums/dialog';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {ROLES} from "../../../../../shared/enums/roles";
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
 import {AppSourceData} from '../../models/source-data';
 import {AppSourceType} from '../../../source-type/models/source-type';
@@ -23,11 +22,16 @@ import {
   DataTableFilterComponent,
   FilterEvent
 } from '../../../../components/data-table-filter/data-table-filter.component';
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_FILTERS,
+  MIN_ENTITIES_FOR_PAGINATION,
+  PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
   selector: 'rb-entities-page',
   templateUrl: './source-datas-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     EntitiesPageHeaderComponent,
     DataTableFilterComponent,
@@ -40,58 +44,57 @@ import {
   ]
 })
 export class SourceDatasPageComponent implements OnInit, OnDestroy {
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   public entityService = inject(SourceDataService);
-  private configService = inject(SourceDataConfigService);
+  protected configService = inject(SourceDataConfigService);
   public dialogService = inject(SourceDataDialogService);
 
+  entityMetadata = this.configService.getEntityMetadata();
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   configFields = this.configService.getFormFields();
 
-  visibleEntities$ = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['entities']);
 
   sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
-  page$ = signal<PageEvent>({
+  page = signal<PageEvent>({
     pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
-    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? this.DEFAULT_PAGE_SIZE,
+    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? DEFAULT_PAGE_SIZE,
     length: 0,
   });
-  sort$ = signal<RbSort>({
+  sort = signal<RbSort>({
     sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
     sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
   });
-  filter$ = signal<FilterEvent>(
+  filter = signal<FilterEvent>(
     this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
       map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
       return map;
     }, {})
   )
 
-  previousParamsState$ = signal<{
+  previousParamsState = signal<{
     page: PageEvent;
     sort: RbSort;
     filter: FilterEvent;
   }>({
-    page: this.page$(),
-    sort: this.sort$(),
-    filter: this.filter$(),
+    page: this.page(),
+    sort: this.sort(),
+    filter: this.filter(),
   });
 
-  paramsChanged$ = computed(() => {
-    const currentPage = this.page$();
-    const currentSort = this.sort$();
-    const currentFilter = this.filter$();
-    const previousState = this.previousParamsState$();
+  paramsChanged = computed(() => {
+    const currentPage = this.page();
+    const currentSort = this.sort();
+    const currentFilter = this.filter();
+    const previousState = this.previousParamsState();
 
     return (
       currentPage.pageIndex !== previousState.page.pageIndex ||
@@ -102,8 +105,8 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
     );
   });
 
-  loading$ = signal(false);
-  extensionClass$ = signal('hidden');
+  loading = signal(false);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -112,25 +115,25 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.paramsChanged$()) {
-        this.previousParamsState$.set({
-          page: this.page$(),
-          sort: this.sort$(),
-          filter: this.filter$(),
+      if (this.paramsChanged()) {
+        this.previousParamsState.set({
+          page: this.page(),
+          sort: this.sort(),
+          filter: this.filter(),
         });
 
-        this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+        this.loadEntities(this.page(), this.sort(), this.filter()).subscribe({
           next: value => {
             this.selection.clear();
-            this.loading$.set(false);
-            this.visibleEntities$.set(value);
+            this.loading.set(false);
+            this.visibleEntities.set(value);
           }
         })
       }
     });
     this.initializeDialogEffect();
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
 
@@ -186,7 +189,7 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -204,30 +207,30 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
         break;
     }
     this.removeFragmentUrl();
-    this.loading$.set(false);
+    this.loading.set(false);
     this.selection.clear();
   }
 
   private addEntityToView(entity?: AppSourceData) {
     if (entity) {
-      const visibleEntities = untracked(this.visibleEntities$);
-      this.visibleEntities$.set([entity, ...visibleEntities]);
+      const visibleEntities = untracked(this.visibleEntities);
+      this.visibleEntities.set([entity, ...visibleEntities]);
     }
   }
 
   private updateEntityInView(entity?: AppSourceData) {
     if (entity) {
-      const updatedEntities = untracked(this.visibleEntities$).map(e => e.id === entity.id ? entity : e);
-      this.visibleEntities$.set(updatedEntities);
+      const updatedEntities = untracked(this.visibleEntities).map(e => e.id === entity.id ? entity : e);
+      this.visibleEntities.set(updatedEntities);
     }
   }
 
   private refreshEntities() {
-    this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+    this.loadEntities(this.page(), this.sort(), this.filter()).subscribe({
       next: value => {
         this.selection.clear();
-        this.loading$.set(false);
-        this.visibleEntities$.set(value);
+        this.loading.set(false);
+        this.visibleEntities.set(value);
       }
     });
   }
@@ -250,8 +253,8 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType, entityId] = fragment.split('/');
-    if (entityType === 'sourceData') {
-      const entity = this.visibleEntities$().find(e => e.id == entityId);
+    if (entityType === this.entityMetadata.name) {
+      const entity = this.visibleEntities().find(e => e.id == entityId);
       switch (action) {
         case 'add':
           this.dialogService.openDialog(DialogMode.ADD, undefined, this.sourceTypes);
@@ -300,23 +303,23 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
 
   handleFilterChange(event: FilterEvent){
-    this.filter$.set(event);
+    this.filter.set(event);
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
 
-    const sort: RbSort = {sortField: event.name, sortOrder: this.sort$()?.sortOrder === 'asc' ? 'desc' : 'asc'};
-    this.sort$.set(sort);
+    const sort: RbSort = {sortField: event.name, sortOrder: this.sort()?.sortOrder === 'asc' ? 'desc' : 'asc'};
+    this.sort.set(sort);
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {
@@ -325,14 +328,14 @@ export class SourceDatasPageComponent implements OnInit, OnDestroy {
 
   /** Selection Helper Methods */
   isAllSelected() {
-    return this.selection.selected.length === this.visibleEntities$().length;
+    return this.selection.selected.length === this.visibleEntities().length;
   }
 
   masterToggle() {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.visibleEntities$());
+      this.selection.select(...this.visibleEntities());
     }
   }
 

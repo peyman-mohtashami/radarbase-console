@@ -1,19 +1,19 @@
-<rb-details [name$]="ENTITY_NAME.sourceData"
-            [entity$]="entity$()"
-            [tableFields$]="tableFields$()"
-            [type$]="type$()"
-            [customTemplate$]="detailsTemplate" />
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate" />
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('sourceType') {
-      <rb-source-data-source-type [sourceType$]="entity$().sourceType"/>
+      <app-source-data-source-type [sourceType]="entity().sourceType"/>
     }
     @case ('processingState') {
-      <rb-source-data-processing-state [processingState$]="entity$().processingState"/>
+      <app-source-data-processing-state [processingState]="entity().processingState"/>
     }
     @default {
-      {{ entity$()[property.name] || '-' }}
+      {{ entity()[property.name] || '-' }}
     }
   }
 </ng-template>

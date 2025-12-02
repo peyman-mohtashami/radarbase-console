@@ -5,7 +5,8 @@ import {AppRole, AppUser, RadarRole, RadarUser} from "../models/user";
 import {Observable} from "rxjs";
 import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {DEFAULT_PAGE_SIZE} from '../../../consts/default-table-values';
+import {ROLES} from "../../../../shared/enums/roles";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -26,19 +27,19 @@ export class UserService {
 
   private toRadarModel(entity: AppUser): RadarUser {
     const roles = this.getRadarRoles(entity._roles);
-    return {...entity, _roles: undefined, langKey: undefined, roles, authorities: []};
+    return {...entity, _roles: null, langKey: null, roles, authorities: []};
   }
 
-  private getRadarRoles(appRoles: AppRole | undefined): RadarRole[] {
+  private getRadarRoles(appRoles: AppRole | null): RadarRole[] {
     if (!appRoles) return [];
     const roles: any[] = [];
     if (appRoles._sysAdmin) {
-      roles.push({authorityName: 'ROLE_SYS_ADMIN'});
+      roles.push({authorityName: ROLES.SYS_ADMIN});
     }
     if (appRoles._organizationAdmin) {
       appRoles._organizations?.forEach((organization: any) => {
         roles.push({
-          authorityName: 'ROLE_ORGANIZATION_ADMIN',
+          authorityName: ROLES.ORGANIZATION_ADMIN,
           organizationName: organization.name,
           organizationId: organization.id
         });
@@ -46,32 +47,38 @@ export class UserService {
     }
     if (appRoles._projectAdmin) {
       appRoles._projects?.forEach((project: any) => {
-        roles.push({authorityName: 'ROLE_PROJECT_ADMIN', projectName: project.projectName, projectId: project.id});
+        roles.push({authorityName: ROLES.PROJECT_ADMIN, projectName: project.projectName, projectId: project.id});
       })
     }
     return roles;
   }
 
-  private getAppRole(roles: RadarRole[] = []) {
-    return roles?.reduce((acc: AppRole, role: RadarRole) => {
+  private getAppRole(roles: RadarRole[] | null = []): AppRole {
+    const defaultAppRole: AppRole = {
+      _sysAdmin: null, _organizationAdmin: null, _projectAdmin: null, _organizations: null, _projects: null
+    };
+
+    if (roles === null) return defaultAppRole;
+
+    return roles.reduce((acc: AppRole, role: RadarRole) => {
       const authorityName = role.authorityName ?? role.authority.name;
-      if (authorityName === 'ROLE_SYS_ADMIN') {
+      if (authorityName === ROLES.SYS_ADMIN) {
         acc._sysAdmin = true;
-      } else if (authorityName === 'ROLE_ORGANIZATION_ADMIN') {
+      } else if (authorityName === ROLES.ORGANIZATION_ADMIN) {
         const organizationId = role.organizationId ?? role.organization.id;
         const organizationName = role.organizationName ?? role.organization.name;
         acc._organizationAdmin = true;
         acc._organizations = acc._organizations || [];
-        acc._organizations.push({ id: organizationId, name: organizationName });
-      } else if (authorityName === 'ROLE_PROJECT_ADMIN') {
+        acc._organizations.push({ id: organizationId, _name: organizationName });
+      } else if (authorityName === ROLES.PROJECT_ADMIN) {
         const projectId = role.projectId ?? role.project.id;
         const projectName = role.projectName ?? role.project.projectName;
         acc._projectAdmin = true;
         acc._projects = acc._projects || [];
-        acc._projects.push({id: projectId, name: projectName});
+        acc._projects.push({id: projectId, _name: projectName});
       }
       return acc;
-    }, {})
+    }, defaultAppRole);
   }
 
   getAll(): Observable<AppUser[]> {

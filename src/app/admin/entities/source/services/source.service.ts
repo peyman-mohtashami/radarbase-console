@@ -6,7 +6,7 @@ import {map, tap} from 'rxjs/operators';
 import {AppSource, RadarSource} from "../models/source";
 import {Params} from '@angular/router';
 import {AppProject} from '../../project/models/project';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
 
 @Injectable({ providedIn: 'root' })
 export class SourceService {

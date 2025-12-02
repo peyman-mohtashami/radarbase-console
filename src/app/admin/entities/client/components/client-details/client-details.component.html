@@ -1,41 +1,41 @@
-<rb-details [name$]="ENTITY_NAME.client"
-            [entity$]="entity$()"
-            [tableFields$]="tableFields$()"
-            [type$]="type$()"
-            [customTemplate$]="detailsTemplate"/>
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('dynamic_registration') {
-      @if (entity$().additionalInformation?.['dynamic_registration']) {
+      @if (entity().additionalInformation['dynamic_registration']) {
         <span class="text-green-700"><mat-icon>check</mat-icon></span>
       } @else {
         <span class="text-red-700"><mat-icon>clear</mat-icon></span>
       }
     }
     @case ('resourceIds') {
-      <rb-client-tags [tags]="entity$().resourceIds" colorClass="bg-primary/10 text-primary"/>
+      <app-client-tags [tags]="entity().resourceIds" colorClass="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark"/>
     }
     @case ('authorizedGrantTypes') {
-      <rb-client-tags [tags]="entity$().authorizedGrantTypes" colorClass="bg-secondary/10 text-primary"/>
+      <app-client-tags [tags]="entity().authorizedGrantTypes" colorClass="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark"/>
     }
     @case ('scope') {
-      <rb-client-tags [tags]="entity$().scope" colorClass="bg-tertiary/10 text-tertiary"/>
+      <app-client-tags [tags]="entity().scope" colorClass="bg-tertiary/10 text-tertiary dark:bg-tertiary-dark/10 dark:text-tertiary-dark"/>
     }
     @case ('autoApproveScopes') {
-      <rb-client-tags [tags]="entity$().autoApproveScopes" colorClass="bg-secondary/10 text-primary"/>
+      <app-client-tags [tags]="entity().autoApproveScopes" colorClass="bg-secondary/10 text-primary dark:bg-secondary-dark/10 dark:text-primary-dark"/>
     }
     @case ('accessTokenValiditySeconds') {
-      {{ entity$().accessTokenValiditySeconds | dhms }}
+      {{ entity().accessTokenValiditySeconds | dhms }}
     }
     @case ('refreshTokenValiditySeconds') {
-      {{ entity$().refreshTokenValiditySeconds | dhms }}
+      {{ entity().refreshTokenValiditySeconds | dhms }}
     }
     @case ('registeredRedirectUri') {
-      <rb-client-tags [tags]="entity$().registeredRedirectUri" colorClass="bg-neutral-100 text-neutral-700"/>
+      <app-client-tags [tags]="entity().registeredRedirectUri" colorClass="bg-neutral-100 text-neutral-700"/>
     }
     @default {
-      {{ entity$()[property.name] || '-' }}
+      {{ entity()[property.name] || '-' }}
     }
   }
 </ng-template>

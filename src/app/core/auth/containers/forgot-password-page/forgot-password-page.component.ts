@@ -1,10 +1,9 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 import {Validator, ValidatorError} from '../../../../shared/utils/validators';
 import {ProfileService} from '../../services/profile.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
@@ -15,9 +14,11 @@ import {RouterLink} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
+import {HttpErrorResponse} from "@angular/common/http";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'rb-forgot-password-page',
+  selector: 'app-forgot-password-page',
   templateUrl: './forgot-password-page.component.html',
   imports: [
     AuthCardComponent,
@@ -33,7 +34,7 @@ import {ErrorMessageComponent} from "../../../error/components/message/error-mes
     ErrorMessageComponent
   ],
 })
-export class ForgotPasswordPageComponent implements OnInit, OnDestroy {
+export class ForgotPasswordPageComponent {
   protected readonly ValidatorError = ValidatorError;
 
   private profileService = inject(ProfileService)
@@ -42,22 +43,22 @@ export class ForgotPasswordPageComponent implements OnInit, OnDestroy {
     email: new FormControl("", [Validator.requiredValidator, Validator.emailValidator]),
   })
 
-  isLoading = false;
-  error = false;
-  success = false;
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
 
-  _destroy$: Subject<void> = new Subject<void>();
+  // _destroy$: Subject<void> = new Subject<void>();
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
 
-  ngOnInit(): void {
-    this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.error = false;
-      this.success = false;
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges()) {
+        this.error.set(null);
+      }
     });
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 
   send() {
@@ -66,16 +67,14 @@ export class ForgotPasswordPageComponent implements OnInit, OnDestroy {
     if (email) {
       this.profileService.requestResetPassword(email).subscribe({
         next: () => {
-          console.log('Class: ForgotPasswordPageComponent, Function: next, Line 69 ',);
-          this.success = true;
-          this.error = false;
-          this.isLoading = false;
+          this.success.set(true);
+          this.error.set(null);
+          this.loading.set(false);
         },
         error: (error) => {
-          console.log('Class: ForgotPasswordPageComponent, Function: error, Line 75 ',);
-          this.error = true;
-          this.success = false;
-          this.isLoading = false;
+          this.error.set(error);
+          this.success.set(false);
+          this.loading.set(false);
           throw error
         },
       });

@@ -1,10 +1,10 @@
-@if (sourcesData$()) {
+@if (sourcesData()) {
   <div class="flex flex-wrap gap-1 py-1">
-    @for (sourceData of sourcesData$(); track sourceData.id) {
-      <rb-tag class="bg-primary/10 text-primary"
+    @for (sourceData of sourcesData(); track sourceData.id) {
+      <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark"
               [link$]="['/admin/source-data', sourceData['sourceDataName']]">
         {{sourceData["sourceDataName"]}}
-      </rb-tag>
+      </app-tag>
     }
   </div>
 } @else {

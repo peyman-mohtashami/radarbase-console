@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppProject, RadarProject} from "../models/project";
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
@@ -16,7 +16,7 @@ export class ProjectService {
   }
 
   private toRadarModel(entity: AppProject): RadarProject {
-    return { ...entity, organizationName: undefined };
+    return entity;
   }
 
   getAll(organizationName?: string): Observable<AppProject[]> {

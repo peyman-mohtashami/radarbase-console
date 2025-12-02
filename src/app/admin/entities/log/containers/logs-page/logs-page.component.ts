@@ -4,11 +4,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {TABLE_ANIMATION} from '../../../../animation';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
-import {TableElement} from '../../../../models/table.model';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import {RbSort, TableElement} from '../../../../models/table.model';
+import {ROLES} from "../../../../../shared/enums/roles";
 import {LogConfigService} from '../../services/log-config.service';
 import {AppLog} from '../../models/log';
 import {DetailType} from '../../../../enums/detail-type';
@@ -18,11 +17,16 @@ import {
   DataTableFilterComponent,
   FilterEvent
 } from '../../../../components/data-table-filter/data-table-filter.component';
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_FILTERS,
+  MIN_ENTITIES_FOR_PAGINATION,
+  PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'rb-logs-page',
+  selector: 'app-logs-page',
   templateUrl: './logs-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     EntitiesPageHeaderComponent,
     DataTableFilterComponent,
@@ -35,30 +39,29 @@ import {
 })
 export class LogsPageComponent implements OnInit, OnDestroy {
   protected readonly DetailType = DetailType;
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private activatedRoute = inject(ActivatedRoute);
-  private configService = inject(LogConfigService);
+  protected configService = inject(LogConfigService);
 
+  entityMetadata = this.configService.getEntityMetadata();
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   configFields = this.configService.getFormFields();
 
-  entities$ = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
-  processedEntities$ = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
-  visibleEntities$ = signal<AppLog[]>([]);
+  entities = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
+  processedEntities = signal<AppLog[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppLog[]>([]);
 
-  page$: WritableSignal<PageEvent>;
-  sort$: WritableSignal<RbSort>;
-  filter$: WritableSignal<FilterEvent>;
+  page: WritableSignal<PageEvent>;
+  sort: WritableSignal<RbSort>;
+  filter: WritableSignal<FilterEvent>;
 
-  loading$ = signal(true);
-  extensionClass$ = signal('hidden');
+  loading = signal(true);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -68,20 +71,20 @@ export class LogsPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     const { pageSize, pageIndex, sortField, sortOrder } = this.activatedRoute.snapshot.queryParams;
-    this.page$ = signal({
+    this.page = signal({
       pageIndex: pageIndex ?? 0,
-      pageSize: pageSize ?? this.DEFAULT_PAGE_SIZE,
+      pageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       length: 0,
     });
-    this.sort$ = signal({sortField: sortField ?? 'id', sortOrder: sortOrder ?? 'desc'});
-    this.filter$ = signal<FilterEvent>(
+    this.sort = signal({sortField: sortField ?? 'id', sortOrder: sortOrder ?? 'desc'});
+    this.filter = signal<FilterEvent>(
       this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
         return map;
       }, {})
     );
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
@@ -144,8 +147,8 @@ export class LogsPageComponent implements OnInit, OnDestroy {
 
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {
@@ -153,16 +156,16 @@ export class LogsPageComponent implements OnInit, OnDestroy {
   }
 
   switchFilter(event: FilterEvent){
-    this.loading$.set(true);
-    this.filter$.set(event);
-    this.page$.set({...this.page$(), pageIndex: 0});
+    this.loading.set(true);
+    this.filter.set(event);
+    this.page.set({...this.page(), pageIndex: 0});
     this.applyFilter();
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
-    const currentSort = this.sort$();
-    this.sort$.set({
+    const currentSort = this.sort();
+    this.sort.set({
       sortField: event.name,
       sortOrder: currentSort?.sortOrder === 'asc' ? 'desc' : 'asc'
     });
@@ -170,42 +173,42 @@ export class LogsPageComponent implements OnInit, OnDestroy {
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
     this.applySortAndPagination();
   }
 
   private applySortAndPagination() {
     const sortedEntities = this.applySorting();
     const pagedEntities = this.applyPagination(sortedEntities);
-    this.visibleEntities$.set(pagedEntities);
-    this.loading$.set(false);
+    this.visibleEntities.set(pagedEntities);
+    this.loading.set(false);
   }
 
   private applySorting(): AppLog[] {
-    const {sortField, sortOrder} = this.sort$();
+    const {sortField, sortOrder} = this.sort();
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    return this.processedEntities$().sort((a, b) => {
+    return this.processedEntities().sort((a, b) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
   }
 
   private applyPagination(entities: AppLog[]): AppLog[] {
-    const { pageSize, pageIndex } = this.page$();
+    const { pageSize, pageIndex } = this.page();
     const startIndex = pageSize * pageIndex;
     return entities.slice(startIndex, startIndex + pageSize);
   }
 
   applyFilter() {
     const filteredEntities = this.getFilteredEntities();
-    this.processedEntities$.set(filteredEntities);
+    this.processedEntities.set(filteredEntities);
     this.applySortAndPagination();
   }
 
   private getFilteredEntities(): AppLog[] {
-    let filteredEntities = [...this.entities$()];
+    let filteredEntities = [...this.entities()];
 
-    Object.entries(this.filter$()).forEach(([key, value]) => {
+    Object.entries(this.filter()).forEach(([key, value]) => {
       if (!value) return;
       filteredEntities = filteredEntities.filter((entity) =>
         entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())

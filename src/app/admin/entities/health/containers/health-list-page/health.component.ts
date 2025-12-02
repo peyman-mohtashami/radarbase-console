@@ -2,7 +2,6 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import { HttpErrorResponse } from "@angular/common/http";
 
 import { HealthService } from '../../services/health.service';
-import { ENTITY_NAME } from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {KeyValuePipe} from "@angular/common";
@@ -19,7 +18,7 @@ import {DetailElementComponent} from '../../../../components/detail-element/deta
 import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
 
 @Component({
-  selector: 'rb-health-check',
+  selector: 'app-health-check',
   templateUrl: './health.component.html',
   imports: [
     TranslatePipe,
@@ -36,7 +35,6 @@ import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
   ]
 })
 export class HealthCheckComponent implements OnInit {
-  protected readonly ENTITY_NAME = ENTITY_NAME;
 
   private healthService = inject(HealthService);
 

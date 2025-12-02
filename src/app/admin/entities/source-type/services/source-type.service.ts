@@ -1,12 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-
 import {AppSourceType, RadarSourceType} from "../models/source-type";
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class SourceTypeService {
   private http = inject(HttpClient);
 
@@ -21,7 +19,7 @@ export class SourceTypeService {
   }
 
   toRadarModel(entity: AppSourceType): RadarSourceType {
-    return { ...entity };
+    return entity;
   }
 
   getAll(): Observable<AppSourceType[]> {
@@ -31,6 +29,11 @@ export class SourceTypeService {
           entities.map((entity) => this.toAppModel(entity))
         )
       );
+  }
+
+  getByKey(key: number | string): Observable<AppSourceType> {
+    return this.http.get<RadarSourceType>(`${this.resourceUrl}/${key}`)//;//encodeURIComponent(key)}`)
+      .pipe(map((entity) => this.toAppModel(entity)));
   }
 
   add(entity: AppSourceType): Observable<AppSourceType> {
@@ -44,8 +47,7 @@ export class SourceTypeService {
   }
 
   delete(entity: AppSourceType): Observable<void> {
-    return this.http.delete<void>(
-      `${this.resourceUrl}/${entity.producer}/${entity.model}/${entity.catalogVersion}`
+    return this.http.delete<void>(`${this.resourceUrl}/${entity._name}`
     );
   }
 }

@@ -1,41 +1,41 @@
 import {inject, makeEnvironmentProviders, provideAppInitializer} from "@angular/core";
-import {ConfigService} from "./config/services/config.service";
 import {ThemeService} from "./theme/services/theme.service";
 import {firstValueFrom} from "rxjs";
-import {provideStore} from "@ngrx/store";
-import {provideEffects} from "@ngrx/effects";
 import {provideAuth} from "./auth/provideAuth";
-import {uiReducer} from "./store/reducers";
-import {UiEffects} from "./store/ui.effects";
-import {provideConfig} from "./config/provideConfig";
 import {provideError} from "./error/provideError";
 import {provideLocale} from "./locale/provideLocale";
+import {provideTranslateService, TranslateLoader} from "@ngx-translate/core";
+import {LocaleService} from "./locale/services/locale.service";
+import {RuntimeConfigTranslateLoader} from "./locale/runtime-config-translate.loader";
+import {AppCustomizationService} from "./app-customization/services/app-customization.service";
 
-function configInitializerFn(configService: ConfigService, themeService: ThemeService) {
+
+function configInitializerFn(customizationService: AppCustomizationService, themeService: ThemeService, localeService: LocaleService) {
   return async () => {
-    await firstValueFrom(configService.init());
-    await firstValueFrom(themeService.init());
+    await firstValueFrom(customizationService.init());
+    themeService.init();
+    localeService.init();
   };
 }
 
 export function provideCore() {
   return makeEnvironmentProviders([
-    provideStore({}),
-    provideEffects([]),
     provideAuth(),
-    provideConfig(),
     provideError(),
     provideLocale(),
+    provideTranslateService({
+      lang: 'en',
+      fallbackLang: 'en'
+    }),
+    { provide: TranslateLoader, useClass: RuntimeConfigTranslateLoader },
 
     provideAppInitializer(() => {
       const initializerFn = configInitializerFn(
-        inject(ConfigService),
-        inject(ThemeService)
+        inject(AppCustomizationService),
+        inject(ThemeService),
+        inject(LocaleService)
       );
       return initializerFn();
     }),
-
-    provideStore({ ui: uiReducer }),
-    provideEffects([UiEffects]),
   ]);
 }

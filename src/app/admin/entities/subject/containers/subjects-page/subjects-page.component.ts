@@ -4,11 +4,9 @@ import {takeUntil} from "rxjs/operators";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import {TABLE_ANIMATION} from '../../../../animation';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
-import {TableElement} from '../../../../models/table.model';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import {RbSort, TableElement} from '../../../../models/table.model';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppSourceType} from '../../../source-type/models/source-type';
@@ -26,11 +24,16 @@ import {
   FilterEvent
 } from '../../../../components/data-table-filter/data-table-filter.component';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ROLES} from "../../../../../shared/enums/roles";
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_PAGINATION,
+  PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'rb-subjects-page',
+  selector: 'app-subjects-page',
   templateUrl: './subjects-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     DataTableFilterComponent,
     EntitiesPageHeaderComponent,
@@ -44,61 +47,58 @@ import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-
   ]
 })
 export class SubjectsPageComponent implements OnInit, OnDestroy {
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   public entityService = inject(SubjectService);
-  private configService = inject(SubjectConfigService);
+  protected configService = inject(SubjectConfigService);
   public dialogService = inject(SubjectDialogService);
 
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   fields = this.configService.getFormFields();
 
-  visibleEntities$ = signal<AppSubject[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['entities']);
 
   sourceTypes: AppSourceType[] = [];
 
   project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
   groups: AppGroup[] = this.activatedRoute.snapshot.data['groups'];
 
-  page$ = signal<PageEvent>({
+  page = signal<PageEvent>({
     pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
-    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? this.DEFAULT_PAGE_SIZE,
+    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? DEFAULT_PAGE_SIZE,
     length: 0,
   });
-  sort$ = signal<RbSort>({
+  sort = signal<RbSort>({
     sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
     sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
   });
-  filter$ = signal<FilterEvent>(
+  filter = signal<FilterEvent>(
     this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
       map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
       return map;
     }, {})
   )
 
-  previousParamsState$ = signal<{
+  previousParamsState = signal<{
     page: PageEvent;
     sort: RbSort;
     filter: FilterEvent;
   }>({
-    page: this.page$(),
-    sort: this.sort$(),
-    filter: this.filter$(),
+    page: this.page(),
+    sort: this.sort(),
+    filter: this.filter(),
   });
 
-  paramsChanged$ = computed(() => {
-    const currentPage = this.page$();
-    const currentSort = this.sort$();
-    const currentFilter = this.filter$();
-    const previousState = this.previousParamsState$();
+  paramsChanged = computed(() => {
+    const currentPage = this.page();
+    const currentSort = this.sort();
+    const currentFilter = this.filter();
+    const previousState = this.previousParamsState();
 
     return (
       currentPage.pageIndex !== previousState.page.pageIndex ||
@@ -109,8 +109,8 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
     );
   });
 
-  loading$ = signal(false);
-  extensionClass$ = signal('hidden');
+  loading = signal(false);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -128,25 +128,25 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.paramsChanged$()) {
-        this.previousParamsState$.set({
-          page: this.page$(),
-          sort: this.sort$(),
-          filter: this.filter$(),
+      if (this.paramsChanged()) {
+        this.previousParamsState.set({
+          page: this.page(),
+          sort: this.sort(),
+          filter: this.filter(),
         });
 
-        this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+        this.loadEntities(this.page(), this.sort(), this.filter()).subscribe({
           next: value => {
             this.selection.clear();
-            this.loading$.set(false);
-            this.visibleEntities$.set(value);
+            this.loading.set(false);
+            this.visibleEntities.set(value);
           }
         })
       }
     });
     this.initializeDialogEffect();
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
 
@@ -232,30 +232,30 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
         break;
     }
     this.removeFragmentUrl();
-    this.loading$.set(false);
+    this.loading.set(false);
     this.selection.clear();
   }
 
   private addEntityToView(entity?: AppSubject) {
     if (entity) {
-      const visibleEntities = untracked(this.visibleEntities$);
-      this.visibleEntities$.set([entity, ...visibleEntities]);
+      const visibleEntities = untracked(this.visibleEntities);
+      this.visibleEntities.set([entity, ...visibleEntities]);
     }
   }
 
   private updateEntityInView(entity?: AppSubject) {
     if (entity) {
-      const updatedEntities = untracked(this.visibleEntities$).map(e => e.id === entity.id ? entity : e);
-      this.visibleEntities$.set(updatedEntities);
+      const updatedEntities = untracked(this.visibleEntities).map(e => e.id === entity.id ? entity : e);
+      this.visibleEntities.set(updatedEntities);
     }
   }
 
   private refreshEntities() {
-    this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+    this.loadEntities(this.page(), this.sort(), this.filter()).subscribe({
       next: value => {
         this.selection.clear();
-        this.loading$.set(false);
-        this.visibleEntities$.set(value);
+        this.loading.set(false);
+        this.visibleEntities.set(value);
       }
     });
   }
@@ -279,7 +279,7 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
   private processUrlFragment(fragment: string) {
     const [_, action, entityType, entityId] = fragment.split('/');
     if (entityType === 'subject') {
-      const entity = this.visibleEntities$().find(e => e.id == entityId);
+      const entity = this.visibleEntities().find(e => e.id == entityId);
       const mode = this.actionMapper[action];
       this.dialogService.openDialog(mode, entity, this.project);
     }
@@ -290,7 +290,8 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
     if (!this.project) throw new Error('Project not found');
     this.sourceTypes = this.project.sourceTypes?.map(s => ({
       ...s,
-      _name: `${s.producer}/${s.model}/${s.catalogVersion}`
+      _name: `${s.producer}/${s.model}/${s.catalogVersion}`,
+      _search: `${s.producer}/${s.model}/${s.catalogVersion}`
     })) ?? [];
     this.handleDialogUrlFragment();
   }
@@ -325,23 +326,23 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
 
 
   handleFilterChange(event: FilterEvent) {
-    this.filter$.set(event);
+    this.filter.set(event);
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
 
-    const sort: RbSort = {sortField: event.name, sortOrder: this.sort$()?.sortOrder === 'asc' ? 'desc' : 'asc'};
-    this.sort$.set(sort);
+    const sort: RbSort = {sortField: event.name, sortOrder: this.sort()?.sortOrder === 'asc' ? 'desc' : 'asc'};
+    this.sort.set(sort);
   }
 
   handleActiveQueryChange(event: { page: PageEvent, sort: RbSort }) {
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {
@@ -350,14 +351,14 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
 
   /** Selection Helper Methods */
   isAllSelected() {
-    return this.selection.selected.length === this.visibleEntities$().length;
+    return this.selection.selected.length === this.visibleEntities().length;
   }
 
   masterToggle() {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.visibleEntities$());
+      this.selection.select(...this.visibleEntities());
     }
   }
 
@@ -366,6 +367,8 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
       ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
       : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   }
+
+
 }
 
 

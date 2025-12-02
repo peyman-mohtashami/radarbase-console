@@ -7,7 +7,6 @@ import {Observable, of} from 'rxjs';
 import {AppOrganization} from '../models/organization';
 import {OrganizationService} from './organization.service';
 import {OrganizationDialogComponent} from '../containers/organization-dialog/organization-dialog.component';
-import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -21,7 +20,7 @@ export class OrganizationDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode, entity: AppOrganization | undefined, entities: AppOrganization[]) {
     if (mode !== DialogMode.ADD && !entity) {
@@ -31,18 +30,25 @@ export class OrganizationDialogService {
 
     const dialogRef = this.createDialogRef(mode, entity, entities);
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppOrganization }) => {
-        this.processDialogAction(value.action, value.entity).subscribe({
-          next: (res) => {
-            const entity = res ?? value.entity;
-            this.dialogUpdateEvent$.set({mode, entity: {...entity, projects: value.entity.projects}})
+    const dialogActionSubscription =
+      dialogRef.componentInstance.dialogActionEvent.subscribe(
+        (value) => {
+          const _entity = value.entity;
+          const _action = value.action;
+          if (!_entity) {
             dialogRef.close();
-          },
-          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-        });
-      }
-    });
+            return;
+          }
+          this.processDialogAction(_action, _entity).subscribe({
+            next: (res) => {
+              const entity = res ?? _entity;
+              this.dialogUpdateEvent.set({mode, entity: {...entity, projects: entity.projects}})
+              dialogRef.close();
+            },
+            error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+          });
+        }
+      );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();

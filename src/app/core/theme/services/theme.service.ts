@@ -1,83 +1,36 @@
-import {inject, Injectable} from "@angular/core";
+import {inject, Injectable, signal} from "@angular/core";
 import { DOCUMENT } from "@angular/common";
-import {Observable, of, tap} from "rxjs";
-import {catchError, map, take} from "rxjs/operators";
 import tinycolor from "tinycolor2";
 
 import {ThemeConfig} from "../models/theme.model";
-import { DEFAULT_THEME } from "../consts/default-theme.const";
-import {Store} from "@ngrx/store";
-import {isLightTheme} from "../../store/ui.selectors";
-import {themeConfig} from "../../config/store/config.selectors";
+import {AppCustomizationService} from "../../app-customization/services/app-customization.service";
+import {DEFAULT_APP_CUSTOMIZATION} from "../../app-customization/consts/default-app-customization.const";
 
 @Injectable({providedIn: 'root'})
 export class ThemeService {
-  private readonly store = inject(Store);
+  private readonly appCustomizationService  = inject(AppCustomizationService);
   private readonly document = inject(DOCUMENT);
 
-  /**
-   * Initializes the theme on application startup.
-   * Sets light/dark class and CSS variables.
-   */
-  init(): Observable<ThemeConfig> {
-    this.store.select(isLightTheme).pipe(take(1)).subscribe(isLight => {
-      this.document.documentElement.classList.toggle('dark', !isLight);
-    });
+  private readonly _isLightTheme = signal<boolean>(true);
+  readonly isLightTheme = this._isLightTheme.asReadonly();
 
-    return this.store.select(themeConfig).pipe(
-      take(1),
-      map(themeConfig => this.validateTheme(themeConfig)),
-      catchError(() => of(DEFAULT_THEME)),
-      tap((theme) => setTheme(theme)),
-    )
+  init(): void {
+    const isLight = localStorage.getItem('theme') !== 'dark';
+    this._isLightTheme.set(isLight);
+    this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
+
+    const themeCustomization = this.appCustomizationService.themeCustomization();
+    const validatedThemeCustomization = validateTheme(themeCustomization);
+    setTheme(validatedThemeCustomization);
   }
 
-  /**
-   * Validates the given theme configuration, falling back to defaults for invalid colors.
-   * @returns Validated theme configuration
-   * @param themeConfig
-   */
-  protected validateTheme(themeConfig: ThemeConfig): ThemeConfig {
-    const lightPrimary = tinycolor(themeConfig?.light?.["primary"]).isValid() ? themeConfig?.light?.["primary"] : DEFAULT_THEME.light["primary"]
-    const lightOnPrimary = tinycolor(themeConfig?.light?.["on-primary"]).isValid() ? themeConfig?.light?.["on-primary"] : DEFAULT_THEME.light["on-primary"]
-    const lightAccent = tinycolor(themeConfig?.light?.["accent"]).isValid() ? themeConfig?.light?.["accent"] : DEFAULT_THEME.light["accent"];
-    const lightOnAccent = tinycolor(themeConfig?.light?.["on-accent"]).isValid() ? themeConfig?.light?.["on-accent"] : DEFAULT_THEME.light["on-accent"];
-    const lightTertiary = tinycolor(themeConfig?.light?.["tertiary"]).isValid() ? themeConfig?.light?.["tertiary"] : DEFAULT_THEME.light["tertiary"];
-    const lightOnTertiary = tinycolor(themeConfig?.light?.["on-tertiary"]).isValid() ? themeConfig?.light?.["on-tertiary"] : DEFAULT_THEME.light["on-tertiary"];
-
-    const darkPrimary = tinycolor(themeConfig?.dark?.["primary"]).isValid() ? themeConfig?.dark?.["primary"] : DEFAULT_THEME.dark["primary"];
-    const darkOnPrimary = tinycolor(themeConfig?.dark?.["on-primary"]).isValid() ? themeConfig?.dark?.["on-primary"] : DEFAULT_THEME.dark["on-primary"];
-    const darkAccent = tinycolor(themeConfig?.dark?.["accent"]).isValid() ? themeConfig?.dark?.["accent"] : DEFAULT_THEME.dark["accent"];
-    const darkOnAccent = tinycolor(themeConfig?.dark?.["on-accent"]).isValid() ? themeConfig?.dark?.["on-accent"] : DEFAULT_THEME.dark["on-accent"];
-    const darkTertiary = tinycolor(themeConfig?.dark?.["tertiary"]).isValid() ? themeConfig?.dark?.["tertiary"] : DEFAULT_THEME.dark["tertiary"];
-    const darkOnTertiary = tinycolor(themeConfig?.dark?.["on-tertiary"]).isValid() ? themeConfig?.dark?.["on-tertiary"] : DEFAULT_THEME.dark["on-tertiary"];
-
-    return {
-      light: {
-        "primary": lightPrimary,
-        "on-primary": lightOnPrimary,
-        "accent": lightAccent,
-        "on-accent": lightOnAccent,
-        "tertiary": lightTertiary,
-        "on-tertiary": lightOnTertiary,
-      },
-      dark: {
-        "primary": darkPrimary,
-        "on-primary": darkOnPrimary,
-        "accent": darkAccent,
-        "on-accent": darkOnAccent,
-        "tertiary": darkTertiary,
-        "on-tertiary": darkOnTertiary,
-      }
-    };
+  toggleTheme(): void {
+    this._isLightTheme.set(!this.isLightTheme());
+    localStorage.setItem('theme', this.isLightTheme() ? 'light' : 'dark');
+    this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
   }
 }
 
-/**
- * Applies a theme configuration to the root document element
- * via CSS custom properties.
- * @param themeConfig The validated theme config
- */
 export function setTheme(themeConfig: ThemeConfig): void {
   const root = document.documentElement;
 
@@ -92,11 +45,6 @@ export function setTheme(themeConfig: ThemeConfig): void {
   });
 }
 
-/**
- * Converts a hex color string to an RGB string, e.g. '#ff0000' → '255, 0, 0'.
- * @param hex Hexadecimal color string
- * @returns RGB string
- */
 export function hexToRgb(hex: string): string {
   hex = hex.replace(/^#/, '');
 
@@ -111,4 +59,33 @@ export function hexToRgb(hex: string): string {
   const b = num & 255;
 
   return `${r}, ${g}, ${b}`;
+}
+
+
+export function validateTheme(themeConfig: ThemeConfig, defaultTheme: ThemeConfig = DEFAULT_APP_CUSTOMIZATION.theme): ThemeConfig {
+  const {light, dark} = themeConfig;
+  const {light: defaultLight, dark: defaultDark} = defaultTheme;
+
+  return {
+    light: {
+      "primary": getValidateColor(light.primary, defaultLight.primary),
+      "on-primary": getValidateColor(light["on-primary"], defaultLight["on-primary"]),
+      "accent": getValidateColor(light.accent, defaultLight.accent),
+      "on-accent": getValidateColor(light["on-accent"], defaultLight["on-accent"]),
+      "tertiary": getValidateColor(light.tertiary, defaultLight.tertiary),
+      "on-tertiary": getValidateColor(light["on-tertiary"], defaultLight["on-tertiary"]),
+    },
+    dark: {
+      "primary": getValidateColor(dark.primary, defaultDark.primary),
+      "on-primary": getValidateColor(dark["on-primary"], defaultDark["on-primary"]),
+      "accent": getValidateColor(dark.accent, defaultDark.accent),
+      "on-accent": getValidateColor(dark["on-accent"], defaultDark["on-accent"]),
+      "tertiary": getValidateColor(dark.tertiary, defaultDark.tertiary),
+      "on-tertiary": getValidateColor(dark["on-tertiary"], defaultDark["on-tertiary"]),
+    }
+  };
+}
+
+export function getValidateColor(color: string | undefined, defaultColor: string | undefined = '#000000') {
+  return color && tinycolor(color).isValid() ? color : defaultColor;
 }

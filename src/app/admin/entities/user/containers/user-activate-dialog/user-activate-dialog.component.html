@@ -15,10 +15,10 @@
   </div>
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ (error$()?.error.errorCode | translate) ?? (error$()?.error?.message | translate) }}
+    {{ (error()?.error.errorCode | translate) ?? (error()?.error?.message | translate) }}
   </div>
 }
 
@@ -34,11 +34,11 @@
 
   <div class='ml-auto justify-end flex items-center gap-2'>
     <button (click)='onAction()'
-            [disabled]='loading$()'
+            [disabled]='loading()'
             mat-raised-button
             color="primary"
             type="button">
-      @if (loading$()) {
+      @if (loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
       {{ "ADMIN.user.activate.send" | translate }}

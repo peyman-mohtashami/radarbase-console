@@ -4,7 +4,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {HttpServerRequests} from '../../../../../shared/models/radar-metrics.model';
 
 @Component({
-  selector: 'rb-metrics-request',
+  selector: 'app-metrics-request',
   templateUrl: './metrics-request.component.html',
   imports: [
     MatProgressBar,

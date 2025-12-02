@@ -9,11 +9,6 @@ import {
 } from "@angular/core";
 import {JwtModule} from "@auth0/angular-jwt";
 import {StorageService} from "../storage/services/storage.service";
-import {provideState} from "@ngrx/store";
-import {authReducer} from "./store/reducers";
-import {provideEffects} from "@ngrx/effects";
-import {AuthEffects} from "./store/auth.effects";
-import {ManagementPortalAuthService} from "./services/management-portal-auth.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {ServerErrorInterceptor} from "./interceptors/server-error.interceptor";
@@ -31,11 +26,6 @@ export function provideAuth(): EnvironmentProviders {
     importProvidersFrom(JwtModule.forRoot({
       config: { tokenGetter: StorageService.getAccessToken },
     })),
-    provideState('auth', authReducer),
-    provideEffects([AuthEffects]),
-
-    { provide: AuthService, useClass: ManagementPortalAuthService },
-
     provideAppInitializer(() => {
       const initializer = authInitializerFn(inject(AuthService));
       return initializer();

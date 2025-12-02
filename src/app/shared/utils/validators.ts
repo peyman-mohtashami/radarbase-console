@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 // export const requiredValidator = Validators.required;
 // export const emailValidator = Validators.email;
@@ -8,8 +8,13 @@ import { Validators } from '@angular/forms';
 // export const normalTextValidator = Validators.pattern(/^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/)
 // // export const longTextValidator = Validators.pattern(/^[a-zA-Z0-9_]+(?:\W+[a-zA-Z0-9_]+)*\W*$/)
 // export const longTextValidator = Validators.pattern(/^.{1,255}$/)
+// export const requiredNumber: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+//   const v = control.value;
+//   return typeof v !== 'number' || !Number.isFinite(v) ? { required: true } : null;
+// };
 
 export const Validator = {
+  // requiredNumber: requiredNumber,
   requiredValidator: Validators.required,
   emailValidator: Validators.email,
   stringIdValidator: Validators.pattern(
@@ -29,7 +34,7 @@ export const ValidatorHint = {
   requiredValidator: '',
   emailValidator: 'Enter a valid email.',
   stringIdValidator:
-    'Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)',
+    'Enter a valid string (Uppercase, lowercase and digits, min 2 max 50)',
   urlValidator: 'Enter a valid URL',
   // normalTextValidator:
   //   'Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)',
@@ -49,4 +54,5 @@ export const ValidatorError = {
   // normalTextValidator: '',
   // longTextValidator: 'Enter a valid string (Uppercase, lowercase and digits, min 1 max 256)'
   longTextValidator: '',
+  duplicateValidator: 'ADMIN.ValidatorError.duplicateValidator',
 };

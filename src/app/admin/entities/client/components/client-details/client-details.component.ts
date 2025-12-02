@@ -1,17 +1,16 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 
 import { AppClient } from "../../models/client";
 import {ClientTagsComponent} from "../client-resource-ids/client-tags.component";
 import {MatIcon} from "@angular/material/icon";
 import {DialogMode} from "../../../../enums/dialog";
 import {DetailType} from "../../../../enums/detail-type";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {DetailsComponent} from "../../../../components/details/details.component";
-import {TableElement} from '../../../../models/table.model';
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
+import {ClientConfigService} from "../../services/client-config.service";
 
 @Component({
-  selector: 'rb-client-details',
+  selector: 'app-client-details',
   templateUrl: './client-details.component.html',
   imports: [
     MatIcon,
@@ -22,10 +21,10 @@ import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 })
 export class ClientDetailsComponent {
   protected readonly DetailType = DetailType;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
 
-  entity$ = input.required<AppClient>();
-  mode$ = input<DialogMode>();
-  type$ = input<DetailType>();
-  tableFields$ = input.required<TableElement[]>();
+  protected configService = inject(ClientConfigService);
+
+  entity = input.required<AppClient>();
+  dialogMode = input<DialogMode>();
+  detailType = input<DetailType>();
 }

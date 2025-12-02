@@ -1,12 +1,12 @@
-@switch (projectStatus$()) {
+@switch (projectStatus()) {
   @case (ProjectStatus.PLANNING) {
-    <rb-tag class="bg-secondary text-white">{{ projectStatus$() }}</rb-tag>
+    <app-tag class="bg-secondary dark:bg-secondary-dark text-white dark:text-black">{{ projectStatus() }}</app-tag>
   }
   @case (ProjectStatus.ONGOING) {
-    <rb-tag class="bg-tertiary text-white">{{ projectStatus$() }}</rb-tag>
+    <app-tag class="bg-tertiary dark:bg-tertiary-dark text-white dark:text-black">{{ projectStatus() }}</app-tag>
   }
   @case (ProjectStatus.ENDED) {
-    <rb-tag class="bg-gray-200 text-gray-800">{{ projectStatus$() }}</rb-tag>
+    <app-tag class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100">{{ projectStatus() }}</app-tag>
   }
   @default {
   }

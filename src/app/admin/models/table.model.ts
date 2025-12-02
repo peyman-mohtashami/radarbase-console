@@ -1,4 +1,6 @@
 import { FormFieldType } from './dialog.model';
+import {PageEvent} from "@angular/material/paginator";
+import {DialogMode} from "../enums/dialog";
 
 export interface FilterItem {
   name: string;
@@ -9,12 +11,6 @@ export interface FilterItem {
   type: FormFieldType;
   options?: { value: string | boolean | number; label: string }[];
 }
-//
-// export enum TableType {
-//   'GET_ALL',
-//   'GET_WITH_QUERY',
-//   'GET_ALL_FROM_STORE',
-// }
 
 export interface TableElement {
   name: string;
@@ -26,5 +22,22 @@ export interface TableElement {
   editable?: boolean;
   showInSummary?: boolean;
   showInDelete?: boolean; //!
+}
+
+export type RbSortOrder = 'asc' | 'desc' | '';
+
+export interface RbSort {
+  sortField: string;
+  sortOrder: RbSortOrder;
+}
+
+export interface RbPageSortEvent {
+  page: PageEvent;
+  sort: RbSort;
+}
+
+export interface DialogQuery {
+  mode: DialogMode;
+  id?: string;
 }
 

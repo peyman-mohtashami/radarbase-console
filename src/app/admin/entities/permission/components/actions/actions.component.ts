@@ -4,16 +4,19 @@ import {DialogMode} from '../../../../enums/dialog';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppUser} from '../../models/user';
+import {OrganizationConfigService} from "../../../organization/services/organization-config.service";
+import {AppUser} from "../../../user/models/user";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
-  selector: 'app-actions',
+  selector: 'app-permission-actions',
   imports: [
     MatIconButton,
     MatMenu,
     MatMenuItem,
     TranslatePipe,
-    MatMenuTrigger
+    MatMenuTrigger,
+    MatTooltip
   ],
   templateUrl: './actions.component.html',
 })
@@ -21,17 +24,20 @@ export class ActionsComponent {
 
   protected readonly DialogMode = DialogMode;
 
-  entity$ = input.required<AppUser>();
-  isExpanded$ = input<boolean>(true);
-
-  private router = inject(Router);
+  private configService = inject(OrganizationConfigService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  entity = input.required<AppUser>();
+  isExpanded = input<boolean>(true);
+
+  entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/permission/${this.entity$().id}`
+      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
     }).then()
   }
 }

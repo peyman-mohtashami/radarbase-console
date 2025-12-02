@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from "@angular/core";
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 
 import {ProfileService} from '../../services/profile.service';
@@ -7,9 +7,10 @@ import {takeUntil} from "rxjs/operators";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'rb-activate-page',
+  selector: 'app-activate-page',
   templateUrl: './activate-page.component.html',
   imports: [
     AuthCardComponent,
@@ -22,9 +23,9 @@ export class ActivatePageComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
   private activatedRoute = inject(ActivatedRoute);
 
-  isLoading = false;
-  error = false;
-  success = false;
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
 
   key?: string;
 
@@ -43,14 +44,14 @@ export class ActivatePageComponent implements OnInit, OnDestroy {
     if (this.key) {
       this.profileService.sendActivation(this.key).subscribe({
         next: () => {
-          this.isLoading = false;
-          this.success = true;
-          this.error = false;
+          this.success.set(true);
+          this.error.set(null);
+          this.loading.set(false);
         },
-        error: () => {
-          this.isLoading = false;
-          this.success = false;
-          this.error = true;
+        error: (error) => {
+          this.error.set(error);
+          this.success.set(false);
+          this.loading.set(false);
         }
       });
     }

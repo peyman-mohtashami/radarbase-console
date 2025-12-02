@@ -8,10 +8,7 @@ import {ClientService} from "./client.service";
 export class ClientsResolver implements Resolve<AppClient[]> {
   private entityService = inject(ClientService);
 
-  resolve():
-    | Observable<AppClient[]>
-    | Promise<AppClient[]>
-    | AppClient[] {
+  resolve(): Observable<AppClient[]> {
     return this.entityService.getAll();
   }
 }

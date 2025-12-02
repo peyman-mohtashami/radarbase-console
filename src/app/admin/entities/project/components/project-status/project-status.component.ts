@@ -3,7 +3,7 @@ import {ProjectStatus} from '../../models/project';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-project-status',
+  selector: 'app-project-status',
   templateUrl: './project-status.component.html',
   imports: [
     TagComponent
@@ -12,5 +12,5 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 export class ProjectStatusComponent {
   protected readonly ProjectStatus = ProjectStatus;
 
-  projectStatus$ = input<ProjectStatus>();
+  projectStatus = input<ProjectStatus | null>();
 }

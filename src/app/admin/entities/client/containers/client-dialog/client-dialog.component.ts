@@ -4,7 +4,6 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppClient} from "../../models/client";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
@@ -23,7 +22,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
-  selector: 'rb-client-dialog',
+  selector: 'app-client-dialog',
   templateUrl: './client-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -45,7 +44,7 @@ import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 })
 export class ClientDialogComponent implements OnInit, AfterViewInit {
 
-  private configService = inject(SourceTypeConfigService);
+  protected configService = inject(SourceTypeConfigService);
   private dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
@@ -53,7 +52,6 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
     entities: AppClient[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
@@ -61,31 +59,30 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
 
   form = new FormGroup({
-    clientId: new FormControl<string | undefined>({value: undefined, disabled: this.dialogData.mode !== DialogMode.ADD}, {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
-    enableEmptySecret: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-    clientSecret: new FormControl<string | undefined>('', {nonNullable: true}),
-    scope: new FormControl<string[] | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
-    resourceIds: new FormControl<string[] | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
+    clientId: new FormControl<string>({value: '', disabled: this.dialogData.mode !== DialogMode.ADD}, {nonNullable: true, validators: [Validator.requiredValidator, Validator.stringIdValidator]}),
+    enableEmptySecret: new FormControl<boolean>(false),
+    clientSecret: new FormControl<string>(''),
+    scope: new FormControl<string[]>([], {validators: [Validator.requiredValidator]}),
+    resourceIds: new FormControl<string[]>([], {nonNullable: true, validators: [Validator.requiredValidator]}),
     _authorizedGrantTypes: new FormGroup({
-        refresh_token: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-        password: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-        authorization_code: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-        client_credentials: new FormControl<boolean | undefined>(false, {nonNullable: true}),
-        implicit: new FormControl<boolean | undefined>(false, {nonNullable: true}),
+        refresh_token: new FormControl<boolean>(false),
+        password: new FormControl<boolean>(false),
+        authorization_code: new FormControl<boolean>(false),
+        client_credentials: new FormControl<boolean>(false),
+        implicit: new FormControl<boolean>(false),
       },
-      //   {
-      //   validators: [NotEmptyCheckValidator()],
-      // }
     ),
-    registeredRedirectUri: new FormControl<string[] | undefined>(undefined, {nonNullable: true}),
-    autoApproveScopes: new FormControl<string[] | undefined>(undefined, {nonNullable: true}),
-    accessTokenValiditySeconds: new FormControl<number | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
-    refreshTokenValiditySeconds: new FormControl<number | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
-    dynamic_registration: new FormControl<boolean | undefined>(undefined, {nonNullable: true}),
+    registeredRedirectUri: new FormControl<string[]>([]),
+    autoApproveScopes: new FormControl<string[]>([]),
+    accessTokenValiditySeconds: new FormControl<number | null>(null, {validators: [Validator.requiredValidator]}),
+    refreshTokenValiditySeconds: new FormControl<number | null>(null, {validators: [Validator.requiredValidator]}),
+    additionalInformation: new FormGroup({
+      dynamic_registration: new FormControl<boolean>(false),
+    })
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppClient }>();
@@ -98,7 +95,7 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -122,8 +119,8 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   }
 
   onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     switch ($event) {
       case 'close':
         this.close();
@@ -140,7 +137,7 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   private handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value, enableEmptySecret: undefined},
+      entity: {...this.dialogData.entity, ...this.form.value, enableEmptySecret: null},
     });
   }
 
@@ -149,7 +146,7 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -161,8 +158,8 @@ export class ClientDialogComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   generateRandomSecret(length: number) {

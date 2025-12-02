@@ -1,0 +1,76 @@
+@let tableFields = configService.getTableFields();
+
+<mat-card class="rb-table-row" [class]="
+    (updated() ? 'bg-orange-200! ' : '') +
+    (expanded() ? 'mb-2' : '')
+  ">
+  <div class="rb-table-main-row">
+    @for (tableElement of tableFields; track tableElement.name) {
+      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
+           [class.flex-1]="!tableElement.width"
+           [class.shrink-0]="!!tableElement.width">
+        @switch (tableElement.name) {
+          @case ('name') {
+            <p class="font-bold text-primary">{{ entity().name || '-' }}</p>
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="text-xs font-bold text-neutral-400 uppercase">Translations</span>
+              @for (l of entity()._languages; track l) {
+                <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{ l.id }}</span></span>
+              }
+            </div>
+          }
+          @case ('questionnaire') {
+            {{ entity().questionnaire?.name }}
+          }
+          @case ('repeatProtocol') {
+            @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
+              <div>
+                Every <span class="font-bold">{{ repeatProtocol.amount }} {{ repeatProtocol.unit }}(s)</span> at specific times
+              </div>
+            }
+            @if (entity().protocol?.completionWindow; as completionWindow) {
+              <div>
+                Available: <span class="font-bold">{{ completionWindow.amount }} {{ completionWindow.unit }}(s)</span>
+              </div>
+            }
+          }
+          @case ('completionWindow') {
+            @if (entity().protocol?.completionWindow; as completionWindow) {
+              {{ completionWindow.amount }} {{ completionWindow.unit }}
+            } @else {
+              -
+            }
+          }
+          @case ('actions') {
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
+                <span class="material-symbols-outlined text-xl!">
+                  {{ expanded() ? 'expand_less' : 'expand_more' }}
+                </span>
+            </button>
+            <app-protocol-actions [entity]="entity()" [isExpanded]="true"/>
+          }
+          @default {
+            {{ entity()[tableElement.name] || '-' }}
+          }
+        }
+      </div>
+    }
+  </div>
+
+  @if (expanded()) {
+    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+      <app-protocol-details class="py-4"
+                            [entity]='entity()'
+                            [detailType]="DetailType.TABLE" />
+    </div>
+  }
+</mat-card>

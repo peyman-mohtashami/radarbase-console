@@ -24,7 +24,7 @@
         "title": "Forgot Password?",
         "subtitle": "Fill the form to reset your password",
         "successMessage": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
-        "successButton": "Your request sent successfully",
+        "successButton": "Submitted",
         "email": "Email",
         "submitButton": "Send",
         "gotTo": "Go to",
@@ -175,8 +175,11 @@
     },
     "appConfig": {
       "title": {
-        "singular": "Global App Config",
-        "plural": "Global App Config"
+        "singular": "App Config",
+        "plural": "App Config"
+      },
+      "global": {
+        "title": "Global App Config"
       }
     },
     "audit": {
@@ -274,6 +277,7 @@
         "tableLabel": "Registration",
         "label": "Dynamic Registration"
       },
+      "selectClient": "Select an OAuth Client",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add OAuth Client",
       "edit": "Edit",
@@ -462,6 +466,7 @@
         "tableLabel": "Projects",
         "label": "Projects"
       },
+      "details": "Details",
       "viewAll": "View all {{count}} projects",
       "viewLess": "View less",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
@@ -470,7 +475,9 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete Organization",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Organization Found",
+      "noItemFound": "No Organization found",
+      "noItemFoundWithTheFilter": "No Organization found with the filter",
+
       "filters": {
         "search": "Search"
       }
@@ -647,6 +654,9 @@
         "externalProjectId": "External Project ID",
         "privacyPolicyUrl": "Privacy Policy URL"
       },
+      "noItemFound": "No Project Found",
+      "noItemFoundWithTheFilter": "No Project found with the filter",
+      "details": "Details",
       "viewAll": "View all {{count}} source types",
       "viewLess": "View less",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
@@ -655,7 +665,6 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete Project",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Project Found",
       "filters": {
         "search": "Search"
       }
@@ -1340,7 +1349,19 @@
         "tableLabel": "Modified At",
         "label": "Modified At"
       },
-      "actions": "Actions",
+      "discard": {
+        "title": "Discard changes",
+        "discard": "Discard",
+        "discarding": "Discarding",
+        "discardAll": "Discard all"
+      },
+      "publish": {
+        "title": "Publish changes",
+        "publish": "Publish",
+        "publishing": "Publishing",
+        "unpublishedMessage": "Unpublished changes"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Protocol",
       "edit": "Edit",
       "delete": "Delete",
@@ -1486,13 +1507,28 @@
         "tableLabel": "Type",
         "label": "Type"
       },
+      "discard": {
+        "title": "Discard changes",
+        "discard": "Discard",
+        "discarding": "Discarding",
+        "discardAll": "Discard all"
+      },
+      "publish": {
+        "title": "Publish changes",
+        "publish": "Publish",
+        "publishing": "Publishing",
+        "unpublishedMessage": "Unpublished changes"
+      },
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Config",
       "edit": "Edit",
       "delete": "Delete",
       "deleteMessage": "You are going to delete Config",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Config Found"
+      "noItemFound": "No Config Found",
+      "filters": {
+        "search": "Search"
+      }
     },
     "PAGINATOR": {
       "ITEMS_PER_PAGE": "Items per page",
@@ -1583,10 +1619,6 @@
       }
     }
   },
-
-
-
-
   "hello": "Hello-en",
   "title": "Management Portal"
 }

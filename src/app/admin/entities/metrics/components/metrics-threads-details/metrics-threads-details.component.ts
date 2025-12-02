@@ -8,7 +8,7 @@ import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.mo
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-metrics-threads-details',
+  selector: 'app-metrics-threads-details',
   templateUrl: './metrics-threads-details.component.html',
   imports: [
     TranslatePipe,

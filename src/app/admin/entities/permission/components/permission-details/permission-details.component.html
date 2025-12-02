@@ -1,45 +1,45 @@
-<rb-details [name$]="ENTITY_NAME.user"
-            [entity$]="entity$()"
-            [tableFields$]="tableFields$()"
-            [type$]="type$()"
-            [customTemplate$]="detailsTemplate" />
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate" />
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('email') {
-      @if (entity$().email) {
-        <a class="underline" href="mailto:{{ entity$().email}}" target="_blank">{{ entity$().email || '-' }}</a>
+      @if (entity().email) {
+        <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
       } @else {
         -
       }
     }
     @case ('activated') {
       <span class="flex items-center gap-1">
-        <rb-user-activated class="inline-flex" [activated$]="entity$().activated" />
-        <rb-activate [entity$]="entity$()" />
+        <app-user-activated class="inline-flex" [activated]="entity().activated" />
+        <app-user-activate [entity]="entity()" />
       </span>
 
     }
     @case ('langKey') {
-      {{ entity$().langKey?.toUpperCase() || '-' }}
+      {{ entity().langKey?.toUpperCase() || '-' }}
     }
     @case ('roles') {
-      <rb-permission-roles [roles$]="entity$()._roles" [organization$]="organizationName$()" [project$]="projectName$()" />
+      <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
     }
     @case ('createdBy') {
-      <rb-user-created-by [createdBy$]="entity$().createdBy" />
+      <app-user-created-by [createdBy]="entity().createdBy" />
     }
     @case ('createdDate') {
-      <rb-local-date [date]="entity$().createdDate" [format]="'long'" />
+      <app-local-date [date]="entity().createdDate" [format]="'long'" />
     }
     @case ('lastModifiedBy') {
-      <rb-user-created-by [createdBy$]="entity$().lastModifiedBy" />
+      <app-user-created-by [createdBy]="entity().lastModifiedBy" />
     }
     @case ('lastModifiedDate') {
-      <rb-local-date [date]="entity$().lastModifiedDate" [format]="'long'" />
+      <app-local-date [date]="entity().lastModifiedDate" [format]="'long'" />
     }
     @default {
-      {{ entity$()[property.name] || '-' }}
+      {{ entity()[property.name] || '-' }}
     }
   }
 </ng-template>

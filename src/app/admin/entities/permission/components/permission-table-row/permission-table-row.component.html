@@ -1,56 +1,66 @@
+@let configFields = configService.getFormFields();
+@let tableFields = configService.getTableFields();
+
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-primary/5! ' : '') +
-    (expanded$() ? 'mb-2' : '')
+    (updated() ? 'bg-primary/5! ' : '') +
+    (expanded() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
-    @for (tableElement of tableFields$(); track tableElement.name) {
+    @for (tableElement of tableFields; track tableElement.name) {
       <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
            [class.flex-1]="!tableElement.width"
            [class.shrink-0]="!!tableElement.width">
         @switch (tableElement.name) {
           @case ('login') {
-              <span class="font-bold text-primary dark:text-primary-dark">{{ entity$().login }}</span>
-            @if (!configFields$() || configFields$()['firstName'] === undefined || configFields$()['firstName'] || configFields$()['lastName'] === undefined || configFields$()['lastName']) {
-              <p class="text-neutral-500 dark:text-neutral-300">{{entity$().firstName}} {{entity$().lastName}}</p>
+              <span class="font-bold text-primary dark:text-primary-dark">{{ entity().login }}</span>
+            @if (!configFields || configFields['firstName'] === undefined || configFields['firstName'] || configFields['lastName'] === undefined || configFields['lastName']) {
+              <p class="text-neutral-500 dark:text-neutral-300">{{entity().firstName}} {{entity().lastName}}</p>
             }
           }
 
           @case('email') {
             <span class="flex items-center gap-1">
-              <rb-user-activated class="inline-flex" [activated$]="entity$().activated" />
-              <rb-activate [entity$]="entity$()" />
-              <a class="underline" href="mailto:{{ entity$().email}}" target="_blank">{{ entity$().email || '-' }}</a>
+              <app-user-activated class="inline-flex" [activated]="entity().activated" />
+              <app-user-activate [entity]="entity()" />
+              <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
             </span>
           }
 
           @case('roles') {
-            <rb-permission-roles [roles$]="entity$()._roles" [organization$]="organizationName$()" [project$]="projectName$()" />
+            <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
           }
           @case ('actions') {
             <button mat-icon-button
                     class="tiny block"
-                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
                     (click)="onExpansionClick($event)">
               <span class="material-symbols-outlined">
-                {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                {{ expanded() ? 'expand_less' : 'expand_more' }}
               </span>
             </button>
-            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+            <app-permission-actions [entity]="entity()" [isExpanded]="true"/>
           }
           @default {
-            {{ entity$()[tableElement.name] || '-' }}
+            {{ entity()[tableElement.name] || '-' }}
           }
         }
       </div>
     }
   </div>
-  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
-    <rb-permission-details class="py-4" [entity$]='entity$()' [type$]="DetailType.TABLE" [tableFields$]="tableFields$()" [organizationName$]="organizationName$()" [projectName$]="projectName$()"/>
+
+  @if (expanded()) {
+    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+    <app-permission-details class="py-4"
+                            [entity]='entity()'
+                            [detailType]="DetailType.TABLE"
+                            [organizationName]="organizationName()"
+                            [projectName]="projectName()"/>
   </div>
+  }
 </mat-card>

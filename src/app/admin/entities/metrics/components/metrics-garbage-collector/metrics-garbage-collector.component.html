@@ -1,7 +1,7 @@
 <div
-  class="text-sm [&_rb-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_rb-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
+  class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
   @if (garbageCollectorMetrics) {
-    <rb-detail-element>
+    <app-detail-element>
       <ng-container label>
         {{ 'ADMIN.metrics.garbageCollector.max.data.size' | translate }}
         ({{ garbageCollectorMetrics['jvm.gc.live.data.size'] / 1048576 | number: '1.0-0' }}M /
@@ -21,10 +21,10 @@
           </div>
         </section>
       </ng-container>
-    </rb-detail-element>
+    </app-detail-element>
   }
   @if (garbageCollectorMetrics) {
-    <rb-detail-element>
+    <app-detail-element>
       <ng-container label>
         {{ 'ADMIN.metrics.garbageCollector.memory.allocated' | translate }}
         ({{ garbageCollectorMetrics['jvm.gc.memory.promoted'] / 1048576 | number: '1.0-0' }}M /
@@ -44,29 +44,29 @@
           </div>
         </section>
       </ng-container>
-    </rb-detail-element>
+    </app-detail-element>
   }
 
   @if (garbageCollectorMetrics) {
-    <rb-detail-element>
+    <app-detail-element>
       <ng-container label>
         {{ 'ADMIN.metrics.databases.classesLoaded' | translate }}
       </ng-container>
       <ng-container value>
         {{ garbageCollectorMetrics.classesLoaded }}
       </ng-container>
-    </rb-detail-element>
+    </app-detail-element>
   }
 
   @if (garbageCollectorMetrics) {
-    <rb-detail-element>
+    <app-detail-element>
       <ng-container label>
         {{ 'ADMIN.metrics.databases.title' | translate }}
       </ng-container>
       <ng-container value>
         {{ garbageCollectorMetrics.classesUnloaded }}
       </ng-container>
-    </rb-detail-element>
+    </app-detail-element>
   }
 </div>
 

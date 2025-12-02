@@ -1,8 +1,6 @@
 import {Component, effect, input, signal} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
-import {ROLES} from "../../../../enums/entities";
 import {DialogMode} from "../../../../enums/dialog";
-import {TABLE_ANIMATION} from "../../../../animation";
 import {AppSubject} from "../../models/subject";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatCard} from "@angular/material/card";
@@ -19,13 +17,12 @@ import {ActionsComponent} from '../actions/actions.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
-import {JsonPipe} from '@angular/common';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {ROLES} from "../../../../../shared/enums/roles";
 
 @Component({
-  selector: 'rb-subject-table-row',
+  selector: 'app-subject-table-row',
   templateUrl: './subject-table-row.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     MatCheckbox,
     MatCard,
@@ -38,7 +35,6 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
     ActionsComponent,
     TruncatePipe,
     MatTooltip,
-    JsonPipe,
     TagComponent,
   ]
 })

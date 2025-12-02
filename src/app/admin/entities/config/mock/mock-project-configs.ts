@@ -4,7 +4,7 @@
 // import { RADAR_PILOT_TEST } from '../../protocol/mock/RADAR-Pilot-Test/protocol';
 // import { MOCK_GLOBAL_CONFIGS } from "./mock-global-configs";
 import { getGlobalConfiguration } from "./mock-configs";
-import {RadarConfigBundle} from '../../../../shared/models/radar-config.model';
+import {RadarConfigBundle} from "../models/config";
 
 export const MOCK_PROJECT_CONFIGS: Record<
   string,
@@ -72,11 +72,11 @@ export const MOCK_PROJECT_CONFIGS: Record<
       clientId: 'radar_restapi',
       scope: 'project.radar',
       config: [
-        { name: 'url', value: 'https://radar.com' },
+        { name: 'url', value: 'https://radarbase.io' },
         { name: 'timeout', value: '500' },
       ],
       defaults: getGlobalConfiguration('radar_restapi').config.map((config: any) => {
-        return {...config, scope: config.scope}
+        return {...config, scope: getGlobalConfiguration('radar_restapi').scope} //config.scope}
       })
     },
     radar_upload_backend: {

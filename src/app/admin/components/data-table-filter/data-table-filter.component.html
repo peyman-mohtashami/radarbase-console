@@ -1,10 +1,10 @@
-@if (filters$()?.length) {
-  <div class='mb-2 rounded-sm px-0 mt-0'>
+@if (filters().length) {
+  <div class='rounded-sm'>
     @if (form) {
       <form [formGroup]="form" novalidate autocomplete="off" class='w-full flex gap-1 justify-between'>
         <div
           class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 text-base items-stretch">
-          @for (filter of filters$(); track filter) {
+          @for (filter of filters(); track filter) {
             @if (!filter.advanced) {
                 @if (filter.type === FilterType.SELECT) {
                   <mat-form-field class="m-0! small no-subscript"
@@ -26,7 +26,7 @@
 
                 @if (filter.type === FilterType.INPUT) {
                   <mat-form-field class="m-0! small no-subscript"
-                                  [class.mat-focused]="form?.controls?.[filter.name]?.value"
+                                  [class.mat-focused]="form.controls[filter.name]?.value"
 
 
                   appearance="outline">
@@ -45,7 +45,7 @@
                            matInput autocomplete="off" data-lpignore="true"
                            placeholder='{{ filter.label | translate }}'>
 <!--                    <input matInput type="text" [formControlName]='filter.name'>-->
-                      @if (form?.controls?.[filter.name]?.value) {
+                      @if (form.controls[filter.name]?.value) {
                         <button matSuffix matIconButton aria-label="Clear" class="mx-2 tiny" (click)="form.controls[filter.name].setValue('')">
                           <mat-icon>close</mat-icon>
                         </button>
@@ -60,7 +60,7 @@
                                   appearance="outline"
                                   floatLabel="auto"
                                   subscriptSizing="dynamic">
-                  <input [formControlName]='filter.name' matInput [matDatepicker]="picker" [placeholder]='dateFormat'>
+                  <input [formControlName]='filter.name' matInput [matDatepicker]="picker" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
                   <mat-datepicker-toggle matSuffix [for]="picker"/>
                   <mat-datepicker #picker/>
                   </mat-form-field>
@@ -72,8 +72,8 @@
                                   appearance="outline"
                                   subscriptSizing="fixed">
                     <mat-date-range-input [rangePicker]="rangePicker">
-                      <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
-                      <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
+                      <input matStartDate [formControlName]="filter.names[0]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                      <input matEndDate [formControlName]="filter.names[1]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
                     <mat-date-range-picker #rangePicker/>
@@ -99,7 +99,7 @@
             </button>
             <mat-menu #advancedFilter="matMenu">
               <div class="text-sm p-4">
-                @for (filter of filters$(); track filter) {
+                @for (filter of filters(); track filter) {
                   @if (filter.advanced) {
                     <div class="mb-4">
                       <span
@@ -143,7 +143,7 @@
                             <input [formControlName]='filter.name'
                                    matInput
                                    [matDatepicker]="filterDatePicker"
-                                   [placeholder]='dateFormat'>
+                                   [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
                             <mat-datepicker-toggle matSuffix [for]="filterDatePicker"/>
                             <mat-datepicker #filterDatePicker/>
                           </mat-form-field>
@@ -156,8 +156,8 @@
                                             (click)="$event.stopPropagation()">
 <!--                              <input [formControlName]='filter.names[0]'>-->
                               <mat-date-range-input [rangePicker]="rangePicker">
-                                <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>
-                                <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>
+                                <input matStartDate [formControlName]="filter.names[0]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                                <input matEndDate [formControlName]="filter.names[1]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
                               </mat-date-range-input>
                               <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
                               <mat-date-range-picker #rangePicker/>
@@ -228,45 +228,46 @@
   </div>
 }
 
+@if (filterEnabled) {
 <div class='mb-4 text-sm! text-white! items-center px-0 flex gap-2'>
-  @for (filter of filters$(); track filter.name) {
+  @for (filter of filters(); track filter.name) {
     @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
       @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {
-        <rb-tag class="bg-secondary/10 text-secondary">
+        <app-tag class="bg-secondary/10 text-secondary">
 <!--        <div class="!bg-accent-color! dark:bg-accent-dark-color! relative">-->
           {{ filter.label | translate }}
           @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {
             ({{ "SHARED.filter.from" | translate }}):
-            <rb-local-date [date]="fromValue" [format]="'mediumDate'"></rb-local-date>
+            <app-local-date [date]="fromValue" [format]="'mediumDate'"></app-local-date>
           }
           @if (form?.controls?.[filter.names[1]]?.value; as toValue) {
               ({{ "SHARED.filter.to" | translate }}):
-            <rb-local-date [date]="toValue" [format]="'mediumDate'"></rb-local-date>
+            <app-local-date [date]="toValue" [format]="'mediumDate'"></app-local-date>
           }
           <button (click)='removeFilter(filter)'>
             <mat-icon>cancel</mat-icon>
           </button>
 <!--        </div>-->
-        </rb-tag>
+        </app-tag>
       }
     }
 
     @if (filter.type === FilterType.DATEPICKER) {
       @if (form?.controls?.[filter.name]?.value; as value) {
-        <rb-tag class="bg-secondary/10 text-secondary">
+        <app-tag class="bg-secondary/10 text-secondary">
 <!--        <div class="bg-accent-color! dark:bg-accent-dark-color!">-->
           {{ filter.label | translate }}:
-          <rb-local-date [date]="value" [format]="'mediumDate'"></rb-local-date>
+          <app-local-date [date]="value" [format]="'mediumDate'"></app-local-date>
           <button (click)='removeFilter(filter)'>
             <mat-icon>cancel</mat-icon>
           </button>
 <!--        </div>-->
-        </rb-tag>
+        </app-tag>
       }
     }
     @if (filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER) {
       @if (form?.controls?.[filter.name]?.value; as value) {
-        <rb-tag class="bg-secondary/10 text-secondary">
+        <app-tag class="bg-secondary/10 text-secondary">
 <!--        <div class="bg-primary! flex items-center">-->
           @if (filter.type === FilterType.SELECT) {
             @for (option of filter?.options; track option.value) {
@@ -284,7 +285,7 @@
             </button>
           }
 <!--        </div>-->
-        </rb-tag>
+        </app-tag>
       }
     }
   }
@@ -298,7 +299,7 @@
     </button>
   }
 </div>
-
+}
 
 <!--=================================-->
 <!--<div class='flex items-center text-sm! text-white! mb-2 gap-2 px-0' aria-label="Filter selection">-->
@@ -310,11 +311,11 @@
 <!--          {{ filter.label | translate }}-->
 <!--          @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {-->
 <!--            ({{ "SHARED.filter.from" | translate }}):-->
-<!--            <rb-local-date [date]="fromValue" [format]="'mediumDate'"></rb-local-date>-->
+<!--            <app-local-date [date]="fromValue" [format]="'mediumDate'"></app-local-date>-->
 <!--          }-->
 <!--          @if (form?.controls?.[filter.names[1]]?.value; as toValue) {-->
 <!--            ({{ "SHARED.filter.to" | translate }}):-->
-<!--            <rb-local-date [date]="toValue" [format]="'mediumDate'"></rb-local-date>-->
+<!--            <app-local-date [date]="toValue" [format]="'mediumDate'"></app-local-date>-->
 <!--          }-->
 
 <!--          <button matChipRemove (click)='removeFilter(filter)'>-->
@@ -329,7 +330,7 @@
 <!--        <mat-chip-option class="bg-accent-color! dark:bg-accent-dark-color!"-->
 <!--                         color="accent">-->
 <!--          {{ filter.label | translate }}:-->
-<!--          <rb-local-date [date]="value" [format]="'mediumDate'"></rb-local-date>-->
+<!--          <app-local-date [date]="value" [format]="'mediumDate'"></app-local-date>-->
 <!--          <button matChipRemove (click)='removeFilter(filter)'>-->
 <!--            <mat-icon>cancel</mat-icon>-->
 <!--          </button>-->

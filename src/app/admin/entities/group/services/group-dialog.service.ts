@@ -21,7 +21,7 @@ export class GroupDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode, entity: AppGroup | undefined, entities: AppGroup[], projectName: string) {
     if (mode !== DialogMode.ADD && !entity) {
@@ -35,7 +35,7 @@ export class GroupDialogService {
       next: (value: { action: DialogMode; entity: AppGroup }) => {
         this.processDialogAction(value.action, value.entity, projectName).subscribe({
           next: (res) => {
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            this.dialogUpdateEvent.set({mode, entity: res ?? value.entity})
             dialogRef.close();
           },
           error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),

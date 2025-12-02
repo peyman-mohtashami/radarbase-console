@@ -1,5 +1,5 @@
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
+    (updated$() ? 'bg-primary/5! ' : '') +
     (expanded$() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
@@ -17,7 +17,7 @@
           }
           @case ('login') {
             <div class="flex flex-wrap gap-1 items-center">
-              <rb-subject-status [status]="entity$().status" [type]="DetailType.TABLE"/>
+              <app-subject-status [status]="entity$().status" [detailType]="DetailType.TABLE"/>
               <a [routerLink]='[entity$().login]' class="underline font-bold text-primary dark:text-primary-dark">
                 <span class='' [matTooltip]="entity$().login">{{ entity$().login | truncate:14 }}</span>
               </a>
@@ -25,7 +25,7 @@
           }
           @case ('externalId') {
             <p>
-              <span class="text-gray-500">External ID: </span>
+              <span class="text-gray-500 dark:text-gray-300">External ID: </span>
               <span class="font-bold">
               @if (entity$().externalId) {
                 @if (entity$().externalLink) {
@@ -39,26 +39,26 @@
             </span>
             </p>
             @if (!configFields$() || configFields$()['personName'] === undefined || configFields$()['personName']) {
-            <p><span class="text-gray-500">Name: </span><span
+            <p><span class="text-gray-500 dark:text-gray-300">Name: </span><span
               class="font-bold">{{ entity$().personName ?? '-' }}</span></p>
             }
             @if (!configFields$() || configFields$()['dateOfBirth'] === undefined || configFields$()['dateOfBirth']) {
-              <p><span class="text-gray-500">Date of birth: </span> <span class="font-bold"><rb-local-date
+              <p><span class="text-gray-500 dark:text-gray-300">Date of birth: </span> <span class="font-bold"><app-local-date
               [date]="entity$().dateOfBirth" [format]="'longDate'"/></span></p>
             }
           }
           @case ('dateOfBirth') {
-            <rb-local-date [date]="entity$().dateOfBirth" [format]="'mediumDate'"/>
+            <app-local-date [date]="entity$().dateOfBirth" [format]="'mediumDate'"/>
           }
           @case ('group') {
-            <rb-subject-group [group$]="entity$().group"/>
+            <app-subject-group [group]="entity$().group"/>
           }
           @case ('status') {
-            <rb-subject-status [status]="entity$().status"/>
+            <app-subject-status [status]="entity$().status"/>
           }
           @case ('sources') {
             @for (source of entity$().sources; track source.id) {
-              <rb-tag class="bg-primary/10 text-primary">{{source.sourceName}}</rb-tag>
+              <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{source.sourceName}}</app-tag>
             }
 <!--            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">-->
 <!--              @for (source of entity$().sources; track source.id) {-->
@@ -67,9 +67,9 @@
 <!--                      _{{ source.sourceTypeCatalogVersion }}</span>-->
 <!--                </button>-->
 
-<!--                <rb-tag colorClass="bg-green-500 text-white">-->
+<!--                <app-tag colorClass="bg-green-500 text-white">-->
 <!--                  CONNECTED-->
-<!--                </rb-tag>-->
+<!--                </app-tag>-->
 <!--                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">-->
 <!--              }-->
 
@@ -102,7 +102,7 @@
                     {{ expanded$() ? 'expand_less' : 'expand_more' }}
                   </span>
               </button>
-              <app-subject-actions [entity$]="entity$()" [isExpanded$]="false"/>
+              <app-subject-actions [entity]="entity$()" [isExpanded]="false"/>
             </div>
           }
           @default {
@@ -113,11 +113,12 @@
     }
   </div>
 
-  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
-    <rb-subject-details class="py-4"
-                        [entity$]='entity$()'
-                        [type$]="DetailType.TABLE"
-                        [tableFields$]="tableFields$()"/>
+  @if (expanded$()) {
+    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+    <app-subject-details class="py-4"
+                        [entity]='entity$()'
+                        [detailType]="DetailType.TABLE" />
   </div>
+  }
 </mat-card>
 

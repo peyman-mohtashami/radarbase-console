@@ -1,25 +1,25 @@
-@let _sourceTypes = sourceTypes$();
+@let _sourceTypes = sourceTypes();
 
 @if (_sourceTypes && _sourceTypes?.length) {
   <div class="flex items-center flex-wrap gap-2 mt-1">
     @for (sourceType of showAll ? _sourceTypes : _sourceTypes?.slice(0, 5); track sourceType) {
-      <rb-tag class="bg-primary/10 text-primary"
+      <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark" (click)="$event.stopPropagation()"
               [link$]='["/admin/source-types", sourceType.producer, sourceType.model, sourceType.catalogVersion]'>
         {{ sourceType.producer }}_{{ sourceType.model }}_{{ sourceType.catalogVersion }}
-      </rb-tag>
+      </app-tag>
     }
 
     @if (_sourceTypes.length > 5) {
       @if (!showAll) {
         <span>...</span>
       }
-      <rb-tag class="bg-primary/20 text-primary" (click)="toggleView($event, showAll)" style="cursor: pointer;">
+      <app-tag class="bg-primary/20 dark:bg-primary-dark/20 text-primary dark:text-primary-dark" (click)="toggleView($event, showAll)" style="cursor: pointer;">
         @if (!showAll) {
           {{'ADMIN.project.viewAll' | translate: {count: _sourceTypes.length} }}
         } @else {
           {{'ADMIN.project.viewLess'}}
         }
-      </rb-tag>
+      </app-tag>
     }
   </div>
 } @else {

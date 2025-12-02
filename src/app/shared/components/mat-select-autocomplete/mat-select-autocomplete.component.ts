@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component, input,
+  Component, Input, input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -20,6 +20,8 @@ import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {AsyncPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatError, MatLabel} from "@angular/material/form-field";
+import {TagComponent} from "../tag/tag.component";
+import {MatIconButton} from "@angular/material/button";
 
 export interface RadarOption {
   id: number | string;
@@ -27,7 +29,7 @@ export interface RadarOption {
 }
 
 @Component({
-  selector: 'rb-mat-select-autocomplete',
+  selector: 'app-mat-select-autocomplete',
   templateUrl: './mat-select-autocomplete.component.html',
   providers: [
     {
@@ -43,18 +45,20 @@ export interface RadarOption {
   ],
   imports: [
     MatFormField,
-    MatLabel,
+    // MatLabel,
     MatSelectTrigger,
     MatError,
     MatSelect,
-    MatChipListbox,
-    MatChipOption,
-    MatIcon,
+    // MatChipListbox,
+    // MatChipOption,
+    // MatIcon,
     TranslatePipe,
     ReactiveFormsModule,
     MatOption,
     NgxMatSelectSearchModule,
     AsyncPipe,
+    TagComponent,
+    MatIconButton,
   ],
 })
 export class MatSelectAutocompleteComponent
@@ -68,6 +72,7 @@ export class MatSelectAutocompleteComponent
   multiple = input<boolean>(false)
   required = input<boolean>(false)
   floatLabel = input<boolean>(false)
+  notRemovable = input<{ id: string; _name: string }>();
 
   form: any; // = new FormControl<RadarOption[]>([]);
 
@@ -137,7 +142,7 @@ export class MatSelectAutocompleteComponent
   }
 
   removeChip(option: RadarOption) {
-    if(this.form.value) {
+    if(this.form.value && this.notRemovable()?.id !== option.id) {
       const formValue = [...this.form.value];
       const index = formValue.indexOf(option);
       formValue.splice(index, 1);
@@ -221,4 +226,5 @@ export class MatSelectAutocompleteComponent
   //
   //   return errors;
   // }
+
 }

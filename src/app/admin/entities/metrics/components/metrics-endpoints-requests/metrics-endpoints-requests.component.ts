@@ -3,7 +3,7 @@ import {DecimalPipe, KeyValuePipe} from "@angular/common";
 import {HttpMethod, MaxMeanCount} from '../../../../../shared/models/radar-metrics.model';
 
 @Component({
-  selector: 'rb-metrics-endpoints-requests',
+  selector: 'app-metrics-endpoints-requests',
   templateUrl: './metrics-endpoints-requests.component.html',
   imports: [
     DecimalPipe,

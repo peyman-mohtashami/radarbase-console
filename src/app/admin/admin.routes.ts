@@ -11,9 +11,9 @@ export enum ROUTES {
   // SUBJECTS = 'subjects',
   USERS = 'users',
   CLIENTS = 'clients',
-  // APP_CONFIGS = 'global-configs',
-  // QUESTIONNAIRES = 'questionnaires',
-  // PROTOCOLS = 'protocols',
+  APP_CONFIGS = 'global-config',
+  QUESTIONNAIRES = 'questionnaires',
+  PROTOCOLS = 'protocols',
   LOGS = 'logs',
   REVISIONS = 'revisions',
   AUDITS = 'audits',
@@ -62,36 +62,29 @@ export const adminRoutes: Routes = [
         path: ROUTES.CLIENTS,
         loadChildren: () => import('./entities/client/client.routes').then((m) => m.clientRoutes),
       },
-      // // {
-      // //   path: ROUTES.APP_CONFIGS,
-      // //   loadChildren: () =>
-      // //     import('./entities/client/client.routes').then((m) => m.clientRoutes),
-      // //   canActivate: [roleGuard],
-      // //   data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], appConfig: true },
-      // // },
-      // // {
-      // //   path: ROUTES.QUESTIONNAIRES,
-      // //   loadChildren: () =>
-      // //     import('./entities/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
-      // //   // loadChildren: () =>
-      // //   //   import('./entities/questionnaire/questionnaire.module').then(
-      // //   //     (m) => m.QuestionnaireModule
-      // //   //   ),
-      // //   canActivate: [roleGuard],
-      // //   data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
-      // // },
-      // // {
-      // //   path: ROUTES.PROTOCOLS,
-      // //   loadChildren: () =>
-      // //     import('./entities/protocol/protocols.route').then((m) => m.protocolsRoutes),
-      // //   // loadChildren: () =>
-      // //   //   import('./entities/protocol/protocol.module').then(
-      // //   //     (m) => m.ProtocolModule
-      // //   //   ),
-      // //   canActivate: [roleGuard],
-      // //   data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
-      // // },
-      // //
+      {
+        path: ROUTES.APP_CONFIGS,
+        loadChildren: () =>
+          import('./entities/client/app-config.routes').then((m) => m.appConfigRoutes),
+          // import('./entities/client/client.routes').then((m) => m.clientRoutes),
+        canActivate: [roleGuard],
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], appConfig: true },
+      },
+      {
+        path: ROUTES.QUESTIONNAIRES,
+        loadChildren: () =>
+          import('./entities/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
+        canActivate: [roleGuard],
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
+      },
+      {
+        path: ROUTES.PROTOCOLS,
+        loadChildren: () =>
+          import('./entities/protocol/protocols.route').then((m) => m.protocolsRoutes),
+        canActivate: [roleGuard],
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
+      },
+
       {
         path: ROUTES.LOGS,
         loadChildren: () => import('./entities/log/log.routes').then((m) => m.logRoutes),
@@ -100,7 +93,10 @@ export const adminRoutes: Routes = [
       },
       {
         path: ROUTES.REVISIONS,
-        loadChildren: () => import('./entities/revision/revision.routes').then((m) => m.revisionRoutes),
+        loadChildren: () => import('./entities/revision/revision.routes').then((m) => {
+          console.log('Class55555: , Function: , Line 104 ' , );
+          return m.revisionRoutes
+        }),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },

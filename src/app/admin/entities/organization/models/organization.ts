@@ -1,10 +1,10 @@
 import {RadarProject} from '../../project/models/project';
 
-export interface RadarOrganization extends Record<string, number | string | RadarProject[] | undefined> {
+export interface RadarOrganization extends Record<string, any> {
   id: number | string;
   name: string;
-  description?: string;
-  location?: string;
+  description: string | null;
+  location: string | null;
   projects?: RadarProject[];
 }
 

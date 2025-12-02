@@ -4,12 +4,14 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
-import {PermissionService} from './permission.service';
-import {AppUser} from '../models/user';
+// import {PermissionService} from './permission.service';
+// import {AppUser} from '../models/user';
 import {AppProject} from '../../project/models/project';
 import {AppOrganization} from '../../organization/models/organization';
 import {PermissionDialogComponent} from '../containers/permission-dialog/permission-dialog.component';
-import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
+// import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
+import {AppUser} from "../../user/models/user";
+import {UserService} from "../../user/services/user.service";
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -18,7 +20,7 @@ export interface UpdateTrigger {
 
 @Injectable({providedIn: 'root'})
 export class PermissionDialogService {
-  private entityService = inject(PermissionService);
+  private entityService = inject(UserService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);

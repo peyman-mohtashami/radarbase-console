@@ -3,7 +3,7 @@ import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.mo
 import {NgClass} from '@angular/common';
 
 @Component({
-  selector: 'radarbase-metrics-thread-modal',
+  selector: 'app-metrics-thread-modal',
   templateUrl: './metrics-modal-threads.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

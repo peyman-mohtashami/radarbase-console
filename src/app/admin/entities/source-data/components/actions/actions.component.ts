@@ -5,33 +5,38 @@ import {AppSourceData} from '../../models/source-data';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SourceDataConfigService} from "../../services/source-data-config.service";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
-  selector: 'app-actions',
+  selector: 'app-source-data-actions',
+  templateUrl: './actions.component.html',
   imports: [
     MatIconButton,
     MatMenu,
     MatMenuItem,
     TranslatePipe,
-    MatMenuTrigger
+    MatMenuTrigger,
+    MatTooltip
   ],
-  templateUrl: './actions.component.html',
 })
 export class ActionsComponent {
-
   protected readonly DialogMode = DialogMode;
 
-  entity$ = input.required<AppSourceData>();
-  isExpanded$ = input<boolean>(true);
-
+  private configService = inject(SourceDataConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
+  entity = input.required<AppSourceData>();
+  isExpanded = input<boolean>(true);
+
+  entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/sourceData/${this.entity$().id}`
+      fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity().id}`
     }).then()
   }
 }

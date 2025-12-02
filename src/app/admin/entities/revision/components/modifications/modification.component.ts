@@ -6,7 +6,7 @@ import {KeyValuePipe} from "@angular/common";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-modification',
+  selector: 'app-modification',
   templateUrl: './modification.component.html',
   imports: [
     TagComponent,

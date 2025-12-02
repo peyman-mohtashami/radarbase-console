@@ -8,7 +8,7 @@ import {AppProject} from '../../../project/models/project';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 
 @Component({
-  selector: 'rb-assign-group',
+  selector: 'app-assign-group',
   templateUrl: './assign-group.component.html',
   imports: [
     MatButton,
@@ -16,9 +16,9 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
   ]
 })
 export class AssignGroupComponent {
-  groups$ = input<AppGroup[]>([]);
-  selection$ = input<SelectionModel<AppSubject>>(new SelectionModel<AppSubject>(true, []));
-  project$ = input.required<AppProject>();
+  groups = input<AppGroup[]>([]);
+  selection = input<SelectionModel<AppSubject>>(new SelectionModel<AppSubject>(true, []));
+  project = input.required<AppProject>();
 
   private dialogService = inject(SubjectDialogService);
 
@@ -27,11 +27,11 @@ export class AssignGroupComponent {
   assignGroupToSubjects(e?: Event) {
     e?.stopPropagation();
 
-    if (this.selection$().selected.length) {
-      const subjects = this.selection$().selected.map((s) => {
+    if (this.selection().selected.length) {
+      const subjects = this.selection().selected.map((s) => {
         return { login: s.login };
       });
-      return this.dialogService.openAssignGroupToSubjectsDialog(subjects, this.project$(), this.groups$())
+      return this.dialogService.openAssignGroupToSubjectsDialog(subjects, this.project(), this.groups())
     }
   }
 }

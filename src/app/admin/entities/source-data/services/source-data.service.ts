@@ -4,7 +4,7 @@ import {Params} from '@angular/router';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
 
 @Injectable({providedIn: 'root'})
 export class SourceDataService {
@@ -21,7 +21,7 @@ export class SourceDataService {
   }
 
   private toRadarModel(entity: AppSourceData): RadarSourceData {
-    return { ...entity };
+    return entity;
   }
 
   getWithQuery(queryParams?: Params | string): Observable<AppSourceData[]> {

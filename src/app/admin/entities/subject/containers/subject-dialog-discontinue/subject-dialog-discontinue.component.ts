@@ -22,7 +22,7 @@ import {
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 
 @Component({
-  selector: 'rb-subject-dialog-discontinue-dialog',
+  selector: 'app-subject-dialog-discontinue-dialog',
   templateUrl: './subject-dialog-discontinue.component.html',
   imports: [
     MatDialogTitle,
@@ -50,8 +50,8 @@ export class SubjectDialogDiscontinueComponent implements AfterViewInit {
 
   tableFields = this.configService.getTableFields();
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
@@ -64,8 +64,8 @@ export class SubjectDialogDiscontinueComponent implements AfterViewInit {
   }
 
   onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     switch ($event) {
       case 'close':
         this.close();
@@ -84,7 +84,7 @@ export class SubjectDialogDiscontinueComponent implements AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -96,7 +96,7 @@ export class SubjectDialogDiscontinueComponent implements AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 }

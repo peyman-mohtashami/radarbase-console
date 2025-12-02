@@ -1,0 +1,66 @@
+<div class="text-sm" [class]="!isMenuOpen() ? 'md:[&_.item-label]:hidden' : ''">
+  @for (navGroupItem of navGroupItems; track navGroupItem) {
+    <div class="m-2">
+      <ng-container *showIfHasRole="navGroupItem.permission">
+        <mat-expansion-panel class="hover:bg-black/20! bg-white/10!" [class.mat-elevation-z0]="true" [expanded]="!navGroupItem.close">
+          <mat-expansion-panel-header class="py-2! bg-transparent! h-auto! text-on-tertiary" [class]="isMenuOpen() ? 'px-4!': 'px-2!'">
+            <div class="flex gap-2 items-center w-full!" [class]="!isMenuOpen() ? 'md:justify-start' : ''">
+              <span class="material-symbols-outlined"
+                    [matTooltip]="!isMenuOpen() ? (('SHARED.nav.' + navGroupItem.header?.name) | translate) : ''"
+                    [matTooltipPosition]="'after'">
+                {{ navGroupItem.header?.icon }}
+              </span>
+              <div class="item-label uppercase whitespace-nowrap">
+                <span class=''>{{ ("SHARED.nav." + navGroupItem.header?.name) | translate }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel-header>
+          <mat-nav-list class="p-0!">
+            @for (nav of navGroupItem.navList; track nav) {
+              <div class="border-t border-on-tertiary/50 w-full" *showIfHasRole='nav.permission'>
+                @if (!nav.external) {
+                  <mat-list-item class="px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary! h-auto!"
+                                 [routerLink]='nav.route'
+                                 routerLinkExactActive="routerLinkActive" [targetUrl]="nav.route">
+                    <span class="text-white! flex items-center gap-2"
+                          [class]="isMenuOpen() ? 'px-4! pl-8!' : 'md:justify-start px-4!'">
+                      <span class="material-symbols-outlined"
+                            [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                            [matTooltipPosition]="'after'">{{ nav.icon }}
+                      </span>
+                      <span class="item-label whitespace-nowrap">
+                        {{ ('ADMIN.' + nav.name + '.title.plural') | translate }}
+                      </span>
+                    </span>
+                  </mat-list-item>
+
+                } @else {
+                  <mat-list-item class="px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary! h-auto!">
+                    <a class="text-white! flex items-center gap-2" [href]="nav.route" [target]="'_blank'"
+                       [class]="isMenuOpen() ? 'px-4! pl-8!' : 'md:justify-center px-2!'">
+                      <span class="material-symbols-outlined"
+                            [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                            [matTooltipPosition]="'after'">
+                        {{ nav.icon }}
+                      </span>
+                      <span class="flex-grow flex justify-between items-center">
+                        <span class="item-label whitespace-nowrap">
+                          {{ ('ADMIN.' + nav.name + '.title.plural') | translate }}
+                        </span>
+                        <span class="material-symbols-outlined text-lg! opacity-50"
+                              [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                              [matTooltipPosition]="'after'">
+                          open_in_new
+                        </span>
+                      </span>
+                    </a>
+                  </mat-list-item>
+                }
+              </div>
+            }
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </ng-container>
+    </div>
+  }
+</div>

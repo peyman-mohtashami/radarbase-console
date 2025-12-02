@@ -94,7 +94,7 @@ export class ConfigDialogService {
     });
   }
 
-  openPublishDialog(mode: "publish" | "discard", entities?: AppConfig[]) {
+  openPublishDialog(mode: "publish" | "discard", entities: AppConfig[], clientId: string, projectId?: string, subjectId?: string) {
     const dialogRef = this.createPublishDialogRef(mode, entities);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
@@ -103,7 +103,7 @@ export class ConfigDialogService {
         if (value.action === 'publish') {
           console.log('Class: ConfigDialogService, Function: next, Line 103 ' , );
           if (entities) {
-            this.entityService.publish1(entities).subscribe({
+            this.entityService.publish1(entities, clientId, projectId, subjectId).subscribe({
               next: (res) => {
                 console.log('Class: ConfigDialogService, Function: next, Line 106 ',);
                 this.dialogUpdateEvent$.set({mode: 'published', entity: undefined});

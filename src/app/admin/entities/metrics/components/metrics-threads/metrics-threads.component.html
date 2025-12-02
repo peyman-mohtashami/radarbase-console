@@ -1,5 +1,5 @@
-<div class="text-sm [&_rb-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_rb-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
-  <rb-detail-element>
+<div class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
+  <app-detail-element>
     <ng-container label>
       {{'ADMIN.metrics.threads.runnable' | translate }} ({{ threadStats.threadDumpRunnable }})
     </ng-container>
@@ -15,8 +15,8 @@
         </div>
       </section>
     </ng-container>
-  </rb-detail-element>
-  <rb-detail-element>
+  </app-detail-element>
+  <app-detail-element>
     <ng-container label>{{'ADMIN.metrics.threads.timedWaiting' | translate }} ({{ threadStats.threadDumpTimedWaiting }}
       )
     </ng-container>
@@ -32,8 +32,8 @@
         </div>
       </section>
     </ng-container>
-  </rb-detail-element>
-  <rb-detail-element>
+  </app-detail-element>
+  <app-detail-element>
     <ng-container label>{{'ADMIN.metrics.threads.waiting' | translate }} ({{ threadStats.threadDumpWaiting }})
     </ng-container>
     <ng-container value>
@@ -48,8 +48,8 @@
         </div>
       </section>
     </ng-container>
-  </rb-detail-element>
-  <rb-detail-element>
+  </app-detail-element>
+  <app-detail-element>
     <ng-container label>{{'ADMIN.metrics.threads.blocked' | translate }} ({{ threadStats.threadDumpBlocked }})
     </ng-container>
     <ng-container value>
@@ -64,13 +64,13 @@
         </div>
       </section>
     </ng-container>
-  </rb-detail-element>
-  <rb-detail-element>
+  </app-detail-element>
+  <app-detail-element>
     <ng-container label>{{'ADMIN.metrics.threads.total' | translate }}</ng-container>
     <ng-container value>
       {{ threadStats.threadDumpAll }}
     </ng-container>
-  </rb-detail-element>
+  </app-detail-element>
 </div>
 
 <div class="p-4">

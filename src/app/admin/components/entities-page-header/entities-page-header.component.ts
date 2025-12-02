@@ -2,30 +2,27 @@ import {Component, Input, input, output} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
-import {RbPermissionDirective} from '../../../core/auth/directives/ng-permission.directive';
-import {ENTITY_NAME} from '../../enums/entities';
+import {PermissionDirective} from '../../../core/auth/directives/show-if-has-role.directive';
 import {DialogMode} from '../../enums/dialog';
-import {ENTITIES} from '../../consts/entities';
+import {EntityRegistry} from "../../../shared/consts/entity-registry";
 
 @Component({
-  selector: 'rb-entities-page-header',
+  selector: 'app-entities-page-header',
   templateUrl: './entities-page-header.component.html',
   imports: [
     TranslatePipe,
     MatIconButton,
-    RbPermissionDirective,
+    PermissionDirective,
     MatButton
   ]
 })
 export class EntitiesPageHeaderComponent {
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
-  protected readonly ENTITIES = ENTITIES;
 
-  showTitle$ = input<boolean>(true);
-  entityName$ = input.required<ENTITY_NAME>();
-  enableAddButton$ = input<boolean>(true);
-  permission$ = input<any>();
+  entityMetadata = input.required<EntityRegistry>();
+  showTitle = input<boolean>(true);
+  enableAddButton = input<boolean>(true);
+  permission = input<any>();
 
   //TODO
   @Input() isGridView?: boolean; // = input<boolean>();

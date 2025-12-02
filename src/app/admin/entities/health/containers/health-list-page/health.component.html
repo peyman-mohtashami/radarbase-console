@@ -18,7 +18,7 @@
   </div>
 
   @if (loading$()) {
-    <rb-loader/>
+    <app-loader/>
   }
 
   @if (health$()?.components) {
@@ -31,14 +31,14 @@
               <span>{{ 'ADMIN.health.service' | translate }}
                 : {{ 'health.indicator.' + componentHealth.key | translate }}</span>
               @if (componentHealth.value.status === 'UP') {
-                <rb-tag class="bg-green-100 text-green-700">
+                <app-tag class="bg-green-100 text-green-700">
                   {{ 'ADMIN.health.status' | translate }}: {{ componentHealth.value.status }}
-                </rb-tag>
+                </app-tag>
               }
               @if (componentHealth.value.status !== 'UP') {
-                <rb-tag class="bg-red-100 text-red-700">
+                <app-tag class="bg-red-100 text-red-700">
                   {{ 'ADMIN.health.status' | translate }}: {{ componentHealth.value.status }}
-                </rb-tag>
+                </app-tag>
               }
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -46,9 +46,9 @@
             <div class="p-4">
               <p class="mb-4">{{ 'ADMIN.health.properties' | translate }}</p>
               <div
-                class="border [&_rb-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_rb-detail-element:nth-child(even)>div]:bg-neutral-600 p-2">
+                class="border [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-2">
                 @for (entry of componentHealth.value.details | keyvalue; track entry.key) {
-                  <rb-detail-element>
+                  <app-detail-element>
                     <ng-container label>{{ entry.key }}</ng-container>
                     @if (entry.key !== 'diskSpace') {
                       <ng-container value>{{ entry.value }}</ng-container>
@@ -56,7 +56,7 @@
                     @if (entry.key === 'diskSpace') {
                       <ng-container value>{{ +entry.value | fileSize:2 }}</ng-container>
                     }
-                  </rb-detail-element>
+                  </app-detail-element>
                 }
               </div>
             </div>

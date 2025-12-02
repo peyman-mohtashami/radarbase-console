@@ -31,12 +31,11 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
-import {ENTITY_NAME} from '../../../../enums/entities';
 import {DetailType} from '../../../../enums/detail-type';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 
 @Component({
-  selector: 'rb-subject-dialog-assign-group-dialog',
+  selector: 'app-subject-dialog-assign-group-dialog',
   templateUrl: './subject-dialog-assign-group.component.html',
   imports: [
     TranslatePipe,
@@ -60,7 +59,6 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
     groups: AppGroup[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = SubjectDialogMode;
   protected readonly DetailType = DetailType;
   protected readonly ValidatorHint = ValidatorHint;
@@ -73,8 +71,8 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
     group: new FormControl<AppGroup | undefined>(undefined, {nonNullable: true})
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ group?: AppGroup }>();
@@ -87,7 +85,7 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -102,8 +100,8 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
   }
 
   onAction() { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     this.handleAssignAction();
   }
 
@@ -114,7 +112,7 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -126,7 +124,7 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 }

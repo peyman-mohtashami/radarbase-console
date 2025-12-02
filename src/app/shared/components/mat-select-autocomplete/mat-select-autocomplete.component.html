@@ -3,11 +3,11 @@
 }
 <mat-form-field class='small-input w-full'
                 subscriptSizing="fixed"
-                appearance="outline"
-                [floatLabel]='floatLabel() ? "always" : "auto"'>
-  @if(floatLabel()) {
-  <mat-label>{{label()}}</mat-label>
-  }
+                appearance="outline">
+<!--                [floatLabel]='floatLabel() ? "always" : "auto"'>-->
+<!--  @if(floatLabel()) {-->
+<!--    <mat-label>{{label()}}</mat-label>-->
+<!--  }-->
   <mat-select [formControl]="form"
               placeholder=""
               [multiple]="multiple()"
@@ -15,16 +15,32 @@
               #multiSelect>
     @if (multiple()) {
       <mat-select-trigger>
-        <mat-chip-listbox>
+<!--        <mat-chip-listbox>-->
+<!--          @for (selected of form?.value; track selected._name) {-->
+<!--            <mat-chip-option [value]="selected"-->
+<!--                             [removable]="true"-->
+<!--                             (removed)="removeChip(selected)">-->
+<!--              {{selected["_name"]}}-->
+<!--              <mat-icon matChipRemove>cancel</mat-icon>-->
+<!--            </mat-chip-option>-->
+<!--          }-->
+<!--        </mat-chip-listbox>-->
+<!--        <mat-chip-listbox>-->
+        <div class="flex flex-wrap gap-1">
           @for (selected of form?.value; track selected._name) {
-            <mat-chip-option [value]="selected"
-                             [removable]="true"
-                             (removed)="removeChip(selected)">
+            <app-tag class="font-bold text-primary bg-primary/10">
               {{selected["_name"]}}
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip-option>
+              <button mat-icon-button class="tiny" [disabled]="selected.id === notRemovable()?.id" (click)="removeChip(selected)"><span class="text-xl! leading-0 material-symbols-outlined" >cancel</span></button>
+            </app-tag>
+<!--            <mat-chip-option [value]="selected"-->
+<!--                             [removable]="true"-->
+<!--                             (removed)="removeChip(selected)">-->
+<!--              {{selected["_name"]}}-->
+<!--              <mat-icon matChipRemove>cancel</mat-icon>-->
+<!--            </mat-chip-option>-->
           }
-        </mat-chip-listbox>
+<!--        </mat-chip-listbox>-->
+        </div>
       </mat-select-trigger>
     }
     <mat-option>
@@ -33,7 +49,7 @@
                              [noEntriesFoundLabel]="'No matching ' + label() + ' found'" />
     </mat-option>
     @for (option of filteredMulti$ | async; track option._name) {
-      <mat-option [value]="option">
+      <mat-option [value]="option" [disabled]="option.id === notRemovable()?.id">
         {{option._name}}
       </mat-option>
     }

@@ -20,7 +20,7 @@
   </div>
 
   @if (loading$()) {
-    <rb-loader/>
+    <app-loader/>
   } @else {
     <mat-accordion class="text-sm">
       @if (metrics) {
@@ -28,7 +28,7 @@
           <mat-expansion-panel-header class="p-4!">
             <mat-panel-title>{{ 'ADMIN.metrics.jvm.title' | translate }}</mat-panel-title>
           </mat-expansion-panel-header>
-          <rb-metrics-memory [jvmMemoryMetrics]="metrics.jvm"/>
+          <app-metrics-memory [jvmMemoryMetrics]="metrics.jvm"/>
         </mat-expansion-panel>
 
 
@@ -36,14 +36,14 @@
           <mat-expansion-panel-header class="p-4!">
             <mat-panel-title>{{ 'ADMIN.metrics.threads.title' | translate }}</mat-panel-title>
           </mat-expansion-panel-header>
-          <rb-metrics-threads [threads]="threads"/>
+          <app-metrics-threads [threads]="threads"/>
         </mat-expansion-panel>
 
         <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
           <mat-expansion-panel-header class="p-4!">
             <mat-panel-title>{{ 'ADMIN.metrics.processMetrics.title' | translate }}</mat-panel-title>
           </mat-expansion-panel-header>
-          <rb-metrics-system [systemMetrics]="metrics.processMetrics"/>
+          <app-metrics-system [systemMetrics]="metrics.processMetrics"/>
         </mat-expansion-panel>
 
         @if (metrics.garbageCollector) {
@@ -51,7 +51,7 @@
             <mat-expansion-panel-header class="p-4!">
               <mat-panel-title>{{ 'ADMIN.metrics.garbageCollector.title' | translate }}</mat-panel-title>
             </mat-expansion-panel-header>
-            <rb-metrics-garbage-collector [garbageCollectorMetrics]="metrics.garbageCollector"/>
+            <app-metrics-garbage-collector [garbageCollectorMetrics]="metrics.garbageCollector"/>
           </mat-expansion-panel>
         }
 
@@ -60,7 +60,7 @@
             <mat-expansion-panel-header class="p-4!">
               <mat-panel-title>{{ 'ADMIN.metrics.http.server.requests.title' | translate }}</mat-panel-title>
             </mat-expansion-panel-header>
-            <rb-metrics-request [requestMetrics]="metrics['http.server.requests']"/>
+            <app-metrics-request [requestMetrics]="metrics['http.server.requests']"/>
           </mat-expansion-panel>
         }
 
@@ -69,7 +69,7 @@
             <mat-expansion-panel-header class="p-4!">
               <mat-panel-title>{{ 'ADMIN.metrics.services.title' | translate }}</mat-panel-title>
             </mat-expansion-panel-header>
-            <rb-metrics-endpoints-requests [endpointsRequestsMetrics]="metrics.services"/>
+            <app-metrics-endpoints-requests [endpointsRequestsMetrics]="metrics.services"/>
           </mat-expansion-panel>
         }
 
@@ -78,7 +78,7 @@
             <mat-expansion-panel-header class="p-4!">
               <mat-panel-title>{{ 'ADMIN.metrics.cache.title' | translate }}</mat-panel-title>
             </mat-expansion-panel-header>
-            <rb-metrics-cache [cacheMetrics]="metrics.cache"/>
+            <app-metrics-cache [cacheMetrics]="metrics.cache"/>
           </mat-expansion-panel>
         }
 
@@ -87,7 +87,7 @@
             <mat-expansion-panel-header class="p-4!">
               <mat-panel-title>{{ 'ADMIN.metrics.databases.title' | translate }}</mat-panel-title>
             </mat-expansion-panel-header>
-            <rb-metrics-datasource [datasourceMetrics]="metrics.databases"/>
+            <app-metrics-datasource [datasourceMetrics]="metrics.databases"/>
           </mat-expansion-panel>
         }
       }

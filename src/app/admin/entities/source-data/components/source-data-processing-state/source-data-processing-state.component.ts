@@ -4,7 +4,7 @@ import {ProcessingState} from '../../models/source-data';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-source-data-processing-state',
+  selector: 'app-source-data-processing-state',
   templateUrl: './source-data-processing-state.component.html',
   imports: [
     TagComponent,
@@ -14,5 +14,5 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 export class SourceDataProcessingStateComponent {
   protected readonly ProcessingState = ProcessingState;
 
-  processingState$ = input<ProcessingState>();
+  processingState = input<ProcessingState | null>();
 }

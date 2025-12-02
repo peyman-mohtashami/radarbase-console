@@ -1,28 +1,28 @@
-<rb-details [name$]="ENTITY_NAME.project"
-            [entity$]="entity$()"
-            [tableFields$]="tableFields$()"
-            [type$]="type$()"
-            [customTemplate$]="detailsTemplate"/>
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @case ('startDate') {
-      <rb-local-date [date]="entity$().startDate" [format]="'mediumDate'"/>
+      <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
     }
     @case ('endDate') {
-      <rb-local-date [date]="entity$().endDate" [format]="'mediumDate'"/>
+      <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
     }
     @case ('projectStatus') {
-      <rb-project-status [projectStatus$]="entity$().projectStatus"/>
+      <app-project-status [projectStatus]="entity().projectStatus"/>
     }
     @case ('sourceTypes') {
-      <rb-project-source-types [sourceTypes$]="entity$().sourceTypes"/>
+      <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
     }
     @case ('attributes') {
-      {{ entity$().attributes | json }}
+      {{ entity().attributes | json }}
     }
     @default {
-      {{ entity$()[property.name] || "-" }}
+      {{ entity()[property.name] || "-" }}
     }
   }
 </ng-template>

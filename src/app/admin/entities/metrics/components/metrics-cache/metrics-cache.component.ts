@@ -4,7 +4,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {CacheMetrics} from '../../../../../shared/models/radar-metrics.model';
 
 @Component({
-  selector: 'rb-metrics-cache',
+  selector: 'app-metrics-cache',
   templateUrl: './metrics-cache.component.html',
   imports: [
     TranslatePipe,

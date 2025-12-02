@@ -1,0 +1,29 @@
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate"/>
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case('repeatProtocol') {
+      @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
+        <div>
+          Every <span class="font-bold">{{ repeatProtocol.amount }} {{ repeatProtocol.unit }}(s)</span> at specific times
+        </div>
+      }
+    }
+
+    @case ('completionWindow') {
+      @if (entity().protocol?.completionWindow; as completionWindow) {
+        {{ completionWindow.amount }} {{ completionWindow.unit }}(s)
+      } @else {
+        -
+      }
+    }
+
+    @default {
+      {{ entity()[property.name] || "-" }}
+    }
+  }
+</ng-template>

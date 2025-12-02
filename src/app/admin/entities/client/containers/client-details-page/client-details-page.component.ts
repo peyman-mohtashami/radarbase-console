@@ -1,7 +1,5 @@
 import {Component, effect, inject, signal} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
-import {TranslatePipe} from "@ngx-translate/core";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {DialogMode} from '../../../../enums/dialog';
 import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
@@ -10,15 +8,12 @@ import {ClientDialogService} from '../../services/client-dialog.service';
 import {AppClient} from '../../models/client';
 
 @Component({
-  selector: 'rb-client-details-page',
+  selector: 'app-client-details-page',
   templateUrl: './client-details-page.component.html',
   imports: [
-    LoaderComponent,
-    TranslatePipe,
     MatCard,
     MatCardContent,
     ClientDetailsComponent,
-    // ClientDetailsComponent
   ]
 })
 export class ClientDetailsPageComponent {
@@ -26,8 +21,7 @@ export class ClientDetailsPageComponent {
   private configService = inject(ClientConfigService);
   private dialogService = inject(ClientDialogService);
 
-  loading = false;
-  entity$ = signal(this.activatedRoute.snapshot.parent?.data['entity'] as AppClient);
+  entity = signal(this.activatedRoute.snapshot.parent?.data['entity'] as AppClient);
   tableFields = this.configService.getTableFields();
 
   constructor() {
@@ -37,7 +31,7 @@ export class ClientDetailsPageComponent {
         switch (updated.mode) {
           case DialogMode.EDIT:
             if (updated?.entity) {
-              this.entity$.set(updated.entity);
+              this.entity.set(updated.entity);
             }
             break;
         }

@@ -16,7 +16,6 @@ import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/ut
 import {
   MatSelectAutocompleteComponent,
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {HttpErrorResponse} from '@angular/common/http';
@@ -34,7 +33,7 @@ import {
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
-  selector: 'rb-source-dialog',
+  selector: 'app-source-dialog',
   templateUrl: './source-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -50,7 +49,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
   ]
 })
 export class SourceDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(SourceConfigService);
+  protected configService = inject(SourceConfigService);
   private dialogRef = inject(MatDialogRef<SourceDialogService>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
@@ -58,7 +57,6 @@ export class SourceDialogComponent implements OnInit, AfterViewInit {
     sourceTypes: AppSourceType[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;

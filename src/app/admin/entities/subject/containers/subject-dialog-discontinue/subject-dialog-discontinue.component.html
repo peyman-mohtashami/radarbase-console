@@ -16,19 +16,18 @@
     {{ "ADMIN.subject.discontinue.message" | translate }} {{ 'Subject' }}:
     <strong>{{ dialogData.entity.login }}</strong>.
   </p>
-  <rb-dialog-body-description>
-    <rb-subject-details class="py-4"
-                        [entity$]='dialogData.entity'
-                        [type$]="DetailType.SUMMARY"
-                        [tableFields$]="tableFields"/>
-  </rb-dialog-body-description>
+  <app-dialog-body-description>
+    <app-subject-details class="py-4"
+                        [entity]='dialogData.entity'
+                        [detailType]="DetailType.SUMMARY" />
+  </app-dialog-body-description>
   <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 
@@ -46,13 +45,15 @@
   <div class='ml-auto justify-end'>
     <button mat-raised-button
             color='warn'
-            [disabled]='loading$()'
+            [disabled]='loading()'
             (click)='onAction("delete")'>
-      @if (loading$()) {
+      @if (loading()) {
+        <ng-container>
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>
         {{ 'ADMIN.subject.discontinue.deleting' | translate }}
+        </ng-container>
       } @else {
         {{ 'ADMIN.subject.discontinue.discontinue' | translate }}
       }

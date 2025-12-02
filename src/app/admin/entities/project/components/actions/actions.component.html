@@ -1,12 +1,12 @@
-@if (isExpanded$()) {
+@if (isExpanded()) {
   <div class="flex items-center">
     <button class="tiny"
-            mat-icon-button color="primary"
+            mat-icon-button color="primary" [matTooltip]="`ADMIN.${entityName}.edit` | translate"
             (click)='onAction(DialogMode.EDIT)'>
       <span class="material-symbols-outlined text-xl!">edit</span>
     </button>
       <button class="tiny" [disabled]="true"
-              mat-icon-button color="warn"
+              mat-icon-button color="warn" [matTooltip]="`ADMIN.${entityName}.delete` | translate"
               (click)='onAction(DialogMode.DELETE)'>
         <span class="material-symbols-outlined text-xl!">delete</span>
       </button>
@@ -17,13 +17,13 @@
           (click)="$event.stopPropagation();">
     <span class="font-bold! material-symbols-outlined text-xl!">more_vert</span>
   </button>
-  <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">
-    <button class="hover:text-primary! hover:bg-transparent! transition-all"
+  <mat-menu #menu="matMenu" class="*:p-0! text-base shadow-lg">
+    <button class="hover:text-primary! hover:dark:text-primary-dark! hover:bg-transparent! transition-all"
             mat-menu-item
             (click)='onAction(DialogMode.EDIT)'>
               <span class="flex items-center gap-2">
-                <span class="text-xl! text-primary material-symbols-outlined font-bold!">edit</span>
-                <span>{{ 'ADMIN.project.edit' | translate }}</span>
+                <span class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">edit</span>
+                <span>{{ `ADMIN.${entityName}.edit` | translate }}</span>
               </span>
     </button>
       <button class="hover:text-red-500 hover:bg-transparent! transition-all" [disabled]="true"
@@ -31,7 +31,7 @@
               (click)='onAction(DialogMode.DELETE)'>
               <span class="flex items-center gap-2">
                 <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>
-                <span>{{ 'ADMIN.project.delete' | translate }}</span>
+                <span>{{ `ADMIN.${entityName}.delete` | translate }}</span>
               </span>
       </button>
   </mat-menu>

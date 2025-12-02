@@ -9,7 +9,6 @@ import {SourceService} from './source.service';
 import {SourceDialogComponent} from '../containers/source-dialog/source-dialog.component';
 import {AppSourceType} from '../../source-type/models/source-type';
 import {AppProject} from '../../project/models/project';
-import {SourceTypeDialogComponent} from '../../source-type/containers/source-type-dialog/source-type-dialog.component';
 
 export interface UpdateTrigger {
   mode: DialogMode;
@@ -23,7 +22,7 @@ export class SourceDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode, entity: AppSource | undefined, project: AppProject, sourceTypes: AppSourceType[]) {
     if (mode !== DialogMode.ADD && !entity) {
@@ -37,7 +36,7 @@ export class SourceDialogService {
       next: (value: { action: DialogMode; entity: AppSource }) => {
         this.processDialogAction(value.action, value.entity, project).subscribe({
           next: (res) => {
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            this.dialogUpdateEvent.set({mode, entity: res ?? value.entity})
             dialogRef.close();
           },
           error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),

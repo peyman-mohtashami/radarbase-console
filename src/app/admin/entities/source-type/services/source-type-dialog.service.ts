@@ -20,7 +20,7 @@ export class SourceTypeDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode, entity?: AppSourceType) {
     if (mode !== DialogMode.ADD && !entity) {
@@ -30,17 +30,25 @@ export class SourceTypeDialogService {
 
     const dialogRef = this.createDialogRef(mode, entity);
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppSourceType }) => {
-        this.processDialogAction(value.action, value.entity).subscribe({
-          next: (res) => {
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+    const dialogActionSubscription =
+      dialogRef.componentInstance.dialogActionEvent.subscribe(
+        (value) => {
+          const _entity = value.entity;
+          const _action = value.action;
+          if (!_entity) {
             dialogRef.close();
-          },
-          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-        });
-      }
-    });
+            return;
+          }
+          this.processDialogAction(_action, _entity).subscribe({
+            next: (res) => {
+              this.dialogUpdateEvent.set({mode, entity: res ?? _entity});
+              dialogRef.close();
+            },
+            error: (error: HttpErrorResponse) =>
+              dialogRef.componentInstance.errorHappened(error),
+          });
+        }
+      );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();

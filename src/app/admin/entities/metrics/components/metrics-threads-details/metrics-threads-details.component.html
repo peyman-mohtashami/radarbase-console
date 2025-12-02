@@ -52,27 +52,27 @@
         <div class="flex items-center gap-4">
 
           @if (thread.threadState === ThreadState.Runnable) {
-          <rb-tag class="bg-green-100 text-green-700">
+          <app-tag class="bg-green-100 text-green-700">
             {{ thread.threadState }}
-          </rb-tag>
+          </app-tag>
           }
 
           @if (thread.threadState === ThreadState.Waiting) {
-          <rb-tag class="bg-blue-100 text-blue-700">
+          <app-tag class="bg-blue-100 text-blue-700">
             {{ thread.threadState }}
-          </rb-tag>
+          </app-tag>
           }
 
           @if (thread.threadState === ThreadState.TimedWaiting) {
-          <rb-tag class="bg-orange-100 text-orange-700">
+          <app-tag class="bg-orange-100 text-orange-700">
             {{ thread.threadState }}
-          </rb-tag>
+          </app-tag>
           }
 
           @if (thread.threadState === ThreadState.Blocked) {
-          <rb-tag class="bg-red-100 text-red-700">
+          <app-tag class="bg-red-100 text-red-700">
             {{ thread.threadState }}
-          </rb-tag>
+          </app-tag>
           }
 
           <span>

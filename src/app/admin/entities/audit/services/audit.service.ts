@@ -5,7 +5,7 @@ import { Params } from '@angular/router';
 import {AppAudit, RadarAudit} from "../models/audit";
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
+import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
 
 @Injectable({ providedIn: 'root' })
 export class AuditService {
@@ -14,7 +14,12 @@ export class AuditService {
   total = 0;
 
   private toAppModel(entity: RadarAudit): AppAudit {
-    return { ...entity, id: entity.timestamp, _name: entity.timestamp, _search: `${entity.timestamp} ${entity.principal} ${entity.type}` };
+    return {
+      ...entity,
+      id: entity.timestamp,
+      _name: entity.timestamp,
+      _search: `${entity.timestamp} ${entity.principal} ${entity.type}`
+    };
   }
 
   // private toRadarModel(entity: AppAudit): RadarAudit {
@@ -81,6 +86,4 @@ export class AuditService {
     }
     return params;
   }
-
-
 }

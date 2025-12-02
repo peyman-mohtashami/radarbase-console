@@ -11,14 +11,14 @@ import {
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {MatFormField, MatHint, MatOption, MatSelect, MatSuffix} from '@angular/material/select';
+import {MatFormField, MatHint, MatOption, MatSelect} from '@angular/material/select';
 import {Validator, ValidatorError, ValidatorHint} from '../../utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {DatePipe} from "@angular/common";
-import {MatError, MatLabel} from "@angular/material/form-field";
+import {MatError} from "@angular/material/form-field";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatInput} from "@angular/material/input";
+import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ToDatePipe} from "../../pipes/to-date.pipe";
 import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
@@ -29,7 +29,7 @@ export interface RadarOption {
 }
 
 @Component({
-  selector: 'rb-mat-dynamic-input',
+  selector: 'app-mat-dynamic-input',
   templateUrl: './mat-dynamic-input.component.html',
   providers: [
     {

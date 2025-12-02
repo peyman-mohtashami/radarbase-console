@@ -1,123 +1,68 @@
-<rb-entities-page-header [showTitle$]="true"
-                         [entityName$]="ENTITY_NAME.config"
-                         [enableAddButton$]="true"
-                         [isGridView]="undefined"
-                         [permission$]="[{role: ROLES.SYS_ADMIN}]">
-  @if (tableFilters.length && entities$().length > MIN_ENTITIES_FOR_FILTERS) {
-    <rb-data-table-filter bottom-filter
-                          [filters$]='tableFilters'
-                          [filterOpened$]='isFilterOpened'
-                          (filterChanged)='switchFilter($event)'
-                          (filterEnableChanged)="onFilterEnabledChanged($event)"/>
-  }
-<!--  <div extra-buttons class="flex items-center gap-2">-->
-<!--    <input type="file" class="hidden"-->
-<!--           onclick="this.value = null"-->
-<!--           (change)="onFileSelected($event)" #fileImport>-->
-<!--    <button (click)="fileImport.click()" mat-stroked-button color="primary"-->
-<!--            type="button">-->
-<!--      <span class="font-bold flex items-center gap-2">-->
-<!--        <span class="material-symbols-outlined font-bold">download</span>-->
-<!--        Import-->
-<!--      </span>-->
-<!--    </button>-->
-<!--    <a [href]="downloadJsonHref" mat-stroked-button color="primary"-->
-<!--       [download]="'app-config-' + clientId + '-' + (projectName || '') +'-export.json'"-->
-<!--       type="button">-->
-<!--        <span class="font-bold flex items-center gap-2">-->
-<!--          <span class="material-symbols-outlined font-bold">upload</span>-->
-<!--          Export-->
-<!--        </span>-->
-<!--    </a>-->
-<!--  </div>-->
-</rb-entities-page-header>
-
-<!--@if (form) {-->
-<!--  <form class="px-4 pt-4" [formGroup]='form' novalidate>-->
-<!--    @if (clientId === 'pRMT') {-->
-<!--      <mat-form-field class='w-1/3! small-input'-->
-<!--                      appearance='outline'-->
-<!--                      subscriptSizing="dynamic"-->
-<!--                      floatLabel='always'>-->
-<!--        <mat-label>Config Category</mat-label>-->
-<!--        <mat-select formControlName='category' placeholder="Select a config category">-->
-<!--          <mat-option [value]="'general'">General</mat-option>-->
-<!--          <mat-option [value]="'measurements'">Therapist App - Measurements</mat-option>-->
-<!--          <mat-option [value]="'feedbackConfig'">Therapist App - Feedback</mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    }-->
-<!--    @if (clientId === 'aRMT') {-->
-<!--      <mat-form-field class='small-input'-->
-<!--                      subscriptSizing="fixed"-->
-<!--                      appearance='outline'-->
-<!--                      floatLabel='always'>-->
-<!--        <mat-label>Config Category</mat-label>-->
-<!--        <mat-select formControlName='category' placeholder="Select a config category">-->
-<!--          <mat-option [value]="'general'">General</mat-option>-->
-<!--          <mat-option [value]="'protocols'">Protocols</mat-option>-->
-<!--          <mat-option [value]="'questionnaires'">Questionnaires</mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    }-->
-<!--  </form>-->
-<!--}-->
-@if (isChanged) {
-<div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
-  <div class="flex items-center gap-4 text-orange-700">
-    <span class="material-symbols-outlined">error_outline</span>
-    <span>Unpublished changes</span>
-  </div>
-  <div class="flex items-center gap-4">
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="configService.getEntityMetadata()"
+                          [enableAddButton]="true"
+                          [isGridView]="undefined"
+                          [permission]="[{role: ROLES.SYS_ADMIN}]">
+  <div extra-buttons>
     <button type='button'
+            class="small"
             mat-stroked-button
-            color='primary'
-            (click)="onPublishDialogAction('discard')">
+            color="primary"
+            (click)="showHistory()">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined">history</span>
+      </span>
+    </button>
+  </div>
+  @if (tableFilters.length && entities().length > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='switchFilter($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</app-entities-page-header>
+
+@if (isChanged) {
+  <div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
+    <div class="flex items-center gap-4 text-orange-700">
+      <span class="material-symbols-outlined">error_outline</span>
+      <span>{{ `ADMIN.config.publish.unpublishedMessage` | translate }}</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button type='button'
+              mat-stroked-button
+              color='primary'
+              (click)="onPublishDialogAction('discard')">
       <span class="font-bold flex items-center gap-2">
         <span class="material-symbols-outlined font-bold">close</span>
-        Discard all
+        {{ `ADMIN.config.discard.discardAll` | translate }}
       </span>
-    </button>
-    <button class="text-white!" type='button'
-            mat-flat-button
-            color='accent'
-            (click)="onPublishDialogAction('publish')">
+      </button>
+      <button class="text-white!" type='button'
+              mat-flat-button
+              color='accent'
+              (click)="onPublishDialogAction('publish')">
       <span class="font-bold flex items-center gap-2">
         <span class="material-symbols-outlined font-bold">publish</span>
-        Publish changes
+        {{ `ADMIN.config.publish.title` | translate }}
       </span>
-    </button>
+      </button>
+    </div>
   </div>
-</div>
 }
 
-
-<!--@if (isChanged) {-->
-<!--  <rb-config-publish (updateTrigger)="triggerUpdate($event)" [entity]="entities$()"/>-->
-<!--}-->
-
-<!--<div class="p-4">-->
-<!--  @if (tableFilters.length && entities$().length > MIN_ENTITIES_FOR_FILTERS) {-->
-<!--    <rb-data-table-filter bottom-filter-->
-<!--                          [filters$]='tableFilters'-->
-<!--                          [filterOpened$]='isFilterOpened'-->
-<!--                          (filterChanged)='switchFilter($event)'-->
-<!--                          (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
-<!--  }-->
-<!--</div>-->
-
-@if (loading$()) {
-  <rb-loader/>
+@if (loading()) {
+  <app-loader/>
 }
 
 <div class="rb-table"
-     rbTableQueryReflector
-     [page]="page$()"
-     [sort]="sort$()"
-     [defaultSort]="{sortField: 'id', sortOrder: 'desc'}"
+     tableQueryReflector
+     [page]="page()"
+     [sort]="sort()"
      (activeQueryParams)="handleActiveQueryChange($event)">
 
-  @if (visibleEntities$().length) {
+  @if (visibleEntities().length) {
     <div class="rb-table-header mat-app-background">
       @for (tableElement of tableFields; track tableElement.name) {
         @if (tableElement.name === 'checkbox') {
@@ -135,11 +80,11 @@
                [class.shrink-0]="!!tableElement.width">
             <button class="rb-table-head group" [class]="tableElement.sortable ? 'cursor-pointer': ''"
                     (click)="switchSort(tableElement)">
-              <span>{{ 'ADMIN.config.' + tableElement.name + '.tableLabel' | translate }}</span>
+              <span>{{ `ADMIN.config.${tableElement.name}.tableLabel` | translate }}</span>
               @if (tableElement.sortable) {
-                <div class="rb-table-sort" [class.opacity-0]="sort$().sortField !== tableElement.name">
+                <div class="rb-table-sort" [class.opacity-0]="sort().sortField !== tableElement.name">
                       <span class="rb-sort-icon material-symbols-outlined">
-                        {{ sort$().sortField === tableElement.name && sort$().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+                        {{ sort().sortField === tableElement.name && sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
                       </span>
                 </div>
               }
@@ -150,172 +95,32 @@
     </div>
   }
 
-  @if (visibleEntities$()?.length) {
-    @for (entity of visibleEntities$(); track entity._name) {
-      <rb-config-table-row [entity$]="entity"
-                           [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"
-                           [tableFields$]="tableFields"
-                           [extensionClass$]="extensionClass$()"
-                           [configFields$]="configFields"
-                           class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]" />
+  @if (visibleEntities().length) {
+    @for (entity of visibleEntities(); track entity._name) {
+      <app-config-table-row [entity]="entity"
+                            [entityUpdateTrigger]="dialogService.dialogUpdateEvent$()"
+                            [extensionClass]="extensionClass()"
+                            class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
     }
   }
 </div>
 
-<div class="flex items-center p-4 text-sm font-bold">
-  @if (entities$().length === 0) {
-    <span>{{ 'ADMIN.config.noItemFound' | translate }}</span>
+<div class="flex items-center px-4 text-sm font-bold">
+  @if (entities().length === 0) {
+    <span class="py-4">{{ `ADMIN.${entityMetadata.name}.noItemFound` | translate }}</span>
   } @else {
-    @if (processedEntities$().length === 0) {
-      <span>{{ 'No item found with this filter' | translate }}</span>
+    @if (processedEntities().length === 0) {
+      <span class="py-4">{{ `ADMIN.${entityMetadata.name}.noItemFoundWithTheFilter` | translate }}</span>
     }
   }
 </div>
 
-@if (processedEntities$().length > MIN_ENTITIES_FOR_PAGINATION) {
+@if (processedEntities().length > MIN_ENTITIES_FOR_PAGINATION) {
   <mat-paginator (page)="switchPage($event)"
-                 [length]="processedEntities$().length"
-                 [pageSize]="page$().pageSize"
+                 [length]="processedEntities().length"
+                 [pageSize]="page().pageSize"
                  [pageSizeOptions]="PAGE_SIZE_OPTIONS"
-                 [pageIndex]="page$().pageIndex"
+                 [pageIndex]="page().pageIndex"
                  aria-label="Select page"/>
 }
-
-<!--<div class="rb-table"-->
-<!--     rbTableQueryReflector-->
-<!--     [page]="page"-->
-<!--     [sort]="sort"-->
-<!--     [defaultSort]="{sortField: 'name', sortOrder: 'asc'}"-->
-<!--     (activeQueryParams)="handleActiveQueryChange($event)"-->
-<!--     (dialogQueryParams)="onAction($event.mode, undefined, $event.id, undefined )">-->
-<!--  <div class="rb-table-header  mat-app-background">-->
-<!--    @for (property of PROPERTIES; track property.name) {-->
-<!--      <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"-->
-<!--           [class.flex-1]="!property.width"-->
-<!--           [class.shrink-0]="!!property.width">-->
-<!--        <button class="rb-table-head group" (click)="switchSort(property)">-->
-<!--          <span>{{ 'ADMIN.' + name + '.' + property.name + '.tableLabel' | translate }}</span>-->
-<!--          @if (property.sortable) {-->
-<!--            <div class="rb-table-sort" [class.opacity-0]="sort.sortField !== property.name">-->
-<!--              <span class="rb-sort-icon material-symbols-outlined">-->
-<!--                {{ sort.sortField === property.name && sort.sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}-->
-<!--              </span>-->
-<!--            </div>-->
-<!--          }-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    }-->
-<!--    &lt;!&ndash;    <div class='w-20'>&ndash;&gt;-->
-<!--    &lt;!&ndash;      <span>{{ 'ADMIN.' + name + '.actions' | translate }}</span>&ndash;&gt;-->
-<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
-<!--  </div>-->
-
-<!--&lt;!&ndash;  {{entitiesToShow | json}}&ndash;&gt;-->
-<!--  @if (entitiesToShow) {-->
-<!--    @for (entity of entitiesToShow; track entity.id) {-->
-<!--      <rb-config-table-row [entity]="entity" [projectId]="projectName" [updated]="updated" (actionEvent)="onAction($event.mode, $event.entity, undefined)"/>-->
-<!--&lt;!&ndash;      <div class="rb-table-row" [class]="updated === entity.id ? 'bg-green-100!' : ''">&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="rb-table-main-row">&ndash;&gt;-->
-<!--&lt;!&ndash;          @for (property of PROPERTIES; track property.name) {&ndash;&gt;-->
-<!--&lt;!&ndash;            <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"&ndash;&gt;-->
-<!--&lt;!&ndash;                 [class.flex-1]="!property.width"&ndash;&gt;-->
-<!--&lt;!&ndash;                 [class.shrink-0]="!!property.width">&ndash;&gt;-->
-<!--&lt;!&ndash;              @switch (property.name) {&ndash;&gt;-->
-<!--&lt;!&ndash;                @case ('value') {&ndash;&gt;-->
-<!--&lt;!&ndash;                  @if (projectName) {&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div>&ndash;&gt;-->
-<!--&lt;!&ndash;                      &lt;!&ndash;              {{entity | json}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                      <div class="font-bold">{{ entity["value"] }}</div>&ndash;&gt;-->
-<!--&lt;!&ndash;                      &lt;!&ndash;              <div class="font-bold text-gray-400" *ngIf="entity['default']"><span class="uppercase font-bold text-neutral-400">Default</span> {{ entity["default"] || '-' }} (Default - {{ entity["scope"] || '-' }})</div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                      @if (entity['default']) {&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div class="font-bold text-gray-400"><span class="uppercase text-xs font-bold text-neutral-300">[Default]</span> {{ entity["default"] || '-' }}&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                      } @else {&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div class="font-bold text-gray-400">No default value</div>&ndash;&gt;-->
-<!--&lt;!&ndash;                      }&ndash;&gt;-->
-<!--&lt;!&ndash;                      &lt;!&ndash;              <div class="font-bold text-gray-400">Default ({{ entity["scope"] || '-' }}):</div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                  } @else {&ndash;&gt;-->
-
-<!--&lt;!&ndash;                    <span>{{ entity["value"] }}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                  }&ndash;&gt;-->
-<!--&lt;!&ndash;                }&ndash;&gt;-->
-<!--&lt;!&ndash;                @default {&ndash;&gt;-->
-<!--&lt;!&ndash;                  {{ entity[property.name] || '-' }}&ndash;&gt;-->
-
-<!--&lt;!&ndash;                }&ndash;&gt;-->
-<!--&lt;!&ndash;              }&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;          }&ndash;&gt;-->
-<!--&lt;!&ndash;          <div class='w-20'>&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          <button mat-icon-button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;                  (click)="$event.stopPropagation(); expandedElement = expandedElement === entity ? null : entity">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          <span class="material-symbols-outlined">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;            {{entity !== expandedElement ? 'expand_more' : 'expand_less'}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          </span>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          <button class="mat-small-icon-button"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;                  mat-icon-button color="primary"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;                  (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;            <span class="material-symbols-outlined">edit</span>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          <button class="mat-small-icon-button" mat-icon-button color="warn"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;                  (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;            <span class="material-symbols-outlined">delete</span>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;            &lt;!&ndash;          </button>&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <button class="mat-small-icon-button" mat-icon-button color="primary"&ndash;&gt;-->
-<!--&lt;!&ndash;                    (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;-->
-<!--&lt;!&ndash;              <span class="material-symbols-outlined">edit</span>&ndash;&gt;-->
-<!--&lt;!&ndash;            </button>&ndash;&gt;-->
-<!--&lt;!&ndash;            @if (projectName && entity['default']) {&ndash;&gt;-->
-<!--&lt;!&ndash;              <button class="mat-small-icon-button" mat-icon-button color="primary"&ndash;&gt;-->
-<!--&lt;!&ndash;                      [disabled]="entity['value'] === entity['default']"&ndash;&gt;-->
-<!--&lt;!&ndash;                      (click)='onAction(DialogMode.EDIT, entity, undefined)'>&ndash;&gt;-->
-<!--&lt;!&ndash;                <span class="font-bold material-symbols-outlined">undo</span>&ndash;&gt;-->
-<!--&lt;!&ndash;              </button>&ndash;&gt;-->
-<!--&lt;!&ndash;            } @else {&ndash;&gt;-->
-<!--&lt;!&ndash;              <button class="mat-small-icon-button" mat-icon-button color="warn"&ndash;&gt;-->
-<!--&lt;!&ndash;                      (click)='onAction(DialogMode.DELETE, entity, undefined)'>&ndash;&gt;-->
-<!--&lt;!&ndash;                <span class="material-symbols-outlined">delete</span>&ndash;&gt;-->
-<!--&lt;!&ndash;              </button>&ndash;&gt;-->
-<!--&lt;!&ndash;            }&ndash;&gt;-->
-<!--&lt;!&ndash;          </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="rb-table-extension-row"&ndash;&gt;-->
-<!--&lt;!&ndash;             [@detailExpand]="entity === expandedElement ? 'expanded' : 'collapsed'"></div>&ndash;&gt;-->
-<!--&lt;!&ndash;      </div>&ndash;&gt;-->
-<!--    }-->
-<!--  }-->
-<!--</div>-->
-
-<!--<div class="flex items-center px-4 text-sm">-->
-<!--  @if (!entities?.length) {-->
-<!--    <span>{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>-->
-<!--  }-->
-<!--  @if (entities?.length && !entitiesToShow?.length) {-->
-<!--    <span>{{ 'No item found with this filter' | translate }}</span>-->
-<!--  }-->
-<!--</div>-->
-
-<!--&lt;!&ndash;<div class="flex items-center px-4 text-sm">&ndash;&gt;-->
-<!--&lt;!&ndash;  <span *ngIf="!entities?.length" >{{ 'ADMIN.' + name + '.noItemFound' | translate }}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;  <span *ngIf="entities?.length && !entitiesToShow?.length">{{ 'No item found with this filter' | translate }}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--@if (entities && entities.length > MIN_ENTITIES_FOR_PAGINATION) {-->
-<!--  <mat-paginator (page)="switchPage($event)"-->
-<!--                 [length]="filteredAndSortedEntities.length"-->
-<!--                 [pageSize]="page.pageSize"-->
-<!--                 [pageSizeOptions]="pageSizeOptions"-->
-<!--                 [pageIndex]="page.pageIndex"-->
-<!--                 aria-label="Select page"/>-->
-<!--}-->
-<!--&lt;!&ndash;  &ndash;&gt;-->
-<!--&lt;!&ndash;<mat-paginator (page)="switchPage($event)"&ndash;&gt;-->
-<!--&lt;!&ndash;               [length]="filteredAndSortedEntities.length"&ndash;&gt;-->
-<!--&lt;!&ndash;               [pageSize]="page.pageSize"&ndash;&gt;-->
-<!--&lt;!&ndash;               [pageSizeOptions]="pageSizeOptions"&ndash;&gt;-->
-<!--&lt;!&ndash;               [pageIndex]="page.pageIndex"&ndash;&gt;-->
-<!--&lt;!&ndash;               aria-label="Select page">&ndash;&gt;-->
-<!--&lt;!&ndash;</mat-paginator>&ndash;&gt;-->
 

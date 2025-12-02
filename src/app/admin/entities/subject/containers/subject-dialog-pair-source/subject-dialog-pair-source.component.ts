@@ -38,7 +38,7 @@ import {
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({
-  selector: 'rb-subject-dialog-pair-source',
+  selector: 'app-subject-dialog-pair-source',
   templateUrl: './subject-dialog-pair-source.component.html',
   imports: [
     TranslatePipe,
@@ -78,7 +78,7 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   //   map(sources => sources.filter(s => !s.assigned))
   // )
 
-  sources$ = toSignal(
+  sources = toSignal(
     this.sourceService.getWithQuery(this.dialogData.project.projectName).pipe(
       map(sources => sources.filter(s => !s.assigned))
     ),
@@ -86,8 +86,8 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   );
 
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
@@ -103,7 +103,7 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -115,8 +115,8 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   // addSource(selectedSource: AppSource) {
@@ -129,11 +129,11 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   // }
   //
   save() {
-    this.loading$.set(false);
+    this.loading.set(false);
     // console.log('Class: SubjectDialogPairSourceComponent, Function: save, Line 124 this.dialogData.entity.sources' , this.dialogData.entity.sources);
     // console.log('Class: SubjectDialogPairSourceComponent, Function: save, Line 134 this.sources$()' , this.sources$());
 
-    const addedSources = this.sources$().filter(s => s.assigned).map(s => {
+    const addedSources = this.sources().filter(s => s.assigned).map(s => {
       return {
         id: s.id,
         sourceTypeId: s.sourceType?.id,

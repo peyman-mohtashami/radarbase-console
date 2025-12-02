@@ -1,8 +1,8 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 
 import {
   MatchPasswordValidator,
@@ -14,14 +14,15 @@ import {AuthCardComponent} from "../../components/auth-card/auth-card.component"
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatInput} from "@angular/material/input";
 import {MatFormField} from "@angular/material/select";
-import {MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
+import {HttpErrorResponse} from "@angular/common/http";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
-  selector: 'rb-reset-password-page',
+  selector: 'app-reset-password-page',
   templateUrl: './reset-password-page.component.html',
   imports: [
     AuthCardComponent,
@@ -29,7 +30,6 @@ import {ErrorMessageComponent} from "../../../error/components/message/error-mes
     RouterLink,
     ReactiveFormsModule,
     MatFormField,
-    MatLabel,
     MatInput,
     MatIcon,
     MatError,
@@ -45,9 +45,9 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
   private activatedRoute = inject(ActivatedRoute);
 
-  isLoading = false;
-  error = false;
-  success = false;
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
 
   hidePassword = true;
   hideConfirmPassword = true;
@@ -65,7 +65,20 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
     })
   }, {
     validators: [MatchPasswordValidator('password', 'confirmPassword')]
-  })
+  });
+
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
+
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges()) {
+        this.error.set(null);
+      }
+    });
+  }
 
   _destroy$: Subject<void> = new Subject<void>();
 
@@ -75,11 +88,6 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         this.key = params['key'];
       });
-
-    this.form?.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.error = false;
-      this.success = false;
-    });
   }
 
   ngOnDestroy() {
@@ -88,23 +96,24 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
   }
 
   update(): void {
-    this.isLoading = true;
-    this.success = false;
-    this.error = false;
+    this.loading.set(true);
+    this.error.set(null);
+    this.success.set(false);
     const password = this.form.controls.password?.value;
     if (this.key && password) {
       this.profileService
         .updatePasswordFinish({ key: this.key, newPassword: password })
         .subscribe({
           next: () => {
-            this.success = true;
-            this.error = false;
-            this.isLoading = false;
+            this.success.set(true);
+            this.error.set(null);
+            this.loading.set(false);
           },
-          error: () => {
-            this.error = true;
-            this.success = false;
-            this.isLoading = false;
+          error: (error) => {
+            this.error.set(error);
+            this.success.set(false);
+            this.loading.set(false);
+            throw error
           },
         });
     }

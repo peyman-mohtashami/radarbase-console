@@ -1,28 +1,33 @@
+@let tableFields = configService.getTableFields();
+
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-green-100! ' : '') +
-    (expanded$() ? 'mb-2' : '')
+    (updated() ? 'bg-green-100! ' : '') +
+    (expanded() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
-    @for (tableElement of tableFields$(); track tableElement.name) {
+    @for (tableElement of tableFields; track tableElement.name) {
       <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
            [class.flex-1]="!tableElement.width"
            [class.shrink-0]="!!tableElement.width">
         @switch (tableElement.name) {
           @default {
-            {{ entity$()[tableElement.name] || '-' }}
+            {{ entity()[tableElement.name] || '-' }}
           }
         }
       </div>
 
       <div class='w-full md:w-1/2 flex justify-end items-center gap-2'>
-        <rb-tag [class]="entity$().level === 'TRACE'? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity$(), 'TRACE')">{{ 'ADMIN.log.level.TRACE' | translate }}</rb-tag>
-        <rb-tag [class]="entity$().level === 'DEBUG'? 'bg-teal-500 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity$(), 'DEBUG')">{{ 'ADMIN.log.level.DEBUG' | translate }}</rb-tag>
-        <rb-tag [class]="entity$().level === 'INFO'? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity$(), 'INFO')">{{ 'ADMIN.log.level.INFO' | translate }}</rb-tag>
-        <rb-tag [class]="entity$().level === 'WARN'? 'bg-orange-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity$(), 'WARN')">{{ 'ADMIN.log.level.WARN' | translate }}</rb-tag>
-        <rb-tag [class]="entity$().level === 'ERROR'? 'bg-red-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity$(), 'ERROR')">{{ 'ADMIN.log.level.ERROR' | translate }}</rb-tag>
+        <app-tag [class]="entity().level === 'TRACE'? 'bg-primary dark:bg-primary-dark text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'TRACE')">{{ 'ADMIN.log.level.TRACE' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'DEBUG'? 'bg-teal-500 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'DEBUG')">{{ 'ADMIN.log.level.DEBUG' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'INFO'? 'bg-primary dark:bg-primary-dark text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'INFO')">{{ 'ADMIN.log.level.INFO' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'WARN'? 'bg-orange-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'WARN')">{{ 'ADMIN.log.level.WARN' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'ERROR'? 'bg-red-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'ERROR')">{{ 'ADMIN.log.level.ERROR' | translate }}</app-tag>
       </div>
     }
   </div>
-  <div class="rb-table-extension-row" [@detailExpand]="expanded$() ? 'expanded' : 'collapsed'">
+
+  @if (expanded()) {
+    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
   </div>
+  }
 </mat-card>

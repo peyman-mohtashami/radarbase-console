@@ -3,7 +3,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
-  selector: 'rb-user-activated',
+  selector: 'app-user-activated',
   templateUrl: './user-activated.component.html',
   imports: [
     MatTooltip,
@@ -11,5 +11,5 @@ import {TranslatePipe} from '@ngx-translate/core';
   ]
 })
 export class UserActivatedComponent {
-  activated$ = input<boolean>();
+  activated = input<boolean | null>();
 }

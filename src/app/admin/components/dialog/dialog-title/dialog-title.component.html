@@ -1,19 +1,19 @@
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span class='inline-flex items-center justify-between w-full'>
     <span class="text-lg">
-      @if (mode$() === DialogMode.EDIT) {
+      @if (dialogMode() === DialogMode.EDIT) {
         <span>{{ "SHARED.dialog.edit" | translate }}</span>
       }
-      @if (mode$() === DialogMode.VIEW) {
+      @if (dialogMode() === DialogMode.VIEW) {
         <span>{{ "SHARED.dialog.view" | translate }}</span>
       }
-      @if (mode$() === DialogMode.ADD) {
+      @if (dialogMode() === DialogMode.ADD) {
         <span>{{ "SHARED.dialog.add" | translate }}</span>
       }
-      @if (mode$() === DialogMode.DELETE) {
+      @if (dialogMode() === DialogMode.DELETE) {
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
-      <span> {{ label$()?.singular! | translate }} {{ "ADMIN." + name$() + ".title.singular" | translate }}</span>
+      <span> {{ label()?.singular! | translate }} {{ "ADMIN." + entityMetadata()?.name + ".title.singular" | translate }}</span>
       <ng-content/>
     </span>
     <button mat-icon-button

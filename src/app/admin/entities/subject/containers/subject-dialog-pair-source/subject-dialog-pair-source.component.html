@@ -13,15 +13,14 @@
 </div>
 
 <mat-dialog-content>
-  <rb-dialog-body-description>
-    <rb-subject-details class="py-4"
-                        [entity$]='dialogData.entity'
-                        [type$]="DetailType.SUMMARY"
-                        [tableFields$]="tableFields"/>
-  </rb-dialog-body-description>
+  <app-dialog-body-description>
+    <app-subject-details class="py-4"
+                        [entity]='dialogData.entity'
+                        [detailType]="DetailType.SUMMARY" />
+  </app-dialog-body-description>
 
   {{'ADMIN.source.title.plural' | translate }}
-  <rb-dialog-body-description>
+  <app-dialog-body-description>
   @if (dialogData.entity.sources?.length) {
 
       @for (source of dialogData.entity.sources; track source.id) {
@@ -32,8 +31,8 @@
             </mat-checkbox>
           </span>
           <span class='value text-base' >
-            <rb-tag class="bg-source-type-color text-white">{{source.sourceTypeProducer+"_"+source.sourceTypeModel+"_"+source.sourceTypeCatalogVersion}}</rb-tag>
-<!--            <rb-tag class="bg-source-type-color text-white">{{`${source.sourceType?.producer}_${source.sourceType?.model}_${source.sourceType?.catalogVersion}`}}</rb-tag>-->
+            <app-tag class="bg-source-type-color text-white">{{source.sourceTypeProducer+"_"+source.sourceTypeModel+"_"+source.sourceTypeCatalogVersion}}</app-tag>
+<!--            <app-tag class="bg-source-type-color text-white">{{`${source.sourceType?.producer}_${source.sourceType?.model}_${source.sourceType?.catalogVersion}`}}</app-tag>-->
             {{source.sourceName}}
             @if (source.expectedSourceName) {
               <span>[{{ source.expectedSourceName }}]</span>
@@ -49,13 +48,13 @@
     <p>No Source assigned</p>
   }
 
-  @for (source of sources$(); track source.id) {
+  @for (source of sources(); track source.id) {
     <div class='detail-item'>
       <span class='label'>
         <mat-checkbox [(ngModel)]='source.assigned' />
       </span>
       <span class='value text-base'>
-        <rb-tag class="bg-source-type-color text-white">{{`${source.sourceType?.producer}_${source.sourceType?.model}_${source.sourceType?.catalogVersion}`}}</rb-tag>
+        <app-tag class="bg-source-type-color text-white">{{`${source.sourceType?.producer}_${source.sourceType?.model}_${source.sourceType?.catalogVersion}`}}</app-tag>
         {{source.sourceName}}
         @if (source.expectedSourceName) {
           <span>[{{ source.expectedSourceName }}]</span>
@@ -63,14 +62,14 @@
       </span>
     </div>
   }
-  </rb-dialog-body-description>
+  </app-dialog-body-description>
 
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 
@@ -91,9 +90,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='loading$()'
+            [disabled]='loading()'
             (click)='save()'>
-      @if (loading$()) {
+      @if (loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
       {{'ADMIN.subject.pairSource.save' | translate }}

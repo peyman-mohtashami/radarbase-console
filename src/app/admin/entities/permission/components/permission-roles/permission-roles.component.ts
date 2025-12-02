@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, input} from "@angular/core";
-import {AppRole, AppUser} from '../../models/user';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {AppRole, AppUser} from "../../../user/models/user";
 
 @Component({
-  selector: 'rb-permission-roles',
+  selector: 'app-permission-roles',
   templateUrl: './permission-roles.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -11,8 +11,8 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class PermissionRolesComponent {
-  roles$ = input<AppRole>();
-  project$ = input<string>();
-  organization$ = input<string>();
-  entity$ = input<AppUser>();
+  roles = input<AppRole>();
+  project = input<string>();
+  organization = input<string>();
+  entity = input<AppUser>();
 }

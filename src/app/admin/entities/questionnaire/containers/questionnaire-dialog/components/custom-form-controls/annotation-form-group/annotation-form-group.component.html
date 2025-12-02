@@ -1,0 +1,75 @@
+<label for="image" class="text-sm">Field Annotation *</label>
+<fieldset [formGroup]="form" class="p-2 rounded-sm border">
+
+  <div>
+    <label for="image" class="text-sm">Image *</label>
+    <mat-form-field class='small-input w-1/2' appearance='outline'>
+      <input matInput formControlName='image' required/>
+      @if (form.controls.image.errors; as errors) {
+        <mat-error>
+          @if (errors?.['pattern']) {
+            {{ ValidatorError.normalTextValidator }}
+          }
+          @if (errors?.['required']) {
+            {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="w-full grid grid-cols-3 gap-4">
+    <div>
+      <label for="unit" class="text-sm">Timer Unit *</label>
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput formControlName='unit' required/>
+        @if (form.controls.unit.errors; as errors) {
+          <mat-error>
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <ng-container formGroupName="timer">
+      <div>
+        <label for="start" class="text-sm">Timer Start *</label>
+        <mat-form-field class='small-input' appearance='outline'>
+          <input matInput formControlName='start' required/>
+          @if (form.controls.timer.controls.start.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div>
+        <label for="end" class="text-sm">Timer End *</label>
+        <mat-form-field class='small-input' appearance='outline'>
+          <input matInput formControlName='end' required/>
+          @if (form.controls.timer.controls.end.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </div>
+</fieldset>

@@ -23,15 +23,13 @@ import {
 } from "../../components/metrics-endpoints-requests/metrics-endpoints-requests.component";
 import {MetricsCacheComponent} from "../../components/metrics-cache/metrics-cache.component";
 import {MetricsDatasourceComponent} from "../../components/metrics-datasource/metrics-datasource.component";
-import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {Metrics, Thread} from '../../../../../shared/models/radar-metrics.model';
 
 @Component({
-  selector: 'rb-metrics-page',
+  selector: 'app-metrics-page',
   templateUrl: './metrics-page.component.html',
   imports: [
-    MatIcon,
     TranslatePipe,
     LoaderComponent,
     MatAccordion,

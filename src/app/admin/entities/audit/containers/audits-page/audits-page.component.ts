@@ -4,11 +4,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Observable, Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
-import { TABLE_ANIMATION } from '../../../../animation';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
-import {TableElement} from '../../../../models/table.model';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import {RbSort, TableElement} from '../../../../models/table.model';
+import {ROLES} from "../../../../../shared/enums/roles";
 import {AuditService} from '../../services/audit.service';
 import {AuditConfigService} from '../../services/audit-config.service';
 import {AuditTableRowComponent} from '../../components/audit-table-row/audit-table-row.component';
@@ -18,11 +17,15 @@ import {
   DataTableFilterComponent,
   FilterEvent
 } from '../../../../components/data-table-filter/data-table-filter.component';
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_PAGINATION,
+  PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'rb-entities-page',
+  selector: 'app-audits-page',
   templateUrl: './audits-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     EntitiesPageHeaderComponent,
     DataTableFilterComponent,
@@ -34,54 +37,52 @@ import {
   ]
 })
 export class AuditsPageComponent implements OnInit, OnDestroy {
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private activatedRoute = inject(ActivatedRoute);
   public entityService = inject(AuditService);
   private configService = inject(AuditConfigService);
 
+  entityMetadata = this.configService.getEntityMetadata();
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   configFields = this.configService.getFormFields();
 
-  visibleEntities$ = signal<AppAudit[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppAudit[]>(this.activatedRoute.snapshot.data['entities']);
 
-  page$ = signal<PageEvent>({
+  page = signal<PageEvent>({
     pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
-    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? this.DEFAULT_PAGE_SIZE,
+    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? DEFAULT_PAGE_SIZE,
     length: 0,
   });
-  sort$ = signal<RbSort>({
+  sort = signal<RbSort>({
     sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
     sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
   });
-  filter$ = signal<FilterEvent>(
+  filter = signal<FilterEvent>(
     this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
       map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
       return map;
     }, {})
   )
 
-  previousParamsState$ = signal<{
+  previousParamsState = signal<{
     page: PageEvent;
     sort: RbSort;
     filter: FilterEvent;
   }>({
-    page: this.page$(),
-    sort: this.sort$(),
-    filter: this.filter$(),
+    page: this.page(),
+    sort: this.sort(),
+    filter: this.filter(),
   });
 
-  paramsChanged$ = computed(() => {
-    const currentPage = this.page$();
-    const currentSort = this.sort$();
-    const currentFilter = this.filter$();
-    const previousState = this.previousParamsState$();
+  paramsChanged = computed(() => {
+    const currentPage = this.page();
+    const currentSort = this.sort();
+    const currentFilter = this.filter();
+    const previousState = this.previousParamsState();
 
     return (
       currentPage.pageIndex !== previousState.page.pageIndex ||
@@ -92,8 +93,8 @@ export class AuditsPageComponent implements OnInit, OnDestroy {
     );
   });
 
-  loading$ = signal(false);
-  extensionClass$ = signal('hidden');
+  loading = signal(false);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -102,24 +103,24 @@ export class AuditsPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.paramsChanged$()) {
-        this.previousParamsState$.set({
-          page: this.page$(),
-          sort: this.sort$(),
-          filter: this.filter$(),
+      if (this.paramsChanged()) {
+        this.previousParamsState.set({
+          page: this.page(),
+          sort: this.sort(),
+          filter: this.filter(),
         });
 
-        this.loadEntities(this.page$(), this.sort$(), this.filter$()).subscribe({
+        this.loadEntities(this.page(), this.sort(), this.filter()).subscribe({
           next: value => {
             this.selection.clear();
-            this.loading$.set(false);
-            this.visibleEntities$.set(value);
+            this.loading.set(false);
+            this.visibleEntities.set(value);
           }
         })
       }
     });
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
 
@@ -204,23 +205,23 @@ export class AuditsPageComponent implements OnInit, OnDestroy {
 
 
   handleFilterChange(event: FilterEvent){
-    this.filter$.set(event);
+    this.filter.set(event);
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
 
-    const sort: RbSort = {sortField: event.name, sortOrder: this.sort$()?.sortOrder === 'asc' ? 'desc' : 'asc'};
-    this.sort$.set(sort);
+    const sort: RbSort = {sortField: event.name, sortOrder: this.sort()?.sortOrder === 'asc' ? 'desc' : 'asc'};
+    this.sort.set(sort);
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {

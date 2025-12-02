@@ -12,7 +12,6 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatOption} from '@angular/material/core';
 
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {debounceTime} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
@@ -25,7 +24,6 @@ import {AppSubject} from '../../models/subject';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {AppGroup} from '../../../group/models/group';
 import {SubjectConfigService} from '../../services/subject-config.service';
-import {JsonPipe} from '@angular/common';
 import {AppProject} from '../../../project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -33,24 +31,15 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {DetailType} from '../../../../enums/detail-type';
-import {locale} from '../../../../../core/locale/store/locale.selectors';
-import {Store} from '@ngrx/store';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {LocaleService} from "../../../../../core/locale/services/locale.service";
 
 @Component({
-  selector: 'rb-subject-dialog',
+  selector: 'app-subject-dialog',
   templateUrl: './subject-dialog.component.html',
   imports: [
     TranslatePipe,
-    DialogActionsComponent,
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ReactiveFormsModule,
     MatFormField,
     MatInput,
@@ -60,7 +49,6 @@ import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dyn
     MatSelect,
     MatOption,
     MatError,
-    JsonPipe,
     MatButton,
     MatIcon,
     MatProgressSpinner,
@@ -72,8 +60,10 @@ import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dyn
   ]
 })
 export class SubjectDialogComponent implements OnInit, AfterViewInit {
-  private store = inject(Store);
-  private configService = inject(SubjectConfigService);
+  // private store = inject(Store);
+  localeService = inject(LocaleService);
+
+  protected configService = inject(SubjectConfigService);
   private dialogRef = inject(MatDialogRef<SubjectDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: SubjectDialogMode;
@@ -82,7 +72,6 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
     groups: AppGroup[];
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = SubjectDialogMode;
   protected readonly DetailType = DetailType;
   protected readonly ValidatorHint = ValidatorHint;
@@ -112,7 +101,7 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
   @Output()
   dialogActionEvent = new EventEmitter<{ action: SubjectDialogMode, entity?: AppSubject }>();
 
-  dateFormat = 'mm/dd/yyy';
+  // dateFormat = 'mm/dd/yyy';
 
   private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
@@ -128,13 +117,13 @@ export class SubjectDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.store?.select(locale)
-      // ?.getLocale()
-      // .pipe(takeUntil(this.subscription$))
-      .subscribe((locale) => {
-        // this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
-        this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
-      });
+    // this.store?.select(locale)
+    //   // ?.getLocale()
+    //   // .pipe(takeUntil(this.subscription$))
+    //   .subscribe((locale) => {
+    //     // this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
+    //     this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
+    //   });
 
     this.extraFields.forEach((field: any) => {
       this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));

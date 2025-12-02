@@ -1,7 +1,6 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {Subject} from 'rxjs';
-import {first, takeUntil} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {
   Validator,
   ValidatorHint,
@@ -12,15 +11,17 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} f
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatHint, MatInput} from "@angular/material/input";
 import {MatFormField} from "@angular/material/select";
-import {MatLabel} from "@angular/material/form-field";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {ManagementPortalUser} from '../../../../shared/models/auth.model';
+import {AuthService} from "../../services/auth.service";
+import {toSignal} from "@angular/core/rxjs-interop";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'rb-profile-page',
+  selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   imports: [
     MatCard,
@@ -29,7 +30,6 @@ import {ManagementPortalUser} from '../../../../shared/models/auth.model';
     TranslatePipe,
     ReactiveFormsModule,
     MatFormField,
-    MatLabel,
     MatInput,
     MatHint,
     MatError,
@@ -41,17 +41,16 @@ import {ManagementPortalUser} from '../../../../shared/models/auth.model';
     ErrorMessageComponent
   ]
 })
-export class ProfilePageComponent implements OnInit, OnDestroy {
+export class ProfilePageComponent implements OnInit {
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
   private profileService = inject(ProfileService);
+  authService = inject(AuthService);
 
-  isLoading = false;
-  error = false;
-  success = false;
-
-  user?: ManagementPortalUser;
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+  success = signal(false);
 
   form = new FormGroup({
     login: new FormControl({value: '', disabled: true}),
@@ -60,45 +59,39 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     email: new FormControl('', [Validator.requiredValidator, Validator.emailValidator]),
   })
 
-  _destroy$: Subject<void> = new Subject<void>();
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
 
-  ngOnInit() {
-    this.profileService
-      .getUser()
-      .pipe(first())
-      .subscribe({
-        next: (user) => {
-          if (user) {
-            this.user = user as ManagementPortalUser;
-            this.form.patchValue(user as ManagementPortalUser);
-          }
-        },
-      });
-
-    this.form?.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.success = false;
-      this.error = false;
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges()) {
+        this.error.set(null);
+      }
     });
   }
 
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+  ngOnInit() {
+    const user = this.authService.user();
+    if (user) {
+      this.form.patchValue(user);
+    }
   }
 
   save(): void {
-    this.isLoading = true;
-    this.error = false;
+    this.loading.set(true);
+    this.error.set(null);
     this.profileService.update(this.form.value as ManagementPortalUser).subscribe({
       next: () => {
-        this.success = true;
-        this.error = false;
-        this.isLoading = false;
+        this.success.set(true);
+        this.error.set(null);
+        this.loading.set(false);
       },
       error: (error) => {
-        this.error = true;
-        this.success = false;
-        this.isLoading = false;
+        this.error.set(error);
+        this.success.set(false);
+        this.loading.set(false);
         throw error
       },
     });

@@ -5,6 +5,8 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatTooltip} from "@angular/material/tooltip";
+import {OrganizationConfigService} from "../../services/organization-config.service";
 
 @Component({
   selector: 'app-organization-actions',
@@ -14,23 +16,27 @@ import {ActivatedRoute, Router} from '@angular/router';
     MatMenu,
     MatMenuItem,
     TranslatePipe,
-    MatIconButton
+    MatIconButton,
+    MatTooltip
   ]
 })
 export class ActionsComponent {
   protected readonly DialogMode = DialogMode;
 
-  entity$ = input.required<AppOrganization>();
-  isExpanded$ = input<boolean>(true);
-
+  private configService = inject(OrganizationConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
+  entity = input.required<AppOrganization>();
+  isExpanded = input<boolean>(true);
+
+  entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/organization/${this.entity$().id}`
+      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
     }).then()
   }
 }

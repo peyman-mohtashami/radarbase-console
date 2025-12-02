@@ -4,7 +4,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {Databases} from '../../../../../shared/models/radar-metrics.model';
 
 @Component({
-  selector: 'rb-metrics-datasource',
+  selector: 'app-metrics-datasource',
   templateUrl: './metrics-datasource.component.html',
   imports: [
     TranslatePipe,

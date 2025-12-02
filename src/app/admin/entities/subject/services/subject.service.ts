@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
-import {DEFAULT_PAGE_SIZE} from '../../../consts/entities';
 import {isValid, parse} from 'date-fns';
+import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {

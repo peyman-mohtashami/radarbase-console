@@ -6,12 +6,11 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {MatCheckbox} from "@angular/material/checkbox";
-import {TABLE_ANIMATION} from '../../../../animation';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
-import {TableElement} from '../../../../models/table.model';
+import {TableQueryReflectorDirective} from '../../../../directives/table-query-reflector.directive';
+import {RbSort, TableElement} from '../../../../models/table.model';
 import {DialogMode} from '../../../../enums/dialog';
-import {ENTITY_NAME, ROLES} from '../../../../enums/entities';
+import {ROLES} from "../../../../../shared/enums/roles";
 import {GroupTableRowComponent} from '../../components/group-table-row/group-table-row.component';
 import {GroupService} from '../../services/group.service';
 import {GroupConfigService} from '../../services/group-config.service';
@@ -23,11 +22,15 @@ import {
   DataTableFilterComponent,
   FilterEvent
 } from '../../../../components/data-table-filter/data-table-filter.component';
+import {
+  DEFAULT_PAGE_SIZE,
+  MIN_ENTITIES_FOR_FILTERS,
+  MIN_ENTITIES_FOR_PAGINATION, PAGE_SIZE_OPTIONS
+} from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'rb-groups-page',
+  selector: 'app-groups-page',
   templateUrl: './groups-page.component.html',
-  animations: TABLE_ANIMATION,
   imports: [
     EntitiesPageHeaderComponent,
     DataTableFilterComponent,
@@ -40,35 +43,34 @@ import {
   ]
 })
 export class GroupsPageComponent implements OnInit, OnDestroy {
-  protected readonly DEFAULT_PAGE_SIZE = 20;
-  protected readonly PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
-  protected readonly MIN_ENTITIES_FOR_FILTERS = 0;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = 0;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly ROLES = ROLES;
+  protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
+  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
+  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private entityService = inject(GroupService);
-  private configService = inject(GroupConfigService);
+  protected configService = inject(GroupConfigService);
   public dialogService = inject(GroupDialogService);
 
   project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
 
+  entityMetadata = this.configService.getEntityMetadata();
   tableFields = this.configService.getTableFields();
   tableFilters = this.configService.getTableFilters();
   fields = this.configService.getFormFields();
 
-  entities$ = signal<AppGroup[]>(this.activatedRoute.snapshot.data['entities']);
-  processedEntities$ = signal<AppGroup[]>(this.activatedRoute.snapshot.data['entities']);
-  visibleEntities$ = signal<AppGroup[]>([]);
+  entities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['entities']);
+  processedEntities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['entities']);
+  visibleEntities = signal<AppGroup[]>([]);
 
-  page$: WritableSignal<PageEvent>;
-  sort$: WritableSignal<RbSort>;
-  filter$: WritableSignal<FilterEvent>;
+  page: WritableSignal<PageEvent>;
+  sort: WritableSignal<RbSort>;
+  filter: WritableSignal<FilterEvent>;
 
-  loading$ = signal(true);
-  extensionClass$ = signal('hidden');
+  loading = signal(true);
+  extensionClass = signal('hidden');
   filterEnabled = false;
   isFilterOpened = true;
   selection = new SelectionModel<any>(true, []);
@@ -77,13 +79,13 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
 
   constructor() {
     const { pageSize, pageIndex, sortField, sortOrder } = this.activatedRoute.snapshot.queryParams;
-    this.page$ = signal({
+    this.page = signal({
       pageIndex: pageIndex ?? 0,
-      pageSize: pageSize ?? this.DEFAULT_PAGE_SIZE,
+      pageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       length: 0,
     });
-    this.sort$ = signal({sortField: sortField ?? 'id', sortOrder: sortOrder ?? 'desc'});
-    this.filter$ = signal<FilterEvent>(
+    this.sort = signal({sortField: sortField ?? 'id', sortOrder: sortOrder ?? 'desc'});
+    this.filter = signal<FilterEvent>(
       this.tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
         return map;
@@ -92,11 +94,11 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
 
     this.initializeDialogEffect();
 
-    this.extensionClass$.set(this.getHighestPriorityClass(this.tableFields));
+    this.extensionClass.set(this.getHighestPriorityClass(this.tableFields));
   }
 
   ngOnInit() {
-    this.dialogService.dialogUpdateEvent$.set(undefined);
+    this.dialogService.dialogUpdateEvent.set(undefined);
     this.applyFilter();
     this.handleDialogUrlFragment();
   }
@@ -158,7 +160,7 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
 
   private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -176,22 +178,22 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
         break;
     }
     this.removeFragmentUrl();
-    this.loading$.set(false);
+    this.loading.set(false);
     this.selection.clear();
   }
 
   private addEntityToView(entity?: AppGroup) {
     if (entity) {
-      const entities = untracked(this.entities$);
-      this.entities$.set([entity, ...entities]);
+      const entities = untracked(this.entities);
+      this.entities.set([entity, ...entities]);
       this.applyFilter();
     }
   }
 
   private updateEntityInView(entity?: AppGroup) {
     if (entity) {
-      const updatedEntities = untracked(this.entities$).map(e => e.id === entity.id ? entity : e);
-      this.entities$.set(updatedEntities);
+      const updatedEntities = untracked(this.entities).map(e => e.id === entity.id ? entity : e);
+      this.entities.set(updatedEntities);
       this.applyFilter();
     }
   }
@@ -199,7 +201,7 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   private refreshEntities() {
     this.entityService.getAll(this.project.projectName).subscribe({
       next: (entities) => {
-        this.entities$.set(entities);
+        this.entities.set(entities);
         this.applyFilter();
       }
     });
@@ -215,17 +217,17 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
 
   private processUrlFragment(fragment: string) {
     const [_, action, entityType, entityId] = fragment.split('/');
-    if (entityType === 'group') {
-      const entity = this.visibleEntities$().find(e => e.id == entityId);
+    if (entityType === this.entityMetadata.name) {
+      const entity = this.visibleEntities().find(e => e.id == entityId);
       switch (action) {
         case 'add':
-          this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities$(), this.project.projectName);
+          this.dialogService.openDialog(DialogMode.ADD, undefined, this.entities(), this.project.projectName);
           break;
         case 'edit':
-          if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.entities$(), this.project.projectName);
+          if (entity) this.dialogService.openDialog(DialogMode.EDIT, entity, this.entities(), this.project.projectName);
           break;
         case 'delete':
-          if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.entities$(), this.project.projectName);
+          if (entity) this.dialogService.openDialog(DialogMode.DELETE, entity, this.entities(), this.project.projectName);
           break;
       }
     }
@@ -240,8 +242,8 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   }
 
   handleActiveQueryChange(event: {page: PageEvent, sort: RbSort}){
-    this.sort$.set(event.sort);
-    this.page$.set(event.page);
+    this.sort.set(event.sort);
+    this.page.set(event.page);
   }
 
   onFilterEnabledChanged($event: boolean) {
@@ -249,16 +251,16 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   }
 
   switchFilter(event: FilterEvent){
-    this.loading$.set(true);
-    this.filter$.set(event);
-    this.page$.set({...this.page$(), pageIndex: 0});
+    this.loading.set(true);
+    this.filter.set(event);
+    this.page.set({...this.page(), pageIndex: 0});
     this.applyFilter();
   }
 
   switchSort(event: TableElement) {
     if (!event.sortable) return;
-    const currentSort = this.sort$();
-    this.sort$.set({
+    const currentSort = this.sort();
+    this.sort.set({
       sortField: event.name,
       sortOrder: currentSort?.sortOrder === 'asc' ? 'desc' : 'asc'
     });
@@ -266,42 +268,42 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
   }
 
   switchPage(page: PageEvent) {
-    this.page$.set(page);
+    this.page.set(page);
     this.applySortAndPagination();
   }
 
   private applySortAndPagination() {
     const sortedEntities = this.applySorting();
     const pagedEntities = this.applyPagination(sortedEntities);
-    this.visibleEntities$.set(pagedEntities);
-    this.loading$.set(false);
+    this.visibleEntities.set(pagedEntities);
+    this.loading.set(false);
   }
 
   private applySorting(): AppGroup[] {
-    const {sortField, sortOrder} = this.sort$();
+    const {sortField, sortOrder} = this.sort();
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    return this.processedEntities$().sort((a, b) => {
+    return this.processedEntities().sort((a, b) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
   }
 
   private applyPagination(entities: AppGroup[]): AppGroup[] {
-    const { pageSize, pageIndex } = this.page$();
+    const { pageSize, pageIndex } = this.page();
     const startIndex = pageSize * pageIndex;
     return entities.slice(startIndex, startIndex + pageSize);
   }
 
   applyFilter() {
     const filteredEntities = this.getFilteredEntities();
-    this.processedEntities$.set(filteredEntities);
+    this.processedEntities.set(filteredEntities);
     this.applySortAndPagination();
   }
 
   private getFilteredEntities(): AppGroup[] {
-    let filteredEntities = [...this.entities$()];
+    let filteredEntities = [...this.entities()];
 
-    Object.entries(this.filter$()).forEach(([key, value]) => {
+    Object.entries(this.filter()).forEach(([key, value]) => {
       if (!value) return;
 
       filteredEntities = filteredEntities.filter((entity) =>
@@ -314,14 +316,14 @@ export class GroupsPageComponent implements OnInit, OnDestroy {
 
   /** Selection Helper Methods */
   isAllSelected() {
-    return this.selection.selected.length === this.visibleEntities$().length;
+    return this.selection.selected.length === this.visibleEntities().length;
   }
 
   masterToggle() {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.visibleEntities$());
+      this.selection.select(...this.visibleEntities());
     }
   }
 

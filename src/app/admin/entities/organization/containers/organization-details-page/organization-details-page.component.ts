@@ -1,8 +1,6 @@
 import {Component, effect, inject, signal} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppOrganization } from "../../models/organization";
-import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
-import {TranslatePipe} from "@ngx-translate/core";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {OrganizationDetailsComponent} from "../../components/organization-details/organization-details.component";
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -10,11 +8,9 @@ import {OrganizationDialogService} from '../../services/organization-dialog.serv
 import {DialogMode} from '../../../../enums/dialog';
 
 @Component({
-  selector: 'rb-organization-details-page',
+  selector: 'app-organization-details-page',
   templateUrl: './organization-details-page.component.html',
   imports: [
-    LoaderComponent,
-    TranslatePipe,
     MatCard,
     MatCardContent,
     OrganizationDetailsComponent
@@ -25,18 +21,17 @@ export class OrganizationDetailsPageComponent {
   private configService = inject(OrganizationConfigService);
   private dialogService = inject(OrganizationDialogService);
 
-  loading = false;
-  entity$ = signal(this.activatedRoute.snapshot.parent?.data['organization'] as AppOrganization);
+  entity = signal(this.activatedRoute.snapshot.parent?.data['organization'] as AppOrganization);
   tableFields = this.configService.getTableFields();
 
   constructor() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) {
         switch (updated.mode) {
           case DialogMode.EDIT:
-            if (updated?.entity) {
-              this.entity$.set(updated.entity);
+            if (updated.entity) {
+              this.entity.set(updated.entity);
             }
             break;
         }

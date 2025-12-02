@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import { AppUser } from "../../models/user";
 import {UserActivatedComponent} from "../user-activated/user-activated.component";
 import {UserRolesComponent} from "../user-roles/user-roles.component";
@@ -6,13 +6,12 @@ import {UserCreatedByComponent} from "../user-createdby/user-created-by.componen
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {DialogMode} from "../../../../enums/dialog";
 import {DetailType} from "../../../../enums/detail-type";
-import {ENTITY_NAME} from "../../../../enums/entities";
 import {DetailsComponent} from "../../../../components/details/details.component";
-import {TableElement} from '../../../../models/table.model';
 import {ActivateComponent} from '../activate/activate.component';
+import {UserConfigService} from "../../services/user-config.service";
 
 @Component({
-  selector: 'rb-user-details',
+  selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   imports: [
     UserActivatedComponent,
@@ -25,10 +24,10 @@ import {ActivateComponent} from '../activate/activate.component';
 })
 export class UserDetailsComponent {
   protected readonly DetailType = DetailType;
-  protected readonly ENTITY_NAME = ENTITY_NAME;
 
-  entity$ = input.required<AppUser>();
-  mode$ = input<DialogMode>();
-  type$ = input<DetailType>();
-  tableFields$ = input.required<TableElement[]>();
+  protected configService = inject(UserConfigService);
+
+  entity = input.required<AppUser>();
+  dialogMode = input<DialogMode>();
+  detailType = input<DetailType>();
 }

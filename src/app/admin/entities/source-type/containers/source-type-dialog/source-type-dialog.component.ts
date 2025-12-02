@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, effect, inject, OnInit, output, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
-import { AppSourceType } from "../../models/source-type";
-import {ENTITY_NAME} from "../../../../enums/entities";
+import {AppSourceType, SourceTypeScope} from "../../models/source-type";
 import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
@@ -18,7 +17,10 @@ import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/d
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {
+  DialogAction,
+  DialogActionsComponent
+} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 
 @Component({
   selector: 'rb-source-type-dialog',
@@ -40,14 +42,13 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
   ]
 })
 export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(SourceTypeConfigService);
+  protected configService = inject(SourceTypeConfigService);
   private dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppSourceType;
   };
 
-  protected readonly ENTITY_NAME = ENTITY_NAME;
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
@@ -55,23 +56,22 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
 
   form = new FormGroup({
-    id: new FormControl<string | number | undefined>({ value: undefined, disabled: true }, {nonNullable: true}),
+    id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),
     producer: new FormControl<string>("", {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
     model: new FormControl<string>("", {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
-    catalogVersion: new FormControl<string>("", {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
-    sourceTypeScope: new FormControl<any>("", {nonNullable: true, validators: [Validator.requiredValidator]}),
+    catalogVersion: new FormControl<string>("", {nonNullable: true, validators: [Validator.requiredValidator]}),
+    sourceTypeScope: new FormControl<SourceTypeScope | null>(null, {nonNullable: true, validators: [Validator.requiredValidator]}),
     canRegisterDynamically: new FormControl<boolean>(false, {nonNullable: true}),
-    name: new FormControl<string>("", {nonNullable: true}),
-    description: new FormControl<string>("", {nonNullable: true, validators: [Validator.longTextValidator]}),
-    assessmentType: new FormControl<string>("", {nonNullable: true}),
-    appProvider: new FormControl<string>("", {nonNullable: true}),
+    name: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
+    description: new FormControl<string>("", {validators: [Validator.longTextValidator]}),
+    assessmentType: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
+    appProvider: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppSourceType }>();
+  dialogActionEvent = output<{ action: DialogMode, entity?: AppSourceType }>();
 
   private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
@@ -81,7 +81,7 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   constructor() {
     effect(() => {
       if (this.formValueChanges()) {
-        this.error$.set(null);
+        this.error.set(null);
       }
     });
   }
@@ -97,17 +97,17 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
+  onAction($event: DialogAction) {
+    this.error.set(null);
+    this.loading.set(true);
     switch ($event) {
-      case 'close':
+      case DialogAction.CLOSE:
         this.close();
         break;
-      case 'delete':
+      case DialogAction.DELETE:
         this.handleDeleteAction();
         break;
-      case 'save':
+      case DialogAction.SAVE:
         this.handleSaveAction();
         break;
     }
@@ -116,7 +116,7 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   private handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value},
+      entity: {...this.dialogData.entity, ...this.form.value},
     });
   }
 
@@ -125,7 +125,7 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -137,7 +137,7 @@ export class SourceTypeDialogComponent implements OnInit, AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 }

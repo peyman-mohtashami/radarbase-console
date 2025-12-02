@@ -2,21 +2,21 @@ import {RadarOrganization} from '../../organization/models/organization';
 import {RadarSourceType} from '../../source-type/models/source-type';
 import {RadarGroup} from '../../group/models/group';
 
-export interface RadarProject extends Record<string, string | number | RadarOrganization | ProjectStatus | RadarSourceType[] | RadarGroup[] | Record<string, string> | undefined>{
+export interface RadarProject extends Record<string, number | string | RadarOrganization | ProjectStatus | RadarSourceType[] | RadarGroup[] | Record<string, string | null | undefined> | null> {
   id: number | string;
   projectName: string;
-  description?: string;
-  organizationName?: string;
+  description: string | null;
+  organizationName: string | null;
   organization: RadarOrganization;
-  location: string;
-  startDate?: string;
-  projectStatus?: ProjectStatus;
-  endDate?: string;
-  attributes?: Record<string, string>;
-  sourceTypes?: RadarSourceType[];
-  groups?: RadarGroup[];
-  humanReadableProjectName?: string;
-  persistentTokenTimeout?: number;
+  location: string | null;
+  startDate: string | null;
+  projectStatus: ProjectStatus | null;
+  endDate: string | null;
+  attributes: Record<string, string | null | undefined> | null;
+  sourceTypes: RadarSourceType[] | null;
+  groups: RadarGroup[] | null;
+  humanReadableProjectName: string | null;
+  persistentTokenTimeout: number | null;
 }
 
 export interface AppProject extends RadarProject {

@@ -1,4 +1,4 @@
-export interface RadarGroup extends Record<string, number | string | undefined>{
+export interface RadarGroup extends Record<string, number | string>{
   id: number | string;
   name: string;
   projectId: number;
@@ -7,5 +7,5 @@ export interface RadarGroup extends Record<string, number | string | undefined>{
 
 export interface AppGroup extends RadarGroup {
  _name: string;
- _search?: string;
+ _search: string;
 }

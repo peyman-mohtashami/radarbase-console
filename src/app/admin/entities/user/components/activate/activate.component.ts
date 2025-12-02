@@ -4,14 +4,14 @@ import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: 'rb-activate',
+  selector: 'app-user-activate',
   templateUrl: './activate.component.html',
   imports: [
     MatIconButton,
   ]
 })
 export class ActivateComponent {
-  entity$ = input.required<AppUser>();
+  entity = input.required<AppUser>();
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -20,7 +20,7 @@ export class ActivateComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/activate/user/${this.entity$().id}`
+      fragment: `/activate/user/${this.entity().id}`
     }).then()
   }
 }

@@ -58,16 +58,15 @@ export const projectRoutes: Routes = [
         loadChildren: () =>
           import('../permission/permission.routes').then((m) => m.permissionRoutes),
       },
-      // // {
-      // //   path: 'clients',
-      // //   loadChildren: () =>
-      // //     import('../client/client.module').then((m) => m.ClientModule),
-      // // },
       {
         path: 'app-config',
         loadChildren: () =>
           import('../client/app-config.routes').then((m) => m.appConfigRoutes),
-        // data: {appConfig: true}
+      },
+      {
+        path: 'protocols',
+        loadChildren: () =>
+          import('../protocol/protocols.route').then((m) => m.protocolsRoutes),
       },
       {
         path: 'details',

@@ -1,8 +1,5 @@
-@if (loading) {
-  <rb-loader [loadingText$]='"loading" | translate' />
-}
 <mat-card class="m-4 p-4 text-sm border">
   <mat-card-content>
-    <rb-project-details [entity$]="entity" [tableFields$]="tableFields" />
+    <app-project-details [entity]="entity" />
   </mat-card-content>
 </mat-card>

@@ -50,6 +50,12 @@ export const subjectRoutes: Routes = [
         path: 'compliance',
         component: SubjectCompliancePageComponent,
       },
+      {
+        path: 'app-config',
+        loadChildren: () =>
+          import('../client/app-config.routes').then((m) => m.appConfigRoutes),
+        // data: {appConfig: true}
+      },
       // {
       //   path: 'clients',
       //   loadChildren: () =>

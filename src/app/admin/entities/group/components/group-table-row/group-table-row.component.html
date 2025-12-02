@@ -1,9 +1,11 @@
+@let tableFields = configService.getTableFields();
+
 <mat-card class="rb-table-row" [class]="
-    (updated$() ? 'bg-primary/5! ' : '') +
-    (expanded$() ? 'mb-2' : '')
+    (updated() ? 'bg-primary/5! ' : '') +
+    (expanded() ? 'mb-2' : '')
   ">
   <div class="rb-table-main-row">
-    @for (tableElement of tableFields$(); track tableElement.name) {
+    @for (tableElement of tableFields; track tableElement.name) {
       <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
            [class.flex-1]="!tableElement.width"
            [class.shrink-0]="!!tableElement.width">
@@ -11,22 +13,22 @@
           @case ('actions') {
             <button mat-icon-button
                     class="tiny block"
-                    [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass$() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"
+                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
                     (click)="onExpansionClick($event)">
                 <span class="material-symbols-outlined text-xl!">
-                  {{ expanded$() ? 'expand_less' : 'expand_more' }}
+                  {{ expanded() ? 'expand_less' : 'expand_more' }}
                 </span>
             </button>
-            <app-actions [entity$]="entity$()" [isExpanded$]="true"/>
+            <app-group-actions [entity]="entity()" [isExpanded]="true"/>
           }
           @default {
-            {{ entity$()[tableElement.name] || '-' }}
+            {{ entity()[tableElement.name] || '-' }}
           }
         }
       </div>

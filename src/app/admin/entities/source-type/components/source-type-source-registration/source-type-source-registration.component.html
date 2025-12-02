@@ -1,9 +1,9 @@
-@if (canRegisterDynamically$()) {
-  <rb-tag class="bg-secondary text-white">
+@if (canRegisterDynamically()) {
+  <app-tag class="bg-secondary dark:bg-secondary-dark text-white">
     {{ 'ADMIN.sourceType.canRegisterDynamically.dynamic' | translate }}
-  </rb-tag>
+  </app-tag>
 } @else {
-  <rb-tag class="bg-secondary/10 text-primary">
+  <app-tag class="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark">
     {{ 'ADMIN.sourceType.canRegisterDynamically.manual' | translate }}
-  </rb-tag>
+  </app-tag>
 }

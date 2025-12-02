@@ -1,98 +1,117 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {select, Store} from "@ngrx/store";
-import {map} from "rxjs/operators";
+import {computed, inject, Injectable, signal} from '@angular/core';
+import {Observable, of, throwError} from 'rxjs';
+import {catchError, shareReplay, switchMap, tap} from "rxjs/operators";
 
-import {isLoggedIn, isLoggedOut, user} from "../store/auth.selectors";
-import {AuthState} from "../store/reducers";
 import {
-  // AuthOptionsModel,
-  // AuthResponse,
   CredentialAuthRequest,
-  ManagementPortalUser
+  ManagementPortalUser, TokenData
 } from '../../../shared/models/auth.model';
-
-// import {AuthOptionsModel, AuthResponse, CredentialAuthRequest, ManagementPortalUser} from '@rb/models';
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {StorageService} from "../../storage/services/storage.service";
+import {Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  constructor(public store: Store<AuthState>) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
-  init(): Observable<ManagementPortalUser | null> {//:  Observable<ManagementPortalUser> {
-    throw new Error('AuthService method not implemented');
-  }
+  private readonly _user = signal<ManagementPortalUser | null>(null);
+  readonly user = this._user.asReadonly();
+  readonly isAuthenticated = computed(() => !!this._user());
 
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // authenticateWithAuthCode(authCode: string): Observable<ManagementPortalUser> {
-  //   throw new Error('AuthService method not implemented');
-  // }
-
-  isAuthenticated(): Observable<boolean> {
-    return this.store.select(isLoggedIn)
-  }
-
-  isUnauthenticated(): Observable<boolean> {
-    return this.store.select(isLoggedOut);
-  }
-
-  isAuthorized(allowedRoles: string[]): Observable<boolean> {
-    return this.store.pipe(
-      select(user),
-      map((user) => {
-        // console.log('Class: AuthService, Function: , Line 46 user' , user);
-        let allow = false;
-        for (const allowedRole of allowedRoles) {
-          if (
-            user?.roles.filter((r) => r.authorityName === allowedRole).length
-          ) {
-            allow = true;
-            break;
-          }
+  init() {
+    return this.getUser().pipe(
+      tap((user) => {
+        if (user) {
+          this._user.set(user);
         }
-        // console.log('Class: AuthService, Function: , Line 56 allow' , allow);
-        return allow;
       }),
-    )
+      catchError(() => {
+        this._user.set(null);
+        return of(null);
+      }),
+    );
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  authenticateWithCredential(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    credentials: CredentialAuthRequest
-  ): Observable<ManagementPortalUser> {
-    throw new Error('AuthService method not implemented');
-  }
-
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // requestAccessToken(authCode: string): Observable<AuthResponse> {
-  //   throw new Error('AuthService method not implemented');
-  // }
-
-  logoutAuthCodeGrant(): void {
-    throw new Error('AuthService method not implemented');
-  }
-
-  // logoutAuthCodeGrantAndNavigate(): void {
-  //   throw new Error('AuthService method not implemented');
-  // }
-
-  logoutPasswordGrant(): Observable<void> {
-    throw new Error('AuthService method not implemented');
-  }
-
-  // refreshToken(): Observable<AuthResponse> {
-  //   throw new Error('AuthService method not implemented');
-  // }
-
-  // getAuthOptions(): AuthOptionsModel {
-  //   throw new Error('AuthService method not implemented');
-  // }
 
   getUser(): Observable<ManagementPortalUser | null> {
-    throw new Error('AuthService method not implemented');
+    return this.http.get<ManagementPortalUser>('api/account').pipe(
+      catchError((err) => {
+        return throwError(() => err);
+      })
+    );
   }
 
-  getUserFromStore(): Observable<ManagementPortalUser | undefined> {
-    throw new Error('AuthService method not implemented');
+  setUser (user: ManagementPortalUser | null): void {
+    this._user.set(user);
+  }
+
+  authenticateWithCredential(
+    credentials: CredentialAuthRequest
+  ): Observable<ManagementPortalUser> {
+    const url = 'oauth/token';
+    const payload = this.getTokenRequestParams(
+      credentials.username,
+      credentials.password
+    );
+    const options = { headers: this.getTokenRequestHeaders() };
+
+    return this.http.post<TokenData>(url, payload, options).pipe(
+      tap((token) => {
+        StorageService.setAuthTokenData(token);
+      }),
+      shareReplay(),
+      switchMap((tokenData: TokenData) => {
+        const authHeaders = new HttpHeaders().append(
+          'Authorization',
+          'Bearer ' + tokenData.access_token
+        );
+        return this.http
+          .post<ManagementPortalUser>('api/login', null, {
+            headers: authHeaders,
+            observe: 'body',
+            withCredentials: true,
+          })
+          .pipe(
+            tap((user) => {
+              this._user.set(user);
+            })
+          );
+      })
+    );
+  }
+
+  logout(): void {
+    const url = 'api/logout';
+    this.http.post<void>(url, { observe: 'body' }).pipe(
+      tap(() => {
+        this._user.set(null);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        this.router.navigate(['/auth/login']).then();
+      })
+    ).subscribe();
+  }
+
+  isAuthorized(allowedRoles: string[]): boolean {
+    const roles = this._user()?.roles ?? [];
+    const allowedSet = new Set(allowedRoles);
+    return roles.some(r => r.authorityName && allowedSet.has(r.authorityName));
+  }
+
+  private getTokenRequestParams(
+    username: string,
+    password: string
+  ): HttpParams {
+    return new HttpParams()
+      .set('client_id', 'ManagementPortalapp')
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
+  }
+
+  private getTokenRequestHeaders(): HttpHeaders {
+    return new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Accept', 'application/json');
   }
 }

@@ -1,41 +1,17 @@
 {
   "theme": {
-    "__light": {
-      "primary": "#e91e63",
-      "on-primary": "#ffffff",
-      "accent": "#673ab7",
-      "on-accent": "#ffffff",
-      "tertiary": "#673ab7",
-      "on-tertiary": "#ffffff"
-    },
-    "___light": {
-      "primary": "#004F6E",
-      "on-primary": "#ffffff",
-      "accent": "#22A2C9",
-      "on-accent": "#ffffff",
-      "tertiary": "#4F6E00",
-      "on-tertiary": "#ffffff"
-    },
     "light": {
-      "primary": "#004F6E",
+      "primary": "#2200ff",
       "on-primary": "#ffffff",
-      "accent": "#22A2C9",
+      "accent": "#004F00",
       "on-accent": "#ffffff",
-      "tertiary": "#004F6E",
-      "on-tertiary": "#ffffff"
-    },
-    "_light": {
-      "primary": "#22A2C9",
-      "on-primary": "#ffffff",
-      "accent": "#004F6E",
-      "on-accent": "#ffffff",
-      "tertiary": "#4F6E00",
+      "tertiary": "#0F6E00",
       "on-tertiary": "#ffffff"
     },
     "dark": {
       "primary": "#22A2C9",
       "on-primary": "#ffffff",
-      "accent": "#004F6E",
+      "accent": "#22A2C9",
       "on-accent": "#ffffff",
       "tertiary": "#004F6E",
       "on-tertiary": "#ffffff"
@@ -54,6 +30,7 @@
       "rb-gray": "#858785"
     }
   },
+  "translationsBaseUrl": "/assets/i18n/",
   "locale": [
     {
       "code": "en",
@@ -70,7 +47,7 @@
     }
   ],
   "title": "RADAR-base Console",
-  "logo": "/assets/images/rb-logo-full-white.svg",
+  "logo": "assets/images/rb-logo-full-white.svg",
   "logo2": "https://www.thehyve.nl/static/img/logos/the-hyve_logo.png",
   "branding": {
     "title": "Welcome to RADAR-base Console",

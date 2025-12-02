@@ -5,7 +5,7 @@
         <span>{{ 'ADMIN.subject.pairApp.title' | translate }}</span>
       </span>
       <span class="flex items-center justify-end gap-2">
-        @if (pairInfo$()) {
+        @if (pairInfo()) {
           <button mat-icon-button color="primary"
                   (click)='close()'>
         <span class="material-symbols-outlined">print</span>
@@ -21,32 +21,32 @@
 </div>
 
 <mat-dialog-content>
-  @if (pairInfo$(); as pairInfo) {
+  @if (pairInfo(); as pairInfo) {
     <div class="flex justify-center">
       <div class="">
         <qr-code class="" [value]="pairInfo.tokenUrl" size="300" errorCorrectionLevel="M"/>
       </div>
     </div>
-    <rb-dialog-body-description>
-      <div class="text-sm [&_rb-detail-element:nth-child(even)>div]:bg-gray-100 p-2">
-        <rb-detail-element>
+    <app-dialog-body-description>
+      <div class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-gray-100 p-2">
+        <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.baseUrl' | translate }}</ng-container>
           <ng-container value>{{ pairInfo.baseUrl || '-' }}</ng-container>
-        </rb-detail-element>
-        <rb-detail-element>
+        </app-detail-element>
+        <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.tokenName' | translate }}</ng-container>
           <ng-container value>{{ pairInfo.tokenName || '-' }}</ng-container>
-        </rb-detail-element>
-        <rb-detail-element>
+        </app-detail-element>
+        <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.validUntil' | translate }}</ng-container>
           <ng-container value>{{ (pairInfo.timesOutAt | date:'medium') || '-' }}</ng-container>
-        </rb-detail-element>
-        <rb-detail-element>
+        </app-detail-element>
+        <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.validity' | translate }}</ng-container>
           <ng-container value>{{ (pairInfo.timeout / 1000 | dhms) || '-' }}</ng-container>
-        </rb-detail-element>
+        </app-detail-element>
       </div>
-    </rb-dialog-body-description>
+    </app-dialog-body-description>
   }
 
 
@@ -67,21 +67,20 @@
     </mat-form-field>
   </form>
 
-  <rb-dialog-body-description>
-    <rb-subject-details class="py-4"
-                        [entity$]='dialogData.entity'
-                        [type$]="DetailType.SUMMARY"
-                        [tableFields$]="tableFields"/>
-  </rb-dialog-body-description>
+  <app-dialog-body-description>
+    <app-subject-details class="py-4"
+                        [entity]='dialogData.entity'
+                        [detailType]="DetailType.SUMMARY" />
+  </app-dialog-body-description>
 
 
 </mat-dialog-content>
 
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 
@@ -101,9 +100,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading$()'
+            [disabled]='!form.valid || !form.dirty || loading()'
             (click)='generateQRCode(false)'>
-      @if (loading$()) {
+      @if (loading()) {
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>
@@ -115,9 +114,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading$()'
+            [disabled]='!form.valid || !form.dirty || loading()'
             (click)='generateQRCode(true)'>
-      @if (loading$()) {
+      @if (loading()) {
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>

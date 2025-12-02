@@ -25,7 +25,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {DialogMode} from '../../../../enums/dialog';
 
 @Component({
-  selector: 'rb-user-activate-dialog',
+  selector: 'app-user-activate-dialog',
   templateUrl: './user-activate-dialog.component.html',
   imports: [
     MatDialogTitle,
@@ -48,8 +48,8 @@ export class UserActivateDialogComponent implements AfterViewInit {
     organizations: AppOrganization[];
   };
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
 
   @Output()
   dialogActionEvent = new EventEmitter<{ action: DialogMode | string, entity?: AppUser }>();
@@ -62,8 +62,8 @@ export class UserActivateDialogComponent implements AfterViewInit {
   }
 
   onAction() {
-    this.error$.set(null);
-    this.loading$.set(true);
+    this.error.set(null);
+    this.loading.set(true);
     this.handleActivateAction();
   }
 
@@ -72,7 +72,7 @@ export class UserActivateDialogComponent implements AfterViewInit {
   }
 
   close() {
-    this.loading$.set(false);
+    this.loading.set(false);
     const container = document.querySelector('.tailwind-slide-panel');
     container?.classList.remove('dialog-enter-active');
     container?.classList.add('dialog-exit-active');
@@ -84,7 +84,7 @@ export class UserActivateDialogComponent implements AfterViewInit {
   }
 
   errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
+    this.loading.set(false);
+    this.error.set(error);
   }
 }

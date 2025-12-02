@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DhmsPipe implements PipeTransform {
 
-  transform(seconds?: number) {
+  transform(seconds: number | null) {
     return seconds? this.secondsToDHMS(seconds) : '0';
   }
 

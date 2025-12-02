@@ -1,12 +1,12 @@
 import {Component, EventEmitter, input, Output} from '@angular/core';
 import {DialogMode} from "../../../enums/dialog";
-import {ENTITY_NAME} from "../../../enums/entities";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
+import {EntityRegistry} from "../../../../shared/consts/entity-registry";
 
 @Component({
-  selector: 'rb-dialog-title',
+  selector: 'app-dialog-title',
   templateUrl: './dialog-title.component.html',
   imports: [
     MatDialogTitle,
@@ -17,9 +17,9 @@ import {MatIconButton} from "@angular/material/button";
 export class DialogTitleComponent {
   protected readonly DialogMode = DialogMode;
 
-  mode$ = input<DialogMode>();
-  name$ = input<ENTITY_NAME>();
-  label$ = input<{ singular: string; plural: string }>();
+  dialogMode = input<DialogMode>();
+  entityMetadata = input<EntityRegistry>();
+  label = input<{ singular: string; plural: string }>();
 
   @Output() closeClicked = new EventEmitter();
 

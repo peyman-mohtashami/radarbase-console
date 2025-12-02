@@ -4,7 +4,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {SubjectStatus} from '../../models/subject';
 
 @Component({
-  selector: 'rb-subject-status',
+  selector: 'app-subject-status',
   templateUrl: './subject-status.component.html',
   imports: [
     MatTooltip
@@ -15,5 +15,5 @@ export class SubjectStatusComponent {
   protected readonly DetailType = DetailType;
 
   status = input<SubjectStatus>();
-  type = input<DetailType>();
+  detailType = input<DetailType>();
 }

@@ -7,7 +7,7 @@ import {DetailElementComponent} from '../../../../components/detail-element/deta
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 
 @Component({
-  selector: 'rb-metrics-system',
+  selector: 'app-metrics-system',
   templateUrl: './metrics-system.component.html',
   imports: [
     DetailElementComponent,
