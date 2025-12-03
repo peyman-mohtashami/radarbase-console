@@ -28,8 +28,8 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {LocaleService} from "../../../../../../../core/locale/services/locale.service";
 
 @Component({
-  selector: 'app-questionnaire-step-scheduling',
-  templateUrl: './questionnaire-step-scheduling.html',
+  selector: 'app-protocol-step-scheduling',
+  templateUrl: './protocol-step-scheduling.html',
   imports: [
     MatDivider,
     ReactiveFormsModule,
@@ -51,16 +51,16 @@ import {LocaleService} from "../../../../../../../core/locale/services/locale.se
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: QuestionnaireStepScheduling
+      useExisting: ProtocolStepScheduling
     },
     {
       provide: NG_VALIDATORS,
       multi: true,
-      useExisting: QuestionnaireStepScheduling
+      useExisting: ProtocolStepScheduling
     }
   ],
 })
-export class QuestionnaireStepScheduling implements ControlValueAccessor, OnDestroy, Validator {
+export class ProtocolStepScheduling implements ControlValueAccessor, OnDestroy, Validator {
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly UNITS = UNITS;
 

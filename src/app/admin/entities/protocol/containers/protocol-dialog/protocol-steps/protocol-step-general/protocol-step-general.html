@@ -1,9 +1,9 @@
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
   <div>
     <label for="name" class="text-sm">Name *</label>
-    <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+    <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
       <input id="name" matInput formControlName='name' required/>
-      <mat-hint align="start">{{ ValidatorHint.stringIdValidator }}</mat-hint>
+<!--      <mat-hint align="start">{{ ValidatorHint.stringIdValidator }}</mat-hint>-->
       @if (form.controls['name']?.errors; as errors) {
         <mat-error>
           @if (errors?.['duplicate']) {
@@ -35,7 +35,7 @@
     <div>
       <label for="order" class="text-sm">Display Order</label>
       <mat-form-field class='small-input w-1/2'
-                      appearance='outline'>
+                      appearance='outline' subscriptSizing="fixed">
         <input id="order" matInput type="number" formControlName='order'/>
         <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
       </mat-form-field>

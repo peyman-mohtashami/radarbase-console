@@ -16,10 +16,12 @@ import {Subscription} from "rxjs";
 import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {ProtocolStateService} from "../../services/protocol-state.service";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {MatFormField, MatSelect} from '@angular/material/select';
+import {MatOption} from '@angular/material/core';
 
 @Component({
-  selector: 'app-questionnaire-step-content',
-  templateUrl: './questionnaire-step-content.html',
+  selector: 'app-protocol-step-content',
+  templateUrl: './protocol-step-content.html',
   imports: [
     MatDivider,
     MatIconButton,
@@ -27,22 +29,25 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
     ReactiveFormsModule,
     TextFormGroupComponent,
     MatRadioGroup,
-    MatRadioButton
+    MatRadioButton,
+    MatSelect,
+    MatOption,
+    MatFormField
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: QuestionnaireStepContent
+      useExisting: ProtocolStepContent
     },
     {
       provide: NG_VALIDATORS,
       multi: true,
-      useExisting: QuestionnaireStepContent
+      useExisting: ProtocolStepContent
     }
   ],
 })
-export class QuestionnaireStepContent implements ControlValueAccessor, OnDestroy, Validator {
+export class ProtocolStepContent implements ControlValueAccessor, OnDestroy, Validator {
   protocolStateService = inject(ProtocolStateService);
 
   languages = input.required<RadarOption[]>();

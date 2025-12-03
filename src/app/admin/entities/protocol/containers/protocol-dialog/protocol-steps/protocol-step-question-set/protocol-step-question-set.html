@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
 
-  <mat-slide-toggle formControlName='github' class="mb-4" color="primary">
+  <mat-slide-toggle formControlName='github' class="my-4" color="primary">
     Use GitHub repository
   </mat-slide-toggle>
 
@@ -17,7 +17,7 @@
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
-                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                {{ ValidatorError.requiredValidator | translate:{value: 'Questionnaire name'} }}
               }
             </mat-error>
           }
@@ -33,7 +33,7 @@
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
-                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                {{ ValidatorError.requiredValidator | translate:{value: 'Questionnaire repository'} }}
               }
             </mat-error>
           }
@@ -53,6 +53,13 @@
           <!--                      <mat-option [value]="q.name">{{q.name}}</mat-option>-->
           <!--                    }-->
         </mat-select>
+        @if (form.controls.appQuestionnaire.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate:{value: 'Question set'} }}
+            }
+          </mat-error>
+        }
       </mat-form-field>
     </div>
   }

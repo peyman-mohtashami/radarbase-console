@@ -32,16 +32,19 @@ import {debounceTime} from "rxjs/operators";
 
 import {MatStep, MatStepLabel, MatStepper} from "@angular/material/stepper";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
-import {QuestionnaireStepGeneral} from "./questionnaire-steps/questionnaire-step-general/questionnaire-step-general";
-import {QuestionnaireStepContent} from "./questionnaire-steps/questionnaire-step-content/questionnaire-step-content";
+import {ProtocolStepGeneral} from "./protocol-steps/protocol-step-general/protocol-step-general";
+import {ProtocolStepContent} from "./protocol-steps/protocol-step-content/protocol-step-content";
 import {
-  QuestionnaireStepQuestionSet
-} from "./questionnaire-steps/questionnaire-step-question-set/questionnaire-step-question-set";
+  ProtocolStepQuestionSet
+} from "./protocol-steps/protocol-step-question-set/protocol-step-question-set";
 import {
-  QuestionnaireStepScheduling
-} from "./questionnaire-steps/questionnaire-step-scheduling/questionnaire-step-scheduling";
+  ProtocolStepScheduling
+} from "./protocol-steps/protocol-step-scheduling/protocol-step-scheduling";
 import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {ProtocolService} from "../../services/protocol.service";
+import {
+  DialogBodyDescriptionComponent
+} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 
 @Component({
   selector: 'app-protocol-dialog',
@@ -58,13 +61,14 @@ import {ProtocolService} from "../../services/protocol.service";
     EditorComponent,
     MatTooltip,
     MatStepper,
-    QuestionnaireStepGeneral,
-    QuestionnaireStepContent,
-    QuestionnaireStepQuestionSet,
-    QuestionnaireStepScheduling,
+    ProtocolStepGeneral,
+    ProtocolStepContent,
+    ProtocolStepQuestionSet,
+    ProtocolStepScheduling,
     MatStep,
     MatStepLabel,
     MatButton,
+    DialogBodyDescriptionComponent,
   ],
   providers: [
     {
@@ -75,7 +79,7 @@ import {ProtocolService} from "../../services/protocol.service";
 })
 export class ProtocolDialogComponent implements OnInit, AfterViewInit {
   private entityService = inject(ProtocolService);
-  private configService = inject(ProtocolConfigService);
+  protected configService = inject(ProtocolConfigService);
   private dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;

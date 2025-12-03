@@ -24,8 +24,8 @@ import {MatButton} from "@angular/material/button";
 import {MatStepperNext} from "@angular/material/stepper";
 
 @Component({
-  selector: 'app-questionnaire-step-question-set',
-  templateUrl: './questionnaire-step-question-set.html',
+  selector: 'app-protocol-step-question-set',
+  templateUrl: './protocol-step-question-set.html',
   imports: [
     ReactiveFormsModule,
     MatSlideToggle,
@@ -44,16 +44,17 @@ import {MatStepperNext} from "@angular/material/stepper";
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: QuestionnaireStepQuestionSet
+      useExisting: ProtocolStepQuestionSet
     },
     {
       provide: NG_VALIDATORS,
       multi: true,
-      useExisting: QuestionnaireStepQuestionSet
+      useExisting: ProtocolStepQuestionSet
     }
   ],
 })
-export class QuestionnaireStepQuestionSet implements ControlValueAccessor, OnDestroy, Validator {
+export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy, Validator {
+  protected readonly ValidatorError = ValidatorError;
   protected readonly ValidatorHint = ValidatorHint;
 
   form = new FormGroup({
@@ -175,5 +176,5 @@ export class QuestionnaireStepQuestionSet implements ControlValueAccessor, OnDes
     this.onTouch = fn;
   }
 
-  protected readonly ValidatorError = ValidatorError;
+
 }

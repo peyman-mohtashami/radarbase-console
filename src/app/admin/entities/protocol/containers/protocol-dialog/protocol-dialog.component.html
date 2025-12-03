@@ -1,3 +1,5 @@
+@let entityName = configService.getEntityMetadata().name;
+
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span class='inline-flex items-center justify-between w-full'>
     <span class="text-lg">
@@ -10,20 +12,23 @@
       @if (dialogData.mode === DialogMode.DELETE) {
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
-      <span> {{ "ADMIN.protocol.title.singular" | translate }} "{{dialogData.entity?.general?.name}}"</span>
+      <span> {{ "ADMIN.protocol.title.singular" | translate }}</span>
+        @if (dialogData.entity?.general?.name) {
+          <span> "{{dialogData.entity?.general?.name}}"</span>
+        }
     </span>
     <div>
-    <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
-      <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
-    </button>
+      @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+        <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
+          <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
+        </button>
+      }
     <button mat-icon-button (click)='close()'>
       <span class="material-symbols-outlined">close</span>
     </button>
     </div>
   </span>
 </h2>
-<!--{{form.controls.general.valid}} / {{form.controls.content.valid}} /{{form.controls.questionsGroup.valid}} / {{form.controls.scheduling.valid}} /-->
-<!--&#45;&#45;{{form.valid}}&#45;&#45;-->
 
 <mat-dialog-content>
   @if (showCode) {
@@ -34,9 +39,9 @@
     </div>
   } @else {
     @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-<!--      <app-dialog-body-description [dialogMode]="dialogData.mode"-->
-<!--                                  [label]="'Organization'"-->
-<!--                                  [entityName]="dialogData.entity.general.name"/>-->
+      <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                   [label]="`ADMIN.${entityName}.name.label` | translate"
+                                   [entityName]="dialogData.entity.general.name"/>
     }
 
     @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -45,7 +50,7 @@
 
           <mat-step [stepControl]="form.controls.general" errorMessage="Configuration is required.">
             <ng-template matStepLabel><span class="text-base">Configuration</span></ng-template>
-            <app-questionnaire-step-general [formControlName]="'general'" [entities]="dialogData.entities"
+            <app-protocol-step-general [formControlName]="'general'" [entities]="dialogData.entities"
                                             [entity]="dialogData.entity"
                                             (onDemandTypeUpdated)="updateOnDemand($event)"
                                             (languagesUpdated)="updateLanguages($event)" />
@@ -53,21 +58,21 @@
 
           <mat-step [stepControl]="form.controls.content" errorMessage="Content is required.">
             <ng-template matStepLabel><span class="text-base">Content</span></ng-template>
-            <app-questionnaire-step-content [formControlName]="'content'"
+            <app-protocol-step-content [formControlName]="'content'"
                                             [languages]="languages()"
                                             [onDemand]="onDemand()"/>
           </mat-step>
 
           <mat-step [stepControl]="form.controls.questionsGroup" errorMessage="Questions Group is required.">
             <ng-template matStepLabel><span class="text-base">Question Set</span></ng-template>
-            <app-questionnaire-step-question-set [formControlName]="'questionsGroup'"/>
+            <app-protocol-step-question-set [formControlName]="'questionsGroup'"/>
           </mat-step>
 
           @if (!onDemand()) {
             <mat-step [stepControl]="form.controls.scheduling" errorMessage="Scheduling is required.">
               <ng-template matStepLabel><span class="text-base">Scheduling</span></ng-template>
 
-              <app-questionnaire-step-scheduling [formControlName]="'scheduling'"/>
+              <app-protocol-step-scheduling [formControlName]="'scheduling'"/>
             </mat-step>
           }
         </mat-stepper>
@@ -83,15 +88,14 @@
 }
 
 
-<app-dialog-actions [dialogMode]='dialogData.mode'
-                   [form]='form'
-                   (actionTriggered)='onAction($event)'>
-<!--  {{stepper()?.selectedIndex}} - {{stepper()?.steps?.length}}-->
-<!--  @if (stepper()?.selectedIndex ?? 0 > 0) {-->
+<app-dialog-actions [dialogMode]='dialogData.mode' [form]='form' (actionTriggered)='onAction($event)'>
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <button mat-stroked-button (click)="previousStep()" [disabled]="!stepper()?.selectedIndex">Back</button>
-<!--  }-->
-<!--  @if ((stepper()?.selectedIndex ?? 0) < (stepper()?.steps?.length ?? 0) - 1) {-->
-  <button mat-stroked-button (click)="nextStep()" [disabled]="((stepper()?.steps?.length ?? 0) - 1) <= (stepper()?.selectedIndex ?? 0)">Next</button>
-<!--  }-->
+    <button mat-stroked-button
+            (click)="nextStep()"
+            [disabled]="((stepper()?.steps?.length ?? 0) - 1) <= (stepper()?.selectedIndex ?? 0)">
+      Next
+    </button>
+  }
 </app-dialog-actions>
 

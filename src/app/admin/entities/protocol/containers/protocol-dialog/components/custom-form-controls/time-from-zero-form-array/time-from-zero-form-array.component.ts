@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, OnInit, signal} from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -20,6 +20,7 @@ import {
 import {Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
 import {map} from "rxjs/operators";
 import {QuestionnaireTimeUnit} from "../../../../../models/protocol";
+import {MatIconButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-time-from-zero-form-array',
@@ -30,6 +31,7 @@ import {QuestionnaireTimeUnit} from "../../../../../models/protocol";
     ReactiveFormsModule,
     MatFormField,
     MatInput,
+    MatIconButton,
   ],
   providers: [
     {
@@ -44,13 +46,22 @@ import {QuestionnaireTimeUnit} from "../../../../../models/protocol";
     }
   ],
 })
-export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Validator {
+export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Validator { //}, OnInit {
   unit = input<QuestionnaireTimeUnit | null | undefined>(QuestionnaireTimeUnit.min);
+
+  // formLength = signal<number>(0);
 
   form = new FormArray<FormGroup<{
     day: FormControl<number | null>;
     time: FormControl<string | null>;
   }>>([]);
+
+  // ngOnInit() {
+  //   console.log('Class: TimeFromZeroFormArrayComponent, Function: ngOnInit, Line 56 ' , );
+  //   this.addItem();
+  //   console.log('Class: TimeFromZeroFormArrayComponent, Function: ngOnInit, Line 58 this.form.controls.length' , this.form.controls.length);
+  //   this.formLength.set(this.form.controls.length);
+  // }
 
   onChange = (value: any) => {};
   onTouch = () => {};
@@ -89,11 +100,24 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
     return Object.keys(errors).length > 0 ? errors : null;
   }
 
-  writeValue(times: number[]) {
-    if (times) {
-      this.form.clear();
+  // writeValue(times: number[]) {
+  //   if (times) {
+  //     this.form.clear();
+  //     times.forEach(time => this.addItem(time));
+  //   }
+  // }
+
+  writeValue(times: number[] | null | undefined) {
+    this.form.clear();
+
+    // If no times are provided, initialize with a single empty row
+    if (!times || times.length === 0) {
+      this.addItem();
+    } else {
       times.forEach(time => this.addItem(time));
     }
+
+    // this.formLength.set(this.form.controls.length);
   }
 
   // registerOnChange(fn: any) {
@@ -133,10 +157,12 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
       day: new FormControl(day, {validators: [CustomValidator.requiredValidator]}),
       time: new FormControl(time, {validators: [CustomValidator.requiredValidator]}),
     }));
+    // this.formLength.set(this.form.controls.length);
   }
 
   removeItem(index: number) {
     this.form.removeAt(index);
+    // this.formLength.set(this.form.controls.length);
   }
 
   onDrop(event: CdkDragDrop<string[]>) {

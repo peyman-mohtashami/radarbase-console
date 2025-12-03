@@ -1,54 +1,54 @@
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
-  <mat-slide-toggle formControlName='relativeToReferenceTime' class="mb-4" color="primary">
+  <mat-slide-toggle formControlName='relativeToReferenceTime' class="my-4" color="primary">
     Relative To reference timestamp
   </mat-slide-toggle>
 
   @if (relativeToReferenceTimeValueChanges()) {
     <div>
       <label for="referenceTimestamp" class="text-sm">Reference timestamp *</label>
-    <mat-form-field class='small-input w-1/2' appearance='outline'>
-      <input matInput [matDatepicker]='startDatePicker'
-             formControlName='referenceTimestamp'
-             [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
-      <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
-      <mat-datepicker #startDatePicker/>
-      @if (form.controls.referenceTimestamp.errors; as errors) {
-        <mat-error>
-<!--          @if (errors?.['matDatepickerMin']) {-->
-<!--            Date is out of range. It should be after 2000. &lt;!&ndash; TODO translate &ndash;&gt;-->
-<!--          }-->
-<!--          @if (errors?.['matDatepickerMax']) {-->
-<!--            Date is out of range. It should be before 2050. &lt;!&ndash; TODO translate &ndash;&gt;-->
-<!--          }-->
-<!--          @if (errors?.['matDatepickerParse']) {-->
-<!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
-<!--          }-->
-<!--          @if (errors?.['matStartDateInvalid']) {-->
-<!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
-<!--          }-->
-        </mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field class='small-input w-1/2' appearance='outline'>
+        <input matInput [matDatepicker]='startDatePicker'
+               formControlName='referenceTimestamp'
+               [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+        <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
+        <mat-datepicker #startDatePicker/>
+        @if (form.controls.referenceTimestamp.errors; as errors) {
+          <mat-error>
+            <!--          @if (errors?.['matDatepickerMin']) {-->
+            <!--            Date is out of range. It should be after 2000. &lt;!&ndash; TODO translate &ndash;&gt;-->
+            <!--          }-->
+            <!--          @if (errors?.['matDatepickerMax']) {-->
+            <!--            Date is out of range. It should be before 2050. &lt;!&ndash; TODO translate &ndash;&gt;-->
+            <!--          }-->
+            <!--          @if (errors?.['matDatepickerParse']) {-->
+            <!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
+            <!--          }-->
+            <!--          @if (errors?.['matStartDateInvalid']) {-->
+            <!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
+            <!--          }-->
+          </mat-error>
+        }
+      </mat-form-field>
     </div>
 
-<!--    <div>-->
-<!--      <label for="referenceTimestamp" class="text-sm">Reference timestamp *</label>-->
-<!--      <mat-form-field class='small-input w-1/2'-->
-<!--                      appearance='outline'>-->
-<!--        <input id="referenceTimestamp" matInput type="date" formControlName='referenceTimestamp' required/>-->
-<!--        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>-->
-<!--      </mat-form-field>-->
-<!--    </div>-->
+    <!--    <div>-->
+      <!--      <label for="referenceTimestamp" class="text-sm">Reference timestamp *</label>-->
+      <!--      <mat-form-field class='small-input w-1/2'-->
+      <!--                      appearance='outline'>-->
+      <!--        <input id="referenceTimestamp" matInput type="date" formControlName='referenceTimestamp' required/>-->
+      <!--        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>-->
+      <!--      </mat-form-field>-->
+      <!--    </div>-->
   }
   <mat-divider class="mb-2!"/>
 
-  <mat-slide-toggle formControlName='repeatedProtocol' class="mb-4" color="primary">
+  <mat-slide-toggle formControlName='repeatedProtocol' class="my-4" color="primary">
     Enable repeating
   </mat-slide-toggle>
 
   @if (repeatedProtocolValueChanges()) {
     <div formGroupName="repeatProtocol">
-      <p class="text-base">Repeat every</p>
+      <p class="text-sm">Repeat every</p>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="repeat-protocol-amount" class="text-sm">Amount *</label>
@@ -75,14 +75,15 @@
   }
 
   <div formGroupName="repeatQuestionnaire">
-    <p class="text-base">At offsets</p>
-      <app-time-from-zero-form-array formControlName="unitsFromZero" [unit]="form.controls.repeatQuestionnaire.controls.unit.value" />
+    <p class="text-sm mt-2">Time offsets</p>
+    <app-time-from-zero-form-array formControlName="unitsFromZero"
+                                   [unit]="form.controls.repeatQuestionnaire.controls.unit.value"/>
   </div>
 
   <mat-divider class="mb-2!"/>
 
-  <div class="" formGroupName="completionWindow">
-    <p class="text-base">Time to complete</p>
+  <div class="mt-2" formGroupName="completionWindow">
+    <p class="text-sm">Time to complete</p>
     <div class="grid grid-cols-2 gap-4">
 
       <div class="">
@@ -110,7 +111,7 @@
   <mat-divider class="mb-2!"/>
 
   <div formGroupName="reminders">
-    <p class="text-base">Reminders</p>
+    <p class="text-sm my-2">Reminders</p>
     <mat-slide-toggle formControlName='enabled' class="mb-4" color="primary">
       Enable reminders
     </mat-slide-toggle>

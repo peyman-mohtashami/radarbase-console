@@ -32,8 +32,8 @@ import {debounceTime} from "rxjs/operators";
 import {ProtocolStateService} from "../../services/protocol-state.service";
 
 @Component({
-  selector: 'app-questionnaire-step-general',
-  templateUrl: './questionnaire-step-general.html',
+  selector: 'app-protocol-step-general',
+  templateUrl: './protocol-step-general.html',
   imports: [
     // MatButton,
     // MatDivider,
@@ -51,16 +51,16 @@ import {ProtocolStateService} from "../../services/protocol-state.service";
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: QuestionnaireStepGeneral
+      useExisting: ProtocolStepGeneral
     },
     {
       provide: NG_VALIDATORS,
       multi: true,
-      useExisting: QuestionnaireStepGeneral
+      useExisting: ProtocolStepGeneral
     }
   ],
 })
-export class QuestionnaireStepGeneral implements OnInit, ControlValueAccessor, OnDestroy, Validator {
+export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDestroy, Validator {
 
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;

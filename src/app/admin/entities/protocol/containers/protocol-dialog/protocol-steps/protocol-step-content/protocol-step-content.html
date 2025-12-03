@@ -10,16 +10,16 @@
       </button>
     }
   </div>
-  <div class="mb-4 text-sm">
+
+  <div class="text-sm w-1/2">
     <label id="show-introduction">Show Introduction</label>
-    <mat-radio-group
-        aria-labelledby="example-radio-group-label"
-        class=""
-        formControlName="showIntroduction">
-      <mat-radio-button class="mx-4" [value]="false">No</mat-radio-button>
-      <mat-radio-button class="mx-4" [value]="true">Once</mat-radio-button>
-      <mat-radio-button class="mx-4" [value]="'always'">Always</mat-radio-button>
-    </mat-radio-group>
+    <mat-form-field class='small-input' appearance='outline'>
+      <mat-select formControlName="showIntroduction">
+        <mat-option [value]="false">No</mat-option>
+        <mat-option [value]="true">Once</mat-option>
+        <mat-option value="always">Always</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   @if (form.controls.showIntroduction.value) {
