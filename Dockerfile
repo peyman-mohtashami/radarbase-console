@@ -11,7 +11,7 @@
 # limitations under the License.
 
 # Stage 1, "build-stage", based on Node.js, to build and compile Angular
-FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as builder
+FROM --platform=$BUILDPLATFORM node:22.12.0-alpine AS builder
 
 WORKDIR /code
 
@@ -23,7 +23,7 @@ COPY . /code/
 
 ARG configuration=production
 
-RUN npm run build -- --output-path=./dist/out --configuration ${configuration}
+RUN npm run build -- --configuration ${configuration}
 
 WORKDIR /code/dist/out
 
@@ -37,9 +37,14 @@ COPY docker/optimization.conf /etc/nginx/conf.d/
 COPY --chown=101 docker/default.conf /etc/nginx/conf.d/
 COPY docker/30-env-subst.sh /docker-entrypoint.d/
 
-COPY --from=builder /code/dist/radarbase-console/browser /usr/share/nginx/html
+COPY --from=builder --chown=101:101 /code/dist/radarbase-console/browser /usr/share/nginx/html
 
-COPY --from=builder --chown=101 /code/dist/radarbase-console/browser/main* /code/dist/radarbase-console/browser/index.html* /usr/share/nginx/html/
+COPY --from=builder --chown=101:101 /code/dist/radarbase-console/browser/main* /code/dist/radarbase-console/browser/index.html* /usr/share/nginx/html/
+
+USER root
+# Ensure gzip step in entrypoint can create files in the html directory
+RUN chown -R 101:101 /usr/share/nginx/html
+USER 101
 
 EXPOSE 8080
 
