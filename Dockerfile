@@ -1,61 +1,52 @@
-# Multi-stage Docker build for Angular app "radarbase-console"
-# 1) Build the production bundle with Node
-# 2) Serve the static site with NGINX (with SPA routing)
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# ---- Build stage ----
-# Angular CLI v20 requires Node >= v20.19 or >= v22.12. Use a compatible default.
-ARG NODE_VERSION=22.12.0
-FROM node:${NODE_VERSION}-alpine AS builder
+# Stage 1, "build-stage", based on Node.js, to build and compile Angular
+FROM --platform=$BUILDPLATFORM node:22.12.0-alpine as builder
 
-WORKDIR /app
+WORKDIR /code
 
-# Install dependencies first (better layer caching)
-COPY package*.json ./
+COPY package*.json /code/
+
 RUN npm ci --no-audit --no-fund
 
-# Copy the rest of the source and build
-COPY . .
-# Set NODE_ENV for Angular/TS tools
-ENV NODE_ENV=production
-RUN npm run build
+COPY . /code/
 
-# ---- Runtime stage ----
-FROM nginx:1.27-alpine AS runner
+ARG configuration=production
 
-# Remove default site config
-RUN rm -f /etc/nginx/conf.d/default.conf
+RUN npm run build -- --output-path=./dist/out --configuration ${configuration}
 
-# Basic NGINX config with SPA fallback to index.html and sensible caching headers
-RUN set -eux; \
-    echo 'server {'                                                   >  /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  listen 80; '                                             >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  server_name _; '                                         >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  sendfile on; '                                           >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  default_type application/octet-stream; '                  >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  gzip on; '                                               >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript; ' >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  root /usr/share/nginx/html; '                            >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  location / {'                                            >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '    try_files $uri $uri/ /index.html; '                    >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  }'                                                       >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  location ~* \.(?:css|js|woff2?|ttf|eot|ico|png|jpg|jpeg|gif|svg)$ {' >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '    expires 30d; add_header Cache-Control "public, immutable"; ' >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '  }'                                                       >> /etc/nginx/conf.d/radarbase-console.conf; \
-    echo '}'                                                         >> /etc/nginx/conf.d/radarbase-console.conf;
+WORKDIR /code/dist/out
 
-# Copy built artifacts from builder
-# Angular CLI (application builder) outputs to dist/<project-name>/browser by default
-COPY --from=builder /app/dist/radarbase-console/browser /usr/share/nginx/html
+# Stage 2, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginxinc/nginx-unprivileged:1.27-alpine3.20-perl
 
-EXPOSE 80
+ENV BASE_HREF=/radarbase-console/
+
+# add init script
+COPY docker/optimization.conf /etc/nginx/conf.d/
+COPY --chown=101 docker/default.conf /etc/nginx/conf.d/
+COPY docker/30-env-subst.sh /docker-entrypoint.d/
+
+COPY --from=builder /code/dist/radarbase-console/browser /usr/share/nginx/html
+
+COPY --from=builder --chown=101 /code/dist/radarbase-console/browser/main* /code/dist/radarbase-console/browser/index.html* /usr/share/nginx/html/
+
+EXPOSE 8080
 
 # Optional healthcheck (container considered healthy if index is served)
 HEALTHCHECK --interval=30s --timeout=3s --retries=5 CMD wget -qO- http://127.0.0.1/ > /dev/null || exit 1
 
-# Default command
-CMD ["nginx", "-g", "daemon off;"]
-
 # --- Usage ---
 # Build:   docker build -t radarbase-console:latest .
-# Run:     docker run --rm -p 8080:80 radarbase-console:latest
+# Run:     docker run --rm -p 8080:8080 radarbase-console:latest
 # Open:    http://localhost:8080
