@@ -9,9 +9,9 @@
     @if (form.controls.length) {
       @for (time of form.controls; let i = $index; track time) {
         <div cdkDrag [formGroup]="time" class="w-full flex items-center gap-1">
-<!--          <div class="w-1/12 flex-grow-0 flex-shrink-0 cursor-move">-->
-            <button mat-icon-button class="w-1/12! flex-grow-0 flex-shrink-0 cursor-move tiny material-symbols-outlined">swap_vertical_circle</button>
-<!--          </div>-->
+          <button mat-icon-button class="w-1/12! flex-grow-0 flex-shrink-0 cursor-move tiny material-symbols-outlined">
+            swap_vertical_circle
+          </button>
           <mat-form-field class='small-input w-3/12! flex-grow-0'
                           appearance='outline'
                           subscriptSizing="dynamic">
@@ -20,7 +20,7 @@
           <mat-form-field class='small-input w-7/12!  flex-grow-0'
                           appearance='outline'
                           subscriptSizing="dynamic">
-            <input matInput [formControlName]="'time'" type="time" />
+            <input matInput [formControlName]="'time'" type="time"/>
           </mat-form-field>
 
           <button mat-icon-button class="tiny w-1/12! flex-grow-0 flex-shrink-0 material-symbols-outlined"
@@ -34,7 +34,9 @@
     }
     <div class="flex items-center gap-1 w-full">
       <div class="w-11/12 flex-grow-0"></div>
-      <button class="tiny w-1/12! flex-grow-0 flex-shrink-0 material-symbols-outlined" mat-icon-button (click)="addItem()">add_circle</button>
+      <button class="tiny w-1/12! flex-grow-0 flex-shrink-0 material-symbols-outlined" mat-icon-button
+              (click)="addItem()">add_circle
+      </button>
     </div>
   </div>
 </div>

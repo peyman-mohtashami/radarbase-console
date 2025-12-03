@@ -2,7 +2,7 @@ import {Component, inject, input} from '@angular/core';
 import {
   ControlValueAccessor,
   FormArray,
-  FormControl, NG_VALIDATORS,
+  FormControl, FormGroup, NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule, ValidationErrors, Validator
 } from '@angular/forms';
@@ -54,12 +54,147 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
 
   // private onValidatorChange: (() => void) | undefined;
 
+  // validate(): ValidationErrors | null {
+  //   const errors: ValidationErrors = {};
+  //
+  //   // --- Clear previous duplicate-code errors ---
+  //   this.form.controls.forEach((group) => {
+  //     console.log('Class: QuestionsFormArrayComponent, Function: , Line 62 ' , group);
+  //     const codeCtrl = group.get('field_name');
+  //     if (codeCtrl?.hasError('duplicateNames')) {
+  //       const { duplicateCode, ...rest } = codeCtrl.errors ?? {};
+  //       codeCtrl.setErrors(Object.keys(rest).length ? rest : null);
+  //     }
+  //   });
+  //
+  //   // --- Check for duplicate "code" values in the FormArray ---
+  //   const codeMap = new Map<string, number[]>();
+  //   this.form.controls.forEach((group, index) => {
+  //     console.log('Class: QuestionsFormArrayComponent, Function: , Line 73 group' , group);
+  //     const raw = group.get('field_name')?.value;
+  //     console.log('Class: QuestionsFormArrayComponent, Function: , Line 75 raw' , raw);
+  //     const code = (raw ?? '').trim();
+  //     console.log('Class: QuestionsFormArrayComponent, Function: , Line 77 code' , code);
+  //     if (!code) {
+  //       return; // ignore empty codes
+  //     }
+  //     const indexes = codeMap.get(code) ?? [];
+  //     indexes.push(index);
+  //     codeMap.set(code, indexes);
+  //   });
+  //
+  //   // Mark duplicates and add a form-level error
+  //   const duplicateIndexes: number[] = [];
+  //   codeMap.forEach((indexes, code) => {
+  //     console.log('Class: QuestionsFormArrayComponent, Function: , Line 87 indexes, code' , indexes, code);
+  //     if (indexes.length > 1) {
+  //       duplicateIndexes.push(...indexes);
+  //       indexes.forEach(i => {
+  //         const group = this.form.at(i);
+  //         const codeCtrl = group.get('field_name');
+  //         const currentErrors = codeCtrl?.errors ?? {};
+  //         codeCtrl?.setErrors({
+  //           ...currentErrors,
+  //           duplicateCode: { code }
+  //         });
+  //       });
+  //     }
+  //   });
+  //
+  //   if (duplicateIndexes.length) {
+  //     errors['duplicateNames'] = {
+  //       message: 'Name values must be unique',
+  //       indexes: duplicateIndexes
+  //     };
+  //   }
+  //
+  //   // --- Existing error collection logic ---
+  //   Object.keys(this.form.controls).forEach(key => {
+  //     const ctrl = this.form.get(key);
+  //     if (ctrl?.errors) {
+  //       errors[key] = ctrl.errors;
+  //     }
+  //
+  //     if (ctrl instanceof FormGroup) {
+  //       Object.keys(ctrl.controls).forEach(nestedKey => {
+  //         const nestedCtrl = ctrl.get(nestedKey);
+  //         if (nestedCtrl?.errors) {
+  //           errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
+  //         }
+  //
+  //         if (nestedCtrl instanceof FormGroup) {
+  //           Object.keys(nestedCtrl.controls).forEach(deepKey => {
+  //             const deepCtrl = nestedCtrl.get(deepKey);
+  //             if (deepCtrl?.errors) {
+  //               errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  //
+  //   return Object.keys(errors).length > 0 ? errors : null;
+  // }
+
+  // validate(): ValidationErrors | null {
+  //   if (this.form.length === 0) {
+  //     return { required: 'At least one Question is required' };
+  //   }
+  //
+  //   const errors: ValidationErrors = {};
+  //   this.form.controls.forEach((control, index) => {
+  //     if (control.errors) {
+  //       errors[`question${index}`] = control.errors;
+  //     }
+  //   });
+  //
+  //   return Object.keys(errors).length > 0 ? errors : null;
+  // }
+
   validate(): ValidationErrors | null {
+    const errors: ValidationErrors = {};
+
+    // 1) Require at least one question
     if (this.form.length === 0) {
-      return { required: 'At least one Question is required' };
+      errors['required'] = 'At least one Question is required';
+      return errors;
     }
 
-    const errors: ValidationErrors = {};
+    // 2) Collect duplicate field_name values
+    const nameMap = new Map<string, number[]>();
+
+    this.form.controls.forEach((control, index) => {
+      const rawName = control.value?.field_name ?? '';
+      const name = rawName.trim();
+      if (!name) {
+        return; // ignore empty names
+      }
+
+      const indexes = nameMap.get(name) ?? [];
+      indexes.push(index);
+      nameMap.set(name, indexes);
+    });
+
+    const duplicateIndexes: number[] = [];
+    const duplicateNames: string[] = [];
+
+    nameMap.forEach((indexes, name) => {
+      if (indexes.length > 1) {
+        duplicateIndexes.push(...indexes);
+        duplicateNames.push(name);
+      }
+    });
+
+    if (duplicateIndexes.length) {
+      errors['duplicateFieldNames'] = {
+        message: 'field_name values must be unique',
+        names: duplicateNames,
+        indexes: duplicateIndexes,
+      };
+    }
+
+    // 3) Collect any child control errors (if you need them at array level)
     this.form.controls.forEach((control, index) => {
       if (control.errors) {
         errors[`question${index}`] = control.errors;

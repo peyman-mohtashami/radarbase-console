@@ -1,4 +1,4 @@
-import {Component, effect, OnDestroy} from '@angular/core';
+import {Component, effect, inject, OnDestroy} from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -10,7 +10,7 @@ import {
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatError, MatHint, MatInput} from "@angular/material/input";
 import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {
   ValidatorHint,
   Validator as CustomValidator,
@@ -22,6 +22,9 @@ import {debounceTime} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 import {MatStepperNext} from "@angular/material/stepper";
+import {QuestionnaireService} from '../../../../../questionnaire/services/questionnaire.service';
+import {AppQuestionnaire} from '../../../../../questionnaire/models/questionnaire';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-protocol-step-question-set',
@@ -37,6 +40,7 @@ import {MatStepperNext} from "@angular/material/stepper";
     MatDivider,
     MatError,
     TranslatePipe,
+    AsyncPipe,
     // MatButton,
     // MatStepperNext
   ],
@@ -57,6 +61,8 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
   protected readonly ValidatorError = ValidatorError;
   protected readonly ValidatorHint = ValidatorHint;
 
+  private questionnaireService = inject(QuestionnaireService);
+
   form = new FormGroup({
     github: new FormControl<boolean>(false),
     questionnaire: new FormGroup({
@@ -67,6 +73,8 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
     appQuestionnaire: new FormControl('', {validators: [CustomValidator.requiredValidator]}),
     estimatedCompletionTime: new FormControl<number | null>(null),
   });
+
+  questionnaires: Observable<AppQuestionnaire[]>;
 
   private valueChangesSub?: Subscription;
 
@@ -81,7 +89,6 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
   constructor() {
     effect(() => {
       const githubValue = this.githubValueChanges();
-      console.log('Class: QuestionnaireStepQuestionSet, Function: , Line 76 githubValue' , githubValue);
       this.form.controls.questionnaire.controls.name.setValidators(!githubValue ? [] : [CustomValidator.requiredValidator]);
       this.form.controls.questionnaire.controls.name.updateValueAndValidity({emitEvent: false});
       this.form.controls.questionnaire.controls.repository.setValidators(!githubValue ? [] : [CustomValidator.requiredValidator]);
@@ -95,6 +102,8 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
 
     // Also notify when the inner form’s status changes (covers field edits)
     this.statusSub = this.form.statusChanges.subscribe(() => this.validatorChange());
+
+    this.questionnaires = this.questionnaireService.getAll()
   }
 
   // private applyGithubDependentValidators(githubValue: boolean | null) {

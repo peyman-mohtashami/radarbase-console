@@ -48,10 +48,10 @@
                       appearance='outline' subscriptSizing="dynamic">
         <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
         <mat-select id="appQuestionnaire" formControlName='appQuestionnaire' [required]="!githubValueChanges()">
-          <mat-option [value]="'q1'">Q1</mat-option>
-          <!--                    @for (q of data.questionnaires; track q.name) {-->
-          <!--                      <mat-option [value]="q.name">{{q.name}}</mat-option>-->
-          <!--                    }-->
+<!--          <mat-option [value]="'q1'">Q1</mat-option>-->
+          @for (q of questionnaires | async; track q.name) {
+            <mat-option [value]="q.name">{{q.name}}</mat-option>
+          }
         </mat-select>
         @if (form.controls.appQuestionnaire.errors; as errors) {
           <mat-error>
