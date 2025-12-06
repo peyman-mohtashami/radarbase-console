@@ -1,10 +1,11 @@
 import {Component, inject, input} from '@angular/core';
 
-import {DialogMode} from "../../../../enums/dialog";
-import {DetailType} from "../../../../enums/detail-type";
+// import {DialogMode} from "../../../../enums/dialog";
+// import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {AppAudit} from '../../models/audit';
 import {AuditConfigService} from "../../services/audit-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-audit-details',
@@ -13,12 +14,16 @@ import {AuditConfigService} from "../../services/audit-config.service";
     DetailsComponent,
   ]
 })
-export class AuditDetailsComponent {
-  protected readonly DetailType = DetailType;
-
-  protected configService = inject(AuditConfigService);
-
-  entity = input.required<AppAudit>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+export class AuditDetailsComponent extends BaseDetailsComponent<AppAudit> {
+  override configService = inject(AuditConfigService);
 }
+
+// export class AuditDetailsComponent {
+//   protected readonly DetailType = DetailType;
+//
+//   protected configService = inject(AuditConfigService);
+//
+//   entity = input.required<AppAudit>();
+//   dialogMode = input<DialogMode>();
+//   detailType = input<DetailType>();
+// }

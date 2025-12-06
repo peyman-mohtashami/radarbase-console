@@ -44,8 +44,8 @@
 
   @if (expanded()) {
     <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-    <app-audit-details [entity]='entity()'
-                       [detailType]="DetailType.TABLE"/>
-  </div>
+      <app-audit-details [entity]='entity()'
+                         [detailType]="DetailType.TABLE"/>
+    </div>
   }
 </mat-card>
