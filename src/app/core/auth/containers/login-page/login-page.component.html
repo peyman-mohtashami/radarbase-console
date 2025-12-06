@@ -41,7 +41,13 @@
       </mat-form-field>
 
       @if (error() || stateError()) {
-        <app-message/>
+        <app-error-message-box>
+          @if (error()) {
+            {{ `ERROR.${error()?.error.error}` | translate }}
+          } @else {
+            {{ stateError() }}
+          }
+        </app-error-message-box>
       }
 
       <button mat-raised-button

@@ -12,8 +12,6 @@ import { StorageService } from '../../storage/services/storage.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {
-  }
 
   static addToken(request: HttpRequest<unknown>, token: string) {
     return request.clone({

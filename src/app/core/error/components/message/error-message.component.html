@@ -1,8 +1,0 @@
-@let errors = errorService.error();
-@if (errors) {
-  <div class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    @for(error of errors.message; track error) {
-      {{error | translate}}
-    }
-  </div>
-}

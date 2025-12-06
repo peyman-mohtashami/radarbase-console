@@ -13,10 +13,10 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatInput} from "@angular/material/input";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {Validator, ValidatorError} from '../../../../shared/utils/validators';
 import {HttpErrorResponse} from "@angular/common/http";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-password-page',
@@ -35,7 +35,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
     MatInput,
     MatCardSubtitle,
     MatCardTitle,
-    ErrorMessageComponent
+    ErrorMessageBoxComponent
   ]
 })
 export class PasswordPageComponent {

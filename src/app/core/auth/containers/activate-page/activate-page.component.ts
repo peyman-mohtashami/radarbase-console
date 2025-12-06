@@ -6,8 +6,8 @@ import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-activate-page',
@@ -16,7 +16,7 @@ import {HttpErrorResponse} from "@angular/common/http";
     AuthCardComponent,
     TranslatePipe,
     RouterLink,
-    ErrorMessageComponent
+    ErrorMessageBoxComponent
   ],
 })
 export class ActivatePageComponent implements OnInit, OnDestroy {

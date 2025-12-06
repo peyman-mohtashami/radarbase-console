@@ -13,9 +13,9 @@ import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {CredentialAuthRequest} from '../../../../shared/models/auth.model';
 import {HttpErrorResponse} from "@angular/common/http";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-login-page',
@@ -31,7 +31,7 @@ import {HttpErrorResponse} from "@angular/common/http";
     RouterLink,
     MatInput,
     MatButton,
-    ErrorMessageComponent,
+    ErrorMessageBoxComponent,
   ]
 })
 export class LoginPageComponent implements OnInit {

@@ -17,9 +17,9 @@ import {MatFormField} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-reset-password-page',
@@ -36,7 +36,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
     MatIcon,
     MatButton,
     MatProgressSpinner,
-    ErrorMessageComponent
+    ErrorMessageBoxComponent
   ]
 })
 export class ResetPasswordPageComponent implements OnInit, OnDestroy {

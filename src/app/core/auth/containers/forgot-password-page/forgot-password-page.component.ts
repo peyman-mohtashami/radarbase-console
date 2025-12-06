@@ -13,9 +13,9 @@ import {MatInput} from "@angular/material/input";
 import {RouterLink} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -31,7 +31,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
     MatProgressSpinner,
     RouterLink,
     MatIcon,
-    ErrorMessageComponent
+    ErrorMessageBoxComponent
   ],
 })
 export class ForgotPasswordPageComponent {
@@ -47,7 +47,6 @@ export class ForgotPasswordPageComponent {
   error = signal<HttpErrorResponse | null>(null);
   success = signal(false);
 
-  // _destroy$: Subject<void> = new Subject<void>();
   private readonly formValueChanges = toSignal(
     this.form.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.getRawValue()}

@@ -21,10 +21,10 @@ export class StorageService {
     this.setRefreshToken(tokenData.refresh_token);
   }
 
-  static clearAuth(): void {
-    this.clearAccessToken();
-    this.clearRefreshToken();
-  }
+  // static clearAuth(): void {
+  //   this.clearAccessToken();
+  //   this.clearRefreshToken();
+  // }
 
   static getAccessToken(): string {
     return <string>localStorage.getItem(AuthStorageItem.ACCESS_TOKEN);
@@ -50,14 +50,14 @@ export class StorageService {
     localStorage.removeItem(AuthStorageItem.REFRESH_TOKEN);
   }
 
-  static getUser(): Observable<ManagementPortalUser | null> {
-    const user = localStorage.getItem(AuthStorageItem.USER);
-    return user ? of(JSON.parse(user)) : of(null);
-  }
+  // static getUser(): Observable<ManagementPortalUser | null> {
+  //   const user = localStorage.getItem(AuthStorageItem.USER);
+  //   return user ? of(JSON.parse(user)) : of(null);
+  // }
 
-  static setUser(user: ManagementPortalUser): void {
-    localStorage.setItem(AuthStorageItem.USER, JSON.stringify(user));
-  }
+  // static setUser(user: ManagementPortalUser): void {
+  //   localStorage.setItem(AuthStorageItem.USER, JSON.stringify(user));
+  // }
 
   // static clearUser(): void {
   //   localStorage.removeItem(AuthStorageItem.USER);

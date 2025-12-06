@@ -14,11 +14,11 @@ import {MatFormField} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {ErrorMessageComponent} from "../../../error/components/message/error-message.component";
 import {ManagementPortalUser} from '../../../../shared/models/auth.model';
 import {AuthService} from "../../services/auth.service";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -38,7 +38,7 @@ import {HttpErrorResponse} from "@angular/common/http";
     MatCardTitle,
     MatCardSubtitle,
     MatProgressSpinner,
-    ErrorMessageComponent
+    ErrorMessageBoxComponent
   ]
 })
 export class ProfilePageComponent implements OnInit {

@@ -1,36 +1,51 @@
-<div class="grid grid-cols-2 gap-4">
-  <div class="flex justify-between items-center">
+<div class="">
+  <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">
     <span class="font-bold">Questions</span>
+    <div class="flex gap-2 items-center">
+    <div class='small-input text-sm flex justify-end gap-1'>
+      <!--  <button mat-icon-button class="tiny" (click)="editMode.set(!editMode())"><span-->
+      <!--    class="material-symbols-outlined">edit</span></button>-->
+      @for (language of languages(); track language) {
+        <button mat-icon-button class="tiny uppercase"
+                (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'
+                [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+            <span class="h-full flex items-center justify-center">
+              <span class="text-sm font-bold">{{ language.id }}</span>
+            </span>
+        </button>
+      }
+    </div>
     <button type="button" mat-stroked-button color="primary" (click)="addQuestion()">
       <mat-icon>add</mat-icon>
       <span class="font-bold">Add Question</span>
     </button>
+    </div>
   </div>
-  <span class="justify-self-start self-center font-bold">Question Settings</span>
+<!--  <span class="justify-self-start self-center font-bold">Question Settings</span>-->
   <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-    @for (question of form.controls; let i = $index; track question) {
-      <app-question-list-item class="cursor-pointer"
-                              cdkDrag
-                              [index]="i"
-                              [questionFormControl]="question"
-                              [selectedQuestion]="questionnaireStateService.selectedQuestionIndex() === i"
-                              (click)="selectQuestion(i)"
-                              (remove)="removeQuestion(i)"/>
-    }
-  </div>
+<!--    @for (question of form.controls; let i = $index; track question) {-->
+<!--      <app-question-list-item class="cursor-pointer"-->
+<!--                              cdkDrag-->
+<!--                              [index]="i"-->
+<!--                              [questionFormControl]="question"-->
+<!--                              [selectedQuestion]="questionnaireStateService.selectedQuestionIndex() === i"-->
+<!--                              (click)="selectQuestion(i)"-->
+<!--                              (remove)="removeQuestion(i)"/>-->
+<!--    }-->
+<!--  </div>-->
 
-  <div>
+<!--  <div>-->
     @for (question of form.controls; let i = $index; track question) {
-      <app-question-form-group class="block cursor-pointer opacity-0 h-0 overflow-hidden"
-                               [class]="questionnaireStateService.selectedQuestionIndex() === i ? 'opacity-100 h-auto' : 'opacity-0 h-0'"
+      <app-question-form-group class="block"
                                [formControl]="question"
                                [questionIndex]="i"
                                [languages]="languages()"/>
+<!--                               [class]="questionnaireStateService.selectedQuestionIndex() === i ? 'opacity-100 h-auto' : 'opacity-0 h-0'"-->
     }
-    @if (questionnaireStateService.selectedQuestionIndex() === undefined) {
-      <div class="text-base text-gray-400">
-        Select a question to edit
-      </div>
-    }
+<!--    @if (questionnaireStateService.selectedQuestionIndex() === undefined) {-->
+<!--      <div class="text-base text-gray-400">-->
+<!--        Select a question to edit-->
+<!--      </div>-->
+<!--    }-->
   </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, inject, Input, input, OnDestroy, output} from '@angular/core';
+import {Component, inject, Input, input, OnDestroy, output, signal} from '@angular/core';
 import {
   ControlValueAccessor,
   FormGroup,
@@ -23,6 +23,8 @@ import {TextFormGroupComponent} from "../text-form-group/text-form-group.compone
 import {AnnotationFormGroupComponent} from "../annotation-form-group/annotation-form-group.component";
 import {RangeFormGroupComponent} from "../range-form-group/range-form-group.component";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {DialogMode} from '../../../../../../../enums/dialog';
+import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
 // import {MatSlideToggle} from "@angular/material/slide-toggle";
 // import {
 //   BranchingLogicFormGroupComponent
@@ -46,6 +48,7 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
     RangeFormGroupComponent,
     MatRadioButton,
     MatRadioGroup,
+    TagComponent,
     // MatSlideToggle,
     // BranchingLogicFormGroupComponent
   ],
@@ -193,4 +196,6 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
     this.onTouch = fn;
   }
 
+  editMode = signal(false);
+  protected readonly DialogMode = DialogMode;
 }

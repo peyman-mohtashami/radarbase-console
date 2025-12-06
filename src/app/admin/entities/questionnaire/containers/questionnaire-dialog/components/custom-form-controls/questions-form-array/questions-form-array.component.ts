@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule, ValidationErrors, Validator
 } from '@angular/forms';
 import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {QuestionListItemComponent} from "../../question-list-item/question-list-item.component";
 import {QuestionFormGroupComponent} from "../question-form-group/question-form-group.component";
@@ -27,6 +27,7 @@ import {moveItemInFormArray} from "../../../questionnaire-dialog.component";
     CdkDrag,
     ReactiveFormsModule,
     QuestionFormGroupComponent,
+    MatIconButton,
   ],
   providers: [{
     provide: NG_VALUE_ACCESSOR,

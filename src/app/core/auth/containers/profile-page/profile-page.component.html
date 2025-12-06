@@ -12,7 +12,9 @@
 
       <mat-card-content>
         @if (error()) {
-          <app-message/>
+          <app-error-message-box>
+            {{ `ERROR.${error()?.error.error}` | translate }}
+          </app-error-message-box>
         }
         <form [formGroup]='form' novalidate>
           <label for="login" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.login' | translate }}</label>

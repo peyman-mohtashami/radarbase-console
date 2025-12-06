@@ -19,6 +19,7 @@ import {
   DialogAction,
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-organization-dialog',
@@ -36,6 +37,7 @@ import {
     MatFormField,
     DialogActionsComponent,
     DialogActionsComponent,
+    ErrorMessageBoxComponent,
   ]
 })
 export class OrganizationDialogComponent implements OnInit, AfterViewInit {
