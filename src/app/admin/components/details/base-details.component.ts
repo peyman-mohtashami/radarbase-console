@@ -3,7 +3,7 @@ import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 
 @Component({
-  selector: 'app-details',
+  selector: 'app-base-details',
   template: '',
 })
 export class BaseDetailsComponent<T> {
