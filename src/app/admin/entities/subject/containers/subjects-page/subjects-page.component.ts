@@ -202,7 +202,7 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
 
   initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -286,7 +286,7 @@ export class SubjectsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.dialogService.dialogUpdateEvent$.set(undefined);
+    this.dialogService.dialogUpdateEvent.set(undefined);
     if (!this.project) throw new Error('Project not found');
     this.sourceTypes = this.project.sourceTypes?.map(s => ({
       ...s,

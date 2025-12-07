@@ -1,83 +1,53 @@
-@let tableFields = configService.getTableFields();
+<app-entity [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-client-details extension-row
+                      class="py-4"
+                      [entity]='entity()'
+                      [detailType]="DetailType.TABLE" />
+  <app-client-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
 
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-primary/5! dark:bg-primary/10! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('clientId') {
-            <a class="font-bold text-primary dark:text-primary-dark underline" [routerLink]='[entity().clientId]'>
-              <span>{{ entity().clientId || '-' }}</span>
-            </a>
-          }
-          @case ('dynamic_registration') {
-            @if (entity().additionalInformation['dynamic_registration']) {
-              <app-tag class="bg-primary text-white">Dynamic</app-tag>
-            } @else {
-              <app-tag class="bg-gray-200 dark:bg-gray-300 text-primary dark:text-primary-dark">Manual</app-tag>
-            }
-          }
-          @case ('resourceIds') {
-            <div class="flex flex-wrap gap-1 py-1">
-              @for (tag of entity().resourceIds; track tag) {
-                <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
-              } @empty {
-                -
-              }
-            </div>
-          }
-          @case ('authorizedGrantTypes') {
-            <div class="flex flex-wrap gap-1 py-1">
-              @for (tag of entity().authorizedGrantTypes; track tag) {
-                <app-tag class="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
-              } @empty {
-                -
-              }
-            </div>
-          }
-          @case ('accessTokenValiditySeconds') {
-            {{ entity().accessTokenValiditySeconds | dhms }}
-          }
-          @case ('refreshTokenValiditySeconds') {
-            {{ entity().refreshTokenValiditySeconds | dhms }}
-          }
-          @case ("actions") {
-            <button mat-icon-button
-                    class="tiny block"
-                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                    (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined text-xl!">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-            </button>
-            <app-client-actions [entity]="entity()" [isExpanded]="true"/>
-          }
-          @default {
-            {{ entity()[tableElement.name] || '-' }}
-          }
-        }
-
-      </div>
-
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('clientId') {
+      <a class="font-bold text-primary dark:text-primary-dark underline" [routerLink]='[entity().clientId]'>
+        <span>{{ entity().clientId || '-' }}</span>
+      </a>
     }
-  </div>
-
-  @if (expanded()) {
-    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-    <app-client-details class="py-4"
-                       [entity]='entity()'
-                       [detailType]="DetailType.TABLE" />
-  </div>
+    @case ('dynamic_registration') {
+      @if (entity().additionalInformation['dynamic_registration']) {
+        <app-tag class="bg-primary text-white">Dynamic</app-tag>
+      } @else {
+        <app-tag class="bg-gray-200 dark:bg-gray-300 text-primary dark:text-primary-dark">Manual</app-tag>
+      }
+    }
+    @case ('resourceIds') {
+      <div class="flex flex-wrap gap-1 py-1">
+        @for (tag of entity().resourceIds; track tag) {
+          <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
+        } @empty {
+          -
+        }
+      </div>
+    }
+    @case ('authorizedGrantTypes') {
+      <div class="flex flex-wrap gap-1 py-1">
+        @for (tag of entity().authorizedGrantTypes; track tag) {
+          <app-tag class="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
+        } @empty {
+          -
+        }
+      </div>
+    }
+    @case ('accessTokenValiditySeconds') {
+      {{ entity().accessTokenValiditySeconds | dhms }}
+    }
+    @case ('refreshTokenValiditySeconds') {
+      {{ entity().refreshTokenValiditySeconds | dhms }}
+    }
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
   }
-</mat-card>
+</ng-template>

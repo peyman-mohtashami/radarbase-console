@@ -29,6 +29,7 @@ export class ProtocolService {
     const languages = extractLanguages(entity);
     return {
       ...entity,
+      _name: entity.name,
       _github: !!entity.questionnaire?.repository,
       _languages: languages,
       _onDemand: entity.type === 'on_demand',
@@ -129,6 +130,7 @@ export class ProtocolService {
 
   formToAppModel(entity: FormProtocol): AppProtocol {
     return {
+      _name: entity.general.name,
       name: entity.general.name,
       _languages: entity.general.languages,
       _onDemand: entity.general.onDemand,

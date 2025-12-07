@@ -1,73 +1,11 @@
 @let configFields = configService.getFormFields();
-@let tableFields = configService.getTableFields();
 
-@if (!gridView()) {
-  <mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-primary/5! dark:bg-primary-dark/5! ' : '') +
-    (expanded() ? 'mb-1' : '')
-  ">
-    <div class="rb-table-main-row">
-      @for (tableElement of tableFields; track tableElement.name) {
-        <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-             [class.flex-1]="!tableElement.width"
-             [class.shrink-0]="!!tableElement.width">
-          @switch (tableElement.name) {
-            @case ('projectName') {
-              <a [routerLink]='["/admin", "organizations", entity().organization.name, "projects", entity().projectName]' class="font-bold text-primary dark:text-primary-dark underline">
-                <span class=''>{{ entity().projectName }}</span>
-              </a>
-              @if (!configFields || configFields['description'] === undefined || configFields['description']) {
-                <p class="">{{ entity().description }}</p>
-              }
-            }
-            @case ('startDate') {
-              <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
-            }
-            @case ('endDate') {
-              <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
-            }
-            @case ('projectStatus') {
-              <app-project-status [projectStatus]="entity().projectStatus"/>
-            }
-            @case ('sourceTypes') {
-              <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
-            }
-            @case ("actions") {
-              <button mat-icon-button
-                      class="tiny block"
-                      [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                      [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                      [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                      [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                      [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                      [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                      [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                      (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-              </button>
-
-              <app-project-actions *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
-                           [entity]="entity()"
-                           [isExpanded]="true"/>
-            }
-            @default {
-              {{ entity()[tableElement.name] || '-' }}
-            }
-          }
-        </div>
-      }
-    </div>
-
-    @if (expanded()) {
-      <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-      <app-project-details [entity]='entity()' [detailType]="DetailType.TABLE" />
-    </div>
-    }
-  </mat-card>
-} @else {
-  <mat-card appearance="outlined"
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-project-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
+  <mat-card card-view appearance="outlined"
             class="cursor-pointer flex items-start justify-start h-full"
             [class]="updated() ? 'bg-primary/5! dark:bg-primary-dark/5! ' : ''"
             [routerLink]='["/admin", "organizations", entity().organization.name, "projects", entity()._name]'>
@@ -90,9 +28,9 @@
           <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity()._name }}</span>
         </div>
         <app-project-actions
-            *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
-            [entity]="entity()"
-            [isExpanded]="false"/>
+          *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+          [entity]="entity()"
+          [isExpanded]="false"/>
       </div>
       <div class="p-4">
         @if (!configFields || configFields['description'] === undefined || configFields['description']) {
@@ -121,4 +59,35 @@
       }
     </mat-card-content>
   </mat-card>
-}
+  <app-project-actions extra-actions *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+                       [entity]="entity()"
+                       [isExpanded]="true"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('projectName') {
+      <a [routerLink]='["/admin", "organizations", entity().organization.name, "projects", entity().projectName]' class="font-bold text-primary dark:text-primary-dark underline">
+        <span class=''>{{ entity().projectName }}</span>
+      </a>
+      @if (!configFields || configFields['description'] === undefined || configFields['description']) {
+        <p class="">{{ entity().description }}</p>
+      }
+    }
+    @case ('startDate') {
+      <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
+    }
+    @case ('endDate') {
+      <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
+    }
+    @case ('projectStatus') {
+      <app-project-status [projectStatus]="entity().projectStatus"/>
+    }
+    @case ('sourceTypes') {
+      <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
+    }
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
+  }
+</ng-template>

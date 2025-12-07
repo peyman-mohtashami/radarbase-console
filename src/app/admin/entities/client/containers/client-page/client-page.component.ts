@@ -72,7 +72,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
   private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) {
         switch (updated.mode) {
           case DialogMode.EDIT:

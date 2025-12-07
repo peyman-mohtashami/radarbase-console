@@ -80,6 +80,7 @@ export interface QuestionnaireLanguage extends RadarOption {
 }
 
 export interface AppProtocol extends RadarProtocol {
+  _name: string;
   _languages: QuestionnaireLanguage[];
   _onDemand: boolean;
   _github: boolean;

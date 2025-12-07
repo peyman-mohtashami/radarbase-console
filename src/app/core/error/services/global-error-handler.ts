@@ -8,6 +8,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   snackBar = inject(MatSnackBar);
 
   handleError(error: Error | HttpErrorResponse): void {
+    console.error(error);
     if (error instanceof HttpErrorResponse) {
       // server error
       if ([500, 503, 504].includes((error as HttpErrorResponse).status)) {

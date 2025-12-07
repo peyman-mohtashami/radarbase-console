@@ -1,59 +1,37 @@
-@let tableFields = configService.getTableFields();
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-source-details class="py-4" extension-row
+                      [entity]='entity()'
+                      [detailType]="DetailType.TABLE" />
+  <app-source-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
 
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-primary/5! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('sourceName') {
-            <p class='font-bold text-primary dark:text-primary-dark'>{{ entity().sourceName || '-' }}</p>
-            <p class='' [matTooltip]="entity().sourceId">{{ entity().sourceId | truncate:13 }}</p>
-          }
-
-          @case ('sourceId') {
-            <p class=''>{{ entity().sourceId || '-' }}</p>
-          }
-
-          @case ('sourceType') {
-            <app-source-source-type [sourceType]="entity().sourceType" />
-          }
-
-          @case ('project') {
-            <app-source-project [project]="entity().project" />
-          }
-
-          @case ('assigned') {
-            <app-source-assigned [assigned]="entity().assigned" />
-          }
-
-          @case('actions') {
-            <button mat-icon-button class="tiny {{extensionClass()}}!" (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined text-xl!">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-            </button>
-            <app-source-actions [entity]="entity()" [isExpanded]="true"/>
-          }
-
-          @default {
-            {{ entity()[tableElement.name] || '-' }}
-          }
-        }
-        </div>
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('sourceName') {
+      <p class='font-bold text-primary dark:text-primary-dark'>{{ entity().sourceName || '-' }}</p>
+      <p class='' [matTooltip]="entity().sourceId">{{ entity().sourceId | truncate:13 }}</p>
     }
-  </div>
 
-  @if (expanded()) {
-    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-    <app-source-details class="py-4"
-                        [entity]='entity()'
-                        [detailType]="DetailType.TABLE" />
-  </div>
+    @case ('sourceId') {
+      <p class=''>{{ entity().sourceId || '-' }}</p>
+    }
+
+    @case ('sourceType') {
+      <app-source-source-type [sourceType]="entity().sourceType" />
+    }
+
+    @case ('project') {
+      <app-source-project [project]="entity().project" />
+    }
+
+    @case ('assigned') {
+      <app-source-assigned [assigned]="entity().assigned" />
+    }
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
   }
-</mat-card>
-
+</ng-template>

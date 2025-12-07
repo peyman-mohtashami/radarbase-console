@@ -26,7 +26,7 @@ export class SubjectDetailsPageComponent {
 
   constructor() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) {
         switch (updated.mode) {
           case SubjectDialogMode.EDIT:

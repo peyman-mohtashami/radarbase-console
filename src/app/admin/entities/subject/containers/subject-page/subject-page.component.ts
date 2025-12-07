@@ -79,7 +79,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
 
   private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }

@@ -1,63 +1,35 @@
-@let tableFields = configService.getTableFields();
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-config-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
 
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-orange-200! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('value') {
-            @if (entity().default !== entity().value) {
-              <div class="font-bold">{{ entity().value }}</div>
-            } @else {
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('value') {
+      @if (entity().default !== entity().value) {
+        <div class="font-bold">{{ entity().value }}</div>
+      } @else {
 
-            }
+      }
 
-            @if (!!entity().default) {
-              <div class="font-bold text-gray-400 flex items-center gap-1">
-                {{ entity().default }}
-                @if (entity().scope?.includes('global')) {
-                  <span class="cursor-pointer material-symbols-outlined text-xl!"
-                        [matTooltip]="'Global Default'">public</span>
-                } @else {
-                  @if (entity().scope?.includes('project')) {
-                    <span class="cursor-pointer material-symbols-outlined text-xl!" [matTooltip]="'Project Default'">folder</span>
-                  }
-                }
-              </div>
+      @if (!!entity().default) {
+        <div class="font-bold text-gray-400 flex items-center gap-1">
+          {{ entity().default }}
+          @if (entity().scope?.includes('global')) {
+            <span class="cursor-pointer material-symbols-outlined text-xl!"
+                  [matTooltip]="'Global Default'">public</span>
+          } @else {
+            @if (entity().scope?.includes('project')) {
+              <span class="cursor-pointer material-symbols-outlined text-xl!" [matTooltip]="'Project Default'">folder</span>
             }
           }
-          @case ('actions') {
-            <button mat-icon-button
-                    class="tiny block"
-                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                    (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined text-xl!">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-            </button>
-            <app-config-actions [entity]="entity()"
-                                [isExpanded]="true"/>
-          }
-          @default {
-            {{ entity()[tableElement.name] || '-' }}
-          }
-        }
-      </div>
+        </div>
+      }
     }
-  </div>
-  @if (expanded()) {
-    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-    </div>
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
   }
-</mat-card>
+</ng-template>

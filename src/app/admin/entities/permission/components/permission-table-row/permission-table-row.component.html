@@ -1,66 +1,39 @@
 @let configFields = configService.getFormFields();
-@let tableFields = configService.getTableFields();
 
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-primary/5! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('login') {
-              <span class="font-bold text-primary dark:text-primary-dark">{{ entity().login }}</span>
-            @if (!configFields || configFields['firstName'] === undefined || configFields['firstName'] || configFields['lastName'] === undefined || configFields['lastName']) {
-              <p class="text-neutral-500 dark:text-neutral-300">{{entity().firstName}} {{entity().lastName}}</p>
-            }
-          }
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-permission-details extension-row class="py-4"
+                          [entity]='entity()'
+                          [detailType]="DetailType.TABLE"
+                          [organizationName]="organizationName()"
+                          [projectName]="projectName()"/>
+  <app-permission-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
 
-          @case('email') {
-            <span class="flex items-center gap-1">
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('login') {
+      <span class="font-bold text-primary dark:text-primary-dark">{{ entity().login }}</span>
+      @if (!configFields || configFields['firstName'] === undefined || configFields['firstName'] || configFields['lastName'] === undefined || configFields['lastName']) {
+        <p class="text-neutral-500 dark:text-neutral-300">{{entity().firstName}} {{entity().lastName}}</p>
+      }
+    }
+
+    @case('email') {
+      <span class="flex items-center gap-1">
               <app-user-activated class="inline-flex" [activated]="entity().activated" />
               <app-user-activate [entity]="entity()" />
               <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
             </span>
-          }
-
-          @case('roles') {
-            <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
-          }
-          @case ('actions') {
-            <button mat-icon-button
-                    class="tiny block"
-                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                    (click)="onExpansionClick($event)">
-              <span class="material-symbols-outlined">
-                {{ expanded() ? 'expand_less' : 'expand_more' }}
-              </span>
-            </button>
-            <app-permission-actions [entity]="entity()" [isExpanded]="true"/>
-          }
-          @default {
-            {{ entity()[tableElement.name] || '-' }}
-          }
-        }
-      </div>
     }
-  </div>
 
-  @if (expanded()) {
-    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-    <app-permission-details class="py-4"
-                            [entity]='entity()'
-                            [detailType]="DetailType.TABLE"
-                            [organizationName]="organizationName()"
-                            [projectName]="projectName()"/>
-  </div>
+    @case('roles') {
+      <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
+    }
+    @default {
+      {{ entity()[property.name] || '-' }}
+    }
   }
-</mat-card>
+</ng-template>

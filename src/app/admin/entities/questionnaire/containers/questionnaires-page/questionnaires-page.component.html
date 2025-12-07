@@ -87,7 +87,7 @@
 
   @if (entities$().length) {
     @for (entity of visibleEntities$(); track entity._name) {
-      <app-questionnaire-table-row [entity$]="entity" [tableFields$]="tableFields" [configFields$]="configFields"/>
+      <app-questionnaire-table-row [entity]="entity"/>
 <!--                                       [entityUpdateTrigger$]="dialogService.dialogUpdateEvent$()"-->
           <!--                                 [tableFields$]="tableFields"-->
           <!--                                 [gridView]="gridView"-->

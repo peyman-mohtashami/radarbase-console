@@ -14,8 +14,9 @@ import {ActionsComponent} from '../../entities/organization/components/actions/a
 import {PermissionDirective} from '../../../core/auth/directives/show-if-has-role.directive';
 import {OrganizationConfigService} from '../../entities/organization/services/organization-config.service';
 import {AppOrganization} from '../../entities/organization/models/organization';
-import {UpdateTrigger} from '../../entities/organization/services/organization-dialog.service';
+// import {UpdateTrigger} from '../../entities/organization/services/organization-dialog.service';
 import {ROLES} from '../../../shared/enums/roles';
+import {SubjectDialogMode} from '../../entities/subject/enums/dialog';
 
 @Component({
   selector: 'app-base-entity',
@@ -29,7 +30,7 @@ export class BaseEntityComponent<T extends {_name: string;}> {
   configService: any;
 
   entity = input.required<T>();
-  entityUpdateTrigger= input<UpdateTrigger>();
+  entityUpdateTrigger= input<{mode: DialogMode | SubjectDialogMode; entity?: T}>();
   extensionClass = input<string>();
   gridView = input<boolean>(false);
 
@@ -42,12 +43,14 @@ export class BaseEntityComponent<T extends {_name: string;}> {
       if (!updateTrigger) return;
 
       const {mode, entity} = updateTrigger;
-      if (entity._name !== this.entity()._name) return;
+      if (entity?._name !== this.entity()._name) return;
       if (mode === DialogMode.ADD || mode === DialogMode.EDIT) {
         this.updated.set(true);
         setTimeout(() => {
           this.updated.set(false);
         }, 1000);
+      } else {
+        this.updated.set(false);
       }
     });
   }

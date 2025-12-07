@@ -1,38 +1,14 @@
-@let tableFields = configService.getTableFields();
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate">
+  <app-group-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
 
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-primary/5! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('actions') {
-            <button mat-icon-button
-                    class="tiny block"
-                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                    (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined text-xl!">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-            </button>
-            <app-group-actions [entity]="entity()" [isExpanded]="true"/>
-          }
-          @default {
-            {{ entity()[tableElement.name] || '-' }}
-          }
-        }
-      </div>
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @default {
+      {{ entity()[property.name] || '-' }}
     }
-  </div>
-</mat-card>
-
+  }
+</ng-template>

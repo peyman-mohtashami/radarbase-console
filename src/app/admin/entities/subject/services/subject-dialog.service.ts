@@ -32,7 +32,7 @@ export class SubjectDialogService {
   private activatedRoute = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
 
-  dialogUpdateEvent$: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
 
   openDialog(mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject) {
     if (mode !== SubjectDialogMode.ADD && !entity) {
@@ -47,7 +47,7 @@ export class SubjectDialogService {
         this.processDialogAction(value.action, value.entity).subscribe({
           next: (res) => {
             console.log('Class: SubjectDialogService, Function: next, Line 46 res' , res);
-            this.dialogUpdateEvent$.set({mode, entity: res ?? value.entity})
+            this.dialogUpdateEvent.set({mode, entity: res ?? value.entity})
             dialogRef.close();
           },
           error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
@@ -160,7 +160,7 @@ export class SubjectDialogService {
         if (value.group) {
           this.entityService.addSubjectsToGroup(project.projectName, value.group.name, subjects).subscribe({
             next: () => {
-              this.dialogUpdateEvent$.set({mode: SubjectDialogMode.ASSIGN_GROUP, entity: undefined})
+              this.dialogUpdateEvent.set({mode: SubjectDialogMode.ASSIGN_GROUP, entity: undefined})
               dialogRef.close();
             },
             error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
