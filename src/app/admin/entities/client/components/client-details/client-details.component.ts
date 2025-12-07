@@ -8,6 +8,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from "../../services/client-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-client-details',
@@ -19,12 +20,12 @@ import {ClientConfigService} from "../../services/client-config.service";
     DetailsComponent,
   ]
 })
-export class ClientDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class ClientDetailsComponent extends BaseDetailsComponent<AppClient> {
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(ClientConfigService);
+  override configService = inject(ClientConfigService);
 
-  entity = input.required<AppClient>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppClient>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }

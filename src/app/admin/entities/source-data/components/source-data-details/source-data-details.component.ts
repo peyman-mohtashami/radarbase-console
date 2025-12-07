@@ -8,6 +8,7 @@ import {DialogMode} from "../../../../enums/dialog";
 import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-source-data-details',
@@ -18,12 +19,12 @@ import {SourceDataConfigService} from "../../services/source-data-config.service
     DetailsComponent,
   ]
 })
-export class SourceDataDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class SourceDataDetailsComponent extends BaseDetailsComponent<AppSourceData>{
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(SourceDataConfigService);
+  override configService = inject(SourceDataConfigService);
 
-  entity = input.required<AppSourceData>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppSourceData>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }

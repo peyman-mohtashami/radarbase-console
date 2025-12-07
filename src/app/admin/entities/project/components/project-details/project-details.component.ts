@@ -8,6 +8,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {JsonPipe} from "@angular/common";
 import {ProjectConfigService} from "../../services/project-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-project-details',
@@ -20,12 +21,12 @@ import {ProjectConfigService} from "../../services/project-config.service";
     JsonPipe,
   ]
 })
-export class ProjectDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class ProjectDetailsComponent extends BaseDetailsComponent<AppProject>{
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(ProjectConfigService);
+  override configService = inject(ProjectConfigService);
 
-  entity = input.required<AppProject>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppProject>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }

@@ -9,6 +9,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {ActivateComponent} from '../activate/activate.component';
 import {UserConfigService} from "../../services/user-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-user-details',
@@ -22,12 +23,12 @@ import {UserConfigService} from "../../services/user-config.service";
     ActivateComponent,
   ]
 })
-export class UserDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class UserDetailsComponent extends BaseDetailsComponent<AppUser>{
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(UserConfigService);
+  override configService = inject(UserConfigService);
 
-  entity = input.required<AppUser>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppUser>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }

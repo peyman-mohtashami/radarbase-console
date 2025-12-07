@@ -5,6 +5,7 @@ import {DetailsComponent} from "../../../../components/details/details.component
 import {DetailType} from "../../../../enums/detail-type";
 import {DialogMode} from "../../../../enums/dialog";
 import {OrganizationConfigService} from "../../services/organization-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-organization-details',
@@ -14,12 +15,12 @@ import {OrganizationConfigService} from "../../services/organization-config.serv
     DetailsComponent,
   ]
 })
-export class OrganizationDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class OrganizationDetailsComponent extends BaseDetailsComponent<AppOrganization>{
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(OrganizationConfigService);
+  override configService = inject(OrganizationConfigService);
 
-  entity = input.required<AppOrganization>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppOrganization>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }

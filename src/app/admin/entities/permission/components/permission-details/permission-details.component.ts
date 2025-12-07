@@ -9,6 +9,7 @@ import {UserCreatedByComponent} from '../../../user/components/user-createdby/us
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
 import {PermissionConfigService} from "../../services/permission-config.service";
 import {AppUser} from "../../../user/models/user";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-permission-details',
@@ -25,14 +26,14 @@ import {AppUser} from "../../../user/models/user";
     PermissionRolesComponent,
   ]
 })
-export class PermissionDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class PermissionDetailsComponent extends BaseDetailsComponent<AppUser>{
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(PermissionConfigService);
+  override configService = inject(PermissionConfigService);
 
-  entity = input.required<AppUser>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppUser>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 
   organizationName = input<string>();
   projectName = input<string>();

@@ -10,6 +10,7 @@ import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {SubjectConfigService} from "../../services/subject-config.service";
+import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
 
 @Component({
   selector: 'app-subject-details',
@@ -24,12 +25,12 @@ import {SubjectConfigService} from "../../services/subject-config.service";
     DetailsComponent,
   ]
 })
-export class SubjectDetailsComponent {
-  protected readonly DetailType = DetailType;
+export class SubjectDetailsComponent extends BaseDetailsComponent<AppSubject> {
+  // protected readonly DetailType = DetailType;
 
-  protected configService = inject(SubjectConfigService);
+  override configService = inject(SubjectConfigService);
 
-  entity = input.required<AppSubject>();
-  dialogMode = input<DialogMode>();
-  detailType = input<DetailType>();
+  // entity = input.required<AppSubject>();
+  // dialogMode = input<DialogMode>();
+  // detailType = input<DetailType>();
 }
