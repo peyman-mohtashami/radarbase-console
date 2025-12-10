@@ -8,12 +8,12 @@ import {SubjectDetailsPageComponent} from "./containers/subject-details-page/sub
 import {SubjectDownloadPageComponent} from "./containers/subject-download-page/subject-download-page.component";
 import {SubjectDataPageComponent} from "./containers/subject-data-page/subject-data-page.component";
 import {SubjectCompliancePageComponent} from "./containers/subject-compliance-page/subject-compliance-page.component";
-import {SubjectsPageComponent} from './containers/subjects-page/subjects-page.component';
+import {SubjectListPageComponent} from './containers/subject-list-page/subject-list-page.component';
 
 export const subjectRoutes: Routes = [
   {
     path: '',
-    component: SubjectsPageComponent,
+    component: SubjectListPageComponent,
     resolve: {
       entities: SubjectsResolver,
       clients: ClientsResolver,

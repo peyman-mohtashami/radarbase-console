@@ -12,10 +12,8 @@ import {AppProject} from '../../project/models/project';
 export class GroupsResolver implements Resolve<AppGroup[]> {
   private entityService = inject(GroupService);
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<AppGroup[]> | Promise<AppGroup[]> | AppGroup[] {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppGroup[]> {
     const currentProject: AppProject = route.parent?.parent?.data['entity'];
-    return this.entityService.getAll(currentProject.projectName);
+    return this.entityService.getWithQuery(route.queryParams, currentProject.projectName);
   }
 }

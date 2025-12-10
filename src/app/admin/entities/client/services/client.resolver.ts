@@ -12,10 +12,8 @@ import {map} from "rxjs/operators";
 export class ClientResolver implements Resolve<AppClient> {
   private entityService = inject(ClientService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ): Observable<AppClient> | Promise<AppClient> | AppClient {
-    return this.entityService.getAll().pipe(
+  resolve(route: ActivatedRouteSnapshot): Observable<AppClient> {
+    return this.entityService.getWithQuery().pipe(
       map(clients => {
         const client = clients.find(client => client.clientId === route.params['id']);
         if (client) {

@@ -1,10 +1,7 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
   inject,
-  Output,
-  signal
 } from '@angular/core';
 
 import {
@@ -21,8 +18,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {HttpErrorResponse} from '@angular/common/http';
 import {DialogMode} from '../../../../enums/dialog';
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
   selector: 'app-user-activate-dialog',
@@ -38,9 +35,9 @@ import {DialogMode} from '../../../../enums/dialog';
     MatProgressSpinner,
   ]
 })
-export class UserActivateDialogComponent implements AfterViewInit {
-  private dialogRef = inject(MatDialogRef<UserDialogService>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class UserActivateDialogComponent extends BaseDialogComponent<AppUser> implements AfterViewInit {
+  override dialogRef = inject(MatDialogRef<UserDialogService>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode | string;
     entity: AppUser;
     entities: AppUser[];
@@ -48,20 +45,11 @@ export class UserActivateDialogComponent implements AfterViewInit {
     organizations: AppOrganization[];
   };
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode | string, entity?: AppUser }>();
-
   ngAfterViewInit() {
-    const container = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      container?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction() {
+  override onAction() {
     this.error.set(null);
     this.loading.set(true);
     this.handleActivateAction();
@@ -69,22 +57,5 @@ export class UserActivateDialogComponent implements AfterViewInit {
 
   private handleActivateAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
   }
 }

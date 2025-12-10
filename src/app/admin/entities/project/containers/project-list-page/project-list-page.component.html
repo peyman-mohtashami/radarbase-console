@@ -1,0 +1,41 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="entityMetadata"
+                          [enableAddButton]="true"
+                          [isGridView]="GRID_VIEW_ENABLED ? gridView : undefined"
+                          (gridListToggled)="gridView = !gridView"
+                          [permission]="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: organization?.name}]">
+  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</app-entities-page-header>
+
+@if (loading()) {
+  <app-loader/>
+}
+
+<app-entities-page [entities]="entities()"
+                   [tableFields]="tableFields"
+                   [entityMetadata]="entityMetadata"
+                   [page]="page()"
+                   [sort]="sort()"
+                   (switchPageEvent)="switchPage($event)"
+                   (switchSortEvent)="switchSort($event)"
+                   (activeQueryChangeEvent)="handleActiveQueryChange($event)"
+                   [customTemplate]="itemTemplate"
+                   [gridView]="gridView"
+                   [totalEntities]="entityService.total()"/>
+<ng-template #itemTemplate let-entity>
+  <app-project-table-row [entity]="entity"
+                         [gridView]="gridView"
+                         [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
+                         [extensionClass]="extensionClass()"
+                         class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
+</ng-template>

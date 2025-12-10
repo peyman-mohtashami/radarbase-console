@@ -1,40 +1,45 @@
-import {inject, Injectable} from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
 import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
 import {isValid, parse} from 'date-fns';
-import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
+import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({ providedIn: 'root' })
-export class SubjectService {
-  private http = inject(HttpClient);
+export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> {
+  override CACHE_ENABLED = false
 
-  private readonly resourceUrl = 'api/subjects';
-  total = 0;
+  projectName?: string;
 
-  private toAppModel(entity: RadarSubject): AppSubject {
+  override getResourceUrl(): string {
+    return `api/subjects`;
+  }
+
+  override toAppModel(entity: RadarSubject): AppSubject {
     return { ...entity, _name: entity.login };
   }
 
-  private toRadarModel(entity: AppSubject): RadarSubject {
+  override toRadarModel(entity: AppSubject): RadarSubject {
     return { ...entity, group: entity.group || undefined, };
   }
 
-  getWithQuery(projectName: string, queryParams?: Params | string): Observable<AppSubject[]> {
+  override getWithQuery(queryParams: Params, projectName?: string): Observable<AppSubject[]> {
+    this.projectName = projectName;
+
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarSubject[]>(`api/projects/${projectName}/subjects`, {
+    return this.http.get<RadarSubject[]>(`api/projects/${this.projectName}/subjects`, {
       params,
       observe: 'response',
     }).pipe(
       tap(
         (res) => {
-          this.total = +(
+          this.total.set(+(
             res.headers.get('x-total-count') ||
             res.body?.length.toString() ||
             '0'
-          )
+          ))
         }
       ),
       map((res) => {
@@ -43,55 +48,7 @@ export class SubjectService {
     );
   }
 
-  getByKey(key: number | string): Observable<AppSubject> {
-    return this.http.get<RadarSubject>(`api/subjects/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  add(entity: AppSubject): Observable<AppSubject> {
-    return this.http.post<RadarSubject>(this.resourceUrl, this.toRadarModel(entity))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  update(update: AppSubject): Observable<AppSubject> {
-    return this.http.put<RadarSubject>(`api/subjects/`, this.toRadarModel(update))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  delete(entity: AppSubject): Observable<void> {
-    return this.http.delete<void>(
-      `api/subjects/${entity.login}`
-    );
-  }
-
-  private convertParamsToHttpParams(queryParams: Params): {
-    params: HttpParams;
-    parentEntityName: string;
-  } {
-    let params = new HttpParams();
-    params = params.append(
-      'size',
-      queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
-    );
-    params = params.append('page', queryParams?.['pageIndex'] || '0');
-    if (
-      queryParams?.['sortField'] &&
-      queryParams['sortField'] !== '' &&
-      queryParams?.['sortOrder'] &&
-      queryParams['sortOrder'] !== ''
-    ) {
-      params = params.append(
-        'sort',
-        queryParams['sortField'] + ',' + queryParams['sortOrder']
-      );
-    } else {
-      params = params.append('sort', 'id' + ',' + 'desc');
-    }
-    params = this.convertFilterParamsToHttpParams(params, queryParams);
-    return { params, parentEntityName: queryParams?.['parentEntityName'] };
-  }
-
-  convertFilterParamsToHttpParams(
+  override convertFilterParamsToHttpParams(
     params: HttpParams,
     queryParams?: Params
   ) {
@@ -141,7 +98,7 @@ export class SubjectService {
 
   discontinue(entity: AppSubject): Observable<AppSubject> {
     return this.http.put<AppSubject>(
-      `${this.resourceUrl}/discontinue`,
+      `api/subjects/discontinue`,
       this.toRadarModel(entity)
     );
   }

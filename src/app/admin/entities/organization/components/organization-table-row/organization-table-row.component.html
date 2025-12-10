@@ -3,7 +3,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-organization-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
   <mat-card card-view
             appearance="outlined"
@@ -46,7 +48,6 @@
       [entity]="entity()"
       [isExpanded]="true"/>
 </app-entity>
-
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
     @case ('name') {
@@ -64,7 +65,7 @@
       <app-organization-projects [organization]="entity()['name']" [projects]="entity()['projects']"/>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

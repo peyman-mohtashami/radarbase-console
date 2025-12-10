@@ -1,17 +1,13 @@
-import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
-import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../enums/dialog';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
 import {PermissionConfigService} from '../../services/permission-config.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {debounceTime} from 'rxjs/operators';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -20,6 +16,8 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AppUser} from "../../../user/models/user";
 import {DialogAction} from "../../../../components/dialog/dialog-actions/dialog-actions.component";
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-permission-dialog',
@@ -38,79 +36,51 @@ import {DialogAction} from "../../../../components/dialog/dialog-actions/dialog-
     MatProgressSpinner,
   ]
 })
-export class PermissionDialogComponent implements OnInit, AfterViewInit {
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
+export class PermissionDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit, OnDestroy {
+  protected readonly DetailType = DetailType;
+  protected readonly DialogAction = DialogAction;
 
-  private configService = inject(PermissionConfigService);
-  private dialogRef = inject(MatDialogRef<PermissionDialogService>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+  override configService = inject(PermissionConfigService);
+  override dialogRef = inject(MatDialogRef<PermissionDialogService>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppUser;
     entities: AppUser[];
     project?: AppProject;
     organization?: AppOrganization;
+    users: AppUser[];
   };
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     email: new FormControl<string>( '', {nonNullable: true}),
   })
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
   selectedUser = signal<AppUser | undefined>(undefined);
 
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppUser }>();
-
-  readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges()) {
-        this.error.set(null);
-        const email = this.form.value.email;
-        this.selectedUser.set(this.dialogData.entities.find(e => e.email === email || e.login === email));
-
-      }
-    });
-  }
-
   ngOnInit() {
-    this.form?.patchValue({...this.dialogData.entity});
+      this.formFields = this.configService.getFormFields();
+      this.form.patchValue(this.dialogData.entity);
+      this.form.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+        if (value) {
+          this.error.set(null);
+          const email = this.form.value.email;
+          const user = this.dialogData.users?.find(e => e.email === email || e.login === email);
+          this.selectedUser.set(user);
+        }
+      })
   }
 
   ngAfterViewInit() {
-    const container = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      container?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: DialogAction) {
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        this.handleSaveAction();
-        break;
-    }
+  ngOnDestroy() {
+    super.destroy();
   }
 
-  private handleSaveAction(): void {
+  override handleSaveAction(): void {
     const selectedUser = this.selectedUser();
     if (!selectedUser) return;
 
@@ -133,7 +103,7 @@ export class PermissionDialogComponent implements OnInit, AfterViewInit {
     this.dialogActionEvent.emit({action: DialogMode.EDIT, entity: updatedEntity});
   }
 
-  private handleDeleteAction(): void {
+  override handleDeleteAction(): void {
     const updatedEntity: AppUser = {...this.dialogData.entity};
     updatedEntity._roles = updatedEntity._roles ?? {};
 
@@ -147,24 +117,4 @@ export class PermissionDialogComponent implements OnInit, AfterViewInit {
     }
     this.dialogActionEvent.emit({action: DialogMode.EDIT, entity: updatedEntity});
   }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
-  }
-
-  protected readonly DetailType = DetailType;
-  protected readonly DialogAction = DialogAction;
 }

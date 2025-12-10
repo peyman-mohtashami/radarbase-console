@@ -3,7 +3,7 @@ import {
   Component,
   effect,
   EventEmitter,
-  inject,
+  inject, OnDestroy,
   OnInit,
   Output,
   signal,
@@ -39,6 +39,7 @@ import {EditorComponent} from "ngx-monaco-editor-v2";
 import {QuestionsFormArrayComponent} from './components/custom-form-controls/questions-form-array/questions-form-array.component'
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 export interface RadarCondition {
   conditionField: string;
@@ -65,18 +66,14 @@ export interface RadarCondition {
     MatTooltip,
   ]
 })
-export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(QuestionnaireConfigService);
-  private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class QuestionnaireDialogComponent extends BaseDialogComponent<AppQuestionnaire> implements OnInit, AfterViewInit, OnDestroy {
+  override configService = inject(QuestionnaireConfigService);
+  override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppQuestionnaire;
     entities: AppQuestionnaire[];
   };
-
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
   protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
@@ -92,32 +89,13 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   updatedValue?: AppQuestionnaire;
   updatedCode: string = '';
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     name: new FormControl<string>('', {validators: [Validator.requiredValidator, Validator.stringIdValidator], nonNullable: true}),
     languages: new FormControl<RadarOption[]>([this.DEFAULT_LANG], {nonNullable: true}),
     questions: new FormControl<AppQuestion[]>([], {nonNullable: true}),
   });
-
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppQuestionnaire }>();
-
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges?.()) {
-        this.error.set(null);
-      }
-    });
-  }
 
   ngOnInit() {
     this.form.controls.name.addValidators(this.duplicateValidator);
@@ -132,30 +110,14 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: DialogAction) {
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        this.handleSaveAction();
-        break;
-    }
+  ngOnDestroy() {
+    super.destroy();
   }
 
-
-  private handleSaveAction(): void {
+  override handleSaveAction(): void {
     const value = this.form.getRawValue();
     const updatedEntity: AppQuestionnaire = {
       ...this.dialogData.entity,
@@ -167,25 +129,8 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private handleDeleteAction(): void {
+  override handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
   }
 
   private duplicateValidator = (control: AbstractControl) => {
@@ -200,7 +145,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   protected toggleCodeView() {
     const value = this.form.getRawValue();
     const json = {...value, languages: undefined};
-    this.updatedValue = {...value, _name: value.name , _search: value.name, _languages: value.languages};
+    this.updatedValue = {...value, _name: value.name , _search: value.name, languages: value.languages};
     this.updatedCode = JSON.stringify(json, null, 2);
     this.showCode = !this.showCode
   }

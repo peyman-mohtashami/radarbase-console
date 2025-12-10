@@ -4,13 +4,13 @@ import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {SourceDataPageComponent} from "./containers/source-data-page/source-data-page.component";
 import {SourceDataResolver} from "./services/source-data.resolver";
 import {RADAR_ROLES} from '../../../shared/models/auth.model';
-import {SourceDatasPageComponent} from './containers/source-datas-page/source-datas-page.component';
 import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
+import {SourceDataListPageComponent} from './containers/source-data-list-page/source-data-list-page.component';
 
 export const sourceDataRoutes: Routes = [
   {
     path: '',
-    component: SourceDatasPageComponent,
+    component: SourceDataListPageComponent,
     resolve: {
       entities: SourcesDataResolver,
       sourceTypes: SourceTypesResolver,

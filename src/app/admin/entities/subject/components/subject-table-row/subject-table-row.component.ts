@@ -1,4 +1,4 @@
-import {Component, input} from "@angular/core";
+import {Component, inject, input} from "@angular/core";
 import {AppSubject} from "../../models/subject";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
@@ -13,6 +13,7 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
 import {SelectionModel} from '@angular/cdk/collections';
+import {SubjectConfigService} from '../../services/subject-config.service';
 
 @Component({
   selector: 'app-subject-table-row',
@@ -33,5 +34,6 @@ import {SelectionModel} from '@angular/cdk/collections';
   ]
 })
 export class SubjectTableRowComponent extends BaseEntityComponent<AppSubject> {
+  override configService = inject(SubjectConfigService);
   selection = input.required<SelectionModel<any>>();
 }

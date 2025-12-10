@@ -33,6 +33,10 @@ export class BaseConfigService {
     return this.filters.filter(f => this.config()?.[f.name] !== false);
   }
 
+  getExtraFields() {
+    return this.config().extraFields;
+  }
+
   getEntityMetadata() {
     return this.entityMetadata;
   }

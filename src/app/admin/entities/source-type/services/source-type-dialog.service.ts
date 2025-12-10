@@ -1,83 +1,17 @@
-import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Observable, of} from 'rxjs';
+import {MatDialogRef} from '@angular/material/dialog';
 import {AppSourceType} from '../models/source-type';
 import {SourceTypeDialogComponent} from '../containers/source-type-dialog/source-type-dialog.component';
 import {SourceTypeService} from './source-type.service';
-
-export interface UpdateTrigger {
-  mode: DialogMode;
-  entity: AppSourceType;
-}
+import {BaseDialogService} from '../../../services/base-dialog.service';
 
 @Injectable({providedIn: 'root'})
-export class SourceTypeDialogService {
-  private entityService = inject(SourceTypeService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class SourceTypeDialogService extends BaseDialogService<AppSourceType, SourceTypeDialogComponent>{
+  override entityService = inject(SourceTypeService);
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  openDialog(mode: DialogMode, entity?: AppSourceType) {
-    if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, entity);
-
-    const dialogActionSubscription =
-      dialogRef.componentInstance.dialogActionEvent.subscribe(
-        (value) => {
-          const _entity = value.entity;
-          const _action = value.action;
-          if (!_entity) {
-            dialogRef.close();
-            return;
-          }
-          this.processDialogAction(_action, _entity).subscribe({
-            next: (res) => {
-              this.dialogUpdateEvent.set({mode, entity: res ?? _entity});
-              dialogRef.close();
-            },
-            error: (error: HttpErrorResponse) =>
-              dialogRef.componentInstance.errorHappened(error),
-          });
-        }
-      );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  private processDialogAction(actionType: DialogMode, entity: AppSourceType): Observable<AppSourceType | void> {
-    switch (actionType) {
-      case DialogMode.ADD:
-        return this.entityService.add(entity);
-      case DialogMode.EDIT:
-        return this.entityService.update(entity);
-      case DialogMode.DELETE:
-        return this.entityService.delete(entity);
-      default:
-        this.clearFragmentUrl();
-        return of();
-    }
-  }
-
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(mode: DialogMode, entity?: AppSourceType): MatDialogRef<SourceTypeDialogComponent> {
+  override createDialogRef(mode: DialogMode, data: {entity?: AppSourceType}): MatDialogRef<SourceTypeDialogComponent> {
+    const {entity} = data;
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(SourceTypeDialogComponent, {

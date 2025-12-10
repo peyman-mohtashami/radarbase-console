@@ -1,5 +1,6 @@
 @let entityName = configService.getEntityMetadata().name;
 
+@if (dialogData?.mode) {
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
                   (closeClicked)='close()'/>
@@ -93,3 +94,4 @@
 <app-dialog-actions [dialogMode]='dialogData.mode'
                     [form]='form'
                     (actionTriggered)='onAction($event)'/>
+}

@@ -1,17 +1,13 @@
 import {
   AfterViewInit,
   Component,
-  effect,
-  EventEmitter,
   inject,
   OnInit,
-  Output,
-  signal
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
-import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
+import {Validator} from '../../../../../shared/utils/validators';
 import {AppUser} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
@@ -19,9 +15,6 @@ import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../enums/dialog';
 import {UserDialogService} from '../../services/user-dialog.service';
 import {UserConfigService} from '../../services/user-config.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {debounceTime} from 'rxjs/operators';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   MatSelectAutocompleteComponent, RadarOption
@@ -33,6 +26,7 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
   selector: 'app-user-dialog',
@@ -51,14 +45,10 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
     MatSelectAutocompleteComponent,
   ]
 })
-export class UserDialogComponent implements OnInit, AfterViewInit {
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
-
-  protected configService = inject(UserConfigService);
-  private dialogRef = inject(MatDialogRef<UserDialogService>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class UserDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit {
+  override configService = inject(UserConfigService);
+  override dialogRef = inject(MatDialogRef<UserDialogService>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppUser;
     entities: AppUser[];
@@ -66,9 +56,9 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
     organizations: AppOrganization[];
   };
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     id: new FormControl<string| number>({ value: '', disabled: true }, {nonNullable: true}),
     login: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
     firstName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
@@ -84,76 +74,21 @@ export class UserDialogComponent implements OnInit, AfterViewInit {
     }),
   });
 
-  loading$ = signal(false);
-  error$ = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppUser }>();
-
-  readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges()) {
-        this.error$.set(null);
-      }
-    });
-  }
-
   ngOnInit() {
-    this.form.patchValue(this.dialogData.entity);
+    super.init();
   }
 
   ngAfterViewInit() {
-    const container = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      container?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: string) { //TODO DIALOG_ACTION
-    this.error$.set(null);
-    this.loading$.set(true);
-    switch ($event) {
-      case 'close':
-        this.close();
-        break;
-      case 'delete':
-        this.handleDeleteAction();
-        break;
-      case 'save':
-        this.handleSaveAction();
-        break;
-    }
-  }
-
-  private handleSaveAction(): void {
+  override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {...this.dialogData.entity, ...this.form.getRawValue()}});
   }
 
-  private handleDeleteAction(): void {
+  override handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading$.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading$.set(false);
-    this.error$.set(error);
   }
 }

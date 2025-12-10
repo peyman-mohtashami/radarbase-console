@@ -11,9 +11,7 @@ import {ProjectService} from "./project.service";
 export class ProjectResolver implements Resolve<AppProject> {
   private entityService = inject(ProjectService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ): Observable<AppProject> | Promise<AppProject> | AppProject {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppProject> {
     const projectId = route.paramMap.get('id');
     return this.entityService.getByKey(projectId as string);
   }

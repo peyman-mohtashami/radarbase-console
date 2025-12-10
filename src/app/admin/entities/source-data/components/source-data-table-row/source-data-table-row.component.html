@@ -3,7 +3,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-source-data-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
   <app-source-data-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
 </app-entity>
@@ -28,7 +30,7 @@
       <app-source-data-processing-state [processingState]="entity().processingState"/>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

@@ -1,16 +1,16 @@
 import {Routes} from "@angular/router";
 import {ProjectsResolver} from "./services/projects.resolver";
-import {ProjectPageComponent} from "./containers/project-page/project-page.component";
 import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
-import { ProjectsPageComponent } from "./containers/projects-page/projects-page.component";
 import {OrganizationsResolver} from '../organization/services/organizations.resolver';
 import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
+import {ProjectListPageComponent} from './containers/project-list-page/project-list-page.component';
+import {ProjectPageComponent} from './containers/project-page/project-page.component';
 
 export const projectRoutes: Routes = [
   {
     path: "",
-    component: ProjectsPageComponent,
+    component: ProjectListPageComponent,
     resolve: {
       entities: ProjectsResolver,
       sourceTypes: SourceTypesResolver,

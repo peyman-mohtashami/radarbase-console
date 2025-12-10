@@ -79,7 +79,7 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
   // )
 
   sources = toSignal(
-    this.sourceService.getWithQuery(this.dialogData.project.projectName).pipe(
+    this.sourceService.getWithQuery(undefined, this.dialogData.project.projectName).pipe(
       map(sources => sources.filter(s => !s.assigned))
     ),
     {initialValue: [] as AppSource[]}

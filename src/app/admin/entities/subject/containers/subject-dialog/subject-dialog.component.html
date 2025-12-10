@@ -2,16 +2,16 @@
   <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span class='inline-flex items-center justify-between w-full'>
     <span class="text-lg">
-      @if (dialogData.mode === DialogMode.EDIT) {
+      @if (dialogData.mode === SubjectDialogMode.EDIT) {
         <span>{{ "SHARED.dialog.edit" | translate }}</span>
       }
-      @if (dialogData.mode === DialogMode.VIEW) {
+      @if (dialogData.mode === SubjectDialogMode.VIEW) {
         <span>{{ "SHARED.dialog.view" | translate }}</span>
       }
-      @if (dialogData.mode === DialogMode.ADD) {
+      @if (dialogData.mode === SubjectDialogMode.ADD) {
         <span>{{ "SHARED.dialog.add" | translate }}</span>
       }
-      @if (dialogData.mode === DialogMode.DELETE) {
+      @if (dialogData.mode === SubjectDialogMode.DELETE) {
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
       <span> {{ "ADMIN.subject.title.singular" | translate }}</span>
@@ -25,9 +25,9 @@
 </div>
 
 <mat-dialog-content>
-  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+  @if (dialogData.mode === SubjectDialogMode.VIEW || dialogData.mode === SubjectDialogMode.DELETE) {
     <div class='mb-4 text-base'>
-      @if (dialogData.mode === DialogMode.DELETE) {
+      @if (dialogData.mode === SubjectDialogMode.DELETE) {
         <div class="mt-8">
           <p class="mb-4">
             {{ "SHARED.dialog.deleteMessage" | translate }} {{ 'Subject' }}:
@@ -42,9 +42,9 @@
     </div>
   }
 
-  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+  @if (dialogData.mode === SubjectDialogMode.ADD || dialogData.mode === SubjectDialogMode.EDIT) {
     <form [formGroup]="form" novalidate>
-      @if (dialogData.mode !== DialogMode.ADD) {
+      @if (dialogData.mode !== SubjectDialogMode.ADD) {
         <label for="id" class="text-sm">{{ 'ADMIN.subject.id.label' | translate }}</label>
         <mat-form-field subscriptSizing="fixed"
                         appearance="fill">
@@ -153,10 +153,10 @@
   }
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 
@@ -170,13 +170,13 @@
     </button>
   </div>
   <div class='ml-auto justify-end flex items-center gap-2'>
-    @if (dialogData.mode === DialogMode.DELETE) {
-      <button [disabled]='loading$()'
-              (click)='onAction(dialogData.mode)'
+    @if (dialogData.mode === SubjectDialogMode.DELETE) {
+      <button [disabled]='loading()'
+              (click)='onAction(DialogAction.DELETE)'
               color="warn"
               mat-raised-button
               type="button">
-        @if (loading$()) {
+        @if (loading()) {
           <ng-container>
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>
@@ -188,13 +188,13 @@
         }
       </button>
     }
-    @if (dialogData.mode === DialogMode.EDIT) {
-      <button [disabled]='!form.valid || !form.dirty || loading$()'
-              (click)='onAction(dialogData.mode)'
+    @if (dialogData.mode === SubjectDialogMode.EDIT) {
+      <button [disabled]='!form.valid || !form.dirty || loading()'
+              (click)='onAction(DialogAction.SAVE)'
               mat-raised-button
               color="primary"
               type="button">
-        @if (loading$()) {
+        @if (loading()) {
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>
           </mat-icon>
@@ -202,13 +202,13 @@
         {{ "SHARED.dialog.update" | translate }}
       </button>
     }
-    @if (dialogData.mode === DialogMode.ADD) {
-      <button [disabled]='!form.valid || loading$()'
-              (click)='onAction(dialogData.mode)'
+    @if (dialogData.mode === SubjectDialogMode.ADD) {
+      <button [disabled]='!form.valid || loading()'
+              (click)='onAction(DialogAction.SAVE)'
               color="primary"
               mat-raised-button
               type="button">
-        @if (loading$()) {
+        @if (loading()) {
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>
           </mat-icon>

@@ -13,7 +13,7 @@
       <app-organization-projects [organization]="entity().name" [projects]="entity().projects"/>
     }
     @default {
-      {{ entity()[property.name] || "-" }}
+      {{ $any(entity())[property.name] || "-" }}
     }
   }
 </ng-template>

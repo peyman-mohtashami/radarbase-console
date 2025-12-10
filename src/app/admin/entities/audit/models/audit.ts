@@ -1,4 +1,4 @@
-export interface RadarAudit extends Record<string, string | Map<string, string>> {
+export interface RadarAudit {
   data: Map<string, string>;
   principal: string;
   timestamp: string;

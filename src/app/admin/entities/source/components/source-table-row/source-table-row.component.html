@@ -1,7 +1,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-source-details class="py-4" extension-row
                       [entity]='entity()'
                       [detailType]="DetailType.TABLE" />
@@ -31,7 +33,7 @@
       <app-source-assigned [assigned]="entity().assigned" />
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

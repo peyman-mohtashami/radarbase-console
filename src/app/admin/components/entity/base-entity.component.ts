@@ -1,36 +1,23 @@
-import {Component, effect, inject, input, signal} from '@angular/core';
+import {Component, effect, input, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
-import {MatCard, MatCardContent} from '@angular/material/card';
-import {RouterLink} from '@angular/router';
-import {
-  OrganizationProjectsComponent
-} from '../../entities/organization/components/organization-projects/organization-projects.component';
-import {MatIconButton} from '@angular/material/button';
-import {
-  OrganizationDetailsComponent
-} from '../../entities/organization/components/organization-details/organization-details.component';
-import {ActionsComponent} from '../../entities/organization/components/actions/actions.component';
-import {PermissionDirective} from '../../../core/auth/directives/show-if-has-role.directive';
-import {OrganizationConfigService} from '../../entities/organization/services/organization-config.service';
-import {AppOrganization} from '../../entities/organization/models/organization';
-// import {UpdateTrigger} from '../../entities/organization/services/organization-dialog.service';
 import {ROLES} from '../../../shared/enums/roles';
 import {SubjectDialogMode} from '../../entities/subject/enums/dialog';
+import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
   selector: 'app-base-entity',
   template: '',
 })
-export class BaseEntityComponent<T extends {_name: string;}> {
+export class BaseEntityComponent<T extends ({_name: string;})> {
   protected readonly ROLES = ROLES;
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
 
-  configService: any;
+  configService!: BaseConfigService;
 
   entity = input.required<T>();
-  entityUpdateTrigger= input<{mode: DialogMode | SubjectDialogMode; entity?: T}>();
+  entityUpdateTrigger= input<{mode: DialogMode | SubjectDialogMode | string; entity?: T}>();
   extensionClass = input<string>();
   gridView = input<boolean>(false);
 

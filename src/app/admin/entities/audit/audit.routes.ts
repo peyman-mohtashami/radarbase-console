@@ -1,13 +1,13 @@
 import {Routes} from "@angular/router";
-import {AuditResolver} from "./services/audit.resolver";
-import {AuditsPageComponent} from './containers/audits-page/audits-page.component';
+import {AuditsResolver} from "./services/audits.resolver";
+import {AuditListPageComponent} from './containers/audit-list-page/audit-list-page.component';
 
 export const auditRoutes: Routes = [
   {
     path: '',
-    component: AuditsPageComponent,
+    component: AuditListPageComponent,
     resolve: {
-      entities: AuditResolver,
+      entities: AuditsResolver,
     },
   },
   {

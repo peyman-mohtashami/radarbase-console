@@ -1,21 +1,20 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpParams} from "@angular/common/http";
 
 import {AppRole, AppUser, RadarRole, RadarUser} from "../models/user";
 import {Observable} from "rxjs";
 import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from '../../../consts/default-table-values';
 import {ROLES} from "../../../../shared/enums/roles";
+import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({providedIn: 'root'})
-export class UserService {
-  private http = inject(HttpClient);
+export class UserService extends BaseEntityService<AppUser, RadarUser> {
+  override getResourceUrl(): string {
+    return 'api/users';
+  }
 
-  private readonly resourceUrl = 'api/users';
-  total = 0;
-
-  private toAppModel(entity: RadarUser): AppUser {
+  override toAppModel(entity: RadarUser): AppUser {
     const appRole = this.getAppRole(entity.roles);
     return {
       ...entity,
@@ -25,9 +24,9 @@ export class UserService {
     };
   }
 
-  private toRadarModel(entity: AppUser): RadarUser {
+  override toRadarModel(entity: AppUser): RadarUser {
     const roles = this.getRadarRoles(entity._roles);
-    return {...entity, _roles: null, langKey: null, roles, authorities: []};
+    return {...entity, langKey: null, roles, authorities: []};
   }
 
   private getRadarRoles(appRoles: AppRole | null): RadarRole[] {
@@ -82,7 +81,7 @@ export class UserService {
   }
 
   getAll(): Observable<AppUser[]> {
-    return this.http.get<RadarUser[]>(`${this.resourceUrl}?includeProvenance=false`)
+    return this.http.get<RadarUser[]>(`api/users?includeProvenance=false`)
       .pipe(
         map((entities) =>
           entities.map((entity) => this.toAppModel(entity))
@@ -90,19 +89,24 @@ export class UserService {
       );
   }
 
-  getWithQuery(queryParams?: Params | string): Observable<AppUser[]> {
+  override getWithQuery(queryParams: Params): Observable<AppUser[]> {
     const {params} = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarUser[]>(this.resourceUrl, {
+    return this.http.get<RadarUser[]>(this.getResourceUrl(), {
       params,
       observe: 'response',
     }).pipe(
       tap(
         (res) => {
-          this.total = +(
+          // this.total = +(
+          //   res.headers.get('x-total-count') ||
+          //   res.body?.length.toString() ||
+          //   '0'
+          // )
+          this.total.set(+(
             res.headers.get('x-total-count') ||
             res.body?.length.toString() ||
             '0'
-          )
+          ))
         }
       ),
       map((res) => {
@@ -111,55 +115,7 @@ export class UserService {
     );
   }
 
-  add(entity: AppUser): Observable<AppUser> {
-    return this.http.post<RadarUser>(this.resourceUrl, this.toRadarModel(entity))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  getByKey(key: number | string): Observable<AppUser> {
-    return this.http.get<RadarUser>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  update(update: AppUser): Observable<AppUser> {
-    return this.http.put<RadarUser>(this.resourceUrl, this.toRadarModel(update))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  delete(entity: AppUser): Observable<void> {
-    return this.http.delete<void>(
-      `${this.resourceUrl}/${encodeURIComponent(entity._name)}`
-    );
-  }
-
-  private convertParamsToHttpParams(queryParams: Params): {
-    params: HttpParams;
-    parentEntityName: string;
-  } {
-    let params = new HttpParams();
-    params = params.append(
-      'size',
-      queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
-    );
-    params = params.append('page', queryParams?.['pageIndex'] || '0');
-    if (
-      queryParams?.['sortField'] &&
-      queryParams['sortField'] !== '' &&
-      queryParams?.['sortOrder'] &&
-      queryParams['sortOrder'] !== ''
-    ) {
-      params = params.append(
-        'sort',
-        queryParams['sortField'] + ',' + queryParams['sortOrder']
-      );
-    } else {
-      params = params.append('sort', 'id' + ',' + 'desc');
-    }
-    params = this.convertFilterParamsToHttpParams(params, queryParams);
-    return {params, parentEntityName: queryParams?.['parentEntityName']};
-  }
-
-  private convertFilterParamsToHttpParams(
+  override convertFilterParamsToHttpParams(
     params: HttpParams,
     queryParams?: Params
   ) {

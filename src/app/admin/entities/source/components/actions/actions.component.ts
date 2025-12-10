@@ -6,7 +6,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppSource} from '../../models/source';
 import {MatTooltip} from "@angular/material/tooltip";
-import {OrganizationConfigService} from "../../../organization/services/organization-config.service";
+import {SourceConfigService} from '../../services/source-config.service';
 
 @Component({
   selector: 'app-source-actions',
@@ -23,7 +23,7 @@ import {OrganizationConfigService} from "../../../organization/services/organiza
 export class ActionsComponent {
   protected readonly DialogMode = DialogMode;
 
-  private configService = inject(OrganizationConfigService);
+  private configService = inject(SourceConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -36,7 +36,7 @@ export class ActionsComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
+      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
     }).then()
   }
 }

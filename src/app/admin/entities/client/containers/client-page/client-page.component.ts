@@ -78,8 +78,8 @@ export class ClientPageComponent implements OnInit, OnDestroy {
           case DialogMode.EDIT:
             if (updated?.entity) {
               this.entity.set(updated.entity);
+              this.navigateOnUpdateSuccess(updated.entity);
             }
-            this.navigateOnUpdateSuccess(updated.entity);
             break;
           case DialogMode.DELETE:
             this.navigateOnDeleteSuccess();
@@ -102,10 +102,10 @@ export class ClientPageComponent implements OnInit, OnDestroy {
     if (entityType === this.entityName) {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity(), this.entities);
+          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities});
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity(), this.entities);
+          this.dialogService.openDialog(DialogMode.DELETE, {entity: this.entity(), entities: this.entities});
       }
     }
   }

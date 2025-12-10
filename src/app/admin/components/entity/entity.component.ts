@@ -25,9 +25,9 @@ export class EntityComponent {
   entity = input.required<any>();
   extensionClass = input<string>();
   gridView = input<boolean>(false);
+  updated = input(false);
 
   expanded = signal(false);
-  updated = signal(false);
 
   onExpansionClick(event: MouseEvent) {
     event.stopPropagation();

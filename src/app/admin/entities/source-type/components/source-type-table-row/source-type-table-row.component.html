@@ -3,9 +3,10 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
-  <app-source-type-details extension-row [entity]='entity()'
-                           [detailType]="DetailType.TABLE" />
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-source-type-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
   <app-source-type-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
 </app-entity>
 
@@ -33,7 +34,7 @@
       <app-source-type-source-registration [canRegisterDynamically]="entity()['canRegisterDynamically']"/>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

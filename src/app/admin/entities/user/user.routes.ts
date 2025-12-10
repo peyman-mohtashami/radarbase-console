@@ -3,14 +3,14 @@ import {UsersResolver} from "./services/users.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {UserPageComponent} from "./containers/user-page/user-page.component";
 import {UserResolver} from "./services/user.resolver";
-import {UsersPageComponent} from './containers/users-page/users-page.component';
 import {ProjectsResolver} from '../project/services/projects.resolver';
 import { OrganizationsResolver } from "../organization/services/organizations.resolver";
+import {UserListPageComponent} from './containers/user-list-page/user-list-page.component';
 
 export const userRoutes: Routes = [
   {
     path: '',
-    component: UsersPageComponent,
+    component: UserListPageComponent,
     resolve: {
       entities: UsersResolver,
       projects: ProjectsResolver,

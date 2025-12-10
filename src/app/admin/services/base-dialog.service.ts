@@ -5,37 +5,37 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {DialogMode} from '../enums/dialog';
 import {BaseDialogComponent} from '../components/dialog/base-dialog.component';
-
-// export interface UpdateTrigger {
-//   mode: DialogMode;
-//   entity: AppOrganization;
-// }
+import {BaseEntityService} from './base-entity.service';
 
 @Injectable({providedIn: 'root'})
-export class BaseDialogService<T, U extends BaseDialogComponent<T>> {
+export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogComponent<T>> {
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
+  protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
 
-  protected entityService: any;// = inject(OrganizationService);
+  protected entityService!: BaseEntityService<T, any>;
 
-  dialogUpdateEvent: WritableSignal<{mode: DialogMode; entity: T;} | undefined> = signal(undefined);
+  dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
 
-  openDialog(mode: DialogMode, entity: T | undefined, entities: T[]) {
-    if (mode !== DialogMode.ADD && !entity) {
+  openDialog(mode: DialogMode | string, data: any) {
+    console.log('Class: BaseDialogService, Function: openDialog, Line 26 ' , mode, data);
+    if (mode !== DialogMode.ADD && !data.entity) {
+      console.log('Class: BaseDialogService, Function: openDialog, Line 23 ' , );
       this.clearFragmentUrl();
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, entity, entities);
+    const dialogRef = this.createDialogRef(mode, data);
 
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
         (value) => {
+          console.log('Class: BaseDialogService, Function: , Line 32 value' , value);
           const _entity = value.entity;
           const _action = value.action;
           if (!_entity) {
             dialogRef.close();
+            this.clearFragmentUrl();
             return;
           }
           this.processDialogAction(_action, _entity).subscribe({
@@ -55,7 +55,7 @@ export class BaseDialogService<T, U extends BaseDialogComponent<T>> {
     });
   }
 
-  private processDialogAction(actionType: DialogMode, entity: T): Observable<T | void> {
+  processDialogAction(actionType: DialogMode | string, entity: T): Observable<T | void> {
     switch (actionType) {
       case DialogMode.ADD:
         return this.entityService.add(entity);
@@ -77,7 +77,7 @@ export class BaseDialogService<T, U extends BaseDialogComponent<T>> {
     }).then();
   }
 
-  createDialogRef(mode: DialogMode, entity: T | undefined, entities: T[]): MatDialogRef<U> {
+  createDialogRef(mode: DialogMode | string, data: any): MatDialogRef<U> {
     throw new Error('Method not implemented.');
   }
 }

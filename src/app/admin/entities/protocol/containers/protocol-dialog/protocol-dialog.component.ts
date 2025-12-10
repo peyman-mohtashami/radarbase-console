@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   Component, effect,
   EventEmitter,
-  inject,
+  inject, OnDestroy,
   OnInit,
   Output,
   signal, viewChild,
@@ -45,6 +45,7 @@ import {ProtocolService} from "../../services/protocol.service";
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
   selector: 'app-protocol-dialog',
@@ -77,19 +78,15 @@ import {
     },
   ],
 })
-export class ProtocolDialogComponent implements OnInit, AfterViewInit {
-  private entityService = inject(ProtocolService);
-  protected configService = inject(ProtocolConfigService);
-  private dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class ProtocolDialogComponent extends BaseDialogComponent<AppProtocol> implements OnInit, AfterViewInit, OnDestroy {
+  entityService = inject(ProtocolService);
+  override configService = inject(ProtocolConfigService);
+  override dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: FormProtocol;
     entities: AppProtocol[];
   };
-
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
 
   onDemand = signal(false);
   languages = signal<RadarOption[]>(this.dialogData.entity?.general?.languages ?? []);
@@ -106,33 +103,14 @@ export class ProtocolDialogComponent implements OnInit, AfterViewInit {
   updatedCode: string = '';
 
   tableFields = this.configService.getTableFields();
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     general: new FormControl<any>({}, {nonNullable: true}),
     questionsGroup: new FormControl<any>({}, {nonNullable: true}),
     scheduling: new FormControl<any>({}),
     content: new FormControl<any>({}, {nonNullable: true}),
   });
-
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppProtocol }>();
-
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges()) {
-        this.error.set(null);
-      }
-    });
-  }
 
   ngOnInit() {
     const updatedEntity = {
@@ -146,30 +124,14 @@ export class ProtocolDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: string) { //TODO DIALOG_ACTION
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case 'close':
-        this.close();
-        break;
-      case 'delete':
-        this.handleDeleteAction();
-        break;
-      case 'save':
-      case 'edit':
-        this.handleSaveAction();
-        break;
-    }
+  ngOnDestroy() {
+    super.destroy();
   }
 
-  private handleSaveAction(): void {
+  override handleSaveAction(): void {
     const value = this.form.getRawValue();
     const updatedEntity: FormProtocol = {
       //...this.dialogData.entity,
@@ -187,21 +149,9 @@ export class ProtocolDialogComponent implements OnInit, AfterViewInit {
     // });
   }
 
-  private handleDeleteAction(): void {
+  override handleDeleteAction(): void {
     const appProtocol = this.entityService.formToAppModel(this.dialogData.entity);
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: appProtocol});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
   }
 
   protected toggleCodeView() {

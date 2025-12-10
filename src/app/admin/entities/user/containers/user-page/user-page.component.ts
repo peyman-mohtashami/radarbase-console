@@ -77,8 +77,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
           case DialogMode.EDIT:
             if (updated?.entity) {
               this.entity.set(updated.entity);
+              this.navigateOnUpdateSuccess(updated.entity);
             }
-            this.navigateOnUpdateSuccess(updated.entity);
             break;
           case DialogMode.DELETE:
             this.navigateOnDeleteSuccess();
@@ -101,13 +101,13 @@ export class UserPageComponent implements OnInit, OnDestroy {
     if (entityType === 'user') {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity(), this.entities, this.projects, this.organizations);
+          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities, projects: this.projects, organizations: this.organizations});
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.entity(), this.entities, this.projects, this.organizations);
+          this.dialogService.openDialog(DialogMode.DELETE, {entity: this.entity(), entities: this.entities, projects: this.projects, organizations: this.organizations});
           break;
         case 'activate':
-          this.dialogService.openDialog('activate', this.entity(), this.entities, this.projects, this.organizations);
+          this.dialogService.openDialog('activate', {entity: this.entity(), entities: this.entities, projects: this.projects, organizations: this.organizations});
           break;
       }
     }

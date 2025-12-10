@@ -1,8 +1,6 @@
-// import {RadarOption} from "../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-
 import {RadarOption} from "../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 
-export interface RadarProtocolWrapper extends Record<string, string | string[] | null | RadarProtocol[]> {
+export interface RadarProtocolWrapper {
   version: string | null;
   schemaVersion: string | null;
   name: string | null;
@@ -10,7 +8,7 @@ export interface RadarProtocolWrapper extends Record<string, string | string[] |
   protocols: RadarProtocol[];
 }
 
-export interface RadarProtocol extends Record<string, any> {
+export interface RadarProtocol {
   name: string;
   type?: string;
   showIntroduction?: boolean;

@@ -3,7 +3,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-project-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
   <mat-card card-view appearance="outlined"
             class="cursor-pointer flex items-start justify-start h-full"
@@ -87,7 +89,7 @@
       <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

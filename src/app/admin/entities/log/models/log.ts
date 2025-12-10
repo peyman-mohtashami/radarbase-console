@@ -1,4 +1,4 @@
-export interface RadarLog extends Record<string, string> {
+export interface RadarLog {
   name: string;
   level: string;
 }

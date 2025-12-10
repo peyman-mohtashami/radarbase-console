@@ -1,7 +1,6 @@
-import {inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {inject, Injectable} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {AppSubject} from '../models/subject';
 import {SubjectService} from './subject.service';
@@ -19,48 +18,13 @@ import {
   SubjectDialogAssignGroupComponent
 } from '../containers/subject-dialog-assign-group/subject-dialog-assign-group.component';
 import {AppGroup} from '../../group/models/group';
-
-export interface UpdateTrigger {
-  mode: SubjectDialogMode;
-  entity?: AppSubject;
-}
+import {BaseDialogService} from '../../../services/base-dialog.service';
 
 @Injectable({providedIn: 'root'})
-export class SubjectDialogService {
-  private entityService = inject(SubjectService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectDialogComponent> {
+  override entityService = inject(SubjectService);
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  openDialog(mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject) {
-    if (mode !== SubjectDialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, entity, project);
-
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: SubjectDialogMode; entity: AppSubject }) => {
-        this.processDialogAction(value.action, value.entity).subscribe({
-          next: (res) => {
-            console.log('Class: SubjectDialogService, Function: next, Line 46 res' , res);
-            this.dialogUpdateEvent.set({mode, entity: res ?? value.entity})
-            dialogRef.close();
-          },
-          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-        });
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  private processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
+  override processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
     switch (actionType) {
       case SubjectDialogMode.ADD:
         return this.entityService.add(entity);
@@ -80,15 +44,9 @@ export class SubjectDialogService {
     }
   }
 
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject): MatDialogRef<any> {
+  override createDialogRef(mode: SubjectDialogMode, data: {entity?: AppSubject, project?: AppProject}): MatDialogRef<any> {
+    console.log('Class: SubjectDialogService, Function: createDialogRef, Line 48 mode, data' , mode, data);
+    const {entity, project} = data;
     if (mode === SubjectDialogMode.DISCONTINUE) {
       return this.createDiscontinueDialogRef(mode, entity, project);
     } else if (mode === SubjectDialogMode.PAIR_APP) {
@@ -96,6 +54,7 @@ export class SubjectDialogService {
     } else if (mode === SubjectDialogMode.PAIR_SOURCE) {
       return this.createPairSourceDialogRef(mode, entity, project);
     } else {
+      console.log('Class: SubjectDialogService, Function: createDialogRef, Line 57 mode, entity, project' , mode, entity, project);
       return this.dialog.open(SubjectDialogComponent, {
         data: {mode, entity, project},
         panelClass: 'tailwind-slide-panel',

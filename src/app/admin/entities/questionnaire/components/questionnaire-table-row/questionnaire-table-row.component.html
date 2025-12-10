@@ -135,7 +135,7 @@
       {{ entity().questions.length || '-' }}
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

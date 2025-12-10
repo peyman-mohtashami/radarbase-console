@@ -1,12 +1,12 @@
 import {RadarOption} from "../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 
-export interface RadarQuestionnaire extends Record<string, any> {
+export interface RadarQuestionnaire {
   name: string;
   languages: string[];
   questions: Record<string, RadarQuestion[]>;
 }
 
-export interface AppQuestionnaire extends Record<string, any> {//extends RadarQuestionnaire { //Record<string, any> {
+export interface AppQuestionnaire {
   name: string;
   languages: RadarOption[];
   questions: AppQuestion[];
@@ -15,10 +15,10 @@ export interface AppQuestionnaire extends Record<string, any> {//extends RadarQu
   // _defaultLanguage: string; //TODO
 }
 
-export interface FormQuestionnaire extends Record<string, any> {
+export interface FormQuestionnaire {
 }
 
-export interface RadarQuestion extends Record<string, any> {
+export interface RadarQuestion {
   field_name: string;
   field_type: string;
   required_field?: string;
@@ -37,7 +37,7 @@ export interface RadarQuestion extends Record<string, any> {
 }
 
 
-export interface AppQuestion extends Record<string, any> {
+export interface AppQuestion {
   field_name: string;
   field_type: string;
   required_field?: string;

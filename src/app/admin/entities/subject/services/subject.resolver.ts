@@ -11,9 +11,7 @@ import { AppSubject } from "../models/subject";
 export class SubjectResolver implements Resolve<AppSubject> {
   private entityService = inject(SubjectService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ): Observable<AppSubject> | Promise<AppSubject> | AppSubject {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSubject> {
     return this.entityService.getByKey(route.params['id'])
   }
 }

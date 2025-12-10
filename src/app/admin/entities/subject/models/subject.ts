@@ -2,7 +2,7 @@ import {RadarProject} from '../../project/models/project';
 import {RadarSource} from '../../source/models/source';
 import {RadarRole} from '../../user/models/user';
 
-export interface RadarSubject extends Record<string, any>{
+export interface RadarSubject {
   id: number | string;
   login: string;
   externalLink?: string;

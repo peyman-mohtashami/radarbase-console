@@ -1,11 +1,11 @@
 import {Routes} from "@angular/router";
 import {GroupsResolver} from "./services/groups.resolver";
-import { GroupsPageComponent } from "./containers/groups-page/groups-page.component";
+import {GroupListPageComponent} from './containers/group-list-page/group-list-page.component';
 
 export const groupRoutes: Routes = [
   {
     path: '',
-    component: GroupsPageComponent,
+    component: GroupListPageComponent,
     resolve: {
       entities: GroupsResolver,
     },

@@ -1,6 +1,6 @@
 import {RadarSourceData} from '../../source-data/models/source-data';
 
-export interface RadarSourceType extends Record<string, any> {
+export interface RadarSourceType {
   id: number | string;
   producer: string;
   model: string;

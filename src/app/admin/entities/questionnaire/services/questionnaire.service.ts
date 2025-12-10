@@ -12,13 +12,12 @@ import {map} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
 import {MockQuestionnaireServer} from "../mock/mockQuestionnaireServer";
+import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireService {
+export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, RadarQuestionnaire>{
 
-  private http = inject(HttpClient);
   private readonly CLIENT_ID = 'questionnaire-service';
-
 
   getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
     const headers = this.getHeaders();
@@ -176,7 +175,7 @@ export class QuestionnaireService {
   customReducer(key: string, source: Record<string, RadarQuestion[]>, item: RadarQuestion) {
     const languages = Object.keys(source);
     return languages.reduce((acc, lang) => {
-      const matchingItem = source[lang].find(x => x.field_name === item.field_name);
+      const matchingItem: any = source[lang].find(x => x.field_name === item.field_name);
       acc[lang] = matchingItem?.[key] || '';
       return acc;
     }, {} as Record<string, string>);

@@ -1,7 +1,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
 </app-entity>
 
 <ng-template #entityTemplate let-property>
@@ -13,7 +15,7 @@
       <app-local-date [date]="entity()['timestamp']" [format]="'long'"/>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

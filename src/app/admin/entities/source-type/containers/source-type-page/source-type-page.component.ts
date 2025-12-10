@@ -60,8 +60,8 @@ export class SourceTypePageComponent implements OnInit, OnDestroy {
           case DialogMode.EDIT:
             if (updated?.entity) {
               this.entity.set(updated.entity);
+              this.navigateOnUpdateSuccess(updated.entity);
             }
-            this.navigateOnUpdateSuccess(updated.entity);
             break;
           case DialogMode.DELETE:
             this.navigateOnDeleteSuccess();

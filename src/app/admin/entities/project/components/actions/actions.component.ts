@@ -36,7 +36,7 @@ export class ActionsComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity().id}`
+      fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity()._name}`
     }).then()
   }
 }

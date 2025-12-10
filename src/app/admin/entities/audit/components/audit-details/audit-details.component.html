@@ -7,7 +7,7 @@
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

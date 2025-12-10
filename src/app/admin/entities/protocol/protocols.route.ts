@@ -1,11 +1,11 @@
 import {Routes} from "@angular/router";
 import {ProtocolsResolver} from "./services/protocols.resolver";
-import {ProtocolsPageComponent} from "./containers/protocols-page/protocols-page.component";
+import {ProtocolListPageComponent} from './containers/protocol-list-page/protocol-list-page.component';
 
 export const protocolsRoutes: Routes = [
   {
     path: '',
-    component: ProtocolsPageComponent,
+    component: ProtocolListPageComponent,
     resolve: {
       entities: ProtocolsResolver,
     },

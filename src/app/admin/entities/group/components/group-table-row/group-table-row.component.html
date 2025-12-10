@@ -1,14 +1,16 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-group-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
 </app-entity>
 
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

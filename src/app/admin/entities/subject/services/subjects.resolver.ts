@@ -13,13 +13,8 @@ import {AppProject} from '../../project/models/project';
 export class SubjectsResolver implements Resolve<AppSubject[]> {
   private entityService = inject(SubjectService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppSubject[]>
-    | Promise<AppSubject[]>
-    | AppSubject[] {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSubject[]> {
     const currentProject: AppProject = route.parent?.parent?.data['entity'];
-    return this.entityService.getWithQuery(currentProject.projectName, route.queryParams)
+    return this.entityService.getWithQuery(route.queryParams, currentProject.projectName)
   }
 }

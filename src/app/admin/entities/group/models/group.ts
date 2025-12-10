@@ -1,4 +1,4 @@
-export interface RadarGroup extends Record<string, number | string>{
+export interface RadarGroup {
   id: number | string;
   name: string;
   projectId: number;

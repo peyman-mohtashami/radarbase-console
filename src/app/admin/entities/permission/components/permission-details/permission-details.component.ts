@@ -1,7 +1,5 @@
 import {Component, inject, input} from '@angular/core';
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {DialogMode} from "../../../../enums/dialog";
-import {DetailType} from "../../../../enums/detail-type";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
 import {ActivateComponent} from '../../../user/components/activate/activate.component';
@@ -27,13 +25,7 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
   ]
 })
 export class PermissionDetailsComponent extends BaseDetailsComponent<AppUser>{
-  // protected readonly DetailType = DetailType;
-
   override configService = inject(PermissionConfigService);
-
-  // entity = input.required<AppUser>();
-  // dialogMode = input<DialogMode>();
-  // detailType = input<DetailType>();
 
   organizationName = input<string>();
   projectName = input<string>();

@@ -1,4 +1,4 @@
-export interface RadarRevision extends Record<string, any> {
+export interface RadarRevision {
   id: number | string;
   author: string;
   timestamp: Date;

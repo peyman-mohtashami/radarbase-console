@@ -12,11 +12,8 @@ import {AppOrganization} from '../../organization/models/organization';
 export class ProjectsResolver implements Resolve<AppProject[]> {
   private entityService = inject(ProjectService);
 
-  resolve(route: ActivatedRouteSnapshot):
-    | Observable<AppProject[]>
-    | Promise<AppProject[]>
-    | AppProject[] {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppProject[]> {
     const organization: AppOrganization | undefined = route.data['organization'] ?? route.parent?.parent?.data['organization'];
-    return this.entityService.getAll(organization?.name);
+    return this.entityService.getWithQuery(route.queryParams, organization?.name);
   }
 }

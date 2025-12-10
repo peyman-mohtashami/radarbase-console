@@ -12,13 +12,7 @@ import { AppRevision } from "../models/revision";
 export class RevisionsResolver implements Resolve<AppRevision[]> {
   private entityService = inject(RevisionService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppRevision[]>
-    | Promise<AppRevision[]>
-    | AppRevision[] {
-    console.log('Class: RevisionsResolver, Function: resolve, Line 21 ' , );
+  resolve(route: ActivatedRouteSnapshot): Observable<AppRevision[]> {
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

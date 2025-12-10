@@ -1,9 +1,11 @@
 @let configFields = configService.getFormFields();
 
 <app-entity [entity]="entity()"
-            [gridView]="gridView()"
+            [gridView]="false"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-user-details extension-row class="py-4" [entity]='entity()' [detailType]="DetailType.TABLE" />
   <app-user-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
 </app-entity>
@@ -31,7 +33,7 @@
       <app-user-roles [roles]="entity()._roles" />
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

@@ -14,6 +14,7 @@ import {
 } from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
 import {AppOrganization} from "../../organization/models/organization";
 import {Observable, of} from "rxjs";
+import {BaseDialogService} from '../../../services/base-dialog.service';
 
 export interface UpdateTrigger {
   mode: DialogMode | string;
@@ -21,94 +22,91 @@ export interface UpdateTrigger {
 }
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireDialogService {
-  private entityService = inject(QuestionnaireService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, QuestionnaireDialogComponent> {
+  override entityService = inject(QuestionnaireService);
+  // private router = inject(Router);
+  // private activatedRoute = inject(ActivatedRoute);
+  // private dialog = inject(MatDialog);
+  //
+  // dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  //
+  // openDialog(
+  //   mode: DialogMode,
+  //   entity: AppQuestionnaire | undefined,
+  //   entities: AppQuestionnaire[],
+  //   language: string = 'en'
+  // ) {
+  //   if (mode !== DialogMode.ADD && !entity) {
+  //     this.clearFragmentUrl();
+  //     return;
+  //   }
+  //
+  //   const dialogRef = this.createDialogRef(mode, entity, entities, language);
+  //
+  //   const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
+  //     next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
+  //       this.processDialogAction(value.action, value.entity, entities).subscribe({
+  //         next: (res) => {
+  //           // const entity = res ?? value.entity;
+  //           this.dialogUpdateEvent.set({mode, entity})
+  //           dialogRef.close();
+  //         },
+  //         error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+  //       });
+  //     }
+  //     // next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
+  //     //   this.dialogUpdateEvent.set({mode, entity: entity ? value.entity : value.entity});
+  //     //   dialogRef.close();
+  //     // }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     dialogActionSubscription.unsubscribe();
+  //   });
+  // }
+  //
+  // private processDialogAction(actionType: DialogMode, entity: AppQuestionnaire, entities: AppQuestionnaire[]): Observable<AppQuestionnaire[] | void> {
+  //
+  //   switch (actionType) {
+  //     case DialogMode.ADD: {
+  //       const updated = [...entities, entity];
+  //       return this.entityService.publish(updated);
+  //     }
+  //     case DialogMode.EDIT: {
+  //       const updated = [...entities];
+  //       const idx = updated.findIndex(e => e.name === entity.name); // use your unique key
+  //       if (idx !== -1) {
+  //         updated.splice(idx, 1, entity);
+  //       } else {
+  //         updated.push(entity);
+  //       }
+  //       return this.entityService.publish(updated);
+  //     }
+  //     case DialogMode.DELETE: {
+  //       const updated = [...entities];
+  //       const idx = updated.findIndex(e => e.name === entity.name);
+  //       if (idx !== -1) {
+  //         updated.splice(idx, 1);
+  //       }
+  //       return this.entityService.publish(updated);
+  //     }
+  //     default:
+  //       this.clearFragmentUrl();
+  //       return of();
+  //   }
+  // }
+  //
+  // clearFragmentUrl() {
+  //   this.router.navigate([], {
+  //     relativeTo: this.activatedRoute,
+  //     queryParamsHandling: 'preserve',
+  //     fragment: undefined // Explicitly remove the fragment
+  //   }).then();
+  // }
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  openDialog(
-    mode: DialogMode,
-    entity: AppQuestionnaire | undefined,
-    entities: AppQuestionnaire[],
-    language: string = 'en'
-  ) {
-    if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, entity, entities, language);
-
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
-        this.processDialogAction(value.action, value.entity, entities).subscribe({
-          next: (res) => {
-            // const entity = res ?? value.entity;
-            this.dialogUpdateEvent.set({mode, entity})
-            dialogRef.close();
-          },
-          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-        });
-      }
-      // next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
-      //   this.dialogUpdateEvent.set({mode, entity: entity ? value.entity : value.entity});
-      //   dialogRef.close();
-      // }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  private processDialogAction(actionType: DialogMode, entity: AppQuestionnaire, entities: AppQuestionnaire[]): Observable<AppQuestionnaire[] | void> {
-
-    switch (actionType) {
-      case DialogMode.ADD: {
-        const updated = [...entities, entity];
-        return this.entityService.publish(updated);
-      }
-      case DialogMode.EDIT: {
-        const updated = [...entities];
-        const idx = updated.findIndex(e => e.name === entity.name); // use your unique key
-        if (idx !== -1) {
-          updated.splice(idx, 1, entity);
-        } else {
-          updated.push(entity);
-        }
-        return this.entityService.publish(updated);
-      }
-      case DialogMode.DELETE: {
-        const updated = [...entities];
-        const idx = updated.findIndex(e => e.name === entity.name);
-        if (idx !== -1) {
-          updated.splice(idx, 1);
-        }
-        return this.entityService.publish(updated);
-      }
-      default:
-        this.clearFragmentUrl();
-        return of();
-    }
-  }
-
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(
-    mode: DialogMode,
-    entity: AppQuestionnaire | undefined,
-    entities: AppQuestionnaire[],
-    language: string
-  ): MatDialogRef<QuestionnaireDialogComponent> {
+  override createDialogRef(
+    mode: DialogMode, data: {entity: AppQuestionnaire | undefined, entities: AppQuestionnaire[], language: string}): MatDialogRef<QuestionnaireDialogComponent> {
+    const {entity, entities, language} = data;
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(QuestionnaireDialogComponent, {

@@ -85,7 +85,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
   formFields = this.configService.getFormFields();
   tableFields = this.configService.getTableFields();
 
-  clients$: Observable<AppClient[]> = this.clientService.getAll().pipe(
+  clients$: Observable<AppClient[]> = this.clientService.getWithQuery().pipe(
     map(clients => clients.filter(c => c.additionalInformation?.['dynamic_registration'] && c.additionalInformation?.['dynamic_registration'] === 'true'))
   )
 

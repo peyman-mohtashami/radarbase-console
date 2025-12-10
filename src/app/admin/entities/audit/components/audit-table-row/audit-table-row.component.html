@@ -1,8 +1,9 @@
 <app-entity [entity]="entity()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
-  <app-audit-details [entity]='entity()'
-                     [detailType]="DetailType.TABLE"/>
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-audit-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
 </app-entity>
 
 <ng-template #entityTemplate let-property>
@@ -16,7 +17,7 @@
       </pre>
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

@@ -1,11 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  effect,
-  EventEmitter, inject,
+  inject,
   OnInit,
-  Output,
-  signal,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -19,11 +16,8 @@ import {MatSelect} from '@angular/material/select';
 import {
   MatSelectAutocompleteComponent
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {debounceTime} from 'rxjs/operators';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
+import {Validator} from '../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../enums/dialog';
-import {toSignal} from '@angular/core/rxjs-interop';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
@@ -31,9 +25,9 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {
-  DialogAction,
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
   selector: 'rb-source-data-dialog',
@@ -53,23 +47,20 @@ import {
     MatError,
   ]
 })
-export class SourceDataDialogComponent implements OnInit, AfterViewInit {
+export class SourceDataDialogComponent extends BaseDialogComponent<AppSourceData> implements OnInit, AfterViewInit {
   protected readonly ProcessingState = ProcessingState;
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
 
-  protected configService = inject(SourceDataConfigService);
-  private dialogRef = inject(MatDialogRef<SourceDataDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+  override configService = inject(SourceDataConfigService);
+  override dialogRef = inject(MatDialogRef<SourceDataDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppSourceData;
     sourceTypes: AppSourceType[];
   };
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),
     sourceDataType: new FormControl<string | null>('', {
       validators: [Validator.requiredValidator, Validator.normalTextValidator]
@@ -88,77 +79,22 @@ export class SourceDataDialogComponent implements OnInit, AfterViewInit {
     a._name.localeCompare(b._name)
   );
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppSourceData }>();
-
-  readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges()) {
-        this.error.set(null);
-      }
-    });
-  }
-
   ngOnInit() {
-    this.form.patchValue(this.dialogData.entity);
+    super.init();
   }
 
   ngAfterViewInit() {
-    const container = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      container?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: DialogAction) {
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        this.handleSaveAction();
-        break;
-    }
-  }
-
-  private handleSaveAction(): void {
+  protected override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {...this.dialogData.entity, ...this.form.value},
     });
   }
 
-  private handleDeleteAction(): void {
+  protected override handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
   }
 }

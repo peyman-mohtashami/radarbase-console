@@ -1,13 +1,8 @@
-import {computed, inject, Injectable} from '@angular/core';
-// import {instanceConfig} from '../../../../core/config/store/config.selectors';
-// import {Store} from '@ngrx/store';
-// import {toSignal} from '@angular/core/rxjs-interop';
-// import {map} from 'rxjs/operators';
-// import {ConfigState} from '../../../../core/config/models/config.model';
+import {Injectable} from '@angular/core';
 import {FilterItem, TableElement} from '../../../models/table.model';
 import {FormFieldType} from '../../../models/dialog.model';
-import {AppCustomizationService} from "../../../../core/app-customization/services/app-customization.service";
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
+import {BaseConfigService} from '../../../services/base-config.service';
 
 export const TableElements: TableElement[] = [
   {name: 'checkbox', width: 'w-12', tableClass: "block", extensionClass: "hidden", editable: true},
@@ -76,41 +71,8 @@ export const filters: FilterItem[] = [
 
 
 @Injectable({providedIn: 'root'})
-export class SubjectConfigService {
-  private readonly appCustomizationService = inject(AppCustomizationService);
-
-  config = computed(() => {
-    return this.appCustomizationService.entitiesCustomization()[this.getEntityMetadata().name];
-  })
-
-  // extraFields$ = toSignal(
-  //   this.store.select(instanceConfig).pipe(
-  //     map((c: ConfigState | undefined) => c?.entities?.[ENTITY_NAME.subject]?.['extraFields'])
-  //   ), { initialValue: {} });
-
-  getFormFields(): Record<string, boolean> {
-    return this.config();
-  }
-
-  getTableFields() {
-    return TableElements.filter(e => {
-      if (e.editable) {
-        return this.config()?.[e.name] !== false;
-      } else {
-        return true;
-      }
-    })
-  }
-
-  getTableFilters() {
-    return filters.filter(f => this.config()?.[f.name] !== false);
-  }
-
-  getExtraFields() {
-    return this.config().extraFields;
-  }
-
-  getEntityMetadata() {
-    return ENTITY_REGISTRY.subject;
-  }
+export class SubjectConfigService extends BaseConfigService {
+  override tableElements = TableElements;
+  override filters = filters;
+  override entityMetadata = ENTITY_REGISTRY.subject;
 }

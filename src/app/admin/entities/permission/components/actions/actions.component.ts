@@ -4,9 +4,9 @@ import {DialogMode} from '../../../../enums/dialog';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {OrganizationConfigService} from "../../../organization/services/organization-config.service";
 import {AppUser} from "../../../user/models/user";
 import {MatTooltip} from "@angular/material/tooltip";
+import {PermissionConfigService} from '../../services/permission-config.service';
 
 @Component({
   selector: 'app-permission-actions',
@@ -24,7 +24,7 @@ export class ActionsComponent {
 
   protected readonly DialogMode = DialogMode;
 
-  private configService = inject(OrganizationConfigService);
+  private configService = inject(PermissionConfigService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -37,7 +37,7 @@ export class ActionsComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
+      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
     }).then()
   }
 }

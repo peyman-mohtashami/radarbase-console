@@ -13,13 +13,8 @@ import {AppProject} from '../../project/models/project';
 export class SourcesResolver implements Resolve<AppSource[]> {
   private entityService = inject(SourceService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppSource[]>
-    | Promise<AppSource[]>
-    | AppSource[] {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSource[]> {
     const currentProject: AppProject = route.parent?.parent?.data['entity'];
-    return this.entityService.getWithQuery(currentProject.projectName, route.queryParams);
+    return this.entityService.getWithQuery(route.queryParams, currentProject.projectName);
   }
 }

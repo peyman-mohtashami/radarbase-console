@@ -1,6 +1,8 @@
 <app-entity [entity]="entity()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-client-details extension-row
                       class="py-4"
                       [entity]='entity()'
@@ -47,7 +49,7 @@
       {{ entity().refreshTokenValiditySeconds | dhms }}
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

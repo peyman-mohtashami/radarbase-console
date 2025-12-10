@@ -84,7 +84,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDialogUpdate(updated: { mode: SubjectDialogMode, entity?: AppSubject }) {
+  private handleDialogUpdate(updated: { mode: SubjectDialogMode | string, entity?: AppSubject }) {
     switch (updated.mode) {
       case SubjectDialogMode.EDIT:
         if (updated?.entity) {
@@ -111,10 +111,10 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
     if (entityType === 'subject') {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(SubjectDialogMode.EDIT, this.entity(), this.project);
+          this.dialogService.openDialog(SubjectDialogMode.EDIT, {entity: this.entity(), project: this.project});
           break;
         case 'delete':
-          this.dialogService.openDialog(SubjectDialogMode.DELETE, this.entity(), this.project);
+          this.dialogService.openDialog(SubjectDialogMode.DELETE, {entity: this.entity(), project: this.project});
       }
     }
   }

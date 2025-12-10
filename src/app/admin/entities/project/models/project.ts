@@ -2,7 +2,7 @@ import {RadarOrganization} from '../../organization/models/organization';
 import {RadarSourceType} from '../../source-type/models/source-type';
 import {RadarGroup} from '../../group/models/group';
 
-export interface RadarProject extends Record<string, number | string | RadarOrganization | ProjectStatus | RadarSourceType[] | RadarGroup[] | Record<string, string | null | undefined> | null> {
+export interface RadarProject {
   id: number | string;
   projectName: string;
   description: string | null;

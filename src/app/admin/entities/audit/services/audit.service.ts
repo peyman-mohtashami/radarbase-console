@@ -1,44 +1,40 @@
-import {inject, Injectable} from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Params } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpParams} from '@angular/common/http';
+import {Params} from '@angular/router';
 
 import {AppAudit, RadarAudit} from "../models/audit";
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE} from "../../../consts/default-table-values";
+import {BaseEntityService} from '../../../services/base-entity.service';
 
-@Injectable({ providedIn: 'root' })
-export class AuditService {
-  private http = inject(HttpClient);
-  private readonly resourceUrl = 'management/audits';
-  total = 0;
+@Injectable({providedIn: 'root'})
+export class AuditService extends BaseEntityService<AppAudit, RadarAudit> {
 
-  private toAppModel(entity: RadarAudit): AppAudit {
+  override getResourceUrl(): string {
+    return 'management/audits';
+  }
+
+  override toAppModel(entity: RadarAudit): AppAudit {
     return {
       ...entity,
-      id: entity.timestamp,
       _name: entity.timestamp,
       _search: `${entity.timestamp} ${entity.principal} ${entity.type}`
     };
   }
 
-  // private toRadarModel(entity: AppAudit): RadarAudit {
-  //   return { ...entity };
-  // }
-
-  getWithQuery(queryParams?: Params | string): Observable<AppAudit[]> {
-    const { params } = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarAudit[]>(this.resourceUrl, {
+  override getWithQuery(queryParams: Params): Observable<AppAudit[]> {
+    const {params} = this.convertParamsToHttpParams(queryParams as Params);
+    return this.http.get<RadarAudit[]>(this.getResourceUrl(), {
       params,
       observe: 'response',
     }).pipe(
       tap(
         (res) => {
-          this.total = +(
+          this.total.set(+(
             res.headers.get('x-total-count') ||
             res.body?.length.toString() ||
             '0'
-          )
+          ))
         }
       ),
       map((res) => {
@@ -47,34 +43,7 @@ export class AuditService {
     );
   }
 
-  private convertParamsToHttpParams(queryParams: Params): {
-    params: HttpParams;
-    parentEntityName: string;
-  } {
-    let params = new HttpParams();
-    params = params.append(
-      'size',
-      queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
-    );
-    params = params.append('page', queryParams?.['pageIndex'] || '0');
-    if (
-      queryParams?.['sortField'] &&
-      queryParams['sortField'] !== '' &&
-      queryParams?.['sortOrder'] &&
-      queryParams['sortOrder'] !== ''
-    ) {
-      params = params.append(
-        'sort',
-        queryParams['sortField'] + ',' + queryParams['sortOrder']
-      );
-    } else {
-      params = params.append('sort', 'id' + ',' + 'desc');
-    }
-    params = this.convertFilterParamsToHttpParams(params, queryParams);
-    return { params, parentEntityName: queryParams?.['parentEntityName'] };
-  }
-
-  convertFilterParamsToHttpParams(
+  override convertFilterParamsToHttpParams(
     params: HttpParams,
     queryParams?: Params
   ) {

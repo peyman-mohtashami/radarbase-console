@@ -39,7 +39,7 @@
       <app-local-date [date]="entity().lastModifiedDate" [format]="'long'" />
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

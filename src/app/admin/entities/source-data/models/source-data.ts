@@ -1,6 +1,6 @@
 import {RadarSourceType} from '../../source-type/models/source-type';
 
-export interface RadarSourceData extends Record<string, string | number | ProcessingState | RadarSourceType | null> {
+export interface RadarSourceData {
   id: number | string;
   keySchema: string | null;
   processingState: ProcessingState | null;
@@ -25,4 +25,3 @@ export enum ProcessingState {
   RADAR = 'RADAR',
   UNKNOWN = 'UNKNOWN',
 }
-

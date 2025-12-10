@@ -1,14 +1,11 @@
-import {AfterViewInit, Component, effect, EventEmitter, inject, OnInit, Output, signal} from "@angular/core";
+import {AfterViewInit, Component, inject, OnInit} from "@angular/core";
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
 
-import {Validator, ValidatorError, ValidatorHint} from "../../../../../shared/utils/validators";
+import {Validator} from "../../../../../shared/utils/validators";
 import {AppProject, ProjectStatus} from "../../models/project";
 import {AppOrganization, RadarOrganization} from "../../../organization/models/organization";
 import {TranslatePipe} from "@ngx-translate/core";
-import {HttpErrorResponse} from '@angular/common/http';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {debounceTime} from 'rxjs/operators';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {DialogMode} from '../../../../enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
@@ -23,10 +20,10 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {
-  DialogAction,
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
   selector: 'app-project-dialog',
@@ -54,11 +51,11 @@ import {LocaleService} from "../../../../../core/locale/services/locale.service"
     MatSuffix,
   ]
 })
-export class ProjectDialogComponent implements OnInit, AfterViewInit {
+export class ProjectDialogComponent extends BaseDialogComponent<AppProject> implements OnInit, AfterViewInit {
   protected localeService = inject(LocaleService);
-  protected configService = inject(ProjectConfigService);
-  private dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
-  protected dialogData = inject(MAT_DIALOG_DATA) as {
+  override configService = inject(ProjectConfigService);
+  override dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppProject;
     entities: AppProject[];
@@ -67,14 +64,11 @@ export class ProjectDialogComponent implements OnInit, AfterViewInit {
     sourceTypes: AppSourceType[];
   };
 
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
   protected readonly ProjectStatus = ProjectStatus;
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),
     projectName: new FormControl<string>(
       {value: '', disabled: this.dialogData.mode !== DialogMode.ADD},
@@ -101,82 +95,28 @@ export class ProjectDialogComponent implements OnInit, AfterViewInit {
     }),
   });
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output() //TODO
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppProject }>();
-
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
   minDate: Date = new Date(2000, 0, 1);
   maxDate: Date = new Date(2050, 0, 1);
 
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges()) {
-        this.error.set(null);
-      }
-    });
-  }
 
   ngOnInit() {
     this.form.controls.projectName.addValidators(this.duplicateValidator);
-    this.form.patchValue(this.dialogData.entity);
+    super.init();
   }
 
   ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
-    });
+    super.afterViewInit();
   }
 
-  onAction($event: DialogAction) {
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        this.handleSaveAction();
-        break;
-    }
-  }
-
-  private handleSaveAction(): void {
+  override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {...this.dialogData.entity, ...this.form?.value},
     });
   }
 
-  private handleDeleteAction(): void {
+  override handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
   }
 
   private duplicateValidator = (control: AbstractControl) => {

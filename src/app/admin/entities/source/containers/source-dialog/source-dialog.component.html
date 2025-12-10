@@ -102,10 +102,10 @@
   }
 </mat-dialog-content>
 
-@if (error$()) {
+@if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error$()?.error.errorCode | translate }}
+    {{ error()?.error.errorCode | translate }}
   </div>
 }
 

@@ -1,16 +1,15 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
 import {AppOrganization, RadarOrganization} from "../models/organization";
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({providedIn: 'root'})
-export class OrganizationService {
-  private http = inject(HttpClient);
+export class OrganizationService extends BaseEntityService<AppOrganization, RadarOrganization> {
 
-  private readonly resourceUrl = 'api/organizations';
+  override getResourceUrl(): string {
+    return 'api/organizations';
+  }
 
-  toAppModel(entity: RadarOrganization): AppOrganization {
+  override toAppModel(entity: RadarOrganization): AppOrganization {
     return {
       ...entity,
       _name: entity.name,
@@ -18,35 +17,7 @@ export class OrganizationService {
     };
   }
 
-  toRadarModel(entity: AppOrganization): RadarOrganization {
+  override toRadarModel(entity: AppOrganization): RadarOrganization {
     return entity;
-  }
-
-  getAll(): Observable<AppOrganization[]> {
-    return this.http.get<RadarOrganization[]>(this.resourceUrl)
-      .pipe(
-        map((entities) =>
-          entities.map((entity) => this.toAppModel(entity))
-        )
-      );
-  }
-
-  getByKey(key: number | string): Observable<AppOrganization> {
-    return this.http.get<RadarOrganization>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  add(entity: AppOrganization): Observable<AppOrganization> {
-    return this.http.post<RadarOrganization>(this.resourceUrl, this.toRadarModel(entity))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  update(update: AppOrganization): Observable<AppOrganization> {
-    return this.http.put<RadarOrganization>(this.resourceUrl, this.toRadarModel(update))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  delete(entity: AppOrganization): Observable<void> {
-    return this.http.delete<void>(`${this.resourceUrl}/${entity.id}`);
   }
 }

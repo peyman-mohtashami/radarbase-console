@@ -12,12 +12,7 @@ import { AppSourceData } from "../models/source-data";
 export class SourcesDataResolver implements Resolve<AppSourceData[]> {
   private entityService = inject(SourceDataService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppSourceData[]>
-    | Promise<AppSourceData[]>
-    | AppSourceData[] {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSourceData[]> {
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

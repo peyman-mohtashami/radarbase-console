@@ -91,13 +91,13 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDialogUpdate(updated: { mode: DialogMode, entity: AppOrganization }) {
+  private handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppOrganization }) {
     switch (updated.mode) {
       case DialogMode.EDIT:
         if (updated?.entity) {
           this.entity.set(updated.entity);
+          this.navigateOnUpdateSuccess(updated.entity);
         }
-        this.navigateOnUpdateSuccess(updated.entity);
         break;
     }
   }
@@ -115,7 +115,7 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
     if (entityType === this.entityName) {
       switch (action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.entity(), this.entities);
+          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities});
           break;
       }
     }

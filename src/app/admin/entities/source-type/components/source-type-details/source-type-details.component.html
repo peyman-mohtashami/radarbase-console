@@ -17,7 +17,7 @@
       <app-source-type-sources-data [sourcesData]="entity()['sourceData']"/>
     }
     @default {
-      {{ entity()[property.name] || "-" }}
+      {{ $any(entity())[property.name] || "-" }}
     }
   }
 </ng-template>

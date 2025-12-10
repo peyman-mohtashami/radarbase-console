@@ -4,13 +4,13 @@ import {OrganizationResolver} from "./services/organization.resolver";
 import {
   OrganizationDetailsPageComponent
 } from "./containers/organization-details-page/organization-details-page.component";
-import {OrganizationsPageComponent} from './containers/organizations-page/organizations-page.component';
 import {OrganizationsResolver} from './services/organizations.resolver';
+import {OrganizationListPageComponent} from './containers/organization-list-page/organization-list-page.component';
 
 export const organizationRoutes: Routes = [
   {
     path: '',
-    component: OrganizationsPageComponent,
+    component: OrganizationListPageComponent,
     resolve: {
       entities: OrganizationsResolver
     }

@@ -1,54 +1,40 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
 import {AppProject, RadarProject} from "../models/project";
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Params} from '@angular/router';
+import {BaseEntityService} from '../../../services/base-entity.service';
 
-@Injectable({ providedIn: 'root' })
-export class ProjectService {
-  private http = inject(HttpClient);
+@Injectable({providedIn: 'root'})
+export class ProjectService extends BaseEntityService<AppProject, RadarProject> {
+  organizationName?: string
 
-  private readonly resourceUrl = 'api/projects';
-  total = 0;
+  override CACHE_ENABLED = false;
 
-  private toAppModel(entity: RadarProject): AppProject {
-    return { ...entity, _name: entity.projectName, _search: `${entity.projectName} ${entity.description} ${entity.location}` };
+  override getResourceUrl(): string {
+    return 'api/projects';
   }
 
-  private toRadarModel(entity: AppProject): RadarProject {
+  override toAppModel(entity: RadarProject): AppProject {
+    return {
+      ...entity,
+      _name: entity.projectName,
+      _search: `${entity.projectName} ${entity.description} ${entity.location}`
+    };
+  }
+
+  override toRadarModel(entity: AppProject): RadarProject {
     return entity;
   }
 
-  getAll(organizationName?: string): Observable<AppProject[]> {
-    return this.http.get<RadarProject[]>(this.resourceUrl)
-      .pipe(
-        map((entities) =>
-          entities.filter(entity => {
-            if (!organizationName) return true;
-            return entity.organization.name === organizationName;
-          }).map((entity) => this.toAppModel(entity))
-        )
-      );
+  override getWithQuery(queryParams?: Params, organizationName?: string): Observable<AppProject[]> {
+    this.organizationName = organizationName;
+    return super.getWithQuery(queryParams);
   }
 
-  add(entity: AppProject): Observable<AppProject> {
-    return this.http.post<RadarProject>(this.resourceUrl, this.toRadarModel(entity))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  getByKey(key: number | string): Observable<AppProject> {
-    return this.http.get<RadarProject>(`${this.resourceUrl}/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  update(update: AppProject): Observable<AppProject> {
-    return this.http.put<RadarProject>(this.resourceUrl, this.toRadarModel(update))
-      .pipe(map((entity) => this.toAppModel(entity)));
-  }
-
-  delete(entity: AppProject): Observable<void> {
-    return this.http.delete<void>(
-      `${this.resourceUrl}/${encodeURIComponent(entity._name)}`
-    );
+  override customFilter(entities: RadarProject[], organizationName?: string) {
+    return entities.filter(entity => {
+      if (!organizationName) return true;
+      return entity.organization.name === organizationName;
+    });
   }
 }

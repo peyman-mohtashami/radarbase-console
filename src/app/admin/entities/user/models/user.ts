@@ -1,7 +1,7 @@
 import {RadarProject} from '../../project/models/project';
 import {RadarOption} from "../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 
-export interface RadarUser extends Record<string, string | number | boolean | string[] | {name: string}[] | RadarProject | RadarRole[] | AppRole | null>{
+export interface RadarUser {
   id: number | string;
   login: string;
   firstName: string | null;
@@ -24,7 +24,7 @@ export interface AppUser extends RadarUser {
   _search: string;
 }
 
-export interface RadarRole extends Record<string, string | number | null> {
+export interface RadarRole {
   id: number;
   authorityName: string;
   projectId: number;

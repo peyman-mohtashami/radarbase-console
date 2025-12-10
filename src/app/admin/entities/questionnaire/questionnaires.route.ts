@@ -1,11 +1,11 @@
 import {Routes} from "@angular/router";
 import {QuestionnairesResolver} from "./services/questionnaires.resolver";
-import {QuestionnairesPageComponent} from "./containers/questionnaires-page/questionnaires-page.component";
+import {QuestionnaireListPageComponent} from './containers/questionnaire-list-page/questionnaire-list-page.component';
 
 export const questionnaireRoutes: Routes = [
   {
     path: '',
-    component: QuestionnairesPageComponent,
+    component: QuestionnaireListPageComponent,
     resolve: {
       entities: QuestionnairesResolver,
     },

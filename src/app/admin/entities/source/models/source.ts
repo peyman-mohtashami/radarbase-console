@@ -1,7 +1,7 @@
 import {RadarSourceType} from '../../source-type/models/source-type';
 import {RadarProject} from '../../project/models/project';
 
-export interface RadarSource extends Record<string, any>{
+export interface RadarSource {
   id: number | string;
   sourceId: string;
   sourceName: string;

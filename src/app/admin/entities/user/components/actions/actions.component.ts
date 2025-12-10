@@ -6,7 +6,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppUser} from '../../models/user';
 import {MatTooltip} from "@angular/material/tooltip";
-import {OrganizationConfigService} from "../../../organization/services/organization-config.service";
+import {UserConfigService} from '../../services/user-config.service';
 
 @Component({
   selector: 'app-user-actions',
@@ -24,7 +24,7 @@ export class ActionsComponent {
 
   protected readonly DialogMode = DialogMode;
 
-  private configService = inject(OrganizationConfigService);
+  private configService = inject(UserConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 

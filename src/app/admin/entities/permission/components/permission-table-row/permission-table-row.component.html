@@ -3,7 +3,9 @@
 <app-entity [entity]="entity()"
             [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
-            [customTemplate]="entityTemplate">
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
   <app-permission-details extension-row class="py-4"
                           [entity]='entity()'
                           [detailType]="DetailType.TABLE"
@@ -33,7 +35,7 @@
       <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
     }
     @default {
-      {{ entity()[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

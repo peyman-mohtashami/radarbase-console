@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Resolve} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {AppOrganization} from "../models/organization";
 import {OrganizationService} from "./organization.service";
@@ -8,7 +8,8 @@ import {OrganizationService} from "./organization.service";
 export class OrganizationsResolver implements Resolve<AppOrganization[]> {
   private entityService = inject(OrganizationService);
 
-  resolve(): Observable<AppOrganization[]> {
-    return this.entityService.getAll();
+  resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization[]> {
+    const queryParams = route.parent?.routeConfig?.path === 'organizations' ? route.queryParams : undefined;
+    return this.entityService.getWithQuery(queryParams);
   }
 }
