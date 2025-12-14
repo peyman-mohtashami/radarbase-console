@@ -10,9 +10,9 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {Subscription} from "rxjs";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {ValidatorError, Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
-import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {QuestionnaireStateService} from "../../../services/questionnaire-state.service";
+import {ValidatorError, Validator as CustomValidator} from "../../../../../../../shared/utils/validators";
+import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
+import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
 
 @Component({
   selector: 'app-text-form-group',

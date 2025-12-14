@@ -45,7 +45,7 @@
           @if (error()) {
             {{ `ERROR.${error()?.error.error}` | translate }}
           } @else {
-            {{ stateError() }}
+            {{ 'CORE.ERROR.sessionExpired' | translate }}
           }
         </app-error-message-box>
       }

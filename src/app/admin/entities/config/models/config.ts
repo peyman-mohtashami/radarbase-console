@@ -5,7 +5,7 @@ export interface RadarConfigBundle {
   defaults?: RadarConfig[];
 }
 
-export interface RadarConfig {
+export interface RadarConfig extends Record<string, any> {
   name: string;
   value: string;
   default?: string;

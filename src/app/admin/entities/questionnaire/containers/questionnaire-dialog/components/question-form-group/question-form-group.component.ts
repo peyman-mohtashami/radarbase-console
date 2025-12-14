@@ -13,22 +13,19 @@ import {MatSelect, MatOption} from "@angular/material/select";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Subscription} from "rxjs";
 import {ChoicesFormArrayComponent} from "../choices-form-array/choices-form-array.component";
-import {ValidatorError, Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
-import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {QuestionForm, QuestionFormAnnotation, QuestionFormRange} from "../../../models/question-form";
-import {AppQuestion} from "../../../../../models/questionnaire";
-import {QUESTION_TYPES} from "../../../models/question-types";
-import {QuestionnaireStateService} from "../../../services/questionnaire-state.service";
+import {ValidatorError, Validator as CustomValidator} from "../../../../../../../shared/utils/validators";
+import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
+import {QuestionForm, QuestionFormAnnotation, QuestionFormRange} from "../../models/question-form";
+import {AppQuestion} from "../../../../models/questionnaire";
+import {QUESTION_TYPES} from "../../models/question-types";
+import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
 import {TextFormGroupComponent} from "../text-form-group/text-form-group.component";
 import {AnnotationFormGroupComponent} from "../annotation-form-group/annotation-form-group.component";
 import {RangeFormGroupComponent} from "../range-form-group/range-form-group.component";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
-import {DialogMode} from '../../../../../../../enums/dialog';
-import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
-// import {MatSlideToggle} from "@angular/material/slide-toggle";
-// import {
-//   BranchingLogicFormGroupComponent
-// } from "../branching-logic-OR-form-array/branching-logic-form-group.component";
+import {DialogMode} from '../../../../../../enums/dialog';
+import {TagComponent} from '../../../../../../../shared/components/tag/tag.component';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-question-form-group',
@@ -49,6 +46,7 @@ import {TagComponent} from '../../../../../../../../shared/components/tag/tag.co
     MatRadioButton,
     MatRadioGroup,
     TagComponent,
+    MatTooltip,
     // MatSlideToggle,
     // BranchingLogicFormGroupComponent
   ],
@@ -70,6 +68,22 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
 
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
   protected readonly ValidatorError = ValidatorError;
+
+  FIELD_TYPE_MAP: Record<string, string> = {
+    'radio': 'Radio',
+    'yesno': 'Yes/No',
+    'checkbox': 'Checkbox',
+    'text': 'Text Input',
+    'datetime': 'Date/Time Input',
+    'info': 'Info',
+    'descriptive': 'Descriptive',
+    'slider': 'Slider',
+    'range': 'Range',
+    'range-info': 'Range Info',
+    'matrix-radio': 'Radio-Matrix',
+    'timed': 'Timed',
+    'audio': 'Audio',
+  };
 
   languages = input.required<RadarOption[]>();
   questionIndex = input.required<number>();
@@ -198,4 +212,5 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
 
   editMode = signal(false);
   protected readonly DialogMode = DialogMode;
+
 }

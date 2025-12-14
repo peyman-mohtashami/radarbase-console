@@ -1,7 +1,3 @@
-@let tableFilters = configService.getTableFilters();
-@let entityMetadata = configService.getEntityMetadata();
-@let tableFields = configService.getTableFields();
-
 <app-entities-page-header [showTitle]="true"
                           [entityMetadata]="configService.getEntityMetadata()"
                           [enableAddButton]="true"
@@ -18,7 +14,7 @@
       </span>
     </button>
   </div>
-  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
+  @if (tableFilters.length && processedEntities().length > MIN_ENTITIES_FOR_FILTERS) {
     <app-data-table-filter bottom-filter
                            [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
@@ -62,7 +58,7 @@
 }
 
 
-<app-entities-page [entities]="entities()"
+<app-entities-page [entities]="visibleEntities()"
                    [tableFields]="tableFields"
                    [entityMetadata]="entityMetadata"
                    [page]="page()"
@@ -71,12 +67,10 @@
                    (switchSortEvent)="switchSort($event)"
                    (activeQueryChangeEvent)="handleActiveQueryChange($event)"
                    [customTemplate]="itemTemplate"
-                   [gridView]="gridView"
-                   [totalEntities]="entityService.total()"/>
+                   [totalEntities]="processedEntities().length"/>
 <ng-template #itemTemplate let-entity>
-  <app-protocol-table-row [entity]="entity" [gridView]="gridView"
+  <app-protocol-table-row [entity]="entity"
                           [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
                           [extensionClass]="extensionClass()"
                           class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
 </ng-template>
-

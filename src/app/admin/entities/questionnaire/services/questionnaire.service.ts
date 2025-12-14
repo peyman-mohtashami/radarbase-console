@@ -12,12 +12,13 @@ import {map} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
 import {MockQuestionnaireServer} from "../mock/mockQuestionnaireServer";
-import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, RadarQuestionnaire>{
+export class QuestionnaireService {
 
+  private http = inject(HttpClient);
   private readonly CLIENT_ID = 'questionnaire-service';
+
 
   getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
     const headers = this.getHeaders();
@@ -135,7 +136,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     return source[firstLang].map((item) => {
       return {
         field_name: item.field_name,
-        field_type: item.field_type,
+        field_type: this.getFieldType(item),
         section_header: this.customReducer('section_header', source, item),
         field_label: this.customReducer('field_label', source, item),
         select_choices_or_calculations: item.select_choices_or_calculations ? item.select_choices_or_calculations?.map(c => {
@@ -224,6 +225,16 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
       } as RadarQuestion));
       return acc;
     }, {});
+  }
+
+  private getFieldType(field: RadarQuestion): string {
+    if (field.field_type === 'text') {
+      const validation = field.text_validation_type_or_show_slider_number;
+      if (validation?.includes('date') || validation?.includes('time') || validation?.includes('duration')) {
+        return 'datetime';
+      }
+    }
+    return field.field_type;
   }
 }
 

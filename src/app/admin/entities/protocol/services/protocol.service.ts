@@ -16,13 +16,13 @@ import {RadarOption} from "../../../../shared/components/mat-dynamic-input/mat-d
 import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
 import {environment} from "../../../../../environments/environment";
 import {MockProtocolServer} from "../mock/mockProtocolServer";
-import {BaseEntityService} from '../../../services/base-entity.service';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];
 
 @Injectable({providedIn: 'root'})
-export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtocol>{
+export class ProtocolService {
 
+  private http = inject(HttpClient);
   private readonly CLIENT_ID = 'protocol-service';
 
   radarToAppModel(entity: RadarProtocol): AppProtocol {
@@ -216,8 +216,7 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       ));
   }
 
-  publish(data: {entities: AppProtocol[], projectId?: string, subjectId?: string}): Observable<AppProtocol[]> {
-    const {entities, projectId, subjectId} = data;
+  publish(protocols: AppProtocol[], projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
     const headers = this.getHeaders();
     const appConfigBaseUrl = `${(typeof window !== 'undefined' ? window.location.origin : '')}/appconfig/api`;
     let urlSegment = `global`;
@@ -229,7 +228,7 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
     }
     console.log('Class: ProtocolService, Function: publish, Line 82 urlSegment' , urlSegment);
 
-    const radarProtocols = entities.map(p => this.appToRadarModel(p));
+    const radarProtocols = protocols.map(p => this.appToRadarModel(p));
     const radarProtocolWrapper: RadarProtocolWrapper = {
       name: null,
       healthIssues: [],

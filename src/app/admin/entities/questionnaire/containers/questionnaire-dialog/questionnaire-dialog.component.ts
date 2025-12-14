@@ -3,7 +3,7 @@ import {
   Component,
   effect,
   EventEmitter,
-  inject, OnDestroy,
+  inject,
   OnInit,
   Output,
   signal,
@@ -36,10 +36,9 @@ import {
 } from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {EditorComponent} from "ngx-monaco-editor-v2";
-import {QuestionsFormArrayComponent} from './components/custom-form-controls/questions-form-array/questions-form-array.component'
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {QuestionsFormArrayComponent} from './components/questions-form-array/questions-form-array.component';
 
 export interface RadarCondition {
   conditionField: string;
@@ -66,14 +65,18 @@ export interface RadarCondition {
     MatTooltip,
   ]
 })
-export class QuestionnaireDialogComponent extends BaseDialogComponent<AppQuestionnaire> implements OnInit, AfterViewInit, OnDestroy {
-  override configService = inject(QuestionnaireConfigService);
-  override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
+export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
+  private configService = inject(QuestionnaireConfigService);
+  private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
+  public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppQuestionnaire;
     entities: AppQuestionnaire[];
   };
+
+  protected readonly DialogMode = DialogMode;
+  protected readonly ValidatorHint = ValidatorHint;
+  protected readonly ValidatorError = ValidatorError;
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
   protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
@@ -89,13 +92,32 @@ export class QuestionnaireDialogComponent extends BaseDialogComponent<AppQuestio
   updatedValue?: AppQuestionnaire;
   updatedCode: string = '';
 
-  override formFields = this.configService.getFormFields();
+  formFields = this.configService.getFormFields();
 
-  override form = new FormGroup({
+  form = new FormGroup({
     name: new FormControl<string>('', {validators: [Validator.requiredValidator, Validator.stringIdValidator], nonNullable: true}),
     languages: new FormControl<RadarOption[]>([this.DEFAULT_LANG], {nonNullable: true}),
     questions: new FormControl<AppQuestion[]>([], {nonNullable: true}),
   });
+
+  loading = signal(false);
+  error = signal<HttpErrorResponse | null>(null);
+
+  @Output()
+  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppQuestionnaire }>();
+
+  private readonly formValueChanges = toSignal(
+    this.form.valueChanges.pipe(debounceTime(300)),
+    {initialValue: this.form.getRawValue()}
+  );
+
+  constructor() {
+    effect(() => {
+      if (this.formValueChanges?.()) {
+        this.error.set(null);
+      }
+    });
+  }
 
   ngOnInit() {
     this.form.controls.name.addValidators(this.duplicateValidator);
@@ -110,14 +132,30 @@ export class QuestionnaireDialogComponent extends BaseDialogComponent<AppQuestio
   }
 
   ngAfterViewInit() {
-    super.afterViewInit();
+    const dialogContainer = document.querySelector('.tailwind-slide-panel');
+    setTimeout(() => {
+      dialogContainer?.classList.add('dialog-enter-active');
+    });
   }
 
-  ngOnDestroy() {
-    super.destroy();
+  onAction($event: DialogAction) {
+    this.error.set(null);
+    this.loading.set(true);
+    switch ($event) {
+      case DialogAction.CLOSE:
+        this.close();
+        break;
+      case DialogAction.DELETE:
+        this.handleDeleteAction();
+        break;
+      case DialogAction.SAVE:
+        this.handleSaveAction();
+        break;
+    }
   }
 
-  override handleSaveAction(): void {
+
+  private handleSaveAction(): void {
     const value = this.form.getRawValue();
     const updatedEntity: AppQuestionnaire = {
       ...this.dialogData.entity,
@@ -129,8 +167,25 @@ export class QuestionnaireDialogComponent extends BaseDialogComponent<AppQuestio
     });
   }
 
-  override handleDeleteAction(): void {
+  private handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  }
+
+  close() {
+    this.loading.set(false);
+    const container = document.querySelector('.tailwind-slide-panel');
+    container?.classList.remove('dialog-enter-active');
+    container?.classList.add('dialog-exit-active');
+
+    setTimeout(() => {
+      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
+      this.dialogRef.close();
+    }, 300);
+  }
+
+  errorHappened(error: HttpErrorResponse): void {
+    this.loading.set(false);
+    this.error.set(error);
   }
 
   private duplicateValidator = (control: AbstractControl) => {

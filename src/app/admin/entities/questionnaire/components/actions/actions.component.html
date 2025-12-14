@@ -1,12 +1,12 @@
-@if (isExpanded$()) {
+@if (isExpanded()) {
   <div class="flex items-center">
     <button class="tiny"
-            mat-icon-button color="primary" [matTooltip]="'ADMIN.protocol.edit' | translate"
+            mat-icon-button color="primary" [matTooltip]="`ADMIN.${entityName}.edit` | translate"
             (click)='onAction(DialogMode.EDIT)'>
       <span class="material-symbols-outlined text-xl!">edit</span>
     </button>
     <button class="tiny"
-            mat-icon-button color="warn" [matTooltip]="'ADMIN.protocol.delete' | translate"
+            mat-icon-button color="warn" [matTooltip]="`ADMIN.${entityName}.delete` | translate"
             (click)='onAction(DialogMode.DELETE)'>
       <span class="material-symbols-outlined text-xl!">delete</span>
     </button>
@@ -23,7 +23,7 @@
             (click)='onAction(DialogMode.EDIT)'>
               <span class="flex items-center gap-2">
                 <span class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">edit</span>
-                <span>{{ 'ADMIN.protocol.edit' | translate }}</span>
+                <span>{{ `ADMIN.${entityName}.edit` | translate }}</span>
               </span>
     </button>
     <button class="hover:text-red-500 hover:bg-transparent! transition-all"
@@ -31,7 +31,7 @@
             (click)='onAction(DialogMode.DELETE)'>
               <span class="flex items-center gap-2">
                 <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>
-                <span>{{ 'ADMIN.protocol.delete' | translate }}</span>
+                <span>{{ `ADMIN.${entityName}.delete` | translate }}</span>
               </span>
     </button>
   </mat-menu>

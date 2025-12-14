@@ -9,12 +9,12 @@ import {
 import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {QuestionListItemComponent} from "../../question-list-item/question-list-item.component";
+// import {QuestionListItemComponent} from "../../question-list-item/question-list-item.component";
 import {QuestionFormGroupComponent} from "../question-form-group/question-form-group.component";
-import {QuestionnaireStateService} from "../../../services/questionnaire-state.service";
-import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {AppQuestion} from "../../../../../models/questionnaire";
-import {moveItemInFormArray} from "../../../questionnaire-dialog.component";
+import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
+import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
+import {AppQuestion} from "../../../../models/questionnaire";
+import {moveItemInFormArray} from "../../questionnaire-dialog.component";
 
 @Component({
   selector: 'app-questions-form-array',
@@ -23,8 +23,8 @@ import {moveItemInFormArray} from "../../../questionnaire-dialog.component";
     MatButton,
     MatIcon,
     CdkDropList,
-    QuestionListItemComponent,
-    CdkDrag,
+    // QuestionListItemComponent,
+    // CdkDrag,
     ReactiveFormsModule,
     QuestionFormGroupComponent,
     MatIconButton,

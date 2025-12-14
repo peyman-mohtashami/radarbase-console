@@ -4,7 +4,6 @@ import {FormFieldType} from '../../../models/dialog.model';
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
 import {BaseConfigService} from '../../../services/base-config.service';
 
-
 export const TableElements: TableElement[] = [
   {
     name: 'id',

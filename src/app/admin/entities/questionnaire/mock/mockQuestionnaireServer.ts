@@ -4,6 +4,9 @@ import {PHQ8} from "./questionnaires/phq8/main";
 import {adhd_medication_side_effects} from "./questionnaires/adhd_medication_side_effects/main";
 import {adhd_medication_use} from "./questionnaires/adhd_medication_use/main";
 import {audio} from "./questionnaires/audio/main";
+import {cns_covid19_baseline} from './questionnaires/cns_covid19_baseline/main';
+import {sample_field_types_en} from './questionnaires/sample-field-types/sample-field-types_armt';
+import {sample_field_types} from './questionnaires/sample-field-types/main';
 
 export class MockQuestionnaireServer {
   static get(url: string): Observable<RadarConfigBundle>{
@@ -25,7 +28,7 @@ export class MockQuestionnaireServer {
   }
 }
 
-const globalQuestionnaires: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...audio];
+const globalQuestionnaires: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...audio, ...cns_covid19_baseline, ...sample_field_types];
 const radarQuestionnaires: RadarConfig[] = [...PHQ8];
 
 export const globalRadarQuestionnaireBundle: RadarConfigBundle = {

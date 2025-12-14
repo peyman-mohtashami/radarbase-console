@@ -39,7 +39,8 @@
       <app-question-form-group class="block"
                                [formControl]="question"
                                [questionIndex]="i"
-                               [languages]="languages()"/>
+                               [languages]="languages()"
+                               (remove)="removeQuestion(i)"/>
 <!--                               [class]="questionnaireStateService.selectedQuestionIndex() === i ? 'opacity-100 h-auto' : 'opacity-0 h-0'"-->
     }
 <!--    @if (questionnaireStateService.selectedQuestionIndex() === undefined) {-->

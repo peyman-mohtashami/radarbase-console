@@ -1,7 +1,6 @@
-import {computed, inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FilterItem, TableElement} from '../../../models/table.model';
 import {FormFieldType} from '../../../models/dialog.model';
-import {AppCustomizationService} from "../../../../core/app-customization/services/app-customization.service";
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
 import {BaseConfigService} from '../../../services/base-config.service';
 

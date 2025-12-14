@@ -23,7 +23,7 @@
     }
 
     @default {
-      {{ $any(entity())[property.name] || "-" }}
+      {{ entity()[property.name] || "-" }}
     }
   }
 </ng-template>

@@ -14,7 +14,7 @@ export class BaseEntityComponent<T extends ({_name: string;})> {
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
 
-  configService!: BaseConfigService;
+  configService!: any;
 
   entity = input.required<T>();
   entityUpdateTrigger= input<{mode: DialogMode | SubjectDialogMode | string; entity?: T}>();

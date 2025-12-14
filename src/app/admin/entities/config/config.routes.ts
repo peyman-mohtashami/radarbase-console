@@ -1,6 +1,6 @@
 import {Routes} from "@angular/router";
+import {ConfigsPageComponent} from "./containers/configs-page/configs-page.component";
 import {ConfigsResolver} from "./services/configs.resolver";
-import {ConfigListPageComponent} from './containers/config-list-page/config-list-page.component';
 
 export const configRoutes: Routes = [
   {
@@ -10,7 +10,7 @@ export const configRoutes: Routes = [
   },
   {
     path: 'configs',
-    component: ConfigListPageComponent,
+    component: ConfigsPageComponent,
     resolve: {
       entities: ConfigsResolver,
     },

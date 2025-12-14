@@ -9,7 +9,7 @@ import {
 import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {Subscription} from "rxjs";
-import {ValidatorError, Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
+import {ValidatorError, Validator as CustomValidator} from "../../../../../../../shared/utils/validators";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({

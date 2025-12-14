@@ -9,8 +9,8 @@ import {
 import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {moveItemInFormArray} from "../../../questionnaire-dialog.component";
+import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
+import {moveItemInFormArray} from "../../questionnaire-dialog.component";
 import {TextFormGroupComponent} from "../text-form-group/text-form-group.component";
 import {MatIconButton} from '@angular/material/button';
 

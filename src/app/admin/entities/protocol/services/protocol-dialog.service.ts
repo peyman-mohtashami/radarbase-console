@@ -10,14 +10,50 @@ import {
   ConfigPublishDialogComponent
 } from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
 import {ProtocolDialogComponent} from "../containers/protocol-dialog/protocol-dialog.component";
-import {BaseDialogService} from '../../../services/base-dialog.service';
+
+export interface UpdateTrigger {
+  mode: DialogMode | string;
+  entity?: AppProtocol;
+}
 
 @Injectable({providedIn: 'root'})
-export class ProtocolDialogService extends BaseDialogService<AppProtocol, ProtocolDialogComponent> {
-  override entityService = inject(ProtocolService);
+export class ProtocolDialogService {
+  private entityService = inject(ProtocolService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppProtocol | undefined, entities: AppProtocol[]}): MatDialogRef<ProtocolDialogComponent> {
-    const {entity, entities} = data;
+  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+
+  openDialog(mode: DialogMode, entity: AppProtocol | undefined, entities: AppProtocol[]) {
+    if (mode !== DialogMode.ADD && !entity) {
+      this.clearFragmentUrl();
+      return;
+    }
+
+    const dialogRef = this.createDialogRef(mode, entity, entities);
+
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
+      next: (value: { action: DialogMode; entity: AppProtocol }) => {
+        this.dialogUpdateEvent.set({mode: value.action, entity: value.entity});
+        dialogRef.close();
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
+  clearFragmentUrl() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined // Explicitly remove the fragment
+    }).then();
+  }
+
+  createDialogRef(mode: DialogMode, entity: AppProtocol | undefined, entities: AppProtocol[]): MatDialogRef<ProtocolDialogComponent> {
     const formEntity = entity ? this.entityService.appToFormModel(entity) : undefined;
     switch (mode) {
       case DialogMode.DELETE:
@@ -45,14 +81,14 @@ export class ProtocolDialogService extends BaseDialogService<AppProtocol, Protoc
 
   }
 
-  openPublishDialog(mode: "publish" | "discard", data: {entities: AppProtocol[], projectId?: string, subjectId?: string}) {
-    const dialogRef = this.createPublishDialogRef(mode, data);
+  openPublishDialog(mode: "publish" | "discard", entities: AppProtocol[], projectId?: string, subjectId?: string) {
+    const dialogRef = this.createPublishDialogRef(mode, entities);
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
-      (value: { action: DialogMode | string; entity?: AppConfig[] | undefined }) => {
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
+      next: (value: { action: DialogMode | string; entity: AppConfig }) => {
         if (value.action === 'publish') {
-          if (data.entities) {
-            this.entityService.publish(data).subscribe({
+          if (entities) {
+            this.entityService.publish(entities, projectId, subjectId).subscribe({
               next: () => {
                 this.dialogUpdateEvent.set({mode: 'published', entity: undefined});
                 dialogRef.close();
@@ -64,6 +100,7 @@ export class ProtocolDialogService extends BaseDialogService<AppProtocol, Protoc
           this.dialogUpdateEvent.set({mode: 'discarded', entity: undefined});
           dialogRef.close();
         }
+      }
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -71,8 +108,7 @@ export class ProtocolDialogService extends BaseDialogService<AppProtocol, Protoc
     });
   }
 
-  createPublishDialogRef(mode: "publish" | "discard", data: {entities: AppProtocol[], projectId?: string, subjectId?: string}): MatDialogRef<ConfigPublishDialogComponent> {
-    const {entities, projectId, subjectId} = data;
+  createPublishDialogRef(mode: "publish" | "discard", entities?: AppProtocol[]): MatDialogRef<ConfigPublishDialogComponent> {
     return this.dialog.open(ConfigPublishDialogComponent, {
       data: {mode, entities},
       width: '50%',
