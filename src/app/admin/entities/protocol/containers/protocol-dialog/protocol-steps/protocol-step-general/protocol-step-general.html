@@ -1,0 +1,56 @@
+<div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
+  <div>
+    <label for="name" class="text-sm">Name *</label>
+    <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+      <input id="name" matInput formControlName='name' required/>
+<!--      <mat-hint align="start">{{ ValidatorHint.stringIdValidator }}</mat-hint>-->
+      @if (form.controls['name']?.errors; as errors) {
+        <mat-error>
+          @if (errors?.['duplicate']) {
+            {{ "Protocol name exists" }}
+          }
+          @if (errors?.['pattern']) {
+            {{ ValidatorError.normalTextValidator }}
+          }
+          @if (errors?.['required']) {
+            {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+          }
+        </mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div>
+    <app-mat-select-autocomplete formControlName="languages"
+                                 [options]="ISO_LANGUAGES"
+                                 [label]="'Languages *'"
+                                 [required]="true"
+                                 [multiple]="true"
+                                 [notRemovable]="DEFAULT_LANG"
+    />
+  </div>
+
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="order" class="text-sm">Display Order</label>
+      <mat-form-field class='small-input w-1/2'
+                      appearance='outline' subscriptSizing="fixed">
+        <input id="order" matInput type="number" formControlName='order'/>
+        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">
+    On Demand
+  </mat-slide-toggle>
+
+  <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">
+    Show In Calendar
+  </mat-slide-toggle>
+
+  <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">
+    Demo mode
+  </mat-slide-toggle>
+</div>

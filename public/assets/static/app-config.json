@@ -1,0 +1,11 @@
+{
+  "logo1": "assets/images/github-logo.svg",
+  "logo2": "assets/images/radar-base-logo.svg",
+  "logo3": "assets/images/rb-logo-full-mono.png",
+  "logo": "assets/images/rb-logo-full-white.svg",
+  "title": "ManagementPortal",
+  "branding": {
+    "title": "Welcome to ManagementPortal",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  }
+}

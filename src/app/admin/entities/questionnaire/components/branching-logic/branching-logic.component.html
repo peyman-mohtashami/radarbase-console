@@ -1,0 +1,26 @@
+<div [formGroup]="form">
+  <mat-slide-toggle formControlName='has_branching_logic' class="mb-4" color="accent">
+    Branching Logic
+  </mat-slide-toggle>
+  @if (form.get('has_branching_logic')?.value) {
+    <div formArrayName="or_group">
+      <div class="mb-4">Show this question if:</div>
+      @for (condition of branchingLogics.controls; let j = $index; track condition) {
+        <div class="" [formGroupName]="j">
+          <app-branching-logic-and-array [entity]="entity()" [index]="index()" formControlName="conditions"/>
+
+          <div class="flex items-center gap-4">
+            @if (j !== 0) {
+              <mat-icon fontSet='material-icons-outlined' (click)="removeBranchingLogicArray(j)" color="accent">
+                do_not_disturb_on
+              </mat-icon>
+            } @else {
+              <mat-icon fontSet='material-icons-outlined' class="text-gray-400">do_not_disturb_on</mat-icon>
+            }
+            <button mat-button color="primary" (click)="addBranchingLogicArray()">OR</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

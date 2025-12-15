@@ -1,0 +1,10 @@
+<div class="flex flex-wrap gap-1 py-1">
+  @for (tag of tags(); track tag) {
+    <app-tag [class]="colorClass()">
+      {{ tag }}
+    </app-tag>
+  } @empty {
+    -
+  }
+</div>
+

@@ -1,0 +1,13 @@
+import {Component, input} from "@angular/core";
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+
+@Component({
+  selector: 'app-user-created-by',
+  templateUrl: './user-created-by.component.html',
+  imports: [
+    TagComponent
+  ]
+})
+export class UserCreatedByComponent {
+  createdBy = input<string | null>();
+}

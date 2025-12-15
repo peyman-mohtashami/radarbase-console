@@ -1,0 +1,83 @@
+import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {DialogMode} from '../enums/dialog';
+import {BaseDialogComponent} from '../components/dialog/base-dialog.component';
+import {BaseEntityService} from './base-entity.service';
+
+@Injectable({providedIn: 'root'})
+export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogComponent<T>> {
+  private router = inject(Router);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected dialog = inject(MatDialog);
+
+  protected entityService!: BaseEntityService<T, any>;
+
+  dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
+
+  openDialog(mode: DialogMode | string, data: any) {
+    console.log('Class: BaseDialogService, Function: openDialog, Line 26 ' , mode, data);
+    if (mode !== DialogMode.ADD && !data.entity) {
+      console.log('Class: BaseDialogService, Function: openDialog, Line 23 ' , );
+      this.clearFragmentUrl();
+      return;
+    }
+
+    const dialogRef = this.createDialogRef(mode, data);
+
+    const dialogActionSubscription =
+      dialogRef.componentInstance.dialogActionEvent.subscribe(
+        (value) => {
+          console.log('Class: BaseDialogService, Function: , Line 32 value' , value);
+          const _entity = value.entity;
+          const _action = value.action;
+          if (!_entity) {
+            dialogRef.close();
+            this.clearFragmentUrl();
+            return;
+          }
+          this.processDialogAction(_action, _entity).subscribe({
+            next: (res) => {
+              const entity = res ?? _entity;
+              // this.dialogUpdateEvent.set({mode, entity: {...entity, projects: entity.projects}})
+              this.dialogUpdateEvent.set({mode, entity})
+              dialogRef.close();
+            },
+            error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+          });
+        }
+      );
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
+  processDialogAction(actionType: DialogMode | string, entity: T): Observable<T | void> {
+    switch (actionType) {
+      case DialogMode.ADD:
+        return this.entityService.add(entity);
+      case DialogMode.EDIT:
+        return this.entityService.update(entity);
+      case DialogMode.DELETE:
+        return this.entityService.delete(entity);
+      default:
+        this.clearFragmentUrl();
+        return of();
+    }
+  }
+
+  clearFragmentUrl() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined // Explicitly remove the fragment
+    }).then();
+  }
+
+  createDialogRef(mode: DialogMode | string, data: any): MatDialogRef<U> {
+    throw new Error('Method not implemented.');
+  }
+}

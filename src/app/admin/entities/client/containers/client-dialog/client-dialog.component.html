@@ -1,0 +1,200 @@
+@let entityName = configService.getEntityMetadata().name;
+
+<app-dialog-title [dialogMode]='dialogData.mode'
+                 [entityMetadata]="configService.getEntityMetadata()"
+                 (closeClicked)='close()'/>
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                [label]="`ADMIN.${entityName}.name.label` | translate"
+                                [entityName]="dialogData.entity.clientId"/>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+
+      <label for="clientId" class="text-sm">{{ `ADMIN.${entityName}.id.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed"
+                      [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input matInput formControlName='clientId' required />
+        @if (form.controls.clientId.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ `ADMIN.${entityName}.clientId.duplicate` | translate }}
+            }
+            @if (errors?.['pattern']) {
+              {{ValidatorError.stringIdValidator}}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.clientId.label` | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName='enableEmptySecret' color="primary">
+        {{ `ADMIN.${entityName}.enableEmptySecret.label` | translate }}
+      </mat-slide-toggle>
+      <p class="mb-4 text-sm">{{ `ADMIN.${entityName}.enableEmptySecret.hint` | translate }}</p>
+
+      @if (!form.controls["enableEmptySecret"].value) {
+        <label for="clientId" class="text-sm">{{ `ADMIN.${entityName}.clientSecret.label` | translate }} *</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='clientSecret' [required]="!form.controls['enableEmptySecret'].value"/>
+          <button type='button'
+                  matSuffix
+                  mat-button
+                  class="text-sm mx-2"
+                  (click)='generateRandomSecret(36)'>
+            {{ `ADMIN.${entityName}.clientSecret.generateKey` | translate }}
+          </button>
+          @if (form.controls.clientSecret.errors; as errors) {
+            <mat-error>
+              @if (errors?.['required']) {
+                {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.clientSecret.label` | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      <label for="scope" class="text-sm">{{ `ADMIN.${entityName}.scope.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" class="mb-16"
+                      appearance='outline'>
+        <textarea rows="3" matInput formControlName='scope' required></textarea>
+        @if (form.controls.scope.errors; as errors) {
+          <mat-error>
+            @if (errors?.['pattern']) {
+              {{ValidatorError.normalTextValidator}}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.scope.label` | translate} }}
+            }
+          </mat-error>
+        }
+        <mat-hint class="text-xs leading-3">{{ `ADMIN.${entityName}.scope.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+      <label for="resourceIds" class="text-sm">{{ `ADMIN.${entityName}.resourceIds.label` | translate }} *</label>
+      <mat-form-field class="mb-4" subscriptSizing="fixed"
+                      appearance='outline'>
+        <input matInput formControlName='resourceIds' required/>
+        @if (form.controls.resourceIds.errors; as errors) {
+          <mat-error>
+            @if (errors?.['pattern']) {
+              {{ValidatorError.normalTextValidator}}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.resourceIds.label` | translate} }}
+            }
+          </mat-error>
+        }
+        <mat-hint>{{ `ADMIN.${entityName}.resourceIds.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+      <label for="_authorizedGrantTypes" class="text-sm">{{ `ADMIN.${entityName}.authorizedGrantTypes.label` | translate }}</label>
+      <fieldset formGroupName='_authorizedGrantTypes'>
+        <div>
+          <mat-checkbox formControlName='refresh_token' color="primary">
+            {{ `ADMIN.${entityName}.authorizedGrantTypes.refreshToken` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox formControlName='password' color="primary">
+            {{ `ADMIN.${entityName}.authorizedGrantTypes.password` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox formControlName='authorization_code' color="primary">
+            {{ `ADMIN.${entityName}.authorizedGrantTypes.authorization_code` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox formControlName='client_credentials' color="primary">
+            {{ `ADMIN.${entityName}.authorizedGrantTypes.client_credentials` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox formControlName='implicit' color="primary">
+            {{ `ADMIN.${entityName}.authorizedGrantTypes.implicit` | translate }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+<!--        <mat-error *ngIf="form.controls.formAuthorizedGrantTypes?.errors?.['required']">-->
+<!--          {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.formAuthorizedGrantTypes.label` | translate} }}-->
+<!--        </mat-error>-->
+
+      <div class="mb-4" formGroupName="additionalInformation">
+        <mat-slide-toggle formControlName='dynamic_registration' color="primary">
+          {{ `ADMIN.${entityName}.dynamic_registration.label` | translate }}
+        </mat-slide-toggle>
+      </div>
+
+      <label for="registeredRedirectUri" class="text-sm">{{ `ADMIN.${entityName}.registeredRedirectUri.label` | translate }}</label>
+      <mat-form-field subscriptSizing="fixed" class="mb-4"
+                      appearance='outline'>
+        <input matInput formControlName='registeredRedirectUri' />
+        <mat-hint>{{ `ADMIN.${entityName}.registeredRedirectUri.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+      <label for="autoApproveScopes" class="text-sm">{{ `ADMIN.${entityName}.autoApproveScopes.label` | translate }}</label>
+      <mat-form-field subscriptSizing="fixed" class="mb-4"
+                      appearance='outline'>
+        <textarea rows="3" matInput formControlName='autoApproveScopes'></textarea>
+        <mat-hint>{{ `ADMIN.${entityName}.autoApproveScopes.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+      <label for="accessTokenValiditySeconds" class="text-sm">{{ `ADMIN.${entityName}.accessTokenValiditySeconds.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" class="mb-4"
+                      appearance='outline'>
+        <input matInput
+               formControlName='accessTokenValiditySeconds'
+               type='number' required/>
+        @if (form.controls.accessTokenValiditySeconds.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.accessTokenValiditySeconds.label` | translate} }}
+            }
+          </mat-error>
+        }
+        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+          {{form.controls.accessTokenValiditySeconds.value | dhms}}
+        </span>
+        <mat-hint>{{ `ADMIN.${entityName}.accessTokenValiditySeconds.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+      <label for="refreshTokenValiditySeconds" class="text-sm">{{ `ADMIN.${entityName}.refreshTokenValiditySeconds.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance='outline'>
+        <input matInput
+               formControlName='refreshTokenValiditySeconds'
+               type='number' required />
+        @if (form.controls.accessTokenValiditySeconds.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.refreshTokenValiditySeconds.label` | translate} }}
+            }
+          </mat-error>
+        }
+        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+          {{form.controls.refreshTokenValiditySeconds.value | dhms}}
+        </span>
+        <mat-hint>{{ `ADMIN.${entityName}.refreshTokenValiditySeconds.hint` | translate }}</mat-hint>
+      </mat-form-field>
+
+    </form>
+  }
+</mat-dialog-content>
+
+
+@if (error()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+<app-dialog-actions [dialogMode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

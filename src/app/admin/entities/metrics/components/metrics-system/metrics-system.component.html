@@ -1,0 +1,48 @@
+@if (systemMetrics) {
+  <div class="">
+    <div
+      class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.uptime' | translate }}</ng-container>
+        <ng-container value>{{ systemMetrics["process.uptime"] / 1000 | dhms }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.start.time' | translate }}</ng-container>
+        <ng-container value>
+          <app-local-date [date]="systemMetrics['process.start.time']" [format]="'full'"></app-local-date>
+        </ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.cpu.usage' | translate }}</ng-container>
+        <ng-container value>{{ systemMetrics["process.cpu.usage"] | percent:'1.2' }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.system.cpu.usage' | translate }}</ng-container>
+        <ng-container value>{{ systemMetrics["system.cpu.usage"] | percent:'1.2' }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.system.cpu.count' | translate }}</ng-container>
+        <ng-container value>{{ systemMetrics["system.cpu.count"] }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.system.load.average.1m' | translate }}</ng-container>
+        <ng-container value>{{ (systemMetrics['system.load.average.1m'] || '') | number: '1.0-2' }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.files.max' | translate }}</ng-container>
+        <ng-container value>{{ (systemMetrics['process.files.max'] || '') | number: '1.0-0' }}</ng-container>
+      </app-detail-element>
+
+      <app-detail-element>
+        <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.files.open' | translate }}</ng-container>
+        <ng-container value>{{ (systemMetrics['process.files.open'] || '') | number: '1.0-0' }}</ng-container>
+      </app-detail-element>
+    </div>
+  </div>
+}

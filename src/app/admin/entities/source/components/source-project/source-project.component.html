@@ -1,0 +1,6 @@
+@let _project = project();
+@if (_project) {
+  <app-tag class='bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark'>{{ _project.projectName }}</app-tag>
+} @else {
+  -
+}

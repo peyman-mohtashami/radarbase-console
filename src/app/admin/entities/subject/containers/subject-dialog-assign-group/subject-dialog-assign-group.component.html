@@ -1,0 +1,52 @@
+<div>
+  <h2 mat-dialog-title class="border-b-2">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      <span>{{'ADMIN.subject.assignGroup.title' | translate }}</span>
+    </span>
+    <button mat-icon-button
+            (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </span>
+  </h2>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="form" novalidate>
+    <app-mat-select-autocomplete [options]="dialogData.groups" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
+  </form>
+</mat-dialog-content>
+
+@if (error()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='primary'
+            type='button'
+            class='close-button'
+            [mat-dialog-close]='true'
+            (click)='close()'>
+      {{ 'ADMIN.subject.assignGroup.cancel' | translate }}
+    </button>
+  </div>
+  <div class='action-buttons-container-right'>
+    <button mat-raised-button
+            color='primary'
+            type='submit'
+            name='update'
+            [disabled]='!form.valid || !form.dirty || loading()'
+            (click)='onAction()'>
+      @if (loading()) {
+        <mat-icon><mat-spinner diameter='20' /></mat-icon>
+      }
+      {{'ADMIN.subject.assignGroup.assign' | translate }}
+    </button>
+  </div>
+</div>

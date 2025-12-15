@@ -1,0 +1,78 @@
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      @if (dialogData.mode === DialogMode.EDIT) {
+        <span>{{ "SHARED.dialog.edit" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.ADD) {
+        <span>{{ "SHARED.dialog.add" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.DELETE) {
+        <span>{{ "SHARED.dialog.delete" | translate }}</span>
+      }
+      <span> {{ "ADMIN.questionnaire.title.singular" | translate }}</span>
+    </span>
+    <div>
+    <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
+      <span class="material-symbols-outlined">{{ showCode ? 'assignment': 'code_blocks' }}</span>
+    </button>
+    <button mat-icon-button (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    </div>
+  </span>
+</h2>
+
+
+<mat-dialog-content class="h-full overflow-auto">
+  @if (showCode) {
+    <div class="h-full">
+      <ngx-monaco-editor style="display:block;height:100%"
+                         [options]="editorOptions"
+                         [(ngModel)]="updatedCode"/>
+    </div>
+  } @else {
+
+    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+      <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                  [label]="'Organization'"
+                                  [entityName]="dialogData.entity._name"/>
+    }
+
+    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+      <form [formGroup]='form' novalidate class="grid grid-cols-2 grid-rows-[auto_1fr] h-full gap-4">
+
+        <div class="">
+          <label for="name" class="text-sm">{{ 'ADMIN.questionnaire.name.label' | translate }} *</label>
+          <mat-form-field class='small-input w-1/2' appearance='outline'>
+            <input matInput formControlName='name' required/>
+          </mat-form-field>
+        </div>
+
+        <div class="">
+          <app-mat-select-autocomplete formControlName="languages"
+                                      [options]="ISO_LANGUAGES"
+                                      [label]="'Languages *'"
+                                      [required]="true"
+                                      [multiple]="true"
+                                      [notRemovable]="DEFAULT_LANG"/>
+        </div>
+
+        <app-questions-form-array class="col-span-2"
+                                  formControlName="questions"
+                                  [languages]="form.controls.languages.value"/>
+      </form>
+    }
+  }
+</mat-dialog-content>
+
+@if (error()) {
+  <div
+      class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+<app-dialog-actions [dialogMode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

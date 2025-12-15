@@ -1,0 +1,17 @@
+<div [formGroup]="form">
+  @if (label()) {
+    <label class="text-sm">{{ label() }} {{ required() ? '*' : '' }}</label>
+  }
+  @for (language of languages(); track language.id) {
+    @if (language.id === protocolStateService.selectedLanguage()) {
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+        @if (textarea()) {
+          <textarea matInput [cdkTextareaAutosize]="textareaAutosize()" [rows]="textareaRows()"
+                    [formControlName]="language.id.toString()"></textarea>
+        } @else {
+          <input matInput [formControlName]="language.id.toString()">
+        }
+      </mat-form-field>
+    }
+  }
+</div>

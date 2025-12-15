@@ -1,0 +1,101 @@
+@let entityName = configService.getEntityMetadata().name;
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span class='inline-flex items-center justify-between w-full'>
+    <span class="text-lg">
+      @if (dialogData.mode === DialogMode.EDIT) {
+        <span>{{ "SHARED.dialog.edit" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.ADD) {
+        <span>{{ "SHARED.dialog.add" | translate }}</span>
+      }
+      @if (dialogData.mode === DialogMode.DELETE) {
+        <span>{{ "SHARED.dialog.delete" | translate }}</span>
+      }
+      <span> {{ "ADMIN.protocol.title.singular" | translate }}</span>
+        @if (dialogData.entity?.general?.name) {
+          <span> "{{dialogData.entity?.general?.name}}"</span>
+        }
+    </span>
+    <div>
+      @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+        <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
+          <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
+        </button>
+      }
+    <button mat-icon-button (click)='close()'>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    </div>
+  </span>
+</h2>
+
+<mat-dialog-content>
+  @if (showCode) {
+    <div class="h-full">
+      <ngx-monaco-editor style="display:block;height:100%"
+                         [options]="editorOptions"
+                         [(ngModel)]="updatedCode"/>
+    </div>
+  } @else {
+    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+      <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                   [label]="`ADMIN.${entityName}.name.label` | translate"
+                                   [entityName]="dialogData.entity.general.name"/>
+    }
+
+    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+      <form [formGroup]="form" novalidate>
+        <mat-stepper labelPosition="bottom" #matStepper [linear]="true">
+
+          <mat-step [stepControl]="form.controls.general" errorMessage="Configuration is required.">
+            <ng-template matStepLabel><span class="text-base">Configuration</span></ng-template>
+            <app-protocol-step-general [formControlName]="'general'" [entities]="dialogData.entities"
+                                            [entity]="dialogData.entity"
+                                            (onDemandTypeUpdated)="updateOnDemand($event)"
+                                            (languagesUpdated)="updateLanguages($event)" />
+          </mat-step>
+
+          <mat-step [stepControl]="form.controls.content" errorMessage="Content is required.">
+            <ng-template matStepLabel><span class="text-base">Content</span></ng-template>
+            <app-protocol-step-content [formControlName]="'content'"
+                                            [languages]="languages()"
+                                            [onDemand]="onDemand()"/>
+          </mat-step>
+
+          <mat-step [stepControl]="form.controls.questionsGroup" errorMessage="Questions Group is required.">
+            <ng-template matStepLabel><span class="text-base">Question Set</span></ng-template>
+            <app-protocol-step-question-set [formControlName]="'questionsGroup'"/>
+          </mat-step>
+
+          @if (!onDemand()) {
+            <mat-step [stepControl]="form.controls.scheduling" errorMessage="Scheduling is required.">
+              <ng-template matStepLabel><span class="text-base">Scheduling</span></ng-template>
+
+              <app-protocol-step-scheduling [formControlName]="'scheduling'"/>
+            </mat-step>
+          }
+        </mat-stepper>
+      </form>
+    }
+  }
+</mat-dialog-content>
+@if (error()) {
+  <div
+      class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+
+<app-dialog-actions [dialogMode]='dialogData.mode' [form]='form' (actionTriggered)='onAction($event)'>
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <button mat-stroked-button (click)="previousStep()" [disabled]="!stepper()?.selectedIndex">Back</button>
+    <button mat-stroked-button
+            (click)="nextStep()"
+            [disabled]="((stepper()?.steps?.length ?? 0) - 1) <= (stepper()?.selectedIndex ?? 0)">
+      Next
+    </button>
+  }
+</app-dialog-actions>
+

@@ -1,0 +1,108 @@
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
+import {AppSourceType} from '../../../source-type/models/source-type';
+import {AppProject} from '../../../project/models/project';
+import {SubjectService} from '../../services/subject.service';
+import {SubjectConfigService} from '../../services/subject-config.service';
+import {SubjectDialogService} from '../../services/subject-dialog.service';
+import {AppSubject} from '../../models/subject';
+import {SubjectTableRowComponent} from '../../components/subject-table-row/subject-table-row.component';
+import {SubjectDialogMode} from '../../enums/dialog';
+import {AssignGroupComponent} from '../../components/assign-group/assign-group.component';
+import {AppGroup} from '../../../group/models/group';
+import {
+  DataTableFilterComponent,
+} from '../../../../components/data-table-filter/data-table-filter.component';
+import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
+import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+
+@Component({
+  selector: 'app-subject-list-page',
+  templateUrl: './subject-list-page.component.html',
+  imports: [
+    DataTableFilterComponent,
+    EntitiesPageHeaderComponent,
+    LoaderComponent,
+    SubjectTableRowComponent,
+    AssignGroupComponent,
+    EntitiesPageComponent,
+  ]
+})
+export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSubject> implements OnInit, OnDestroy {
+  override entityService = inject(SubjectService);
+  override configService = inject(SubjectConfigService);
+  override dialogService = inject(SubjectDialogService);
+
+  sourceTypes: AppSourceType[] = [];
+
+  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
+  groups: AppGroup[] = this.activatedRoute.snapshot.data['groups'];
+
+  actionMapper: Record<string, SubjectDialogMode> = {
+    'add': SubjectDialogMode.ADD,
+    'edit': SubjectDialogMode.EDIT,
+    'delete': SubjectDialogMode.DELETE,
+    'discontinue': SubjectDialogMode.DISCONTINUE,
+    'pair_app': SubjectDialogMode.PAIR_APP,
+    'pair_source': SubjectDialogMode.PAIR_SOURCE,
+  }
+
+  override handleDialogUpdate(updated: { mode: SubjectDialogMode, entity?: AppSubject }) {
+    switch (updated.mode) {
+      case SubjectDialogMode.ADD:
+        this.addEntityToView(updated.entity);
+        break;
+      case SubjectDialogMode.EDIT:
+        this.refreshEntities();
+        break;
+      case SubjectDialogMode.DISCONTINUE:
+        this.refreshEntities();
+        break;
+      case SubjectDialogMode.PAIR_APP:
+        this.refreshEntities();
+        break;
+      case SubjectDialogMode.PAIR_SOURCE:
+        this.refreshEntities();
+        break;
+      case SubjectDialogMode.DELETE:
+        this.refreshEntities();
+        break;
+      case SubjectDialogMode.ASSIGN_GROUP:
+        this.refreshEntities();
+        break;
+    }
+    this.removeFragmentUrl();
+    this.loading.set(false);
+    this.selection.clear();
+  }
+
+  override getEntities() {
+    return this.entityService.getWithQuery(this.params(), this.project.projectName);
+  }
+
+  ngOnInit() {
+    if (!this.project) throw new Error('Project not found');
+    this.sourceTypes = this.project.sourceTypes?.map(s => ({
+      ...s,
+      _name: `${s.producer}/${s.model}/${s.catalogVersion}`,
+      _search: `${s.producer}/${s.model}/${s.catalogVersion}`
+    })) ?? [];
+    super.init();
+  }
+
+  ngOnDestroy() {
+    super.destroy();
+  }
+
+  override getDialogData(entity?: AppSubject) {
+    return {
+      entity: entity,
+      entities: this.entities(),
+      project: this.project,
+      groups: this.groups
+    }
+  }
+}
+
+

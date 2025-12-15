@@ -1,0 +1,318 @@
+@let entityName = configService.getEntityMetadata().name;
+
+<app-dialog-title [dialogMode]='dialogData.mode'
+                 [entityMetadata]="configService.getEntityMetadata()"
+                 (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                [label]="'Project'"
+                                [entityName]="dialogData.entity.projectName"/>
+  }
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+      @if (!dialogData.organization && (!dialogData.entity || !dialogData.entity.organization)) {
+        <app-mat-select-autocomplete formControlName='organization'
+                                    [legend]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
+                                    [options]='dialogData.organizations'
+                                    [label]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
+                                    [multiple]="false"
+                                    [required]="true"/>
+      }
+
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ `ADMIN.${entityName}.id.label` | translate }}</label>
+        <mat-form-field class='small-input w-full my-4'
+                        subscriptSizing="fixed"
+                        appearance='fill'>
+          <input matInput formControlName='id'/>
+        </mat-form-field>
+      }
+
+      <label for="projectName" class="text-sm">{{ `ADMIN.${entityName}.projectName.label` | translate }} *</label>
+      <mat-form-field class='small-input w-full'
+                      subscriptSizing="fixed"
+                      [appearance]='dialogData.entity ? "fill": "outline"'>
+        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+        <input matInput formControlName='projectName' required/>
+        @if (form.controls.projectName.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ "Project Name exists" }}
+            }
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.projectName.label` | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+
+      @if (!formFields || formFields['humanReadableProjectName'] === undefined || formFields['humanReadableProjectName']) {
+        <label for="humanReadableProjectName"
+               class="text-sm">{{ `ADMIN.${entityName}.humanReadableProjectName.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='humanReadableProjectName'/>
+          @if (form.controls.humanReadableProjectName.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+        <span class="block text-xs leading-3 -mt-3 mb-4">
+          {{ `ADMIN.${entityName}.humanReadableProjectName.hint` | translate }}
+        </span>
+      }
+
+      @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+        <label for="description" class="text-sm">{{ `ADMIN.${entityName}.description.label` | translate }}</label>
+        <mat-form-field class='small-input w-ful'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <textarea matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <mat-hint align="start">{{ ValidatorHint.longTextValidator }}</mat-hint>
+          <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+          @if (form.controls.description.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.longTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.description.label` | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+        <label for="location" class="text-sm">{{ `ADMIN.${entityName}.location.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='location'/>
+          @if (form.controls.location.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.longTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate: {value: `ADMIN.${entityName}.location.label` | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      <!-- TODO organizationName is deprecated -->
+      @if (false) {
+        <label for="organizationName"
+               class="text-sm">{{ `ADMIN.${entityName}.organizationName.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput formControlName='organizationName'/>
+        </mat-form-field>
+      }
+
+
+
+      @if (!formFields || formFields['projectStatus'] === undefined || formFields['projectStatus']) {
+        <label for="projectStatus" class="text-sm">{{ `ADMIN.${entityName}.projectStatus.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <mat-select formControlName='projectStatus'>
+            <mat-option [value]="ProjectStatus.PLANNING">{{ `ADMIN.${entityName}.projectStatus.PLANNING` | translate }}
+            </mat-option>
+            <mat-option [value]="ProjectStatus.ONGOING">{{ `ADMIN.${entityName}.projectStatus.ONGOING` | translate }}
+            </mat-option>
+            <mat-option [value]="ProjectStatus.ENDED">{{ `ADMIN.${entityName}.projectStatus.ENDED` | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+
+      @if (!formFields || formFields['startDate'] === undefined || formFields['startDate']) {
+        <label for="startDate" class="text-sm">{{ `ADMIN.${entityName}.startDate.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput [matDatepicker]='startDatePicker'
+                 formControlName='startDate'
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+          <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
+          <mat-datepicker #startDatePicker/>
+          @if (form.controls.startDate.errors; as errors) {
+            <mat-error>
+              @if (errors?.['matDatepickerMin']) {
+                Date is out of range. It should be after 2000. <!-- TODO translate -->
+              }
+              @if (errors?.['matDatepickerMax']) {
+                Date is out of range. It should be before 2050. <!-- TODO translate -->
+              }
+              @if (errors?.['matDatepickerParse']) {
+                {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}
+              }
+              @if (errors?.['matStartDateInvalid']) {
+                {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['endDate'] === undefined || formFields['endDate']) {
+        <label for="endDate" class="text-sm">{{ `ADMIN.${entityName}.endDate.label` | translate }}</label>
+        <mat-form-field class='small-input w-full'
+                        subscriptSizing="fixed"
+                        appearance='outline'>
+          <input matInput [matDatepicker]='endDatePicker'
+                 formControlName='endDate'
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+          <mat-datepicker-toggle matSuffix [for]='endDatePicker'/>
+          <mat-datepicker #endDatePicker/>
+          @if (form.controls.endDate.errors; as errors) {
+            <mat-error>
+              @if (errors?.['matDatepickerMin']) {
+                Date is out of range. It should be after 2000. <!-- TODO translate -->
+              }
+              @if (errors?.['matDatepickerMax']) {
+                Date is out of range. It should be before 2050. <!-- TODO translate -->
+              }
+              @if (errors?.['matDatepickerParse']) {
+                {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}
+              }
+              @if (errors?.['matStartDateInvalid']) {
+                {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      <app-mat-select-autocomplete formControlName='sourceTypes'
+                                  [legend]="`ADMIN.${entityName}.sourceTypes.label` | translate"
+                                  [options]='dialogData.sourceTypes'
+                                  [label]="`ADMIN.${entityName}.sourceTypes.label` | translate"
+                                  [multiple]="true"/>
+
+      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+        <div formGroupName='attributes'>
+          <label for="attributes" class="text-sm">{{ `ADMIN.${entityName}.attributes.label` | translate }}</label>
+          <fieldset
+            class="mb-4 rounded-sm border p-4">
+
+            @if (!formFields || formFields['attributes.Work-package'] === undefined || formFields['attributes.Work-package']) {
+              <label for="workPackage"
+                     class="text-sm">{{ `ADMIN.${entityName}.attributes.workPackage` | translate }}</label>
+              <mat-form-field class='small-input w-full'
+                              subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='Work-package'/>
+                @if (form.controls.attributes.controls?.['Work-package']?.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+                      {{ ValidatorError.normalTextValidator }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.Phase'] === undefined || formFields['attributes.Phase']) {
+              <label for="phase" class="text-sm">{{ `ADMIN.${entityName}.attributes.phase` | translate }}</label>
+              <mat-form-field class='small-input w-full'
+                              subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='Phase'/>
+                @if (form.controls.attributes.controls?.['Phase']?.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+
+                      {{ ValidatorError.normalTextValidator }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.External-project-url'] === undefined || formFields['attributes.External-project-url']) {
+              <label for="externalProjectUrl"
+                     class="text-sm">{{ `ADMIN.${entityName}.attributes.externalProjectUrl` | translate }}</label>
+              <mat-form-field class='small-input w-full'
+                              subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='External-project-url'/>
+                @if (form.controls.attributes.controls?.['External-project-url']?.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+                      {{ ValidatorError.urlValidator }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.External-project-id'] === undefined || formFields['attributes.External-project-id']) {
+              <label for="externalProjectId"
+                     class="text-sm">{{ `ADMIN.${entityName}.attributes.externalProjectId` | translate }}</label>
+              <mat-form-field class='small-input w-full'
+                              subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='External-project-id'/>
+                @if (form.controls.attributes.controls?.['External-project-id']?.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+
+                      {{ ValidatorError.stringIdValidator }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.Privacy-policy-url'] === undefined || formFields['attributes.Privacy-policy-url']) {
+              <label for="privacyPolicyUrl"
+                     class="text-sm">{{ `ADMIN.${entityName}.attributes.privacyPolicyUrl` | translate }}</label>
+              <mat-form-field class='small-input w-full'
+                              subscriptSizing="fixed"
+                              appearance='outline'>
+                <input matInput formControlName='Privacy-policy-url'/>
+                @if (form.controls.attributes.controls?.['Privacy-policy-url']?.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+                      {{ ValidatorError.urlValidator }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+          </fieldset>
+        </div>
+      }
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+<app-dialog-actions [dialogMode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

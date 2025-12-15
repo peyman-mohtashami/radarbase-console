@@ -1,0 +1,24 @@
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @default {
+      <div class="flex justify-between items-center gap-2">
+      {{ $any(entity())[property.name] || '-' }}
+      <div class='w-full md:w-1/2 flex justify-end items-center gap-2'>
+        <app-tag [class]="entity().level === 'TRACE'? 'bg-primary dark:bg-primary-dark text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'TRACE')">{{ 'ADMIN.log.level.TRACE' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'DEBUG'? 'bg-teal-500 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'DEBUG')">{{ 'ADMIN.log.level.DEBUG' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'INFO'? 'bg-primary dark:bg-primary-dark text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'INFO')">{{ 'ADMIN.log.level.INFO' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'WARN'? 'bg-orange-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'WARN')">{{ 'ADMIN.log.level.WARN' | translate }}</app-tag>
+        <app-tag [class]="entity().level === 'ERROR'? 'bg-red-400 text-white' : 'bg-gray-200 dark:bg-gray-500'" (click)="updateAction(entity(), 'ERROR')">{{ 'ADMIN.log.level.ERROR' | translate }}</app-tag>
+      </div>
+      </div>
+    }
+  }
+</ng-template>

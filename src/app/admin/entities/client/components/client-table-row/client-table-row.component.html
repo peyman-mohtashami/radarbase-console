@@ -1,0 +1,55 @@
+<app-entity [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-client-details extension-row
+                      class="py-4"
+                      [entity]='entity()'
+                      [detailType]="DetailType.TABLE" />
+  <app-client-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('clientId') {
+      <a class="font-bold text-primary dark:text-primary-dark underline" [routerLink]='[entity().clientId]'>
+        <span>{{ entity().clientId || '-' }}</span>
+      </a>
+    }
+    @case ('dynamic_registration') {
+      @if (entity().additionalInformation['dynamic_registration']) {
+        <app-tag class="bg-primary text-white">Dynamic</app-tag>
+      } @else {
+        <app-tag class="bg-gray-200 dark:bg-gray-300 text-primary dark:text-primary-dark">Manual</app-tag>
+      }
+    }
+    @case ('resourceIds') {
+      <div class="flex flex-wrap gap-1 py-1">
+        @for (tag of entity().resourceIds; track tag) {
+          <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
+        } @empty {
+          -
+        }
+      </div>
+    }
+    @case ('authorizedGrantTypes') {
+      <div class="flex flex-wrap gap-1 py-1">
+        @for (tag of entity().authorizedGrantTypes; track tag) {
+          <app-tag class="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark">{{ tag }}</app-tag>
+        } @empty {
+          -
+        }
+      </div>
+    }
+    @case ('accessTokenValiditySeconds') {
+      {{ entity().accessTokenValiditySeconds | dhms }}
+    }
+    @case ('refreshTokenValiditySeconds') {
+      {{ entity().refreshTokenValiditySeconds | dhms }}
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>

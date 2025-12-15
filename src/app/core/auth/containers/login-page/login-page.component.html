@@ -1,0 +1,74 @@
+<app-auth-card>
+  <ng-container header>{{ 'CORE.AUTH.LOGIN_PAGE.title' | translate }}</ng-container>
+  <ng-container body>
+    <p class="mb-4">{{ 'CORE.AUTH.LOGIN_PAGE.subtitle' | translate }}</p>
+    <form [formGroup]="form" novalidate autocomplete="on">
+      <label for="username" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.username' | translate }} *</label>
+      <mat-form-field class="mb-1! w-full small"
+                      subscriptSizing="fixed"
+                      appearance='outline'
+                      floatLabel='auto'>
+        <input matInput id="username" autocomplete="off" data-lpignore="true"
+               formControlName='username'
+               required
+               type="text"/>
+        @if (form.controls.username.errors?.['required']) {
+          <mat-error>
+            {{
+              ValidatorError.requiredValidator | translate:
+                {value: 'CORE.AUTH.LOGIN_PAGE.username' | translate}
+            }}
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <label for="password" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.password' | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" class="w-full small"
+                      appearance='outline'
+                      floatLabel='auto'>
+        <input matInput id="password" autocomplete="new-password" data-lpignore="true"
+               formControlName='password'
+               required
+               type="password"/>
+        @if (form.controls.password.errors?.['required']) {
+          <mat-error>
+            {{
+              ValidatorError.requiredValidator | translate:
+                {value: 'CORE.AUTH.LOGIN_PAGE.password' | translate}
+            }}
+          </mat-error>
+        }
+      </mat-form-field>
+
+      @if (error() || stateError()) {
+        <app-error-message-box>
+          @if (error()) {
+            {{ `ERROR.${error()?.error.error}` | translate }}
+          } @else {
+            {{ 'CORE.ERROR.sessionExpired' | translate }}
+          }
+        </app-error-message-box>
+      }
+
+      <button mat-raised-button
+              class="gradient-btn w-full mt-2 mb-4"
+              color='primary'
+              type='submit'
+              name='update'
+              [disabled]='!form.valid || !form.dirty || loading()'
+              (click)='loginHandler()'>
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'></mat-spinner>
+          </mat-icon>
+        }
+        {{ 'CORE.AUTH.LOGIN_PAGE.loginButtonPasswordGrant' | translate }}
+      </button>
+
+      <a class="text-primary dark:text-primary-dark" [routerLink]='["/auth/forgot-password"]'>
+        {{ 'CORE.AUTH.LOGIN_PAGE.gotoForgotPassword' | translate }}
+      </a>
+    </form>
+
+  </ng-container>
+</app-auth-card>

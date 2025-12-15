@@ -1,0 +1,158 @@
+@switch (field().type) {
+  @case ('slideToggle') {
+    <!--    <div>-->
+    <label>{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</label>
+    <div>
+      <mat-slide-toggle color="primary" [formControl]="form"/>
+    </div>
+    <mat-hint align="start">
+      @if (field().hint) {
+        {{ field().hint | translate }}
+      }
+    </mat-hint>
+    <!--    </div>-->
+  }
+  @case ('select') {
+    <!--    <pre>{{options() | json}}</pre>-->
+        <!--    {{_options() | json}}-->
+    <app-mat-select-autocomplete [formControl]="form"
+                                [label]="'ADMIN.' + entityName() + '.' + field().name + '.label'  | translate"
+                                [options]="_options()" [required]="field().validators.requiredValidator"/>
+  }
+  @default {
+    <!--    @if(!floatLabel()) {-->
+    <label [for]="field().name"
+           class="text-sm">{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</label>
+    <!--    }-->
+    <mat-form-field appearance='outline'>
+      <!--    [floatLabel]='floatLabel() ? "always" : "auto"'>-->
+      <!--      @if(floatLabel()) {-->
+      <!--        <mat-label>{{ 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate }}</mat-label>-->
+      <!--      }-->
+
+      @switch (field().type) {
+        @case ('text') {
+          <input matInput
+                 [id]="field.name"
+                 autocomplete="off" data-lpignore="true"
+                 [formControl]="form"
+                 [placeholder]="(field().placeholder ?? '') | translate"
+                 [required]="field().required"
+                 [attr.maxlength]="field().maxlength"
+                 type="text"
+                 (blur)="form.markAsTouched()"/>
+        }
+        @case ('textarea') {
+          <textarea matInput
+                    [formControl]="form"
+                    [rows]="field().rows ?? 3"
+                    [maxlength]="field().maxlength ?? 255"
+                    [required]="field().required"
+                    [placeholder]="(field().placeholder ?? '') | translate"
+                    (blur)="form.markAsTouched()">
+          </textarea>
+        }
+        @case ('date') {
+          <input matInput [matDatepicker]="datePicker"
+                 [formControl]="form"
+                 [min]="field().minDate | toDate" [max]="field().maxDate | toDate"
+                 [placeholder]="dateFormat"/>
+        }
+        @case ('simpleSelect') {
+          <mat-select [formControl]="form">
+            @for (option of _options(); track option._name) {
+              <mat-option [value]="option._name">{{ option._name | translate }}</mat-option>
+            }
+          </mat-select>
+        }
+<!--        @case ('slideToggle') {-->
+<!--          <mat-slide-toggle color="primary" [formControl]="form">ROLE_ORGANIZATION_ADMIN</mat-slide-toggle>-->
+<!--        }-->
+      }
+
+      @if (field().type === 'date') {
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+      } @else {
+        <span matSuffix style="width:0;height:0;padding:0;margin:0;display:inline-block"></span>
+      }
+
+      <mat-datepicker #datePicker></mat-datepicker>
+      <mat-hint align="start">
+        @if (field().hint) {
+          {{ ValidatorHint.normalTextValidator }}
+        }
+      </mat-hint>
+      <mat-hint align="end">
+        @if (field().maxlength) {
+          <!--          {{(form.valueChanges | async)?.length ?? 0}} / {{config.maxlength ?? 255}}-->
+        }
+      </mat-hint>
+      <!--      @if (field().validators?.duplicateValidator) {-->
+      <!--        <mat-error *ngIf="form.errors?.['duplicate']">-->
+      <!--          {{ "Organization name exists" }}-->
+      <!--        </mat-error>-->
+      <!--      }-->
+      <!--      @if (field().validators?.longTextValidator) {-->
+      <!--        <mat-error *ngIf="form.errors?.['pattern']">-->
+      <!--          {{ValidatorError.longTextValidator}}-->
+      <!--        </mat-error>-->
+      <!--      }-->
+      <!--      @if (field().validators?.normalTextValidator) {-->
+      <!--        <mat-error *ngIf="form.errors?.['pattern']">-->
+      <!--          {{ValidatorError.normalTextValidator}}-->
+      <!--        </mat-error>-->
+      <!--      }-->
+      <!--      @if (field().validators?.requiredValidator) {-->
+      <!--        HH {{form.errors}}-->
+      <!--        @if (form.errors?.['required']) {-->
+      <!--        KK-->
+      <!--      <mat-error *ngIf="field().validators?.requiredValidator && form.errors?.['required']">-->
+      <mat-error>
+        @if (field().validators?.duplicateValidator && form.errors?.['duplicate']) {
+          {{ "Organization name exists" }}
+        }
+        @if (field().validators?.longTextValidator && form.errors?.['pattern']) {
+          {{ ValidatorError.longTextValidator }}
+        }
+        @if (field().validators?.normalTextValidator && form.errors?.['pattern']) {
+          {{ ValidatorError.normalTextValidator }}
+        }
+        @if (field().validators?.requiredValidator && form.errors?.['required']) {
+          {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.' + entityName() + '.' + field().name + '.label' | translate} }}
+        }
+        @if (field().type === 'date') {
+          @if (form.errors?.['matDatepickerMin']) {
+            Date is out of range. It should be after {{ field().minDate | toDate | date }}. <!-- TODO translate -->
+          }
+          @if (form.errors?.['matDatepickerMax']) {
+            Date is out of range. It should be before {{ field().maxDate | toDate | date }}. <!-- TODO translate -->
+          }
+          @if (form.errors?.['matDatepickerParse']) {
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          }
+          @if (form.errors?.['matStartDateInvalid']) {
+            {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}
+          }
+        }
+      </mat-error>
+      <!--        }-->
+      <!--      }-->
+      <!--      @if (field().type === 'date') {-->
+      <!--        <mat-error *ngIf="form.errors?.['matDatepickerMin']">-->
+      <!--          Date is out of range. It should be after {{field().minDate | toDate | date}}. &lt;!&ndash; TODO translate &ndash;&gt;-->
+      <!--        </mat-error>-->
+      <!--        <mat-error *ngIf="form.errors?.['matDatepickerMax']">-->
+      <!--          Date is out of range. It should be before {{field().maxDate | toDate | date}}. &lt;!&ndash; TODO translate &ndash;&gt;-->
+      <!--        </mat-error>-->
+      <!--        <mat-error *ngIf="form.errors?.['matDatepickerParse']">-->
+      <!--          {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}-->
+      <!--        </mat-error>-->
+      <!--        <mat-error *ngIf="form.errors?.['matStartDateInvalid']">-->
+      <!--          {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}-->
+      <!--        </mat-error>-->
+      <!--      }-->
+
+
+    </mat-form-field>
+  }
+}

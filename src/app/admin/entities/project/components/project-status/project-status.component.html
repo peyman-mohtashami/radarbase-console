@@ -1,0 +1,13 @@
+@switch (projectStatus()) {
+  @case (ProjectStatus.PLANNING) {
+    <app-tag class="bg-secondary dark:bg-secondary-dark text-white dark:text-black">{{ projectStatus() }}</app-tag>
+  }
+  @case (ProjectStatus.ONGOING) {
+    <app-tag class="bg-tertiary dark:bg-tertiary-dark text-white dark:text-black">{{ projectStatus() }}</app-tag>
+  }
+  @case (ProjectStatus.ENDED) {
+    <app-tag class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100">{{ projectStatus() }}</app-tag>
+  }
+  @default {
+  }
+}

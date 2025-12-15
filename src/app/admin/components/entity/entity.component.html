@@ -1,0 +1,43 @@
+@if (!gridView()) {
+  <mat-card class="rb-table-row" [class]="
+    (updated() ? 'bg-primary/5! ' : '') +
+    (expanded() ? 'mb-2' : '')
+  ">
+    <div class="rb-table-main-row">
+      @for (property of tableFields(); track property.name) {
+        <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
+             [class.flex-1]="!property.width"
+             [class.shrink-0]="!!property.width">
+          @if (property.name === 'actions') {
+            <button mat-icon-button
+                    class="tiny block"
+                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
+                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
+                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
+                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
+                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
+                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
+                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
+                    (click)="onExpansionClick($event)">
+              <span class="material-symbols-outlined">
+                {{ expanded() ? 'expand_less' : 'expand_more' }}
+              </span>
+            </button>
+            <ng-content select="[extra-actions]"/>
+          } @else if (customTemplate()) {
+            <ng-container *ngTemplateOutlet="customTemplate()!; context: { $implicit: property }"/>
+          }
+        </div>
+      }
+    </div>
+
+    @if (expanded()) {
+      <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+        <ng-content select="[extension-row]"/>
+
+      </div>
+    }
+  </mat-card>
+} @else {
+  <ng-content select="[card-view]"/>
+}

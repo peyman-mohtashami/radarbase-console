@@ -1,0 +1,9 @@
+@if (canRegisterDynamically()) {
+  <app-tag class="bg-secondary dark:bg-secondary-dark text-white">
+    {{ 'ADMIN.sourceType.canRegisterDynamically.dynamic' | translate }}
+  </app-tag>
+} @else {
+  <app-tag class="bg-secondary/10 dark:bg-secondary-dark/10 text-primary dark:text-primary-dark">
+    {{ 'ADMIN.sourceType.canRegisterDynamically.manual' | translate }}
+  </app-tag>
+}

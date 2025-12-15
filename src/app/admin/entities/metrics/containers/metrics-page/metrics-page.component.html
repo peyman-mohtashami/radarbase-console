@@ -1,0 +1,96 @@
+<div class='p-4'>
+  <div class='flex flex-wrap justify-between gap-2 mb-4'>
+    <h2 class='m-0 font-bold flex items-center gap-2'>
+      <span
+        class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">speed</span>
+      {{ 'ADMIN.metrics.title.plural' | translate }}
+      <span>({{ 'ADMIN.metrics.subTitle' | translate }})</span>
+    </h2>
+    <div class='flex gap-2 items-center ml-auto'>
+      <button (click)='refresh()'
+              mat-stroked-button
+              color="primary"
+              type="button">
+            <span class="font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined">sync</span>
+              {{ 'ADMIN.metrics.refresh' | translate }}
+            </span>
+      </button>
+    </div>
+  </div>
+
+  @if (loading$()) {
+    <app-loader/>
+  } @else {
+    <mat-accordion class="text-sm">
+      @if (metrics) {
+        <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+          <mat-expansion-panel-header class="p-4!">
+            <mat-panel-title>{{ 'ADMIN.metrics.jvm.title' | translate }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-metrics-memory [jvmMemoryMetrics]="metrics.jvm"/>
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+          <mat-expansion-panel-header class="p-4!">
+            <mat-panel-title>{{ 'ADMIN.metrics.threads.title' | translate }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-metrics-threads [threads]="threads"/>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+          <mat-expansion-panel-header class="p-4!">
+            <mat-panel-title>{{ 'ADMIN.metrics.processMetrics.title' | translate }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-metrics-system [systemMetrics]="metrics.processMetrics"/>
+        </mat-expansion-panel>
+
+        @if (metrics.garbageCollector) {
+          <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+            <mat-expansion-panel-header class="p-4!">
+              <mat-panel-title>{{ 'ADMIN.metrics.garbageCollector.title' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-metrics-garbage-collector [garbageCollectorMetrics]="metrics.garbageCollector"/>
+          </mat-expansion-panel>
+        }
+
+        @if (metrics['http.server.requests']) {
+          <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+            <mat-expansion-panel-header class="p-4!">
+              <mat-panel-title>{{ 'ADMIN.metrics.http.server.requests.title' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-metrics-request [requestMetrics]="metrics['http.server.requests']"/>
+          </mat-expansion-panel>
+        }
+
+        @if (metrics.services) {
+          <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+            <mat-expansion-panel-header class="p-4!">
+              <mat-panel-title>{{ 'ADMIN.metrics.services.title' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-metrics-endpoints-requests [endpointsRequestsMetrics]="metrics.services"/>
+          </mat-expansion-panel>
+        }
+
+        @if (metrics.cache) {
+          <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+            <mat-expansion-panel-header class="p-4!">
+              <mat-panel-title>{{ 'ADMIN.metrics.cache.title' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-metrics-cache [cacheMetrics]="metrics.cache"/>
+          </mat-expansion-panel>
+        }
+
+        @if (metrics.databases && (metrics.databases | json) !== '{}') {
+          <mat-expansion-panel class="dark:border border-neutral-400 mb-1!">
+            <mat-expansion-panel-header class="p-4!">
+              <mat-panel-title>{{ 'ADMIN.metrics.databases.title' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-metrics-datasource [datasourceMetrics]="metrics.databases"/>
+          </mat-expansion-panel>
+        }
+      }
+    </mat-accordion>
+  }
+</div>

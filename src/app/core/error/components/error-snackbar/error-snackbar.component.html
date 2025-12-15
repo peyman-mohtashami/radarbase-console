@@ -1,0 +1,10 @@
+<div class="flex justify-between whitespace-pre-wrap text-base">
+  <div>
+    @for (error of data; track error) {
+    <p>{{error | translate}}</p>
+    }
+  </div>
+  <button class="mat-medium-icon-button" mat-icon-button (click)="close()">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+</div>

@@ -1,0 +1,27 @@
+<div class="flex flex-wrap gap-1">
+  @if (roles(); as roles) {
+    @if (roles._sysAdmin) {
+      <app-tag class="bg-primary text-white">SYS_ADMIN</app-tag>
+    }
+
+    @if (roles._organizationAdmin) {
+      @for (_organization of roles._organizations; track _organization.id) {
+        @if (_organization._name === organization()) {
+          <app-tag class="bg-secondary text-white">
+            ORGANIZATION_ADMIN: {{ _organization._name }}
+          </app-tag>
+        }
+      }
+    }
+
+    @if (roles._projectAdmin) {
+      @for (_project of roles._projects; track _project.id) {
+        @if (_project._name === project()) {
+          <app-tag class="bg-tertiary text-white">
+            PROJECT_ADMIN: {{ _project._name }}
+          </app-tag>
+        }
+      }
+    }
+  }
+</div>

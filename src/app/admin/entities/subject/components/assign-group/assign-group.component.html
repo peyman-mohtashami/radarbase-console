@@ -1,0 +1,12 @@
+<div class="px-4 mb-4 flex gap-2 items-center">
+  <span class="text-sm">{{selection().selected.length}} item(s) selected.</span>
+  @if (selection().selected.length) {
+    <button type='button'
+            mat-stroked-button
+            color='primary'
+            (click)='assignGroupToSubjects($event)'>
+      <mat-icon>add</mat-icon>
+      <span>Add To a Group</span>
+    </button>
+  }
+</div>

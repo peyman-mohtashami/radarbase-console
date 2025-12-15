@@ -1,0 +1,23 @@
+<app-entity [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-audit-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('timestamp') {
+      <app-local-date [date]="entity()['timestamp']" [format]="'medium'"/>
+    }
+    @case ('data') {
+      <pre class="inline-block w-full overflow-x-auto whitespace-pre-wrap break-words">
+        {{ (entity().data | json) || '-' }}
+      </pre>
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>

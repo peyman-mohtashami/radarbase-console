@@ -1,0 +1,47 @@
+<!--<div [formGroup]="form">-->
+<!--  <label for="select_choices_or_calculations" class="text-sm">Conditional Logic</label>-->
+<!--  <div>-->
+<!--    <mat-slide-toggle formControlName="enabled">Enable conditional logic</mat-slide-toggle>-->
+<!--  </div>-->
+<!--  @if (form.controls.enabled.value) {-->
+<!--    <p>Show this question if:</p>-->
+<!--  @if (form.controls.or_array.length) {-->
+<!--    &lt;!&ndash;  <div class="grid grid-cols-12 gap-2 text-sm">&ndash;&gt;-->
+<!--        &lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--        &lt;!&ndash;    <p class="col-span-3">Code</p>&ndash;&gt;-->
+<!--        &lt;!&ndash;    <p class="col-span-7">Label</p>&ndash;&gt;-->
+<!--        &lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--        &lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--    <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="">-->
+
+<!--      @for (item of form.controls.or_array.controls; let i = $index; track item) {-->
+<!--        <div class="grid grid-cols-12 gap-1 mb-1" cdkDrag [formGroup]="item">-->
+<!--          <div class="justify-self-center self-center">-->
+<!--            <span class="material-symbols-outlined">swap_vertical_circle</span>-->
+<!--          </div>-->
+<!--          &lt;!&ndash;        <mat-form-field class='col-span-3 small-input' appearance='outline' subscriptSizing="dynamic">&ndash;&gt;-->
+<!--          &lt;!&ndash;          <input matInput formControlName="code">&ndash;&gt;-->
+<!--          &lt;!&ndash;        </mat-form-field>&ndash;&gt;-->
+
+<!--          &lt;!&ndash;        <app-text-form-group class="col-span-7"&ndash;&gt;-->
+<!--          &lt;!&ndash;                             formControlName="label"&ndash;&gt;-->
+<!--          &lt;!&ndash;                             [languages]="languages()"&ndash;&gt;-->
+<!--          &lt;!&ndash;                             [label]="undefined"/>&ndash;&gt;-->
+
+<!--          <button class="justify-self-center self-center material-symbols-outlined text-red-500"-->
+<!--                  (click)="removeItem(i)">-->
+<!--            remove_circle-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      }-->
+
+<!--    </div>-->
+<!--  } @else {-->
+<!--    <div class="text-base text-gray-400">-->
+<!--      No choices added yet-->
+<!--    </div>-->
+<!--  }-->
+<!--  <button class="material-symbols-outlined" (click)="addItem()">add_circle</button>-->
+<!--  }-->
+<!--</div>-->

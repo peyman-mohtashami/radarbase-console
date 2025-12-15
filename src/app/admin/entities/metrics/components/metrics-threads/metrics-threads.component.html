@@ -1,0 +1,80 @@
+<div class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
+  <app-detail-element>
+    <ng-container label>
+      {{'ADMIN.metrics.threads.runnable' | translate }} ({{ threadStats.threadDumpRunnable }})
+    </ng-container>
+    <ng-container value>
+      <section class="flex items-center w-full">
+        <mat-progress-bar class="h-16!"
+                          [color]="'primary'"
+                          [value]="100 * threadStats.threadDumpRunnable / threadStats.threadDumpAll">
+<!--                          [bufferValue]="50">-->
+        </mat-progress-bar>
+        <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+          {{ (threadStats.threadDumpRunnable / threadStats.threadDumpAll) | percent }}
+        </div>
+      </section>
+    </ng-container>
+  </app-detail-element>
+  <app-detail-element>
+    <ng-container label>{{'ADMIN.metrics.threads.timedWaiting' | translate }} ({{ threadStats.threadDumpTimedWaiting }}
+      )
+    </ng-container>
+    <ng-container value>
+      <section class="w-full flex items-center">
+        <mat-progress-bar class="h-8!"
+                          [color]="'primary'"
+                          [value]="100 * threadStats.threadDumpTimedWaiting / threadStats.threadDumpAll"
+                          [bufferValue]="50">
+        </mat-progress-bar>
+        <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+          {{ (threadStats.threadDumpTimedWaiting / threadStats.threadDumpAll) | percent }}
+        </div>
+      </section>
+    </ng-container>
+  </app-detail-element>
+  <app-detail-element>
+    <ng-container label>{{'ADMIN.metrics.threads.waiting' | translate }} ({{ threadStats.threadDumpWaiting }})
+    </ng-container>
+    <ng-container value>
+      <section class="w-full flex items-center">
+        <mat-progress-bar class="h-8!"
+                          [color]="'primary'"
+                          [value]="100 * threadStats.threadDumpWaiting / threadStats.threadDumpAll"
+                          [bufferValue]="50">
+        </mat-progress-bar>
+        <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+          {{ (threadStats.threadDumpWaiting / threadStats.threadDumpAll) | percent }}
+        </div>
+      </section>
+    </ng-container>
+  </app-detail-element>
+  <app-detail-element>
+    <ng-container label>{{'ADMIN.metrics.threads.blocked' | translate }} ({{ threadStats.threadDumpBlocked }})
+    </ng-container>
+    <ng-container value>
+      <section class="w-full flex items-center">
+        <mat-progress-bar class="h-8!"
+                          [color]="'primary'"
+                          [value]="(threadStats.threadDumpBlocked * 100) / threadStats.threadDumpAll"
+                          [bufferValue]="50">
+        </mat-progress-bar>
+        <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+          {{ (threadStats.threadDumpBlocked / threadStats.threadDumpAll) | percent }}
+        </div>
+      </section>
+    </ng-container>
+  </app-detail-element>
+  <app-detail-element>
+    <ng-container label>{{'ADMIN.metrics.threads.total' | translate }}</ng-container>
+    <ng-container value>
+      {{ threadStats.threadDumpAll }}
+    </ng-container>
+  </app-detail-element>
+</div>
+
+<div class="p-4">
+  <button mat-stroked-button [routerLink]='["threads"]' data-toggle="modal" data-target="#threadDump">
+    <span>{{'ADMIN.metrics.threads.expand' | translate }}Expand</span>
+  </button>
+</div>

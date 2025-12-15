@@ -1,0 +1,19 @@
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate" />
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('sourceType') {
+      <app-source-data-source-type [sourceType]="entity().sourceType"/>
+    }
+    @case ('processingState') {
+      <app-source-data-processing-state [processingState]="entity().processingState"/>
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>

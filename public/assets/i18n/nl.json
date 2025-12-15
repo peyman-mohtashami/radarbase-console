@@ -1,0 +1,1605 @@
+{
+  "CORE": {
+    "AUTH": {
+      "LOGIN_PAGE": {
+        "title": "Login",
+        "subtitle": "Log in to Management Portal App",
+        "description": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs (e.g. Fitbit, Withings and ...)",
+        "loginButtonOauthCodeGrant": "Login with Management Portal",
+        "username": "Username",
+        "password": "Password",
+        "loginButtonPasswordGrant": "Login",
+        "gotoForgotPassword": "Forgot your password?"
+      },
+      "ACTIVATION_PAGE": {
+        "title": "Activation",
+        "invalidKeyErrorMessage": "Your user could not be activated. Key is not valid.",
+        "invalidKeyErrorDescription": "Contact support team and request activation link again.",
+        "successMessage": "Your user account has been activated.",
+        "gotTo": "Go to",
+        "loginPage": "Login",
+        "errorMessage": "Request activation link again."
+      },
+      "FORGOT_PASSWORD_PAGE": {
+        "title": "Forgot Password?",
+        "subtitle": "Fill the form to reset your password",
+        "successMessage": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
+        "successButton": "Your request sent successfully",
+        "email": "Email",
+        "submitButton": "Send",
+        "gotTo": "Go to",
+        "loginPage": "Login",
+        "return": "Return to Login"
+      },
+      "PASSWORD_PAGE": {
+        "title": "Change Your Password",
+        "subtitle": "Create a new password for your account",
+        "newPassword": "New Password",
+        "weakPasswordError": "Weak Password. (At least 8 characters with 1 uppercase, 1 lowercase, 1 digit and 1 symbol)",
+        "confirmPassword": "Password Confirmation",
+        "confirmPasswordError": "Password and Password Confirmation didn't match.",
+        "updateButton": "Update",
+        "successButton": "Updated Successfully"
+      },
+      "PROFILE_PAGE": {
+        "title": "Edit Profile",
+        "subtitle": "User",
+        "login": "Login",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "language": "Language",
+        "updateButton": "Update",
+        "successButton": "Updated Successfully"
+      },
+      "RESET_PASSWORD_PAGE": {
+        "title": "Reset Your Password",
+        "subtitle": "Create a new password for your account",
+        "invalidKeyErrorMessage": "Key is not valid.",
+        "invalidKeyErrorDescription": "Request reset password link again?",
+        "gotoForgotPasswordPage": "Go to Forgot Password",
+        "successMessage": "Your user account has been activated.",
+        "errorMessage": "Request activation link again.",
+        "newPassword": "New Password",
+        "weakPasswordError": "Weak Password. (At least 8 characters, 1 letter, 1 digit and 1 symbol)",
+        "confirmPassword": "Password Confirmation",
+        "confirmPasswordError": "Password and Password Confirmation didn't match.",
+        "updateButton": "Update",
+        "successButton": "Updated Successfully",
+        "gotTo": "Go to",
+        "loginPage": "Login",
+        "forgotPasswordPage": "Forgot password",
+        "gotToForgotPasswordEndMessage": "to request reset password link again."
+      }
+    },
+
+    "ERROR": {
+      "sessionExpired": "The session has been expired. Log in again.",
+      "authGuard": "You need to be logged in to see the requested page."
+    }
+  },
+  "SHARED": {
+    "loading": "Loading",
+    "footer": "NL Powered by",
+    "nav": {
+      "dashboard": "Dashboard",
+      "entities": "Entities",
+      "organizations": "Organizations",
+      "projects": "Projects",
+      "details": "Details",
+      "subjects": "Subjects",
+      "authorizer": "Authorizer",
+      "sources": "Sources",
+      "groups": "Groups",
+      "app-config": "App Config",
+      "members": "Members",
+      "sourceTypes": "Source Types",
+      "sourceData": "Source Data",
+      "questionnaires": "Questionnaires",
+      "protocols": "Protocols",
+      "administrator": "Administrator",
+      "users": "User management",
+      "clients": "OAuth Clients",
+      "metrics": "Metrics",
+      "audits": "Audits",
+      "health": "Health",
+      "revisions": "Revisions",
+      "logs": "Logs",
+      "database": "Database",
+      "applications": "Applications",
+      "outcomesDashboard": "Outcomes Dashboard",
+      "restSourceAuthorizer": "REST Source Authorizer",
+      "appConfig": "App Config",
+      "help": "Help",
+      "support": "Support",
+      "docs": "Docs",
+      "q_a": "Q/A",
+      "externalLinks": "External Tools",
+      "coreManagement": "Workspace",
+      "systemConfiguration": "Advanced Settings",
+      "monitoring": "Monitoring & Logs",
+      "documentation": "Help & Support"
+    },
+    "dialog": {
+      "edit": "Edit",
+      "view": "View",
+      "add": "Create",
+      "delete": "Delete",
+      "no": "No",
+      "yes": "Yes",
+      "cancel": "Cancel",
+      "deletingButton": "Deleting",
+      "update": "Update",
+      "create": "Create",
+      "deleteMessage": "You are going to delete",
+      "deleteWarning": "Are you sure?"
+    },
+    "filter": {
+      "from": "From",
+      "to": "To",
+      "filterBy": "Filter by",
+      "all": "All"
+    },
+    "AUTHORIZATION_PAGE": {
+      "title": "Link your {{sourceType}} account to RADAR-base",
+      "subtitle": "",
+      "description": "You are going to link your {{sourceType}} account to RADAR-base for Project {{project}}",
+      "authorizeButton": "Authorize {{sourceType}} Account",
+      "ERROR": {
+        "title": "Error",
+        "subtitle": "",
+        "badUrl": "The url is not valid.",
+        "badSecret": "Secret does not match token.",
+        "registrationNotFound": "State has expired or not found.",
+        "contactSupport": "Copy and paste the complete url and try again. If the error persists contact the support team."
+      }
+    },
+    "AUTHORIZATION_COMPLETE_PAGE": {
+      "title": "Thank you!",
+      "subtitle": "",
+      "description": "Your {{sourceType}} account has been linked to RADAR-base for Project {{project}}",
+      "actionMessage": "You can close this page.",
+      "actionButton": "Login",
+      "ERROR": {
+        "title": "Error",
+        "subtitle": "",
+        "badUrl": "The url is not valid.",
+        "contactSupport": "Retry to link your account. If the error persists contact the support team."
+      }
+    }
+  },
+  "ADMIN": {
+    "dashboard": {
+      "title": "Dashboard",
+      "view": "View"
+    },
+    "appConfig": {
+      "title": {
+        "singular": "Global App Config",
+        "plural": "Global App Config"
+      }
+    },
+    "audit": {
+      "title": {
+        "singular": "Audit",
+        "plural": "Audits"
+      },
+      "timestamp": {
+        "tableLabel": "Date",
+        "label": "Date"
+      },
+      "principal": {
+        "tableLabel": "User",
+        "label": "Date"
+      },
+      "type": {
+        "tableLabel": "Status",
+        "label": "Status"
+      },
+      "extra": {
+        "tableLabel": "Extra Data",
+        "label": "Extra Data"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "noItemFound": "No Audit Found"
+    },
+    "authorizer": {
+      "title": {
+        "plural": "Authorizers",
+        "singular": "Authorizer"
+      }
+    },
+    "client": {
+      "title": {
+        "singular": "OAuth Client",
+        "plural": "OAuth Clients"
+      },
+      "clientId": {
+        "tableLabel": "ID",
+        "label": "Client ID",
+        "duplicate": "Client ID exists"
+      },
+      "enableEmptySecret": {
+        "label": "Empty Secret for Public Client",
+        "hint": "Enable it to set empty client secret. Public clients do not need a secret."
+      },
+      "clientSecret": {
+        "label": "Client Secret",
+        "generateKey": "Generate Key"
+      },
+      "scope": {
+        "label": "Scope",
+        "hint": "Comma seperated list of scopes. Scopes should have the following structure: ENTITY.OPERATION. See the radar-auth library documentation for more information.\nENTITY is any of SOURCETYPE, SOURCEDATA, SOURCE, SUBJECT, USER, ROLE, PROJECT, OAUTHCLIENTS, AUDIT, AUTHORITY, MEASUREMENT and OPERATION is any of CREATE, UPDATE, READ, WRITE."
+      },
+      "resourceIds": {
+        "tableLabel": "Resource IDs",
+        "label": "Resource IDs",
+        "hint": "Comma seperated list of allowed resource IDs."
+      },
+      "authorizedGrantTypes": {
+        "tableLabel": "Grant Types",
+        "label": "Grant Types",
+        "refreshToken": "Refresh Token",
+        "password": "Password",
+        "authorization_code": "Authorization Code",
+        "client_credentials": "Client Credentials",
+        "implicit": "Implicit"
+      },
+      "registeredRedirectUri": {
+        "label": "Redirect URIs",
+        "hint": "Comma seperated list of resolvable redirect URIs."
+      },
+      "autoApproveScopes": {
+        "label": "Auto Approve Scopes",
+        "hint": "Comma seperated list of scopes that do not require explicit user approval in the authorization code grant."
+      },
+      "accessTokenValiditySeconds": {
+        "tableLabel": "Access Token",
+        "label": "Access Token Validity (Seconds)",
+        "hint": "Token validity period in seconds."
+      },
+      "refreshTokenValiditySeconds": {
+        "tableLabel": "Refresh Token",
+        "label": "Refresh Token Validity (Seconds)",
+        "hint": "Token validity period in seconds."
+      },
+      "additionalInformation": {
+        "label": "Additional Information"
+      },
+      "dynamic_registration": {
+        "tableLabel": "Registration",
+        "label": "Dynamic Registration"
+      },
+      "_dynamic_registration": {
+        "tableLabel": "Registration",
+        "label": "Dynamic Registration"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add OAuth Client",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete OAuth Client",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No OAuth Client Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "database": {
+      "title": {
+        "singular": "Database",
+        "plural": "Databases"
+      }
+    },
+    "detail": {
+      "title": {
+        "plural": "Details",
+        "singular": "Detail"
+      }
+    },
+    "group": {
+      "title": {
+        "singular": "Group",
+        "plural": "Groups"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "projectName": {
+        "tableLabel": "Project Name",
+        "label": "Project Name"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Group",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete OAuth Client",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Group Found"
+    },
+    "health": {
+      "title": {
+        "singular": "Health Check",
+        "plural": "Health Checks"
+      },
+      "refresh": "Refresh",
+      "service": "Service",
+      "status": "Status",
+      "properties": "Properties"
+    },
+    "log": {
+      "title": {
+        "singular": "Log",
+        "plural": "Logs"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "level": {
+        "TRACE": "TRACE",
+        "DEBUG": "DEBUG",
+        "INFO": "INFO",
+        "WARN": "WARN",
+        "ERROR": "ERROR"
+      },
+      "actions": "Level",
+      "create": "Add Project",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Project",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Log Found"
+    },
+    "metrics": {
+      "title": {
+        "singular": "Application Metrics",
+        "plural": "Metrics"
+      },
+      "subTitle": "JVM Metrics",
+      "jvm": {
+        "title": "Memory",
+        "committed": "Committed"
+      },
+      "threads": {
+        "title": "Threads",
+        "runnable": "Runnable",
+        "timedWaiting": "Timed Waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "total": "Total",
+        "expand": "Expand",
+        "threadsDump": "Threads dump",
+        "all": "All",
+        "threadId": "ID",
+        "showStackTrace": "Show StackTrace",
+        "hideStackTrace": "Hide StackTrace",
+        "blockedTime": "Blocked Time",
+        "blockedCount": "Blocked Count",
+        "waitedTime": "Waited Time",
+        "waitedCount": "Waited Count",
+        "lockName": "Lock Name"
+      },
+      "processMetrics": {
+        "title": "System",
+        "process.uptime": "Uptime",
+        "process.start.time": "Start time",
+        "process.cpu.usage": "Process CPU usage",
+        "system.cpu.usage": "System CPU usage",
+        "system.cpu.count": "System CPU count",
+        "system.load.average.1m": "System 1m Load average",
+        "process.files.max": "Process files max",
+        "process.files.open": "Process files open"
+      },
+      "garbageCollector": {
+        "title": "Garbage collector statistics",
+        "max.data.size": "GC Live Data Size/GC Max Data Size",
+        "memory.allocated": "GC Memory Promoted/GC Memory Allocated",
+        "classesLoaded": "Classes loaded",
+        "classesUnloaded": "Classes unloaded"
+      },
+      "http.server.requests": {
+        "title": "HTTP requests (time in millisecond)"
+      },
+      "services": {
+        "title": "Endpoints requests (time in millisecond)"
+      },
+      "cache": {
+        "title": "Cache statistics",
+        "name": "Cache name",
+        "hits": "Cache Hits",
+        "misses": "Cache Misses",
+        "gets": "Cache Gets",
+        "puts": "Cache Puts",
+        "removals": "Cache Removals",
+        "evictions": "Cache Evictions",
+        "hitPercent": "Cache Hit %",
+        "missPercent": "Cache Miss %"
+      },
+      "databases": {
+        "title": "DataSource statistics (time in millisecond)",
+        "connectionPoolUsage": "Connection Pool Usage",
+        "active": "active",
+        "idle": "idle",
+        "acquire": "Acquire",
+        "creation": "Creation",
+        "usage": "Usage"
+      },
+      "refresh": "Refresh"
+    },
+    "organization": {
+      "title": {
+        "singular": "Organization",
+        "plural": "Organizations"
+      },
+      "subtitle": "Select an Organization",
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "location": {
+        "tableLabel": "Location",
+        "label": "Location"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "projectCount": {
+        "tableLabel": "Project Count",
+        "label": "Project Count"
+      },
+      "projects": {
+        "tableLabel": "Projects",
+        "label": "Projects"
+      },
+      "viewAll": "View all {{count}} projects",
+      "viewLess": "View less",
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Organization",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Organization",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Organization Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "permission": {
+      "title": {
+        "singular": "User",
+        "plural": "Users"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "Login",
+        "label": "Login",
+        "duplicate": "Login exists"
+      },
+      "email": {
+        "tableLabel": "Email",
+        "label": "Email",
+        "duplicate": "Email exists"
+      },
+      "search": {
+        "tableLabel": "Search",
+        "label": "Search by login or email"
+      },
+      "firstName": {
+        "tableLabel": "First Name",
+        "label": "First Name"
+      },
+      "lastName": {
+        "tableLabel": "Last Name",
+        "label": "Last Name"
+      },
+      "activated": {
+        "tableLabel": "Activated",
+        "label": "Activated"
+      },
+      "roles": {
+        "tableLabel": "Roles",
+        "label": "Roles",
+        "hasPermission": "Has Permission",
+        "doesntHavePermission": "Doesn't Have Permission"
+      },
+      "langKey": {
+        "tableLabel": "Language",
+        "label": "Language"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "lastModifiedBy": {
+        "tableLabel": "Last Modified By",
+        "label": "Last Modified By"
+      },
+      "lastModifiedDate": {
+        "tableLabel": "Last Modified Date",
+        "label": "Last Modified Date"
+      },
+      "authority": {
+        "tableLabel": "Authority"
+      },
+      "projectOrOrganization": {
+        "tableLabel": "Organization Or Project"
+      },
+      "activate": {
+        "title": "Confirm sending activation link",
+        "message": "Are you sure you want to resend activation link for User {{user}} to {{email}}?",
+        "send": "Send",
+        "sending": "Sending",
+        "cancel": "Cancel"
+      },
+      "role": {
+        "add": {
+          "title": "Add User Role",
+          "message": "You are going to add this User as {{role}} for {{entityName}}",
+          "adding": "Adding Role ...",
+          "add": "Add Role"
+        },
+        "remove": {
+          "title": "Remove User Role",
+          "message": "You are going to remove this User as {{role}} for {{entityName}}",
+          "removing": "Removing Role ...",
+          "remove": "Remove Role"
+        },
+        "confirmationMessage": "Are you sure?",
+        "no": "No"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add User",
+      "edit": "Edit",
+      "remove": "Remove User",
+      "sendActivationLink": "Send Activation Link",
+      "removeMessage": "You are going to remove User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No User Found",
+      "noUserFound": "No user found with the provided email or login.",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "project": {
+      "title": {
+        "singular": "Project",
+        "plural": "Projects"
+      },
+      "subtitle": "Select a Project",
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Project Name",
+        "label": "Project Name"
+      },
+      "projectName": {
+        "tableLabel": "Project Name",
+        "label": "Project Name"
+      },
+      "organization": {
+        "tableLabel": "Organization",
+        "label": "Organization"
+      },
+      "location": {
+        "tableLabel": "Location",
+        "label": "Location"
+      },
+      "startDate": {
+        "tableLabel": "Start Date",
+        "label": "Start Date",
+        "startDateInvalid": "Invalid Start Date"
+      },
+      "endDate": {
+        "tableLabel": "End Date",
+        "label": "End Date",
+        "endDateInvalid": "Invalid End Date"
+      },
+      "projectStatus": {
+        "tableLabel": "Status",
+        "label": "Project Status",
+        "PLANNING": "PLANNING",
+        "ONGOING": "ONGOING",
+        "ENDED": "ENDED"
+      },
+      "sourceTypes": {
+        "tableLabel": "Source Types",
+        "label": "Source Types"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "humanReadableProjectName": {
+        "tableLabel": "Human Readable Project Name",
+        "label": "Human Readable Project Name",
+        "hint": "Human readable project name that doesn't have to follow url pattern.<br/>If you leave it empty, the Project Name sets as the human readable name."
+      },
+      "organizationName": {
+        "tableLabel": "Organization (Deprecated)",
+        "label": "Organization (Deprecated)"
+      },
+      "attributes": {
+        "tableLabel": "Attributes",
+        "label": "Attributes",
+        "workPackage": "Work Package",
+        "phase": "Phase",
+        "externalProjectUrl": "External Project URL",
+        "externalProjectId": "External Project ID",
+        "privacyPolicyUrl": "Privacy Policy URL"
+      },
+      "viewAll": "View all {{count}} source types",
+      "viewLess": "View less",
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Project",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Project",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Project Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "revision": {
+      "title": {
+        "singular": "Revision",
+        "plural": "Revisions"
+      },
+      "id": {
+        "tableLabel": "No.",
+        "label": "No."
+      },
+      "revisionType": {
+        "tableLabel": "Revision Type",
+        "label": "Revision Type"
+      },
+      "modifications": {
+        "tableLabel": "Modifications",
+        "label": "Modifications"
+      },
+      "author": {
+        "tableLabel": "Author",
+        "label": "Author"
+      },
+      "timestamp": {
+        "tableLabel": "Date",
+        "label": "Date"
+      },
+      "entity": {
+        "project": "Project",
+        "subject":"Subject",
+        "source": "Source",
+        "sourceType": "Source Type",
+        "sourceData": "Source Data",
+        "user": "User"
+      },
+      "added": "ADDED",
+      "modified": "MODIFIED",
+      "deleted": "DELETED",
+      "actions": "Actions",
+      "create": "Add User",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Revision Found"
+    },
+    "source": {
+      "title": {
+        "singular": "Source",
+        "plural": "Sources"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "sourceName": {
+        "tableLabel": "Source Name",
+        "label": "Source Name"
+      },
+      "expectedSourceName": {
+        "tableLabel": "Physical ID",
+        "label": "Physical ID"
+      },
+      "sourceId": {
+        "tableLabel": "Source ID",
+        "label": "Source ID"
+      },
+      "sourceType": {
+        "tableLabel": "Source Type",
+        "label": "Source Type"
+      },
+      "project": {
+        "tableLabel": "Project",
+        "label": "Project"
+      },
+      "assigned": {
+        "tableLabel": "Assigned",
+        "label": "Assigned"
+      },
+      "attributes": {
+        "tableLabel": "Attributes",
+        "label": "Attributes"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Source",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Source",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Source Found"
+    },
+    "sourceData": {
+      "title": {
+        "singular": "Source Data",
+        "plural": "Source Data"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "sourceDataType": {
+        "tableLabel": "Source Data Type",
+        "label": "Source Data Type"
+      },
+      "sourceDataName": {
+        "tableLabel": "Source Data Name",
+        "label": "Source Data Name"
+      },
+      "processingState": {
+        "tableLabel": "Processing State",
+        "label": "Processing State",
+        "RAW": "RAW",
+        "DERIVED": "DERIVED",
+        "VENDOR": "VENDOR",
+        "RADAR": "RADAR",
+        "UNKNOWN": "UNKNOWN",
+        "NOT_STATED": "NOT_STATED"
+      },
+      "unit": {
+        "tableLabel": "Unit",
+        "label": "Unit"
+      },
+      "frequency": {
+        "tableLabel": "Frequency",
+        "label": "Frequency"
+      },
+      "sourceType": {
+        "tableLabel": "Source Type",
+        "label": "Source Type"
+      },
+      "topic": {
+        "tableLabel": "Topic",
+        "label": "Topic"
+      },
+      "keySchema": {
+        "tableLabel": "Key Schema",
+        "label": "Key Schema"
+      },
+      "valueSchema": {
+        "tableLabel": "Value Schema",
+        "label": "Value Schema"
+      },
+      "sourceTypes": {
+        "tableLabel": "Source Types",
+        "label": "Source Types"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "humanReadableProjectName": {
+        "tableLabel": "Human Readable Project Name",
+        "label": "Human Readable Project Name",
+        "hint": "Human readable project name that doesn't have to follow url pattern.<br/>If you leave it empty, the Project Name sets as the human readable name."
+      },
+      "organizationName": {
+        "tableLabel": "Organization (Deprecated)",
+        "label": "Organization (Deprecated)"
+      },
+      "attributes": {
+        "tableLabel": "Attributes",
+        "label": "Attributes",
+        "workPackage": "Work Package",
+        "phase": "Phase",
+        "externalProjectUrl": "External Project URL",
+        "externalProjectId": "External Project ID",
+        "privacyPolicyUrl": "Privacy Policy URL"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Source Data",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Project",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Source Data Found"
+    },
+    "sourceType": {
+      "title": {
+        "singular": "Source Type",
+        "plural": "Source Types"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "_name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "assessmentType": {
+        "tableLabel": "Assessment Type",
+        "label": "Assessment Type"
+      },
+      "appProvider": {
+        "tableLabel": "App provider",
+        "label": "App provider"
+      },
+      "producer": {
+        "tableLabel": "Producer",
+        "label": "Producer",
+        "duplicate": "Source Type (Producer, model and catalog version) exists"
+      },
+      "producerModelVersion": {
+        "tableLabel": "Producer/Model/Version",
+        "label": "Producer/Model/Version"
+      },
+      "model": {
+        "tableLabel": "Model",
+        "label": "Model"
+      },
+      "catalogVersion": {
+        "tableLabel": "Catalog Version",
+        "label": "Catalog Version"
+      },
+      "sourceTypeScope": {
+        "tableLabel": "Scope",
+        "label": "Source Type Scope",
+        "PASSIVE": "Passive",
+        "ACTIVE": "Active"
+      },
+      "canRegisterDynamically": {
+        "tableLabel": "Source Registration",
+        "label": "Source Registration",
+        "dynamic": "Dynamic",
+        "manual": "Manual",
+        "hint": "If enabled this will allow the OAuth client to dynamically register data sources."
+      },
+      "sourceData": {
+        "tableLabel": "Source Data",
+        "label": "Source Data"
+      },
+      "producerModelCatalogVersion": {
+        "tableLabel": "Producer, Model, Catalog Version"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Source Type",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Source Type",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Source Type Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "subject": {
+      "title": {
+        "singular": "Subject",
+        "plural": "Subjects"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "Login",
+        "label": "Subject ID"
+      },
+      "personName": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "externalId": {
+        "tableLabel": "External ID",
+        "label": "External ID"
+      },
+      "externalLink": {
+        "tableLabel": "External Link",
+        "label": "External Link"
+      },
+      "dateOfBirth": {
+        "tableLabel": "Date Of Birth",
+        "label": "Date Of Birth",
+        "invalid": "Invalid Date of Birth"
+      },
+      "project": {
+        "tableLabel": "Project",
+        "label": "Project"
+      },
+      "organization": {
+        "tableLabel": "Organization",
+        "label": "Organization"
+      },
+      "group": {
+        "tableLabel": "Group",
+        "label": "Group"
+      },
+      "attributes": {
+        "tableLabel": "Attributes",
+        "label": "Attributes",
+        "humanReadableIdentifier": "Human Readable Name",
+        "participant_group": "Participant Group"
+      },
+      "sources": {
+        "tableLabel": "Sources",
+        "label": "Sources"
+      },
+      "status": {
+        "tableLabel": "Status",
+        "label": "Status"
+      },
+      "roles": {
+        "tableLabel": "Roles",
+        "label": "Roles"
+      },
+      "enrollmentDate": {
+        "tableLabel": "Enrollment Date",
+        "label": "Enrollment Date"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "lastModifiedBy": {
+        "tableLabel": "Last Modified By",
+        "label": "Last Modified By"
+      },
+      "lastModifiedDate": {
+        "tableLabel": "Last Modified Date",
+        "label": "Last Modified Date"
+      },
+      "assignGroup": {
+        "title": "Assign a Group to Selected Subjects",
+        "cancel": "Cancel",
+        "assign": "Assign"
+      },
+      "discontinue": {
+        "buttonLabel": "Discontinue",
+        "title": "Confirm discontinue operation",
+        "message": "",
+        "discontinue": "Discontinue",
+        "deleting": "Discontinuing",
+        "no": "No"
+      },
+      "pairApp": {
+        "buttonLabel": "Pair App",
+        "title": "Pair an Application",
+        "client": "Application",
+        "baseUrl": "Base URL",
+        "tokenName": "Token Name",
+        "validUntil": "Valid Until",
+        "validity": "Validity",
+        "cancel": "Cancel",
+        "generateQrCode": "Generate QR Code",
+        "generatePersistentQrCode": "Generate Persistent QR Code"
+      },
+      "pairSource": {
+        "buttonLabel": "Pair Source",
+        "title": "Assign or Remove sources",
+        "noItemAvailable": "No Source Available",
+        "cancel": "Cancel",
+        "save": "Save"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Subject",
+      "edit": "Edit",
+      "delete": "Delete",
+      "history": "History",
+      "deleteMessage": "You are going to delete Subject",
+      "deleteConfirmationMessage": "Are you sure?",
+      "discontinueMessage": "Are you sure you want to discontinue this Subject? This operation cannot be undone.",
+      "cancel": "Cancel",
+      "update": "Update",
+      "noItemFound": "No Subject Found"
+    },
+    "subjectRevision": {
+      "title": {
+        "singular": "Revision",
+        "plural": "Revisions"
+      },
+      "id": {
+        "tableLabel": "Revision No.",
+        "label": "Revision No."
+      },
+      "revisionType": {
+        "tableLabel": "Revision Type",
+        "label": "Revision Type"
+      },
+      "auditor": {
+        "tableLabel": "Author",
+        "label": "Author"
+      },
+      "timestamp": {
+        "tableLabel": "Date",
+        "label": "Date"
+      },
+      "entity": {
+        "entity": {
+          "tableLabel": "Entity",
+          "label": "Entity"
+        },
+        "login": {
+          "tableLabel": "Login",
+          "label": "Login"
+        },
+        "externalId": {
+          "tableLabel": "External ID",
+          "label": "External ID"
+        },
+        "externalLink": {
+          "tableLabel": "External Link",
+          "label": "External Link"
+        },
+        "project": {
+          "tableLabel": "Project",
+          "label": "Project"
+        },
+        "sources": {
+          "tableLabel": "Sources",
+          "label": "Sources"
+        },
+        "attributes": {
+          "tableLabel": "Attributes",
+          "label": "Attributes"
+        }
+      },
+      "added": "ADDED",
+      "modified": "MODIFIED",
+      "deleted": "DELETED",
+      "actions": "Actions",
+      "create": "Add User",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Revision Found"
+    },
+    "user": {
+      "title": {
+        "singular": "User",
+        "plural": "Users"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "Login",
+        "label": "Login",
+        "duplicate": "Login exists"
+      },
+      "email": {
+        "tableLabel": "Email",
+        "label": "Email",
+        "duplicate": "Email exists"
+      },
+      "firstName": {
+        "tableLabel": "First Name",
+        "label": "First Name"
+      },
+      "lastName": {
+        "tableLabel": "Last Name",
+        "label": "Last Name"
+      },
+      "activated": {
+        "tableLabel": "Activated",
+        "label": "Activated"
+      },
+      "notActivated": {
+        "tableLabel": "Not Activated",
+        "label": "Not Activated"
+      },
+      "roles": {
+        "tableLabel": "Roles",
+        "label": "Roles",
+        "hasPermission": "Has Permission",
+        "doesntHavePermission": "Doesn't Have Permission"
+      },
+      "langKey": {
+        "tableLabel": "Language",
+        "label": "Language"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "lastModifiedBy": {
+        "tableLabel": "Last Modified By",
+        "label": "Last Modified By"
+      },
+      "lastModifiedDate": {
+        "tableLabel": "Last Modified Date",
+        "label": "Last Modified Date"
+      },
+      "authority": {
+        "tableLabel": "Authority"
+      },
+      "projectOrOrganization": {
+        "tableLabel": "Organization Or Project"
+      },
+      "activate": {
+        "title": "Confirm sending activation link",
+        "message": "Are you sure you want to resend activation link for User {{user}} to {{email}}?",
+        "send": "Send",
+        "sending": "Sending",
+        "cancel": "Cancel"
+      },
+      "role": {
+        "add": {
+          "title": "Add User Role",
+          "message": "You are going to add this User as {{role}} for {{entityName}}",
+          "adding": "Adding Role ...",
+          "add": "Add Role"
+        },
+        "remove": {
+          "title": "Remove User Role",
+          "message": "You are going to remove this User as {{role}} for {{entityName}}",
+          "removing": "Removing Role ...",
+          "remove": "Remove Role"
+        },
+        "confirmationMessage": "Are you sure?",
+        "no": "No"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add User",
+      "edit": "Edit",
+      "delete": "Delete",
+      "sendActivationLink": "Send Activation Link",
+      "deleteMessage": "You are going to delete User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No User Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "role": {
+      "title": {
+        "singular": "Member",
+        "plural": "Members"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "Login",
+        "label": "Login",
+        "duplicate": "Login exists"
+      },
+      "email": {
+        "tableLabel": "Email",
+        "label": "Email",
+        "duplicate": "Email exists"
+      },
+      "firstName": {
+        "tableLabel": "First Name",
+        "label": "First Name"
+      },
+      "lastName": {
+        "tableLabel": "Last Name",
+        "label": "Last Name"
+      },
+      "activated": {
+        "tableLabel": "Activated",
+        "label": "Activated"
+      },
+      "roles": {
+        "tableLabel": "Roles",
+        "label": "Roles",
+        "hasPermission": "Has Permission",
+        "doesntHavePermission": "Doesn't Have Permission"
+      },
+      "langKey": {
+        "tableLabel": "Language",
+        "label": "Language"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "lastModifiedBy": {
+        "tableLabel": "Last Modified By",
+        "label": "Last Modified By"
+      },
+      "lastModifiedDate": {
+        "tableLabel": "Last Modified Date",
+        "label": "Last Modified Date"
+      },
+      "authority": {
+        "tableLabel": "Authority"
+      },
+      "projectOrOrganization": {
+        "tableLabel": "Organization Or Project"
+      },
+      "activate": {
+        "title": "Confirm sending activation link",
+        "message": "Are you sure you want to resend activation link for User {{user}} to {{email}}?",
+        "send": "Send",
+        "sending": "Sending",
+        "cancel": "Cancel"
+      },
+      "role": {
+        "add": {
+          "title": "Add User Role",
+          "message": "You are going to add this User as {{role}} for {{entityName}}",
+          "adding": "Adding Role ...",
+          "add": "Add Role"
+        },
+        "remove": {
+          "title": "Remove User Role",
+          "message": "You are going to remove this User as {{role}} for {{entityName}}",
+          "removing": "Removing Role ...",
+          "remove": "Remove Role"
+        },
+        "confirmationMessage": "Are you sure?",
+        "no": "No"
+      },
+      "actions": "Actions",
+      "create": "Add Member",
+      "edit": "Edit",
+      "delete": "Delete",
+      "sendActivationLink": "Send Activation Link",
+      "deleteMessage": "You are going to delete User",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No User Found"
+    },
+    "protocol": {
+      "title": {
+        "singular": "Protocol",
+        "plural": "Protocols"
+      },
+      "subtitle": "Select a Protocol",
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "repeatProtocol": {
+        "tableLabel": "Schedule's Description",
+        "label": "Schedule's Description"
+      },
+      "completionWindow": {
+        "tableLabel": "Completion Window",
+        "label": "Completion Window"
+      },
+      "questionnaire": {
+        "tableLabel": "Questionnaire",
+        "label": "Questionnaire"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "modifiedBy": {
+        "tableLabel": "Modified By",
+        "label": "Modified By"
+      },
+      "createdAt": {
+        "tableLabel": "Created At",
+        "label": "Created At"
+      },
+      "modifiedAt": {
+        "tableLabel": "Modified At",
+        "label": "Modified At"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Protocol",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Protocol",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Protocol Found"
+    },
+    "questionnaire": {
+      "title": {
+        "singular": "Questionnaire",
+        "plural": "Questionnaires"
+      },
+      "subtitle": "Select a Questionnaire",
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "translations": {
+        "tableLabel": "Translations",
+        "label": "Translations"
+      },
+      "description": {
+        "tableLabel": "Description",
+        "label": "Description"
+      },
+      "createdBy": {
+        "tableLabel": "Created By",
+        "label": "Created By"
+      },
+      "modifiedBy": {
+        "tableLabel": "Modified By",
+        "label": "Modified By"
+      },
+      "createdDate": {
+        "tableLabel": "Created Date",
+        "label": "Created Date"
+      },
+      "modifiedDate": {
+        "tableLabel": "Modified Date",
+        "label": "Modified Date"
+      },
+      "questionCount": {
+        "tableLabel": "Question Count",
+        "label": "Question Count"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Questionnaire",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Questionnaire",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Questionnaire Found"
+    },
+    "sourceAuthorizerSubject": {
+      "title": {
+        "singular": "Subject",
+        "plural": "Subjects"
+      },
+      "id": {
+        "tableLabel": "ID",
+        "label": "ID"
+      },
+      "login": {
+        "tableLabel": "login",
+        "label": "login"
+      },
+      "sourceType": {
+        "tableLabel": "sourceType",
+        "label": "sourceType"
+      },
+      "project": {
+        "tableLabel": "project",
+        "label": "project"
+      },
+      "authorized": {
+        "tableLabel": "authorized",
+        "label": "authorized",
+        "yes": "Yes",
+        "no": "No",
+        "pending": "Pending",
+        "unset": "Unset"
+      },
+      "registrationCreatedAt": {
+        "tableLabel": "registrationCreatedAt",
+        "label": "registrationCreatedAt"
+      },
+      "sourceId": {
+        "tableLabel": "sourceId",
+        "label": "sourceId"
+      },
+      "hasValidToken": {
+        "tableLabel": "hasValidToken",
+        "label": "hasValidToken",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "serviceUserId": {
+        "tableLabel": "serviceUserId",
+        "label": "serviceUserId"
+      },
+      "timesReset": {
+        "tableLabel": "timesReset",
+        "label": "timesReset"
+      },
+      "startEndDate": {
+        "tableLabel": "startEndDate",
+        "label": "startEndDate"
+      },
+      "actions": "Actions",
+      "create": "Add Organization",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Organization",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Organization Found"
+    },
+    "config": {
+      "title": {
+        "singular": "Config",
+        "plural": "Configs"
+      },
+      "name": {
+        "tableLabel": "Name",
+        "label": "Name"
+      },
+      "value": {
+        "tableLabel": "Value",
+        "label": "Value"
+      },
+      "defaultValue": {
+        "tableLabel": "Default Value",
+        "label": "Default Value"
+      },
+      "defaultSource": {
+        "tableLabel": "Default Source",
+        "label": "Default Source"
+      },
+      "type": {
+        "tableLabel": "Type",
+        "label": "Type"
+      },
+      "discard": {
+        "title": "Discard changes",
+        "discard": "Discard",
+        "discarding": "Discarding"
+      },
+      "publish": {
+        "title": "Publish changes",
+        "publish": "Publish",
+        "publishing": "Publishing"
+      },
+      "actions": {"tableLabel":  "Actions", "label":  "Actions"},
+      "create": "Add Config",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteMessage": "You are going to delete Config",
+      "deleteConfirmationMessage": "Are you sure?",
+      "noItemFound": "No Config Found",
+      "filters": {
+        "search": "Search"
+      }
+    },
+    "PAGINATOR": {
+      "ITEMS_PER_PAGE": "Items per page",
+      "NEXT_PAGE": "Next page",
+      "PREVIOUS_PAGE": "Previous page",
+      "OF_LABEL": "of"
+    },
+    "ValidatorError": {
+      "requiredValidator": "'{{value}}' is required."
+    },
+    "uploadPortal": {
+      "title": {
+        "singular": "Upload Portal",
+        "plural": "Upload Portal"
+      }
+    },
+    "dataStorage": {
+      "title": {
+        "singular": "Data storage",
+        "plural": "Data storage"
+      }
+    },
+    "grafana": {
+      "title": {
+        "singular": "Grafana",
+        "plural": "Grafana"
+      }
+    },
+    "systemMonitor": {
+      "title": {
+        "singular": "System Monitor",
+        "plural": "System Monitor"
+      }
+    },
+    "systemStatus": {
+      "title": {
+        "singular": "System Monitor",
+        "plural": "System Monitor"
+      }
+    },
+    "systemLogs": {
+      "title": {
+        "singular": "System logs",
+        "plural": "System logs"
+      }
+    },
+    "website": {
+      "title": {
+        "singular": "RADAR-base website",
+        "plural": "RADAR-base website"
+      }
+    },
+    "wiki": {
+      "title": {
+        "singular": "RADAR-base wiki",
+        "plural": "User's guide"
+      }
+    }
+  },
+  "ERROR": {
+    "clientError": "Client Error",
+    "unknownError": "Unknown error occurred.",
+    "serverDown": "(Backend server is down.)",
+    "contactSupport": "Retry again or contact support.",
+    "loginRequired": "You need to log in to view requested page.",
+    "sessionExpired": "The session is expired. Log in again.",
+    "invalid_grant": "Invalid username or password",
+    "500": "Internal Server Error",
+    "error": {
+      "emailNotRegistered": "Email address not registered",
+      "internalServerError": "Internal Server Error",
+      "sourceDataNameAvailable": "Source Data Name exists",
+      "sourceTypeExists": "Source Type (Producer, model and catalog version) exists",
+      "nameexists": "Organization Name exists"
+    },
+    "ValidatorError": {
+      "requiredValidator": "'{{value}}' is required."
+    },
+    "group": {
+      "error.validation": "Group has subjects. Do you still want to delete this group?"
+    },
+    "source": {
+      "error.sourceNameExists": "Source Name exists. Enter another Source Name."
+    },
+    "userManagement": {
+      "error": {
+        "emailNotRegistered": "This email is not registered."
+      }
+    }
+  },
+
+
+
+
+  "hello": "Hello-en",
+  "title": "Management Portal"
+}

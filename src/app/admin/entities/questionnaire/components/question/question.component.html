@@ -1,0 +1,348 @@
+<div>
+  <div class="text-base">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex justify-between items-center">
+        <span class="font-bold">Questions</span>
+        <button type='button'
+                mat-stroked-button
+                color='primary'
+                (click)="addQuestion()">
+          <mat-icon>add</mat-icon>
+          <span class="font-bold">Add Question</span>
+        </button>
+      </div>
+      <span class="justify-self-start self-center font-bold">Question Settings</span>
+<!--      <mat-button-toggle-group class="w-full">-->
+<!--        <mat-button-toggle value="1">-->
+<!--          Question Settings-->
+<!--        </mat-button-toggle>-->
+<!--        <mat-button-toggle value="2">-->
+<!--          Preview-->
+<!--        </mat-button-toggle>-->
+<!--      </mat-button-toggle-group>-->
+
+      <div>
+        <div cdkDropList class="" (cdkDropListDropped)="drop($event)">
+          @for (question of form.controls; let i = $index; track question) {
+            <div cdkDrag class="flex justify-between items-center w-full p-1 border border-gray-200 rounded-lg mb-2"
+                 (click)="selectQuestion(question, i)" [class]="selectedQuestion() === question ? 'bg-primary/10' : ''">
+              <div class="w-8 flex">
+                <span class="material-symbols-outlined">swap_vertical_circle</span>
+              </div>
+              <span class="w-16">#{{ i + 1 }}</span>
+              <span class="grow">{{ question.controls.field_name?.value }}</span>
+              <span class="w-72">{{ question.controls.field_type?.value }}</span>
+              <div class="w-8 flex">
+                <button class="material-symbols-outlined text-red-500" (click)="removeQuestion(i)">do_not_disturb_on
+                </button>
+              </div>
+            </div>
+
+            @if (i > 0) {
+              <!--                <rb-branching-logic [entity]="entity()" [index]="i" formControlName="branching_logic" />-->
+            }
+          }
+        </div>
+      </div>
+      @if (selectedQuestion(); as question) {
+        <div>
+<!--          <mat-button-toggle-group class="w-full">-->
+<!--            <mat-button-toggle value="1">-->
+<!--              Question Settings-->
+<!--            </mat-button-toggle>-->
+<!--            <mat-button-toggle value="2">-->
+<!--              Preview-->
+<!--            </mat-button-toggle>-->
+<!--          </mat-button-toggle-group>-->
+
+          <div class="rounded-lg bg-primary/10">
+            <div class="p-4" [formGroup]="question">
+              <div class='small-input text-sm flex justify-end gap-1'>
+                @for (language of languages(); track language) {
+                  <button mat-icon-button class="tiny uppercase"
+                          (click)='$event.stopPropagation(); selectedLanguage = language.id.toString()'
+                          [class]="selectedLanguage === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+                                  <span class="h-full flex items-center justify-center">
+                                    <span class="text-sm font-bold">{{ language.id }}</span>
+                                  </span>
+                  </button>
+                }
+              </div>
+
+              <label for="field_name" class="text-sm">Field Name *</label>
+              <mat-form-field class='small-input w-1/2' appearance="outline">
+                <input matInput formControlName='field_name' required/>
+                @if (question.controls.field_name.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['required']) {
+                      {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <label for="field_type" class="text-sm">Field Type *</label>
+              <mat-form-field class='small-input w-1/2' appearance="outline">
+                <mat-select formControlName='field_type'>
+                  @for (type of questionTypes; track type) {
+                    <mat-option [value]="type.name">{{ type.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (question.controls.field_type.errors; as errors) {
+                  <mat-error>
+                    @if (errors?.['pattern']) {
+                      {{ ValidatorError.normalTextValidator }}
+                    }
+                    @if (errors?.['required']) {
+                      {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                    }
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <div formGroupName="field_label" class="w-full">
+<!--                <div class="flex justify-between items-center gap-4">-->
+                  <label for="startText" class="text-sm">Field Label *</label>
+<!--                  <div class='small-input text-sm'>-->
+<!--                    @for (language of languages(); track language) {-->
+<!--                      <button mat-icon-button class="tiny uppercase"-->
+<!--                              (click)='$event.stopPropagation(); selectedLanguage = language.id.toString()'-->
+<!--                              [class]="selectedLanguage === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
+<!--                        <span class="h-full flex items-center justify-center">-->
+<!--                          <span class="text-sm font-bold">{{ language.id }}</span>-->
+<!--                        </span>-->
+<!--                      </button>-->
+<!--                    }-->
+<!--                  </div>-->
+<!--                </div>-->
+                @for (language of languages(); track language) {
+                  @if (language.id === selectedLanguage) {
+                    <mat-form-field class='small-input w-full' appearance='outline'>
+                      <textarea matInput rows="4" [formControlName]='language.id'></textarea>
+                    </mat-form-field>
+                  }
+                }
+              </div>
+
+              <div formGroupName="section_header" class="w-full">
+<!--                <div class="flex justify-between items-center gap-4">-->
+                  <label for="startText" class="text-sm">Section Header</label>
+<!--                  <div class='small-input text-sm'>-->
+<!--                    @for (language of languages(); track language) {-->
+<!--                      <button mat-icon-button class="tiny uppercase"-->
+<!--                              (click)='$event.stopPropagation(); selectedLanguage = language.id.toString()'-->
+<!--                              [class]="selectedLanguage === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
+<!--                  <span class="h-full flex items-center justify-center"><span-->
+<!--                      class="text-sm font-bold">{{ language.id }}</span></span>-->
+<!--                      </button>-->
+<!--                    }-->
+<!--                  </div>-->
+<!--                </div>-->
+                @for (language of languages(); track language) {
+                  @if (language.id === selectedLanguage) {
+                    <mat-form-field class='small-input w-full' appearance='outline'>
+                      <textarea matInput rows="4" [formControlName]='language.id'></textarea>
+                    </mat-form-field>
+                  }
+                }
+              </div>
+
+              @if (question.controls.field_type.value; as type) {
+                @if (type !== 'timed' && type !== 'audio' && type !== 'text' && type !== 'datepicker' && type !== 'slider') {
+                  <div cdkDropList (cdkDropListDropped)="dropChoice($event, question.controls.select_choices_or_calculations)" class="">
+                    <label for="select_choices_or_calculations" class="text-sm">Choices *</label>
+                    @for (
+                        choice of question.controls.select_choices_or_calculations.controls; let
+                        i = $index; track choice) {
+                      <div class="mb-1  overflow-hidden" cdkDrag [formGroup]="choice">
+                        <div class="flex items-start gap-1 p-2 rounded-lg bg-gray-200 border border-gray-300">
+                        <div class="w-1/4">
+                          <label for="unit" class="text-sm">Code</label>
+                          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                            <input matInput formControlName="code">
+                          </mat-form-field>
+                        </div>
+
+                        <div formGroupName="label" class="flex-1">
+<!--                          <div class="flex justify-between items-center gap-4">-->
+                            <label for="startText" class="text-sm">Label</label>
+<!--                            <div class='small-input text-sm'>-->
+<!--                              @for (language of languages(); track language) {-->
+<!--                                <button mat-icon-button class="tiny uppercase"-->
+<!--                                        (click)='$event.stopPropagation(); selectedLanguage = language.id.toString()'-->
+<!--                                        [class]="selectedLanguage === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
+<!--                                  <span class="h-full flex items-center justify-center">-->
+<!--                                    <span class="text-sm font-bold">{{ language.id }}</span>-->
+<!--                                  </span>-->
+<!--                                </button>-->
+<!--                              }-->
+<!--                            </div>-->
+<!--                          </div>-->
+                          @for (language of languages(); track language) {
+                            @if (language.id === selectedLanguage) {
+                              <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+                                <textarea matInput rows="1" cdkTextareaAutosize [formControlName]='language.id'></textarea>
+                              </mat-form-field>
+                            }
+                          }
+                        </div>
+
+                        <div class="flex flex-col items-center justify-center">
+                        <button class="material-symbols-outlined text-red-500" (click)="removeChoice(question.controls.select_choices_or_calculations, i)">
+                          remove_circle
+                        </button>
+                        <button class="material-symbols-outlined" (click)="addChoice(question.controls.select_choices_or_calculations, undefined, i + 1)">
+                          add_circle
+                        </button>
+                        </div>
+                      </div>
+                      </div>
+                    }
+                    <button class="material-symbols-outlined" (click)="addChoice(question.controls.select_choices_or_calculations)">add_circle</button>
+                  </div>
+                }
+
+                @if (type === 'timed') {
+                  <fieldset [formGroup]="question.controls.field_annotation" class="p-4 rounded-sm border">
+                    <legend class="px-4">Field Annotation *</legend>
+                    <div>
+                      <label for="image" class="text-sm">Image *</label>
+                      <mat-form-field class='small-input w-1/2' appearance='outline'>
+                        <input matInput formControlName='image' required/>
+                        @if (question.controls.field_annotation.controls.image.errors; as errors) {
+                          <mat-error>
+                            @if (errors?.['pattern']) {
+                              {{ ValidatorError.normalTextValidator }}
+                            }
+                            @if (errors?.['required']) {
+                              {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                            }
+                          </mat-error>
+                        }
+                      </mat-form-field>
+                    </div>
+
+                    <div class="flex justify-between items-center gap-4">
+                      <div>
+                        <label for="unit" class="text-sm">Timer Unit *</label>
+                        <mat-form-field class='small-input w-1/6' appearance='outline'>
+                          <input matInput formControlName='unit' required/>
+                          @if (question.controls.field_annotation.controls.unit.errors; as errors) {
+                            <mat-error>
+                              @if (errors?.['pattern']) {
+                                {{ ValidatorError.normalTextValidator }}
+                              }
+                              @if (errors?.['required']) {
+                                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                              }
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <ng-container formGroupName="timer">
+                        <div>
+                          <label for="start" class="text-sm">Timer Start *</label>
+                          <mat-form-field class='small-input w-1/6' appearance='outline'>
+                            <input matInput formControlName='start' required/>
+                            @if (question.controls.field_annotation.controls.timer.controls.start.errors; as errors) {
+                              <mat-error>
+                                @if (errors?.['pattern']) {
+                                  {{ ValidatorError.normalTextValidator }}
+                                }
+                                @if (errors?.['required']) {
+                                  {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                                }
+                              </mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+
+                        <div>
+                          <label for="end" class="text-sm">Timer End *</label>
+                          <mat-form-field class='small-input w-1/6' appearance='outline'>
+                            <input matInput formControlName='end' required/>
+                            @if (question.controls.field_annotation.controls.timer.controls.end.errors; as errors) {
+                              <mat-error>
+                                @if (errors?.['pattern']) {
+                                  {{ ValidatorError.normalTextValidator }}
+                                }
+                                @if (errors?.['required']) {
+                                  {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                                }
+                              </mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </fieldset>
+                }
+
+                @if (type === 'slider') {
+                  <fieldset formGroupName="range" class="p-4 rounded-sm border">
+                    <legend class="px-4">Range</legend>
+                    <div class="flex justify-between items-center gap-4">
+                      <div>
+                        <label for="select_choices_or_calculations" class="text-sm">Min *</label>
+                        <mat-form-field class='small-input w-1/3' appearance='outline'>
+                          <input matInput formControlName='min' required/>
+                          @if (question.controls.range.controls.min.errors; as errors) {
+                            <mat-error>
+                              @if (errors?.['pattern']) {
+                                {{ ValidatorError.normalTextValidator }}
+                              }
+                              @if (errors?.['required']) {
+                                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                              }
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <div>
+                        <label for="select_choices_or_calculations" class="text-sm">Max *</label>
+                        <mat-form-field class='small-input w-1/3' appearance='outline'>
+                          <input matInput formControlName='max' required/>
+                          @if (question.controls.range.controls.max.errors; as errors) {
+                            <mat-error>
+                              @if (errors?.['pattern']) {
+                                {{ ValidatorError.normalTextValidator }}
+                              }
+                              @if (errors?.['required']) {
+                                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                              }
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+
+                      <div>
+                        <label for="select_choices_or_calculations" class="text-sm">Step *</label>
+                        <mat-form-field class='w-1/3' appearance='outline'>
+                          <input matInput formControlName='step' required/>
+                          @if (question.controls.range.controls.step.errors; as errors) {
+                            <mat-error>
+                              @if (errors?.['pattern']) {
+                                {{ ValidatorError.normalTextValidator }}
+                              }
+                              @if (errors?.['required']) {
+                                {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+                              }
+                            </mat-error>
+                          }
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </fieldset>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        Select a question to edit
+      }
+    </div>
+  </div>
+</div>

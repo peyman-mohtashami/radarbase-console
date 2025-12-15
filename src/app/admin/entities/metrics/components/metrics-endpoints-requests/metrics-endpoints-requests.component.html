@@ -1,0 +1,26 @@
+@if (endpointsRequestsMetrics) {
+  <div class="p-4 metrics">
+    <table class="w-full text-xs">
+      <thead class="border-b border-gray-500">
+      <tr class="[&>th]:text-start">
+        <th>Method</th>
+        <th>Endpoint url</th>
+        <th>Count</th>
+        <th>Mean</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (entry of endpointsRequestsMetrics | keyvalue; track entry.key) {
+          @for (method of entry.value | keyvalue; track method.key) {
+            <tr>
+              <td>{{ method.key }}</td>
+              <td>{{ entry.key }}</td>
+              <td>{{ method.value.count }}</td>
+              <td>{{ method.value.mean | number: '1.0-3' }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

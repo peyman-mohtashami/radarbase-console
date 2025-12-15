@@ -1,0 +1,13 @@
+<div class="flex justify-center items-center h-[calc(100vh-64px)] max-w-[1500px] mx-auto">
+  <mat-card class="m-4 w-full max-w-[800px]">
+    <mat-card-content class="flex! p-0!">
+      <div class="shrink-0 grow-0 w-full p-4 md:p-16 md:w-1/2">
+        <h4 class="text-center mb-12 mt-1 pb-1 text-xl font-semibold">
+          <ng-content select="[header]"/>
+        </h4>
+        <ng-content select="[body]"/>
+      </div>
+      <app-branding/>
+    </mat-card-content>
+  </mat-card>
+</div>

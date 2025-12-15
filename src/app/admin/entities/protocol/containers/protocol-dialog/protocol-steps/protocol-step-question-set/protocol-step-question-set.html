@@ -1,0 +1,76 @@
+<div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
+
+  <mat-slide-toggle formControlName='github' class="my-4" color="primary">
+    Use GitHub repository
+  </mat-slide-toggle>
+
+  @if (githubValueChanges()) {
+    <p class="text-base">Github Properties</p>
+    <div class="mb-2" [formGroup]="form.controls.questionnaire">
+      <div>
+        <label for="questionnaire-name" class="text-sm">Questionnaire Name *</label>
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+          <input id="questionnaire-name" matInput formControlName='name' required/>
+          @if (form.controls.questionnaire.controls.name.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: 'Questionnaire name'} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div>
+        <label for="questionnaire-repository" class="text-sm">Questionnaire Repository *</label>
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+          <input id="questionnaire-repository" matInput formControlName='repository' required/>
+          @if (form.controls.questionnaire.controls.repository.errors; as errors) {
+            <mat-error>
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: 'Questionnaire repository'} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-divider class="my-2!"/>
+  } @else {
+    <div>
+      <label for="appQuestionnaire" class="text-sm">App Questionnaire *</label>
+      <mat-form-field class='small-input w-full'
+                      appearance='outline' subscriptSizing="dynamic">
+        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+        <mat-select id="appQuestionnaire" formControlName='appQuestionnaire' [required]="!githubValueChanges()">
+<!--          <mat-option [value]="'q1'">Q1</mat-option>-->
+          @for (q of questionnaires | async; track q.name) {
+            <mat-option [value]="q.name">{{q.name}}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.appQuestionnaire.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate:{value: 'Question set'} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+    </div>
+  }
+
+  <div>
+    <label for="estimatedCompletionTime" class="text-sm">Estimated completion time (minutes)</label>
+    <mat-form-field class='small-input w-full'
+                    appearance='outline'>
+      <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+      <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'/>
+      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">minutes</span>
+    </mat-form-field>
+  </div>
+</div>

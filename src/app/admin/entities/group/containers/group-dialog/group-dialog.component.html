@@ -1,0 +1,50 @@
+<app-dialog-title [dialogMode]='dialogData.mode'
+                 [entityMetadata]="configService.getEntityMetadata()"
+                 (closeClicked)='close()'/>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                [label]="'Group'"
+                                [entityName]="dialogData.entity.name"/>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form [formGroup]='form' novalidate>
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ 'ADMIN.group.id.label' | translate }}</label>
+        <mat-form-field subscriptSizing="fixed"
+                        appearance="fill">
+          <input matInput formControlName='id' />
+        </mat-form-field>
+      }
+
+      <label for="name" class="text-sm">{{ 'ADMIN.group.name.label' | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed"
+                      appearance="outline">
+        <input matInput formControlName='name' required/>
+        @if (form.controls.name.errors; as errors) {
+          <mat-error>
+            @if (errors?.['duplicate']) {
+              {{ "Group name exists" }}
+            }
+            @if (errors?.['required']) {
+              {{ValidatorError.requiredValidator | translate:{value: 'ADMIN.group.name.label' | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error()) {
+  <div
+    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+    {{ error()?.error.errorCode | translate }}
+  </div>
+}
+
+<app-dialog-actions [dialogMode]='dialogData.mode'
+                   [form]='form'
+                   (actionTriggered)='onAction($event)'/>

@@ -1,0 +1,39 @@
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-source-details class="py-4" extension-row
+                      [entity]='entity()'
+                      [detailType]="DetailType.TABLE" />
+  <app-source-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('sourceName') {
+      <p class='font-bold text-primary dark:text-primary-dark'>{{ entity().sourceName || '-' }}</p>
+      <p class='' [matTooltip]="entity().sourceId">{{ entity().sourceId | truncate:13 }}</p>
+    }
+
+    @case ('sourceId') {
+      <p class=''>{{ entity().sourceId || '-' }}</p>
+    }
+
+    @case ('sourceType') {
+      <app-source-source-type [sourceType]="entity().sourceType" />
+    }
+
+    @case ('project') {
+      <app-source-project [project]="entity().project" />
+    }
+
+    @case ('assigned') {
+      <app-source-assigned [assigned]="entity().assigned" />
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>

@@ -1,0 +1,23 @@
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+            [entity]="entity()"
+            [tableFields]="configService.getTableFields()"
+            [detailType]="detailType()"
+            [customTemplate]="detailsTemplate"/>
+
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('sourceTypeScope') {
+      <app-source-type-scope [sourceTypeScope]="entity()['sourceTypeScope']"/>
+    }
+    @case ('canRegisterDynamically') {
+      <app-source-type-source-registration [canRegisterDynamically]="entity()['canRegisterDynamically']"/>
+    }
+    @case ('sourceData') {
+      <app-source-type-sources-data [sourcesData]="entity()['sourceData']"/>
+    }
+    @default {
+      {{ $any(entity())[property.name] || "-" }}
+    }
+  }
+</ng-template>

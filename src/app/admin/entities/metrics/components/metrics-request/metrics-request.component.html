@@ -1,0 +1,38 @@
+<div class='p-4 metrics'>
+  @if (requestMetrics) {
+  <table class="w-full text-xs">
+    <thead class="border-b border-gray-500">
+    <tr class="[&>th]:text-start">
+      <th>Code</th>
+      <th>Count</th>
+      <th>Mean</th>
+      <th>Max</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (entry of requestMetrics.percode | keyvalue; track entry.key) {
+    <tr>
+      <td>{{ entry.key }}</td>
+      <td>
+          <section class="flex items-center">
+          <mat-progress-bar
+                  class="h-6!"
+            [color]="'primary'"
+            [value]="100 * entry.value.count / requestMetrics.all.count">
+<!--            [bufferValue]="50">-->
+          </mat-progress-bar>
+          <div class="font-bold absolute p-4 text-accent-color dark:text-accent-dark-color">
+            {{ entry.value.count }}
+          </div>
+        </section>
+      </td>
+      <td>
+        {{ (entry.value.mean) | number: '1.0-2' }}
+      </td>
+      <td>{{ entry.value.max | number: '1.0-2' }}</td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  }
+</div>

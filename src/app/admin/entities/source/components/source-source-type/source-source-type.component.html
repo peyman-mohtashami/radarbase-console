@@ -1,0 +1,8 @@
+@let _sourceType = sourceType();
+@if (_sourceType) {
+  <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">
+    {{ _sourceType.producer }}_{{ _sourceType.model }}_{{ _sourceType.catalogVersion }}
+  </app-tag>
+} @else {
+  -
+}

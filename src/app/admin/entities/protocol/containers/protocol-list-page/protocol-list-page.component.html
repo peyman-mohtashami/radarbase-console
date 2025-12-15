@@ -1,0 +1,76 @@
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="configService.getEntityMetadata()"
+                          [enableAddButton]="true"
+                          [isGridView]="undefined"
+                          [permission]="[{role: ROLES.SYS_ADMIN}]">
+  <div extra-buttons>
+    <button type='button'
+            class="small"
+            mat-stroked-button
+            color="primary"
+            (click)="showHistory()">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined">history</span>
+      </span>
+    </button>
+  </div>
+  @if (tableFilters.length && processedEntities().length > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</app-entities-page-header>
+
+@if (isChanged) {
+  <div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
+    <div class="flex items-center gap-4 text-orange-700">
+      <span class="material-symbols-outlined">error_outline</span>
+      <span>{{ `ADMIN.protocol.publish.unpublishedMessage` | translate }}</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button type='button'
+              mat-stroked-button
+              color='primary'
+              (click)="onPublishDialogAction('discard')">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined font-bold">close</span>
+        {{ `ADMIN.protocol.discard.discardAll` | translate }}
+      </span>
+      </button>
+      <button class="text-white!" type='button'
+              mat-flat-button
+              color='accent'
+              (click)="onPublishDialogAction('publish')">
+      <span class="font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined font-bold">publish</span>
+        {{ `ADMIN.protocol.publish.title` | translate }}
+      </span>
+      </button>
+    </div>
+  </div>
+}
+
+
+@if (loading()) {
+  <app-loader/>
+}
+
+
+<app-entities-page [entities]="visibleEntities()"
+                   [tableFields]="tableFields"
+                   [entityMetadata]="entityMetadata"
+                   [page]="page()"
+                   [sort]="sort()"
+                   (switchPageEvent)="switchPage($event)"
+                   (switchSortEvent)="switchSort($event)"
+                   (activeQueryChangeEvent)="handleActiveQueryChange($event)"
+                   [customTemplate]="itemTemplate"
+                   [totalEntities]="processedEntities().length"/>
+<ng-template #itemTemplate let-entity>
+  <app-protocol-table-row [entity]="entity"
+                          [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
+                          [extensionClass]="extensionClass()"
+                          class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
+</ng-template>

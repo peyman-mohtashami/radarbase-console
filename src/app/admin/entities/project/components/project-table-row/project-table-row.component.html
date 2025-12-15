@@ -1,0 +1,95 @@
+@let configFields = configService.getFormFields();
+
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-project-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
+  <mat-card card-view appearance="outlined"
+            class="cursor-pointer flex items-start justify-start h-full"
+            [class]="updated() ? 'bg-primary/5! dark:bg-primary-dark/5! ' : ''"
+            [routerLink]='["/admin", "organizations", entity().organization.name, "projects", entity()._name]'>
+    <mat-card-content class="p-0! w-full">
+      <div class="rounded-t-[4px] px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
+        <div
+          class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">
+          <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>
+          <span class='text-xs'>{{ entity().organization.name }}</span>
+        </div>
+        @if (!configFields || configFields['projectStatus'] === undefined || configFields['projectStatus']) {
+          <app-project-status class="" [projectStatus]="entity().projectStatus"/>
+        }
+      </div>
+
+      <div class="p-4 flex items-center justify-between gap-2 w-full">
+        <div class="flex items-center gap-2">
+        <span
+          class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">folder_open</span>
+          <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity()._name }}</span>
+        </div>
+        <app-project-actions
+          *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+          [entity]="entity()"
+          [isExpanded]="false"/>
+      </div>
+      <div class="p-4">
+        @if (!configFields || configFields['description'] === undefined || configFields['description']) {
+          <div class="text-sm text-gray-500 dark:text-gray-300">{{ entity().description }}</div>
+        }
+        @if (!configFields || configFields['startDate'] === undefined || configFields['startDate']) {
+          <div class="text-sm flex mt-4 gap-4 items-center text-gray-500 dark:text-gray-300">
+            <span class="material-symbols-outlined text-xl shrink-0">date_range</span>
+            @if (entity().startDate || entity().endDate) {
+              <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
+              <span> - </span>
+              <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
+            } @else {
+              Dates not set.
+            }
+          </div>
+        }
+      </div>
+      @if (!configFields || configFields['sourceTypes'] === undefined || configFields['sourceTypes']) {
+        <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
+          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Source Types
+            ({{ entity().sourceTypes?.length ?? 0 }})
+          </div>
+          <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+  <app-project-actions extra-actions *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+                       [entity]="entity()"
+                       [isExpanded]="true"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('projectName') {
+      <a [routerLink]='["/admin", "organizations", entity().organization.name, "projects", entity().projectName]' class="font-bold text-primary dark:text-primary-dark underline">
+        <span class=''>{{ entity().projectName }}</span>
+      </a>
+      @if (!configFields || configFields['description'] === undefined || configFields['description']) {
+        <p class="">{{ entity().description }}</p>
+      }
+    }
+    @case ('startDate') {
+      <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
+    }
+    @case ('endDate') {
+      <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
+    }
+    @case ('projectStatus') {
+      <app-project-status [projectStatus]="entity().projectStatus"/>
+    }
+    @case ('sourceTypes') {
+      <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>

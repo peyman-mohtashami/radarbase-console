@@ -1,0 +1,17 @@
+<div class="bg-app-background dark:bg-app-background-dark text-foreground dark:text-foreground-dark">
+  <rb-toolbar (menuStatus)="isMenuOpened = $event"/>
+  <div class="fixed inset-0 top-[56px] flex bg-inherit">
+    <div
+        class="absolute lg:relative inset-0 -left-64 lg:left-0 z-50 w-64 h-full bg-tertiary flex flex-col justify-between pb-2 transition-property:width duration-300 flex-shrink-0"
+        [class]="isMenuOpened ? 'w-64 left-0' : 'w-[72px]'">
+      <div class="flex-grow overflow-auto overflow-y-auto scrollbar">
+        <app-sidebar-nav class="min-h-0" [isMenuOpen]="isMenuOpened"/>
+      </div>
+      <app-footer [isMenuOpen]="isMenuOpened"/>
+    </div>
+    <div class="flex-grow overflow-y-auto scrollbar">
+      <router-outlet/>
+    </div>
+  </div>
+</div>
+

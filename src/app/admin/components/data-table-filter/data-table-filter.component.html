@@ -1,0 +1,371 @@
+@if (filters().length) {
+  <div class='rounded-sm'>
+    @if (form) {
+      <form [formGroup]="form" novalidate autocomplete="off" class='w-full flex gap-1 justify-between'>
+        <div
+          class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 text-base items-stretch">
+          @for (filter of filters(); track filter) {
+            @if (!filter.advanced) {
+                @if (filter.type === FilterType.SELECT) {
+                  <mat-form-field class="m-0! small no-subscript"
+                                  appearance="outline"
+                                  floatLabel="auto"
+                                  subscriptSizing="dynamic">
+                  <mat-select [formControlName]='filter.name'>
+                    <mat-option [value]='""'>
+                      {{ 'SHARED.filter.all' | translate }}
+                    </mat-option>
+                    @for (item of filter?.options || []; track item) {
+                      <mat-option [value]='item.value.toString()'>
+                        {{ item.label | translate }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                  </mat-form-field>
+                }
+
+                @if (filter.type === FilterType.INPUT) {
+                  <mat-form-field class="m-0! small no-subscript"
+                                  [class.mat-focused]="form.controls[filter.name]?.value"
+
+
+                  appearance="outline">
+<!--                                  [class]="form?.controls?.[filter.name]?.value ? 'border-highlight': ''"-->
+<!--                                  floatLabel="auto"-->
+<!--                                  subscriptSizing="dynamic">-->
+<!--                  <mat-label>Telephone</mat-label>-->
+<!--                  <span matPrefix>+1 &nbsp;</span>-->
+<!--                  <input type="tel" matInput placeholder="555-555-1234">-->
+<!--                  <mat-icon matSuffix>mode_edit</mat-icon>-->
+<!--                      <mat-label>Clearable input</mat-label>-->
+                      <mat-icon fontSet='material-icons-outlined' class="text-neutral-300" matPrefix>search</mat-icon>
+                    <input [id]="filter.name + '-search'" class="bg-amber-500"
+                           type="search"
+                           [formControlName]='filter.name'
+                           matInput autocomplete="off" data-lpignore="true"
+                           placeholder='{{ filter.label | translate }}'>
+<!--                    <input matInput type="text" [formControlName]='filter.name'>-->
+                      @if (form.controls[filter.name]?.value) {
+                        <button matSuffix matIconButton aria-label="Clear" class="mx-2 tiny" (click)="form.controls[filter.name].setValue('')">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      }
+                    </mat-form-field>
+
+<!--                  </mat-form-field>-->
+                }
+
+                @if (filter.type === FilterType.DATEPICKER) {
+                  <mat-form-field class="m-0! small"
+                                  appearance="outline"
+                                  floatLabel="auto"
+                                  subscriptSizing="dynamic">
+                  <input [formControlName]='filter.name' matInput [matDatepicker]="picker" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                  <mat-datepicker-toggle matSuffix [for]="picker"/>
+                  <mat-datepicker #picker/>
+                  </mat-form-field>
+                }
+
+
+                @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
+                  <mat-form-field class="small-input"
+                                  appearance="outline"
+                                  subscriptSizing="fixed">
+                    <mat-date-range-input [rangePicker]="rangePicker">
+                      <input matStartDate [formControlName]="filter.names[0]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                      <input matEndDate [formControlName]="filter.names[1]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
+                    <mat-date-range-picker #rangePicker/>
+                  </mat-form-field>
+                }
+
+<!--                @if (filter.type === FilterType.RANGE_PICKER) {-->
+<!--                }-->
+
+<!--              </mat-form-field>-->
+            }
+          }
+        </div>
+        @if (advancedFilterEnabled) {
+          <div class="shrink-0">
+            <button class="flex gap-1 justify-center items-center bg-neutral-200 border-neutral-300 border-2 rounded-full px-1 py-1 text-base font-bold text-neutral-700
+                    transition duration-150 ease-in-out font-feature-default"
+                    type="button"
+                    [matMenuTriggerFor]="advancedFilter">
+              <span class="material-symbols-outlined text-lg font-bold">filter_alt</span>
+<!--              <span class="text-sm">Advanced Filter</span>-->
+              <span class="material-symbols-outlined text-lg font-bold">expand_more</span>
+            </button>
+            <mat-menu #advancedFilter="matMenu">
+              <div class="text-sm p-4">
+                @for (filter of filters(); track filter) {
+                  @if (filter.advanced) {
+                    <div class="mb-4">
+                      <span
+                        class="dark:text-white">{{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}
+                        :</span>
+                      @switch (filter.type) {
+                        @case (FilterType.INPUT) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
+                            <input [formControlName]='filter.name'
+                                   matInput
+                                   name='{{ filter.name }}'
+                                   placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.SELECT) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
+                            <mat-select [formControlName]='filter.name'>
+                              <mat-option [value]='""'>
+                                {{ 'SHARED.filter.all' | translate }}
+                              </mat-option>
+                              @for (item of filter?.options; track item.value) {
+                                <mat-option [value]='item.value.toString()'>
+                                  {{ item.label | translate }}
+                                </mat-option>
+                              }
+                            </mat-select>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.DATEPICKER) {
+                          <mat-form-field appearance="outline"
+                                          floatLabel="always"
+                                          subscriptSizing="dynamic"
+                                          (click)="$event.stopPropagation()">
+<!--                            <input [formControlName]="filter.name" matInput>-->
+                            <input [formControlName]='filter.name'
+                                   matInput
+                                   [matDatepicker]="filterDatePicker"
+                                   [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                            <mat-datepicker-toggle matSuffix [for]="filterDatePicker"/>
+                            <mat-datepicker #filterDatePicker/>
+                          </mat-form-field>
+                        }
+                        @case (FilterType.RANGE_PICKER) {
+                          @if (filter.names) {
+                            <mat-form-field appearance="outline"
+                                            floatLabel="always"
+                                            subscriptSizing="dynamic"
+                                            (click)="$event.stopPropagation()">
+<!--                              <input [formControlName]='filter.names[0]'>-->
+                              <mat-date-range-input [rangePicker]="rangePicker">
+                                <input matStartDate [formControlName]="filter.names[0]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                                <input matEndDate [formControlName]="filter.names[1]" [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+                              </mat-date-range-input>
+                              <mat-datepicker-toggle matSuffix [for]="rangePicker"/>
+                              <mat-date-range-picker #rangePicker/>
+                            </mat-form-field>
+                          }
+                        }
+                      }
+
+<!--                      <mat-form-field appearance="outline"-->
+<!--                                      floatLabel="always"-->
+<!--                                      subscriptSizing="dynamic"-->
+<!--                                      (click)="$event.stopPropagation()">-->
+<!--                        &lt;!&ndash;        <mat-label>&ndash;&gt;-->
+<!--                        &lt;!&ndash;          {{ "SHARED.filter.filterBy" | translate }} {{ filter.label | translate }}&ndash;&gt;-->
+<!--                        &lt;!&ndash;        </mat-label>&ndash;&gt;-->
+<!--                        @if (filter.type === FilterType.SELECT) {-->
+<!--                          @if (filter.type === FilterType.SELECT) {-->
+<!--                            <mat-select [formControlName]='filter.name'>-->
+<!--                              <mat-option [value]='""'>-->
+<!--                                {{ 'SHARED.filter.all' | translate }}-->
+<!--                              </mat-option>-->
+<!--                              @for (item of filter?.options; track item.value) {-->
+<!--                                <mat-option [value]='item.value.toString()'>-->
+<!--                                  {{ item.label | translate }}-->
+<!--                                </mat-option>-->
+<!--                              }-->
+<!--                            </mat-select>-->
+<!--                          }-->
+<!--                        }-->
+
+<!--                        <span class="material-symbols-outlined p-1.5! text-neutral-300" matPrefix>filter_alt</span>-->
+<!--                        @if (filter.type === FilterType.INPUT) {-->
+<!--                          <input [formControlName]='filter.name'-->
+<!--                                 matInput-->
+<!--                                 name='{{ filter.name }}'-->
+<!--                                 placeholder='{{"SHARED.filter.filterBy" | translate}} {{ filter.label | translate }}'>-->
+<!--                        }-->
+
+<!--                        @if (filter.type === FilterType.DATEPICKER) {-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.name'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.name'&ndash;&gt;-->
+<!--&lt;!&ndash;                                 matInput&ndash;&gt;-->
+<!--&lt;!&ndash;                                 [matDatepicker]="filterDatePicker"&ndash;&gt;-->
+<!--&lt;!&ndash;                                 [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker-toggle matSuffix [for]="filterDatePicker"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker #filterDatePicker/>&ndash;&gt;-->
+<!--                        }-->
+
+<!--                        @if (filter.type === FilterType.RANGE_PICKER && filter.names) {-->
+<!--&lt;!&ndash;                          <input [formControlName]='filter.names[0]'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-date-range-input [rangePicker]="rangePicker">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input matStartDate [formControlName]="filter.names[0]" [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input matEndDate [formControlName]="filter.names[1]" [placeholder]='dateFormat'>&ndash;&gt;-->
+<!--&lt;!&ndash;                          </mat-date-range-input>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-datepicker-toggle matSuffix [for]="rangePicker"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                          <mat-date-range-picker #rangePicker/>&ndash;&gt;-->
+<!--                        }-->
+<!--                      </mat-form-field>-->
+                    </div>
+                  }
+                }
+              </div>
+            </mat-menu>
+          </div>
+        }
+      </form>
+    }
+  </div>
+}
+
+@if (filterEnabled) {
+<div class='mb-4 text-sm! text-white! items-center px-0 flex gap-2'>
+  @for (filter of filters(); track filter.name) {
+    @if (filter.type === FilterType.RANGE_PICKER && filter.names) {
+      @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {
+        <app-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="!bg-accent-color! dark:bg-accent-dark-color! relative">-->
+          {{ filter.label | translate }}
+          @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {
+            ({{ "SHARED.filter.from" | translate }}):
+            <app-local-date [date]="fromValue" [format]="'mediumDate'"></app-local-date>
+          }
+          @if (form?.controls?.[filter.names[1]]?.value; as toValue) {
+              ({{ "SHARED.filter.to" | translate }}):
+            <app-local-date [date]="toValue" [format]="'mediumDate'"></app-local-date>
+          }
+          <button (click)='removeFilter(filter)'>
+            <mat-icon>cancel</mat-icon>
+          </button>
+<!--        </div>-->
+        </app-tag>
+      }
+    }
+
+    @if (filter.type === FilterType.DATEPICKER) {
+      @if (form?.controls?.[filter.name]?.value; as value) {
+        <app-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="bg-accent-color! dark:bg-accent-dark-color!">-->
+          {{ filter.label | translate }}:
+          <app-local-date [date]="value" [format]="'mediumDate'"></app-local-date>
+          <button (click)='removeFilter(filter)'>
+            <mat-icon>cancel</mat-icon>
+          </button>
+<!--        </div>-->
+        </app-tag>
+      }
+    }
+    @if (filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER) {
+      @if (form?.controls?.[filter.name]?.value; as value) {
+        <app-tag class="bg-secondary/10 text-secondary">
+<!--        <div class="bg-primary! flex items-center">-->
+          @if (filter.type === FilterType.SELECT) {
+            @for (option of filter?.options; track option.value) {
+              @if (option.value.toString() === value) {
+                {{ filter.label | translate }}: {{ option.label | translate }}
+                <button (click)='removeFilter(filter)'>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              }
+            }
+          } @else {
+            {{ filter.label | translate }}: {{ value | translate }}
+            <button (click)='removeFilter(filter)'>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          }
+<!--        </div>-->
+        </app-tag>
+      }
+    }
+  }
+  @if (filterEnabled) {
+    <button mat-icon-button
+            color='warn'
+            class='shrink-0 filter-reset-button tiny'
+            [disabled]='!filterEnabled'
+            (click)='resetFilters()'>
+      <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>
+    </button>
+  }
+</div>
+}
+
+<!--=================================-->
+<!--<div class='flex items-center text-sm! text-white! mb-2 gap-2 px-0' aria-label="Filter selection">-->
+<!--  @for (filter of filters; track filter.name) {-->
+<!--    @if (filter.type === FilterType.RANGE_PICKER && filter.names) {-->
+<!--      @if (form?.controls?.[filter.names[0]]?.value || form?.controls?.[filter.names[1]]?.value) {-->
+<!--        <mat-chip-option class="!bg-accent-color! dark:bg-accent-dark-color! relative"-->
+<!--                         color="accent">-->
+<!--          {{ filter.label | translate }}-->
+<!--          @if (form?.controls?.[filter.names[0]]?.value; as fromValue) {-->
+<!--            ({{ "SHARED.filter.from" | translate }}):-->
+<!--            <app-local-date [date]="fromValue" [format]="'mediumDate'"></app-local-date>-->
+<!--          }-->
+<!--          @if (form?.controls?.[filter.names[1]]?.value; as toValue) {-->
+<!--            ({{ "SHARED.filter.to" | translate }}):-->
+<!--            <app-local-date [date]="toValue" [format]="'mediumDate'"></app-local-date>-->
+<!--          }-->
+
+<!--          <button matChipRemove (click)='removeFilter(filter)'>-->
+<!--            <mat-icon>cancel</mat-icon>-->
+<!--          </button>-->
+<!--        </mat-chip-option>-->
+<!--      }-->
+<!--    }-->
+
+<!--    @if (filter.type === FilterType.DATEPICKER) {-->
+<!--      @if (form?.controls?.[filter.name]?.value; as value) {-->
+<!--        <mat-chip-option class="bg-accent-color! dark:bg-accent-dark-color!"-->
+<!--                         color="accent">-->
+<!--          {{ filter.label | translate }}:-->
+<!--          <app-local-date [date]="value" [format]="'mediumDate'"></app-local-date>-->
+<!--          <button matChipRemove (click)='removeFilter(filter)'>-->
+<!--            <mat-icon>cancel</mat-icon>-->
+<!--          </button>-->
+<!--        </mat-chip-option>-->
+<!--      }-->
+<!--    }-->
+
+<!--    @if (filter.type !== FilterType.RANGE_PICKER && filter.type !== FilterType.DATEPICKER) {-->
+<!--      @if (form?.controls?.[filter.name]?.value; as value) {-->
+<!--        <button mat-flat-button-->
+<!--                type="button" class="bg-gray-300!">-->
+<!--          <span class="flex items-center gap-2">-->
+<!--              @if (filter.type === FilterType.SELECT) {-->
+<!--                @for (option of filter?.options; track option.value) {-->
+<!--                  @if (option.value.toString() === value) {-->
+<!--                    {{ filter.label | translate }}: {{ option.label | translate }}-->
+<!--                    <span class="material-symbols-outlined" (click)="removeFilter(filter)">cancel</span>-->
+<!--                  }-->
+<!--                }-->
+<!--              } @else {-->
+<!--                {{ filter.label | translate }}: {{ value | translate }}-->
+<!--                <span class="material-symbols-outlined" (click)="removeFilter(filter)">cancel</span>-->
+<!--              }-->
+<!--            </span>-->
+<!--          </button>-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+<!--  @if (filterEnabled) {-->
+<!--    <button mat-icon-button-->
+<!--            color='warn'-->
+<!--            class='shrink-0 filter-reset-button'-->
+<!--            [disabled]='!filterEnabled'-->
+<!--            (click)='resetFilters()'>-->
+<!--      <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>-->
+<!--    </button>-->
+<!--  }-->
+<!--</div>-->

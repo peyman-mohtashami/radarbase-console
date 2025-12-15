@@ -1,0 +1,225 @@
+@let configFields = configService.getFormFields();
+
+<app-entity [entity]="entity()"
+            [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-subject-details extension-row class="py-4"
+                       [entity]='entity()'
+                       [detailType]="DetailType.TABLE" />
+  <app-subject-actions extra-actions [entity]="entity()" [isExpanded]="false"/>
+</app-entity>
+
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('checkbox') {
+      <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                    (change)="$event ?  selection().toggle(entity()) : null"
+                    [checked]="selection().isSelected(entity())">
+        <!--                  [aria-label]="checkboxLabel(entity)">-->
+      </mat-checkbox>
+    }
+    @case ('login') {
+      <div class="flex flex-wrap gap-1 items-center">
+        <app-subject-status [status]="entity().status" [detailType]="DetailType.TABLE"/>
+        <a [routerLink]='[entity().login]' class="underline font-bold text-primary dark:text-primary-dark">
+          <span class='' [matTooltip]="entity().login">{{ entity().login | truncate:14 }}</span>
+        </a>
+      </div>
+    }
+    @case ('externalId') {
+      <p>
+        <span class="text-gray-500 dark:text-gray-300">External ID: </span>
+        <span class="font-bold">
+              @if (entity().externalId) {
+                @if (entity().externalLink) {
+                  <a [href]='entity().externalLink' target='_blank'>{{ entity().externalId }}</a>
+                } @else {
+                  {{ entity().externalId }}
+                }
+              } @else {
+                -
+              }
+            </span>
+      </p>
+      @if (!configFields || configFields['personName'] === undefined || configFields['personName']) {
+        <p><span class="text-gray-500 dark:text-gray-300">Name: </span><span
+          class="font-bold">{{ entity().personName ?? '-' }}</span></p>
+      }
+      @if (!configFields || configFields['dateOfBirth'] === undefined || configFields['dateOfBirth']) {
+        <p><span class="text-gray-500 dark:text-gray-300">Date of birth: </span> <span class="font-bold"><app-local-date
+          [date]="entity().dateOfBirth" [format]="'longDate'"/></span></p>
+      }
+    }
+    @case ('dateOfBirth') {
+      <app-local-date [date]="entity().dateOfBirth" [format]="'mediumDate'"/>
+    }
+    @case ('group') {
+      <app-subject-group [group]="entity().group"/>
+    }
+    @case ('status') {
+      <app-subject-status [status]="entity().status"/>
+    }
+    @case ('sources') {
+      @for (source of entity().sources; track source.id) {
+        <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{source.sourceName}}</app-tag>
+      }
+      <!--            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">-->
+        <!--              @for (source of entity$().sources; track source.id) {-->
+        <!--                <button (click)="openSourceDialog(entity$(), source, 0)">-->
+        <!--                    <span>{{ source.sourceTypeProducer }}_{{ source.sourceTypeModel }}-->
+        <!--                      _{{ source.sourceTypeCatalogVersion }}</span>-->
+        <!--                </button>-->
+
+        <!--                <app-tag colorClass="bg-green-500 text-white">-->
+        <!--                  CONNECTED-->
+        <!--                </app-tag>-->
+        <!--                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">-->
+        <!--              }-->
+
+        <!--              @for (source of mockSources; let i = $index; track source) {-->
+        <!--                <button (click)="openSourceDialog(entity$(), source, i)">-->
+        <!--                  <span class="cursor-pointer text-primary-color-500 font-bold">{{ source.name }}</span>-->
+        <!--                </button>-->
+        <!--                <span class="material-symbols-outlined {{source.color}}"-->
+        <!--                      [matTooltip]="source.status">{{ source.icon }}</span>-->
+
+        <!--                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">-->
+        <!--                &lt;!&ndash;                <img *ngIf="i === 0" src="assets/images/connectionStatusARMT{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40 bg-neutral-200">&ndash;&gt;-->
+        <!--                  &lt;!&ndash;                <img *ngIf="i === 2" src="assets/images/connectionStatusFitbit{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40  bg-neutral-200">&ndash;&gt;-->
+        <!--              }-->
+        <!--            </div>-->
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>
+
+
+<!--<mat-card class="rb-table-row" [class]="-->
+<!--    (updated$() ? 'bg-primary/5! ' : '') +-->
+<!--    (expanded$() ? 'mb-2' : '')-->
+<!--  ">-->
+<!--  <div class="rb-table-main-row">-->
+<!--    @for (tableElement of tableFields$(); track tableElement.name) {-->
+<!--      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"-->
+<!--           [class.flex-1]="!tableElement.width"-->
+<!--           [class.shrink-0]="!!tableElement.width">-->
+<!--        @switch (tableElement.name) {-->
+<!--          @case ('checkbox') {-->
+<!--            <mat-checkbox color="primary" (click)="$event.stopPropagation()"-->
+<!--                          (change)="$event ?  selection$().toggle(entity$()) : null"-->
+<!--                          [checked]="selection$().isSelected(entity$())">-->
+<!--              &lt;!&ndash;                  [aria-label]="checkboxLabel(entity)">&ndash;&gt;-->
+<!--            </mat-checkbox>-->
+<!--          }-->
+<!--          @case ('login') {-->
+<!--            <div class="flex flex-wrap gap-1 items-center">-->
+<!--              <app-subject-status [status]="entity$().status" [detailType]="DetailType.TABLE"/>-->
+<!--              <a [routerLink]='[entity$().login]' class="underline font-bold text-primary dark:text-primary-dark">-->
+<!--                <span class='' [matTooltip]="entity$().login">{{ entity$().login | truncate:14 }}</span>-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          }-->
+<!--          @case ('externalId') {-->
+<!--            <p>-->
+<!--              <span class="text-gray-500 dark:text-gray-300">External ID: </span>-->
+<!--              <span class="font-bold">-->
+<!--              @if (entity$().externalId) {-->
+<!--                @if (entity$().externalLink) {-->
+<!--                  <a [href]='entity$().externalLink' target='_blank'>{{ entity$().externalId }}</a>-->
+<!--                } @else {-->
+<!--                  {{ entity$().externalId }}-->
+<!--                }-->
+<!--              } @else {-->
+<!--                - -->
+<!--              }-->
+<!--            </span>-->
+<!--            </p>-->
+<!--            @if (!configFields$() || configFields$()['personName'] === undefined || configFields$()['personName']) {-->
+<!--            <p><span class="text-gray-500 dark:text-gray-300">Name: </span><span-->
+<!--              class="font-bold">{{ entity$().personName ?? '-' }}</span></p>-->
+<!--            }-->
+<!--            @if (!configFields$() || configFields$()['dateOfBirth'] === undefined || configFields$()['dateOfBirth']) {-->
+<!--              <p><span class="text-gray-500 dark:text-gray-300">Date of birth: </span> <span class="font-bold"><app-local-date-->
+<!--              [date]="entity$().dateOfBirth" [format]="'longDate'"/></span></p>-->
+<!--            }-->
+<!--          }-->
+<!--          @case ('dateOfBirth') {-->
+<!--            <app-local-date [date]="entity$().dateOfBirth" [format]="'mediumDate'"/>-->
+<!--          }-->
+<!--          @case ('group') {-->
+<!--            <app-subject-group [group]="entity$().group"/>-->
+<!--          }-->
+<!--          @case ('status') {-->
+<!--            <app-subject-status [status]="entity$().status"/>-->
+<!--          }-->
+<!--          @case ('sources') {-->
+<!--            @for (source of entity$().sources; track source.id) {-->
+<!--              <app-tag class="bg-primary/10 dark:bg-primary-dark/10 text-primary dark:text-primary-dark">{{source.sourceName}}</app-tag>-->
+<!--            }-->
+<!--&lt;!&ndash;            <div class="grid grid-cols-[auto_auto_1fr] gap-2 items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;              @for (source of entity$().sources; track source.id) {&ndash;&gt;-->
+<!--&lt;!&ndash;                <button (click)="openSourceDialog(entity$(), source, 0)">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span>{{ source.sourceTypeProducer }}_{{ source.sourceTypeModel }}&ndash;&gt;-->
+<!--&lt;!&ndash;                      _{{ source.sourceTypeCatalogVersion }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <app-tag colorClass="bg-green-500 text-white">&ndash;&gt;-->
+<!--&lt;!&ndash;                  CONNECTED&ndash;&gt;-->
+<!--&lt;!&ndash;                </app-tag>&ndash;&gt;-->
+<!--&lt;!&ndash;                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;-->
+<!--&lt;!&ndash;              }&ndash;&gt;-->
+
+<!--&lt;!&ndash;              @for (source of mockSources; let i = $index; track source) {&ndash;&gt;-->
+<!--&lt;!&ndash;                <button (click)="openSourceDialog(entity$(), source, i)">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <span class="cursor-pointer text-primary-color-500 font-bold">{{ source.name }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="material-symbols-outlined {{source.color}}"&ndash;&gt;-->
+<!--&lt;!&ndash;                      [matTooltip]="source.status">{{ source.icon }}</span>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <img src="assets/images/connectionStatus2.png" alt="logo" class="p-1 w-40 h-10 bg-neutral-200">&ndash;&gt;-->
+<!--&lt;!&ndash;                &lt;!&ndash;                <img *ngIf="i === 0" src="assets/images/connectionStatusARMT{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40 bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                  &lt;!&ndash;                <img *ngIf="i === 2" src="assets/images/connectionStatusFitbit{{j % 3 + 1}}.png" alt="logo" class="p-1 w-40  bg-neutral-200">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;              }&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('actions') {-->
+<!--            <div class="flex flex-wrap gap-1 py-1">-->
+<!--              <button mat-icon-button-->
+<!--                      class="tiny block"-->
+<!--                      [class.xs:hidden!]="extensionClass$() === 'block xs:hidden'"-->
+<!--                      [class.sm:hidden!]="extensionClass$() === 'block sm:hidden'"-->
+<!--                      [class.md:hidden!]="extensionClass$() === 'block md:hidden'"-->
+<!--                      [class.lg:hidden!]="extensionClass$() === 'block lg:hidden'"-->
+<!--                      [class.xl:hidden!]="extensionClass$() === 'block xl:hidden'"-->
+<!--                      [class.2xl:hidden!]="extensionClass$() === 'block 2xl:hidden'"-->
+<!--                      [class.3xl:hidden!]="extensionClass$() === 'block 3xl:hidden'"-->
+<!--                      (click)="onExpansionClick($event)">-->
+<!--                  <span class="material-symbols-outlined text-xl!">-->
+<!--                    {{ expanded$() ? 'expand_less' : 'expand_more' }}-->
+<!--                  </span>-->
+<!--              </button>-->
+<!--              <app-subject-actions [entity]="entity$()" [isExpanded]="false"/>-->
+<!--            </div>-->
+<!--          }-->
+<!--          @default {-->
+<!--            {{ entity$()[tableElement.name] || '-' }}-->
+<!--          }-->
+<!--        }-->
+<!--      </div>-->
+<!--    }-->
+<!--  </div>-->
+
+<!--  @if (expanded$()) {-->
+<!--    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">-->
+<!--    <app-subject-details class="py-4"-->
+<!--                        [entity]='entity$()'-->
+<!--                        [detailType]="DetailType.TABLE" />-->
+<!--  </div>-->
+<!--  }-->
+<!--</mat-card>-->
+

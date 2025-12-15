@@ -1,0 +1,43 @@
+<div cdkDropList (cdkDropListDropped)="onDrop($event)" class="">
+  <div class="w-full flex-col mt-4 mb-1 text-sm">
+    <div class="flex items-center gap-1 w-full">
+      <div class="w-1/12 flex-grow-0"></div>
+      <div class="w-3/12 flex-grow-0">Day</div>
+      <div class="w-7/12 flex-grow-0">Time</div>
+      <div class="w-1/12 flex-grow-0"></div>
+    </div>
+    @if (form.controls.length) {
+      @for (time of form.controls; let i = $index; track time) {
+        <div cdkDrag [formGroup]="time" class="w-full flex items-center gap-1">
+          <button mat-icon-button class="w-1/12! flex-grow-0 flex-shrink-0 cursor-move tiny material-symbols-outlined">
+            swap_vertical_circle
+          </button>
+          <mat-form-field class='small-input w-3/12! flex-grow-0'
+                          appearance='outline'
+                          subscriptSizing="dynamic">
+            <input class="" matInput type="number" [formControlName]="'day'">
+          </mat-form-field>
+          <mat-form-field class='small-input w-7/12!  flex-grow-0'
+                          appearance='outline'
+                          subscriptSizing="dynamic">
+            <input matInput [formControlName]="'time'" type="time"/>
+          </mat-form-field>
+
+          <button mat-icon-button class="tiny w-1/12! flex-grow-0 flex-shrink-0 material-symbols-outlined"
+                  color="warn"
+                  [disabled]="form.controls.length === 1"
+                  (click)="removeItem(i)">
+            remove_circle
+          </button>
+        </div>
+      }
+    }
+    <div class="flex items-center gap-1 w-full">
+      <div class="w-11/12 flex-grow-0"></div>
+      <button class="tiny w-1/12! flex-grow-0 flex-shrink-0 material-symbols-outlined" mat-icon-button
+              (click)="addItem()">add_circle
+      </button>
+    </div>
+  </div>
+</div>
+

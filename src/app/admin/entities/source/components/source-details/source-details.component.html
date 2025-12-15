@@ -1,0 +1,31 @@
+<app-details [entityMetadata]="configService.getEntityMetadata()"
+             [entity]="entity()"
+             [tableFields]="configService.getTableFields()"
+             [detailType]="detailType()"
+             [customTemplate]="detailsTemplate"/>
+
+<ng-template #detailsTemplate let-property>
+  @switch (property.name) {
+    @case ('assigned') {
+      <app-source-assigned [assigned]="entity().assigned"/>
+    }
+    @case ('sourceType') {
+      <app-source-source-type [sourceType]="entity().sourceType"/>
+    }
+    @case ('attributes') {
+      @if (entity().attributes) {
+        @for (attribute of entity().attributes | keyvalue; track attribute.key) {
+          <div>
+            {{ attribute.key }}: {{ attribute.value || '-' }}
+          </div>
+        }
+      }
+      @if (!entity().attributes || !(entity().attributes | keyvalue)?.length) {
+        -
+      }
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
+  }
+</ng-template>
