@@ -5,7 +5,7 @@ import {AppOrganization} from "../models/organization";
 import {OrganizationService} from "./organization.service";
 
 @Injectable({providedIn: 'root'})
-export class OrganizationsResolver implements Resolve<AppOrganization[]> {
+export class OrganizationListResolver implements Resolve<AppOrganization[]> {
   private entityService = inject(OrganizationService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization[]> {

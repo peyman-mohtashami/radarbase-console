@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {AuditService} from '../../services/audit.service';
 import {AuditConfigService} from '../../services/audit-config.service';
@@ -22,13 +22,15 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     EntitiesPageComponent,
   ]
 })
-export class AuditListPageComponent extends BaseEntityListPageComponent<AppAudit> implements OnInit, OnDestroy {
+export class AuditListPageComponent extends BaseEntityListPageComponent<AppAudit> implements OnDestroy {
   override entityService = inject(AuditService);
   override configService = inject(AuditConfigService);
 
-  ngOnInit() {
-    super.init();
-  }
+  override entities = signal<AppAudit[]>(this.activatedRoute.snapshot.data['auditList']);
+
+  // ngOnInit() {
+  //   //super.init();
+  // }
 
   ngOnDestroy() {
     super.destroy();

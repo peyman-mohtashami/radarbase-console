@@ -6,7 +6,7 @@ import {LogService} from './log.service';
 import {AppLog} from "../models/log";
 
 @Injectable({providedIn: 'root'})
-export class LogsResolver implements Resolve<AppLog[]> {
+export class LogListResolver implements Resolve<AppLog[]> {
   private entityService = inject(LogService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppLog[]> {

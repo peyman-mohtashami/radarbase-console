@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {AppProject} from '../../../project/models/project';
@@ -16,7 +16,7 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {DialogMode} from '../../../../enums/dialog';
+import {getCurrentProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-subject-list-page',
@@ -37,8 +37,10 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
 
   sourceTypes: AppSourceType[] = [];
 
-  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
-  groups: AppGroup[] = this.activatedRoute.snapshot.data['groups'];
+  override entities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['subjectList']);
+  groups: AppGroup[] = this.activatedRoute.snapshot.data['groupFullList'];
+
+  project: AppProject = getCurrentProject(this.activatedRoute.snapshot)!;
 
   // actionMapper: Record<string, SubjectDialogMode> = {
   //   'add': SubjectDialogMode.ADD,
@@ -81,7 +83,7 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
   override processUrlFragment(fragment: string) {
     console.log('Class: SubjectListPageComponent, Function: processUrlFragment, Line 82 fragment' , fragment);
     const entityMetadata = this.configService.getEntityMetadata()
-    const [_, action, entityType, entityId] = fragment.split('/');
+    const [, action, entityType, entityId] = fragment.split('/');
     if (entityType === entityMetadata.name) {
       const entity = this.entities().find(e => e._name == entityId);
       switch (action) {
@@ -108,7 +110,7 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
   }
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project.projectName);
+    return this.entityService.getWithQuery(this.params(), this.project?.projectName);
   }
 
   ngOnInit() {

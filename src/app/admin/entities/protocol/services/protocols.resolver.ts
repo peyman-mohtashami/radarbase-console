@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 
 import {ProtocolService} from './protocol.service';
 import {AppProtocol} from "../models/protocol";
-import {getCurrentProject, getCurrentSubject} from '../../config/services/configs.resolver';
+import {getCurrentProject, getCurrentSubject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
 export class ProtocolsResolver implements Resolve<AppProtocol[]> {

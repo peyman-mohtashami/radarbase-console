@@ -9,7 +9,7 @@ import { RevisionService } from './revision.service';
 import { AppRevision } from "../models/revision";
 
 @Injectable({ providedIn: 'root' })
-export class RevisionsResolver implements Resolve<AppRevision[]> {
+export class RevisionListResolver implements Resolve<AppRevision[]> {
   private entityService = inject(RevisionService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppRevision[]> {

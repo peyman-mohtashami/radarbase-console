@@ -13,7 +13,7 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
 
-  protected entityService!: BaseEntityService<T, any>;
+  protected entityService!: any; //BaseEntityService<T, any>;
 
   dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
 

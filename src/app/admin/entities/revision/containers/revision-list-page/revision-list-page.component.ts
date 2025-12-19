@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {RevisionService} from '../../services/revision.service';
@@ -12,6 +12,7 @@ import {
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {AppClient} from '../../../client/models/client';
 
 @Component({
   selector: 'app-revision-list-page',
@@ -29,6 +30,8 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
 export class RevisionListPageComponent extends BaseEntityListPageComponent<AppRevision> implements OnInit, OnDestroy {
   override entityService = inject(RevisionService);
   override configService = inject(RevisionConfigService);
+
+  override entities = signal<AppRevision[]>(this.activatedRoute.snapshot.data['revisionList']);
 
   ngOnInit() {}
 

@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {RevisionsResolver} from "./services/revisions.resolver";
+import {RevisionListResolver} from "./services/revision-list.resolver";
 import {RevisionListPageComponent} from './containers/revision-list-page/revision-list-page.component';
 
 export const revisionRoutes: Routes = [
@@ -7,7 +7,7 @@ export const revisionRoutes: Routes = [
     path: '',
     component: RevisionListPageComponent,
     resolve: {
-      entities: RevisionsResolver,
+      revisionList: RevisionListResolver,
     },
   },
   {

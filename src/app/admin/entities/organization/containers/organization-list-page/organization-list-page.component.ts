@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {OrganizationService} from '../../services/organization.service';
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -29,10 +29,11 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
   override configService = inject(OrganizationConfigService);
   override dialogService = inject(OrganizationDialogService);
 
+  override entities = signal<AppOrganization[]>(this.activatedRoute.snapshot.data['organizationList']);
+  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
-
-  allOrganizations: AppOrganization[] = this.activatedRoute.snapshot.data['allOrganizations'];
 
   ngOnInit() {
     super.init();
@@ -43,6 +44,6 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
   }
 
   override getDialogData(entity?: AppOrganization) {
-    return {entity, entities: this.allOrganizations}
+    return {entity, entities: this.organizationFullList}
   }
 }

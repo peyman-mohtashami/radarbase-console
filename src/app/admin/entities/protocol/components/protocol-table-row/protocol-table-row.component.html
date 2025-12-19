@@ -59,7 +59,7 @@
             <app-protocol-actions [entity]="entity()" [isExpanded]="true"/>
           }
           @default {
-            {{ entity()[tableElement.name] || '-' }}
+            {{ $any(entity())[tableElement.name] || '-' }}
           }
         }
       </div>

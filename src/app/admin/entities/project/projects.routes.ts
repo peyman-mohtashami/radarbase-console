@@ -1,30 +1,31 @@
 import {Routes} from "@angular/router";
-import {ProjectsResolver} from "./services/projects.resolver";
+import {ProjectListResolver} from "./services/project-list.resolver";
 import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
 import {ProjectListPageComponent} from './containers/project-list-page/project-list-page.component';
 import {ProjectPageComponent} from './containers/project-page/project-page.component';
-import {AllOrganizationsResolver} from '../organization/services/all-organizations.resolver';
-import {AllSourceTypesResolver} from '../source-type/services/all-source-types.resolver';
-import {AllProjectsResolver} from './services/all-projects.resolver';
+import {OrganizationFullListResolver} from '../organization/services/organization-full-list.resolver';
+import {SourceTypeFullListResolver} from '../source-type/services/source-type-full-list.resolver';
+import {ProjectFullListResolver} from './services/project-full-list.resolver';
 
 export const projectRoutes: Routes = [
   {
     path: "",
     component: ProjectListPageComponent,
     resolve: {
-      entities: ProjectsResolver,
-      sourceTypes: AllSourceTypesResolver,
-      organizations: AllOrganizationsResolver,
+      projectList: ProjectListResolver,
+      projectFullList: ProjectFullListResolver,
+      sourceTypeFullList: SourceTypeFullListResolver,
+      organizationFullList: OrganizationFullListResolver,
     },
   },
   {
     path: ':id',
     component: ProjectPageComponent,
     resolve: {
-      entity: ProjectResolver,
-      entities: AllProjectsResolver,
-      sourceTypes: AllSourceTypesResolver,
+      project: ProjectResolver,
+      projectFullList: ProjectFullListResolver,
+      sourceTypeFullList: SourceTypeFullListResolver,
     },
     children: [
       {

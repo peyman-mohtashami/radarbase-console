@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {SourceService} from '../../services/source.service';
 import {SourceConfigService} from '../../services/source-config.service';
@@ -13,6 +13,7 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {getCurrentProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-source-list-page',
@@ -30,12 +31,14 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
   override configService = inject(SourceConfigService);
   override dialogService = inject(SourceDialogService);
 
+  override entities = signal<AppSource[]>(this.activatedRoute.snapshot.data['sourceList']);
+  project?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
+
   sourceTypes: AppSourceType[] = [];
 
-  project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project.projectName);
+    return this.entityService.getWithQuery(this.params(), this.project?.projectName);
   }
 
   ngOnInit() {

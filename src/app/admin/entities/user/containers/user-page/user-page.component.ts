@@ -37,11 +37,12 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
   entityName = this.configService.getEntityMetadata().name;
 
-  entity = signal<AppUser>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppUser>(this.activatedRoute.snapshot.data['user']);
+  entities: AppUser[] = this.activatedRoute.snapshot.data['userList'];
+  projects: AppProject[] = this.activatedRoute.snapshot.data['projectFullList'];
+  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+
   tableFields = this.configService.getTableFields();
-  entities: AppUser[] = this.activatedRoute.snapshot.data['entities'];
-  projects: AppProject[] = this.activatedRoute.snapshot.data['projects'];
-  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizations'];
 
   private _destroy$: Subject<void> = new Subject<void>();
 

@@ -33,7 +33,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   protected GRID_VIEW_ENABLED = false;
   gridView = false;
 
-  entities = signal<T[]>(this.activatedRoute.snapshot.data['entities']);
+  entities = signal<T[]>([]);
 
   page = signal<PageEvent>({
     pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
@@ -94,7 +94,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   destroy() {
-    this.dialogService.dialogUpdateEvent.set(undefined);
+    this.dialogService?.dialogUpdateEvent.set(undefined);
     this._destroy$.next();
     this._destroy$.complete();
   }
@@ -234,7 +234,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   getDialogData(entity?: T) {
-    return {entity, entities: this.entities()}
+    return {entity}
   }
 
   handleFilterChange(event: FilterEvent) {

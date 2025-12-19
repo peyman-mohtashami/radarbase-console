@@ -1,7 +1,5 @@
 import {Routes} from "@angular/router";
-import {SubjectsResolver} from "./services/subjects.resolver";
-import {ClientsResolver} from "../client/services/clients.resolver";
-import {GroupsResolver} from "../group/services/groups.resolver";
+import {SubjectListResolver} from "./services/subject-list.resolver";
 import {SubjectPageComponent} from "./containers/subject-page/subject-page.component";
 import {SubjectResolver} from "./services/subject.resolver";
 import {SubjectDetailsPageComponent} from "./containers/subject-details-page/subject-details-page.component";
@@ -9,26 +7,26 @@ import {SubjectDownloadPageComponent} from "./containers/subject-download-page/s
 import {SubjectDataPageComponent} from "./containers/subject-data-page/subject-data-page.component";
 import {SubjectCompliancePageComponent} from "./containers/subject-compliance-page/subject-compliance-page.component";
 import {SubjectListPageComponent} from './containers/subject-list-page/subject-list-page.component';
-import {AllClientsResolver} from '../client/services/all-clients.resolver';
-import {AllGroupsResolver} from '../group/services/all-groups.resolver';
+import {ClientFullListResolver} from '../client/services/client-full-list.resolver';
+import {GroupFullListResolver} from '../group/services/group-full-list.resolver';
 
 export const subjectRoutes: Routes = [
   {
     path: '',
     component: SubjectListPageComponent,
     resolve: {
-      entities: SubjectsResolver,
-      clients: AllClientsResolver,
-      groups: AllGroupsResolver,
+      subjectList: SubjectListResolver,
+      clientFullList: ClientFullListResolver,
+      groupFullList: GroupFullListResolver,
     },
   },
   {
     path: ':id',
     component: SubjectPageComponent,
     resolve: {
-      entity: SubjectResolver,
-      clients: AllClientsResolver,
-      groups: AllGroupsResolver,
+      subject: SubjectResolver,
+      clientFullList: ClientFullListResolver,
+      groupFullList: GroupFullListResolver,
     },
     children: [
       {

@@ -1,14 +1,14 @@
 import {inject, Injectable} from '@angular/core';
-import {Resolve} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppSourceType} from "../models/source-type";
 import {SourceTypeService} from './source-type.service';
 
 @Injectable({providedIn: 'root'})
-export class AllSourceTypesResolver implements Resolve<AppSourceType[]> {
+export class SourceTypeListResolver implements Resolve<AppSourceType[]> {
   private entityService = inject(SourceTypeService);
 
-  resolve(): Observable<AppSourceType[]> {
-    return this.entityService.getWithQuery();
+  resolve(route: ActivatedRouteSnapshot): Observable<AppSourceType[]> {
+    return this.entityService.getWithQuery(route.queryParams);
   }
 }

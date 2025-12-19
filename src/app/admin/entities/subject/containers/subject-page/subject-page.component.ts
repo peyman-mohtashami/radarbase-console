@@ -55,7 +55,8 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
 
   activePath?: string;
 
-  entity = signal<AppSubject>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
+
   project?: AppProject = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
   organization?: AppOrganization = this.activatedRoute.parent?.parent?.parent?.parent?.snapshot?.data['organization'];
 

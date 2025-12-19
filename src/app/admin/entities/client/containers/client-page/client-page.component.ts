@@ -49,7 +49,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
   activePath?: string;
 
-  entity = signal<AppClient>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppClient>(this.activatedRoute.snapshot.data['client']);
   entities = this.activatedRoute.snapshot.data['entities'];
   tableFields = this.configService.getTableFields();
 

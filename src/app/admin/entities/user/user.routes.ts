@@ -1,20 +1,20 @@
 import {Routes} from "@angular/router";
-import {UsersResolver} from "./services/users.resolver";
+import {UserListResolver} from "./services/user-list.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {UserPageComponent} from "./containers/user-page/user-page.component";
 import {UserResolver} from "./services/user.resolver";
 import {UserListPageComponent} from './containers/user-list-page/user-list-page.component';
-import {AllOrganizationsResolver} from '../organization/services/all-organizations.resolver';
-import {AllProjectsResolver} from '../project/services/all-projects.resolver';
+import {OrganizationFullListResolver} from '../organization/services/organization-full-list.resolver';
+import {ProjectFullListResolver} from '../project/services/project-full-list.resolver';
 
 export const userRoutes: Routes = [
   {
     path: '',
     component: UserListPageComponent,
     resolve: {
-      entities: UsersResolver,
-      projects: AllProjectsResolver,
-      organizations: AllOrganizationsResolver,
+      userList: UserListResolver,
+      projectFullList: ProjectFullListResolver,
+      organizationFullList: OrganizationFullListResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -25,10 +25,10 @@ export const userRoutes: Routes = [
     path: ':id',
     component: UserPageComponent,
     resolve: {
-      entity: UserResolver,
-      entities: UsersResolver,
-      projects: AllProjectsResolver,
-      organizations: AllOrganizationsResolver,
+      user: UserResolver,
+      userList: UserListResolver,
+      projectFullList: ProjectFullListResolver,
+      organizationFullList: OrganizationFullListResolver,
     },
   },
   {

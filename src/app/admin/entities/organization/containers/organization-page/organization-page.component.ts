@@ -42,9 +42,10 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   entityName = this.configService.getEntityMetadata().name;
-  entities: AppOrganization[] = this.activatedRoute.snapshot.data['entities'];
 
   entity = signal<AppOrganization>(this.activatedRoute.snapshot.data['organization']);
+  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+
   tableFields = this.configService.getTableFields();
 
   links: TabLink[] = [
@@ -115,7 +116,7 @@ export class OrganizationPageComponent implements OnInit, OnDestroy {
     if (entityType === this.entityName) {
       switch (action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities});
+          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.organizationFullList});
           break;
       }
     }

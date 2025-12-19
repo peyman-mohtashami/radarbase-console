@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
 import {SourceDataService} from '../../services/source-data.service';
@@ -30,7 +30,8 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
   override configService = inject(SourceDataConfigService);
   override dialogService = inject(SourceDataDialogService);
 
-  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
+  override entities = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['sourceDataList']);
+  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   ngOnInit() {
     super.init();
@@ -43,8 +44,7 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
   override getDialogData(entity?: AppSourceData) {
     return {
       entity: entity,
-      entities: this.entities(),
-      sourceTypes: this.sourceTypes
+      sourceTypes: this.sourceTypeFullList
     }
   }
 }

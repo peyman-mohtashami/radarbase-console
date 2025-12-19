@@ -4,25 +4,25 @@ import {OrganizationResolver} from "./services/organization.resolver";
 import {
   OrganizationDetailsPageComponent
 } from "./containers/organization-details-page/organization-details-page.component";
-import {OrganizationsResolver} from './services/organizations.resolver';
+import {OrganizationListResolver} from './services/organization-list.resolver';
 import {OrganizationListPageComponent} from './containers/organization-list-page/organization-list-page.component';
-import {AllOrganizationsResolver} from './services/all-organizations.resolver';
+import {OrganizationFullListResolver} from './services/organization-full-list.resolver';
 
 export const organizationRoutes: Routes = [
   {
     path: '',
     component: OrganizationListPageComponent,
     resolve: {
-      entities: OrganizationsResolver,
-      allOrganizations: AllOrganizationsResolver,
+      organizationList: OrganizationListResolver,
+      organizationFullList: OrganizationFullListResolver,
     }
   },
   {
     path: ':organizationId',
     component: OrganizationPageComponent,
     resolve: {
-      entities: AllOrganizationsResolver,
       organization: OrganizationResolver,
+      organizationFullList: OrganizationFullListResolver,
     },
     children: [
       {

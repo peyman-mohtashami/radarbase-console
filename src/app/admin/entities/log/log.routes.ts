@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {LogsResolver} from "./services/logs.resolver";
+import {LogListResolver} from "./services/log-list.resolver";
 import {LogListPageComponent} from './containers/log-list-page/log-list-page.component';
 
 export const logRoutes: Routes = [
@@ -7,7 +7,7 @@ export const logRoutes: Routes = [
     path: '',
     component: LogListPageComponent,
     resolve: {
-      entities: LogsResolver,
+      logList: LogListResolver,
     },
   },
   {

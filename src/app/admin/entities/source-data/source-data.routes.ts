@@ -1,19 +1,19 @@
 import {Routes} from "@angular/router";
-import {SourcesDataResolver} from "./services/sources-data.resolver";
+import {SourceDataListResolver} from "./services/source-data-list.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {SourceDataPageComponent} from "./containers/source-data-page/source-data-page.component";
 import {SourceDataResolver} from "./services/source-data.resolver";
 import {SourceDataListPageComponent} from './containers/source-data-list-page/source-data-list-page.component';
 import {RADAR_ROLES} from '../../../core/auth/models/auth.model';
-import {AllSourceTypesResolver} from '../source-type/services/all-source-types.resolver';
+import {SourceTypeFullListResolver} from '../source-type/services/source-type-full-list.resolver';
 
 export const sourceDataRoutes: Routes = [
   {
     path: '',
     component: SourceDataListPageComponent,
     resolve: {
-      entities: SourcesDataResolver,
-      sourceTypes: AllSourceTypesResolver,
+      sourceDataList: SourceDataListResolver,
+      sourceTypeFullList: SourceTypeFullListResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -24,8 +24,8 @@ export const sourceDataRoutes: Routes = [
     path: ':id',
     component: SourceDataPageComponent,
     resolve: {
-      entity: SourceDataResolver,
-      sourceTypes: AllSourceTypesResolver,
+      sourceData: SourceDataResolver,
+      sourceTypeFullList: SourceTypeFullListResolver,
     },
   },
   {

@@ -9,7 +9,7 @@ import { AuditService } from './audit.service';
 import { AppAudit } from "../models/audit";
 
 @Injectable({ providedIn: 'root' })
-export class AuditsResolver implements Resolve<AppAudit[]> {
+export class AuditListResolver implements Resolve<AppAudit[]> {
   private entityService = inject(AuditService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppAudit[]> {

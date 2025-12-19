@@ -1,16 +1,15 @@
 import {Routes} from "@angular/router";
-import {PermissionsResolver} from "./services/permissions.resolver";
+import {PermissionListResolver} from "./services/permission-list.resolver";
 import {PermissionListPageComponent} from './containers/permission-list-page/permission-list-page.component';
-import {UserResolver} from '../user/services/user.resolver';
-import {UsersResolver} from '../user/services/users.resolver';
+import {UserListResolver} from '../user/services/user-list.resolver';
 
 export const permissionRoutes: Routes = [
   {
     path: '',
     component: PermissionListPageComponent,
     resolve: {
-      entities: PermissionsResolver,
-      users: UsersResolver
+      permissionList: PermissionListResolver,
+      userList: UserListResolver
     }
   },
   {

@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
@@ -28,11 +28,21 @@ export class SourceTypeListPageComponent extends BaseEntityListPageComponent<App
   override configService = inject(SourceTypeConfigService);
   override dialogService = inject(SourceTypeDialogService);
 
+  override entities = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['sourceTypeList']);
+  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
+
   ngOnInit() {
     super.init();
   }
 
   ngOnDestroy() {
     super.destroy();
+  }
+
+  override getDialogData(entity?: AppSourceType) {
+    return {
+      entity: entity,
+      sourceTypes: this.sourceTypeFullList
+    }
   }
 }

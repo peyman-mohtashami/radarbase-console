@@ -1,56 +1,23 @@
-import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AppConfig} from '../models/config';
 import {ConfigService} from './config.service';
 import {ConfigDialogComponent} from '../containers/config-dialog/config-dialog.component';
 import {ConfigPublishDialogComponent} from '../containers/config-publish-dialog/config-publish-dialog.component';
+import {BaseDialogService} from '../../../services/base-dialog.service';
 
-export interface UpdateTrigger {
-  mode: DialogMode | string;
-  entity?: AppConfig;
-}
+// export interface UpdateTrigger {
+//   mode: DialogMode | string;
+//   entity?: AppConfig;
+// }
 
 @Injectable({providedIn: 'root'})
-export class ConfigDialogService {
-  private entityService = inject(ConfigService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDialogComponent> {
+  override entityService = inject(ConfigService);
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  openDialog(mode: DialogMode, entity: AppConfig | undefined) {
-    if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, entity);
-
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppConfig }) => {
-        this.dialogUpdateEvent.set({mode, entity: entity ? value.entity : this.entityService.toAppModel(value.entity)});
-        dialogRef.close();
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(mode: DialogMode, entity: AppConfig | undefined): MatDialogRef<ConfigDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity: AppConfig | undefined): MatDialogRef<ConfigDialogComponent> {
     return this.dialog.open(ConfigDialogComponent, {
       data: {mode, entity},
       panelClass: 'tailwind-slide-panel',

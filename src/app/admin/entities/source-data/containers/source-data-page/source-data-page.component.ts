@@ -36,8 +36,10 @@ export class SourceDataPageComponent implements OnInit, OnDestroy {
   protected readonly DialogMode = DialogMode;
 
   entityName = this.configService.getEntityMetadata().name;
-  entity = signal<AppSourceData>(this.activatedRoute.snapshot.data['entity']);
-  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
+
+  entity = signal<AppSourceData>(this.activatedRoute.snapshot.data['sourceData']);
+  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
+
   tableFields = this.configService.getTableFields();
 
   private _destroy$: Subject<void> = new Subject<void>();

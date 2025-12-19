@@ -46,11 +46,12 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   entityName = this.configService.getEntityMetadata().name;
-  entities: AppProject[] = this.activatedRoute.snapshot.data['entities'];
-  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['entities'];
-  sourceTypes: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypes'];
 
-  entity = signal<AppProject>(this.activatedRoute.snapshot.data['entity']);
+  entity = signal<AppProject>(this.activatedRoute.snapshot.data['project']);
+  projectFullList: AppProject[] = this.activatedRoute.snapshot.data['projectFullList'];
+  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
+
   tableFields = this.configService.getTableFields();
 
   links: TabLink[] = [
@@ -126,10 +127,10 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     if (entityType === this.entityName) {
       switch(action) {
         case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities, organizations: this.organizations, sourceTypes: this.sourceTypes});
+          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.projectFullList, organizations: this.organizationFullList, sourceTypes: this.sourceTypeFullList});
           break;
         case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, {entity: this.entity(), entities: this.entities, organizations: this.organizations, sourceTypes: this.sourceTypes});
+          this.dialogService.openDialog(DialogMode.DELETE, {entity: this.entity(), entities: this.projectFullList, organizations: this.organizationFullList, sourceTypes: this.sourceTypeFullList});
       }
     }
   }

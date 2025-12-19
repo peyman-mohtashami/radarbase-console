@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {ClientsResolver} from "./services/clients.resolver";
+import {ClientListResolver} from "./services/client-list.resolver";
 import {ClientPageComponent} from "./containers/client-page/client-page.component";
 import {ClientResolver} from "./services/client.resolver";
 import {ClientDetailsPageComponent} from './containers/client-details-page/client-details-page.component';
@@ -10,14 +10,14 @@ export const clientRoutes: Routes = [
     path: '',
     component: ClientListPageComponent,
     resolve: {
-      entities: ClientsResolver,
+      clientList: ClientListResolver,
     },
   },
   {
     path: ':id',
     component: ClientPageComponent,
     resolve: {
-      entity: ClientResolver,
+      client: ClientResolver,
     },
     children: [
       {

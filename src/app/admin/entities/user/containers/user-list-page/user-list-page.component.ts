@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {DialogMode} from '../../../../enums/dialog';
 import {UserService} from '../../services/user.service';
@@ -31,12 +31,13 @@ export class UserListPageComponent extends BaseEntityListPageComponent<AppUser> 
   protected override configService = inject(UserConfigService);
   protected override dialogService = inject(UserDialogService);
 
-  projects: AppProject[] = this.activatedRoute.snapshot.data['projects'];
-  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizations'];
+  override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['userList']);
+  projects: AppProject[] = this.activatedRoute.snapshot.data['projectFullList'];
+  organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
 
   override processUrlFragment(fragment: string) {
     const entityMetadata = this.configService.getEntityMetadata()
-    const [_, action, entityType, entityId] = fragment.split('/');
+    const [, action, entityType, entityId] = fragment.split('/');
     if (entityType === entityMetadata.name) {
       const entity = this.entities().find(e => e.id == entityId);
       switch (action) {

@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {ClientService} from '../../services/client.service';
 import {ClientConfigService} from '../../services/client-config.service';
@@ -29,7 +29,7 @@ export class ClientListPageComponent extends BaseEntityListPageComponent<AppClie
   override configService = inject(ClientConfigService);
   override dialogService = inject(ClientDialogService);
 
-  sourceTypes: AppClient[] = this.activatedRoute.snapshot.data['sourceTypes'];
+  override entities = signal<AppClient[]>(this.activatedRoute.snapshot.data['clientList']);
 
   ngOnInit() {
     super.init();

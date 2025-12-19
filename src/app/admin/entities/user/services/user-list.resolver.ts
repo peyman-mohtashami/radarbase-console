@@ -5,7 +5,7 @@ import {AppUser} from "../models/user";
 import {UserService} from './user.service';
 
 @Injectable({ providedIn: 'root' })
-export class UsersResolver implements Resolve<AppUser[]> {
+export class UserListResolver implements Resolve<AppUser[]> {
   private entityService = inject(UserService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppUser[]> {

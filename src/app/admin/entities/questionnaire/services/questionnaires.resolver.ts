@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {QuestionnaireService} from "./questionnaire.service";
 import {AppQuestionnaire} from "../models/questionnaire";
-import {getCurrentProject, getCurrentSubject} from '../../config/services/configs.resolver';
+import {getCurrentProject, getCurrentSubject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnairesResolver implements Resolve<AppQuestionnaire[]> {

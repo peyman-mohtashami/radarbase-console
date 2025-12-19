@@ -7,14 +7,14 @@ import {Observable} from 'rxjs';
 
 import { SubjectService } from './subject.service';
 import { AppSubject } from "../models/subject";
-import {AppProject} from '../../project/models/project';
+import {getCurrentProject} from '../../../services/util';
 
 @Injectable({ providedIn: 'root' })
-export class SubjectsResolver implements Resolve<AppSubject[]> {
+export class SubjectListResolver implements Resolve<AppSubject[]> {
   private entityService = inject(SubjectService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppSubject[]> {
-    const currentProject: AppProject = route.parent?.parent?.data['entity'];
-    return this.entityService.getWithQuery(route.queryParams, currentProject.projectName)
+    const project = getCurrentProject(route);
+    return this.entityService.getWithQuery(route.queryParams, project?.projectName)
   }
 }

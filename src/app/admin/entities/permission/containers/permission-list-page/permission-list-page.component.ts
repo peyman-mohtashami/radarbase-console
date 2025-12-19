@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
@@ -13,6 +13,7 @@ import {AppUser} from "../../../user/models/user";
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
 import {PermissionService} from '../../services/permission.service';
+import {getCurrentOrganization, getCurrentProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-permission-list-page',
@@ -30,9 +31,11 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
   override configService = inject(PermissionConfigService);
   override dialogService = inject(PermissionDialogService);
 
-  currentOrganization?: AppOrganization = this.activatedRoute.snapshot.parent?.parent?.data['organization'] ?? this.activatedRoute.snapshot.parent?.parent?.parent?.parent?.data['organization'];
-  currentProject?: AppProject = this.activatedRoute.snapshot.parent?.parent?.data['entity'];
-  users: AppUser[] = this.activatedRoute.snapshot.data['users'];
+  override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
+  users: AppUser[] = this.activatedRoute.snapshot.data['userList'];
+
+  currentOrganization?: AppOrganization = getCurrentOrganization(this.activatedRoute.snapshot);
+  currentProject?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.currentOrganization, this.currentProject);

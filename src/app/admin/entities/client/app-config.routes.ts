@@ -1,14 +1,14 @@
 import {Routes} from "@angular/router";
 import {ClientResolver} from "./services/client.resolver";
 import {ClientsSelectPageComponent} from './containers/clients-select-page/clients-select-page.component';
-import {AllClientsResolver} from './services/all-clients.resolver';
+import {ClientFullListResolver} from './services/client-full-list.resolver';
 
 export const appConfigRoutes: Routes = [
   {
     path: '',
     component: ClientsSelectPageComponent,
     resolve: {
-      entities: AllClientsResolver,
+      clientFullList: ClientFullListResolver,
     },
     children: [
       {
