@@ -3,12 +3,12 @@ import { DOCUMENT } from "@angular/common";
 import tinycolor from "tinycolor2";
 
 import {ThemeConfig} from "../models/theme.model";
-import {AppCustomizationService} from "../../app-customization/services/app-customization.service";
-import {DEFAULT_APP_CUSTOMIZATION} from "../../app-customization/consts/default-app-customization.const";
+import {ConfigurationService} from '../../configuration/services/configuration.service';
+import {DEFAULT_CUSTOM_CONFIGURATION} from '../../configuration/consts/default-custom-configuration.const';
 
 @Injectable({providedIn: 'root'})
 export class ThemeService {
-  private readonly appCustomizationService  = inject(AppCustomizationService);
+  private readonly appCustomizationService  = inject(ConfigurationService);
   private readonly document = inject(DOCUMENT);
 
   private readonly _isLightTheme = signal<boolean>(true);
@@ -62,7 +62,7 @@ export function hexToRgb(hex: string): string {
 }
 
 
-export function validateTheme(themeConfig: ThemeConfig, defaultTheme: ThemeConfig = DEFAULT_APP_CUSTOMIZATION.theme): ThemeConfig {
+export function validateTheme(themeConfig: ThemeConfig, defaultTheme: ThemeConfig = DEFAULT_CUSTOM_CONFIGURATION.theme): ThemeConfig {
   const {light, dark} = themeConfig;
   const {light: defaultLight, dark: defaultDark} = defaultTheme;
 

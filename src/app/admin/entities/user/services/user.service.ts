@@ -7,11 +7,12 @@ import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
 import {ROLES} from "../../../../shared/enums/roles";
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class UserService extends BaseEntityService<AppUser, RadarUser> {
   override getResourceUrl(): string {
-    return 'api/users';
+    return `${environment.apiUrl}api/users`;
   }
 
   override toAppModel(entity: RadarUser): AppUser {
@@ -81,7 +82,7 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
   }
 
   getAll(): Observable<AppUser[]> {
-    return this.http.get<RadarUser[]>(`api/users?includeProvenance=false`)
+    return this.http.get<RadarUser[]>(`/managementportal/api/users?includeProvenance=false`)
       .pipe(
         map((entities) =>
           entities.map((entity) => this.toAppModel(entity))
@@ -129,6 +130,6 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
   }
 
   sendActivationEmail(entity: AppUser): Observable<void> {
-    return this.http.post<void>('api/account/reset-activation/init', entity.login);
+    return this.http.post<void>('/managementportal/api/account/reset-activation/init', entity.login);
   }
 }

@@ -29,14 +29,14 @@ import {ValidatorError} from '../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
 import {format, isValid, parse} from 'date-fns';
-import { enGB, nl, faIR } from 'date-fns/locale';
+import {enGB, nl, faIR} from 'date-fns/locale';
 import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
 import {TagComponent} from '../../../shared/components/tag/tag.component';
 import {LocaleService} from "../../../core/locale/services/locale.service";
 
-export interface FilterEvent {
-  [key: string]: string | null | undefined;
-}
+export type FilterEvent = Record<string, string | null | undefined>
+//   [key: string]: string | null | undefined;
+// }
 
 @Component({
   selector: 'app-data-table-filter',
@@ -92,8 +92,8 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       const rawLocale = this.localeService.currentLocale()?.locale;
-      const angularLocaleId = rawLocale === 'en-GB' ? 'en-GB' : rawLocale?.substring(0,2);
-      const dfLocaleMap: Record<string, any> = { 'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR };
+      const angularLocaleId = rawLocale === 'en-GB' ? 'en-GB' : rawLocale?.substring(0, 2);
+      const dfLocaleMap: Record<string, any> = {'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR};
       const dfLocale = angularLocaleId ? (dfLocaleMap[angularLocaleId] || enGB) : enGB;
       this.dateAdapter?.setLocale(dfLocale);
     });
@@ -103,7 +103,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
     this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
 
     const filterGroup = this.filters()?.reduce(
-      (acc: { [key: string]: FormControl }, filterItem: FilterItem) => {
+      (acc: Record<string, FormControl>, filterItem: FilterItem) => {
         if (
           filterItem.type === FormFieldType.RANGE_PICKER &&
           filterItem.names
@@ -127,20 +127,14 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
           if (filter.type === FormFieldType.DATEPICKER && filter.name) {
             if (formValue[filter.name]) {
               formValue[filter.name] = format(formValue[filter.name], 'yyyy-MM-dd')
-
-              // formValue[filter.name] = formValue[filter.name].format('YYYY-MM-DD');
             }
           }
 
           if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
             if (formValue[filter.names[0]]) {
-              // formValue[filter.names[0]] =
-              //   formValue[filter.names[0]].format('YYYY-MM-DD');
               formValue[filter.names[0]] = format(formValue[filter.names[0]], 'yyyy-MM-dd');
             }
             if (formValue[filter.names[1]]) {
-              // formValue[filter.names[1]] =
-              //   formValue[filter.names[1]].format('YYYY-MM-DD');
               formValue[filter.names[1]] = format(formValue[filter.names[1]], 'yyyy-MM-dd');
             }
           }

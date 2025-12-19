@@ -32,7 +32,7 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
 
-  sourceTypes: AppOrganization[] = this.activatedRoute.snapshot.data['sourceTypes'];
+  allOrganizations: AppOrganization[] = this.activatedRoute.snapshot.data['allOrganizations'];
 
   ngOnInit() {
     super.init();
@@ -40,5 +40,9 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
 
   ngOnDestroy() {
     super.destroy();
+  }
+
+  override getDialogData(entity?: AppOrganization) {
+    return {entity, entities: this.allOrganizations}
   }
 }

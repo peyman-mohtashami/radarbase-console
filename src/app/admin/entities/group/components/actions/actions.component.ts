@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppGroup} from '../../models/group';
 import {MatTooltip} from "@angular/material/tooltip";
 import {GroupConfigService} from "../../services/group-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-group-actions',
@@ -17,7 +18,8 @@ import {GroupConfigService} from "../../services/group-config.service";
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

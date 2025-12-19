@@ -15,38 +15,28 @@ import {AppSubject} from "../../subject/models/subject";
 export class ConfigsResolver implements Resolve<AppConfig[]> {
   private entityService = inject(ConfigService);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-  ):
-    | Observable<AppConfig[]>
-    | Promise<AppConfig[]>
-    | AppConfig[] {
-    const currentClient: AppClient = route.parent?.parent?.data['entity'];
-    console.log('Class: ConfigsResolver, Function: resolve, Line 24 ' , route.parent?.parent?.parent?.parent?.parent?.data['entity']);
-    console.log('Class: ConfigsResolver, Function: resolve, Line 25 ' , route.parent?.parent?.parent?.parent?.parent?.parent?.parent?.data['entity']);
-    console.log('Class: ConfigsResolver, Function: resolve, Line 27 ' , route.parent?.parent?.parent?.parent?.parent?.parent?.routeConfig);
-    let currentProject: AppProject | undefined = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-    let currentSubject: AppSubject | undefined = undefined;
-    if (route.parent?.parent?.parent?.parent?.parent?.parent?.routeConfig?.path === 'subjects') {
-      currentSubject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-      currentProject = route.parent?.parent?.parent?.parent?.parent?.parent?.parent?.data['entity'];
-    }
-      // no subject
-      // const currentProject: AppProject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-      // const currentSubject: AppProject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-
-    // } else {
-    //   const currentProject: AppProject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-    //   const currentSubject: AppProject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-    //
-    // }
-
-    // const currentProject: AppProject = route.parent?.parent?.parent?.parent?.parent?.data['entity'];
-    // console.log('Class: ConfigsResolver, Function: resolve, Line 25 route.parent?.parent?.parent?.parent?.data' , route.parent?.parent?.parent?.parent?.data);
-    // console.log('Class: ConfigsResolver, Function: resolve, Line 25 route.parent?.parent?.parent?.parent?.data' , route.parent?.parent?.parent?.parent?.parent?.data);
-    // console.log('Class: ConfigsResolver, Function: resolve, Line 25 route.parent?.parent?.parent?.parent?.data' , route.parent?.parent?.parent?.parent?.parent?.parent?.data);
-    // console.log('Class: ConfigsResolver, Function: resolve, Line 25 route.parent?.parent?.parent?.parent?.data' , route.parent?.parent?.parent?.parent?.parent?.parent?.parent?.parent?.data);
-    console.log('Class: ConfigsResolver, Function: resolve, Line 23 currentClient' , currentClient, currentProject);
-    return this.entityService.getAll(currentClient.clientId, currentProject?.projectName, currentSubject?.login);
+  resolve(route: ActivatedRouteSnapshot): Observable<AppConfig[]> {
+    return this.entityService.getAll(
+      getCurrentClient(route).clientId,
+      getCurrentProject(route)?.projectName,
+      getCurrentSubject(route)?.login
+    );
   }
+}
+
+export function getCurrentProject(route: ActivatedRouteSnapshot): AppProject | undefined {
+  const projectIndex = route.pathFromRoot.findIndex(route => route.routeConfig?.path === 'projects');
+  return route.pathFromRoot[projectIndex + 1].data['entity'];
+}
+
+export function getCurrentSubject(route: ActivatedRouteSnapshot): AppSubject | undefined {
+  const subjectIndex = route.pathFromRoot.findIndex(route => route.routeConfig?.path === 'subjects');
+  return route.pathFromRoot[subjectIndex + 1].data['entity'];
+
+}
+
+export function getCurrentClient(route: ActivatedRouteSnapshot): AppClient {
+  const clientIndex = route.pathFromRoot.findIndex(route => route.routeConfig?.path === 'global-config' || route.routeConfig?.path === 'app-config');
+  return route.pathFromRoot[clientIndex + 2].data['entity'];
+
 }

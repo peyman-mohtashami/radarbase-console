@@ -4,7 +4,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {PercentPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
-import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.model';
+import {Thread, ThreadState} from '../../models/radar-metrics.model';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({

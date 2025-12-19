@@ -13,6 +13,7 @@ export class ProjectsResolver implements Resolve<AppProject[]> {
   private entityService = inject(ProjectService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppProject[]> {
+    console.log('Class: ProjectsResolver, Function: resolve, Line 16 ' , );
     const organization: AppOrganization | undefined = route.data['organization'] ?? route.parent?.parent?.data['organization'];
     return this.entityService.getWithQuery(route.queryParams, organization?.name);
   }

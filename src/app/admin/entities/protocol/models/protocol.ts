@@ -10,7 +10,7 @@ export interface RadarProtocolWrapper extends Record<string, string | string[] |
   protocols: RadarProtocol[];
 }
 
-export interface RadarProtocol extends Record<string, any> {
+export interface RadarProtocol {
   name: string;
   type?: string;
   showIntroduction?: boolean;
@@ -89,7 +89,7 @@ export interface AppProtocol extends RadarProtocol {
   _reminderEnabled: boolean;
 }
 
-export interface FormProtocol extends Record<string, any> {
+export interface FormProtocol {
   general: {
     name: string;
     languages: QuestionnaireLanguage[];

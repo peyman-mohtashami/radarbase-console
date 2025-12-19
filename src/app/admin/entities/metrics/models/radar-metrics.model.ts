@@ -1,5 +1,5 @@
 export interface Metrics {
-  jvm: Map<string, JvmMetrics>; //{ [key: string]: JvmMetrics };
+  jvm: Map<string, JvmMetrics>;
   databases: Databases;
   'http.server.requests': HttpServerRequests;
   cache: Map<string, CacheMetrics>;
@@ -45,7 +45,7 @@ export interface MetricsWithPercentile {
 
 export interface HttpServerRequests {
   all: {count: number;};
-  percode: Map<string, MaxMeanCount>; //{ [key: string]: MaxMeanCount };
+  percode: Map<string, MaxMeanCount>;
 }
 
 export interface MaxMeanCount {
@@ -71,19 +71,6 @@ export interface GarbageCollector {
   'jvm.gc.live.data.size': number;
   classesUnloaded: number;
 }
-// export interface Service {
-//   Map<string, Map<HttpMethod, MaxMeanCount>>
-// }
-//
-// export interface Service {
-//   [key: string]: Map<HttpMethod, MaxMeanCount>; //[key in HttpMethod], MaxMeanCount>;
-// }
-
-// export interface Services {
-//   [key: string]: {
-//     [key in HttpMethod]?: MaxMeanCount;
-//   };
-// }
 
 export enum HttpMethod {
   Post = 'POST',

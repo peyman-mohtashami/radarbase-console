@@ -181,10 +181,10 @@ export class ProtocolDialogComponent implements OnInit, AfterViewInit {
     console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 177 appProtocol' , appProtocol);
     const radarProtocol = this.entityService.appToRadarModel(appProtocol);
     console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 179 radarProtocol' , radarProtocol);
-    // this.dialogActionEvent.emit({
-    //   action: this.dialogData.mode,
-    //   entity: appProtocol,
-    // });
+    this.dialogActionEvent.emit({
+      action: this.dialogData.mode,
+      entity: appProtocol,
+    });
   }
 
   private handleDeleteAction(): void {

@@ -16,5 +16,5 @@ export class TagComponent {
 
     @Input() class = '';
 
-    link$ = input<(string|undefined)[]>();
+    link = input<(string|undefined)[]>();
 }

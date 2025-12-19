@@ -6,6 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import {AppSubject, RadarSubject} from "../models/subject";
 import {isValid, parse} from 'date-fns';
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> {
@@ -14,7 +15,7 @@ export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> 
   projectName?: string;
 
   override getResourceUrl(): string {
-    return `api/subjects`;
+    return `${environment.apiUrl}api/subjects`;
   }
 
   override toAppModel(entity: RadarSubject): AppSubject {
@@ -29,7 +30,7 @@ export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> 
     this.projectName = projectName;
 
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarSubject[]>(`api/projects/${this.projectName}/subjects`, {
+    return this.http.get<RadarSubject[]>(`${environment.apiUrl}api/projects/${this.projectName}/subjects`, {
       params,
       observe: 'response',
     }).pipe(
@@ -98,7 +99,7 @@ export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> 
 
   discontinue(entity: AppSubject): Observable<AppSubject> {
     return this.http.put<AppSubject>(
-      `api/subjects/discontinue`,
+      `${environment.apiUrl}api/subjects/discontinue`,
       this.toRadarModel(entity)
     );
   }
@@ -109,7 +110,7 @@ export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> 
     subjects: { login?: string; id?: number }[]
   ) {
     const url =
-      `api/projects/${projectName}/groups/${encodeURIComponent(groupName)}/subjects`;
+      `${environment.apiUrl}api/projects/${projectName}/groups/${encodeURIComponent(groupName)}/subjects`;
     const body = [{ op: 'add', value: subjects }];
     return this.http.patch<void>(url, body);
   }

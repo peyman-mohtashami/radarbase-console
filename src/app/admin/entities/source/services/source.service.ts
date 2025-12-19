@@ -6,6 +6,7 @@ import {AppSource, RadarSource} from "../models/source";
 import {Params} from '@angular/router';
 import {AppProject} from '../../project/models/project';
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SourceService extends BaseEntityService<AppSource, RadarSource> {
@@ -19,7 +20,7 @@ export class SourceService extends BaseEntityService<AppSource, RadarSource> {
 
   override getWithQuery(queryParams: Params | undefined, projectName?: string): Observable<AppSource[]> {
     const { params } = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarSource[]>(`api/projects/${projectName}/sources`, {
+    return this.http.get<RadarSource[]>(`${environment.apiUrl}api/projects/${projectName}/sources`, {
       params,
       observe: 'response',
     }).pipe(

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import {DecimalPipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBar} from "@angular/material/progress-bar";
-import {GarbageCollector} from '../../../../../shared/models/radar-metrics.model';
+import {GarbageCollector} from '../../models/radar-metrics.model';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({

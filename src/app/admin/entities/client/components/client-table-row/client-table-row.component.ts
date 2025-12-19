@@ -8,6 +8,7 @@ import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from "../../services/client-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-client-table-row',
@@ -19,6 +20,7 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
     ClientDetailsComponent,
     ActionsComponent,
     EntityComponent,
+    TranslatePipe,
   ]
 })
 export class ClientTableRowComponent extends BaseEntityComponent<AppClient>{

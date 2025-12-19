@@ -14,7 +14,7 @@ import {MatFormField} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {ManagementPortalUser} from '../../../../shared/models/auth.model';
+import {ManagementPortalUser} from '../../models/auth.model';
 import {AuthService} from "../../services/auth.service";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {HttpErrorResponse} from "@angular/common/http";

@@ -9,7 +9,6 @@ export class OrganizationsResolver implements Resolve<AppOrganization[]> {
   private entityService = inject(OrganizationService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization[]> {
-    const queryParams = route.parent?.routeConfig?.path === 'organizations' ? route.queryParams : undefined;
-    return this.entityService.getWithQuery(queryParams);
+    return this.entityService.getWithQuery(route.queryParams);
   }
 }

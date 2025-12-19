@@ -4,12 +4,12 @@ import { DateAdapter } from '@angular/material/core';
 import {registerLocaleData} from "@angular/common";
 import {Locale} from 'date-fns';
 
-import {Language} from '../../../shared/models/locale.model';
-import {AppCustomizationService} from "../../app-customization/services/app-customization.service";
+import {Language} from '../models/locale.model';
+import {ConfigurationService} from '../../configuration/services/configuration.service';
 
 @Injectable({providedIn: 'root'})
 export class LocaleService {
-  private readonly appCustomizationService = inject(AppCustomizationService);
+  private readonly configurationService = inject(ConfigurationService);
   private readonly translate = inject(TranslateService);
   private readonly dateAdapter = inject(DateAdapter<string>);
 
@@ -20,7 +20,7 @@ export class LocaleService {
   readonly currentLocale = this._currentLocale.asReadonly();
 
   init(): void {
-    const languages = this.appCustomizationService.localeCustomization().languages;
+    const languages = this.configurationService.localeCustomization().languages;
     this.initLocales(languages);
   }
 

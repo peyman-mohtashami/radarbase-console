@@ -11,21 +11,15 @@ import {
 import { Subscription } from 'rxjs';
 import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import { ValidatorError, Validator as CustomValidator } from "../../../../../shared/utils/validators";
-import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from "@angular/material/expansion";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatInput} from "@angular/material/input";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {MatLabel, MatOption, MatSelect} from "@angular/material/select";
+import {MatOption, MatSelect} from "@angular/material/select";
 import {MatError} from "@angular/material/form-field";
-import {AppQuestion, AppQuestionnaire, RadarQuestion} from "../../models/questionnaire";
-import {BranchingLogicComponent} from "../branching-logic/branching-logic.component";
+import {AppQuestion, AppQuestionnaire} from "../../models/questionnaire";
 import {moveItemInFormArray} from "../../containers/questionnaire-dialog/questionnaire-dialog.component";
-import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {JsonPipe} from "@angular/common";
-import {ChoicesComponent} from "../choices/choices.component";
-import {TimePipe} from "../../../../../shared/pipes/time.pipe";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
@@ -48,26 +42,14 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
     MatButton,
     MatIcon,
     CdkDropList,
-    MatExpansionPanel,
-    MatExpansionPanelTitle,
     MatFormField,
-    MatLabel,
     MatError,
     TranslatePipe,
     MatInput,
     MatSelect,
     MatOption,
-    MatExpansionPanelHeader,
     CdkDrag,
-    BranchingLogicComponent,
-    MatHint,
-    MatButtonToggleGroup,
-    MatButtonToggle,
     MatIconButton,
-    JsonPipe,
-    ChoicesComponent,
-    MatSuffix,
-    TimePipe,
     CdkTextareaAutosize,
   ]
 })
@@ -75,7 +57,6 @@ export default class QuestionComponent
   implements OnInit, OnDestroy, ControlValueAccessor, Validator {
 
   protected readonly ValidatorError = ValidatorError;
-  protected readonly DEFAULT_LANG = {id: 'en', _name: 'English'};
 
   questionTypes = [
     { name: 'radio', label: 'Radio' },
@@ -91,10 +72,7 @@ export default class QuestionComponent
     { name: 'datepicker', label: 'Date Input' },
   ];
 
-  questionsOptions?: any;
-
   entity = input.required<AppQuestionnaire>();
-  // language = input.required<string>();
   disabled = input<boolean>(false);
   languages = input.required<RadarOption[]>();
 

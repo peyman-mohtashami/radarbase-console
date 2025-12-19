@@ -19,14 +19,13 @@ import {
 
 
 import { AppSubject } from "../../models/subject";
-import { AppClient } from "../../../client/models/client";
+import {AppClient, RadarPairInfo} from "../../../client/models/client";
 import {QrCodeComponent, QrCodeModule} from "ng-qrcode";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AsyncPipe, DatePipe} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {RadarPairInfo} from '../../../../../shared/models/radar-client.model';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -171,8 +170,8 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
       .subscribe((pairInfo: RadarPairInfo | undefined) => (this.pairInfo.set(pairInfo)));
   }
 
-  private deleteToken(tokenName: string): Subscription {
-    return this.clientPairService.delete(tokenName).subscribe((deleteRes: any) => {
+  private deleteToken(tokenName: string) {
+    this.clientPairService.delete(tokenName).subscribe((deleteRes: any) => {
       if (!deleteRes.ok) {
         console.log(
           'Failed to delete stale MetaToken: ' +

@@ -7,10 +7,10 @@ import {provideLocale} from "./locale/provideLocale";
 import {provideTranslateService, TranslateLoader} from "@ngx-translate/core";
 import {LocaleService} from "./locale/services/locale.service";
 import {RuntimeConfigTranslateLoader} from "./locale/runtime-config-translate.loader";
-import {AppCustomizationService} from "./app-customization/services/app-customization.service";
+import {ConfigurationService} from './configuration/services/configuration.service';
 
 
-function configInitializerFn(customizationService: AppCustomizationService, themeService: ThemeService, localeService: LocaleService) {
+function configInitializerFn(customizationService: ConfigurationService, themeService: ThemeService, localeService: LocaleService) {
   return async () => {
     await firstValueFrom(customizationService.init());
     themeService.init();
@@ -31,7 +31,7 @@ export function provideCore() {
 
     provideAppInitializer(() => {
       const initializerFn = configInitializerFn(
-        inject(AppCustomizationService),
+        inject(ConfigurationService),
         inject(ThemeService),
         inject(LocaleService)
       );

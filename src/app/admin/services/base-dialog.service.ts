@@ -18,9 +18,7 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
   dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
 
   openDialog(mode: DialogMode | string, data: any) {
-    console.log('Class: BaseDialogService, Function: openDialog, Line 26 ' , mode, data);
     if (mode !== DialogMode.ADD && !data.entity) {
-      console.log('Class: BaseDialogService, Function: openDialog, Line 23 ' , );
       this.clearFragmentUrl();
       return;
     }
@@ -30,7 +28,6 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
         (value) => {
-          console.log('Class: BaseDialogService, Function: , Line 32 value' , value);
           const _entity = value.entity;
           const _action = value.action;
           if (!_entity) {

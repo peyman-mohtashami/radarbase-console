@@ -19,9 +19,9 @@
     }
     @case ('dynamic_registration') {
       @if (entity().additionalInformation['dynamic_registration']) {
-        <app-tag class="bg-primary text-white">Dynamic</app-tag>
+        <app-tag class="bg-primary text-white">{{ 'ADMIN.client.dynamic_registration.dynamic' | translate }}</app-tag>
       } @else {
-        <app-tag class="bg-gray-200 dark:bg-gray-300 text-primary dark:text-primary-dark">Manual</app-tag>
+        <app-tag class="bg-gray-200 dark:bg-gray-300 text-primary dark:text-primary-dark">{{ 'ADMIN.client.dynamic_registration.manual' | translate }}</app-tag>
       }
     }
     @case ('resourceIds') {

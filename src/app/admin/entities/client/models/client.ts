@@ -19,3 +19,13 @@ export interface AppClient extends RadarClient {
   _search: string;
   _dynamic_registration: boolean | null;
 }
+
+export interface RadarPairInfo {
+  tokenName: string;
+  tokenUrl: string;
+  baseUrl: string;
+  timeout: number;
+  timesOutAt: string;
+  timeOutDate?: string;
+  timeoutString?: string;
+}

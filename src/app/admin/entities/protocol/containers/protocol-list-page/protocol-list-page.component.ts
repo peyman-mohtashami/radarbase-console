@@ -318,7 +318,7 @@ export class ProtocolListPageComponent implements OnInit, OnDestroy {
   private applySorting(): AppProtocol[] {
     const {sortField, sortOrder} = this.sort();
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    return this.processedEntities().sort((a, b) => {
+    return this.processedEntities().sort((a: any, b: any) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
@@ -342,7 +342,7 @@ export class ProtocolListPageComponent implements OnInit, OnDestroy {
     Object.entries(this.filter()).forEach(([key, value]) => {
       if (!value) return;
 
-      filteredEntities = filteredEntities.filter((entity) =>
+      filteredEntities = filteredEntities.filter((entity: any) =>
         entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
       );
     });

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {DecimalPipe, KeyValuePipe} from "@angular/common";
-import {HttpMethod, MaxMeanCount} from '../../../../../shared/models/radar-metrics.model';
+import {HttpMethod, MaxMeanCount} from '../../models/radar-metrics.model';
 
 @Component({
   selector: 'app-metrics-endpoints-requests',

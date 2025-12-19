@@ -12,7 +12,7 @@ import {
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
 import {MatButton} from "@angular/material/button";
-import {RadarHealth} from '../../../../../shared/models/radar-health.model';
+import {RadarHealth} from '../../models/radar-health.model';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';

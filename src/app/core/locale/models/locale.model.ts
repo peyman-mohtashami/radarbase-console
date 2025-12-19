@@ -1,8 +1,3 @@
-export interface LocaleState {
-  currentLanguage?: Language;
-  languages?: Language[];
-}
-
 export interface Language {
   code: string;
   locale: string;
@@ -11,4 +6,3 @@ export interface Language {
   dateFormat?: string;
   direction?: 'ltr' | 'rtl';
 }
-

@@ -68,6 +68,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('Class: SubjectPageComponent, Function: ngOnInit, Line 71 ' , );
     this.handleDialogUrlFragment();
     this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
   }
@@ -99,6 +100,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   }
 
   private handleDialogUrlFragment() {
+    console.log('Class: SubjectPageComponent, Function: handleDialogUrlFragment, Line 102 ' , );
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
@@ -107,6 +109,7 @@ export class SubjectPageComponent implements OnInit, OnDestroy {
   }
 
   private processUrlFragment(fragment: string) {
+    console.log('Class: SubjectPageComponent, Function: processUrlFragment, Line 110 fragment' , fragment);
     const [_, action, entityType] = fragment.split('/');
     if (entityType === 'subject') {
       switch(action) {

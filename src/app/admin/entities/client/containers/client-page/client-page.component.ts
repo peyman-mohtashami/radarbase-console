@@ -98,7 +98,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
   }
 
   private processUrlFragment(fragment: string) {
-    const [_, action, entityType] = fragment.split('/');
+    const [, action, entityType] = fragment.split('/');
     if (entityType === this.entityName) {
       switch(action) {
         case 'edit':

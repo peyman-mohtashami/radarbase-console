@@ -5,10 +5,11 @@ import {catchError, shareReplay, switchMap, tap} from "rxjs/operators";
 import {
   CredentialAuthRequest,
   ManagementPortalUser, TokenData
-} from '../../../shared/models/auth.model';
+} from '../models/auth.model';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {StorageService} from "../../storage/services/storage.service";
 import {Router} from "@angular/router";
+import {environment} from '../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -34,7 +35,7 @@ export class AuthService {
   }
 
   getUser(): Observable<ManagementPortalUser | null> {
-    return this.http.get<ManagementPortalUser>('api/account').pipe(
+    return this.http.get<ManagementPortalUser>(`${environment.apiUrl}api/account`).pipe(
       catchError((err) => {
         return throwError(() => err);
       })
@@ -48,7 +49,7 @@ export class AuthService {
   authenticateWithCredential(
     credentials: CredentialAuthRequest
   ): Observable<ManagementPortalUser> {
-    const url = 'oauth/token';
+    const url = `${environment.apiUrl}oauth/token`;
     const payload = this.getTokenRequestParams(
       credentials.username,
       credentials.password
@@ -66,7 +67,7 @@ export class AuthService {
           'Bearer ' + tokenData.access_token
         );
         return this.http
-          .post<ManagementPortalUser>('api/login', null, {
+          .post<ManagementPortalUser>(`${environment.apiUrl}api/login`, null, {
             headers: authHeaders,
             observe: 'body',
             withCredentials: true,
@@ -81,7 +82,7 @@ export class AuthService {
   }
 
   logout(): void {
-    const url = 'api/logout';
+    const url = `${environment.apiUrl}api/logout`;
     this.http.post<void>(url, { observe: 'body' }).pipe(
       tap(() => {
         this._user.set(null);

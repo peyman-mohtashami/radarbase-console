@@ -3,9 +3,9 @@ import {SourcesDataResolver} from "./services/sources-data.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {SourceDataPageComponent} from "./containers/source-data-page/source-data-page.component";
 import {SourceDataResolver} from "./services/source-data.resolver";
-import {RADAR_ROLES} from '../../../shared/models/auth.model';
-import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
 import {SourceDataListPageComponent} from './containers/source-data-list-page/source-data-list-page.component';
+import {RADAR_ROLES} from '../../../core/auth/models/auth.model';
+import {AllSourceTypesResolver} from '../source-type/services/all-source-types.resolver';
 
 export const sourceDataRoutes: Routes = [
   {
@@ -13,7 +13,7 @@ export const sourceDataRoutes: Routes = [
     component: SourceDataListPageComponent,
     resolve: {
       entities: SourcesDataResolver,
-      sourceTypes: SourceTypesResolver,
+      sourceTypes: AllSourceTypesResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -25,7 +25,7 @@ export const sourceDataRoutes: Routes = [
     component: SourceDataPageComponent,
     resolve: {
       entity: SourceDataResolver,
-      sourceTypes: SourceTypesResolver,
+      sourceTypes: AllSourceTypesResolver,
     },
   },
   {

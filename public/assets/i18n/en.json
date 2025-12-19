@@ -271,7 +271,9 @@
       },
       "dynamic_registration": {
         "tableLabel": "Registration",
-        "label": "Dynamic Registration"
+        "label": "Dynamic Registration",
+        "dynamic": "Dynamic",
+        "manual": "Manual"
       },
       "_dynamic_registration": {
         "tableLabel": "Registration",

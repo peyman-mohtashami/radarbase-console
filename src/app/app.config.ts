@@ -21,7 +21,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptorsFromDi(),
     ),
     importProvidersFrom(
-      //     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production , connectInZone: true}),
       LoggerModule.forRoot({
         // serverLoggingUrl: '/api/logs',
         level: NgxLoggerLevel.DEBUG,

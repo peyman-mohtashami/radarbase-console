@@ -43,12 +43,10 @@ import {JsonPipe} from "@angular/common";
     ReactiveFormsModule,
     MatSelectAutocompleteComponent,
     MatFormField,
-    MatLabel,
     MatSelect,
     MatOption,
     MatIcon,
     MatButton,
-    JsonPipe
   ]
 })
 export class BranchingLogicAndArrayComponent

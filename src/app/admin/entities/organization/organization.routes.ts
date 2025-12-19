@@ -6,20 +6,22 @@ import {
 } from "./containers/organization-details-page/organization-details-page.component";
 import {OrganizationsResolver} from './services/organizations.resolver';
 import {OrganizationListPageComponent} from './containers/organization-list-page/organization-list-page.component';
+import {AllOrganizationsResolver} from './services/all-organizations.resolver';
 
 export const organizationRoutes: Routes = [
   {
     path: '',
     component: OrganizationListPageComponent,
     resolve: {
-      entities: OrganizationsResolver
+      entities: OrganizationsResolver,
+      allOrganizations: AllOrganizationsResolver,
     }
   },
   {
     path: ':organizationId',
     component: OrganizationPageComponent,
     resolve: {
-      entities: OrganizationsResolver,
+      entities: AllOrganizationsResolver,
       organization: OrganizationResolver,
     },
     children: [

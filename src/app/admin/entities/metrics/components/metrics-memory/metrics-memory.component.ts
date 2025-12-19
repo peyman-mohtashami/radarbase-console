@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import {KeyValuePipe, PercentPipe} from "@angular/common";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {TranslatePipe} from "@ngx-translate/core";
-import {JvmMetrics} from '../../../../../shared/models/radar-metrics.model';
+import {JvmMetrics} from '../../models/radar-metrics.model';
 import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
 
 @Component({

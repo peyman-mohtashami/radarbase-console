@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {AppClient, RadarClient} from "../models/client";
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class ClientService extends BaseEntityService<AppClient, RadarClient>{
   override getResourceUrl(): string {
-    return 'api/oauth-clients';
+    return `${environment.apiUrl}api/oauth-clients`;
   }
 
   override toAppModel(entity: RadarClient): AppClient {

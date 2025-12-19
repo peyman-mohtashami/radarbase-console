@@ -40,7 +40,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
 
     if (this.CACHE_ENABLED && this.cacheLoaded) {
       this.total.set(this.cache.length);
-      return of(process(this.cache));
+      return of(queryParams ? process(this.cache) : this.cache);
     }
 
     return this.http.get<U[]>(this.getResourceUrl()).pipe(
@@ -103,6 +103,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
       .pipe(
         map((entity) => this.toAppModel(entity)),
         tap(() => {
+          this.total.set(this.total() + 1);
           this.cacheLoaded = false;
         })
       );

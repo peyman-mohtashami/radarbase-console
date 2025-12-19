@@ -3,7 +3,6 @@ import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 import {ROLES} from '../../../shared/enums/roles';
 import {SubjectDialogMode} from '../../entities/subject/enums/dialog';
-import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
   selector: 'app-base-entity',

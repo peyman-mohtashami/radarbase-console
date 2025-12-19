@@ -2,39 +2,39 @@
     <button class="tiny" [matTooltip]="`ADMIN.${entityName}.edit` | translate"
             mat-icon-button color="primary"
             (click)='onAction(DialogMode.EDIT)'>
-      <span class="material-symbols-outlined text-xl!">edit</span>
+      <mat-icon class="material-symbols-outlined text-xl!">edit</mat-icon>
     </button>
     <button class="tiny"
             mat-icon-button color="warn" [matTooltip]="`ADMIN.${entityName}.delete` | translate"
             (click)='onAction(DialogMode.DELETE)'>
-      <span class="material-symbols-outlined text-xl!">delete</span>
+      <mat-icon class="material-symbols-outlined text-xl!">delete</mat-icon>
     </button>
     <button class="tiny" mat-icon-button color="primary" [disabled]="entity().status === 'DISCONTINUED'"
             [matTooltip]="`ADMIN.${entityName}.discontinue.buttonLabel` | translate" (click)='onAction(DialogMode.DISCONTINUE)'>
-      <span class="text-xl! material-symbols-outlined font-bold"
-            [class]="entity().status === 'DISCONTINUED' ? 'text-gray-300': 'text-yellow-500'">stop_circle</span>
+      <mat-icon class="text-xl! material-symbols-outlined font-bold"
+            [class]="entity().status === 'DISCONTINUED' ? 'text-gray-300': 'text-yellow-500'">stop_circle</mat-icon>
     </button>
 
     <button class="tiny" mat-icon-button color="primary"
             [matTooltip]="`ADMIN.${entityName}.pairSource.buttonLabel` | translate" (click)='onAction(DialogMode.PAIR_SOURCE)'>
-      <span class="text-xl! material-symbols-outlined font-bold">link</span>
+      <mat-icon class="text-xl! material-symbols-outlined font-bold">link</mat-icon>
     </button>
     <button class="tiny" mat-icon-button color="primary"
             [matTooltip]="`ADMIN.${entityName}.pairApp.buttonLabel` | translate" (click)='onAction(DialogMode.PAIR_APP)'>
-      <span class="text-xl! material-symbols-outlined font-bold">qr_code</span>
+      <mat-icon class="text-xl! material-symbols-outlined font-bold">qr_code</mat-icon>
     </button>
 } @else {
   <button mat-icon-button class="tiny"
           [matMenuTriggerFor]="menu"
           (click)="$event.stopPropagation();">
-    <span class="font-bold! material-symbols-outlined text-xl!">more_vert</span>
+    <mat-icon class="font-bold! material-symbols-outlined text-xl!">more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">
     <button class="hover:text-primary! dark:hover:text-primary-dark! hover:bg-transparent! transition-all"
             mat-menu-item
             (click)='onAction(DialogMode.EDIT)'>
               <span class="flex items-center gap-2">
-                <span class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">edit</span>
+                <mat-icon class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">edit</mat-icon>
                 <span>{{ `ADMIN.${entityName}.edit` | translate }}</span>
               </span>
     </button>
@@ -42,7 +42,7 @@
             mat-menu-item
             (click)='onAction(DialogMode.DELETE)'>
                 <span class="flex items-center gap-2">
-                  <span class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</span>
+                  <mat-icon class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</mat-icon>
                   <span>{{ `ADMIN.${entityName}.delete` | translate }}</span>
                 </span>
     </button>
@@ -50,7 +50,7 @@
             mat-menu-item [disabled]="entity().status === 'DISCONTINUED'"
             (click)='onAction(DialogMode.DISCONTINUE)'>
       <span class="flex items-center gap-2">
-                  <span class="text-xl! text-yellow-600 material-symbols-outlined font-bold!">stop_circle</span>
+                  <mat-icon class="text-xl! text-yellow-600 material-symbols-outlined font-bold!">stop_circle</mat-icon>
                   <span>{{ `ADMIN.${entityName}.discontinue.buttonLabel` | translate }}</span>
                 </span>
     </button>
@@ -58,15 +58,15 @@
             mat-menu-item
             (click)='onAction(DialogMode.PAIR_SOURCE)'>
       <span class="flex items-center gap-2">
-                  <span class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">link</span>
+                  <mat-icon class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">link</mat-icon>
                   <span>{{ `ADMIN.${entityName}.pairSource.buttonLabel` | translate }}</span>
                 </span>
     </button>
     <button class="hover:text-primary hover:bg-transparent! transition-all"
             mat-menu-item
-            (click)='onAction(DialogMode.DISCONTINUE)'>
+            (click)='onAction(DialogMode.PAIR_APP)'>
       <span class="flex items-center gap-2">
-                  <span class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">qr_code</span>
+                  <mat-icon class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">qr_code</mat-icon>
                   <span>{{ `ADMIN.${entityName}.pairApp.buttonLabel` | translate }}</span>
                 </span>
     </button>

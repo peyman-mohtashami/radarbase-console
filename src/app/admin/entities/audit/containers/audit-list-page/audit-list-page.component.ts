@@ -26,7 +26,9 @@ export class AuditListPageComponent extends BaseEntityListPageComponent<AppAudit
   override entityService = inject(AuditService);
   override configService = inject(AuditConfigService);
 
-  ngOnInit() {}
+  ngOnInit() {
+    super.init();
+  }
 
   ngOnDestroy() {
     super.destroy();

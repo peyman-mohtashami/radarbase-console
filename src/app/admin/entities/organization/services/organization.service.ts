@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {AppOrganization, RadarOrganization} from "../models/organization";
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseEntityService<AppOrganization, RadarOrganization> {
 
   override getResourceUrl(): string {
-    return 'api/organizations';
+    return `${environment.apiUrl}api/organizations`;
   }
 
   override toAppModel(entity: RadarOrganization): AppOrganization {

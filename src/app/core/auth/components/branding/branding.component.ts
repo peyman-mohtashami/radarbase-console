@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LogoComponent} from '../../../../shared/components/logo/logo.component';
-import {AppCustomizationService} from "../../../app-customization/services/app-customization.service";
+import {ConfigurationService} from '../../../configuration/services/configuration.service';
 
 @Component({
   selector: 'app-branding',
@@ -12,5 +12,5 @@ import {AppCustomizationService} from "../../../app-customization/services/app-c
   ],
 })
 export class BrandingComponent {
-  appCustomizationService = inject(AppCustomizationService)
+  configurationService = inject(ConfigurationService)
 }

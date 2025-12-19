@@ -13,7 +13,7 @@ export class GroupsResolver implements Resolve<AppGroup[]> {
   private entityService = inject(GroupService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppGroup[]> {
-    const currentProject: AppProject = route.parent?.parent?.data['entity'];
-    return this.entityService.getWithQuery(route.queryParams, currentProject.projectName);
+    const currentProject: AppProject | undefined = route.parent?.parent?.data['entity'];
+    return this.entityService.getWithQuery(route.queryParams, currentProject?.projectName);
   }
 }

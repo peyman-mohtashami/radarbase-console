@@ -3,6 +3,7 @@ import {AppGroup, RadarGroup} from "../models/group";
 import {Observable} from 'rxjs';
 import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +14,7 @@ export class GroupService extends BaseEntityService<AppGroup, RadarGroup> {
   projectName?: string;
 
   override getResourceUrl(): string {
-    return `api/projects/${this.projectName}/groups`;
+    return `${environment.apiUrl}api/projects/${this.projectName}/groups`;
   }
 
   override toAppModel(entity: RadarGroup): AppGroup {
@@ -24,7 +25,7 @@ export class GroupService extends BaseEntityService<AppGroup, RadarGroup> {
     return { ...entity, projectName: projectName! };
   }
 
-  override getWithQuery(queryParams: Params, projectName?: string): Observable<AppGroup[]> {
+  override getWithQuery(queryParams?: Params, projectName?: string): Observable<AppGroup[]> {
     this.projectName = projectName;
     return super.getWithQuery(queryParams);
   }

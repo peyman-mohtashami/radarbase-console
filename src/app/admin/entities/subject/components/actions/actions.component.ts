@@ -7,6 +7,7 @@ import {AppSubject} from '../../models/subject';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectConfigService} from "../../services/subject-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-subject-actions',
@@ -17,7 +18,8 @@ import {SubjectConfigService} from "../../services/subject-config.service";
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {
@@ -33,6 +35,7 @@ export class ActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: SubjectDialogMode) {
+    console.log('Class: ActionsComponent, Function: onAction, Line 36 mode' , mode);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',

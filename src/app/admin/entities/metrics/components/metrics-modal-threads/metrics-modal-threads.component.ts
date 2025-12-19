@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.model';
+import {Thread, ThreadState} from '../../models/radar-metrics.model';
 import {NgClass} from '@angular/common';
 
 @Component({

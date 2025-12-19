@@ -3,11 +3,12 @@ import {AppSourceType, RadarSourceType} from "../models/source-type";
 import {BaseEntityService} from '../../../services/base-entity.service';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class SourceTypeService extends BaseEntityService<AppSourceType, RadarSourceType> {
   override getResourceUrl(): string {
-    return 'api/source-types';
+    return `${environment.apiUrl}api/source-types`;
   }
 
   override toAppModel(entity: RadarSourceType): AppSourceType {

@@ -16,6 +16,7 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {DialogMode} from '../../../../enums/dialog';
 
 @Component({
   selector: 'app-subject-list-page',
@@ -39,14 +40,14 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
   project: AppProject = this.activatedRoute.parent?.parent?.snapshot.data['entity'];
   groups: AppGroup[] = this.activatedRoute.snapshot.data['groups'];
 
-  actionMapper: Record<string, SubjectDialogMode> = {
-    'add': SubjectDialogMode.ADD,
-    'edit': SubjectDialogMode.EDIT,
-    'delete': SubjectDialogMode.DELETE,
-    'discontinue': SubjectDialogMode.DISCONTINUE,
-    'pair_app': SubjectDialogMode.PAIR_APP,
-    'pair_source': SubjectDialogMode.PAIR_SOURCE,
-  }
+  // actionMapper: Record<string, SubjectDialogMode> = {
+  //   'add': SubjectDialogMode.ADD,
+  //   'edit': SubjectDialogMode.EDIT,
+  //   'delete': SubjectDialogMode.DELETE,
+  //   'discontinue': SubjectDialogMode.DISCONTINUE,
+  //   'pair_app': SubjectDialogMode.PAIR_APP,
+  //   'pair_source': SubjectDialogMode.PAIR_SOURCE,
+  // }
 
   override handleDialogUpdate(updated: { mode: SubjectDialogMode, entity?: AppSubject }) {
     switch (updated.mode) {
@@ -75,6 +76,35 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
     this.removeFragmentUrl();
     this.loading.set(false);
     this.selection.clear();
+  }
+
+  override processUrlFragment(fragment: string) {
+    console.log('Class: SubjectListPageComponent, Function: processUrlFragment, Line 82 fragment' , fragment);
+    const entityMetadata = this.configService.getEntityMetadata()
+    const [_, action, entityType, entityId] = fragment.split('/');
+    if (entityType === entityMetadata.name) {
+      const entity = this.entities().find(e => e._name == entityId);
+      switch (action) {
+        case 'add':
+          this.dialogService.openDialog(SubjectDialogMode.ADD, this.getDialogData(entity));
+          break;
+        case 'edit':
+          if (entity) this.dialogService.openDialog(SubjectDialogMode.EDIT, this.getDialogData(entity));
+          break;
+        case 'delete':
+          if (entity) this.dialogService.openDialog(SubjectDialogMode.DELETE, this.getDialogData(entity));
+          break;
+        case 'discontinue':
+          if (entity) this.dialogService.openDialog(SubjectDialogMode.DISCONTINUE, this.getDialogData(entity));
+          break;
+        case 'pair_source':
+          if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_SOURCE, this.getDialogData(entity));
+          break;
+        case 'pair_app':
+          if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_APP, this.getDialogData(entity));
+          break;
+      }
+    }
   }
 
   override getEntities() {

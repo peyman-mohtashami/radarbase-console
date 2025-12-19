@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {AppProtocol} from "../../models/protocol";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-protocol-actions',
@@ -17,7 +18,8 @@ import {ProtocolConfigService} from "../../services/protocol-config.service";
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

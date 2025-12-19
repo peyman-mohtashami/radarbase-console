@@ -1,7 +1,7 @@
 import {ThemeConfig} from "../../theme/models/theme.model";
-import {Language} from '../../../shared/models/locale.model';
+import {Language} from '../../locale/models/locale.model';
 
-export interface AppCustomization {
+export interface CustomConfiguration {
   branding: {
     name: string;
     logo: string;

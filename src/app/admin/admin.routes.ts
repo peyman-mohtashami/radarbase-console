@@ -1,7 +1,7 @@
 import {Routes} from "@angular/router";
 import {AdminComponent} from "./admin.component";
 import {roleGuard} from "../core/auth/guards/role.guard";
-import {RADAR_ROLES} from '../shared/models/auth.model';
+import {RADAR_ROLES} from '../core/auth/models/auth.model';
 
 export enum ROUTES {
   ORGANIZATIONS = 'organizations',
@@ -66,9 +66,8 @@ export const adminRoutes: Routes = [
         path: ROUTES.APP_CONFIGS,
         loadChildren: () =>
           import('./entities/client/app-config.routes').then((m) => m.appConfigRoutes),
-          // import('./entities/client/client.routes').then((m) => m.clientRoutes),
         canActivate: [roleGuard],
-        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], appConfig: true },
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
       {
         path: ROUTES.QUESTIONNAIRES,
@@ -93,10 +92,7 @@ export const adminRoutes: Routes = [
       },
       {
         path: ROUTES.REVISIONS,
-        loadChildren: () => import('./entities/revision/revision.routes').then((m) => {
-          console.log('Class55555: , Function: , Line 104 ' , );
-          return m.revisionRoutes
-        }),
+        loadChildren: () => import('./entities/revision/revision.routes').then((m) => m.revisionRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },

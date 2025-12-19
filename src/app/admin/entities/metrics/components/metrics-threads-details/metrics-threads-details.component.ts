@@ -4,7 +4,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 import {MatCard} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
-import {Thread, ThreadState} from '../../../../../shared/models/radar-metrics.model';
+import {Thread, ThreadState} from '../../models/radar-metrics.model';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({

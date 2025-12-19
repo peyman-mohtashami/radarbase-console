@@ -7,8 +7,6 @@ import {FilterEvent} from '../data-table-filter/data-table-filter.component';
 import {Subject} from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE, MIN_ENTITIES_FOR_FILTERS,
-  MIN_ENTITIES_FOR_PAGINATION,
-  PAGE_SIZE_OPTIONS
 } from '../../consts/default-table-values';
 import {skip, takeUntil} from 'rxjs/operators';
 import {ROLES} from '../../../shared/enums/roles';
@@ -24,9 +22,7 @@ import {BaseDialogService} from '../../services/base-dialog.service';
 })
 export class BaseEntityListPageComponent<T extends { _name: string; }> {
   protected readonly ROLES = ROLES;
-  protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
-  protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   private router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
@@ -98,6 +94,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   destroy() {
+    this.dialogService.dialogUpdateEvent.set(undefined);
     this._destroy$.next();
     this._destroy$.complete();
   }
@@ -217,17 +214,16 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   processUrlFragment(fragment: string) {
+    console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 217 fragment' , fragment);
     const entityMetadata = this.configService.getEntityMetadata()
     const [_, action, entityType, entityId] = fragment.split('/');
     if (entityType === entityMetadata.name) {
-      console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 227 entityId' , entityId);
       const entity = this.entities().find(e => e._name == entityId);
       switch (action) {
         case 'add':
           this.dialogService.openDialog(DialogMode.ADD, this.getDialogData(entity));
           break;
         case 'edit':
-          console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 233 entity' , entity);
           if (entity) this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(entity));
           break;
         case 'delete':

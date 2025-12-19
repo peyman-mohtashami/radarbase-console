@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {Subject} from 'rxjs';
 import {AuthService} from '../services/auth.service';
-import {ManagementPortalUser} from '../../../shared/models/auth.model';
+import {ManagementPortalUser} from '../models/auth.model';
 
 @Directive({
   selector: '[showIfHasRole]',

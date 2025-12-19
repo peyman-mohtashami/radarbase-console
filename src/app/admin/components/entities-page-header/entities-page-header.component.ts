@@ -1,4 +1,4 @@
-import {Component, Input, input, output} from "@angular/core";
+import {Component, inject, Input, input, output} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
@@ -17,6 +17,9 @@ import {EntityRegistry} from "../../../shared/consts/entity-registry";
   ]
 })
 export class EntitiesPageHeaderComponent {
+  public router = inject(Router);
+  public route = inject(ActivatedRoute);
+
   protected readonly DialogMode = DialogMode;
 
   entityMetadata = input.required<EntityRegistry>();
@@ -29,8 +32,6 @@ export class EntitiesPageHeaderComponent {
 
   action = output<any>();
   gridListToggled = output<boolean>();
-
-  constructor(public router: Router, public route: ActivatedRoute) { }
 
   toggleGridListView() {
     this.isGridView = !this.isGridView;

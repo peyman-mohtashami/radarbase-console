@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppUser} from "../../../user/models/user";
 import {MatTooltip} from "@angular/material/tooltip";
 import {PermissionConfigService} from '../../services/permission-config.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-permission-actions',
@@ -16,7 +17,8 @@ import {PermissionConfigService} from '../../services/permission-config.service'
     MatMenuItem,
     TranslatePipe,
     MatMenuTrigger,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ],
   templateUrl: './actions.component.html',
 })

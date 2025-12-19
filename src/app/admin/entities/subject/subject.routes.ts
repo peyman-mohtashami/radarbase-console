@@ -9,6 +9,8 @@ import {SubjectDownloadPageComponent} from "./containers/subject-download-page/s
 import {SubjectDataPageComponent} from "./containers/subject-data-page/subject-data-page.component";
 import {SubjectCompliancePageComponent} from "./containers/subject-compliance-page/subject-compliance-page.component";
 import {SubjectListPageComponent} from './containers/subject-list-page/subject-list-page.component';
+import {AllClientsResolver} from '../client/services/all-clients.resolver';
+import {AllGroupsResolver} from '../group/services/all-groups.resolver';
 
 export const subjectRoutes: Routes = [
   {
@@ -16,8 +18,8 @@ export const subjectRoutes: Routes = [
     component: SubjectListPageComponent,
     resolve: {
       entities: SubjectsResolver,
-      clients: ClientsResolver,
-      groups: GroupsResolver,
+      clients: AllClientsResolver,
+      groups: AllGroupsResolver,
     },
   },
   {
@@ -25,8 +27,8 @@ export const subjectRoutes: Routes = [
     component: SubjectPageComponent,
     resolve: {
       entity: SubjectResolver,
-      clients: ClientsResolver,
-      groups: GroupsResolver,
+      clients: AllClientsResolver,
+      groups: AllGroupsResolver,
     },
     children: [
       {
@@ -54,7 +56,7 @@ export const subjectRoutes: Routes = [
         path: 'app-config',
         loadChildren: () =>
           import('../client/app-config.routes').then((m) => m.appConfigRoutes),
-        // data: {appConfig: true}
+        data: {scope: 'subject'}
       },
       // {
       //   path: 'clients',

@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {AppConfig} from "../../models/config";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-config-actions',
@@ -17,7 +18,8 @@ import {AppConfig} from "../../models/config";
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

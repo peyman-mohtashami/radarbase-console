@@ -6,12 +6,13 @@ import {AppAudit, RadarAudit} from "../models/audit";
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class AuditService extends BaseEntityService<AppAudit, RadarAudit> {
 
   override getResourceUrl(): string {
-    return 'management/audits';
+    return `${environment.apiUrl}management/audits`;
   }
 
   override toAppModel(entity: RadarAudit): AppAudit {

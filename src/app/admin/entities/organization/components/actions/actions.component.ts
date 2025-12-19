@@ -7,6 +7,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {OrganizationConfigService} from "../../services/organization-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-organization-actions',
@@ -17,7 +18,8 @@ import {OrganizationConfigService} from "../../services/organization-config.serv
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

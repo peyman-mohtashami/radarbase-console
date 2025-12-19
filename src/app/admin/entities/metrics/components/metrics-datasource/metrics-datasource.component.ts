@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {DecimalPipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
-import {Databases} from '../../../../../shared/models/radar-metrics.model';
+import {Databases} from '../../models/radar-metrics.model';
 
 @Component({
   selector: 'app-metrics-datasource',

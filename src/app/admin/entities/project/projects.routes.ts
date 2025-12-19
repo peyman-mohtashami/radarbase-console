@@ -2,10 +2,11 @@ import {Routes} from "@angular/router";
 import {ProjectsResolver} from "./services/projects.resolver";
 import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
-import {OrganizationsResolver} from '../organization/services/organizations.resolver';
-import {SourceTypesResolver} from '../source-type/services/source-types.resolver';
 import {ProjectListPageComponent} from './containers/project-list-page/project-list-page.component';
 import {ProjectPageComponent} from './containers/project-page/project-page.component';
+import {AllOrganizationsResolver} from '../organization/services/all-organizations.resolver';
+import {AllSourceTypesResolver} from '../source-type/services/all-source-types.resolver';
+import {AllProjectsResolver} from './services/all-projects.resolver';
 
 export const projectRoutes: Routes = [
   {
@@ -13,8 +14,8 @@ export const projectRoutes: Routes = [
     component: ProjectListPageComponent,
     resolve: {
       entities: ProjectsResolver,
-      sourceTypes: SourceTypesResolver,
-      organizations: OrganizationsResolver,
+      sourceTypes: AllSourceTypesResolver,
+      organizations: AllOrganizationsResolver,
     },
   },
   {
@@ -22,8 +23,8 @@ export const projectRoutes: Routes = [
     component: ProjectPageComponent,
     resolve: {
       entity: ProjectResolver,
-      entities: ProjectsResolver,
-      sourceTypes: SourceTypesResolver,
+      entities: AllProjectsResolver,
+      sourceTypes: AllSourceTypesResolver,
     },
     children: [
       {
@@ -62,6 +63,7 @@ export const projectRoutes: Routes = [
         path: 'app-config',
         loadChildren: () =>
           import('../client/app-config.routes').then((m) => m.appConfigRoutes),
+        data: {scope: 'project'}
       },
       {
         path: 'protocols',

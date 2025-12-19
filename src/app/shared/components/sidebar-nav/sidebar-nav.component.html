@@ -1,5 +1,5 @@
 <div class="text-sm" [class]="!isMenuOpen() ? 'md:[&_.item-label]:hidden' : ''">
-  @for (navGroupItem of navGroupItems; track navGroupItem) {
+  @for (navGroupItem of navGroupItems(); track navGroupItem) {
     <div class="m-2">
       <ng-container *showIfHasRole="navGroupItem.permission">
         <mat-expansion-panel class="hover:bg-black/20! bg-white/10!" [class.mat-elevation-z0]="true" [expanded]="!navGroupItem.close">
@@ -47,11 +47,11 @@
                         <span class="item-label whitespace-nowrap">
                           {{ ('ADMIN.' + nav.name + '.title.plural') | translate }}
                         </span>
-                        <span class="material-symbols-outlined text-lg! opacity-50"
+                        <mat-icon class="material-symbols-outlined text-lg! opacity-50"
                               [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
                               [matTooltipPosition]="'after'">
                           open_in_new
-                        </span>
+                        </mat-icon>
                       </span>
                     </a>
                   </mat-list-item>

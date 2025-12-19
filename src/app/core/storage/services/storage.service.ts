@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import {ManagementPortalUser, TokenData} from '../../../shared/models/auth.model';
+import {TokenData} from '../../auth/models/auth.model';
 
 export enum AuthStorageItem {
   ACCESS_TOKEN = 'accessToken',

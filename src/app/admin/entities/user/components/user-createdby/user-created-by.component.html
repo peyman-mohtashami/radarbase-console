@@ -1,5 +1,5 @@
 @if (createdBy() && createdBy() !== 'system') {
-  <app-tag [link$]='["/admin/users", createdBy() ?? ""]' class="bg-user-color-500 text-white">
+  <app-tag [link]='["/admin/users", createdBy() ?? ""]' class="bg-user-color-500 text-white">
     {{ createdBy() || '-' }}
   </app-tag>
 } @else {

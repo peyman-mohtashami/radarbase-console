@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {
   AppQuestion,
   AppQuestionnaire,
@@ -12,6 +12,12 @@ import {map} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
 import {MockQuestionnaireServer} from "../mock/mockQuestionnaireServer";
+import {
+  getAppConfigBaseUrl,
+  getConfigsFromConfigBundle,
+  getHeaders,
+  getUrlSegment
+} from '../../config/services/config.service';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnaireService {
@@ -21,22 +27,14 @@ export class QuestionnaireService {
 
 
   getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
-    const headers = this.getHeaders();
-    const appConfigBaseUrl = `${(typeof window !== 'undefined' ? window.location.origin : '')}/appconfig/api`;
-
-    let urlSegment = `global`;
-    if (projectId) {
-      urlSegment = `projects/${projectId}`;
-      if (subjectId) {
-        urlSegment = `${urlSegment}/users/${subjectId}`;
-      }
-    }
-
+    const headers = getHeaders();
+    const appConfigBaseUrl = getAppConfigBaseUrl();
+    const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
     return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)).pipe(
       map(configBundle => {
-          const radarConfigs = this.getConfigsFromConfigBundle(configBundle);
+          const radarConfigs = getConfigsFromConfigBundle(configBundle);
           const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
             const name = cur.name;
             const {base, lang} = parseName(name);
@@ -50,26 +48,15 @@ export class QuestionnaireService {
               questions: groupedQuestionnaires[key]
             }
           });
-          const t = questionnaireArray.map(q => this.radarToAppModel(q));
-          console.log('Class: QuestionnaireService, Function: , Line 57 t' , t);
-          return t;
+          return questionnaireArray.map(q => this.radarToAppModel(q));
         }
       ));
   }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
-    console.log('Class: QuestionnaireService, Function: publish, Line 61 questionnaires' , questionnaires);
-    const headers = this.getHeaders();
-    const appConfigBaseUrl = `${(typeof window !== 'undefined' ? window.location.origin : '')}/appconfig/api`;
-
-    let urlSegment = `global`;
-    if (projectId) {
-      urlSegment = `projects/${projectId}`;
-      if (subjectId) {
-        urlSegment = `${urlSegment}/users/${subjectId}`;
-      }
-    }
-
+    const headers = getHeaders();
+    const appConfigBaseUrl = getAppConfigBaseUrl();
+    const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
     const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => (
@@ -88,46 +75,11 @@ export class QuestionnaireService {
       })
     });
 
-    console.log('Class: QuestionnaireService, Function: publish, Line 91 url, configs' , url, configs);
-
-    return (!environment.localDeployment ? this.http.post<RadarConfigBundle>(url, {config: configs}, {headers}) : MockQuestionnaireServer.post(url, {config: configs})).pipe(
+    return this.http.post<RadarConfigBundle>(url, {config: configs}, {headers}).pipe(
       map(() => {
         return questionnaires;
       })
     );
-  }
-
-  private getConfigsFromConfigBundle(configBundle: RadarConfigBundle): RadarConfig[] {
-    const mergedDefaultsWithConfigs = configBundle.defaults?.map((defaultConfig) => {
-      let _config: RadarConfig = {
-        name: defaultConfig.name,
-        default: defaultConfig.value,
-        value: defaultConfig.value,
-        scope: defaultConfig.scope,
-      };
-      configBundle.config.forEach((config, index, arr) => {
-        if (defaultConfig.name === config.name) {
-          _config = {
-            name: defaultConfig.name,
-            default: defaultConfig.value,
-            value: config.value,
-            scope: defaultConfig.scope,
-          };
-          arr.splice(index, 1);
-        }
-      });
-      return _config;
-    });
-
-    let _configs = [...configBundle.config];
-    if (mergedDefaultsWithConfigs) {
-      _configs = [..._configs, ...mergedDefaultsWithConfigs];
-    }
-    return _configs;
-  }
-
-  private getHeaders() {
-    return new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   }
 
   private toQuestionAppModel(source:  Record<string, RadarQuestion[]>): AppQuestion[] {

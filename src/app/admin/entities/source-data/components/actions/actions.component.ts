@@ -7,6 +7,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SourceDataConfigService} from "../../services/source-data-config.service";
 import {MatTooltip} from "@angular/material/tooltip";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-source-data-actions',
@@ -17,7 +18,8 @@ import {MatTooltip} from "@angular/material/tooltip";
     MatMenuItem,
     TranslatePipe,
     MatMenuTrigger,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ],
 })
 export class ActionsComponent {

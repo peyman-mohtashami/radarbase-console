@@ -1,7 +1,7 @@
 import {computed, inject, Injectable} from '@angular/core';
-import {AppCustomizationService} from '../../core/app-customization/services/app-customization.service';
 import {ENTITY_REGISTRY} from '../../shared/consts/entity-registry';
 import {FilterItem, TableElement} from '../models/table.model';
+import {ConfigurationService} from '../../core/configuration/services/configuration.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseConfigService {
@@ -9,10 +9,10 @@ export class BaseConfigService {
   protected readonly filters: FilterItem[] = [];
   protected readonly entityMetadata: {name: string; icon: string; route: string} = ENTITY_REGISTRY.organization;
 
-  private readonly appCustomizationService = inject(AppCustomizationService);
+  private readonly configurationService = inject(ConfigurationService);
 
   private config = computed(() => {
-    return this.appCustomizationService.entitiesCustomization()[this.entityMetadata?.name];
+    return this.configurationService.entitiesCustomization()[this.entityMetadata?.name];
   })
 
   getFormFields(): Record<string, boolean> {

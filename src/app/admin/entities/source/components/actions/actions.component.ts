@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppSource} from '../../models/source';
 import {MatTooltip} from "@angular/material/tooltip";
 import {SourceConfigService} from '../../services/source-config.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-source-actions',
@@ -17,7 +18,8 @@ import {SourceConfigService} from '../../services/source-config.service';
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

@@ -14,7 +14,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TableQueryReflectorDirective} from "../../../../directives/table-query-reflector.directive";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatAnchor, MatButton, MatIconButton} from "@angular/material/button";
+import {MatAnchor, MatButton} from "@angular/material/button";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {ConfigTableRowComponent} from "../../components/config-table-row/config-table-row.component";
 import {
@@ -39,8 +39,8 @@ import {
 } from "../../../../consts/default-table-values";
 
 @Component({
-  selector: 'app-configs-page',
-  templateUrl: './configs-page.component.html',
+  selector: 'app-config-list-page',
+  templateUrl: './config-list-page.component.html',
   imports: [
     LoaderComponent,
     TableQueryReflectorDirective,
@@ -55,7 +55,7 @@ import {
     MatButton,
   ]
 })
-export class ConfigsPageComponent implements OnInit, OnDestroy {
+export class ConfigListPageComponent implements OnInit, OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
   protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
@@ -122,7 +122,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(data => {
       this.entities.set(data['entities']);
       this.processedEntities.set(data['entities']);
-      this.dialogService.dialogUpdateEvent$.set(undefined);
+      this.dialogService.dialogUpdateEvent.set(undefined);
       this.applyFilter();
     })
     this.handleDialogUrlFragment();
@@ -185,7 +185,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
 
   private initializeDialogEffect() {
     effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent$();
+      const updated = this.dialogService.dialogUpdateEvent();
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -333,7 +333,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   private applySorting(): AppConfig[] {
     const {sortField, sortOrder} = this.sort();
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
-    return this.processedEntities().sort((a, b) => {
+    return this.processedEntities().sort((a: any, b: any) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
@@ -357,7 +357,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
     Object.entries(this.filter()).forEach(([key, value]) => {
       if (!value) return;
 
-      filteredEntities = filteredEntities.filter((entity) =>
+      filteredEntities = filteredEntities.filter((entity: any) =>
         entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
       );
     });
@@ -390,7 +390,7 @@ export class ConfigsPageComponent implements OnInit, OnDestroy {
   triggerUpdate($event: string) {
     console.log('Class: ConfigsPageComponent, Function: triggerUpdate, Line 534 $event' , $event);
     if ($event === 'discard') {
-      this.dialogService.dialogUpdateEvent$.set({mode: 'discard', entity: undefined})
+      this.dialogService.dialogUpdateEvent.set({mode: 'discard', entity: undefined})
     }
 
   }

@@ -68,10 +68,13 @@ export class QuestionnaireDialogService {
 
     switch (actionType) {
       case DialogMode.ADD: {
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 71 ' , );
         const updated = [...entities, entity];
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 73 updated' , updated);
         return this.entityService.publish(updated);
       }
       case DialogMode.EDIT: {
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 77 ' , );
         const updated = [...entities];
         const idx = updated.findIndex(e => e.name === entity.name); // use your unique key
         if (idx !== -1) {
@@ -79,14 +82,17 @@ export class QuestionnaireDialogService {
         } else {
           updated.push(entity);
         }
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 85 updated' , updated);
         return this.entityService.publish(updated);
       }
       case DialogMode.DELETE: {
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 89 ' , );
         const updated = [...entities];
         const idx = updated.findIndex(e => e.name === entity.name);
         if (idx !== -1) {
           updated.splice(idx, 1);
         }
+        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 94 updated' , updated);
         return this.entityService.publish(updated);
       }
       default:

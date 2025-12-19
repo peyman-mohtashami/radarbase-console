@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppUser} from '../../models/user';
 import {MatTooltip} from "@angular/material/tooltip";
 import {UserConfigService} from '../../services/user-config.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-actions',
@@ -16,7 +17,8 @@ import {UserConfigService} from '../../services/user-config.service';
     MatMenuItem,
     TranslatePipe,
     MatMenuTrigger,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ],
   templateUrl: './actions.component.html',
 })

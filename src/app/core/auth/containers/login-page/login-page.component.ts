@@ -13,7 +13,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
-import {CredentialAuthRequest} from '../../../../shared/models/auth.model';
+import {CredentialAuthRequest} from '../../models/auth.model';
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
 

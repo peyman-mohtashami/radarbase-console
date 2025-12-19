@@ -4,7 +4,7 @@
   <div class="flex items-center flex-wrap gap-2 mt-1">
     @for (project of showAll ? _projects : _projects?.slice(0, 5); track project.projectName) {
       <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark"
-              [link$]="['/admin/organizations', organization(), 'projects', project['projectName']]" (click)="$event.stopPropagation()">
+              [link]="['/admin/organizations', organization(), 'projects', project['projectName']]" (click)="$event.stopPropagation()">
         {{project["projectName"]}}
       </app-tag>
     }

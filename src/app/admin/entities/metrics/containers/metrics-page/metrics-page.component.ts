@@ -24,7 +24,7 @@ import {
 import {MetricsCacheComponent} from "../../components/metrics-cache/metrics-cache.component";
 import {MetricsDatasourceComponent} from "../../components/metrics-datasource/metrics-datasource.component";
 import {MatButton} from "@angular/material/button";
-import {Metrics, Thread} from '../../../../../shared/models/radar-metrics.model';
+import {Metrics, Thread} from '../../models/radar-metrics.model';
 
 @Component({
   selector: 'app-metrics-page',

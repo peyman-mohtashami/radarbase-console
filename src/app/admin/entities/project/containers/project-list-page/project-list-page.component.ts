@@ -53,4 +53,8 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
       sourceTypes: this.sourceTypes
     }
   }
+
+  protected override getEntities() {
+    return this.entityService.getWithQuery(this.params(), this.organization?.name);
+  }
 }

@@ -3,9 +3,9 @@ import {UsersResolver} from "./services/users.resolver";
 import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {UserPageComponent} from "./containers/user-page/user-page.component";
 import {UserResolver} from "./services/user.resolver";
-import {ProjectsResolver} from '../project/services/projects.resolver';
-import { OrganizationsResolver } from "../organization/services/organizations.resolver";
 import {UserListPageComponent} from './containers/user-list-page/user-list-page.component';
+import {AllOrganizationsResolver} from '../organization/services/all-organizations.resolver';
+import {AllProjectsResolver} from '../project/services/all-projects.resolver';
 
 export const userRoutes: Routes = [
   {
@@ -13,8 +13,8 @@ export const userRoutes: Routes = [
     component: UserListPageComponent,
     resolve: {
       entities: UsersResolver,
-      projects: ProjectsResolver,
-      organizations: OrganizationsResolver,
+      projects: AllProjectsResolver,
+      organizations: AllOrganizationsResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -27,8 +27,8 @@ export const userRoutes: Routes = [
     resolve: {
       entity: UserResolver,
       entities: UsersResolver,
-      projects: ProjectsResolver,
-      organizations: OrganizationsResolver,
+      projects: AllProjectsResolver,
+      organizations: AllOrganizationsResolver,
     },
   },
   {

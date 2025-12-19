@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireConfigService} from '../../services/questionnaire-config.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-questionnaire-actions',
@@ -17,7 +18,8 @@ import {QuestionnaireConfigService} from '../../services/questionnaire-config.se
     MatMenuItem,
     TranslatePipe,
     MatIconButton,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

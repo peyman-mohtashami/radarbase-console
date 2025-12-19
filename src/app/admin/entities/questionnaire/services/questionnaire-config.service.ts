@@ -5,14 +5,8 @@ import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
 import {BaseConfigService} from '../../../services/base-config.service';
 
 export const TableElements: TableElement[] = [
-  // { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true },
   { name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true },
-  // { name: 'createdBy', tableClass: "hidden", extensionClass: "block" },
-  // { name: 'modifiedBy', tableClass: "hidden", extensionClass: "block" },
-  // { name: 'createdDate', tableClass: "hidden", extensionClass: "block" },
-  // { name: 'modifiedDate', tableClass: "hidden", extensionClass: "block" },
   { name: 'questionCount', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden", sortable: true},
-  // { name: 'translations', tableClass: "hidden", extensionClass: "block"}
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
 ];
 

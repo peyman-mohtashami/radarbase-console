@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppClient} from '../../models/client';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ClientConfigService} from "../../services/client-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-client-actions',
@@ -17,6 +18,7 @@ import {ClientConfigService} from "../../services/client-config.service";
     TranslatePipe,
     MatMenuTrigger,
     MatTooltip,
+    MatIcon,
   ],
   templateUrl: './actions.component.html',
 })

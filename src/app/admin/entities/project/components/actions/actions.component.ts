@@ -7,6 +7,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ProjectConfigService} from "../../services/project-config.service";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-project-actions',
@@ -17,7 +18,8 @@ import {ProjectConfigService} from "../../services/project-config.service";
     MatIconButton,
     MatMenuItem,
     TranslatePipe,
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class ActionsComponent {

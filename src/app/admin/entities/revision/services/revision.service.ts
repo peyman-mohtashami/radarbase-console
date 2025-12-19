@@ -5,11 +5,12 @@ import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {AppRevision, RadarRevision} from '../models/revision';
 import {BaseEntityService} from '../../../services/base-entity.service';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RevisionService extends BaseEntityService<AppRevision, RadarRevision> {
   override getResourceUrl(): string {
-    return 'api/revisions';
+    return `${environment.apiUrl}api/revisions`;
   }
 
   override toAppModel(entity: RadarRevision): AppRevision {

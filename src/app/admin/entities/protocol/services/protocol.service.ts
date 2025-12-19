@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 
 import {map} from "rxjs/operators";
@@ -13,9 +13,15 @@ import {
 } from "../models/protocol";
 import {ISO_LANGUAGES_MAP} from "../../questionnaire/models/questionnaire";
 import {RadarOption} from "../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
+import {RadarConfigBundle} from "../../config/models/config";
 import {environment} from "../../../../../environments/environment";
 import {MockProtocolServer} from "../mock/mockProtocolServer";
+import {
+  getAppConfigBaseUrl,
+  getConfigsFromConfigBundle,
+  getHeaders,
+  getUrlSegment
+} from '../../config/services/config.service';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];
 
@@ -192,22 +198,14 @@ export class ProtocolService {
   }
 
   getAll(projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
-    const headers = this.getHeaders();
-    const appConfigBaseUrl = `${(typeof window !== 'undefined' ? window.location.origin : '')}/appconfig/api`;
-
-    let urlSegment = `global`;
-    if (projectId) {
-      urlSegment = `projects/${projectId}`;
-      if (subjectId) {
-        urlSegment = `${urlSegment}/users/${subjectId}`;
-      }
-    }
-
+    const headers = getHeaders();
+    const appConfigBaseUrl = getAppConfigBaseUrl();
+    const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
     return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockProtocolServer.get(url)).pipe(
       map(configBundle => {
-          const superProtocolString = this.getConfigsFromConfigBundle(configBundle)
+          const superProtocolString = getConfigsFromConfigBundle(configBundle)
             .find(config => config.name === 'main');
           const superProtocol = superProtocolString ? JSON.parse(superProtocolString.value) : [];
           const protocols = superProtocol?.['protocols'] as RadarProtocol[] || [];
@@ -217,16 +215,10 @@ export class ProtocolService {
   }
 
   publish(protocols: AppProtocol[], projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
-    const headers = this.getHeaders();
-    const appConfigBaseUrl = `${(typeof window !== 'undefined' ? window.location.origin : '')}/appconfig/api`;
-    let urlSegment = `global`;
-    if (projectId) {
-      urlSegment = `projects/${projectId}`;
-      if (subjectId) {
-        urlSegment = `${urlSegment}/users/${subjectId}`;
-      }
-    }
-    console.log('Class: ProtocolService, Function: publish, Line 82 urlSegment' , urlSegment);
+    const headers = getHeaders();
+    const appConfigBaseUrl = getAppConfigBaseUrl();
+    const urlSegment = getUrlSegment(projectId, subjectId);
+    const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
     const radarProtocols = protocols.map(p => this.appToRadarModel(p));
     const radarProtocolWrapper: RadarProtocolWrapper = {
@@ -238,49 +230,14 @@ export class ProtocolService {
     };
     const configs = [{name: 'main', value: JSON.stringify(radarProtocolWrapper)}];
 
-    return this.http.post<RadarConfigBundle>(`${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`, {config: configs}, {headers}).pipe(
+    return this.http.post<RadarConfigBundle>(url, {config: configs}, {headers}).pipe(
       map(configBundle => {
-          const superProtocolString = this.getConfigsFromConfigBundle(configBundle).find(config => config.name === 'main');
+          const superProtocolString = getConfigsFromConfigBundle(configBundle).find(config => config.name === 'main');
           const superProtocol = superProtocolString ? JSON.parse(superProtocolString.value) : [];
           return superProtocol?.['protocols'] as AppProtocol[] || [];
         }
       )
     )
-  }
-
-  private getConfigsFromConfigBundle(_configBundle: RadarConfigBundle): RadarConfig[] {
-    const configBundle: RadarConfigBundle = JSON.parse(JSON.stringify(_configBundle));
-
-    const mergedDefaultsWithConfigs = configBundle.defaults?.map((defaultConfig) => {
-      let _config: RadarConfig = {
-        name: defaultConfig.name,
-        default: defaultConfig.value,
-        value: defaultConfig.value,
-        scope: defaultConfig.scope,
-      };
-      configBundle.config.forEach((config, index, arr) => {
-        if (defaultConfig.name === config.name) {
-          _config = {
-            name: defaultConfig.name,
-            default: defaultConfig.value,
-            value: config.value,
-            scope: defaultConfig.scope,
-          };
-          arr.splice(index, 1);
-        }
-      });
-      return _config;
-    });
-
-    let _configs = [...configBundle.config];
-    if (mergedDefaultsWithConfigs) {
-      _configs = [..._configs, ...mergedDefaultsWithConfigs];
-    }
-    return _configs;
-  }
-
-  private getHeaders() {
-    return new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   }
 }
 

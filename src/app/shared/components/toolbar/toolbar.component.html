@@ -6,7 +6,7 @@
                 mat-icon-button
                 aria-label="Menu button"
                 (click)="toggleMenu()">
-          <span class="material-symbols-outlined">menu</span>
+          <mat-icon class="material-symbols-outlined">menu</mat-icon>
         </button>
       <app-logo class="block mx-auto max-h-12" [url]="appCustomizationService.brandingCustomization().logo"/>
     </div>
@@ -19,7 +19,7 @@
                     [matMenuTriggerFor]="languageMenu"
                     aria-label="Language button">
               <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined">language</span>
+                <mat-icon class="material-symbols-outlined">language</mat-icon>
                 <span class="text-base">
                   {{ localeService.currentLocale()?.shortLabel || localeService.currentLocale()?.label }}
                 </span>
@@ -41,42 +41,13 @@
           </mat-menu>
         }
       }
-<!--      @if (locale$ | async; as locale) {-->
-<!--        @if (locale && locale.languages && locale.languages.length > 1) {-->
-<!--          <div class="flex items-center">-->
-<!--            <button mat-button-->
-<!--                    [matMenuTriggerFor]="languageMenu"-->
-<!--                    aria-label="Language button">-->
-<!--              <span class="flex items-center gap-1">-->
-<!--                <span class="material-symbols-outlined">language</span>-->
-<!--                <span class="text-base">-->
-<!--                  {{ locale.currentLanguage?.shortLabel || locale.currentLanguage?.label }}-->
-<!--                </span>-->
-<!--              </span>-->
-<!--            </button>-->
-<!--          </div>-->
-
-<!--          <mat-menu #languageMenu="matMenu"-->
-<!--                    xPosition="before"-->
-<!--                    class="text-base w-64">-->
-<!--            @for (language of locale.languages; track language.code) {-->
-<!--              <button class="hover:text-primary! dark:hover:text-primary-dark! hover:bg-transparent! transition-all"-->
-<!--                      mat-menu-item-->
-<!--                      [class]="locale?.currentLanguage?.locale === language.locale ? 'text-primary! dark:text-primary-dark!' : ''"-->
-<!--                      (click)="switchLanguage(language)">-->
-<!--                <span>{{ language.label }}</span>-->
-<!--              </button>-->
-<!--            }-->
-<!--          </mat-menu>-->
-<!--        }-->
-<!--      }-->
 
       @if (authService.user(); as user) {
         <button mat-icon-button
                 class="small"
                 aria-label="User account button"
                 [matMenuTriggerFor]="userMenu">
-          <span class="material-symbols-outlined">account_circle</span>
+          <mat-icon class="material-symbols-outlined">account_circle</mat-icon>
         </button>
         <mat-menu #userMenu="matMenu"
                   xPosition="before"
@@ -88,7 +59,7 @@
                   mat-menu-item
                   [routerLink]="['/admin','profile']">
               <span class="flex items-center gap-4">
-                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">account_circle</span>
+                <mat-icon class="text-xl sm:text-2xl material-symbols-outlined font-bold">account_circle</mat-icon>
                 <span>{{ 'Profile' | translate }}</span>
               </span>
           </button>
@@ -96,7 +67,7 @@
                   mat-menu-item
                   [routerLink]="['/admin','change-password']">
               <span class="flex items-center gap-4">
-                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">lock</span>
+                <mat-icon class="text-xl sm:text-2xl material-symbols-outlined font-bold">lock</mat-icon>
                 <span>{{ 'Reset Password' | translate }}</span>
               </span>
           </button>
@@ -104,7 +75,7 @@
                   mat-menu-item
                   (click)="logout()">
               <span class="flex items-center gap-4">
-                <span class="text-xl sm:text-2xl material-symbols-outlined font-bold">logout</span>
+                <mat-icon class="text-xl sm:text-2xl material-symbols-outlined font-bold">logout</mat-icon>
                 <span>{{ 'Sign Out' | translate }}</span>
               </span>
           </button>

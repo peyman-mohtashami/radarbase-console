@@ -45,7 +45,6 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
   }
 
   override createDialogRef(mode: SubjectDialogMode, data: {entity?: AppSubject, project?: AppProject}): MatDialogRef<any> {
-    console.log('Class: SubjectDialogService, Function: createDialogRef, Line 48 mode, data' , mode, data);
     const {entity, project} = data;
     if (mode === SubjectDialogMode.DISCONTINUE) {
       return this.createDiscontinueDialogRef(mode, entity, project);
@@ -54,7 +53,6 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
     } else if (mode === SubjectDialogMode.PAIR_SOURCE) {
       return this.createPairSourceDialogRef(mode, entity, project);
     } else {
-      console.log('Class: SubjectDialogService, Function: createDialogRef, Line 57 mode, entity, project' , mode, entity, project);
       return this.dialog.open(SubjectDialogComponent, {
         data: {mode, entity, project},
         panelClass: 'tailwind-slide-panel',

@@ -2,16 +2,16 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {TranslateLoader} from '@ngx-translate/core';
 import {from, Observable, switchMap} from 'rxjs';
-import {AppCustomizationService} from "../app-customization/services/app-customization.service";
 import {environment} from "../../../environments/environment";
+import {ConfigurationService} from '../configuration/services/configuration.service';
 
 @Injectable({providedIn: 'root'})
 export class RuntimeConfigTranslateLoader implements TranslateLoader {
-  private appCustomizationService = inject(AppCustomizationService)
+  private configurationService = inject(ConfigurationService)
   private http = inject(HttpClient);
 
   getTranslation(lang: string): Observable<any> {
-    const localeCustomization = this.appCustomizationService.localeCustomization();
+    const localeCustomization = this.configurationService.localeCustomization();
     const base = localeCustomization.translationsBaseUrl || this.defaultBase();
     const url = this.joinUrl(base, `${lang}.json`);
 

@@ -4,7 +4,6 @@ import {PageEvent} from "@angular/material/paginator";
 import {DEFAULT_PAGE_SIZE} from "../consts/default-table-values";
 import {DialogQuery, RbPageSortEvent, RbSort} from "../models/table.model";
 
-
 @Directive({
   selector: '[tableQueryReflector]',
 })

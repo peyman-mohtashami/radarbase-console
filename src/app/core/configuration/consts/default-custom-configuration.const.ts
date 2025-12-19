@@ -1,6 +1,6 @@
-import {AppCustomization} from "../models/app-customization.model";
+import {CustomConfiguration} from '../models/custom-configuration.model';
 
-export const DEFAULT_APP_CUSTOMIZATION: AppCustomization = {
+export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
   theme: {
     light: {
       primary: "#004F6E",
