@@ -20,7 +20,7 @@ import {
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 
 @Component({
-  selector: 'rb-source-type-dialog',
+  selector: 'app-source-type-dialog',
   templateUrl: './source-type-dialog.component.html',
   imports: [
     DialogTitleComponent,

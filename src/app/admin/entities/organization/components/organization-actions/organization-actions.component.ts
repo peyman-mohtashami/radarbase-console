@@ -11,7 +11,7 @@ import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-organization-actions',
-  templateUrl: './actions.component.html',
+  templateUrl: './organization-actions.component.html',
   imports: [
     MatMenuTrigger,
     MatMenu,
@@ -22,7 +22,7 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon
   ]
 })
-export class ActionsComponent {
+export class OrganizationActionsComponent {
   protected readonly DialogMode = DialogMode;
 
   private configService = inject(OrganizationConfigService);

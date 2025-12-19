@@ -9,7 +9,7 @@ import {takeUntil} from 'rxjs/operators';
 import {filter, Subject} from 'rxjs';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
-import {ActionsComponent} from '../../components/actions/actions.component';
+import {OrganizationActionsComponent} from '../../components/organization-actions/organization-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {ROLES} from "../../../../../shared/enums/roles";
@@ -26,7 +26,7 @@ import {TabLink} from "../../../../models/tab-link";
     RouterLink,
     MatTabNavPanel,
     RouterOutlet,
-    ActionsComponent,
+    OrganizationActionsComponent,
     MatPrefix,
     TranslatePipe,
   ]

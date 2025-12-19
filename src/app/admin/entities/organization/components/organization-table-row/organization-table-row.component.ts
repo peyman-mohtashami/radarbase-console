@@ -5,7 +5,7 @@ import {MatCard, MatCardContent} from "@angular/material/card";
 import {AppOrganization} from "../../models/organization";
 import {OrganizationProjectsComponent} from "../organization-projects/organization-projects.component";
 import {OrganizationDetailsComponent} from "../organization-details/organization-details.component";
-import {ActionsComponent} from "../actions/actions.component";
+import {OrganizationActionsComponent} from "../organization-actions/organization-actions.component";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {OrganizationConfigService} from "../../services/organization-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
@@ -20,7 +20,7 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
     OrganizationProjectsComponent,
     OrganizationDetailsComponent,
     MatCardContent,
-    ActionsComponent,
+    OrganizationActionsComponent,
     PermissionDirective,
     EntityComponent,
   ]
