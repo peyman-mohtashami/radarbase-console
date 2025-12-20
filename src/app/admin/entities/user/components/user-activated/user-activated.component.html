@@ -1,11 +1,11 @@
 @if (activated()) {
-  <span class="material-symbols-outlined text-green-600"
+  <mat-icon class="material-symbols-outlined text-green-600"
         [matTooltip]="'ADMIN.user.activated.label' | translate ">
     verified
-  </span>
+  </mat-icon>
 } @else {
-  <span class="material-symbols-outlined text-red-600"
+  <mat-icon class="material-symbols-outlined text-red-600"
         [matTooltip]="'ADMIN.user.notActivated.label' | translate">
     verified_off
-  </span>
+  </mat-icon>
 }

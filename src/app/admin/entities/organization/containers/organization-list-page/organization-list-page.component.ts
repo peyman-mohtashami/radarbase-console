@@ -30,7 +30,7 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
   override dialogService = inject(OrganizationDialogService);
 
   override entities = signal<AppOrganization[]>(this.activatedRoute.snapshot.data['organizationList']);
-  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+  // organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
@@ -44,6 +44,10 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
   }
 
   override getDialogData(entity?: AppOrganization) {
-    return {entity, entities: this.organizationFullList}
+    return {
+      entity,
+      entities: this.entities(),
+      // entities: this.organizationFullList
+    }
   }
 }

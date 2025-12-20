@@ -40,8 +40,8 @@ import {DetailType} from '../../../../enums/detail-type';
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
+import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 
 @Component({
   selector: 'app-subject-dialog-pair-app',

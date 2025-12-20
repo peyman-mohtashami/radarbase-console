@@ -1,28 +1,28 @@
 <div class="flex items-center gap-2">
   @switch(status()) {
     @case (SubjectStatus.DEACTIVATED) {
-      <span class="text-xl material-symbols-outlined font-bold text-red-600"
+      <mat-icon class="text-xl material-symbols-outlined font-bold text-red-600"
             [matTooltip]="status()">
         disabled_by_default
-      </span>
+      </mat-icon>
     }
     @case (SubjectStatus.ACTIVATED) {
-      <span class="text-xl material-symbols-outlined font-bold text-green-600"
+      <mat-icon class="text-xl material-symbols-outlined font-bold text-green-600"
             [matTooltip]="status()">
         verified_user
-      </span>
+      </mat-icon>
     }
     @case (SubjectStatus.DISCONTINUED) {
-      <span class="text-xl material-symbols-outlined font-bold text-yellow-600"
+      <mat-icon class="text-xl material-symbols-outlined font-bold text-yellow-600"
             [matTooltip]="status()">
         stop_circle
-      </span>
+      </mat-icon>
     }
     @case (SubjectStatus.INVALID) {
-      <span class="text-xl material-symbols-outlined font-bold text-gray-400"
+      <mat-icon class="text-xl material-symbols-outlined font-bold text-gray-400"
             [matTooltip]="status()">
         warning
-      </span>
+      </mat-icon>
     }
     @default {
       <span>-</span>

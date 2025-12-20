@@ -10,12 +10,12 @@ import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {AppProject} from '../../../project/models/project';
-import {ActionsComponent} from '../../components/actions/actions.component';
 import {AppOrganization} from '../../../organization/models/organization';
 import {ROLES} from "../../../../../shared/enums/roles";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
 
 @Component({
   selector: 'app-subject-page',
@@ -30,7 +30,7 @@ import {BaseEntityPageComponent} from '../../../../components/entity-page/base-e
     MatButton,
     MatPrefix,
     TranslatePipe,
-    ActionsComponent,
+    SubjectActionsComponent,
   ]
 })
 export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> implements OnInit, OnDestroy {

@@ -13,11 +13,13 @@ export class SourceTypeDialogService extends BaseDialogService<AppSourceType, So
   override configService = inject(SourceTypeConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity?: AppSourceType}): MatDialogRef<SourceTypeDialogComponent> {
-    const {entity} = data;
+    const sourceTypeFullList = this.entityService.getWithQuery();
+    const _data = {mode, entity: data.entity, sourceTypeFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(SourceTypeDialogComponent, {
-          data: {mode, entity},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -26,7 +28,7 @@ export class SourceTypeDialogService extends BaseDialogService<AppSourceType, So
         });
       default:
         return this.dialog.open(SourceTypeDialogComponent, {
-          data: {mode, entity},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

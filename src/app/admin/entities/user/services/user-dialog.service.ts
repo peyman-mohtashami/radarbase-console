@@ -10,11 +10,16 @@ import {AppOrganization} from '../../organization/models/organization';
 import {UserActivateDialogComponent} from '../containers/user-activate-dialog/user-activate-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {UserConfigService} from './user-config.service';
+import {ProjectService} from '../../project/services/project.service';
+import {OrganizationService} from '../../organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
 export class UserDialogService extends BaseDialogService<AppUser, UserDialogComponent | UserActivateDialogComponent> {
   override entityService = inject(UserService);
   override configService = inject(UserConfigService);
+
+  projectService = inject(ProjectService);
+  organizationService = inject(OrganizationService);
 
   override processDialogAction(actionType: DialogMode | string, entity: AppUser): Observable<AppUser | void> {
     switch (actionType) {
@@ -32,12 +37,38 @@ export class UserDialogService extends BaseDialogService<AppUser, UserDialogComp
     }
   }
 
+  override processUrlFragment(fragment: string, data: {entity?: AppUser, entities?: AppUser[]}) {
+    const entityMetadata = this.configService.getEntityMetadata()
+    const [, action, entityType, entityId] = fragment.split('/');
+    if (entityType === entityMetadata.name) {
+      const entity = data.entity ?? data.entities?.find(e => e._name == entityId);
+      switch (action) {
+        case 'add':
+          this.openDialog(DialogMode.ADD, {...data, entity});
+          break;
+        case 'edit':
+          if (entity) this.openDialog(DialogMode.EDIT, {...data, entity});
+          break;
+        case 'delete':
+          if (entity) this.openDialog(DialogMode.DELETE, {...data, entity});
+          break;
+        case 'activate':
+          if (entity) this.openDialog('activate', {...data, entity});
+          break;
+      }
+    }
+  }
+
   override createDialogRef(mode: DialogMode | string, data: {entity: AppUser | undefined, entities: AppUser[], projects: AppProject[], organizations: AppOrganization[]}): MatDialogRef<UserDialogComponent | UserActivateDialogComponent> {
-    const {entity, entities, projects, organizations} = data;
+    const userFullList = this.entityService.getAll();
+    const projectFullList = this.projectService.getWithQuery();
+    const organizationFullList = this.organizationService.getWithQuery();
+    const _data = {mode, entity: data.entity, userFullList, projectFullList, organizationFullList};
+
     switch (mode) {
       case 'activate':
         return this.dialog.open(UserActivateDialogComponent, {
-          data: {mode, entity, entities, projects, organizations},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -46,7 +77,7 @@ export class UserDialogService extends BaseDialogService<AppUser, UserDialogComp
         });
       case DialogMode.DELETE:
         return this.dialog.open(UserDialogComponent, {
-          data: {mode, entity, entities, projects, organizations},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -55,7 +86,7 @@ export class UserDialogService extends BaseDialogService<AppUser, UserDialogComp
         });
       default:
         return this.dialog.open(UserDialogComponent, {
-          data: {mode, entity, entities, projects, organizations},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

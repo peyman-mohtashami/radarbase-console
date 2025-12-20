@@ -5,11 +5,11 @@ import {
   SourceTypeSourceRegistrationComponent
 } from "../source-type-source-registration/source-type-source-registration.component";
 import {SourceTypeDetailsComponent} from "../source-type-details/source-type-details.component";
-import {ActionsComponent} from '../actions/actions.component';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeConfigService} from "../../services/source-type-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
+import {SourceTypeActionsComponent} from '../source-type-actions/source-type-actions.component';
 
 @Component({
   selector: 'app-source-type-table-row',
@@ -19,9 +19,8 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
     SourceTypeScopeComponent,
     SourceTypeSourceRegistrationComponent,
     SourceTypeDetailsComponent,
-    ActionsComponent,
-    ActionsComponent,
     EntityComponent,
+    SourceTypeActionsComponent,
   ]
 })
 export class SourceTypeTableRowComponent extends BaseEntityComponent<AppSourceType>{

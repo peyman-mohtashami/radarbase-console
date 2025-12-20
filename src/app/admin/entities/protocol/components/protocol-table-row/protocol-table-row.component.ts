@@ -7,9 +7,9 @@ import {ROLES} from "../../../../../shared/enums/roles";
 import {DialogMode} from "../../../../enums/dialog";
 import {AppProtocol} from "../../models/protocol";
 import {UpdateTrigger} from "../../services/protocol-dialog.service";
-import {ActionsComponent} from "../actions/actions.component";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {ProtocolDetailsComponent} from "../protocol-details/protocol-details.component";
+import {ProtocolActionsComponent} from '../protocol-actions/protocol-actions.component';
 
 @Component({
   selector: 'app-protocol-table-row',
@@ -17,9 +17,8 @@ import {ProtocolDetailsComponent} from "../protocol-details/protocol-details.com
   imports: [
     MatCard,
     MatIconButton,
-    ActionsComponent,
-    ActionsComponent,
     ProtocolDetailsComponent,
+    ProtocolActionsComponent,
   ]
 })
 export class ProtocolTableRowComponent {

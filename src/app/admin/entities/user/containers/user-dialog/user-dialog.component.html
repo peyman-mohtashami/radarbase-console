@@ -102,7 +102,7 @@
                 <app-mat-select-autocomplete formControlName='_organizations'
                                             [legend]='"ADMIN.organization.title.plural" | translate'
                                             [label]='"ADMIN.organization.title.plural" | translate'
-                                            [options]='dialogData.organizations'
+                                            [options]='(dialogData.organizationFullList | async) ?? []'
                                             [multiple]="true"/>
               }
             </div>
@@ -118,7 +118,7 @@
                 <app-mat-select-autocomplete formControlName='_projects'
                                             [legend]='"ADMIN.project.title.plural" | translate'
                                             [label]='"ADMIN.project.title.plural" | translate'
-                                            [options]='dialogData.projects'
+                                            [options]='(dialogData.projectFullList | async) ?? []'
                                             [multiple]="true"/>
               }
             </div>

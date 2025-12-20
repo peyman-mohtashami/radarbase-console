@@ -82,7 +82,7 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
   }
 
   getAll(): Observable<AppUser[]> {
-    return this.http.get<RadarUser[]>(`/managementportal/api/users?includeProvenance=false`)
+    return this.http.get<RadarUser[]>(`${environment.apiUrl}api/users?includeProvenance=false`)
       .pipe(
         map((entities) =>
           entities.map((entity) => this.toAppModel(entity))

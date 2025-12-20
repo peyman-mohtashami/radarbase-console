@@ -4,6 +4,7 @@ import {MatDialogTitle} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
 import {EntityRegistry} from "../../../../shared/consts/entity-registry";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-dialog-title',
@@ -11,7 +12,8 @@ import {EntityRegistry} from "../../../../shared/consts/entity-registry";
   imports: [
     MatDialogTitle,
     TranslatePipe,
-    MatIconButton
+    MatIconButton,
+    MatIcon
   ]
 })
 export class DialogTitleComponent {

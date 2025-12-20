@@ -38,9 +38,10 @@
 
       <app-mat-select-autocomplete formControlName='sourceType'
                                   [legend]="`ADMIN.${entityName}.sourceType.label` | translate "
-                                  [options]='sourceTypesOptions'
                                   [label]="(`ADMIN.${entityName}.sourceType.label` | translate) + ' *'"
+                                   [options]='(dialogData.sourceTypeFullList | async) ?? []'
                                   [required]="true">
+<!--                                  [options]='sourceTypesOptions'-->
       </app-mat-select-autocomplete>
 
       <label for="sourceDataName" class="text-sm">{{ `ADMIN.${entityName}.sourceDataName.label` | translate }} *</label>

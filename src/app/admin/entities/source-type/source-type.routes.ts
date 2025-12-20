@@ -12,7 +12,6 @@ export const sourceTypeRoutes: Routes = [
     component: SourceTypeListPageComponent,
     resolve: {
       sourceTypeList: SourceTypeListResolver,
-      sourceTypeFullList: SourceTypeListResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -24,7 +23,6 @@ export const sourceTypeRoutes: Routes = [
     component: SourceTypePageComponent,
     resolve: {
       sourceType: SourceTypeResolver,
-      sourceTypeFullList: SourceTypeListResolver,
     },
   },
   {

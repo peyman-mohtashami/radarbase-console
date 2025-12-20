@@ -39,7 +39,7 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   override entity = signal<AppOrganization>(this.activatedRoute.snapshot.data['organization']);
-  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+  // organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
 
   links: TabLink[] = [
     {path: 'projects', label: `ADMIN.${ENTITY_REGISTRY.project.name}.title.plural`},
@@ -79,7 +79,7 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
   override getDialogData(entity?: AppOrganization) {
     return {
       entity: entity,
-      organizations: this.organizationFullList,
+      // organizations: this.organizationFullList,
     }
   }
 }

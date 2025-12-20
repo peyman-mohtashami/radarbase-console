@@ -3,13 +3,13 @@ import {AppSourceData} from "../../models/source-data";
 
 import {SourceDataDetailsComponent} from "../../components/source-data-details/source-data-details.component";
 import {MatCard, MatCardContent} from '@angular/material/card';
-import {ActionsComponent} from '../../components/actions/actions.component';
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
-import {AppSourceType} from '../../../source-type/models/source-type';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';
+import {SourceDataActionsComponent} from '../../components/source-data-actions/source-data-actions.component';
 
 @Component({
   selector: 'app-source-data-page',
@@ -18,9 +18,9 @@ import {BaseEntityPageComponent} from '../../../../components/entity-page/base-e
     SourceDataDetailsComponent,
     MatCard,
     MatCardContent,
-    ActionsComponent,
     TranslatePipe,
-    MatPrefix
+    MatPrefix,
+    SourceDataActionsComponent
   ]
 })
 export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData> implements OnInit, OnDestroy {
@@ -29,7 +29,6 @@ export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceDa
   override dialogService = inject(SourceDataDialogService);
 
   override entity = signal<AppSourceData>(this.activatedRoute.snapshot.data['sourceData']);
-  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   ngOnInit(): void {
     super.init();
@@ -50,6 +49,10 @@ export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceDa
   }
 
   override getDialogData(entity?: AppSourceData) {
-    return {entity, sourceTypes: this.sourceTypeFullList}
+    return {
+      entity,
+    }
   }
+
+  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 }

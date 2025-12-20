@@ -4,9 +4,6 @@ import {ProjectResolver} from "./services/project.resolver";
 import {ProjectDetailsPageComponent} from "./containers/project-details-page/project-details-page.component";
 import {ProjectListPageComponent} from './containers/project-list-page/project-list-page.component';
 import {ProjectPageComponent} from './containers/project-page/project-page.component';
-import {OrganizationFullListResolver} from '../organization/services/organization-full-list.resolver';
-import {SourceTypeFullListResolver} from '../source-type/services/source-type-full-list.resolver';
-import {ProjectFullListResolver} from './services/project-full-list.resolver';
 
 export const projectRoutes: Routes = [
   {
@@ -14,9 +11,6 @@ export const projectRoutes: Routes = [
     component: ProjectListPageComponent,
     resolve: {
       projectList: ProjectListResolver,
-      projectFullList: ProjectFullListResolver,
-      sourceTypeFullList: SourceTypeFullListResolver,
-      organizationFullList: OrganizationFullListResolver,
     },
   },
   {
@@ -24,8 +18,6 @@ export const projectRoutes: Routes = [
     component: ProjectPageComponent,
     resolve: {
       project: ProjectResolver,
-      projectFullList: ProjectFullListResolver,
-      sourceTypeFullList: SourceTypeFullListResolver,
     },
     children: [
       {

@@ -13,11 +13,13 @@ export class OrganizationDialogService extends BaseDialogService<AppOrganization
   override configService = inject(OrganizationConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppOrganization | undefined, entities: AppOrganization[]}): MatDialogRef<OrganizationDialogComponent> {
-    const {entity, entities} = data;
+    const organizationFullList = this.entityService.getWithQuery();
+    const _data = {mode, entity: data.entity, organizationFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(OrganizationDialogComponent, {
-          data: {mode, entity, entities},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -26,7 +28,7 @@ export class OrganizationDialogService extends BaseDialogService<AppOrganization
         });
       default:
         return this.dialog.open(OrganizationDialogComponent, {
-          data: {mode, entity, entities},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

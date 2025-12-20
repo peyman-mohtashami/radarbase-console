@@ -7,18 +7,23 @@ import {AppSourceData} from '../models/source-data';
 import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SourceDataConfigService} from './source-data-config.service';
+import {SourceTypeService} from '../../source-type/services/source-type.service';
 
 @Injectable({providedIn: 'root'})
 export class SourceDataDialogService extends BaseDialogService<AppSourceData, SourceDataDialogComponent> {
   override entityService = inject(SourceDataService);
   override configService = inject(SourceDataConfigService);
 
+  sourceTypeService = inject(SourceTypeService);
+
   override createDialogRef(mode: DialogMode, data: {entity: AppSourceData | undefined, sourceTypes: AppSourceType[]}): MatDialogRef<SourceDataDialogComponent> {
-    const {entity , sourceTypes} = data;
+    const sourceTypeFullList = this.sourceTypeService.getWithQuery();
+    const _data = {mode, entity: data.entity, sourceTypeFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(SourceDataDialogComponent, {
-          data: {mode, entity, sourceTypes},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -27,7 +32,7 @@ export class SourceDataDialogService extends BaseDialogService<AppSourceData, So
         });
       default:
         return this.dialog.open(SourceDataDialogComponent, {
-          data: {mode, entity, sourceTypes},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

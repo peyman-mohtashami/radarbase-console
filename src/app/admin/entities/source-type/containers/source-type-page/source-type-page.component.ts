@@ -5,9 +5,9 @@ import {SourceTypeDialogService} from '../../services/source-type-dialog.service
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
 import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
-import {ActionsComponent} from '../../components/actions/actions.component';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {SourceTypeActionsComponent} from '../../components/source-type-actions/source-type-actions.component';
 
 @Component({
   selector: 'app-source-type-page',
@@ -18,7 +18,7 @@ import {BaseEntityPageComponent} from '../../../../components/entity-page/base-e
     TranslatePipe,
     MatPrefix,
     SourceTypeDetailsComponent,
-    ActionsComponent
+    SourceTypeActionsComponent,
   ]
 })
 export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType> implements OnInit, OnDestroy {
@@ -26,7 +26,6 @@ export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceTy
   override dialogService = inject(SourceTypeDialogService);
 
   override entity = signal<AppSourceType>(this.activatedRoute.snapshot.data['sourceType']);
-  sourceTypeFullList = this.activatedRoute.snapshot.data['sourceTypeListFullList'];
 
   ngOnInit(): void {
     super.init();
@@ -53,6 +52,9 @@ export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceTy
   }
 
   override getDialogData(entity?: AppSourceType) {
-    return {entity, sourceTypes: this.sourceTypeFullList}
+    return {
+      entity,
+      // sourceTypes: this.sourceTypeFullList
+    }
   }
 }

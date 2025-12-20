@@ -32,7 +32,7 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
   override dialogService = inject(PermissionDialogService);
 
   override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
-  users: AppUser[] = this.activatedRoute.snapshot.data['userList'];
+  // users: AppUser[] = this.activatedRoute.snapshot.data['userList'];
 
   currentOrganization?: AppOrganization = getCurrentOrganization(this.activatedRoute.snapshot);
   currentProject?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
@@ -55,7 +55,7 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
       entities: this.entities(),
       project: this.currentProject,
       organization: this.currentOrganization,
-      users: this.users,
+      // users: this.users,
     }
   }
 }

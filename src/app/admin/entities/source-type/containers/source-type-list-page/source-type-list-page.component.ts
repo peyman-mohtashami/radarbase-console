@@ -29,7 +29,7 @@ export class SourceTypeListPageComponent extends BaseEntityListPageComponent<App
   override dialogService = inject(SourceTypeDialogService);
 
   override entities = signal<AppSourceType[]>(this.activatedRoute.snapshot.data['sourceTypeList']);
-  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
+  // sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   ngOnInit() {
     super.init();
@@ -43,7 +43,7 @@ export class SourceTypeListPageComponent extends BaseEntityListPageComponent<App
     return {
       entity: entity,
       entities: this.entities(),
-      sourceTypes: this.sourceTypeFullList
+      // sourceTypes: this.sourceTypeFullList
     }
   }
 }

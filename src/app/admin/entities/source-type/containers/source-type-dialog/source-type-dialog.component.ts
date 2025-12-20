@@ -18,6 +18,7 @@ import {
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-source-type-dialog',
@@ -44,6 +45,7 @@ export class SourceTypeDialogComponent extends BaseDialogComponent<AppSourceType
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppSourceType;
+    sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
   override formFields = this.configService.getFormFields();

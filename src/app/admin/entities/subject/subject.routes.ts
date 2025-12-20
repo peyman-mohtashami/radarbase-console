@@ -7,8 +7,6 @@ import {SubjectDownloadPageComponent} from "./containers/subject-download-page/s
 import {SubjectDataPageComponent} from "./containers/subject-data-page/subject-data-page.component";
 import {SubjectCompliancePageComponent} from "./containers/subject-compliance-page/subject-compliance-page.component";
 import {SubjectListPageComponent} from './containers/subject-list-page/subject-list-page.component';
-import {ClientFullListResolver} from '../client/services/client-full-list.resolver';
-import {GroupFullListResolver} from '../group/services/group-full-list.resolver';
 
 export const subjectRoutes: Routes = [
   {
@@ -16,8 +14,6 @@ export const subjectRoutes: Routes = [
     component: SubjectListPageComponent,
     resolve: {
       subjectList: SubjectListResolver,
-      clientFullList: ClientFullListResolver,
-      groupFullList: GroupFullListResolver,
     },
   },
   {
@@ -25,8 +21,6 @@ export const subjectRoutes: Routes = [
     component: SubjectPageComponent,
     resolve: {
       subject: SubjectResolver,
-      clientFullList: ClientFullListResolver,
-      groupFullList: GroupFullListResolver,
     },
     children: [
       {

@@ -9,7 +9,6 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {AppSourceData, ProcessingState} from "../../models/source-data";
 import {MatOption} from "@angular/material/core";
-import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSelect} from '@angular/material/select';
@@ -28,9 +27,11 @@ import {
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
-  selector: 'rb-source-data-dialog',
+  selector: 'app-source-data-dialog',
   templateUrl: './source-data-dialog.component.html',
   imports: [
     DialogTitleComponent,
@@ -45,6 +46,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     MatOption,
     DialogActionsComponent,
     MatError,
+    AsyncPipe,
   ]
 })
 export class SourceDataDialogComponent extends BaseDialogComponent<AppSourceData> implements OnInit, AfterViewInit {
@@ -55,7 +57,7 @@ export class SourceDataDialogComponent extends BaseDialogComponent<AppSourceData
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppSourceData;
-    sourceTypes: AppSourceType[];
+    sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
   override formFields = this.configService.getFormFields();
@@ -75,9 +77,9 @@ export class SourceDataDialogComponent extends BaseDialogComponent<AppSourceData
     unit: new FormControl<string>(''),
   });
 
-  sourceTypesOptions: RadarOption[] = (this.dialogData.sourceTypes as AppSourceType[]).sort((a, b) =>
-    a._name.localeCompare(b._name)
-  );
+  // sourceTypesOptions: RadarOption[] = (this.dialogData.sourceTypeFullList as AppSourceType[]).sort((a, b) =>
+  //   a._name.localeCompare(b._name)
+  // );
 
   ngOnInit() {
     super.init();

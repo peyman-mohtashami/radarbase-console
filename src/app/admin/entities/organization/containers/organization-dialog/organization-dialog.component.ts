@@ -17,6 +17,7 @@ import {
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-organization-dialog',
@@ -43,7 +44,8 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppOrganization;
-    entities: AppOrganization[];
+    organizationFullList: Observable<AppOrganization[]>;
+    // entities: AppOrganization[];
   };
 
   override formFields = this.configService.getFormFields();
@@ -55,8 +57,13 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
     location: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
 
+  organizations: AppOrganization[] = [];
+
   ngOnInit() {
-    this.form.controls.name.addValidators(this.duplicateValidator);
+    this.dialogData.organizationFullList.subscribe(organizations => {
+      this.organizations = organizations;
+      this.form.controls.name.addValidators(this.duplicateValidator);
+    });
     super.init();
     // this.form.patchValue(this.dialogData.entity);
   }
@@ -77,7 +84,13 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    return this.dialogData.entities?.find(
+    // return this.dialogData.entities?.find(
+    //   (entity) =>
+    //     control.value === entity.name && this.dialogData.entity?.name !== entity.name
+    // )
+    //   ? { duplicate: true }
+    //   : null;
+    return this.organizations.find(
       (entity) =>
         control.value === entity.name && this.dialogData.entity?.name !== entity.name
     )

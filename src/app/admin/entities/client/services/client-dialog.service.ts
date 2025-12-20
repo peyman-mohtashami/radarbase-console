@@ -13,11 +13,13 @@ export class ClientDialogService extends BaseDialogService<AppClient, ClientDial
   override configService = inject(ClientConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppClient | undefined, entities: AppClient[]}): MatDialogRef<ClientDialogComponent> {
-    const {entity, entities} = data;
+    const clientFullList = this.entityService.getWithQuery();
+    const _data = {mode, entity: data.entity, clientFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(ClientDialogComponent, {
-          data: {mode, entity, entities},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -26,7 +28,7 @@ export class ClientDialogService extends BaseDialogService<AppClient, ClientDial
         });
       default:
         return this.dialog.open(ClientDialogComponent, {
-          data: {mode, entity, entities},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

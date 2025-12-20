@@ -24,11 +24,12 @@ export class PermissionDialogService extends BaseDialogService<AppUser, Permissi
       users: AppUser[];
     }
   ): MatDialogRef<PermissionDialogComponent> {
-    const {entity, entities, project, organization, users} = data;
+    const userFullList = this.entityService.getAll();
+    const _data = {mode, entity: data.entity, entities: data.entities, project: data.project, organization: data.organization, userFullList};
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(PermissionDialogComponent, {
-          data: {mode, entity, entities, project, organization, users},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -37,7 +38,7 @@ export class PermissionDialogService extends BaseDialogService<AppUser, Permissi
         });
       default:
         return this.dialog.open(PermissionDialogComponent, {
-          data: {mode, entity, entities, project, organization, users},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',

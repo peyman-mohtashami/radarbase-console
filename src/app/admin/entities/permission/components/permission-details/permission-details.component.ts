@@ -2,12 +2,12 @@ import {Component, inject, input} from '@angular/core';
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {DetailsComponent} from "../../../../components/details/details.component";
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
-import {ActivateComponent} from '../../../user/components/activate/activate.component';
 import {UserCreatedByComponent} from '../../../user/components/user-createdby/user-created-by.component';
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
 import {PermissionConfigService} from "../../services/permission-config.service";
 import {AppUser} from "../../../user/models/user";
 import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
 
 @Component({
   selector: 'app-permission-details',
@@ -17,11 +17,10 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
     UserCreatedByComponent,
     LocalDateComponent,
     DetailsComponent,
-    ActivateComponent,
     UserActivatedComponent,
-    ActivateComponent,
     UserCreatedByComponent,
     PermissionRolesComponent,
+    UserActivateComponent,
   ]
 })
 export class PermissionDetailsComponent extends BaseDetailsComponent<AppUser>{

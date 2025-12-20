@@ -7,10 +7,10 @@ import {ProjectSourceTypesComponent} from "../project-source-types/project-sourc
 import {ProjectDetailsComponent} from "../project-details/project-details.component";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {ActionsComponent} from '../actions/actions.component';
 import {ProjectConfigService} from "../../services/project-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
+import {ProjectActionsComponent} from '../project-actions/project-actions.component';
 
 @Component({
   selector: 'app-project-table-row',
@@ -24,9 +24,8 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
     PermissionDirective,
     LocalDateComponent,
     MatCardContent,
-    ActionsComponent,
-    ActionsComponent,
     EntityComponent,
+    ProjectActionsComponent,
   ]
 })
 export class ProjectTableRowComponent extends BaseEntityComponent<AppProject> {

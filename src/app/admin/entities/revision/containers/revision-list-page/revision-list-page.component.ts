@@ -12,7 +12,6 @@ import {
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {AppClient} from '../../../client/models/client';
 
 @Component({
   selector: 'app-revision-list-page',

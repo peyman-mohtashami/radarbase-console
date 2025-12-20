@@ -24,6 +24,8 @@ import {
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-project-dialog',
@@ -49,6 +51,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     MatSelect,
     MatDatepickerInput,
     MatSuffix,
+    AsyncPipe,
   ]
 })
 export class ProjectDialogComponent extends BaseDialogComponent<AppProject> implements OnInit, AfterViewInit {
@@ -58,10 +61,10 @@ export class ProjectDialogComponent extends BaseDialogComponent<AppProject> impl
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppProject;
-    entities: AppProject[];
     organization: RadarOrganization;
-    organizations: AppOrganization[];
-    sourceTypes: AppSourceType[];
+    projectFullList: Observable<AppProject[]>;
+    organizationFullList: Observable<AppOrganization[]>;
+    sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
   protected readonly ProjectStatus = ProjectStatus;
@@ -98,9 +101,13 @@ export class ProjectDialogComponent extends BaseDialogComponent<AppProject> impl
   minDate: Date = new Date(2000, 0, 1);
   maxDate: Date = new Date(2050, 0, 1);
 
+  projectFullList: AppProject[] = [];
 
   ngOnInit() {
-    this.form.controls.projectName.addValidators(this.duplicateValidator);
+    this.dialogData.projectFullList.subscribe(projects => {
+      this.projectFullList = projects;
+      this.form.controls.projectName.addValidators(this.duplicateValidator);
+    })
     super.init();
   }
 
@@ -120,7 +127,7 @@ export class ProjectDialogComponent extends BaseDialogComponent<AppProject> impl
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    return this.dialogData.entities?.find(
+    return this.projectFullList.find(
       (entity) =>
         control.value === entity.projectName &&
         this.dialogData.entity?.projectName !== entity.projectName

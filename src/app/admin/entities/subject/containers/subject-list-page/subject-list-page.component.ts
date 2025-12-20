@@ -8,7 +8,6 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {AppSubject} from '../../models/subject';
 import {SubjectTableRowComponent} from '../../components/subject-table-row/subject-table-row.component';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {AssignGroupComponent} from '../../components/assign-group/assign-group.component';
 import {AppGroup} from '../../../group/models/group';
 import {
   DataTableFilterComponent,
@@ -17,6 +16,7 @@ import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
 import {getCurrentProject} from '../../../../services/util';
+import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
 
 @Component({
   selector: 'app-subject-list-page',
@@ -26,8 +26,8 @@ import {getCurrentProject} from '../../../../services/util';
     EntitiesPageHeaderComponent,
     LoaderComponent,
     SubjectTableRowComponent,
-    AssignGroupComponent,
     EntitiesPageComponent,
+    SubjectAssignGroupComponent,
   ]
 })
 export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSubject> implements OnInit, OnDestroy {

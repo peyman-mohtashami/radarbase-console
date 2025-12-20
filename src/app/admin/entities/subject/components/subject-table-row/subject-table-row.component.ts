@@ -7,13 +7,13 @@ import {LocalDateComponent} from "../../../../../core/locale/components/local-da
 import {SubjectGroupComponent} from "../subject-group/subject-group.component";
 import {SubjectDetailsComponent} from "../subject-details/subject-details.component";
 import {MatTooltip} from "@angular/material/tooltip";
-import {ActionsComponent} from '../actions/actions.component';
 import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectConfigService} from '../../services/subject-config.service';
+import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
 
 @Component({
   selector: 'app-subject-table-row',
@@ -25,12 +25,11 @@ import {SubjectConfigService} from '../../services/subject-config.service';
     LocalDateComponent,
     SubjectGroupComponent,
     SubjectDetailsComponent,
-    ActionsComponent,
     TruncatePipe,
     MatTooltip,
     TagComponent,
-    ActionsComponent,
     EntityComponent,
+    SubjectActionsComponent,
   ]
 })
 export class SubjectTableRowComponent extends BaseEntityComponent<AppSubject> {

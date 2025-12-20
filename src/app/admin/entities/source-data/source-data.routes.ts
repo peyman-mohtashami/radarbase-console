@@ -5,7 +5,6 @@ import {SourceDataPageComponent} from "./containers/source-data-page/source-data
 import {SourceDataResolver} from "./services/source-data.resolver";
 import {SourceDataListPageComponent} from './containers/source-data-list-page/source-data-list-page.component';
 import {RADAR_ROLES} from '../../../core/auth/models/auth.model';
-import {SourceTypeFullListResolver} from '../source-type/services/source-type-full-list.resolver';
 
 export const sourceDataRoutes: Routes = [
   {
@@ -13,7 +12,6 @@ export const sourceDataRoutes: Routes = [
     component: SourceDataListPageComponent,
     resolve: {
       sourceDataList: SourceDataListResolver,
-      sourceTypeFullList: SourceTypeFullListResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -25,7 +23,6 @@ export const sourceDataRoutes: Routes = [
     component: SourceDataPageComponent,
     resolve: {
       sourceData: SourceDataResolver,
-      sourceTypeFullList: SourceTypeFullListResolver,
     },
   },
   {

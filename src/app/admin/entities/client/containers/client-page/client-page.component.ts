@@ -9,10 +9,10 @@ import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
 import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
-import {ActionsComponent} from '../../components/actions/actions.component';
 import {TabLink} from "../../../../models/tab-link";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {ClientActionsComponent} from '../../components/client-actions/client-actions.component';
 
 @Component({
   selector: 'app-client-page',
@@ -27,7 +27,7 @@ import {BaseEntityPageComponent} from '../../../../components/entity-page/base-e
     RouterOutlet,
     RouterLink,
     PermissionDirective,
-    ActionsComponent
+    ClientActionsComponent,
   ]
 })
 export class ClientPageComponent extends BaseEntityPageComponent<AppClient> implements OnInit, OnDestroy {

@@ -19,7 +19,7 @@
       </a>
       @if (!configFields || configFields['topic'] === undefined || configFields['topic']) {
         <p class="text-neutral-500 dark:text-neutral-300 font-bold">
-          <span class="uppercase text-xs text-neutral-400">Topic</span> {{ entity().topic || '-' }}
+          <span class="uppercase text-xs text-neutral-400">{{ `ADMIN.sourceData.topic.label` | translate }}</span> {{ entity().topic || '-' }}
         </p>
       }
     }

@@ -2,13 +2,11 @@ import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {NavigationEnd, RouterLink, RouterOutlet} from '@angular/router';
 
 import {AppProject} from "../../models/project";
-import { AppOrganization } from "../../../organization/models/organization";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {filter} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ROLES} from "../../../../../shared/enums/roles";
-import {ActionsComponent} from '../../components/actions/actions.component';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {ProjectDialogService} from '../../services/project-dialog.service';
 import {MatButton} from '@angular/material/button';
@@ -16,8 +14,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
-import {AppSourceType} from "../../../source-type/models/source-type";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
 
 @Component({
   selector: 'app-project-page',
@@ -29,10 +27,10 @@ import {BaseEntityPageComponent} from '../../../../components/entity-page/base-e
     RouterLink,
     MatTabNavPanel,
     RouterOutlet,
-    ActionsComponent,
     MatButton,
     MatPrefix,
     TranslatePipe,
+    ProjectActionsComponent,
   ]
 })
 export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> implements OnInit, OnDestroy {
@@ -43,9 +41,6 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   override entity = signal<AppProject>(this.activatedRoute.snapshot.data['project']);
-  projectFullList: AppProject[] = this.activatedRoute.snapshot.data['projectFullList'];
-  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
-  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   links: TabLink[] = [
     { path: 'subjects', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.title.plural` },
@@ -117,9 +112,9 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
       entity: entity,
       // entities: this.entities(),
       // organization: this.organization,
-      projects: this.projectFullList,
-      organizations: this.organizationFullList,
-      sourceTypes: this.sourceTypeFullList
+      // projects: this.projectFullList,
+      // organizations: this.organizationFullList,
+      // sourceTypes: this.sourceTypeFullList
     }
   }
 }

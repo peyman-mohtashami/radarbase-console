@@ -27,6 +27,8 @@ import {
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-user-dialog',
@@ -43,6 +45,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     MatInput,
     MatSlideToggle,
     MatSelectAutocompleteComponent,
+    AsyncPipe,
   ]
 })
 export class UserDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit {
@@ -51,9 +54,9 @@ export class UserDialogComponent extends BaseDialogComponent<AppUser> implements
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppUser;
-    entities: AppUser[];
-    projects: AppProject[];
-    organizations: AppOrganization[];
+    userFullList: Observable<AppUser[]>;
+    projectFullList: Observable<AppProject[]>;
+    organizationFullList: Observable<AppOrganization[]>;
   };
 
   override formFields = this.configService.getFormFields();

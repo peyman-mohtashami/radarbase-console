@@ -18,6 +18,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from '../../services/client-config.service';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-client-dialog',
@@ -46,7 +47,7 @@ export class ClientDialogComponent extends BaseDialogComponent<AppClient> implem
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppClient;
-    entities: AppClient[];
+    clientFullList: Observable<AppClient[]>;
   };
 
   override formFields = this.configService.getFormFields();
@@ -74,9 +75,16 @@ export class ClientDialogComponent extends BaseDialogComponent<AppClient> implem
     })
   });
 
+  clientFullList: AppClient[] = [];
+
   ngOnInit() {
-    this.form.controls.clientId.addValidators(this.duplicateValidator);
+    this.dialogData.clientFullList.subscribe(clients => {
+      this.clientFullList = clients;
+      this.form.controls.clientId.addValidators(this.duplicateValidator);
+    });
+
     super.init();
+
     this.form.controls.enableEmptySecret?.valueChanges.subscribe((value) => {
       this.form.controls.clientSecret?.setValidators(
         value ? null : Validator.requiredValidator
@@ -114,7 +122,7 @@ export class ClientDialogComponent extends BaseDialogComponent<AppClient> implem
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    return this.dialogData.entities?.find(
+    return this.clientFullList.find(
       (entity) =>
         control.value === entity.clientId &&
         this.dialogData.entity?.clientId !== entity.clientId

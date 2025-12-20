@@ -4,8 +4,6 @@ import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {UserPageComponent} from "./containers/user-page/user-page.component";
 import {UserResolver} from "./services/user.resolver";
 import {UserListPageComponent} from './containers/user-list-page/user-list-page.component';
-import {OrganizationFullListResolver} from '../organization/services/organization-full-list.resolver';
-import {ProjectFullListResolver} from '../project/services/project-full-list.resolver';
 
 export const userRoutes: Routes = [
   {
@@ -13,8 +11,6 @@ export const userRoutes: Routes = [
     component: UserListPageComponent,
     resolve: {
       userList: UserListResolver,
-      projectFullList: ProjectFullListResolver,
-      organizationFullList: OrganizationFullListResolver,
     },
     canActivate: [roleGuard],
     data: {
@@ -26,9 +22,6 @@ export const userRoutes: Routes = [
     component: UserPageComponent,
     resolve: {
       user: UserResolver,
-      userList: UserListResolver,
-      projectFullList: ProjectFullListResolver,
-      organizationFullList: OrganizationFullListResolver,
     },
   },
   {

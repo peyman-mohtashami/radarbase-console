@@ -1,4 +1,3 @@
-import {RadarProject} from '../../project/models/project';
 import {RadarOption} from "../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 
 export interface RadarUser {

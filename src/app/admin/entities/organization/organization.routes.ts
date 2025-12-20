@@ -6,7 +6,6 @@ import {
 } from "./containers/organization-details-page/organization-details-page.component";
 import {OrganizationListResolver} from './services/organization-list.resolver';
 import {OrganizationListPageComponent} from './containers/organization-list-page/organization-list-page.component';
-import {OrganizationFullListResolver} from './services/organization-full-list.resolver';
 
 export const organizationRoutes: Routes = [
   {
@@ -14,7 +13,6 @@ export const organizationRoutes: Routes = [
     component: OrganizationListPageComponent,
     resolve: {
       organizationList: OrganizationListResolver,
-      organizationFullList: OrganizationFullListResolver,
     }
   },
   {
@@ -22,7 +20,6 @@ export const organizationRoutes: Routes = [
     component: OrganizationPageComponent,
     resolve: {
       organization: OrganizationResolver,
-      organizationFullList: OrganizationFullListResolver,
     },
     children: [
       {

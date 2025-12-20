@@ -4,7 +4,6 @@ import { SourceDataTableRowComponent } from '../../components/source-data-table-
 import {SourceDataService} from '../../services/source-data.service';
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
 import {AppSourceData} from '../../models/source-data';
-import {AppSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -31,7 +30,6 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
   override dialogService = inject(SourceDataDialogService);
 
   override entities = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['sourceDataList']);
-  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   ngOnInit() {
     super.init();
@@ -45,7 +43,6 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
     return {
       entity: entity,
       entities: this.entities(),
-      sourceTypes: this.sourceTypeFullList
     }
   }
 }

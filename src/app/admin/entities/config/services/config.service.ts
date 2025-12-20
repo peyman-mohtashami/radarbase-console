@@ -6,10 +6,7 @@ import {getGlobalConfiguration, getProjectConfiguration, getSubjectConfiguration
 import {map, tap} from "rxjs/operators";
 import {AppConfig, RadarConfig, RadarConfigBundle} from "../models/config";
 import {environment} from "../../../../../environments/environment";
-import {ActivatedRouteSnapshot, Params} from '@angular/router';
-import {AppProject} from '../../project/models/project';
-import {AppSubject} from '../../subject/models/subject';
-import {AppClient} from '../../client/models/client';
+import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({ providedIn: 'root' })

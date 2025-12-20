@@ -20,11 +20,14 @@ import {
 import {AppGroup} from '../../group/models/group';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SubjectConfigService} from './subject-config.service';
+import {GroupService} from '../../group/services/group.service';
 
 @Injectable({providedIn: 'root'})
 export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectDialogComponent> {
   override entityService = inject(SubjectService);
   override configService = inject(SubjectConfigService);
+
+  groupService = inject(GroupService);
 
   override processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
     switch (actionType) {
@@ -47,16 +50,18 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
   }
 
   override createDialogRef(mode: SubjectDialogMode, data: {entity?: AppSubject, project?: AppProject}): MatDialogRef<any> {
-    const {entity, project} = data;
+    const groupFullList = this.groupService.getWithQuery();
+    const _data = {mode, entity: data.entity, project: data.project, groupFullList};
+
     if (mode === SubjectDialogMode.DISCONTINUE) {
-      return this.createDiscontinueDialogRef(mode, entity, project);
+      return this.createDiscontinueDialogRef(_data.mode, _data.entity, _data.project);
     } else if (mode === SubjectDialogMode.PAIR_APP) {
-      return this.createPairAppDialogRef(mode, entity, project);
+      return this.createPairAppDialogRef(_data.mode, _data.entity, _data.project);
     } else if (mode === SubjectDialogMode.PAIR_SOURCE) {
-      return this.createPairSourceDialogRef(mode, entity, project);
+      return this.createPairSourceDialogRef(_data.mode, _data.entity, _data.project);
     } else {
       return this.dialog.open(SubjectDialogComponent, {
-        data: {mode, entity, project},
+        data: _data,
         panelClass: 'tailwind-slide-panel',
         width: '50%',
         height: '100vh',

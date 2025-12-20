@@ -8,16 +8,25 @@ import {AppOrganization, RadarOrganization} from '../../organization/models/orga
 import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {ProjectConfigService} from './project-config.service';
+import {OrganizationService} from '../../organization/services/organization.service';
+import {SourceTypeService} from '../../source-type/services/source-type.service';
 
 @Injectable({providedIn: 'root'})
 export class ProjectDialogService extends BaseDialogService<AppProject, ProjectDialogComponent> {
   override entityService = inject(ProjectService);
   override configService = inject(ProjectConfigService);
 
+  organizationService = inject(OrganizationService);
+  sourceTypeService = inject(SourceTypeService);
+
   override createDialogRef(mode: DialogMode, data: {entity: AppProject | undefined, entities: AppProject[], organization: RadarOrganization | undefined, organizations: AppOrganization[], sourceTypes: AppSourceType[]}): MatDialogRef<ProjectDialogComponent> {
-    const {entity, entities, organization, organizations, sourceTypes} = data;
+    const projectFullList = this.entityService.getWithQuery();
+    const organizationFullList = this.organizationService.getWithQuery();
+    const sourceTypeFullList = this.sourceTypeService.getWithQuery();
+    const _data = {mode, entity: data.entity, organization: data.organization, projectFullList, sourceTypeFullList, organizationFullList};
+
     return this.dialog.open(ProjectDialogComponent, {
-      data: {mode, entity, entities, organization, organizations, sourceTypes},
+      data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',

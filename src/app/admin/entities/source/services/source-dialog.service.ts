@@ -14,6 +14,7 @@ export class SourceDialogService extends BaseDialogService<AppSource, SourceDial
   override configService = inject(SourceConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppSource | undefined, sourceTypes: AppSourceType[]}): MatDialogRef<SourceDialogComponent> {
+
     const {entity, sourceTypes} = data;
     switch (mode) {
       case DialogMode.DELETE:

@@ -35,8 +35,6 @@ import {TagComponent} from '../../../shared/components/tag/tag.component';
 import {LocaleService} from "../../../core/locale/services/locale.service";
 
 export type FilterEvent = Record<string, string | null | undefined>
-//   [key: string]: string | null | undefined;
-// }
 
 @Component({
   selector: 'app-data-table-filter',

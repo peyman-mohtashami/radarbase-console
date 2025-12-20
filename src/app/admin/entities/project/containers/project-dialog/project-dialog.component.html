@@ -15,7 +15,7 @@
       @if (!dialogData.organization && (!dialogData.entity || !dialogData.entity.organization)) {
         <app-mat-select-autocomplete formControlName='organization'
                                     [legend]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
-                                    [options]='dialogData.organizations'
+                                    [options]='(dialogData.organizationFullList | async) ?? []'
                                     [label]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
                                     [multiple]="false"
                                     [required]="true"/>
@@ -204,7 +204,7 @@
 
       <app-mat-select-autocomplete formControlName='sourceTypes'
                                   [legend]="`ADMIN.${entityName}.sourceTypes.label` | translate"
-                                  [options]='dialogData.sourceTypes'
+                                  [options]='(dialogData.sourceTypeFullList | async) ?? []'
                                   [label]="`ADMIN.${entityName}.sourceTypes.label` | translate"
                                   [multiple]="true"/>
 

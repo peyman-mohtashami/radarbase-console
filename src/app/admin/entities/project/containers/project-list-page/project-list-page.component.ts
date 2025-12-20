@@ -32,8 +32,8 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
   override dialogService = inject(ProjectDialogService);
 
   override entities = signal<AppProject[]>(this.activatedRoute.snapshot.data['projectList']);
-  organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
-  sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
+  // organizationFullList: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
+  // sourceTypeFullList: AppSourceType[] = this.activatedRoute.snapshot.data['sourceTypeFullList'];
 
   organization?: AppOrganization = getCurrentOrganization(this.activatedRoute.snapshot);
 
@@ -53,8 +53,8 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
       entity: entity,
       entities: this.entities(),
       organization: this.organization,
-      organizations: this.organizationFullList,
-      sourceTypes: this.sourceTypeFullList
+      // organizations: this.organizationFullList,
+      // sourceTypes: this.sourceTypeFullList
     }
   }
 

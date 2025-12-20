@@ -2,12 +2,14 @@ import {Component, input} from "@angular/core";
 import {DetailType} from "../../../../enums/detail-type";
 import {MatTooltip} from "@angular/material/tooltip";
 import {SubjectStatus} from '../../models/subject';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-subject-status',
   templateUrl: './subject-status.component.html',
   imports: [
-    MatTooltip
+    MatTooltip,
+    MatIcon
   ]
 })
 export class SubjectStatusComponent {
