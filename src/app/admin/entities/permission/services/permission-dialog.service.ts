@@ -7,10 +7,12 @@ import {PermissionDialogComponent} from '../containers/permission-dialog/permiss
 import {AppUser} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {PermissionConfigService} from './permission-config.service';
 
 @Injectable({providedIn: 'root'})
 export class PermissionDialogService extends BaseDialogService<AppUser, PermissionDialogComponent> {
   override entityService = inject(UserService);
+  override configService = inject(PermissionConfigService);
 
   override createDialogRef(
     mode: DialogMode,

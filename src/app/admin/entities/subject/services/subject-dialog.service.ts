@@ -19,10 +19,12 @@ import {
 } from '../containers/subject-dialog-assign-group/subject-dialog-assign-group.component';
 import {AppGroup} from '../../group/models/group';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {SubjectConfigService} from './subject-config.service';
 
 @Injectable({providedIn: 'root'})
 export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectDialogComponent> {
   override entityService = inject(SubjectService);
+  override configService = inject(SubjectConfigService);
 
   override processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
     switch (actionType) {

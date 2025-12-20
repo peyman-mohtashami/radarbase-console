@@ -5,10 +5,12 @@ import {AppGroup} from '../models/group';
 import {GroupService} from './group.service';
 import {GroupDialogComponent} from '../containers/group-dialog/group-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {GroupConfigService} from './group-config.service';
 
 @Injectable({providedIn: 'root'})
 export class GroupDialogService extends BaseDialogService<AppGroup, GroupDialogComponent>{
   override entityService = inject(GroupService);
+  override configService = inject(GroupConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppGroup | undefined, entities: AppGroup[]}): MatDialogRef<GroupDialogComponent> {
     const {entity, entities} = data;

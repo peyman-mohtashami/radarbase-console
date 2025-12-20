@@ -26,13 +26,13 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
   // protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
   protected readonly DialogMode = DialogMode;
 
-  private router = inject(Router);
+  protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
   // protected entityService!: BaseEntityService<T, any>;
   protected configService!: BaseConfigService;
   protected dialogService!: BaseDialogService<T, any>;
 
-  entityName = this.configService.getEntityMetadata().name;
+  // entityName = this.configService.getEntityMetadata().name;
   // protected GRID_VIEW_ENABLED = false;
   // gridView = false;
   entity = signal<T | undefined>(undefined);
@@ -162,24 +162,26 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        if (fragment) this.processUrlFragment(fragment);
+        const data = this.getDialogData(this.entity());
+        if (fragment) this.dialogService.processUrlFragment(fragment, data)
+        // if (fragment) this.processUrlFragment(fragment);
       });
   }
 
-  processUrlFragment(fragment: string) {
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [, action, entityType] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      switch (action) {
-        case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(this.entity()));
-          break;
-        case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, this.getDialogData(this.entity()));
-          break;
-      }
-    }
-  }
+  // processUrlFragment(fragment: string) {
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [, action, entityType] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     switch (action) {
+  //       case 'edit':
+  //         this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(this.entity()));
+  //         break;
+  //       case 'delete':
+  //         this.dialogService.openDialog(DialogMode.DELETE, this.getDialogData(this.entity()));
+  //         break;
+  //     }
+  //   }
+  // }
 
   getDialogData(entity?: T) {
     return {entity}

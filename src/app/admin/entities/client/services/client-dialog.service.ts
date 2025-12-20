@@ -5,10 +5,12 @@ import {AppClient} from '../models/client';
 import {ClientService} from './client.service';
 import {ClientDialogComponent} from '../containers/client-dialog/client-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {ClientConfigService} from './client-config.service';
 
 @Injectable({providedIn: 'root'})
 export class ClientDialogService extends BaseDialogService<AppClient, ClientDialogComponent>{
   override entityService = inject(ClientService);
+  override configService = inject(ClientConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppClient | undefined, entities: AppClient[]}): MatDialogRef<ClientDialogComponent> {
     const {entity, entities} = data;

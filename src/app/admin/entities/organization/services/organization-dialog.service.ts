@@ -5,10 +5,12 @@ import {AppOrganization} from '../models/organization';
 import {OrganizationService} from './organization.service';
 import {OrganizationDialogComponent} from '../containers/organization-dialog/organization-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {OrganizationConfigService} from './organization-config.service';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationDialogService extends BaseDialogService<AppOrganization, OrganizationDialogComponent>{
   override entityService = inject(OrganizationService);
+  override configService = inject(OrganizationConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppOrganization | undefined, entities: AppOrganization[]}): MatDialogRef<OrganizationDialogComponent> {
     const {entity, entities} = data;

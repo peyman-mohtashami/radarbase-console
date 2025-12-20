@@ -84,7 +84,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
     const tableFields = this.configService.getTableFields();
     const tableFilters: FilterItem[] = this.configService.getTableFilters();
     this.filter = signal<FilterEvent>(
-      tableFilters.reduce((map: { [key: string]: string | undefined }, filterItem) => {
+      tableFilters.reduce((map: Record<string, string | undefined>, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
         return map;
       }, {})
@@ -206,35 +206,38 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   private handleDialogUrlFragment() {
+    console.log('Class: BaseEntityListPageComponent, Function: handleDialogUrlFragment, Line 209 ' , );
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        if (fragment) this.processUrlFragment(fragment);
+        console.log('Class: BaseEntityListPageComponent, Function: , Line 213 fragment' , fragment);
+        const data = this.getDialogData();
+        if (fragment) this.dialogService.processUrlFragment(fragment, data);
       });
   }
 
-  processUrlFragment(fragment: string) {
-    console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 217 fragment' , fragment);
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [_, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = this.entities().find(e => e._name == entityId);
-      switch (action) {
-        case 'add':
-          this.dialogService.openDialog(DialogMode.ADD, this.getDialogData(entity));
-          break;
-        case 'edit':
-          if (entity) this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(entity));
-          break;
-        case 'delete':
-          if (entity) this.dialogService.openDialog(DialogMode.DELETE, this.getDialogData(entity));
-          break;
-      }
-    }
-  }
+  // processUrlFragment(fragment: string) {
+  //   console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 217 fragment' , fragment);
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [_, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = this.entities().find(e => e._name == entityId);
+  //     switch (action) {
+  //       case 'add':
+  //         this.dialogService.openDialog(DialogMode.ADD, this.getDialogData(entity));
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(entity));
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.dialogService.openDialog(DialogMode.DELETE, this.getDialogData(entity));
+  //         break;
+  //     }
+  //   }
+  // }
 
   getDialogData(entity?: T) {
-    return {entity}
+    return {entity, entities: this.entities()}
   }
 
   handleFilterChange(event: FilterEvent) {

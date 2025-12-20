@@ -80,34 +80,34 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
     this.selection.clear();
   }
 
-  override processUrlFragment(fragment: string) {
-    console.log('Class: SubjectListPageComponent, Function: processUrlFragment, Line 82 fragment' , fragment);
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = this.entities().find(e => e._name == entityId);
-      switch (action) {
-        case 'add':
-          this.dialogService.openDialog(SubjectDialogMode.ADD, this.getDialogData(entity));
-          break;
-        case 'edit':
-          if (entity) this.dialogService.openDialog(SubjectDialogMode.EDIT, this.getDialogData(entity));
-          break;
-        case 'delete':
-          if (entity) this.dialogService.openDialog(SubjectDialogMode.DELETE, this.getDialogData(entity));
-          break;
-        case 'discontinue':
-          if (entity) this.dialogService.openDialog(SubjectDialogMode.DISCONTINUE, this.getDialogData(entity));
-          break;
-        case 'pair_source':
-          if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_SOURCE, this.getDialogData(entity));
-          break;
-        case 'pair_app':
-          if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_APP, this.getDialogData(entity));
-          break;
-      }
-    }
-  }
+  // override processUrlFragment(fragment: string) {
+  //   console.log('Class: SubjectListPageComponent, Function: processUrlFragment, Line 82 fragment' , fragment);
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = this.entities().find(e => e._name == entityId);
+  //     switch (action) {
+  //       case 'add':
+  //         this.dialogService.openDialog(SubjectDialogMode.ADD, this.getDialogData(entity));
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.dialogService.openDialog(SubjectDialogMode.EDIT, this.getDialogData(entity));
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.dialogService.openDialog(SubjectDialogMode.DELETE, this.getDialogData(entity));
+  //         break;
+  //       case 'discontinue':
+  //         if (entity) this.dialogService.openDialog(SubjectDialogMode.DISCONTINUE, this.getDialogData(entity));
+  //         break;
+  //       case 'pair_source':
+  //         if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_SOURCE, this.getDialogData(entity));
+  //         break;
+  //       case 'pair_app':
+  //         if (entity) this.dialogService.openDialog(SubjectDialogMode.PAIR_APP, this.getDialogData(entity));
+  //         break;
+  //     }
+  //   }
+  // }
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);

@@ -35,6 +35,7 @@ export class OrganizationActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
+    console.log('Class: OrganizationActionsComponent, Function: onAction, Line 38 mode, this.entityName, this.entity().name ' , mode, this.entityName, this.entity().name );
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',

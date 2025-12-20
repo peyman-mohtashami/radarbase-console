@@ -72,8 +72,8 @@ export class ConfigListPageComponent implements OnInit, OnDestroy {
   tableFilters = this.configService.getTableFilters();
   configFields = this.configService.getFormFields();
 
-  entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
-  processedEntities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['entities']);
+  entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
+  processedEntities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
   visibleEntities = signal<AppConfig[]>([]);
 
   currentClient: AppClient = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
@@ -120,8 +120,8 @@ export class ConfigListPageComponent implements OnInit, OnDestroy {
     }
 
     this.activatedRoute.data.subscribe(data => {
-      this.entities.set(data['entities']);
-      this.processedEntities.set(data['entities']);
+      this.entities.set(data['configList']);
+      this.processedEntities.set(data['configList']);
       this.dialogService.dialogUpdateEvent.set(undefined);
       this.applyFilter();
     })

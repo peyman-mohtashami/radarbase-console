@@ -1,11 +1,13 @@
 <div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
   <div class='flex flex-wrap gap-2 items-center'>
-          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
-            <span class="material-symbols-outlined text-lg!" matPrefix>{{ configService.getEntityMetadata().icon }}</span>
-            <span>{{ 'ADMIN.sourceType.title.singular' | translate }}</span>
-          </span>
+    <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
+      <span class="material-symbols-outlined text-lg!" matPrefix>
+        {{ configService.getEntityMetadata().icon }}
+      </span>
+      <span>{{ 'ADMIN.sourceType.title.singular' | translate }}</span>
+    </span>
     <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
-      {{`${entity().producer}/${entity().model}/${entity().catalogVersion}`}}
+      {{ `${entity().producer}/${entity().model}/${entity().catalogVersion}` }}
     </h2>
   </div>
   <div class='flex gap-1 ml-auto'>
@@ -15,6 +17,6 @@
 
 <mat-card class="m-4 p-4 text-sm border">
   <mat-card-content>
-    <app-source-type-details [entity]='entity()' />
+    <app-source-type-details [entity]='entity()'/>
   </mat-card-content>
 </mat-card>

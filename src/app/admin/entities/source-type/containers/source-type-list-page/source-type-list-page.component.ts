@@ -42,6 +42,7 @@ export class SourceTypeListPageComponent extends BaseEntityListPageComponent<App
   override getDialogData(entity?: AppSourceType) {
     return {
       entity: entity,
+      entities: this.entities(),
       sourceTypes: this.sourceTypeFullList
     }
   }

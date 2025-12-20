@@ -1,13 +1,10 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {RouterLink, RouterOutlet} from '@angular/router';
 
-import { DialogMode } from '../../../../enums/dialog';
-import {takeUntil} from "rxjs/operators";
 import { AppClient } from "../../models/client";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPrefix} from "@angular/material/input";
-import {Subject} from 'rxjs';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
@@ -15,6 +12,7 @@ import {PermissionDirective} from '../../../../../core/auth/directives/show-if-h
 import {ActionsComponent} from '../../components/actions/actions.component';
 import {TabLink} from "../../../../models/tab-link";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
+import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
 
 @Component({
   selector: 'app-client-page',
@@ -32,94 +30,36 @@ import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
     ActionsComponent
   ]
 })
-export class ClientPageComponent implements OnInit, OnDestroy {
-  protected configService = inject(ClientConfigService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialogService = inject(ClientDialogService);
-
-  protected readonly DialogMode = DialogMode;
-
-  entityName = this.configService.getEntityMetadata().name;
+export class ClientPageComponent extends BaseEntityPageComponent<AppClient> implements OnInit, OnDestroy {
+  override configService = inject(ClientConfigService);
+  override dialogService = inject(ClientDialogService);
 
   links: TabLink[] = [
     { path: 'configs', label: `ADMIN.${ENTITY_REGISTRY.config.name}.title.plural` },
-    { path: 'details', label: `ADMIN.${this.entityName}.details` },
+    { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.client.name}.details` },
   ];
 
   activePath?: string;
 
-  entity = signal<AppClient>(this.activatedRoute.snapshot.data['client']);
+  override entity = signal<AppClient>(this.activatedRoute.snapshot.data['client']);
   entities = this.activatedRoute.snapshot.data['entities'];
-  tableFields = this.configService.getTableFields();
 
   hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id'];
 
-  private _destroy$: Subject<void> = new Subject<void>();
-
-  constructor() {
-    this.initializeDialogEffect();
-  }
 
   ngOnInit(): void {
-    this.handleDialogUrlFragment();
+    super.init();
   }
 
   ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
+    super.destroy();
   }
 
-  private initializeDialogEffect() {
-    effect(() => {
-      const updated = this.dialogService.dialogUpdateEvent();
-      if (updated) {
-        switch (updated.mode) {
-          case DialogMode.EDIT:
-            if (updated?.entity) {
-              this.entity.set(updated.entity);
-              this.navigateOnUpdateSuccess(updated.entity);
-            }
-            break;
-          case DialogMode.DELETE:
-            this.navigateOnDeleteSuccess();
-            break;
-        }
-      }
-    })
-  }
-
-  private handleDialogUrlFragment() {
-    this.activatedRoute.fragment
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(fragment => {
-        if (fragment) this.processUrlFragment(fragment);
-      });
-  }
-
-  private processUrlFragment(fragment: string) {
-    const [, action, entityType] = fragment.split('/');
-    if (entityType === this.entityName) {
-      switch(action) {
-        case 'edit':
-          this.dialogService.openDialog(DialogMode.EDIT, {entity: this.entity(), entities: this.entities});
-          break;
-        case 'delete':
-          this.dialogService.openDialog(DialogMode.DELETE, {entity: this.entity(), entities: this.entities});
-      }
-    }
-  }
-
-  navigateOnUpdateSuccess(entity: AppClient) {
+  override navigateOnUpdateSuccess(entity: AppClient) {
     this.router.navigate(['/admin', 'clients', entity.clientId]).then();
   }
 
-  navigateOnDeleteSuccess() {
+  override navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'clients']).then();
   }
-
-
-  form = new FormGroup({
-    category: new FormControl('general'),
-  })
 }

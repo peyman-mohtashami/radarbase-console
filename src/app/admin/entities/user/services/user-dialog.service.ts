@@ -9,10 +9,12 @@ import {AppProject} from '../../project/models/project';
 import {AppOrganization} from '../../organization/models/organization';
 import {UserActivateDialogComponent} from '../containers/user-activate-dialog/user-activate-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {UserConfigService} from './user-config.service';
 
 @Injectable({providedIn: 'root'})
 export class UserDialogService extends BaseDialogService<AppUser, UserDialogComponent | UserActivateDialogComponent> {
   override entityService = inject(UserService);
+  override configService = inject(UserConfigService);
 
   override processDialogAction(actionType: DialogMode | string, entity: AppUser): Observable<AppUser | void> {
     switch (actionType) {

@@ -35,27 +35,27 @@ export class UserListPageComponent extends BaseEntityListPageComponent<AppUser> 
   projects: AppProject[] = this.activatedRoute.snapshot.data['projectFullList'];
   organizations: AppOrganization[] = this.activatedRoute.snapshot.data['organizationFullList'];
 
-  override processUrlFragment(fragment: string) {
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = this.entities().find(e => e.id == entityId);
-      switch (action) {
-        case 'add':
-          this.dialogService.openDialog(DialogMode.ADD, {entities: this.entities(), projects: this.projects, organizations: this.organizations});
-          break;
-        case 'edit':
-          if (entity) this.dialogService.openDialog(DialogMode.EDIT, {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
-          break;
-        case 'delete':
-          if (entity) this.dialogService.openDialog(DialogMode.DELETE, {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
-          break;
-        case 'activate':
-          if (entity) this.dialogService.openDialog('activate', {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
-          break;
-      }
-    }
-  }
+  // override processUrlFragment(fragment: string) {
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = this.entities().find(e => e.id == entityId);
+  //     switch (action) {
+  //       case 'add':
+  //         this.dialogService.openDialog(DialogMode.ADD, {entities: this.entities(), projects: this.projects, organizations: this.organizations});
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.dialogService.openDialog(DialogMode.EDIT, {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.dialogService.openDialog(DialogMode.DELETE, {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
+  //         break;
+  //       case 'activate':
+  //         if (entity) this.dialogService.openDialog('activate', {entity, entities: this.entities(), projects: this.projects, organizations: this.organizations});
+  //         break;
+  //     }
+  //   }
+  // }
 
   ngOnInit() {
     super.init();

@@ -7,6 +7,7 @@ import {ConfigService} from './config.service';
 import {ConfigDialogComponent} from '../containers/config-dialog/config-dialog.component';
 import {ConfigPublishDialogComponent} from '../containers/config-publish-dialog/config-publish-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {ConfigConfigService} from './config-config.service';
 
 // export interface UpdateTrigger {
 //   mode: DialogMode | string;
@@ -16,6 +17,7 @@ import {BaseDialogService} from '../../../services/base-dialog.service';
 @Injectable({providedIn: 'root'})
 export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDialogComponent> {
   override entityService = inject(ConfigService);
+  override configService = inject(ConfigConfigService);
 
   override createDialogRef(mode: DialogMode, entity: AppConfig | undefined): MatDialogRef<ConfigDialogComponent> {
     return this.dialog.open(ConfigDialogComponent, {

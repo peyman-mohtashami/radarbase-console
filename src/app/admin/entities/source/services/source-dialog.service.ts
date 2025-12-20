@@ -6,10 +6,12 @@ import {SourceService} from './source.service';
 import {SourceDialogComponent} from '../containers/source-dialog/source-dialog.component';
 import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {SourceConfigService} from './source-config.service';
 
 @Injectable({providedIn: 'root'})
 export class SourceDialogService extends BaseDialogService<AppSource, SourceDialogComponent> {
   override entityService = inject(SourceService);
+  override configService = inject(SourceConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppSource | undefined, sourceTypes: AppSourceType[]}): MatDialogRef<SourceDialogComponent> {
     const {entity, sourceTypes} = data;

@@ -7,10 +7,12 @@ import {ProjectDialogComponent} from '../containers/project-dialog/project-dialo
 import {AppOrganization, RadarOrganization} from '../../organization/models/organization';
 import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
+import {ProjectConfigService} from './project-config.service';
 
 @Injectable({providedIn: 'root'})
 export class ProjectDialogService extends BaseDialogService<AppProject, ProjectDialogComponent> {
   override entityService = inject(ProjectService);
+  override configService = inject(ProjectConfigService);
 
   override createDialogRef(mode: DialogMode, data: {entity: AppProject | undefined, entities: AppProject[], organization: RadarOrganization | undefined, organizations: AppOrganization[], sourceTypes: AppSourceType[]}): MatDialogRef<ProjectDialogComponent> {
     const {entity, entities, organization, organizations, sourceTypes} = data;

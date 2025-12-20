@@ -4,7 +4,7 @@
     <div class='flex flex-wrap gap-2 items-center'>
           <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
             <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.organization.icon }}</span>
-            <span>{{ `ADMIN.${entityName}.title.singular` | translate }}</span>
+            <span>{{ `ADMIN.${ENTITY_REGISTRY.organization.name}.title.singular` | translate }}</span>
           </span>
       <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
         {{ entity().name }}

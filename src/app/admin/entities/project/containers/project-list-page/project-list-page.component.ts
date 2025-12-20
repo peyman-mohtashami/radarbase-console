@@ -51,7 +51,7 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
   override getDialogData(entity?: AppProject) {
     return {
       entity: entity,
-      // entities: this.entities(),
+      entities: this.entities(),
       organization: this.organization,
       organizations: this.organizationFullList,
       sourceTypes: this.sourceTypeFullList
