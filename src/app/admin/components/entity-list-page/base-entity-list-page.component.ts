@@ -206,13 +206,10 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   private handleDialogUrlFragment() {
-    console.log('Class: BaseEntityListPageComponent, Function: handleDialogUrlFragment, Line 209 ' , );
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        console.log('Class: BaseEntityListPageComponent, Function: , Line 213 fragment' , fragment);
-        const data = this.getDialogData();
-        if (fragment) this.dialogService.processUrlFragment(fragment, data);
+        if (fragment) this.dialogService.processUrlFragment(fragment);
       });
   }
 
@@ -236,9 +233,9 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   //   }
   // }
 
-  getDialogData(entity?: T) {
-    return {entity, entities: this.entities()}
-  }
+  // getDialogData(entity?: T) {
+  //   return {entity, entities: this.entities()}
+  // }
 
   handleFilterChange(event: FilterEvent) {
     this.filter.set(event);

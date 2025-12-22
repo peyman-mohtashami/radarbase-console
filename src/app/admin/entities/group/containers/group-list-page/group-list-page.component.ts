@@ -12,7 +12,7 @@ import {
 } from '../../../../components/data-table-filter/data-table-filter.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getCurrentProject} from '../../../../services/util';
+import {getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-group-list-page',
@@ -31,7 +31,7 @@ export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup
   override dialogService = inject(GroupDialogService);
 
   override entities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['groupList']);
-  project?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
+  project?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);

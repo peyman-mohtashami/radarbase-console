@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
@@ -11,8 +11,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {ROLES} from "../../../../../shared/enums/roles";
-import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
@@ -31,14 +29,12 @@ import {SubjectActionsComponent} from '../../components/subject-actions/subject-
     MatPrefix,
     TranslatePipe,
     SubjectActionsComponent,
+    RouterLinkActive,
   ]
 })
 export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> implements OnInit, OnDestroy {
   override configService = inject(SubjectConfigService);
   override dialogService = inject(SubjectDialogService);
-
-  protected readonly ROLES = ROLES;
-  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   links: TabLink[] = [
     { path: 'download', label: 'Download' },
@@ -48,15 +44,12 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> im
     { path: 'details', label: 'Details' },
   ];
 
-  activePath?: string;
-
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
   project?: AppProject = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
   organization?: AppOrganization = this.activatedRoute.parent?.parent?.parent?.parent?.snapshot?.data['organization'];
 
   ngOnInit(): void {
     super.init();
-    this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
   }
 
   ngOnDestroy() {

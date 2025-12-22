@@ -5,6 +5,8 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {BaseConfigService} from '../../services/base-config.service';
 import {BaseDialogService} from '../../services/base-dialog.service';
+import {ROLES} from '../../../shared/enums/roles';
+import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
 
 @Component({
   selector: 'app-base-entities-page',
@@ -12,6 +14,8 @@ import {BaseDialogService} from '../../services/base-dialog.service';
 })
 export class BaseEntityPageComponent<T extends { _name: string; }> {
   protected readonly DialogMode = DialogMode;
+  protected readonly ROLES = ROLES;
+  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
@@ -39,6 +43,7 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
   initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService?.dialogUpdateEvent();
+      console.log('Class: BaseEntityPageComponent, Function: , Line 46 updated' , updated);
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -49,11 +54,13 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
         if (updated?.entity) {
           this.entity.set(updated.entity);
           this.navigateOnUpdateSuccess(updated.entity);
+          return;
         }
         break;
       case DialogMode.DELETE:
         this.navigateOnDeleteSuccess();
-        break;
+        return;
+
     }
     this.removeFragmentUrl();
   }
@@ -70,13 +77,9 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        const data = this.getDialogData(this.entity());
-        if (fragment) this.dialogService.processUrlFragment(fragment, data)
+        // const data = this.getDialogData(this.entity());
+        if (fragment) this.dialogService.processUrlFragment(fragment)
       });
-  }
-
-  getDialogData(entity?: T) {
-    return {entity}
   }
 
   navigateOnUpdateSuccess(entity: T) {

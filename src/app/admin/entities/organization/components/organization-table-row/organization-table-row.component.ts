@@ -10,6 +10,8 @@ import {PermissionDirective} from "../../../../../core/auth/directives/show-if-h
 import {OrganizationConfigService} from "../../services/organization-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-organization-table-row',
@@ -23,6 +25,8 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
     OrganizationActionsComponent,
     PermissionDirective,
     EntityComponent,
+    MatIcon,
+    TranslatePipe,
   ]
 })
 export class OrganizationTableRowComponent extends BaseEntityComponent<AppOrganization> {

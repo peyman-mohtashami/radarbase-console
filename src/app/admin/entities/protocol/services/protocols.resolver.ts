@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 
 import {ProtocolService} from './protocol.service';
 import {AppProtocol} from "../models/protocol";
-import {getCurrentProject, getCurrentSubject} from '../../../services/util';
+import {getSelectedProject, getSelectedSubject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
 export class ProtocolsResolver implements Resolve<AppProtocol[]> {
@@ -12,8 +12,8 @@ export class ProtocolsResolver implements Resolve<AppProtocol[]> {
 
   resolve(route: ActivatedRouteSnapshot,): Observable<AppProtocol[]> {
     return this.entityService.getAll(
-      getCurrentProject(route)?.projectName,
-      getCurrentSubject(route)?.login
+      getSelectedProject(route)?.projectName,
+      getSelectedSubject(route)?.login
     );
   }
 }

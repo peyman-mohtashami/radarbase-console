@@ -13,7 +13,7 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getCurrentProject} from '../../../../services/util';
+import {getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-source-list-page',
@@ -32,7 +32,7 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
   override dialogService = inject(SourceDialogService);
 
   override entities = signal<AppSource[]>(this.activatedRoute.snapshot.data['sourceList']);
-  project?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
+  project?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
 
   sourceTypes: AppSourceType[] = [];
 
@@ -55,11 +55,11 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
     super.destroy();
   }
 
-  override getDialogData(entity?: AppSource) {
-    return {
-      entity: entity,
-      entities: this.entities(),
-      sourceTypes: this.sourceTypes
-    }
-  }
+  // override getDialogData(entity?: AppSource) {
+  //   return {
+  //     entity: entity,
+  //     entities: this.entities(),
+  //     sourceTypes: this.sourceTypes
+  //   }
+  // }
 }

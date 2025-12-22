@@ -79,8 +79,8 @@
 <!--       mat-align-tabs="start"-->
     @for (link of links; track link) {
       <a mat-tab-link
-         (click)="activePath = link.path"
-         [active]="link.path === activePath"
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive"
          [routerLink]="link.path">
         <!--        {{link | json}}-->
         <h2 class='flex items-center gap-2 m-0 text-base font-bold '>

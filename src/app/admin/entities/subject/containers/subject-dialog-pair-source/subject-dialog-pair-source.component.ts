@@ -64,7 +64,6 @@ export class SubjectDialogPairSourceComponent implements OnInit, AfterViewInit {
     mode: SubjectDialogMode;
     entity: AppSubject;
     project: AppProject;
-    // projectName: string;
   };
   private sourceService = inject(SourceService);
 

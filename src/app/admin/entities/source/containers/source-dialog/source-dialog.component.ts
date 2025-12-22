@@ -25,6 +25,8 @@ import {
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-source-dialog',
@@ -40,6 +42,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     MatError,
     MatSelectAutocompleteComponent,
     DialogActionsComponent,
+    AsyncPipe,
   ]
 })
 export class SourceDialogComponent extends BaseDialogComponent<AppSource> implements OnInit, AfterViewInit {
@@ -48,7 +51,7 @@ export class SourceDialogComponent extends BaseDialogComponent<AppSource> implem
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppSource;
-    sourceTypes: AppSourceType[];
+    sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
   override formFields = this.configService.getFormFields();

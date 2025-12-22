@@ -18,6 +18,7 @@ import {AppUser} from "../../../user/models/user";
 import {DialogAction} from "../../../../components/dialog/dialog-actions/dialog-actions.component";
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {debounceTime} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-permission-dialog',
@@ -45,10 +46,9 @@ export class PermissionDialogComponent extends BaseDialogComponent<AppUser> impl
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppUser;
-    entities: AppUser[];
     project?: AppProject;
     organization?: AppOrganization;
-    users: AppUser[];
+    userFullList: Observable<AppUser[]>;
   };
 
   override formFields = this.configService.getFormFields();
@@ -59,17 +59,22 @@ export class PermissionDialogComponent extends BaseDialogComponent<AppUser> impl
 
   selectedUser = signal<AppUser | undefined>(undefined);
 
+  usersFullList: AppUser[] = [];
+
   ngOnInit() {
-      this.formFields = this.configService.getFormFields();
-      this.form.patchValue(this.dialogData.entity);
-      this.form.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
-        if (value) {
-          this.error.set(null);
-          const email = this.form.value.email;
-          const user = this.dialogData.users?.find(e => e.email === email || e.login === email);
-          this.selectedUser.set(user);
-        }
-      })
+    this.dialogData.userFullList.subscribe(users => {
+      this.usersFullList = users;
+    })
+    this.formFields = this.configService.getFormFields();
+    this.form.patchValue(this.dialogData.entity);
+    this.form.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+      if (value) {
+        this.error.set(null);
+        const email = this.form.value.email;
+        const user = this.usersFullList.find(e => e.email === email || e.login === email);
+        this.selectedUser.set(user);
+      }
+    })
   }
 
   ngAfterViewInit() {

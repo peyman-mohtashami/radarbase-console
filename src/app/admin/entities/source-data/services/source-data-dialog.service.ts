@@ -4,7 +4,6 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {SourceDataService} from './source-data.service';
 import {SourceDataDialogComponent} from '../containers/source-data-dialog/source-data-dialog.component';
 import {AppSourceData} from '../models/source-data';
-import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SourceDataConfigService} from './source-data-config.service';
 import {SourceTypeService} from '../../source-type/services/source-type.service';
@@ -16,9 +15,9 @@ export class SourceDataDialogService extends BaseDialogService<AppSourceData, So
 
   sourceTypeService = inject(SourceTypeService);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppSourceData | undefined, sourceTypes: AppSourceType[]}): MatDialogRef<SourceDataDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppSourceData): MatDialogRef<SourceDataDialogComponent> {
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
-    const _data = {mode, entity: data.entity, sourceTypeFullList};
+    const _data = {mode, entity, sourceTypeFullList};
 
     switch (mode) {
       case DialogMode.DELETE:

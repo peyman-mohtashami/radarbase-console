@@ -43,11 +43,11 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
     super.destroy();
   }
 
-  override getDialogData(entity?: AppOrganization) {
-    return {
-      entity,
-      entities: this.entities(),
-      // entities: this.organizationFullList
-    }
-  }
+  // override getDialogData(entity?: AppOrganization) {
+  //   return {
+  //     entity,
+  //     entities: this.entities(),
+  //     // entities: this.organizationFullList
+  //   }
+  // }
 }

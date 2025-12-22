@@ -4,22 +4,26 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {AppSource} from '../models/source';
 import {SourceService} from './source.service';
 import {SourceDialogComponent} from '../containers/source-dialog/source-dialog.component';
-import {AppSourceType} from '../../source-type/models/source-type';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SourceConfigService} from './source-config.service';
+import {SourceTypeService} from '../../source-type/services/source-type.service';
 
 @Injectable({providedIn: 'root'})
 export class SourceDialogService extends BaseDialogService<AppSource, SourceDialogComponent> {
   override entityService = inject(SourceService);
   override configService = inject(SourceConfigService);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppSource | undefined, sourceTypes: AppSourceType[]}): MatDialogRef<SourceDialogComponent> {
+  sourceTypeService = inject(SourceTypeService);
 
-    const {entity, sourceTypes} = data;
+  override createDialogRef(mode: DialogMode, entity?: AppSource): MatDialogRef<SourceDialogComponent> {
+    const sourceTypeFullList = this.sourceTypeService.getWithQuery();
+
+    const _data = {mode, entity, sourceTypes: sourceTypeFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(SourceDialogComponent, {
-          data: {mode, entity, sourceTypes},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -28,7 +32,7 @@ export class SourceDialogService extends BaseDialogService<AppSource, SourceDial
         });
       default:
         return this.dialog.open(SourceDialogComponent, {
-          data: {mode, entity, sourceTypes},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
           height: '100vh',
@@ -39,7 +43,5 @@ export class SourceDialogService extends BaseDialogService<AppSource, SourceDial
           restoreFocus: false
         });
     }
-
-
   }
 }

@@ -26,6 +26,7 @@ import {LocaleService} from "../../../../../core/locale/services/locale.service"
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-project-dialog',
@@ -66,6 +67,11 @@ export class ProjectDialogComponent extends BaseDialogComponent<AppProject> impl
     organizationFullList: Observable<AppOrganization[]>;
     sourceTypeFullList: Observable<AppSourceType[]>;
   };
+
+  activatedRoute = inject(ActivatedRoute);
+  router = inject(Router)
+
+  // currentOrganization = getCurrentOrganization(this.activatedRoute.snapshot)
 
   protected readonly ProjectStatus = ProjectStatus;
 

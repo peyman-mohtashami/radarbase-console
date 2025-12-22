@@ -156,10 +156,10 @@
           @if (form.controls.startDate.errors; as errors) {
             <mat-error>
               @if (errors?.['matDatepickerMin']) {
-                Date is out of range. It should be after 2000. <!-- TODO translate -->
+                {{ ValidatorError.dateOutOfMinRange }}
               }
               @if (errors?.['matDatepickerMax']) {
-                Date is out of range. It should be before 2050. <!-- TODO translate -->
+                {{ ValidatorError.dateOutOfMaxRange }}
               }
               @if (errors?.['matDatepickerParse']) {
                 {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}
@@ -186,10 +186,10 @@
           @if (form.controls.endDate.errors; as errors) {
             <mat-error>
               @if (errors?.['matDatepickerMin']) {
-                Date is out of range. It should be after 2000. <!-- TODO translate -->
+                {{ ValidatorError.dateOutOfMinRange }}
               }
               @if (errors?.['matDatepickerMax']) {
-                Date is out of range. It should be before 2050. <!-- TODO translate -->
+                {{ ValidatorError.dateOutOfMaxRange }}
               }
               @if (errors?.['matDatepickerParse']) {
                 {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}

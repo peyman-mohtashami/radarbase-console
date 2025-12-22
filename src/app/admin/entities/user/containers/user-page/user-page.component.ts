@@ -55,10 +55,4 @@ export class UserPageComponent extends BaseEntityPageComponent<AppUser> implemen
   override navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'users']).then();
   }
-
-  override getDialogData(entity?: AppUser) {
-    return {
-      entity,
-    }
-  }
 }

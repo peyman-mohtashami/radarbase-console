@@ -13,6 +13,7 @@ export class OrganizationResolver implements Resolve<AppOrganization> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization> {
     const organizationId = route.paramMap.get('organizationId')!;
+    console.log('Class: OrganizationResolver, Function: resolve, Line 16 organizationId' , organizationId);
 
     return this.entityService.getByKey(organizationId).pipe(
       catchError(() => {

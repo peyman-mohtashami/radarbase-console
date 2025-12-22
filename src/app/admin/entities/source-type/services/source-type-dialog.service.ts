@@ -12,9 +12,9 @@ export class SourceTypeDialogService extends BaseDialogService<AppSourceType, So
   override entityService = inject(SourceTypeService);
   override configService = inject(SourceTypeConfigService);
 
-  override createDialogRef(mode: DialogMode, data: {entity?: AppSourceType}): MatDialogRef<SourceTypeDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppSourceType): MatDialogRef<SourceTypeDialogComponent> {
     const sourceTypeFullList = this.entityService.getWithQuery();
-    const _data = {mode, entity: data.entity, sourceTypeFullList};
+    const _data = {mode, entity, sourceTypeFullList};
 
     switch (mode) {
       case DialogMode.DELETE:

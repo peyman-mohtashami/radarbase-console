@@ -8,11 +8,9 @@ import {QuestionnaireService} from "./questionnaire.service";
 import {
   QuestionnaireDialogComponent
 } from "../containers/questionnaire-dialog/questionnaire-dialog.component";
-import {AppConfig} from "../../config/models/config";
 import {
   ConfigPublishDialogComponent
 } from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
-import {AppOrganization} from "../../organization/models/organization";
 import {Observable, of} from "rxjs";
 
 export interface UpdateTrigger {
@@ -33,14 +31,14 @@ export class QuestionnaireDialogService {
     mode: DialogMode,
     entity: AppQuestionnaire | undefined,
     entities: AppQuestionnaire[],
-    language: string = 'en'
+    language = 'en'
   ) {
     if (mode !== DialogMode.ADD && !entity) {
       this.clearFragmentUrl();
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, entity, entities, language);
+    const dialogRef = this.createDialogRef(mode, {entity, language});
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
       next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
@@ -111,14 +109,16 @@ export class QuestionnaireDialogService {
 
   createDialogRef(
     mode: DialogMode,
-    entity: AppQuestionnaire | undefined,
-    entities: AppQuestionnaire[],
-    language: string
+    data: {entity: AppQuestionnaire | undefined, language: string},
   ): MatDialogRef<QuestionnaireDialogComponent> {
+    const questionnairesFullList = this.entityService.getAll();
+
+    const _data = {mode, entity: data.entity, questionnairesFullList, language: data.language};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(QuestionnaireDialogComponent, {
-          data: {mode, entity, entities, language},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -127,7 +127,7 @@ export class QuestionnaireDialogService {
         });
       default:
         return this.dialog.open(QuestionnaireDialogComponent, {
-          data: {mode, entity, entities, language},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '80%',
           height: '100vh',

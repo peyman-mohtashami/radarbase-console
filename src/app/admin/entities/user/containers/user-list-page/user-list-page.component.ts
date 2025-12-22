@@ -37,11 +37,4 @@ export class UserListPageComponent extends BaseEntityListPageComponent<AppUser> 
   ngOnDestroy() {
     super.destroy();
   }
-
-  override getDialogData(entity?: AppUser) {
-    return {
-      entity: entity,
-      entities: this.entities(),
-    }
-  }
 }

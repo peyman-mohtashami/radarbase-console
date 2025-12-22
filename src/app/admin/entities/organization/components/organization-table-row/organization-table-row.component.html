@@ -15,8 +15,10 @@
     <mat-card-content class="p-0! w-full">
       <div class="p-4 flex items-center justify-between gap-2 w-full">
         <div class="flex items-center gap-2">
-          <span
-              class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">corporate_fare</span>
+          <mat-icon
+              class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white!">
+            corporate_fare
+          </mat-icon>
           <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity().name }}</span>
         </div>
         <app-organization-actions
@@ -29,14 +31,15 @@
         }
         @if (!configFields || configFields['location'] === undefined || configFields['location']) {
           <div class="text-sm mt-4 flex gap-2 items-center text-gray-500 dark:text-gray-300">
-            <span class="material-symbols-outlined">place</span>
+            <mat-icon class="material-symbols-outlined">place</mat-icon>
             <span>{{ entity().location || '-' }}</span>
           </div>
         }
       </div>
       @if (!configFields || configFields['projects'] === undefined || configFields['projects']) {
         <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
-          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Projects ({{ entity()['projects']?.length }})
+          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">
+            {{ 'ADMIN.organization.projects.tableLabel' | translate }} ({{ entity()['projects']?.length }})
           </div>
           <app-organization-projects [organization]="entity()['name']" [projects]="entity()['projects']"/>
         </div>

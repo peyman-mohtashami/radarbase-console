@@ -33,7 +33,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime, map, tap} from 'rxjs/operators';
 import {MatFormField, MatOption, MatSelect} from '@angular/material/select';
 import {ClientPairService} from '../../../client/services/client-pair.service';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {ClientService} from '../../../client/services/client.service';
 import {DetailType} from '../../../../enums/detail-type';
@@ -74,7 +74,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: SubjectDialogMode;
     entity: AppSubject;
-    clients: AppClient[];
+    clientFullList: Observable<AppClient[]>;
   };
   private clientService = inject(ClientService);
   private clientPairService = inject(ClientPairService);

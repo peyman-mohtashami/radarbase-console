@@ -39,10 +39,10 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
     super.destroy();
   }
 
-  override getDialogData(entity?: AppSourceData) {
-    return {
-      entity: entity,
-      entities: this.entities(),
-    }
-  }
+  // override getDialogData(entity?: AppSourceData) {
+  //   return {
+  //     entity: entity,
+  //     entities: this.entities(),
+  //   }
+  // }
 }

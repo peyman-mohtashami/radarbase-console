@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {AppOrganization, RadarOrganization} from "../models/organization";
 import {BaseEntityService} from '../../../services/base-entity.service';
 import {environment} from '../../../../../environments/environment';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseEntityService<AppOrganization, RadarOrganization> {
@@ -20,5 +22,20 @@ export class OrganizationService extends BaseEntityService<AppOrganization, Rada
 
   override toRadarModel(entity: AppOrganization): RadarOrganization {
     return entity;
+  }
+
+  override getByKey(key: number | string): Observable<AppOrganization> {
+    if (!this.cacheLoaded) {
+      return this.getWithQuery().pipe(map(items => items.find(item => item._name === key)!));
+    }
+    const organization = this.cache.find(item => item._name === key)
+    if (!organization) throw new Error(`Organization with id ${key} not found`);
+    return of(organization);
+  }
+
+  override getEntity(key: number | string): AppOrganization {
+    const organization = this.cache.find(item => item._name === key);
+    if (!organization) throw new Error(`Organization with id ${key} not found`);
+    return organization;
   }
 }

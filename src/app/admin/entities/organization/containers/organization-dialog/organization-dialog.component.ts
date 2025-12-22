@@ -45,7 +45,6 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
     mode: DialogMode;
     entity: AppOrganization;
     organizationFullList: Observable<AppOrganization[]>;
-    // entities: AppOrganization[];
   };
 
   override formFields = this.configService.getFormFields();
@@ -65,7 +64,6 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
       this.form.controls.name.addValidators(this.duplicateValidator);
     });
     super.init();
-    // this.form.patchValue(this.dialogData.entity);
   }
 
   ngAfterViewInit() {
@@ -84,12 +82,6 @@ export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganiza
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    // return this.dialogData.entities?.find(
-    //   (entity) =>
-    //     control.value === entity.name && this.dialogData.entity?.name !== entity.name
-    // )
-    //   ? { duplicate: true }
-    //   : null;
     return this.organizations.find(
       (entity) =>
         control.value === entity.name && this.dialogData.entity?.name !== entity.name

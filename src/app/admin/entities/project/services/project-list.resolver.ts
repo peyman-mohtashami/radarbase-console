@@ -7,14 +7,14 @@ import { Observable} from "rxjs";
 import { AppProject } from "../models/project";
 import {ProjectService} from "./project.service";
 import {AppOrganization} from '../../organization/models/organization';
-import {getCurrentOrganization} from '../../../services/util';
+import {getSelectedOrganization} from '../../../services/util';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectListResolver implements Resolve<AppProject[]> {
   private entityService = inject(ProjectService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppProject[]> {
-    const organization: AppOrganization | undefined = getCurrentOrganization(route);
+    const organization: AppOrganization | undefined = getSelectedOrganization(route);
     return this.entityService.getWithQuery(route.queryParams, organization?.name);
   }
 }

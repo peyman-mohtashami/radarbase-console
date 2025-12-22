@@ -22,6 +22,7 @@ import {
   DialogActionsComponent
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-organization-dialog',
@@ -44,7 +45,7 @@ export class GroupDialogComponent extends BaseDialogComponent<AppGroup> implemen
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppGroup;
-    entities: AppGroup[];
+    groupFullList: Observable<AppGroup[]>;
   };
 
   override formFields = this.configService.getFormFields();
@@ -54,8 +55,13 @@ export class GroupDialogComponent extends BaseDialogComponent<AppGroup> implemen
     name: new FormControl<string>('', {nonNullable: true}),
   });
 
+  groupFullList: AppGroup[] = [];
+
   ngOnInit() {
-    this.form.controls.name.addValidators(this.duplicateValidator);
+    this.dialogData.groupFullList.subscribe(groups => {
+      this.groupFullList = groups;
+      this.form.controls.name.addValidators(this.duplicateValidator);
+    })
     super.init();
   }
 
@@ -75,7 +81,7 @@ export class GroupDialogComponent extends BaseDialogComponent<AppGroup> implemen
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    return this.dialogData.entities?.find(
+    return this.groupFullList.find(
       (entity) =>
         control.value === entity.name && this.dialogData.entity?.name !== entity.name
     )

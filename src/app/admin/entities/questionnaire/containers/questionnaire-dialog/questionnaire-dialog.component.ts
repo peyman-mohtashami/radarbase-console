@@ -39,6 +39,7 @@ import {EditorComponent} from "ngx-monaco-editor-v2";
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {QuestionsFormArrayComponent} from './components/questions-form-array/questions-form-array.component';
+import {Observable} from 'rxjs';
 
 export interface RadarCondition {
   conditionField: string;
@@ -71,7 +72,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
     entity: AppQuestionnaire;
-    entities: AppQuestionnaire[];
+    questionnaireFullList: Observable<AppQuestionnaire[]>;
   };
 
   protected readonly DialogMode = DialogMode;
@@ -90,7 +91,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   protected showCode = false;
 
   updatedValue?: AppQuestionnaire;
-  updatedCode: string = '';
+  updatedCode = '';
 
   formFields = this.configService.getFormFields();
 
@@ -111,6 +112,8 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
     {initialValue: this.form.getRawValue()}
   );
 
+  questionnaireFullList: AppQuestionnaire[] = [];
+
   constructor() {
     effect(() => {
       if (this.formValueChanges?.()) {
@@ -120,7 +123,10 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.form.controls.name.addValidators(this.duplicateValidator);
+    this.dialogData.questionnaireFullList.subscribe(questionnaires => {
+      this.questionnaireFullList = questionnaires;
+      this.form.controls.name.addValidators(this.duplicateValidator);
+    })
 
     const updatedEntity: AppQuestionnaire = {
       ...this.dialogData.entity,
@@ -189,7 +195,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 
   private duplicateValidator = (control: AbstractControl) => {
-    return this.dialogData.entities?.find(
+    return this.questionnaireFullList.find(
       (entity) =>
         control.value === entity._name && this.dialogData.entity?._name !== entity._name
     )

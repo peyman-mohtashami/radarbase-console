@@ -166,6 +166,25 @@
         "badUrl": "The url is not valid.",
         "contactSupport": "Retry to link your account. If the error persists contact the support team."
       }
+    },
+    "validatorHint": {
+      "requiredValidator": "",
+      "emailValidator": "Enter a valid email.",
+      "stringIdValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 50)",
+      "urlValidator": "Enter a valid URL",
+      "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
+      "longTextValidator": "Enter a valid text (Uppercase, lowercase and digits, min 1 max 256)"
+    },
+    "validatorError": {
+      "requiredValidator": "'{{value}}' is required.",
+      "emailValidator": "Enter a valid email address.",
+      "stringIdValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
+      "urlValidator": "Enter a valid URL",
+      "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
+      "longTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 1 max 256)",
+      "duplicateValidator": "",
+      "dateOutOfMinRange": "Date is out of range. It should be after 2000.",
+      "dateOutOfMaxRange": "Date is out of range. It should be before 2050."
     }
   },
   "ADMIN": {
@@ -1537,9 +1556,6 @@
       "NEXT_PAGE": "Next page",
       "PREVIOUS_PAGE": "Previous page",
       "OF_LABEL": "of"
-    },
-    "ValidatorError": {
-      "requiredValidator": "'{{value}}' is required."
     },
     "uploadPortal": {
       "title": {

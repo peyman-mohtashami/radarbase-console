@@ -11,6 +11,8 @@ import {ProjectConfigService} from "../../services/project-config.service";
 import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
 import {EntityComponent} from '../../../../components/entity/entity.component';
 import {ProjectActionsComponent} from '../project-actions/project-actions.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-project-table-row',
@@ -26,6 +28,8 @@ import {ProjectActionsComponent} from '../project-actions/project-actions.compon
     MatCardContent,
     EntityComponent,
     ProjectActionsComponent,
+    MatIcon,
+    TranslatePipe,
   ]
 })
 export class ProjectTableRowComponent extends BaseEntityComponent<AppProject> {

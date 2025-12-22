@@ -19,9 +19,11 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDial
   override entityService = inject(ConfigService);
   override configService = inject(ConfigConfigService);
 
-  override createDialogRef(mode: DialogMode, entity: AppConfig | undefined): MatDialogRef<ConfigDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppConfig): MatDialogRef<ConfigDialogComponent> {
+    const _data = {mode, entity};
+
     return this.dialog.open(ConfigDialogComponent, {
-      data: {mode, entity},
+      data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',

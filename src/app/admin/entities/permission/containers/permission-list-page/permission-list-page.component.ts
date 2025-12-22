@@ -13,7 +13,7 @@ import {AppUser} from "../../../user/models/user";
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
 import {PermissionService} from '../../services/permission.service';
-import {getCurrentOrganization, getCurrentProject} from '../../../../services/util';
+import {getSelectedOrganization, getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-permission-list-page',
@@ -34,8 +34,8 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
   override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
   // users: AppUser[] = this.activatedRoute.snapshot.data['userList'];
 
-  currentOrganization?: AppOrganization = getCurrentOrganization(this.activatedRoute.snapshot);
-  currentProject?: AppProject = getCurrentProject(this.activatedRoute.snapshot);
+  currentOrganization?: AppOrganization = getSelectedOrganization(this.activatedRoute.snapshot);
+  currentProject?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.currentOrganization, this.currentProject);
@@ -49,13 +49,13 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
     super.destroy();
   }
 
-  override getDialogData(entity?: AppUser) {
-    return {
-      entity: entity,
-      entities: this.entities(),
-      project: this.currentProject,
-      organization: this.currentOrganization,
-      // users: this.users,
-    }
-  }
+  // override getDialogData(entity?: AppUser) {
+  //   return {
+  //     entity: entity,
+  //     entities: this.entities(),
+  //     project: this.currentProject,
+  //     organization: this.currentOrganization,
+  //     // users: this.users,
+  //   }
+  // }
 }

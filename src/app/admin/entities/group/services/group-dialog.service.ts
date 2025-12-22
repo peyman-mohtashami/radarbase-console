@@ -12,9 +12,9 @@ export class GroupDialogService extends BaseDialogService<AppGroup, GroupDialogC
   override entityService = inject(GroupService);
   override configService = inject(GroupConfigService);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppGroup | undefined, entities: AppGroup[]}): MatDialogRef<GroupDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppGroup): MatDialogRef<GroupDialogComponent> {
     const groupFullList = this.entityService.getWithQuery();
-    const _data = {mode, entity: data.entity, groupFullList};
+    const _data = {mode, entity, groupFullList};
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(GroupDialogComponent, {

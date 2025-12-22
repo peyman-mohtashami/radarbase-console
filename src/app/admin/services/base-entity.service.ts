@@ -5,6 +5,7 @@ import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {RbSort} from '../models/table.model';
 import {DEFAULT_PAGE_SIZE} from '../consts/default-table-values';
+import {AppOrganization} from '../entities/organization/models/organization';
 
 export class BaseEntityService<T extends {_name: string}, U> {
   protected http = inject(HttpClient);
@@ -91,6 +92,12 @@ export class BaseEntityService<T extends {_name: string}, U> {
     const {pageSize, pageIndex} = page;
     const startIndex = pageSize * pageIndex;
     return entities.slice(startIndex, startIndex + pageSize);
+  }
+
+  getEntity(key: number | string): T {
+    const entity = this.cache.find(item => item._name === key);
+    if (!entity) throw new Error(`Entity with id ${key} not found`);
+    return entity;
   }
 
   getByKey(key: number | string): Observable<T> {

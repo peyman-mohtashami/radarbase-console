@@ -15,7 +15,7 @@
       <div class="rounded-t-[4px] px-4 py-2 flex gap-2 items-center justify-between bg-neutral-100 dark:bg-neutral-600">
         <div
           class="flex items-center gap-2 px-2 rounded-full bg-neutral-200 dark:bg-neutral-500 text-neutral-500 dark:text-neutral-100">
-          <span class="material-symbols-outlined font-bold text-base!">corporate_fare</span>
+          <mat-icon class="material-symbols-outlined font-bold text-base!">corporate_fare</mat-icon>
           <span class='text-xs'>{{ entity().organization.name }}</span>
         </div>
         @if (!configFields || configFields['projectStatus'] === undefined || configFields['projectStatus']) {
@@ -25,8 +25,8 @@
 
       <div class="p-4 flex items-center justify-between gap-2 w-full">
         <div class="flex items-center gap-2">
-        <span
-          class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white">folder_open</span>
+        <mat-icon
+          class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark material-symbols-outlined font-bold text-white!">folder_open</mat-icon>
           <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity()._name }}</span>
         </div>
         <app-project-actions
@@ -40,21 +40,21 @@
         }
         @if (!configFields || configFields['startDate'] === undefined || configFields['startDate']) {
           <div class="text-sm flex mt-4 gap-4 items-center text-gray-500 dark:text-gray-300">
-            <span class="material-symbols-outlined text-xl shrink-0">date_range</span>
+            <mat-icon class="material-symbols-outlined text-xl shrink-0">date_range</mat-icon>
             @if (entity().startDate || entity().endDate) {
               <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
               <span> - </span>
               <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
             } @else {
-              Dates not set.
+              {{ 'ADMIN.project.dateNotSet' | translate}}
             }
           </div>
         }
       </div>
       @if (!configFields || configFields['sourceTypes'] === undefined || configFields['sourceTypes']) {
         <div class="mt-4 border-t-2 border-neutral-100 p-4 dark:border-neutral-600 dark:text-neutral-50">
-          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">Source Types
-            ({{ entity().sourceTypes?.length ?? 0 }})
+          <div class="text-xs uppercase text-neutral-400 font-bold mb-1">
+            {{ 'ADMIN.project.sourceType.tableLabel' | translate}} ({{ entity().sourceTypes?.length ?? 0 }})
           </div>
           <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
         </div>

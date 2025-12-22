@@ -8,7 +8,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
-import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';
 import {SourceDataActionsComponent} from '../../components/source-data-actions/source-data-actions.component';
 
 @Component({
@@ -47,12 +46,4 @@ export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceDa
   override navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'source-data']).then();
   }
-
-  override getDialogData(entity?: AppSourceData) {
-    return {
-      entity,
-    }
-  }
-
-  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 }

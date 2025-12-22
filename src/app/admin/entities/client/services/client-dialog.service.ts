@@ -12,9 +12,9 @@ export class ClientDialogService extends BaseDialogService<AppClient, ClientDial
   override entityService = inject(ClientService);
   override configService = inject(ClientConfigService);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppClient | undefined, entities: AppClient[]}): MatDialogRef<ClientDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppClient): MatDialogRef<ClientDialogComponent> {
     const clientFullList = this.entityService.getWithQuery();
-    const _data = {mode, entity: data.entity, clientFullList};
+    const _data = {mode, entity, clientFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -39,7 +39,5 @@ export class ClientDialogService extends BaseDialogService<AppClient, ClientDial
           restoreFocus: false
         });
     }
-
-
   }
 }

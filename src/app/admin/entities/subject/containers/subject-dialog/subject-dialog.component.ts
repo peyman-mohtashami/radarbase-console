@@ -27,6 +27,8 @@ import {LocaleService} from "../../../../../core/locale/services/locale.service"
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {DetailType} from '../../../../enums/detail-type';
 import {DialogAction} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-subject-dialog',
@@ -51,6 +53,7 @@ import {DialogAction} from '../../../../components/dialog/dialog-actions/dialog-
     MatSuffix,
     SubjectDetailsComponent,
     MatDynamicInputComponent,
+    AsyncPipe,
   ]
 })
 export class SubjectDialogComponent extends BaseDialogComponent<AppSubject> implements OnInit, AfterViewInit {
@@ -66,7 +69,7 @@ export class SubjectDialogComponent extends BaseDialogComponent<AppSubject> impl
     mode: SubjectDialogMode;
     entity: AppSubject;
     project: AppProject;
-    groups: AppGroup[];
+    groupFullList: Observable<AppGroup[]>;
   };
 
   override formFields = this.configService.getFormFields();

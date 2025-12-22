@@ -33,6 +33,8 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
 import {DetailType} from '../../../../enums/detail-type';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-subject-dialog-assign-group-dialog',
@@ -47,7 +49,8 @@ import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validat
     MatButton,
     MatDialogClose,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    AsyncPipe
   ]
 })
 export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit {
@@ -56,7 +59,7 @@ export class SubjectDialogAssignGroupComponent implements OnInit, AfterViewInit 
   public dialogData = inject(MAT_DIALOG_DATA) as {
     mode: string;
     entity: AppSubject;
-    groups: AppGroup[];
+    groupFullList: Observable<AppGroup[]>;
   };
 
   protected readonly DialogMode = SubjectDialogMode;

@@ -51,10 +51,10 @@ export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceTy
     this.router.navigate(['/admin', 'source-types']).then();
   }
 
-  override getDialogData(entity?: AppSourceType) {
-    return {
-      entity,
-      // sourceTypes: this.sourceTypeFullList
-    }
-  }
+  // override getDialogData(entity?: AppSourceType) {
+  //   return {
+  //     entity,
+  //     // sourceTypes: this.sourceTypeFullList
+  //   }
+  // }
 }

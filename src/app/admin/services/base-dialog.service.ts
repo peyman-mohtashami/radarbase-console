@@ -10,7 +10,7 @@ import {BaseConfigService} from './base-config.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogComponent<T>> {
-  private router = inject(Router);
+  protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
 
@@ -19,40 +19,32 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
 
   dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
 
-  processUrlFragment(fragment: string, data: {entity?: T; entities?: T[];}) {
-    console.log('Class: BaseDialogService, Function: processUrlFragment, Line 23 ' , fragment, data);
+  processUrlFragment(fragment: string) {
     const entityMetadata = this.configService.getEntityMetadata();
-    console.log('Class: BaseDialogService, Function: processUrlFragment, Line 25 entityMetadata' , entityMetadata);
     const [, action, entityType, entityId] = fragment.split('/');
-    console.log('Class: BaseDialogService, Function: processUrlFragment, Line 27 action, entityType, entityId' , action, entityType, entityId);
     if (entityType === entityMetadata.name) {
-      const entity = data.entity ?? data.entities?.find(e => e._name == entityId);
-      console.log('Class: BaseDialogService, Function: processUrlFragment, Line 30 entity' , entity);
+      const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
       switch (action) {
         case 'add':
-          console.log('Class: BaseDialogService, Function: processUrlFragment, Line 33 ' , );
-          this.openDialog(DialogMode.ADD, {...data, entity});
+          this.openDialog(DialogMode.ADD);
           break;
         case 'edit':
-          console.log('Class: BaseDialogService, Function: processUrlFragment, Line 37 ' , );
-          if (entity) this.openDialog(DialogMode.EDIT, {...data, entity});
+          if (entity) this.openDialog(DialogMode.EDIT, entity);
           break;
         case 'delete':
-          console.log('Class: BaseDialogService, Function: processUrlFragment, Line 41 ' , );
-          if (entity) this.openDialog(DialogMode.DELETE, {...data, entity});
+          if (entity) this.openDialog(DialogMode.DELETE, entity);
           break;
       }
     }
   }
 
-  openDialog(mode: DialogMode | string, data: any) {
-    console.log('Class: BaseDialogService, Function: openDialog, Line 49 mode, data' , mode, data);
-    if (mode !== DialogMode.ADD && !data.entity) {
+  openDialog(mode: DialogMode | string, entity?: T) {
+    if (mode !== DialogMode.ADD && !entity) {
       this.clearFragmentUrl();
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, data);
+    const dialogRef = this.createDialogRef(mode, entity);
 
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
@@ -66,7 +58,9 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
           }
           this.processDialogAction(_action, _entity).subscribe({
             next: (res) => {
+              console.log('Class: BaseDialogService, Function: next, Line 61 res' , res);
               const entity = res ?? _entity;
+              console.log('Class: BaseDialogService, Function: next, Line 63 entity' , entity);
               // this.dialogUpdateEvent.set({mode, entity: {...entity, projects: entity.projects}})
               this.dialogUpdateEvent.set({mode, entity})
               dialogRef.close();

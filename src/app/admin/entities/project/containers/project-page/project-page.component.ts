@@ -1,12 +1,9 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {NavigationEnd, RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppProject} from "../../models/project";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
-import {filter} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {ROLES} from "../../../../../shared/enums/roles";
 import {ProjectConfigService} from '../../services/project-config.service';
 import {ProjectDialogService} from '../../services/project-dialog.service';
 import {MatButton} from '@angular/material/button';
@@ -16,6 +13,7 @@ import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
 import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
+import {hasChildEntity} from '../../../../services/util';
 
 @Component({
   selector: 'app-project-page',
@@ -31,14 +29,12 @@ import {ProjectActionsComponent} from '../../components/project-actions/project-
     MatPrefix,
     TranslatePipe,
     ProjectActionsComponent,
+    RouterLinkActive,
   ]
 })
 export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> implements OnInit, OnDestroy {
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
-
-  protected readonly ROLES = ROLES;
-  protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   override entity = signal<AppProject>(this.activatedRoute.snapshot.data['project']);
 
@@ -52,24 +48,9 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` },
   ];
 
-  activePath?: string;
+  hasSubject = hasChildEntity(this.router.routerState.snapshot.root, 'subject');
 
-  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id'];
-
-
-  ngOnInit(): void {
-    // if (this.sourceTypes.find(sourceType => sourceType._name === '') === undefined &&) {
-
-    // }
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      takeUntil(this._destroy$)
-    ).subscribe(() => {
-      this.hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot.params['id'];
-    });
-    this.activePath = this.activatedRoute.firstChild?.snapshot?.url?.[0]?.path;
-
+  ngOnInit() {
     super.init();
   }
 
@@ -77,44 +58,15 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
     super.destroy();
   }
 
-  // private initializeDialogEffect() {
-  //   effect(() => {
-  //     const updated = this.dialogService.dialogUpdateEvent();
-  //     if (updated) {
-  //       switch (updated.mode) {
-  //         case DialogMode.EDIT:
-  //           if (updated?.entity) {
-  //             this.entity.set(updated.entity);
-  //             this.navigateOnUpdateSuccess(updated.entity);
-  //           }
-  //           break;
-  //         case DialogMode.DELETE:
-  //           this.navigateOnDeleteSuccess();
-  //           break;
-  //       }
-  //     }
-  //   })
-  // }
-
-
   override navigateOnUpdateSuccess(entity: AppProject) {
-    this.router
-      .navigate(['/admin', 'projects', entity.projectName, 'subjects'])
-      .then();
+    this.router.navigate(['../', entity._name], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined
+    }).then();
   }
 
   override navigateOnDeleteSuccess() {
     this.router.navigate(['/admin', 'organizations']).then();
-  }
-
-  override getDialogData(entity?: AppProject) {
-    return {
-      entity: entity,
-      // entities: this.entities(),
-      // organization: this.organization,
-      // projects: this.projectFullList,
-      // organizations: this.organizationFullList,
-      // sourceTypes: this.sourceTypeFullList
-    }
   }
 }

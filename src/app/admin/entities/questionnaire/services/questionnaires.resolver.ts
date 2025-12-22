@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {QuestionnaireService} from "./questionnaire.service";
 import {AppQuestionnaire} from "../models/questionnaire";
-import {getCurrentProject, getCurrentSubject} from '../../../services/util';
+import {getSelectedProject, getSelectedSubject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnairesResolver implements Resolve<AppQuestionnaire[]> {
@@ -11,8 +11,8 @@ export class QuestionnairesResolver implements Resolve<AppQuestionnaire[]> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppQuestionnaire[]> {
     return this.entityService.getAll(
-      getCurrentProject(route)?.projectName,
-      getCurrentSubject(route)?.login
+      getSelectedProject(route)?.projectName,
+      getSelectedSubject(route)?.login
     );
   }
 }

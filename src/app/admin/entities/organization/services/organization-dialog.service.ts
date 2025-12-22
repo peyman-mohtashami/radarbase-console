@@ -12,9 +12,9 @@ export class OrganizationDialogService extends BaseDialogService<AppOrganization
   override entityService = inject(OrganizationService);
   override configService = inject(OrganizationConfigService);
 
-  override createDialogRef(mode: DialogMode, data: {entity: AppOrganization | undefined, entities: AppOrganization[]}): MatDialogRef<OrganizationDialogComponent> {
+  override createDialogRef(mode: DialogMode, entity?: AppOrganization): MatDialogRef<OrganizationDialogComponent> {
     const organizationFullList = this.entityService.getWithQuery();
-    const _data = {mode, entity: data.entity, organizationFullList};
+    const _data = {mode, entity, organizationFullList};
 
     switch (mode) {
       case DialogMode.DELETE:

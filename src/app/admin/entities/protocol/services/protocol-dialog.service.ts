@@ -31,7 +31,7 @@ export class ProtocolDialogService {
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, entity, entities);
+    const dialogRef = this.createDialogRef(mode, {entity});
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
       next: (value: { action: DialogMode; entity: AppProtocol }) => {
@@ -53,12 +53,16 @@ export class ProtocolDialogService {
     }).then();
   }
 
-  createDialogRef(mode: DialogMode, entity: AppProtocol | undefined, entities: AppProtocol[]): MatDialogRef<ProtocolDialogComponent> {
-    const formEntity = entity ? this.entityService.appToFormModel(entity) : undefined;
+  createDialogRef(mode: DialogMode, data: {entity: AppProtocol | undefined}): MatDialogRef<ProtocolDialogComponent> {
+    const formEntity = data.entity ? this.entityService.appToFormModel(data.entity) : undefined;
+    const protocolFullList = this.entityService.getAll();
+
+    const _data = {mode, entity: formEntity, entities: protocolFullList};
+
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(ProtocolDialogComponent, {
-          data: {mode, entity: formEntity, entities},
+          data: _data,
           width: '50%',
           hasBackdrop: true,
           disableClose: true,
@@ -67,7 +71,7 @@ export class ProtocolDialogService {
         });
       default:
         return this.dialog.open(ProtocolDialogComponent, {
-          data: {mode, entity: formEntity, entities},
+          data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '80%',
           height: '100vh',

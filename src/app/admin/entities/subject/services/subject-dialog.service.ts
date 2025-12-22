@@ -21,6 +21,8 @@ import {AppGroup} from '../../group/models/group';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SubjectConfigService} from './subject-config.service';
 import {GroupService} from '../../group/services/group.service';
+import {ClientService} from '../../client/services/client.service';
+import {getSelectedProject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
 export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectDialogComponent> {
@@ -28,6 +30,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
   override configService = inject(SubjectConfigService);
 
   groupService = inject(GroupService);
+  clientService = inject(ClientService);
 
   override processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
     switch (actionType) {
@@ -49,16 +52,18 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
     }
   }
 
-  override createDialogRef(mode: SubjectDialogMode, data: {entity?: AppSubject, project?: AppProject}): MatDialogRef<any> {
+  override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject): MatDialogRef<any> {
     const groupFullList = this.groupService.getWithQuery();
-    const _data = {mode, entity: data.entity, project: data.project, groupFullList};
+    const project = getSelectedProject(this.router.routerState.snapshot.root);
+
+    const _data = {mode, entity, project, groupFullList};
 
     if (mode === SubjectDialogMode.DISCONTINUE) {
-      return this.createDiscontinueDialogRef(_data.mode, _data.entity, _data.project);
+      return this.createDiscontinueDialogRef(_data);
     } else if (mode === SubjectDialogMode.PAIR_APP) {
-      return this.createPairAppDialogRef(_data.mode, _data.entity, _data.project);
+      return this.createPairAppDialogRef(_data);
     } else if (mode === SubjectDialogMode.PAIR_SOURCE) {
-      return this.createPairSourceDialogRef(_data.mode, _data.entity, _data.project);
+      return this.createPairSourceDialogRef(_data);
     } else {
       return this.dialog.open(SubjectDialogComponent, {
         data: _data,
@@ -74,9 +79,9 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
     }
   }
 
-  createDiscontinueDialogRef(mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject) {
+  createDiscontinueDialogRef(_data: {mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject}): MatDialogRef<SubjectDialogDiscontinueComponent> {
     return this.dialog.open(SubjectDialogDiscontinueComponent, {
-      data: {mode, entity, project},
+      data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -88,9 +93,10 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
     });
   }
 
-  createPairAppDialogRef(mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject) {
+  createPairAppDialogRef(_data: {mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject}) {
+    const clientFullList = this.clientService.getWithQuery();
     return this.dialog.open(SubjectDialogPairAppComponent, {
-      data: {mode, entity, clients: []},
+      data: {..._data, clientFullList},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -102,9 +108,9 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, SubjectD
     });
   }
 
-  createPairSourceDialogRef(mode: SubjectDialogMode, entity: AppSubject | undefined, project: AppProject | undefined) {
+  createPairSourceDialogRef(_data: {mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject}) {
     return this.dialog.open(SubjectDialogPairSourceComponent, {
-      data: {mode, entity, project: project},
+      data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',

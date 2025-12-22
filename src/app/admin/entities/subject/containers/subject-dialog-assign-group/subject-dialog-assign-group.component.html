@@ -14,7 +14,7 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" novalidate>
-    <app-mat-select-autocomplete [options]="dialogData.groups" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
+    <app-mat-select-autocomplete [options]="(dialogData.groupFullList | async) ?? []" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
   </form>
 </mat-dialog-content>
 

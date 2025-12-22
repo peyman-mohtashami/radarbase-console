@@ -15,8 +15,8 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getCurrentProject} from '../../../../services/util';
 import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
+import {getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-subject-list-page',
@@ -40,7 +40,7 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
   override entities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['subjectList']);
   groups: AppGroup[] = this.activatedRoute.snapshot.data['groupFullList'];
 
-  project: AppProject = getCurrentProject(this.activatedRoute.snapshot)!;
+  project: AppProject = getSelectedProject(this.activatedRoute.snapshot)!;
 
   // actionMapper: Record<string, SubjectDialogMode> = {
   //   'add': SubjectDialogMode.ADD,
@@ -127,14 +127,14 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
     super.destroy();
   }
 
-  override getDialogData(entity?: AppSubject) {
-    return {
-      entity: entity,
-      entities: this.entities(),
-      project: this.project,
-      groups: this.groups
-    }
-  }
+  // override getDialogData(entity?: AppSubject) {
+  //   return {
+  //     entity: entity,
+  //     entities: this.entities(),
+  //     project: this.project,
+  //     groups: this.groups
+  //   }
+  // }
 }
 
 
