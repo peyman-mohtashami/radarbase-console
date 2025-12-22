@@ -10,7 +10,7 @@
             color="primary"
             (click)="showHistory()">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined">history</span>
+        <mat-icon class="material-symbols-outlined">history</mat-icon>
       </span>
     </button>
   </div>
@@ -26,7 +26,7 @@
 @if (isChanged) {
   <div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
     <div class="flex items-center gap-4 text-orange-700">
-      <span class="material-symbols-outlined">error_outline</span>
+      <mat-icon class="material-symbols-outlined">error_outline</mat-icon>
       <span>{{ `ADMIN.config.publish.unpublishedMessage` | translate }}</span>
     </div>
     <div class="flex items-center gap-4">
@@ -35,7 +35,7 @@
               color='primary'
               (click)="onPublishDialogAction('discard')">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined font-bold">close</span>
+        <mat-icon class="material-symbols-outlined font-bold">close</mat-icon>
         {{ `ADMIN.config.discard.discardAll` | translate }}
       </span>
       </button>
@@ -44,7 +44,7 @@
               color='accent'
               (click)="onPublishDialogAction('publish')">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined font-bold">publish</span>
+        <mat-icon class="material-symbols-outlined font-bold">publish</mat-icon>
         {{ `ADMIN.config.publish.title` | translate }}
       </span>
       </button>

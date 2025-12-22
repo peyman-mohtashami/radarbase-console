@@ -8,15 +8,14 @@
   @switch (property.name) {
     @case('repeatProtocol') {
       @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
-        <div>
-          Every <span class="font-bold">{{ repeatProtocol.amount }} {{ repeatProtocol.unit }}(s)</span> at specific times
+        <div [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
         </div>
       }
     }
 
     @case ('completionWindow') {
       @if (entity().protocol?.completionWindow; as completionWindow) {
-        {{ completionWindow.amount }} {{ completionWindow.unit }}(s)
+        {{ 'ADMIN.protocol.completionWindow.tableContent' | translate: {amount: completionWindow.amount, unit: completionWindow.unit} }}
       } @else {
         -
       }

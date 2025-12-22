@@ -10,6 +10,7 @@ import {UpdateTrigger} from "../../services/protocol-dialog.service";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {ProtocolDetailsComponent} from "../protocol-details/protocol-details.component";
 import {ProtocolActionsComponent} from '../protocol-actions/protocol-actions.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-protocol-table-row',
@@ -19,6 +20,7 @@ import {ProtocolActionsComponent} from '../protocol-actions/protocol-actions.com
     MatIconButton,
     ProtocolDetailsComponent,
     ProtocolActionsComponent,
+    TranslatePipe,
   ]
 })
 export class ProtocolTableRowComponent {

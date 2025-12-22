@@ -13,7 +13,7 @@
           @case ('name') {
             <p class="font-bold text-primary">{{ entity().name || '-' }}</p>
             <div class="flex items-center flex-wrap gap-2">
-              <span class="text-xs font-bold text-neutral-400 uppercase">Translations</span>
+              <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.protocol.availableLanguages' | translate}}</span>
               @for (l of entity()._languages; track l) {
                 <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{ l.id }}</span></span>
               }
@@ -24,13 +24,12 @@
           }
           @case ('repeatProtocol') {
             @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
-              <div>
-                Every <span class="font-bold">{{ repeatProtocol.amount }} {{ repeatProtocol.unit }}(s)</span> at specific times
+              <div [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
               </div>
             }
             @if (entity().protocol?.completionWindow; as completionWindow) {
               <div>
-                Available: <span class="font-bold">{{ completionWindow.amount }} {{ completionWindow.unit }}(s)</span>
+                {{ 'ADMIN.protocol.completionWindow.tableContent' | translate: {amount: completionWindow.amount, unit: completionWindow.unit} }}
               </div>
             }
           }

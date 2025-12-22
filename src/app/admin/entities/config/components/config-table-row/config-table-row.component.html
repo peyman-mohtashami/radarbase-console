@@ -4,9 +4,7 @@
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
-  <app-config-actions extra-actions
-                      [entity]="entity()"
-                      [isExpanded]="true"/>
+  <app-config-actions extra-actions [entity]="entity()" />
 </app-entity>
 <ng-template #entityTemplate let-property>
   @switch (property.name) {

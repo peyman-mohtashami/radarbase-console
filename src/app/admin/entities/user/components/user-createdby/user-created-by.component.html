@@ -1,9 +1,9 @@
 @if (createdBy() && createdBy() !== 'system') {
-  <app-tag [link]='["/admin/users", createdBy() ?? ""]' class="bg-user-color-500 text-white">
+  <app-tag [link]='["/admin/users", createdBy() ?? ""]' class="bg-primary/20 text-primary">
     {{ createdBy() || '-' }}
   </app-tag>
 } @else {
   <span class="uppercase">
-  {{ createdBy() || '-' }}
-</span>
+    {{ createdBy() || '-' }}
+  </span>
 }

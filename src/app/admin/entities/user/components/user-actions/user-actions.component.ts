@@ -18,7 +18,7 @@ import {MatIcon} from '@angular/material/icon';
     TranslatePipe,
     MatMenuTrigger,
     MatTooltip,
-    MatIcon
+    MatIcon,
   ],
   templateUrl: './user-actions.component.html',
 })

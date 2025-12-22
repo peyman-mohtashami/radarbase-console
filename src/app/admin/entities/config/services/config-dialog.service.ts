@@ -9,11 +9,6 @@ import {ConfigPublishDialogComponent} from '../containers/config-publish-dialog/
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {ConfigConfigService} from './config-config.service';
 
-// export interface UpdateTrigger {
-//   mode: DialogMode | string;
-//   entity?: AppConfig;
-// }
-
 @Injectable({providedIn: 'root'})
 export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDialogComponent> {
   override entityService = inject(ConfigService);

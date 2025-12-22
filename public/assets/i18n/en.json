@@ -1215,7 +1215,10 @@
           "remove": "Remove Role"
         },
         "confirmationMessage": "Are you sure?",
-        "no": "No"
+        "no": "No",
+        "sysAdmin": "SYS ADMIN",
+        "organizationAdmin": "ORGANIZATION ADMIN",
+        "projectAdmin": "PROJECT ADMIN"
       },
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add User",
@@ -1340,11 +1343,13 @@
       },
       "repeatProtocol": {
         "tableLabel": "Schedule's Description",
-        "label": "Schedule's Description"
+        "label": "Schedule's Description",
+        "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
       },
       "completionWindow": {
         "tableLabel": "Completion Window",
-        "label": "Completion Window"
+        "label": "Completion Window",
+        "tableContent": "{{ amount }} {{ unit }}(s) after the start of the protocol"
       },
       "questionnaire": {
         "tableLabel": "Questionnaire",
@@ -1382,6 +1387,7 @@
         "publishing": "Publishing",
         "unpublishedMessage": "Unpublished changes"
       },
+      "availableLanguages": "Languages",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Protocol",
       "edit": "Edit",

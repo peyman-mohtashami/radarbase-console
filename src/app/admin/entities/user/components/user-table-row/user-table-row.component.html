@@ -7,7 +7,7 @@
             [customTemplate]="entityTemplate"
             [updated]="updated()">
   <app-user-details extension-row class="py-4" [entity]='entity()' [detailType]="DetailType.TABLE" />
-  <app-user-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+  <app-user-actions extra-actions [entity]="entity()" />
 </app-entity>
 
 <ng-template #entityTemplate let-property>

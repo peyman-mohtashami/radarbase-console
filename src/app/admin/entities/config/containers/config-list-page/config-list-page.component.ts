@@ -37,6 +37,7 @@ import {
   MIN_ENTITIES_FOR_PAGINATION,
   PAGE_SIZE_OPTIONS
 } from "../../../../consts/default-table-values";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-config-list-page',
@@ -53,6 +54,7 @@ import {
     MatCheckbox,
     DataTableFilterComponent,
     MatButton,
+    MatIcon,
   ]
 })
 export class ConfigListPageComponent implements OnInit, OnDestroy {

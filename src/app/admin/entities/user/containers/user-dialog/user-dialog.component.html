@@ -89,12 +89,13 @@
       <label for="_roles" class="text-sm">{{ 'ADMIN.user.roles.label' | translate }}</label>
       <fieldset formGroupName='_roles'>
         <div>
-          <mat-slide-toggle color="primary" formControlName='_sysAdmin'>SYS_ADMIN</mat-slide-toggle>
+          <mat-slide-toggle color="primary" formControlName='_sysAdmin'>{{ 'ADMIN.user.role.sysAdmin' | translate }}</mat-slide-toggle>
         </div>
         @if (!form.controls._roles.controls._sysAdmin.value) {
           <div class='flex items-center'>
             <div class='w-1/3'>
-              <mat-slide-toggle color="primary" formControlName='_organizationAdmin'>ORGANIZATION_ADMIN
+              <mat-slide-toggle color="primary" formControlName='_organizationAdmin'>
+                {{ 'ADMIN.user.role.organizationAdmin' | translate }}
               </mat-slide-toggle>
             </div>
             <div class="w-2/3">
@@ -111,7 +112,9 @@
         @if (!form.controls._roles.controls._sysAdmin.value) {
           <div class='flex items-center'>
             <div class='w-1/3'>
-              <mat-slide-toggle color="primary" formControlName='_projectAdmin'>PROJECT_ADMIN</mat-slide-toggle>
+              <mat-slide-toggle color="primary" formControlName='_projectAdmin'>
+                {{ 'ADMIN.user.role.projectAdmin' | translate }}
+              </mat-slide-toggle>
             </div>
             <div class="w-2/3">
               @if (form.controls._roles.controls._projectAdmin.value) {

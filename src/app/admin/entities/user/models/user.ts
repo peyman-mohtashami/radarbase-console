@@ -41,6 +41,6 @@ export interface AppRole {
   _sysAdmin: boolean | null;
   _organizationAdmin: boolean | null;
   _projectAdmin: boolean | null;
-  _organizations: RadarOption[] | null; //{ name: string | null; id: string | number | null; }[] | null;
-  _projects: RadarOption[] | null; //{ id: string | number | null; name: string | null }[] | null;
+  _organizations: RadarOption[] | null;
+  _projects: RadarOption[] | null;
 }
