@@ -11,11 +11,9 @@ import {BaseEntityService} from '../../../services/base-entity.service';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
-  override CACHE_ENABLED = false;
+  override CACHE_ENABLED = true;
 
-  override getResourceUrl(): string {
-    return `${environment.apiUrl}api/subjects`;
-  }
+  updatedList: AppConfig[] = [];
 
   override toAppModel(entity: RadarConfig): AppConfig {
     return {
@@ -25,12 +23,6 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
       _search: entity.name
     };
   }
-
-  // toRadarModel(entity: AppConfig): RadarConfig {
-  //   return {
-  //     ...entity,
-  //   };
-  // }
 
   override getWithQuery(queryParams?: Params, clientId?: string, projectId?: string, subjectId?: string): Observable<AppConfig[]> {
     if (!clientId) throw new Error('Client id is required');
@@ -42,35 +34,24 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
       ...filter
     } = queryParams ?? {};
 
-    const headers = getHeaders();
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const urlSegment = getUrlSegment(projectId, subjectId);
-    const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
-
     const process = (entities: AppConfig[]) => {
       const filteredEntities = this.getFilteredEntities(entities, filter);
       const sortedEntities = this.applySorting(filteredEntities, {sortField, sortOrder});
       return this.applyPagination(sortedEntities, {pageSize, pageIndex});
     };
 
-    // if (this.CACHE_ENABLED && this.cacheLoaded) {
-    //   this.total.set(this.cache.length);
-    //   return of(queryParams ? process(this.cache) : this.cache);
-    // }
-    if (!environment.localDeployment) {
-      return this.http.get<RadarConfigBundle>(url, {headers}).pipe(
-        map(configBundle =>
-          getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
-        ),
-        // map((entities) => entities.map((entity) => this.toAppModel(entity))),
-        tap((entities) => {
-          this.cache = entities;
-          this.cacheLoaded = true;
-          this.total.set(entities.length);
-        }),
-        map((entities) => queryParams ? process(entities) : entities)
-      );
-    } else {
+    if (this.CACHE_ENABLED && this.cacheLoaded) {
+      this.total.set(this.cache.length);
+      return of(queryParams ? process(this.updatedList) : this.updatedList);
+    }
+
+    const headers = getHeaders();
+    const appConfigBaseUrl = getAppConfigBaseUrl();
+    const urlSegment = getUrlSegment(projectId, subjectId);
+    const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
+
+    let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    if (environment.localDeployment) {
       let radarConfigBundle;
       if (subjectId && projectId) {
         radarConfigBundle = getSubjectConfiguration(clientId, projectId, subjectId);
@@ -81,57 +62,56 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
           radarConfigBundle = getGlobalConfiguration(clientId);
         }
       }
-      return (
-        of(radarConfigBundle).pipe(
-          map((configBundle) => {
-            return getConfigsFromConfigBundle(configBundle)
-          }),
-          map((configs) => {
-            return configs.map((config) => {
-              return this.toAppModel(config)
-            })
-          }),
-        )
-      );
-
+      radarConfigBundleObservable = of(radarConfigBundle);
     }
+
+    return radarConfigBundleObservable.pipe(
+      map(configBundle =>
+        getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
+      ),
+      tap((entities) => {
+        this.cache = [...entities];
+        this.updatedList = [...entities];
+        this.cacheLoaded = true;
+        this.total.set(entities.length);
+      }),
+      map((entities) => queryParams ? process(entities) : entities)
+    );
   }
 
-  getAll(clientId: string, projectId?: string, subjectId?: string): Observable<AppConfig[]> {
-    if (!environment.localDeployment) {
-      const headers = getHeaders();
-      const appConfigBaseUrl = getAppConfigBaseUrl();
-      const urlSegment = getUrlSegment(projectId, subjectId);
-      const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
+  override getEntity(key: number | string): AppConfig {
+    const entity = this.updatedList.find(item => item._name === key);
+    if (!entity) throw new Error(`Entity with id ${key} not found`);
+    return entity;
+  }
 
-      return this.http.get<RadarConfigBundle>(url, {headers}).pipe(
-        map((configBundle) =>
-          getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
-        ));
-    } else {
-      let radarConfigBundle;
-      if (subjectId && projectId) {
-        radarConfigBundle = getSubjectConfiguration(clientId, projectId, subjectId);
-      } else {
-        if (projectId) {
-          radarConfigBundle = getProjectConfiguration(clientId, projectId);
-        } else {
-          radarConfigBundle = getGlobalConfiguration(clientId);
-        }
-      }
-      return (
-        of(radarConfigBundle).pipe(
-          map((configBundle) => {
-            return getConfigsFromConfigBundle(configBundle)
-          }),
-          map((configs) => {
-            return configs.map((config) => {
-              return this.toAppModel(config)
-            })
-          }),
-        )
+  override add(entity: AppConfig): Observable<AppConfig> {
+    return of(entity)
+      .pipe(
+        map(entity => this.toAppModel(entity)),
+        tap(_entity => {
+          this.total.set(this.total() + 1);
+          this.updatedList.push(_entity);
+        })
       );
-    }
+  }
+
+  override update(update: AppConfig): Observable<AppConfig> {
+    return of(update)
+      .pipe(
+        map(entity => this.toAppModel(entity)),
+        tap(() => {
+          this.updatedList = this.updatedList.map((e) => (e.id === update.id ? update : e));
+        })
+      );
+  }
+
+  override delete(entity: AppConfig): Observable<void> {
+    return of(undefined).pipe(
+      tap(() => {
+        this.updatedList = this.updatedList.filter((e) => e.id !== entity.id);
+      })
+    );
   }
 
   publish(configs: AppConfig[], clientId: string, projectId?: string, subjectId?: string): Observable<AppConfig[]>{
@@ -144,6 +124,12 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
       map((configBundle) => getConfigsFromConfigBundle(configBundle)),
       map((configs) => configs.map((config) => this.toAppModel(config))),
     )
+  }
+
+  clearCache() {
+    this.cacheLoaded = false;
+    this.cache = [];
+    this.updatedList = [];
   }
 }
 

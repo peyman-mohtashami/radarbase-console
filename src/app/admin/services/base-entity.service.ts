@@ -13,7 +13,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
   total = signal(0);
 
   CACHE_ENABLED = true;
-  protected cache: T[] = [];
+  cache: T[] = [];
   protected cacheLoaded = false;
 
   toAppModel(entity: U): T {

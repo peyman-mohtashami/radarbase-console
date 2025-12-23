@@ -5,7 +5,6 @@ import {MOCK_SUBJECT_CONFIGS} from "./mock-subject-configs";
 // import { RadarConfigBundleDTO, RadarConfigDTO } from "@rb/models";
 
 export function getGlobalConfiguration(clientId: string): RadarConfigBundle {
-  console.log('Class: getGlobalConfiguration, Function: getGlobalConfiguration, Line 8 ' , );
   return JSON.parse(JSON.stringify(
     MOCK_GLOBAL_CONFIGS[clientId] || {
       clientId: clientId,
@@ -16,7 +15,6 @@ export function getGlobalConfiguration(clientId: string): RadarConfigBundle {
 }
 
 export function getProjectConfiguration(clientId: string, project: string): RadarConfigBundle {
-  console.log(project, clientId);
   return JSON.parse(JSON.stringify(
     MOCK_PROJECT_CONFIGS[project][clientId] || {
       clientId: clientId,
@@ -27,7 +25,6 @@ export function getProjectConfiguration(clientId: string, project: string): Rada
 }
 
 export function getSubjectConfiguration(clientId: string, project: string, subjectId: string): RadarConfigBundle {
-  console.log(subjectId, project, clientId);
   return JSON.parse(JSON.stringify(
     MOCK_SUBJECT_CONFIGS[project]?.[subjectId]?.[clientId] || {
       clientId: clientId,

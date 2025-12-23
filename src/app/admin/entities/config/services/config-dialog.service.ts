@@ -31,10 +31,10 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDial
   }
 
   openPublishDialog(mode: "publish" | "discard", entities: AppConfig[], clientId: string, projectId?: string, subjectId?: string) {
-    const dialogRef = this.createPublishDialogRef(mode, entities);
+    const dialogRef = this.createPublishDialogRef(mode);
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode | string; entity: AppConfig }) => {
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
+      (value) => {
         if (value.action === 'publish') {
           if (entities) {
             this.entityService.publish(entities, clientId, projectId, subjectId).subscribe({
@@ -50,20 +50,22 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDial
           dialogRef.close();
         }
       }
-    });
+    );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();
     });
   }
 
-  createPublishDialogRef(mode: "publish" | "discard", entities?: AppConfig[]): MatDialogRef<ConfigPublishDialogComponent> {
+  createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
+    const originalList = this.entityService.cache;
+    const updatedList = this.entityService.updatedList;
     return this.dialog.open(ConfigPublishDialogComponent, {
-      data: {mode, entities},
-      // panelClass: 'tailwind-slide-panel',
+      data: {mode, originalList, updatedList},
+      panelClass: 'tailwind-slide-panel',
       width: '50%',
-      // height: '100vh',
-      // position: {right: '0'},
+      height: '100vh',
+      position: {right: '0'},
       hasBackdrop: true,
       disableClose: true,
       autoFocus: false,
@@ -72,3 +74,4 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, ConfigDial
   }
 
 }
+

@@ -88,8 +88,8 @@ export class ProtocolDialogService {
   openPublishDialog(mode: "publish" | "discard", entities: AppProtocol[], projectId?: string, subjectId?: string) {
     const dialogRef = this.createPublishDialogRef(mode, entities);
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode | string; entity: AppConfig }) => {
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
+      (value) => {
         if (value.action === 'publish') {
           if (entities) {
             this.entityService.publish(entities, projectId, subjectId).subscribe({
@@ -105,7 +105,7 @@ export class ProtocolDialogService {
           dialogRef.close();
         }
       }
-    });
+    );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();

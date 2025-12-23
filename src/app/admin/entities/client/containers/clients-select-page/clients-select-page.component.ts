@@ -26,7 +26,7 @@ export class ClientsSelectPageComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
-  entities: AppClient[] = this.activatedRoute.snapshot.data['entities'];
+  entities: AppClient[] = this.activatedRoute.snapshot.data['clientFullList'];
   scope = this.activatedRoute.snapshot.data['scope'];
 
   form = new FormGroup({

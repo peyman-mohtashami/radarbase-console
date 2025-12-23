@@ -14,6 +14,7 @@ export class ConfigListResolver implements Resolve<AppConfig[]> {
   private entityService = inject(ConfigService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppConfig[]> {
+    this.entityService.clearCache();
     return this.entityService.getWithQuery(
       route.queryParams,
       getSelectedClient(route)!.clientId,

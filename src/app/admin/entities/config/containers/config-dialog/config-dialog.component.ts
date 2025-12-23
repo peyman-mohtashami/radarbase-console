@@ -22,6 +22,7 @@ import {
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-config-dialog',
@@ -35,7 +36,8 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     DialogActionsComponent,
     MatInput,
     ReactiveFormsModule,
-    CdkTextareaAutosize
+    CdkTextareaAutosize,
+    ErrorMessageBoxComponent
   ]
 })
 export class ConfigDialogComponent extends BaseDialogComponent<AppConfig> implements OnInit, AfterViewInit {

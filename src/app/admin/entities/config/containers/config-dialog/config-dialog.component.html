@@ -5,7 +5,7 @@
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
                                  [label]="'Config'"
-                                 [entityName]="dialogData.entity._name" />
+                                 [entityName]="dialogData.entity._name"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -26,10 +26,9 @@
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-      class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
 
 <app-dialog-actions [dialogMode]='dialogData.mode'

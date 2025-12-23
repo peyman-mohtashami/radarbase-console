@@ -1,11 +1,7 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
-  inject,
-  OnInit,
-  Output,
-  signal
+  inject, OnInit,
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -19,11 +15,9 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {HttpErrorResponse} from '@angular/common/http';
-import {DialogMode} from '../../../../enums/dialog';
-import {DetailType} from '../../../../enums/detail-type';
-import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {ConfigConfigService} from '../../services/config-config.service';
+import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-config-publish-dialog',
@@ -36,66 +30,59 @@ import {ConfigConfigService} from '../../services/config-config.service';
     MatButton,
     TranslatePipe,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    ErrorMessageBoxComponent,
   ]
 })
-export class ConfigPublishDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(ConfigConfigService);
-  private dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class ConfigPublishDialogComponent extends BaseDialogComponent<AppConfig[]> implements OnInit, AfterViewInit {
+  override configService = inject(ConfigConfigService);
+  override dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: "publish" | "discard";
-    entities: AppConfig[];
+    originalList: AppConfig[];
+    updatedList: AppConfig[];
   };
 
-  protected readonly DialogMode = DialogMode;
-  protected readonly DetailType = DetailType;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
+  override formFields = this.configService.getFormFields();
 
-  tableFields = this.configService.getTableFields();
-  formFields = this.configService.getFormFields();
+  differences: { name: string; originalValue?: string; newValue?: string;}[] = [];
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode | string, entities?: AppConfig[] }>();
-
-  ngOnInit() {}
+  ngOnInit() {
+    this.dialogData.updatedList.forEach(config => {
+      const originalConfig = this.dialogData.originalList.find(originalConfig => originalConfig.name === config.name);
+      if (originalConfig?._name !== config._name || originalConfig?.value !== config.value) {
+        this.differences.push({
+          name: config.name,
+          originalValue: originalConfig?.value,
+          newValue: config.value
+        })
+      }
+    })
+    this.dialogData.originalList.forEach(config => {
+      const updatedConfig = this.dialogData.updatedList.find(updatedConfig => updatedConfig.name === config.name);
+      if (!updatedConfig) {
+        this.differences.push({
+          name: config.name,
+          originalValue: config.value,
+          newValue: undefined
+        })
+      }
+    })
+  }
 
   ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
-    });
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
+    super.afterViewInit();
   }
 
   publish() {
     this.error.set(null);
     this.loading.set(true);
-    this.dialogActionEvent.emit({ action: 'publish', entities: this.dialogData.entities });
+    this.dialogActionEvent.emit({ action: 'publish', entity: this.dialogData.updatedList });
   }
 
   discard() {
     this.error.set(null);
     this.loading.set(true);
-    this.dialogActionEvent.emit({ action: 'discard', entities: undefined });
+    this.dialogActionEvent.emit({ action: 'discard', entity: undefined });
   }
 }

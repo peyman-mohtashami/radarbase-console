@@ -2,12 +2,12 @@
   <h2 mat-dialog-title class="border-b-2">
   <span class='inline-flex items-center justify-between w-full'>
     <span class="text-lg">
-      <span>{{ (dialogData.mode === "publish" ? "ADMIN.config.publish.title" : "ADMIN.config.discard.title") | translate }}</span>
+      <span>{{ (dialogData.mode === "publish" ? "ADMIN.config.publishDialog.title" : "ADMIN.config.discardDialog.title") | translate }}</span>
     </span>
     <button mat-icon-button
             (click)='close()'
             [mat-dialog-close]='true'>
-      <span class="material-symbols-outlined">close</span>
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
     </button>
   </span>
   </h2>
@@ -15,19 +15,38 @@
 
 <mat-dialog-content>
   @if (dialogData.mode === "publish") {
-    <p>Are you sure you want to publish these changes?</p>
-    <p>After you publish, these changes are available to users.</p>
+    <p>{{ "ADMIN.config.publishDialog.confirmationMessage" | translate }}</p>
+    <p>{{ "ADMIN.config.publishDialog.message" | translate }}</p>
   } @else {
-    <p>Are you sure you want to unpublish these changes?</p>
+    <p>{{ "ADMIN.config.discardDialog.confirmationMessage" | translate }}</p>
   }
+  <div class="text-base mt-4">
+    <h3 class="border-b-1 py-2">{{ "ADMIN.config.publishDialog.changes" | translate }}</h3>
+    @for (diff of differences; track diff.name) {
+      <div class="grid gap-4 grid-cols-2 mt-2">
+        <span>{{diff.name}}</span>
+        <span>
+          @if (!diff.originalValue) {
+            {{ "ADMIN.config.publishDialog.created" | translate }}
+          } @else {
+            @if (!diff.newValue) {
+              {{ "ADMIN.config.publishDialog.deleted" | translate }}
+            } @else {
+              {{ "ADMIN.config.publishDialog.modified" | translate }}
+            }
+          }
+        </span>
+      </div>
+    }
+  </div>
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-      class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
+
 
 <div>
   <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
@@ -38,7 +57,7 @@
               class='close-button'
               [mat-dialog-close]='true'
               (click)='close()'>
-        {{ 'ADMIN.user.activate.cancel' | translate }}
+        {{ 'ADMIN.config.publishDialog.cancel' | translate }}
       </button>
     </div>
     <div class=''>
@@ -52,10 +71,10 @@
               <mat-icon>
                 <mat-spinner diameter='20'/>
               </mat-icon>
-              {{ "ADMIN.config.publish.publishing" | translate }}
+              {{ "ADMIN.config.publishDialog.publishing" | translate }}
             </ng-container>
           } @else {
-            {{ "ADMIN.config.publish.publish" | translate }}
+            {{ "ADMIN.config.publishDialog.publish" | translate }}
           }
         </button>
       } @else {
@@ -68,10 +87,10 @@
               <mat-icon>
                 <mat-spinner diameter='20'/>
               </mat-icon>
-              {{ "ADMIN.config.discard.discarding" | translate }}
+              {{ "ADMIN.config.discardDialog.discarding" | translate }}
             </ng-container>
           } @else {
-            {{ "ADMIN.config.discard.discard" | translate }}
+            {{ "ADMIN.config.discardDialog.discard" | translate }}
           }
         </button>
       }

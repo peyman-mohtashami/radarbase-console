@@ -14,7 +14,7 @@ export const appConfigRoutes: Routes = [
       {
         path: ':id',
         resolve: {
-          entity: ClientResolver,
+          client: ClientResolver,
         },
         children: [
           {

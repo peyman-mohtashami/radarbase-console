@@ -1534,17 +1534,26 @@
         "tableLabel": "Type",
         "label": "Type"
       },
-      "discard": {
+      "discardDialog": {
         "title": "Discard changes",
         "discard": "Discard",
         "discarding": "Discarding",
-        "discardAll": "Discard all"
+        "discardAll": "Discard all",
+        "confirmationMessage": "Are you sure you want to discard these changes?",
+        "cancel": "Cancel"
       },
-      "publish": {
+      "publishDialog": {
         "title": "Publish changes",
         "publish": "Publish",
         "publishing": "Publishing",
-        "unpublishedMessage": "Unpublished changes"
+        "unpublishedMessage": "Unpublished changes",
+        "confirmationMessage": "Are you sure you want to publish these changes?",
+        "message": "After you publish, these changes are available to users.",
+        "changes": "Changes",
+        "created": "Created",
+        "modified": "Modified",
+        "deleted": "Deleted",
+        "cancel": "Cancel"
       },
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Config",
