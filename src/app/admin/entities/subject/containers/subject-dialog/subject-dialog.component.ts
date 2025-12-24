@@ -29,6 +29,7 @@ import {DetailType} from '../../../../enums/detail-type';
 import {DialogAction} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-subject-dialog',
@@ -54,6 +55,7 @@ import {AsyncPipe} from '@angular/common';
     SubjectDetailsComponent,
     MatDynamicInputComponent,
     AsyncPipe,
+    ErrorMessageBoxComponent,
   ]
 })
 export class SubjectDialogComponent extends BaseDialogComponent<AppSubject> implements OnInit, AfterViewInit {

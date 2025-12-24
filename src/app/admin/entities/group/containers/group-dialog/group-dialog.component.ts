@@ -23,6 +23,7 @@ import {
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {Observable} from 'rxjs';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-organization-dialog',
@@ -36,7 +37,8 @@ import {Observable} from 'rxjs';
     MatFormField,
     MatInput,
     DialogActionsComponent,
-    MatError
+    MatError,
+    ErrorMessageBoxComponent
   ]
 })
 export class GroupDialogComponent extends BaseDialogComponent<AppGroup> implements OnInit, AfterViewInit {

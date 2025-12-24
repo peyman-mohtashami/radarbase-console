@@ -2,21 +2,20 @@ import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {PermissionDialogComponent} from '../containers/permission-dialog/permission-dialog.component';
-import {AppUser} from "../../user/models/user";
+import {AppUser, RadarUser} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {PermissionConfigService} from './permission-config.service';
-import {getSelectedOrganization, getSelectedProject} from '../../../services/util';
 
 @Injectable({providedIn: 'root'})
-export class PermissionDialogService extends BaseDialogService<AppUser, PermissionDialogComponent> {
+export class PermissionDialogService extends BaseDialogService<AppUser, RadarUser, PermissionDialogComponent> {
   override entityService = inject(UserService);
   override configService = inject(PermissionConfigService);
 
   override createDialogRef(mode: DialogMode, entity?: AppUser): MatDialogRef<PermissionDialogComponent> {
-    const userFullList = this.entityService.getAll();
-    const project = getSelectedProject(this.router.routerState.snapshot.root);
-    const organization = getSelectedOrganization(this.router.routerState.snapshot.root);
+    const userFullList = this.entityService.getWithQuery();
+    const project = this.selectedEntitiesService.selectedProject();
+    const organization = this.selectedEntitiesService.selectedOrganization();
 
     const _data = {mode, entity, project, organization, userFullList};
 

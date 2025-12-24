@@ -11,13 +11,15 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { RadarCondition } from '../../containers/questionnaire-dialog/questionnaire-dialog.component';
-import { RadarOption } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion, AppQuestionnaire, RadarQuestion} from "../../models/questionnaire";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
-import {BranchingLogicAndArrayComponent} from "../branching-logic-and-array/branching-logic-and-array.component";
+import {
+  BranchingLogicAndArrayComponent
+} from '../questionnaire-branching-logic-and-array/branching-logic-and-array.component';
+import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
+import {RadarOption} from '../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {RadarCondition} from '../../questionnaire-dialog.component';
 // import {BranchingLogicAndArrayComponent} from "../branching-logic-and-array/branching-logic-and-array.component";
 
 @Component({

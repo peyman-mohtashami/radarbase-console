@@ -1,11 +1,13 @@
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
   <mat-slide-toggle formControlName='relativeToReferenceTime' class="my-4" color="primary">
-    Relative To reference timestamp
+    {{ 'ADMIN.protocol.dialog.scheduling.relativeToReferenceTimeLabel' | translate }}
   </mat-slide-toggle>
 
   @if (relativeToReferenceTimeValueChanges()) {
     <div>
-      <label for="referenceTimestamp" class="text-sm">Reference timestamp *</label>
+      <label for="referenceTimestamp" class="text-sm">
+        {{ 'ADMIN.protocol.dialog.scheduling.relativeToReferenceTimeLabel' | translate }} *
+      </label>
       <mat-form-field class='small-input w-1/2' appearance='outline'>
         <input matInput [matDatepicker]='startDatePicker'
                formControlName='referenceTimestamp'
@@ -43,15 +45,19 @@
   <mat-divider class="mb-2!"/>
 
   <mat-slide-toggle formControlName='repeatedProtocol' class="my-4" color="primary">
-    Enable repeating
+    {{ 'ADMIN.protocol.dialog.scheduling.repeatedProtocolLabel' | translate }}
   </mat-slide-toggle>
 
   @if (repeatedProtocolValueChanges()) {
     <div formGroupName="repeatProtocol">
-      <p class="text-sm">Repeat every</p>
+      <p class="text-sm">
+        {{ 'ADMIN.protocol.dialog.scheduling.repeatProtocolLabel' | translate }}
+      </p>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label for="repeat-protocol-amount" class="text-sm">Amount *</label>
+          <label for="repeat-protocol-amount" class="text-sm">
+            {{ 'ADMIN.protocol.dialog.scheduling.repeatProtocolAmount' | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance='outline'>
             <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
             <input id="repeat-protocol-amount" matInput formControlName='amount' type="number" min="1"
@@ -60,7 +66,9 @@
         </div>
 
         <div>
-          <label for="repeat-protocol-unit" class="text-sm">Unit *</label>
+          <label for="repeat-protocol-unit" class="text-sm">
+            {{ 'ADMIN.protocol.dialog.scheduling.repeatProtocolUnit' | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance='outline'>
             <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
             <mat-select id="repeat-protocol-unit" formControlName='unit' required>
@@ -75,7 +83,7 @@
   }
 
   <div formGroupName="repeatQuestionnaire">
-    <p class="text-sm mt-2">Time offsets</p>
+    <p class="text-sm mt-2">{{ 'ADMIN.protocol.dialog.scheduling.timeOffsetsLabel' | translate }}</p>
     <app-time-from-zero-form-array formControlName="unitsFromZero"
                                    [unit]="form.controls.repeatQuestionnaire.controls.unit.value"/>
   </div>
@@ -83,11 +91,13 @@
   <mat-divider class="mb-2!"/>
 
   <div class="mt-2" formGroupName="completionWindow">
-    <p class="text-sm">Time to complete</p>
+    <p class="text-sm">{{ 'ADMIN.protocol.dialog.scheduling.completionWindowLabel' | translate }}</p>
     <div class="grid grid-cols-2 gap-4">
 
       <div class="">
-        <label for="completion-window-amount" class="text-sm">Amount *</label>
+        <label for="completion-window-amount" class="text-sm">
+          {{ 'ADMIN.protocol.dialog.scheduling.completionWindowAmount' | translate }} *
+        </label>
         <mat-form-field class='small-input' appearance='outline'>
           <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
           <input id="completion-window-amount" matInput formControlName='amount' type="number" min="0" max="10000">
@@ -95,7 +105,9 @@
       </div>
 
       <div class="">
-        <label for="completion-window-unit" class="text-sm">Unit *</label>
+        <label for="completion-window-unit" class="text-sm">
+          {{ 'ADMIN.protocol.dialog.scheduling.completionWindowUnit' | translate }} *
+        </label>
         <mat-form-field class='small-input' appearance='outline'>
           <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
           <mat-select id="completion-window-unit" formControlName='unit' required>
@@ -111,15 +123,17 @@
   <mat-divider class="mb-2!"/>
 
   <div formGroupName="reminders">
-    <p class="text-sm my-2">Reminders</p>
+    <p class="text-sm my-2">{{ 'ADMIN.protocol.dialog.scheduling.remindersLabel' | translate }}</p>
     <mat-slide-toggle formControlName='enabled' class="mb-4" color="primary">
-      Enable reminders
+      {{ 'ADMIN.protocol.dialog.scheduling.remindersEnableLabel' | translate }}
     </mat-slide-toggle>
 
     @if (reminderEnabledValueChanges()) {
       <div class="grid grid-cols-3 gap-4">
         <div>
-          <label for="reminders-repeat" class="text-sm">Repeat count *</label>
+          <label for="reminders-repeat" class="text-sm">
+            {{ 'ADMIN.protocol.dialog.scheduling.reminderRepeat' | translate }} *
+          </label>
           <mat-form-field class='small-input w-1/3'
                           subscriptSizing="dynamic"
                           appearance='outline'>
@@ -128,14 +142,18 @@
           </mat-form-field>
         </div>
         <div>
-          <label for="reminders-amount" class="text-sm">Amount *</label>
+          <label for="reminders-amount" class="text-sm">
+            {{ 'ADMIN.protocol.dialog.scheduling.reminderAmount' | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance='outline'>
             <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
             <input id="reminders-amount" matInput formControlName='amount' type="number" min="1" max="10000" required/>
           </mat-form-field>
         </div>
         <div>
-          <label for="reminders-unit" class="text-sm">Unit *</label>
+          <label for="reminders-unit" class="text-sm">
+            {{ 'ADMIN.protocol.dialog.scheduling.reminderUnit' | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance='outline'>
             <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
             <mat-select id="reminders-unit" formControlName='unit'>

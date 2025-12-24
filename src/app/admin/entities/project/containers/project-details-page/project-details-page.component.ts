@@ -1,9 +1,8 @@
 import {Component, inject,} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AppProject } from "../../models/project";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {ProjectDetailsComponent} from "../../components/project-details/project-details.component";
 import {ProjectConfigService} from '../../services/project-config.service';
+import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Component({
   selector: 'app-project-details-page',
@@ -15,9 +14,9 @@ import {ProjectConfigService} from '../../services/project-config.service';
   ]
 })
 export class ProjectDetailsPageComponent {
-  private activatedRoute = inject(ActivatedRoute);
   private configService = inject(ProjectConfigService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  entity = this.activatedRoute.snapshot.parent?.data['entity'] as AppProject;
+  entity = this.selectedEntitiesService.selectedProject()!;
   tableFields = this.configService.getTableFields();
 }

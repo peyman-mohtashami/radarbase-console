@@ -9,11 +9,10 @@ import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-
 import {
   DataTableFilterComponent,
 } from '../../../../components/data-table-filter/data-table-filter.component';
-import {AppUser} from "../../../user/models/user";
+import {AppUser, RadarUser} from "../../../user/models/user";
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
 import {PermissionService} from '../../services/permission.service';
-import {getSelectedOrganization, getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-permission-list-page',
@@ -26,16 +25,15 @@ import {getSelectedOrganization, getSelectedProject} from '../../../../services/
     EntitiesPageComponent,
   ]
 })
-export class PermissionListPageComponent extends BaseEntityListPageComponent<AppUser> implements OnInit, OnDestroy {
+export class PermissionListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {
   override entityService = inject(PermissionService);
   override configService = inject(PermissionConfigService);
   override dialogService = inject(PermissionDialogService);
 
   override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
-  // users: AppUser[] = this.activatedRoute.snapshot.data['userList'];
 
-  currentOrganization?: AppOrganization = getSelectedOrganization(this.activatedRoute.snapshot);
-  currentProject?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
+  currentOrganization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
+  currentProject?: AppProject = this.selectedEntitiesService.selectedProject();
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.currentOrganization, this.currentProject);
@@ -48,14 +46,4 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
   ngOnDestroy() {
     super.destroy();
   }
-
-  // override getDialogData(entity?: AppUser) {
-  //   return {
-  //     entity: entity,
-  //     entities: this.entities(),
-  //     project: this.currentProject,
-  //     organization: this.currentOrganization,
-  //     // users: this.users,
-  //   }
-  // }
 }

@@ -1,5 +1,5 @@
 <div [class]="!gridView() ? 'rb-table': 'grid-container'"
-     tableQueryReflector
+     appTableQueryReflector
      [page]="page()"
      [sort]="sort()"
      (activeQueryParams)="handleActiveQueryChange($event)">

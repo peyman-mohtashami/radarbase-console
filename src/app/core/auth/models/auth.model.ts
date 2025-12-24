@@ -4,18 +4,18 @@
 
 import {RadarRole} from '../../../admin/entities/user/models/user';
 
-export interface AuthOptionsModel {
-  backendBaseUrl?: string;
-  authorizationGrantType: string;
-  refreshToken?: boolean;
-  cookies?: boolean;
-  appClientId: string;
-  appClientSecret: string;
-  authCallbackUrl: string;
-  authBaseUrl: string;
-  authGuardRedirectUrl?: string;
-  guestGuardRedirectUrl?: string;
-}
+// export interface AuthOptionsModel {
+//   backendBaseUrl?: string;
+//   authorizationGrantType: string;
+//   refreshToken?: boolean;
+//   cookies?: boolean;
+//   appClientId: string;
+//   appClientSecret: string;
+//   authCallbackUrl: string;
+//   authBaseUrl: string;
+//   authGuardRedirectUrl?: string;
+//   guestGuardRedirectUrl?: string;
+// }
 
 // export interface Language {
 //   language: string;
@@ -42,13 +42,13 @@ export interface ManagementPortalUser {
   roles: RadarRole[]; //[{id: 1, projectId: null, projectName: null, authorityName: "ROLE_SYS_ADMIN"}]
 }
 
-export interface RadarRolePayload {
-  authorityName?: string;
-  projectId?: number | null;
-  projectName?: string | null;
-  organizationName?: string | null;
-  organizationId?: number | null;
-}
+// export interface RadarRolePayload {
+//   authorityName?: string;
+//   projectId?: number | null;
+//   projectName?: string | null;
+//   organizationName?: string | null;
+//   organizationId?: number | null;
+// }
 
 
 // export interface RadarRoleDTO {
@@ -90,26 +90,26 @@ export enum RADAR_ROLES {
   PROJECT_ADMIN = 'ROLE_PROJECT_ADMIN',
 }
 
-export interface AuthResponse {
-  access_token: string;
-  expires_in: number;
-  grant_type: string;
-  iat: number;
-  iss: string;
-  jti: string;
-  roles: any[];
-  scope: string;
-  sources: any[];
-  sub: string;
-  token_type: string;
-  refresh_token: string;
-}
-
-// export interface User {
-//   login: string;
-//   // name: string;
-//   roles: string[];
+// export interface AuthResponse {
+//   access_token: string;
+//   expires_in: number;
+//   grant_type: string;
+//   iat: number;
+//   iss: string;
+//   jti: string;
+//   roles: any[];
+//   scope: string;
+//   sources: any[];
+//   sub: string;
+//   token_type: string;
+//   refresh_token: string;
 // }
+//
+// // export interface User {
+// //   login: string;
+// //   // name: string;
+// //   roles: string[];
+// // }
 
 export interface TokenData {
   access_token: string;

@@ -54,8 +54,6 @@ export class ServerErrorInterceptor implements HttpInterceptor {
               }
               break;
             }
-            default: {
-            }
           }
         }
         return throwError(() => error);

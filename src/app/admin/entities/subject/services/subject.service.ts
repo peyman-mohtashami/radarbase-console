@@ -10,7 +10,6 @@ import {environment} from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> {
-  override CACHE_ENABLED = false
 
   projectName?: string;
 
@@ -44,7 +43,9 @@ export class SubjectService extends BaseEntityService<AppSubject, RadarSubject> 
         }
       ),
       map((res) => {
-        return (res.body || []).map((entity) => this.toAppModel(entity));
+        const entities = (res.body || []).map((entity) => this.toAppModel(entity));
+        this.cache = [...entities];
+        return entities;
       })
     );
   }

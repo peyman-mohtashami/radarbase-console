@@ -1,14 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
-import {AppSourceType} from '../models/source-type';
+import {AppSourceType, RadarSourceType} from '../models/source-type';
 import {SourceTypeDialogComponent} from '../containers/source-type-dialog/source-type-dialog.component';
 import {SourceTypeService} from './source-type.service';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {SourceTypeConfigService} from './source-type-config.service';
 
 @Injectable({providedIn: 'root'})
-export class SourceTypeDialogService extends BaseDialogService<AppSourceType, SourceTypeDialogComponent>{
+export class SourceTypeDialogService extends BaseDialogService<AppSourceType, RadarSourceType, SourceTypeDialogComponent>{
   override entityService = inject(SourceTypeService);
   override configService = inject(SourceTypeConfigService);
 

@@ -34,7 +34,9 @@ export class SourceService extends BaseEntityService<AppSource, RadarSource> {
         }
       ),
       map((res) => {
-        return (res.body || []).map((entity) => this.toAppModel(entity));
+        const entities = (res.body || []).map((entity) => this.toAppModel(entity));
+        this.cache = entities;
+        return entities;
       })
     );
   }

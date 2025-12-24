@@ -1,19 +1,20 @@
 import {inject, Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
+import {Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 
 import {ProtocolService} from './protocol.service';
 import {AppProtocol} from "../models/protocol";
-import {getSelectedProject, getSelectedSubject} from '../../../services/util';
+import {SelectedEntitiesService} from '../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class ProtocolsResolver implements Resolve<AppProtocol[]> {
   private entityService = inject(ProtocolService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  resolve(route: ActivatedRouteSnapshot,): Observable<AppProtocol[]> {
-    return this.entityService.getAll(
-      getSelectedProject(route)?.projectName,
-      getSelectedSubject(route)?.login
-    );
+
+  resolve(): Observable<AppProtocol[]> {
+    const project = this.selectedEntitiesService.selectedProject();
+    const subject = this.selectedEntitiesService.selectedSubject();
+    return this.entityService.getAll(project?._name, subject?._name);
   }
 }

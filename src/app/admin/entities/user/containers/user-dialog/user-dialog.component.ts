@@ -29,6 +29,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-user-dialog',
@@ -46,6 +47,7 @@ import {AsyncPipe} from '@angular/common';
     MatSlideToggle,
     MatSelectAutocompleteComponent,
     AsyncPipe,
+    ErrorMessageBoxComponent,
   ]
 })
 export class UserDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit {

@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import { DialogMode } from '../../../../enums/dialog';
 import { ConfigService } from '../../services/config.service';
-import {AppConfig} from "../../models/config";
+import {AppConfig, RadarConfig} from "../../models/config";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -18,7 +18,6 @@ import {AppProject} from '../../../project/models/project';
 import {AppSubject} from "../../../subject/models/subject";
 import {MatIcon} from '@angular/material/icon';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {getSelectedClient, getSelectedProject, getSelectedSubject} from '../../../../services/util';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
 
 @Component({
@@ -36,16 +35,16 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     EntitiesPageComponent,
   ]
 })
-export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig> implements OnInit, OnDestroy {
+export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> implements OnInit, OnDestroy {
   override entityService = inject(ConfigService);
   override configService = inject(ConfigConfigService);
   override dialogService = inject(ConfigDialogService);
 
   override entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
 
-  client: AppClient = getSelectedClient(this.activatedRoute.snapshot);
-  project: AppProject | undefined = getSelectedProject(this.activatedRoute.snapshot);
-  subject: AppSubject | undefined = getSelectedSubject(this.activatedRoute.snapshot);
+  client: AppClient = this.selectedEntitiesService.selectedClient()!;
+  project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
+  subject: AppSubject | undefined = this.selectedEntitiesService.selectedSubject();
 
   isChanged = false;
 

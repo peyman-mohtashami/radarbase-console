@@ -7,20 +7,24 @@ import {BaseConfigService} from '../../services/base-config.service';
 import {BaseDialogService} from '../../services/base-dialog.service';
 import {ROLES} from '../../../shared/enums/roles';
 import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
+import {BaseDialogComponent} from '../dialog/base-dialog.component';
+import {SelectedEntitiesService} from '../../services/selected-entities.service';
 
 @Component({
   selector: 'app-base-entities-page',
   template: '',
 })
-export class BaseEntityPageComponent<T extends { _name: string; }> {
+export class BaseEntityPageComponent<T extends { _name: string; }, U> {
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
+  protected selectedEntitiesService = inject(SelectedEntitiesService);
+
   protected configService!: BaseConfigService;
-  protected dialogService!: BaseDialogService<T, any>;
+  protected dialogService!: BaseDialogService<T, U, BaseDialogComponent<T>>;
 
   entity = signal<T | undefined>(undefined);
 
@@ -43,7 +47,6 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
   initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService?.dialogUpdateEvent();
-      console.log('Class: BaseEntityPageComponent, Function: , Line 46 updated' , updated);
       if (updated) untracked(() => this.handleDialogUpdate(updated));
     });
   }
@@ -77,16 +80,23 @@ export class BaseEntityPageComponent<T extends { _name: string; }> {
     this.activatedRoute.fragment
       .pipe(takeUntil(this._destroy$))
       .subscribe(fragment => {
-        // const data = this.getDialogData(this.entity());
-        if (fragment) this.dialogService.processUrlFragment(fragment)
+        if (fragment) this.dialogService.processUrlFragment(fragment);
       });
   }
 
   navigateOnUpdateSuccess(entity: T) {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['../', entity._name], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined
+    }).then();
   }
 
   navigateOnDeleteSuccess() {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['../'], {
+      relativeTo: this.activatedRoute,
+      queryParamsHandling: 'preserve',
+      fragment: undefined
+    }).then();
   }
 }

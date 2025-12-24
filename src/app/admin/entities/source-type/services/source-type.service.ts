@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AppSourceType, RadarSourceType} from "../models/source-type";
 import {BaseEntityService} from '../../../services/base-entity.service';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})
@@ -21,6 +21,16 @@ export class SourceTypeService extends BaseEntityService<AppSourceType, RadarSou
 
   override toRadarModel(entity: AppSourceType): RadarSourceType {
     return entity;
+  }
+
+  override getByKey(key: number | string): Observable<AppSourceType> {
+    return this.http.get<RadarSourceType>(`${this.getResourceUrl()}/${key}`)
+      .pipe(
+        map((entity) => this.toAppModel(entity)),
+        tap((entity) => {
+          this.cache = [entity];
+        })
+      );
   }
 
   override delete(entity: AppSourceType): Observable<void> {

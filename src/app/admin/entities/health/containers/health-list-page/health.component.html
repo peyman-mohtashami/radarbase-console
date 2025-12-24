@@ -1,7 +1,7 @@
 <div class='p-4'>
   <div class='flex flex-wrap justify-between gap-2 mb-4'>
     <h2 class='m-0 font-bold flex items-center gap-2'>
-      <span class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">monitor_heart</span>
+      <mat-icon class="material-symbols-outlined p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600">monitor_heart</mat-icon>
       {{ 'ADMIN.health.title.plural' | translate }}
     </h2>
     <div class='flex gap-2 items-center ml-auto'>
@@ -10,20 +10,20 @@
               color="primary"
               type="button">
             <span class="font-bold flex items-center gap-2">
-              <span class="material-symbols-outlined">sync</span>
+              <mat-icon class="material-symbols-outlined">sync</mat-icon>
               {{ 'ADMIN.metrics.refresh' | translate }}
             </span>
       </button>
     </div>
   </div>
 
-  @if (loading$()) {
+  @if (loading()) {
     <app-loader/>
   }
 
-  @if (health$()?.components) {
+  @if (health()?.components) {
     <mat-accordion class="text-sm">
-      @for (componentHealth of health$()?.components | keyvalue; track componentHealth.key) {
+      @for (componentHealth of health()?.components | keyvalue; track componentHealth.key) {
         <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
                              [hideToggle]='!componentHealth.value.details'>
           <mat-expansion-panel-header class="p-4! dark:bg-neutral-700">

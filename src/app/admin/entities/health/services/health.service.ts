@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {RadarHealth} from '../models/radar-health.model';
 import {environment} from '../../../../../environments/environment';
+import {RadarHealth} from '../models/health.model';
 
 @Injectable({providedIn: 'root'})
 export class HealthService {

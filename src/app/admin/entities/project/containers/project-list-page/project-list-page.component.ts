@@ -3,7 +3,7 @@ import {LoaderComponent} from '../../../../../shared/components/loader/loader.co
 import {ProjectService} from '../../services/project.service';
 import {ProjectConfigService} from '../../services/project-config.service';
 import {ProjectDialogService} from '../../services/project-dialog.service';
-import {AppProject} from '../../models/project';
+import {AppProject, RadarProject} from '../../models/project';
 import {ProjectTableRowComponent} from '../../components/project-table-row/project-table-row.component';
 import {AppOrganization} from '../../../organization/models/organization';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
@@ -12,7 +12,6 @@ import {
 } from '../../../../components/data-table-filter/data-table-filter.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getSelectedOrganization} from '../../../../services/util';
 
 @Component({
   selector: 'app-project-list-page',
@@ -25,14 +24,14 @@ import {getSelectedOrganization} from '../../../../services/util';
     EntitiesPageComponent,
   ]
 })
-export class ProjectListPageComponent extends BaseEntityListPageComponent<AppProject> implements OnInit, OnDestroy {
+export class ProjectListPageComponent extends BaseEntityListPageComponent<AppProject, RadarProject> implements OnInit, OnDestroy {
   override entityService = inject(ProjectService);
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
 
   override entities = signal<AppProject[]>(this.activatedRoute.snapshot.data['projectList']);
 
-  organization?: AppOrganization = getSelectedOrganization(this.activatedRoute.snapshot);
+  organization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;

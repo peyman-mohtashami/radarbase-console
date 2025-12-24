@@ -26,7 +26,7 @@ export class StorageService {
   // }
 
   static getAccessToken(): string {
-    return <string>localStorage.getItem(AuthStorageItem.ACCESS_TOKEN);
+    return localStorage.getItem(AuthStorageItem.ACCESS_TOKEN) as string;
   }
 
   static setAccessToken(token: string): void {
@@ -63,7 +63,7 @@ export class StorageService {
   // }
 
   static getLastLocation(): string {
-    return <string>localStorage.getItem(AuthStorageItem.LAST_LOCATION);
+    return localStorage.getItem(AuthStorageItem.LAST_LOCATION) as string;
   }
 
   // static setLastLocation(location: Location): void {

@@ -19,6 +19,7 @@ import {
 } from '../../../../components/dialog/dialog-actions/dialog-actions.component';
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {Observable} from 'rxjs';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-source-type-dialog',
@@ -36,7 +37,8 @@ import {Observable} from 'rxjs';
     MatSelect,
     MatOption,
     MatSlideToggle,
-    MatHint
+    MatHint,
+    ErrorMessageBoxComponent
   ]
 })
 export class SourceTypeDialogComponent extends BaseDialogComponent<AppSourceType> implements OnInit, AfterViewInit {

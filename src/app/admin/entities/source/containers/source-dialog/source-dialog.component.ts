@@ -27,6 +27,7 @@ import {DialogActionsComponent} from '../../../../components/dialog/dialog-actio
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-source-dialog',
@@ -43,6 +44,7 @@ import {AsyncPipe} from '@angular/common';
     MatSelectAutocompleteComponent,
     DialogActionsComponent,
     AsyncPipe,
+    ErrorMessageBoxComponent,
   ]
 })
 export class SourceDialogComponent extends BaseDialogComponent<AppSource> implements OnInit, AfterViewInit {

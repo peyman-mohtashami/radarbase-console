@@ -5,7 +5,6 @@ import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {RbSort} from '../models/table.model';
 import {DEFAULT_PAGE_SIZE} from '../consts/default-table-values';
-import {AppOrganization} from '../entities/organization/models/organization';
 
 export class BaseEntityService<T extends {_name: string}, U> {
   protected http = inject(HttpClient);
@@ -65,14 +64,14 @@ export class BaseEntityService<T extends {_name: string}, U> {
     throw new Error('Method not implemented.');
   }
 
-  protected getFilteredEntities(entities: T[], filter: { [p: string]: any }): T[] {
+  protected getFilteredEntities(entities: T[], filter: Record<string, string>): T[] {
     let filteredEntities = [...entities];
 
     Object.entries(filter).forEach(([key, value]) => {
       if (!value) return;
 
-      filteredEntities = filteredEntities.filter((entity: any) =>
-        entity[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
+      filteredEntities = filteredEntities.filter(entity =>
+        (entity as Record<string, string>)[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase())
       );
     });
 
@@ -82,7 +81,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
   protected applySorting(entities: T[], sort: RbSort): T[] {
     const {sortField, sortOrder} = sort;
     const collator = new Intl.Collator('en', {numeric: true, sensitivity: 'base'})
-    return entities.sort((a: any, b: any) => {
+    return entities.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
       const sorted = collator.compare(a[sortField]?.toString() ?? '', b[sortField]?.toString() ?? '');
       return sortOrder === 'asc' ? sorted : -1 * sorted;
     })
@@ -95,6 +94,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
   }
 
   getEntity(key: number | string): T {
+    console.log('Class: BaseEntityService, Function: getEntity, Line 97 key, this.cache' , key, this.cache);
     const entity = this.cache.find(item => item._name === key);
     if (!entity) throw new Error(`Entity with id ${key} not found`);
     return entity;
@@ -102,7 +102,12 @@ export class BaseEntityService<T extends {_name: string}, U> {
 
   getByKey(key: number | string): Observable<T> {
     return this.http.get<U>(`${this.getResourceUrl()}/${encodeURIComponent(key)}`)
-      .pipe(map((entity) => this.toAppModel(entity)));
+      .pipe(
+        map((entity) => this.toAppModel(entity)),
+        tap((entity) => {
+          this.cache = [entity];
+        })
+      );
   }
 
   add(entity: T): Observable<T> {
@@ -110,7 +115,6 @@ export class BaseEntityService<T extends {_name: string}, U> {
       .pipe(
         map((entity) => this.toAppModel(entity)),
         tap(() => {
-          this.total.set(this.total() + 1);
           this.cacheLoaded = false;
         })
       );
@@ -134,34 +138,40 @@ export class BaseEntityService<T extends {_name: string}, U> {
     );
   }
 
-  protected convertParamsToHttpParams(queryParams: Params): {
+  clearCache() {
+    this.cacheLoaded = false;
+    this.cache = [];
+  }
+
+  protected convertParamsToHttpParams(params: Params): {
     params: HttpParams;
     parentEntityName: string;
   } {
-    let params = new HttpParams();
-    params = params.append(
+    let httpParams = new HttpParams();
+    httpParams = httpParams.append(
       'size',
-      queryParams?.['pageSize'] || DEFAULT_PAGE_SIZE
+      params?.['pageSize'] || DEFAULT_PAGE_SIZE
     );
-    params = params.append('page', queryParams?.['pageIndex'] || '0');
+    httpParams = httpParams.append('page', params?.['pageIndex'] || '0');
     if (
-      queryParams?.['sortField'] &&
-      queryParams['sortField'] !== '' &&
-      queryParams?.['sortOrder'] &&
-      queryParams['sortOrder'] !== ''
+      params?.['sortField'] &&
+      params['sortField'] !== '' &&
+      params?.['sortOrder'] &&
+      params['sortOrder'] !== ''
     ) {
-      params = params.append(
+      httpParams = httpParams.append(
         'sort',
-        queryParams['sortField'] + ',' + queryParams['sortOrder']
+        params['sortField'] + ',' + params['sortOrder']
       );
     } else {
-      params = params.append('sort', 'id' + ',' + 'desc');
+      httpParams = httpParams.append('sort', 'id' + ',' + 'desc');
     }
-    params = this.convertFilterParamsToHttpParams(params, queryParams);
-    return { params, parentEntityName: queryParams?.['parentEntityName'] };
+    httpParams = this.convertFilterParamsToHttpParams(httpParams, params);
+    return { params: httpParams, parentEntityName: params?.['parentEntityName'] };
   }
 
-  convertFilterParamsToHttpParams(params: HttpParams, queryParams?: Params): HttpParams {
-    return params;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  convertFilterParamsToHttpParams(httpParams: HttpParams, _params?: Params): HttpParams {
+    return httpParams;
   }
 }

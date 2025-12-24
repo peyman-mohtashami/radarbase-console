@@ -126,7 +126,7 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
     )
   }
 
-  clearCache() {
+  override clearCache() {
     this.cacheLoaded = false;
     this.cache = [];
     this.updatedList = [];

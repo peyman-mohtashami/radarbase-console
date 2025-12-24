@@ -21,7 +21,7 @@
 }
 
 @if (entities().length) {
-  <app-subject-assign-group [selection]="selection" [groups]="groups" [project]="project"/>
+  <app-subject-assign-group [selection]="selection" [project]="project"/>
 }
 
 <app-entities-page [entities]="entities()"
@@ -31,7 +31,6 @@
                    [sort]="sort()"
                    (switchPageEvent)="switchPage($event)"
                    (switchSortEvent)="switchSort($event)"
-                   (activeQueryChangeEvent)="handleActiveQueryChange($event)"
                    [customTemplate]="itemTemplate"
                    [gridView]="gridView"
                    [totalEntities]="entityService.total()"/>
@@ -40,6 +39,5 @@
                          [gridView]="gridView"
                          [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
                          [extensionClass]="extensionClass()"
-                         [selection]="selection"
-                         class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
+                         [selection]="selection" />
 </ng-template>

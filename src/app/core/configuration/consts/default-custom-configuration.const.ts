@@ -239,6 +239,7 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const colorHints = {
   "amber": "#ffc107",
   "deepPurple": "#673ab7",

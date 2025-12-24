@@ -11,18 +11,17 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { RadarCondition } from '../../containers/questionnaire-dialog/questionnaire-dialog.component';
-import {
-  MatSelectAutocompleteComponent,
-  RadarOption
-} from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {MatFormField} from "@angular/material/input";
-import {MatLabel, MatSelect} from "@angular/material/select";
+import {MatSelect} from "@angular/material/select";
 import {MatOption} from "@angular/material/core";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
-import {AppQuestion, AppQuestionnaire, RadarQuestion} from "../../models/questionnaire";
-import {JsonPipe} from "@angular/common";
+import {
+  MatSelectAutocompleteComponent
+} from '../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+import {RadarOption} from '../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
+import {RadarCondition} from '../../questionnaire-dialog.component';
 
 @Component({
   selector: 'app-branching-logic-and-array',

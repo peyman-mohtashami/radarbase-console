@@ -23,11 +23,8 @@ import {
 } from "../../components/questionnaire-table-row/questionnaire-table-row.component";
 import {AppProject} from "../../../project/models/project";
 import {AppSubject} from "../../../subject/models/subject";
-import {
-  DEFAULT_PAGE_SIZE,
-  MIN_ENTITIES_FOR_FILTERS,
-} from "../../../../consts/default-table-values";
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {DEFAULT_PAGE_SIZE, MIN_ENTITIES_FOR_FILTERS} from '../../../../consts/default-table-values';
 
 @Component({
   selector: 'app-questionnaire-list-page',

@@ -3,7 +3,7 @@ import {LoaderComponent} from '../../../../../shared/components/loader/loader.co
 import {UserService} from '../../services/user.service';
 import {UserConfigService} from '../../services/user-config.service';
 import {UserDialogService} from '../../services/user-dialog.service';
-import {AppUser} from '../../models/user';
+import {AppUser, RadarUser} from '../../models/user';
 import {UserTableRowComponent} from '../../components/user-table-row/user-table-row.component';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -23,7 +23,7 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     EntitiesPageComponent,
   ]
 })
-export class UserListPageComponent extends BaseEntityListPageComponent<AppUser> implements OnInit, OnDestroy {
+export class UserListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {
   protected override entityService = inject(UserService);
   protected override configService = inject(UserConfigService);
   protected override dialogService = inject(UserDialogService);

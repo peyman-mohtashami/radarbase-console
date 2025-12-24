@@ -17,10 +17,9 @@ import {EntityRegistry} from "../../../shared/consts/entity-registry";
 export class DetailsComponent {
   protected readonly DetailType = DetailType;
 
-  customTemplate = input<TemplateRef<any>>();
+  customTemplate = input<TemplateRef<unknown>>();
   tableFields = input<TableElement[]>([]);
   entityMetadata = input.required<EntityRegistry>();
-  entity = input.required<any>();
   dialogMode = input<DialogMode>();
   detailType = input<DetailType>();
 }

@@ -1,12 +1,14 @@
 <div class="px-4 mb-4 flex gap-2 items-center">
-  <span class="text-sm">{{selection().selected.length}} item(s) selected.</span>
+  <span class="text-sm">
+    {{ "ADMIN.subject.assignGroupDialog.message" | translate:{numberOfItems: selection().selected.length} }}
+  </span>
   @if (selection().selected.length) {
     <button type='button'
             mat-stroked-button
             color='primary'
             (click)='assignGroupToSubjects($event)'>
       <mat-icon>add</mat-icon>
-      <span>Add To a Group</span>
+      <span>{{ "ADMIN.subject.assignGroupDialog.button" | translate }}</span>
     </button>
   }
 </div>

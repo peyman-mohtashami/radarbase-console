@@ -3,7 +3,7 @@ import {LoaderComponent} from '../../../../../shared/components/loader/loader.co
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
 import {SourceDataService} from '../../services/source-data.service';
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
-import {AppSourceData} from '../../models/source-data';
+import {AppSourceData, RadarSourceData} from '../../models/source-data';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -23,7 +23,7 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     EntitiesPageComponent,
   ]
 })
-export class SourceDataListPageComponent extends BaseEntityListPageComponent<AppSourceData> implements OnInit, OnDestroy {
+export class SourceDataListPageComponent extends BaseEntityListPageComponent<AppSourceData, RadarSourceData> implements OnInit, OnDestroy {
 
   override entityService = inject(SourceDataService);
   override configService = inject(SourceDataConfigService);
@@ -38,11 +38,4 @@ export class SourceDataListPageComponent extends BaseEntityListPageComponent<App
   ngOnDestroy() {
     super.destroy();
   }
-
-  // override getDialogData(entity?: AppSourceData) {
-  //   return {
-  //     entity: entity,
-  //     entities: this.entities(),
-  //   }
-  // }
 }

@@ -1,11 +1,10 @@
-import {Component, effect, inject, signal} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, effect, inject} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {SubjectDetailsComponent} from "../../components/subject-details/subject-details.component";
-import {AppSubject} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {SubjectDialogMode} from '../../enums/dialog';
+import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Component({
   selector: 'app-subject-details-page',
@@ -17,11 +16,11 @@ import {SubjectDialogMode} from '../../enums/dialog';
   ]
 })
 export class SubjectDetailsPageComponent {
-  private activatedRoute = inject(ActivatedRoute);
   private configService = inject(SubjectConfigService);
   private dialogService = inject(SubjectDialogService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  entity = signal(this.activatedRoute.snapshot.parent?.data['entity'] as AppSubject);
+  entity = this.selectedEntitiesService.selectedSubject;
   tableFields = this.configService.getTableFields();
 
   constructor() {

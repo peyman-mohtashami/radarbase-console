@@ -12,12 +12,12 @@
   </div>
 
   <div class="text-sm w-1/2">
-    <label id="show-introduction">Show Introduction</label>
+    <label for="showIntroduction">{{ 'ADMIN.protocol.dialog.content.showIntroductionLabel' | translate }}</label>
     <mat-form-field class='small-input' appearance='outline'>
-      <mat-select formControlName="showIntroduction">
-        <mat-option [value]="false">No</mat-option>
-        <mat-option [value]="true">Once</mat-option>
-        <mat-option value="always">Always</mat-option>
+      <mat-select id="showIntroduction" formControlName="showIntroduction">
+        <mat-option [value]="false">{{ 'ADMIN.protocol.dialog.content.showIntroductionNo' | translate }}</mat-option>
+        <mat-option [value]="true">{{ 'ADMIN.protocol.dialog.content.showIntroductionOnce' | translate }}</mat-option>
+        <mat-option value="always">{{ 'ADMIN.protocol.dialog.content.showIntroductionAlways' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -25,7 +25,7 @@
   @if (form.controls.showIntroduction.value) {
     <app-text-form-group class="mb-4" formControlName="startText"
                          [languages]="languages()"
-                         label="Introduction text (per language)"
+                         [label]="'ADMIN.protocol.dialog.content.startTextLabel' | translate"
                          [textarea]="true"
                          [textareaAutosize]="true"/>
   }
@@ -33,30 +33,30 @@
   <app-text-form-group class="mb-4"
                        formControlName="endText"
                        [languages]="languages()"
-                       label="End text (per language)"
+                       [label]="'ADMIN.protocol.dialog.content.endTextLabel' | translate"
                        [textarea]="true"
                        [textareaAutosize]="true"/>
 
   <app-text-form-group formControlName="warn"
                        [languages]="languages()"
-                       label="Warning text (per language)"
+                       [label]="'ADMIN.protocol.dialog.content.warningTextLabel' | translate"
                        [textarea]="true"
                        [textareaAutosize]="true"/>
 
   @if (!onDemand()) {
     <mat-divider class="mt-4!"/>
     <div formGroupName="notification" class="mt-4">
-      <p class="text-base">Notification</p>
+      <p class="text-base">{{ 'ADMIN.protocol.dialog.content.notificationLabel' | translate }}</p>
       <app-text-form-group class="mb-4"
                            formControlName="title"
                            [languages]="languages()"
-                           label="Title (per language)"
+                           [label]="'ADMIN.protocol.dialog.content.notificationTitleLabel' | translate"
                            [textarea]="true"
                            [textareaAutosize]="true"/>
 
       <app-text-form-group formControlName="text"
                            [languages]="languages()"
-                           label="Message (per language)"
+                           [label]="'ADMIN.protocol.dialog.content.notificationMessageLabel' | translate"
                            [textarea]="true"
                            [textareaAutosize]="true"/>
     </div>

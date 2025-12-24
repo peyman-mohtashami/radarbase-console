@@ -4,7 +4,7 @@ import {GroupTableRowComponent} from '../../components/group-table-row/group-tab
 import {GroupService} from '../../services/group.service';
 import {GroupConfigService} from '../../services/group-config.service';
 import {GroupDialogService} from '../../services/group-dialog.service';
-import {AppGroup} from '../../models/group';
+import {AppGroup, RadarGroup} from '../../models/group';
 import {AppProject} from '../../../project/models/project';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -12,7 +12,6 @@ import {
 } from '../../../../components/data-table-filter/data-table-filter.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-group-list-page',
@@ -25,13 +24,13 @@ import {getSelectedProject} from '../../../../services/util';
     EntitiesPageComponent,
   ]
 })
-export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup> implements OnInit, OnDestroy {
+export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup, RadarGroup> implements OnInit, OnDestroy {
   override entityService = inject(GroupService);
   override configService = inject(GroupConfigService);
   override dialogService = inject(GroupDialogService);
 
   override entities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['groupList']);
-  project?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
+  project?: AppProject = this.selectedEntitiesService.selectedProject();
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);

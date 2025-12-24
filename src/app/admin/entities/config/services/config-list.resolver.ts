@@ -7,19 +7,24 @@ import { Observable } from "rxjs";
 
 import {ConfigService} from './config.service';
 import {AppConfig} from "../models/config";
-import {getSelectedClient, getSelectedProject, getSelectedSubject} from '../../../services/util';
+import {SelectedEntitiesService} from '../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigListResolver implements Resolve<AppConfig[]> {
   private entityService = inject(ConfigService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppConfig[]> {
     this.entityService.clearCache();
+    const client = this.selectedEntitiesService.selectedClient();
+    const project = this.selectedEntitiesService.selectedProject();
+    const subject = this.selectedEntitiesService.selectedSubject();
+
     return this.entityService.getWithQuery(
       route.queryParams,
-      getSelectedClient(route)!.clientId,
-      getSelectedProject(route)?.projectName,
-      getSelectedSubject(route)?.login
+      client?._name,
+      project?._name,
+      subject?.login
     );
   }
 }

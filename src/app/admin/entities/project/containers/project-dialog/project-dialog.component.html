@@ -1,24 +1,25 @@
 @let entityName = configService.getEntityMetadata().name;
 
 <app-dialog-title [dialogMode]='dialogData.mode'
-                 [entityMetadata]="configService.getEntityMetadata()"
-                 (closeClicked)='close()'/>
+                  [entityMetadata]="configService.getEntityMetadata()"
+                  (closeClicked)='close()'/>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                [label]="'Project'"
-                                [entityName]="dialogData.entity.projectName"/>
+                                 [label]="'Project'"
+                                 [entityName]="dialogData.entity.projectName"/>
   }
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>
       @if (!dialogData.organization && (!dialogData.entity || !dialogData.entity.organization)) {
-        <app-mat-select-autocomplete formControlName='organization'
-                                    [legend]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
-                                    [options]='(dialogData.organizationFullList | async) ?? []'
-                                    [label]="(`ADMIN.${entityName}.organization.label` | translate) + ' *'"
-                                    [multiple]="false"
-                                    [required]="true"/>
+        @if (dialogData.organizationFullList | async; as organizations) {
+          <app-mat-select-autocomplete formControlName='organization'
+                                       [options]='organizations'
+                                       [label]="`ADMIN.${entityName}.organization.label` | translate"
+                                       [multiple]="false"
+                                       [required]="true"/>
+        }
       }
 
       @if (dialogData.mode !== DialogMode.ADD) {
@@ -124,7 +125,6 @@
       }
 
 
-
       @if (!formFields || formFields['projectStatus'] === undefined || formFields['projectStatus']) {
         <label for="projectStatus" class="text-sm">{{ `ADMIN.${entityName}.projectStatus.label` | translate }}</label>
         <mat-form-field class='small-input w-full'
@@ -202,11 +202,12 @@
         </mat-form-field>
       }
 
-      <app-mat-select-autocomplete formControlName='sourceTypes'
-                                  [legend]="`ADMIN.${entityName}.sourceTypes.label` | translate"
-                                  [options]='(dialogData.sourceTypeFullList | async) ?? []'
-                                  [label]="`ADMIN.${entityName}.sourceTypes.label` | translate"
-                                  [multiple]="true"/>
+      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {
+        <app-mat-select-autocomplete formControlName='sourceTypes'
+                                     [options]='sourceTypes'
+                                     [label]="`ADMIN.${entityName}.sourceTypes.label` | translate"
+                                     [multiple]="true"/>
+      }
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
         <div formGroupName='attributes'>
@@ -307,12 +308,11 @@
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
 
 <app-dialog-actions [dialogMode]='dialogData.mode'
-                   [form]='form'
-                   (actionTriggered)='onAction($event)'/>
+                    [form]='form'
+                    (actionTriggered)='onAction($event)'/>

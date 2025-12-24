@@ -1,11 +1,11 @@
 import {Directive, effect, EventEmitter, inject, input, OnInit, Output, signal} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {PageEvent} from "@angular/material/paginator";
-import {DEFAULT_PAGE_SIZE} from "../consts/default-table-values";
 import {DialogQuery, RbPageSortEvent, RbSort} from "../models/table.model";
+import {DEFAULT_PAGE_SIZE} from '../consts/default-table-values';
 
 @Directive({
-  selector: '[tableQueryReflector]',
+  selector: '[appTableQueryReflector]',
 })
 export class TableQueryReflectorDirective implements OnInit {
   private router = inject(Router);

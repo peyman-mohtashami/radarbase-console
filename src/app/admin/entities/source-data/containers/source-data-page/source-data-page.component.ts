@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {AppSourceData} from "../../models/source-data";
+import {AppSourceData, RadarSourceData} from "../../models/source-data";
 
 import {SourceDataDetailsComponent} from "../../components/source-data-details/source-data-details.component";
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -22,7 +22,7 @@ import {SourceDataActionsComponent} from '../../components/source-data-actions/s
     SourceDataActionsComponent
   ]
 })
-export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData> implements OnInit, OnDestroy {
+export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData, RadarSourceData> implements OnInit, OnDestroy {
 
   override configService = inject(SourceDataConfigService);
   override dialogService = inject(SourceDataDialogService);
@@ -35,15 +35,5 @@ export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceDa
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppSourceData) {
-    this.router
-      .navigate(['/admin', 'source-data', entity.sourceDataName])
-      .then();
-  }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'source-data']).then();
   }
 }

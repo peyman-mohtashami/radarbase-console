@@ -1,4 +1,4 @@
-export type DeploymentConfiguration = {
+export interface DeploymentConfiguration {
   internal: {
     client: boolean;
     sourceType: boolean;
@@ -21,4 +21,4 @@ export type DeploymentConfiguration = {
     website?: { url: string };
     wiki?: { url: string };
   }
-};
+}

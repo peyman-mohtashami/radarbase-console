@@ -27,6 +27,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-project-dialog',
@@ -53,6 +54,7 @@ import {ActivatedRoute, Router} from '@angular/router';
     MatDatepickerInput,
     MatSuffix,
     AsyncPipe,
+    ErrorMessageBoxComponent,
   ]
 })
 export class ProjectDialogComponent extends BaseDialogComponent<AppProject> implements OnInit, AfterViewInit {
@@ -70,8 +72,6 @@ export class ProjectDialogComponent extends BaseDialogComponent<AppProject> impl
 
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router)
-
-  // currentOrganization = getCurrentOrganization(this.activatedRoute.snapshot)
 
   protected readonly ProjectStatus = ProjectStatus;
 

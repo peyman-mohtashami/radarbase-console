@@ -11,7 +11,7 @@
     </span>
     <button mat-icon-button
             (click)='close()'>
-      <span class="material-symbols-outlined">close</span>
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
     </button>
   </span>
   </h2>
@@ -92,10 +92,9 @@
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ (error()?.error.errorCode | translate) ?? (error()?.error?.message | translate) }}
-  </div>
+  <app-error-message-box>
+    {{ error()?.error.errorCode | translate }}
+  </app-error-message-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>

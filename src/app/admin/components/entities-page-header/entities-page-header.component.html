@@ -1,35 +1,19 @@
-<div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
+<div
+  class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
   @if (showTitle()) {
-<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold p-4 h-10! rounded-full bg-organization-color dark:bg-neutral-600 text-white'>-->
-<!--      <span class="material-symbols-outlined">{{ ENTITIES[entityName()].icon }}</span>-->
-<!--      {{ 'ADMIN.' + entityName() + '.title.plural' | translate }}-->
-<!--    </h2>-->
-
-<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
-<!--      <span class="p-2 w-10! h-10! rounded-full bg-{{entityName()}}-color dark:bg-neutral-600  font-bold text-white relative">-->
-<!--        <span class="material-symbols-outlined absolute left-1.5 top-1.5 opacity-70">{{ ENTITIES[entityName()].icon }}</span>-->
-<!--        <span class="material-symbols-outlined absolute left-2.5 top-2.5">{{ ENTITIES[entityName()].icon }}</span>-->
-<!--      </span>-->
-<!--      <span class="text-{{entityName()}}-color">{{ 'ADMIN.' + entityName() + '.title.plural' | translate }}</span>-->
-<!--    </h2>-->
-
     <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
       <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">
         <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata().icon }}</span>
         <span class="material-symbols-outlined absolute left-2 top-2">{{ entityMetadata().icon }}</span>
       </span>
-      <span class="text-primary dark:text-primary-dark">{{ 'ADMIN.' + entityMetadata().name + '.title.plural' | translate }}</span>
+      <span
+        class="text-primary dark:text-primary-dark">{{ 'ADMIN.' + entityMetadata().name + '.title.plural' | translate }}</span>
     </h2>
-
-<!--      <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>-->
-<!--      <span class="p-2 w-10! h-10! rounded-full bg-neutral-200 dark:bg-neutral-600 material-symbols-outlined font-bold">{{ ENTITIES[entityName()].icon }}</span>-->
-<!--      {{ 'ADMIN.' + entityName() + '.title.plural' | translate }}-->
-<!--    </h2>-->
   }
-  <ng-content select="[top-filter]" />
+  <ng-content select="[top-filter]"/>
 
   <div class="flex items-center gap-2">
-    <ng-content select="[extra-buttons]" />
+    <ng-content select="[extra-buttons]"/>
 
     @if (isGridView !== undefined) {
       <button type='button'
@@ -40,31 +24,23 @@
         <span class="material-symbols-outlined">{{ isGridView ? "list" : "grid_view" }}</span>
       </button>
     }
-    <ng-container *showIfHasRole="permission()">
+    <ng-container *appShowIfHasRole="permission()">
       @if (enableAddButton()) {
-        <button (click)="router.navigate([], {relativeTo: route, queryParamsHandling: 'preserve', fragment: `/add/${entityMetadata().name}`})"
-                mat-stroked-button
-                color="primary"
-                type="button">
+        <button
+          (click)="router.navigate([], {relativeTo: route, queryParamsHandling: 'preserve', fragment: `/add/${entityMetadata().name}`})"
+          mat-stroked-button
+          color="primary"
+          type="button">
             <span class="font-bold flex items-center gap-2">
-              <span class="material-symbols-outlined">add</span>
+              <mat-icon class="material-symbols-outlined">add</mat-icon>
               {{ 'ADMIN.' + entityMetadata().name + '.create' | translate }}
             </span>
         </button>
-<!--        <button (click)='onAction(DialogMode.ADD)'-->
-<!--                mat-stroked-button-->
-<!--                color="primary"-->
-<!--                type="button">-->
-<!--          <span class="font-bold flex items-center gap-2">-->
-<!--            <span class="material-symbols-outlined">add</span>-->
-<!--            {{ 'ADMIN.' + entityName() + '.create' | translate }}-->
-<!--          </span>-->
-<!--        </button>-->
       }
     </ng-container>
   </div>
 </div>
 
 <div class="px-4">
-  <ng-content select="[bottom-filter]" />
+  <ng-content select="[bottom-filter]"/>
 </div>

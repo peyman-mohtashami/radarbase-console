@@ -12,10 +12,11 @@ import {
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
 import {MatButton} from "@angular/material/button";
-import {RadarHealth} from '../../models/radar-health.model';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
 import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
+import {MatIcon} from '@angular/material/icon';
+import {RadarHealth} from '../../models/health.model';
 
 @Component({
   selector: 'app-health-check',
@@ -31,18 +32,16 @@ import {FileSizePipe} from '../../../../../shared/pipes/file-size.pipe';
     DetailElementComponent,
     KeyValuePipe,
     FileSizePipe,
-    MatExpansionPanelHeader
+    MatExpansionPanelHeader,
+    MatIcon
   ]
 })
 export class HealthCheckComponent implements OnInit {
 
   private healthService = inject(HealthService);
 
-  loading$ = signal(false);
-  health$ = signal<RadarHealth | undefined>(undefined);
-
-  error?: any;
-
+  loading = signal(false);
+  health = signal<RadarHealth | undefined>(undefined);
 
   ngOnInit(): void {
     this.refresh();
@@ -51,11 +50,11 @@ export class HealthCheckComponent implements OnInit {
   refresh(): void {
     this.healthService.checkHealth().subscribe({
         next: health => {
-          this.health$.set(health)
+          this.health.set(health)
         },
         error: (error: HttpErrorResponse) => {
           if (error.status === 503) {
-            this.health$.set(error.error);
+            this.health.set(error.error);
           }
         }
       });

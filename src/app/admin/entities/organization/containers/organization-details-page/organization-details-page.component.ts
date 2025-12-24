@@ -1,11 +1,10 @@
-import {Component, effect, inject, signal} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AppOrganization } from "../../models/organization";
+import {Component, effect, inject} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {OrganizationDetailsComponent} from "../../components/organization-details/organization-details.component";
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
 import {DialogMode} from '../../../../enums/dialog';
+import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Component({
   selector: 'app-organization-details-page',
@@ -17,11 +16,11 @@ import {DialogMode} from '../../../../enums/dialog';
   ]
 })
 export class OrganizationDetailsPageComponent {
-  private activatedRoute = inject(ActivatedRoute);
   private configService = inject(OrganizationConfigService);
   private dialogService = inject(OrganizationDialogService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  entity = signal(this.activatedRoute.snapshot.parent?.data['organization'] as AppOrganization);
+  entity = this.selectedEntitiesService.selectedOrganization;
   tableFields = this.configService.getTableFields();
 
   constructor() {

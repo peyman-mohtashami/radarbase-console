@@ -7,14 +7,20 @@ import { Observable } from "rxjs";
 
 import { AppSource } from "../models/source";
 import {SourceService} from './source.service';
-import {getSelectedProject} from '../../../services/util';
+import {SelectedEntitiesService} from '../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class SourceListResolver implements Resolve<AppSource[]> {
   private entityService = inject(SourceService);
+  private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppSource[]> {
-    const project = getSelectedProject(route)
+    this.selectedEntitiesService.selectedSubject.set(undefined);
+    this.selectedEntitiesService.selectedClient.set(undefined);
+
+    this.entityService.clearCache();
+
+    const project = this.selectedEntitiesService.selectedProject();
     return this.entityService.getWithQuery(route.queryParams, project?.projectName);
   }
 }

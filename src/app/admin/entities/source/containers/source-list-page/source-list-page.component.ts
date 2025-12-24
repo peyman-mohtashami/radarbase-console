@@ -3,7 +3,7 @@ import {LoaderComponent} from '../../../../../shared/components/loader/loader.co
 import {SourceService} from '../../services/source.service';
 import {SourceConfigService} from '../../services/source-config.service';
 import {SourceDialogService} from '../../services/source-dialog.service';
-import {AppSource} from '../../models/source';
+import {AppSource, RadarSource} from '../../models/source';
 import {SourceTableRowComponent} from '../../components/source-table-row/source-table-row.component';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {AppProject} from '../../../project/models/project';
@@ -13,7 +13,6 @@ import {
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
 import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {getSelectedProject} from '../../../../services/util';
 
 @Component({
   selector: 'app-source-list-page',
@@ -26,13 +25,13 @@ import {getSelectedProject} from '../../../../services/util';
     EntitiesPageComponent,
   ]
 })
-export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource> implements OnInit, OnDestroy {
+export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource, RadarSource> implements OnInit, OnDestroy {
   override entityService = inject(SourceService);
   override configService = inject(SourceConfigService);
   override dialogService = inject(SourceDialogService);
 
   override entities = signal<AppSource[]>(this.activatedRoute.snapshot.data['sourceList']);
-  project?: AppProject = getSelectedProject(this.activatedRoute.snapshot);
+  project?: AppProject = this.selectedEntitiesService.selectedProject();
 
   sourceTypes: AppSourceType[] = [];
 
@@ -54,12 +53,4 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
   ngOnDestroy() {
     super.destroy();
   }
-
-  // override getDialogData(entity?: AppSource) {
-  //   return {
-  //     entity: entity,
-  //     entities: this.entities(),
-  //     sourceTypes: this.sourceTypes
-  //   }
-  // }
 }

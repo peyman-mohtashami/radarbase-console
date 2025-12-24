@@ -21,7 +21,6 @@ export class BaseEntityComponent<T extends ({_name: string;})> {
   extensionClass = input<string>();
   gridView = input<boolean>(false);
 
-  expanded = signal(false);
   updated = signal(false);
 
   constructor() {
@@ -40,10 +39,5 @@ export class BaseEntityComponent<T extends ({_name: string;})> {
         this.updated.set(false);
       }
     });
-  }
-
-  onExpansionClick(event: MouseEvent) {
-    event.stopPropagation();
-    this.expanded.update((currentValue) => !currentValue);
   }
 }

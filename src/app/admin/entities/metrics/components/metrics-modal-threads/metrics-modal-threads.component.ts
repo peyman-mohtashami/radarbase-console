@@ -20,8 +20,6 @@ export class MetricsModalThreadsComponent implements OnInit {
   threadDumpTimedWaiting = 0;
   threadDumpWaiting = 0;
 
-  // constructor(private activeModal: NgbActiveModal) {}
-
   ngOnInit(): void {
     this.threads?.forEach(thread => {
       if (thread.threadState === ThreadState.Runnable) {

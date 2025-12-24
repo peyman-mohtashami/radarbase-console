@@ -1,4 +1,4 @@
-import {Component, input, signal, TemplateRef} from "@angular/core";
+import {Component, HostBinding, input, signal, TemplateRef} from "@angular/core";
 import {DialogMode} from "../../enums/dialog";
 import {DetailType} from "../../enums/detail-type";
 import {TableElement} from "../../models/table.model";
@@ -16,13 +16,17 @@ import {MatIconButton} from '@angular/material/button';
   ]
 })
 export class EntityComponent {
+  @HostBinding('class')
+  get hostClasses(): string {
+    return `block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]`.trim();
+  }
+
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;
 
-  customTemplate = input<TemplateRef<any>>();
+  customTemplate = input<TemplateRef<unknown>>();
   tableFields = input<TableElement[]>([]);
 
-  entity = input.required<any>();
   extensionClass = input<string>();
   gridView = input<boolean>(false);
   updated = input(false);

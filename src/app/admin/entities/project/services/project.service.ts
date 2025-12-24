@@ -28,13 +28,11 @@ export class ProjectService extends BaseEntityService<AppProject, RadarProject> 
   }
 
   override getWithQuery(queryParams?: Params, organizationName?: string): Observable<AppProject[]> {
-    console.log('Class: ProjectService, Function: getWithQuery, Line 31 organizationName' , organizationName);
     this.organizationName = organizationName;
     return super.getWithQuery(queryParams);
   }
 
   override customFilter(entities: RadarProject[]) {
-    console.log('Class: ProjectService, Function: customFilter, Line 36 this.organizationName' , this.organizationName);
     return entities.filter(entity => {
       if (!this.organizationName) return true;
       return entity.organization.name === this.organizationName;

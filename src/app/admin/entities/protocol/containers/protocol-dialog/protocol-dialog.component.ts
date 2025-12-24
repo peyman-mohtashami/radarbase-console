@@ -45,6 +45,8 @@ import {ProtocolService} from "../../services/protocol.service";
 import {
   DialogBodyDescriptionComponent
 } from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-protocol-dialog',
@@ -69,6 +71,8 @@ import {
     MatStepLabel,
     MatButton,
     DialogBodyDescriptionComponent,
+    MatIcon,
+    ErrorMessageBoxComponent,
   ],
   providers: [
     {
@@ -103,7 +107,7 @@ export class ProtocolDialogComponent implements OnInit, AfterViewInit {
   protected showCode = false;
 
   updatedValue?: any;
-  updatedCode: string = '';
+  updatedCode = '';
 
   tableFields = this.configService.getTableFields();
   formFields = this.configService.getFormFields();

@@ -3,7 +3,7 @@ import {DialogMode} from '../../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 import {UserService} from './user.service';
-import {AppUser} from '../models/user';
+import {AppUser, RadarUser} from '../models/user';
 import {UserDialogComponent} from '../containers/user-dialog/user-dialog.component';
 import {UserActivateDialogComponent} from '../containers/user-activate-dialog/user-activate-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
@@ -12,7 +12,7 @@ import {ProjectService} from '../../project/services/project.service';
 import {OrganizationService} from '../../organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
-export class UserDialogService extends BaseDialogService<AppUser, UserDialogComponent | UserActivateDialogComponent> {
+export class UserDialogService extends BaseDialogService<AppUser, RadarUser, UserDialogComponent | UserActivateDialogComponent> {
   override entityService = inject(UserService);
   override configService = inject(UserConfigService);
 
@@ -58,7 +58,7 @@ export class UserDialogService extends BaseDialogService<AppUser, UserDialogComp
   }
 
   override createDialogRef(mode: DialogMode | string, entity?: AppUser): MatDialogRef<UserDialogComponent | UserActivateDialogComponent> {
-    const userFullList = this.entityService.getAll();
+    const userFullList = this.entityService.getWithQuery();
     const projectFullList = this.projectService.getWithQuery();
     const organizationFullList = this.organizationService.getWithQuery();
     const _data = {mode, entity, userFullList, projectFullList, organizationFullList};

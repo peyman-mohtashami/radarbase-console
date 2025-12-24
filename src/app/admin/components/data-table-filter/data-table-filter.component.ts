@@ -28,7 +28,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ValidatorError} from '../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
-import {format, isValid, parse} from 'date-fns';
+import {format, isValid, Locale, parse} from 'date-fns';
 import {enGB, nl, faIR} from 'date-fns/locale';
 import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
 import {TagComponent} from '../../../shared/components/tag/tag.component';
@@ -71,7 +71,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   localeService = inject(LocaleService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private dateAdapter = inject(DateAdapter<any>);
+  private dateAdapter = inject(DateAdapter<unknown>);
 
   filters = input<FilterItem[]>([]);
   filterOpened = input<boolean>(true);
@@ -91,7 +91,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
     effect(() => {
       const rawLocale = this.localeService.currentLocale()?.locale;
       const angularLocaleId = rawLocale === 'en-GB' ? 'en-GB' : rawLocale?.substring(0, 2);
-      const dfLocaleMap: Record<string, any> = {'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR};
+      const dfLocaleMap: Record<string, Locale> = {'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR};
       const dfLocale = angularLocaleId ? (dfLocaleMap[angularLocaleId] || enGB) : enGB;
       this.dateAdapter?.setLocale(dfLocale);
     });
@@ -110,9 +110,9 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
           acc[filterItem.names[1]] = new FormControl("");
           return acc;
         }
-        return (acc[filterItem.name] = new FormControl("")), acc;
-      },
-      {}
+        acc[filterItem.name] = new FormControl("");
+        return acc;
+      }, {}
     );
 
     this.form = new FormGroup(filterGroup)

@@ -15,20 +15,24 @@ import {toObservable} from '@angular/core/rxjs-interop';
 import {BaseEntityService} from '../../services/base-entity.service';
 import {BaseConfigService} from '../../services/base-config.service';
 import {BaseDialogService} from '../../services/base-dialog.service';
+import {BaseDialogComponent} from '../dialog/base-dialog.component';
+import {SelectedEntitiesService} from '../../services/selected-entities.service';
 
 @Component({
   selector: 'app-base-entities-page',
   template: '',
 })
-export class BaseEntityListPageComponent<T extends { _name: string; }> {
+export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   private router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
-  protected entityService!: BaseEntityService<T, any>;
+  protected selectedEntitiesService = inject(SelectedEntitiesService);
+
+  protected entityService!: BaseEntityService<T, U>;
   protected configService!: BaseConfigService;
-  protected dialogService!: BaseDialogService<T, any>;
+  protected dialogService!: BaseDialogService<T, U, BaseDialogComponent<T>>;
 
   protected GRID_VIEW_ENABLED = false;
   gridView = false;
@@ -62,7 +66,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
 
   filterEnabled = false;
   isFilterOpened = true;
-  selection = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<T>(true, []);
 
   _destroy$: Subject<void> = new Subject<void>();
 
@@ -158,18 +162,20 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
   }
 
   handleDialogUpdate(updated: { mode: DialogMode | string, entity?: T }) {
-    switch (updated.mode) {
-      case DialogMode.ADD:
-        this.addEntityToView(updated.entity);
-        break;
-      case DialogMode.EDIT:
-        this.refreshEntities();
-        // this.updateEntityInView(updated.entity);
-        break;
-      case DialogMode.DELETE:
-        this.refreshEntities();
-        break;
-    }
+    this.refreshEntities();
+    // switch (updated.mode) {
+    //   case DialogMode.ADD:
+    //     this.refreshEntities();
+    //     // this.addEntityToView(updated.entity);
+    //     break;
+    //   case DialogMode.EDIT:
+    //     this.refreshEntities();
+    //     // this.updateEntityInView(updated.entity);
+    //     break;
+    //   case DialogMode.DELETE:
+    //     this.refreshEntities();
+    //     break;
+    // }
     this.removeFragmentUrl();
     this.loading.set(false);
     this.selection.clear();
@@ -213,30 +219,6 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
       });
   }
 
-  // processUrlFragment(fragment: string) {
-  //   console.log('Class: BaseEntityListPageComponent, Function: processUrlFragment, Line 217 fragment' , fragment);
-  //   const entityMetadata = this.configService.getEntityMetadata()
-  //   const [_, action, entityType, entityId] = fragment.split('/');
-  //   if (entityType === entityMetadata.name) {
-  //     const entity = this.entities().find(e => e._name == entityId);
-  //     switch (action) {
-  //       case 'add':
-  //         this.dialogService.openDialog(DialogMode.ADD, this.getDialogData(entity));
-  //         break;
-  //       case 'edit':
-  //         if (entity) this.dialogService.openDialog(DialogMode.EDIT, this.getDialogData(entity));
-  //         break;
-  //       case 'delete':
-  //         if (entity) this.dialogService.openDialog(DialogMode.DELETE, this.getDialogData(entity));
-  //         break;
-  //     }
-  //   }
-  // }
-
-  // getDialogData(entity?: T) {
-  //   return {entity, entities: this.entities()}
-  // }
-
   handleFilterChange(event: FilterEvent) {
     this.filter.set(event);
   }
@@ -252,31 +234,26 @@ export class BaseEntityListPageComponent<T extends { _name: string; }> {
     this.sort.set(sort);
   }
 
-  handleActiveQueryChange(event: { page: PageEvent, sort: RbSort }) {
-    // this.sort.set(event.sort);
-    // this.page.set(event.page);
-  }
-
   onFilterEnabledChanged($event: boolean) {
     this.filterEnabled = $event;
   }
 
-  /** Selection Helper Methods */
-  isAllSelected() {
-    return this.selection.selected.length === this.entities().length;
-  }
-
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.selection.select(...this.entities());
-    }
-  }
-
-  checkboxLabel(row?: any): string {
-    return row
-      ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
-      : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-  }
+  // /** Selection Helper Methods */
+  // isAllSelected() {
+  //   return this.selection.selected.length === this.entities().length;
+  // }
+  //
+  // masterToggle() {
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     this.selection.select(...this.entities());
+  //   }
+  // }
+  //
+  // checkboxLabel(row?: any): string {
+  //   return row
+  //     ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
+  //     : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+  // }
 }

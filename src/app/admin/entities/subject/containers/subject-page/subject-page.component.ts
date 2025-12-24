@@ -3,7 +3,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
-import {AppSubject} from '../../models/subject';
+import {AppSubject, RadarSubject} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {MatButton} from '@angular/material/button';
@@ -14,6 +14,7 @@ import {AppOrganization} from '../../../organization/models/organization';
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-subject-page',
@@ -30,9 +31,10 @@ import {SubjectActionsComponent} from '../../components/subject-actions/subject-
     TranslatePipe,
     SubjectActionsComponent,
     RouterLinkActive,
+    MatIcon,
   ]
 })
-export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> implements OnInit, OnDestroy {
+export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, RadarSubject> implements OnInit, OnDestroy {
   override configService = inject(SubjectConfigService);
   override dialogService = inject(SubjectDialogService);
 
@@ -45,8 +47,8 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> im
   ];
 
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
-  project?: AppProject = this.activatedRoute.parent?.parent?.snapshot?.data['entity'];
-  organization?: AppOrganization = this.activatedRoute.parent?.parent?.parent?.parent?.snapshot?.data['organization'];
+  project?: AppProject = this.selectedEntitiesService.selectedProject();
+  organization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
 
   ngOnInit(): void {
     super.init();
@@ -54,30 +56,5 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject> im
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppSubject) {
-    const lastSegment = this.activatedRoute.firstChild?.snapshot.url[this.activatedRoute.firstChild?.snapshot.url.length - 1].path;
-    this.router.navigate([
-      '/admin',
-      'organizations',
-      this.organization?.name,
-      'projects',
-      this.project?.projectName,
-      'subjects',
-      entity.login,
-      lastSegment
-    ], {fragment: undefined}).then();
-  }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate([
-      '/admin',
-      'organizations',
-      this.organization?.name,
-      'projects',
-      this.project?.projectName,
-      'subjects',
-    ], {fragment: undefined}).then();
   }
 }

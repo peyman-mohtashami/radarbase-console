@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
-import {AppOrganization} from "../../models/organization";
+import {AppOrganization, RadarOrganization} from "../../models/organization";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -13,7 +13,6 @@ import {ROLES} from "../../../../../shared/enums/roles";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
-import {hasChildEntity} from '../../../../services/util';
 
 @Component({
   selector: 'app-organization-page',
@@ -31,7 +30,7 @@ import {hasChildEntity} from '../../../../services/util';
     RouterLinkActive,
   ]
 })
-export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrganization> implements OnInit, OnDestroy {
+export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrganization, RadarOrganization> implements OnInit, OnDestroy {
   override configService = inject(OrganizationConfigService);
   override dialogService = inject(OrganizationDialogService);
 
@@ -39,14 +38,10 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
 
   links: TabLink[] = [];
 
-  hasProject = hasChildEntity(this.router.routerState.snapshot.root, 'project');
+  hasProject = this.selectedEntitiesService.selectedProject;
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(() => {
-      this.hasProject = hasChildEntity(this.router.routerState.snapshot.root, 'project');
-    });
-
-    this.links = [
+      this.links = [
       {path: 'projects', label: `ADMIN.${ENTITY_REGISTRY.project.name}.title.plural`},
       {
         path: 'users',
@@ -61,13 +56,5 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppOrganization) {
-    this.router.navigate(['../', entity.name], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined
-    }).then();
   }
 }

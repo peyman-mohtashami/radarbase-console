@@ -19,6 +19,7 @@ import {DialogAction} from "../../../../components/dialog/dialog-actions/dialog-
 import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
 import {debounceTime} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
   selector: 'app-permission-dialog',
@@ -35,6 +36,7 @@ import {Observable} from 'rxjs';
     MatButton,
     MatIcon,
     MatProgressSpinner,
+    ErrorMessageBoxComponent,
   ]
 })
 export class PermissionDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit, OnDestroy {

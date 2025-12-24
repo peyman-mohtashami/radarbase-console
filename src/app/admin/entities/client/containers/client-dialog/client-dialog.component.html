@@ -6,14 +6,14 @@
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                [label]="`ADMIN.${entityName}.name.label` | translate"
+                                [label]="`ADMIN.${entityName}.title.singular` | translate"
                                 [entityName]="dialogData.entity.clientId"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>
 
-      <label for="clientId" class="text-sm">{{ `ADMIN.${entityName}.id.label` | translate }} *</label>
+      <label for="clientId" class="text-sm">{{ `ADMIN.${entityName}.clientId.label` | translate }} *</label>
       <mat-form-field subscriptSizing="fixed"
                       [appearance]='dialogData.entity ? "fill": "outline"'>
         <input matInput formControlName='clientId' required />

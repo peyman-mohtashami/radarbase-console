@@ -18,6 +18,7 @@ import {ProtocolStateService} from "../../services/protocol-state.service";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {MatFormField, MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-protocol-step-content',
@@ -29,7 +30,8 @@ import {MatOption} from '@angular/material/core';
     TextFormGroupComponent,
     MatSelect,
     MatOption,
-    MatFormField
+    MatFormField,
+    TranslatePipe
   ],
   providers: [
     {

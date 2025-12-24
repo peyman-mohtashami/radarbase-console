@@ -5,13 +5,15 @@ import {
 } from '@angular/material/snack-bar';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-error-snackbar',
   templateUrl: './error-snackbar.component.html',
   imports: [
     TranslatePipe,
-    MatIconButton
+    MatIconButton,
+    MatIcon
   ]
 })
 export class ErrorSnackbarComponent {

@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component, Input, input,
+  Component, input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -14,12 +14,11 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import {MatFormField, MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
 import { ValidatorError } from '../../utils/validators';
-import {MatChipListbox, MatChipOption} from "@angular/material/chips";
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {AsyncPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {MatError, MatLabel} from "@angular/material/form-field";
+import {MatError} from "@angular/material/form-field";
 import {TagComponent} from "../tag/tag.component";
 import {MatIconButton} from "@angular/material/button";
 
@@ -45,13 +44,9 @@ export interface RadarOption {
   ],
   imports: [
     MatFormField,
-    // MatLabel,
     MatSelectTrigger,
     MatError,
     MatSelect,
-    // MatChipListbox,
-    // MatChipOption,
-    // MatIcon,
     TranslatePipe,
     ReactiveFormsModule,
     MatOption,
@@ -59,6 +54,7 @@ export interface RadarOption {
     AsyncPipe,
     TagComponent,
     MatIconButton,
+    MatIcon,
   ],
 })
 export class MatSelectAutocompleteComponent
@@ -66,12 +62,11 @@ export class MatSelectAutocompleteComponent
 {
   protected readonly ValidatorError = ValidatorError;
 
-  label = input<string>("")
-  legend = input<string>("") // TODO remove this, use label instead
-  options = input<RadarOption[]>([])
-  multiple = input<boolean>(false)
-  required = input<boolean>(false)
-  floatLabel = input<boolean>(false)
+  label = input<string>("");
+  options = input<RadarOption[]>([]);
+  multiple = input<boolean>(false);
+  required = input<boolean>(false);
+  // floatLabel = input<boolean>(false);
   notRemovable = input<{ id: string; _name: string }>();
 
   form: any; // = new FormControl<RadarOption[]>([]);

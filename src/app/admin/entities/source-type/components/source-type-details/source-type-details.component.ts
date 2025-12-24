@@ -6,8 +6,8 @@ import {
 } from "../source-type-source-registration/source-type-source-registration.component";
 import {SourceTypeSourcesDataComponent} from "../source-type-sources-data/source-type-sources-data.component";
 import {DetailsComponent} from "../../../../components/details/details.component";
-import {SourceConfigService} from "../../../source/services/source-config.service";
 import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {SourceTypeConfigService} from '../../services/source-type-config.service';
 
 @Component({
   selector: 'app-source-type-details',
@@ -20,5 +20,5 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
   ]
 })
 export class SourceTypeDetailsComponent extends BaseDetailsComponent<AppSourceType>{
-  override configService = inject(SourceConfigService);
+  override configService = inject(SourceTypeConfigService);
 }

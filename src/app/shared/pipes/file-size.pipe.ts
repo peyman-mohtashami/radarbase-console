@@ -23,9 +23,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 type unit = 'bytes' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB';
-type unitPrecisionMap = {
-  [u in unit]: number;
-};
+type unitPrecisionMap = Record<unit, number>;
 
 const defaultPrecisionMap: unitPrecisionMap = {
   bytes: 0,

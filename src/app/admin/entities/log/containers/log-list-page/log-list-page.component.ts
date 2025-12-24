@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {LogConfigService} from '../../services/log-config.service';
-import {AppLog} from '../../models/log';
+import {AppLog, RadarLog} from '../../models/log';
 import {LogTableRowComponent} from '../../components/log-table-row/log-table-row.component';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -22,7 +22,7 @@ import {LogService} from '../../services/log.service';
     EntitiesPageComponent,
   ]
 })
-export class LogListPageComponent extends BaseEntityListPageComponent<AppLog> implements OnInit, OnDestroy {
+export class LogListPageComponent extends BaseEntityListPageComponent<AppLog, RadarLog> implements OnInit, OnDestroy {
   override configService = inject(LogConfigService);
   override entityService = inject(LogService);
 

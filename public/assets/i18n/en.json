@@ -55,7 +55,7 @@
       "RESET_PASSWORD_PAGE": {
         "title": "Reset Your Password",
         "subtitle": "Create a new password for your account",
-        "invalidKeyErrorMessage": "Key is not valid.",
+        "invalidKeyErrorMessage": "The link is invalid or expired.",
         "invalidKeyErrorDescription": "Request reset password link again?",
         "gotoForgotPasswordPage": "Go to Forgot Password",
         "successMessage": "Your user account has been activated.",
@@ -930,6 +930,9 @@
       "producerModelCatalogVersion": {
         "tableLabel": "Producer, Model, Catalog Version"
       },
+      "error": {
+        "sourceTypeInUse": "Remove sourceType from these projects first:\n"
+      },
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Source Type",
       "edit": "Edit",
@@ -967,9 +970,9 @@
         "label": "External Link"
       },
       "dateOfBirth": {
-        "tableLabel": "Date Of Birth",
-        "label": "Date Of Birth",
-        "invalid": "Invalid Date of Birth"
+        "tableLabel": "Date of birth",
+        "label": "Date of birth",
+        "invalid": "Invalid Date of birth"
       },
       "project": {
         "tableLabel": "Project",
@@ -1021,10 +1024,12 @@
         "tableLabel": "Last Modified Date",
         "label": "Last Modified Date"
       },
-      "assignGroup": {
+      "assignGroupDialog": {
         "title": "Assign a Group to Selected Subjects",
         "cancel": "Cancel",
-        "assign": "Assign"
+        "assign": "Assign",
+        "button": "Add To a Group",
+        "message": "{{numberOfItems}} item(s) selected."
       },
       "discontinue": {
         "buttonLabel": "Discontinue",
@@ -1386,6 +1391,59 @@
         "publish": "Publish",
         "publishing": "Publishing",
         "unpublishedMessage": "Unpublished changes"
+      },
+      "dialog": {
+        "general": {
+          "title": "Configuration",
+          "nameLabel": "Name",
+          "orderLabel": "Display Order",
+          "onDemandLabel": "On Demand",
+          "showInCalendarLabel": "Show In Calendar",
+          "isDemoLabel": "Demo mode"
+        },
+        "content": {
+          "title": "Content",
+          "showIntroductionLabel": "Show Introduction",
+          "showIntroductionNo": "No",
+          "showIntroductionOnce": "Once",
+          "showIntroductionAlways": "Always",
+          "startTextLabel": "Start Text (per language)",
+          "endTextLabel": "End Text (per language)",
+          "warningTextLabel": "Warning text (per language)",
+          "notificationLabel": "Notification",
+          "notificationTitleLabel": "Title (per language)",
+          "notificationMessageLabel": "Message (per language)"
+        },
+        "questionGroup": {
+          "title": "Question Set",
+          "githubLabel": "Use GitHub repository",
+          "githubPropertiesLabel": "Github Properties",
+          "questionnaireNameLabel": "Questionnaire Name",
+          "questionnaireRepositoryLabel": "Questionnaire Repository",
+          "appQuestionnaireLabel": "App Questionnaire",
+          "estimatedCompletionTimeLabel": "Estimated completion time (minutes)",
+          "minutes": "minutes"
+        },
+        "scheduling": {
+          "title": "Scheduling",
+          "relativeToReferenceTimeLabel": "Relative To reference timestamp",
+          "": "Reference timestamp",
+          "repeatedProtocolLabel": "Enable repeating",
+          "repeatProtocolLabel": "Repeat every",
+          "repeatProtocolAmount": "Amount",
+          "repeatProtocolUnit": "Unit",
+          "timeOffsetsLabel": "Time offsets",
+          "completionWindowLabel": "Time to complete",
+          "completionWindowUnit": "Unit",
+          "completionWindowAmount": "Amount",
+          "remindersLabel": "Reminders",
+          "remindersEnableLabel": "Enable reminders",
+          "reminderUnit": "Unit",
+          "reminderAmount": "Amount",
+          "reminderRepeat": "Repeat count"
+        },
+        "backButton": "Back",
+        "nextButton": "Next"
       },
       "availableLanguages": "Languages",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},

@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PermissionDirective} from '../../../core/auth/directives/show-if-has-role.directive';
 import {DialogMode} from '../../enums/dialog';
 import {EntityRegistry} from "../../../shared/consts/entity-registry";
+import {MatIcon} from '@angular/material/icon';
+import {ROLES} from '../../../shared/enums/roles';
 
 @Component({
   selector: 'app-entities-page-header',
@@ -13,7 +15,8 @@ import {EntityRegistry} from "../../../shared/consts/entity-registry";
     TranslatePipe,
     MatIconButton,
     PermissionDirective,
-    MatButton
+    MatButton,
+    MatIcon
   ]
 })
 export class EntitiesPageHeaderComponent {
@@ -25,12 +28,11 @@ export class EntitiesPageHeaderComponent {
   entityMetadata = input.required<EntityRegistry>();
   showTitle = input<boolean>(true);
   enableAddButton = input<boolean>(true);
-  permission = input<any>();
+  permission = input<{role: ROLES; entityName?: string;}[]>();
 
   //TODO
-  @Input() isGridView?: boolean; // = input<boolean>();
+  @Input() isGridView?: boolean;
 
-  action = output<any>();
   gridListToggled = output<boolean>();
 
   toggleGridListView() {

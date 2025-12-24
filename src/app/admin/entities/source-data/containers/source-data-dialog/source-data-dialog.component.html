@@ -37,7 +37,6 @@
       </mat-form-field>
 
       <app-mat-select-autocomplete formControlName='sourceType'
-                                  [legend]="`ADMIN.${entityName}.sourceType.label` | translate "
                                   [label]="(`ADMIN.${entityName}.sourceType.label` | translate) + ' *'"
                                    [options]='(dialogData.sourceTypeFullList | async) ?? []'
                                   [required]="true">

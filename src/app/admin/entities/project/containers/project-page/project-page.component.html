@@ -1,4 +1,4 @@
-@if (!hasSubject) {
+@if (!hasSubject()) {
   <nav aria-label="breadcrumb" class="px-4 py-2 flex flex-wrap items-center bg-white dark:bg-background-dark">
     <div class='flex flex-wrap gap-2 items-center'>
       <button class="h-6! text-xs! font-bold! rounded-sm! bg-neutral-100! dark:bg-neutral-600! dark:text-white!"
@@ -9,7 +9,7 @@
             <span>{{ `ADMIN.${ENTITY_REGISTRY.organization.name}.title.plural` | translate }}</span>
           </span>
       </button>
-      <span class="material-symbols-outlined text-lg">chevron_right</span>
+      <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
       <a class="text-xs font-bold" [routerLink]="">{{ entity().organization.name }}</a>
     </div>
   </nav>
@@ -27,14 +27,14 @@
 
     <div class='flex gap-1 ml-auto'>
       <ng-container
-          *showIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().projectName}]'>
+          *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().projectName}]'>
         <app-project-actions [entity]="entity()"/>
       </ng-container>
     </div>
   </div>
 }
-<div [class]="!hasSubject ? 'm-4' : ''">
-  @if (!hasSubject) {
+<div [class]="!hasSubject() ? 'm-4' : ''">
+  @if (!hasSubject()) {
     <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
          mat-tab-nav-bar
          mat-stretch-tabs="false"

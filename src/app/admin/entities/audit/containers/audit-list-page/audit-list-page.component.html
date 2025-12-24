@@ -20,7 +20,6 @@
   <app-loader/>
 }
 
-
 <app-entities-page [entities]="entities()"
                    [tableFields]="tableFields"
                    [entityMetadata]="entityMetadata"
@@ -28,12 +27,10 @@
                    [sort]="sort()"
                    (switchPageEvent)="switchPage($event)"
                    (switchSortEvent)="switchSort($event)"
-                   (activeQueryChangeEvent)="handleActiveQueryChange($event)"
                    [customTemplate]="itemTemplate"
                    [gridView]="gridView"
                    [totalEntities]="entityService.total()"/>
 <ng-template #itemTemplate let-entity>
   <app-audit-table-row [entity]="entity" [gridView]="gridView"
-                       [extensionClass]="extensionClass()"
-                       class="block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]"/>
+                       [extensionClass]="extensionClass()" />
 </ng-template>

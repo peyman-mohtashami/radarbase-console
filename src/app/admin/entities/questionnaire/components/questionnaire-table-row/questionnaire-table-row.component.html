@@ -1,12 +1,11 @@
-<app-entity [entity]="entity()"
-            [gridView]="gridView()"
+<app-entity [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
   <app-questionnaire-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
   <app-questionnaire-actions extra-actions
-                            *showIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'
+                            *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'
                             [entity]="entity()"
                             [isExpanded]="true"/>
 </app-entity>
@@ -15,7 +14,7 @@
     @case ('name') {
       <p class="font-bold">{{ entity()['name'] || '-' }}</p>
       <div class="flex items-center flex-wrap gap-2">
-        <span class="text-xs font-bold text-neutral-400 uppercase">Translations</span>
+        <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.questionnaire.availableLanguages' | translate}}</span>
         @for (l of entity().languages; track l) {
           <span>
             <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{l.id}}</span></span>

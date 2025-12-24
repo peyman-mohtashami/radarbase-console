@@ -45,6 +45,7 @@ import {LocaleService} from "../../../../../../../core/locale/services/locale.se
     MatDatepickerToggle,
     MatError,
     MatSuffix,
+    TranslatePipe,
     // TranslatePipe,
   ],
   providers: [

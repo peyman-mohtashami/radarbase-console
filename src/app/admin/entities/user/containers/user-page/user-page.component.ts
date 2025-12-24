@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import { AppUser } from "../../models/user";
+import {AppUser, RadarUser} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
 import {UserDetailsComponent} from "../../components/user-details/user-details.component";
 import {UserConfigService} from '../../services/user-config.service';
@@ -22,7 +22,7 @@ import {UserActionsComponent} from '../../components/user-actions/user-actions.c
     UserActionsComponent,
   ]
 })
-export class UserPageComponent extends BaseEntityPageComponent<AppUser> implements OnInit, OnDestroy {
+export class UserPageComponent extends BaseEntityPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {
   override configService = inject(UserConfigService);
   override dialogService = inject(UserDialogService);
 
@@ -46,13 +46,5 @@ export class UserPageComponent extends BaseEntityPageComponent<AppUser> implemen
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppUser) {
-    this.router.navigate(['/admin', 'users', entity.login]).then();
-  }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'users']).then();
   }
 }

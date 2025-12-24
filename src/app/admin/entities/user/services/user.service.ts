@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpParams} from "@angular/common/http";
 
 import {AppRole, AppUser, RadarRole, RadarUser} from "../models/user";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Params} from '@angular/router';
 import {map, tap} from 'rxjs/operators';
 import {ROLES} from "../../../../shared/enums/roles";
@@ -32,22 +31,25 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
 
   private getRadarRoles(appRoles: AppRole | null): RadarRole[] {
     if (!appRoles) return [];
-    const roles: any[] = [];
+    const roles: RadarRole[] = [];
     if (appRoles._sysAdmin) {
       roles.push({authorityName: ROLES.SYS_ADMIN});
     }
     if (appRoles._organizationAdmin) {
-      appRoles._organizations?.forEach((organization: any) => {
+      appRoles._organizations?.forEach((organization) => {
         roles.push({
           authorityName: ROLES.ORGANIZATION_ADMIN,
-          organizationName: organization.name,
-          organizationId: organization.id
+          organizationName: organization._name,
+          organizationId: +organization.id
         });
       })
     }
     if (appRoles._projectAdmin) {
-      appRoles._projects?.forEach((project: any) => {
-        roles.push({authorityName: ROLES.PROJECT_ADMIN, projectName: project.projectName, projectId: project.id});
+      appRoles._projects?.forEach((project) => {
+        roles.push({
+          authorityName: ROLES.PROJECT_ADMIN,
+          projectName: project._name,
+          projectId: +project.id});
       })
     }
     return roles;
@@ -81,52 +83,36 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
     }, defaultAppRole);
   }
 
-  getAll(): Observable<AppUser[]> {
-    return this.http.get<RadarUser[]>(`${environment.apiUrl}api/users?includeProvenance=false`)
-      .pipe(
-        map((entities) =>
-          entities.map((entity) => this.toAppModel(entity))
-        )
-      );
-  }
+  override getWithQuery(queryParams?: Params): Observable<AppUser[]> {
+    const {
+      pageIndex = 0,
+      pageSize = 10,
+      sortField = 'id',
+      sortOrder = 'desc',
+      ...filter
+    } = queryParams ?? {};
 
-  override getWithQuery(queryParams: Params): Observable<AppUser[]> {
-    const {params} = this.convertParamsToHttpParams(queryParams as Params);
-    return this.http.get<RadarUser[]>(this.getResourceUrl(), {
-      params,
-      observe: 'response',
-    }).pipe(
-      tap(
-        (res) => {
-          // this.total = +(
-          //   res.headers.get('x-total-count') ||
-          //   res.body?.length.toString() ||
-          //   '0'
-          // )
-          this.total.set(+(
-            res.headers.get('x-total-count') ||
-            res.body?.length.toString() ||
-            '0'
-          ))
-        }
-      ),
-      map((res) => {
-        return (res.body || []).map((entity) => this.toAppModel(entity));
-      })
+    const process = (entities: AppUser[]) => {
+      const filteredEntities = this.getFilteredEntities(entities, filter);
+      const sortedEntities = this.applySorting(filteredEntities, {sortField, sortOrder});
+      return this.applyPagination(sortedEntities, {pageSize, pageIndex});
+    };
+
+    if (this.CACHE_ENABLED && this.cacheLoaded) {
+      this.total.set(this.cache.length);
+      return of(queryParams ? process(this.cache) : this.cache);
+    }
+
+    return this.http.get<RadarUser[]>(`${environment.apiUrl}api/users?includeProvenance=false`).pipe(
+      map((entities) => this.customFilter(entities)),
+      map((entities) => entities.map((entity) => this.toAppModel(entity))),
+      tap((entities) => {
+        this.cache = entities;
+        this.cacheLoaded = true;
+        this.total.set(entities.length);
+      }),
+      map((entities) => queryParams ? process(entities) : entities)
     );
-  }
-
-  override convertFilterParamsToHttpParams(
-    params: HttpParams,
-    queryParams?: Params
-  ) {
-    if (queryParams?.['login'] && queryParams['login'] !== '') {
-      params = params.append('login', queryParams['login']);
-    }
-    if (queryParams?.['email'] && queryParams['email'] !== '') {
-      params = params.append('email', queryParams['email']);
-    }
-    return params;
   }
 
   sendActivationEmail(entity: AppUser): Observable<void> {

@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
+import {Component, OnDestroy, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {AuditService} from '../../services/audit.service';
 import {AuditConfigService} from '../../services/audit-config.service';
 import {AuditTableRowComponent} from '../../components/audit-table-row/audit-table-row.component';
-import {AppAudit} from '../../models/audit';
+import {AppAudit, RadarAudit} from '../../models/audit';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
   DataTableFilterComponent,
@@ -22,15 +22,11 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     EntitiesPageComponent,
   ]
 })
-export class AuditListPageComponent extends BaseEntityListPageComponent<AppAudit> implements OnDestroy {
+export class AuditListPageComponent extends BaseEntityListPageComponent<AppAudit, RadarAudit> implements OnDestroy {
   override entityService = inject(AuditService);
   override configService = inject(AuditConfigService);
 
   override entities = signal<AppAudit[]>(this.activatedRoute.snapshot.data['auditList']);
-
-  // ngOnInit() {
-  //   //super.init();
-  // }
 
   ngOnDestroy() {
     super.destroy();

@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
-import {AppProject} from "../../models/project";
+import {AppProject, RadarProject} from "../../models/project";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {ProjectConfigService} from '../../services/project-config.service';
@@ -13,7 +13,7 @@ import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../models/tab-link";
 import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
 import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
-import {hasChildEntity} from '../../../../services/util';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-project-page',
@@ -30,9 +30,10 @@ import {hasChildEntity} from '../../../../services/util';
     TranslatePipe,
     ProjectActionsComponent,
     RouterLinkActive,
+    MatIcon,
   ]
 })
-export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> implements OnInit, OnDestroy {
+export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, RadarProject> implements OnInit, OnDestroy {
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
 
@@ -48,7 +49,7 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` },
   ];
 
-  hasSubject = hasChildEntity(this.router.routerState.snapshot.root, 'subject');
+  hasSubject = this.selectedEntitiesService.selectedSubject;
 
   ngOnInit() {
     super.init();
@@ -56,17 +57,5 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject> im
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppProject) {
-    this.router.navigate(['../', entity._name], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined
-    }).then();
-  }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'organizations']).then();
   }
 }

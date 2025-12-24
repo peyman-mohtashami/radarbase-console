@@ -69,12 +69,13 @@
         </mat-form-field>
       }
 
-      <app-mat-select-autocomplete formControlName='sourceType'
-                                  [legend]='"ADMIN.source.sourceType.label" | translate '
-                                  [options]='(dialogData.sourceTypeFullList | async) ?? []'
-                                  [label]='("ADMIN.source.sourceType.label" | translate) + "*"'
-                                  [multiple]="false"
-                                  [required]="true"/>
+      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {
+        <app-mat-select-autocomplete formControlName='sourceType'
+                                    [options]='sourceTypes'
+                                    [label]='("ADMIN.source.sourceType.label" | translate) + "*"'
+                                    [multiple]="false"
+                                    [required]="true"/>
+      }
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
         <label for="attributes" class="text-sm">{{ 'ADMIN.source.attributes.label' | translate }}</label>
@@ -103,10 +104,9 @@
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
 
 <app-dialog-actions [dialogMode]='dialogData.mode'

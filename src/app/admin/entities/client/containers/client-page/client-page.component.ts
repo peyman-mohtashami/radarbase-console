@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
-import { AppClient } from "../../models/client";
+import {AppClient, RadarClient} from "../../models/client";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatPrefix} from "@angular/material/input";
@@ -28,24 +28,19 @@ import {ClientActionsComponent} from '../../components/client-actions/client-act
     RouterLink,
     PermissionDirective,
     ClientActionsComponent,
+    RouterLinkActive,
   ]
 })
-export class ClientPageComponent extends BaseEntityPageComponent<AppClient> implements OnInit, OnDestroy {
+export class ClientPageComponent extends BaseEntityPageComponent<AppClient, RadarClient> implements OnInit, OnDestroy {
   override configService = inject(ClientConfigService);
   override dialogService = inject(ClientDialogService);
+
+  override entity = signal<AppClient>(this.activatedRoute.snapshot.data['client']);
 
   links: TabLink[] = [
     { path: 'configs', label: `ADMIN.${ENTITY_REGISTRY.config.name}.title.plural` },
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.client.name}.details` },
   ];
-
-  activePath?: string;
-
-  override entity = signal<AppClient>(this.activatedRoute.snapshot.data['client']);
-  entities = this.activatedRoute.snapshot.data['entities'];
-
-  hasChildren = !!this.activatedRoute.firstChild?.firstChild?.snapshot?.params?.['id'];
-
 
   ngOnInit(): void {
     super.init();
@@ -53,13 +48,5 @@ export class ClientPageComponent extends BaseEntityPageComponent<AppClient> impl
 
   ngOnDestroy() {
     super.destroy();
-  }
-
-  override navigateOnUpdateSuccess(entity: AppClient) {
-    this.router.navigate(['/admin', 'clients', entity.clientId]).then();
-  }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'clients']).then();
   }
 }

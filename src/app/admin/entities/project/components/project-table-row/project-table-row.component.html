@@ -1,7 +1,6 @@
 @let configFields = configService.getFormFields();
 
-<app-entity [entity]="entity()"
-            [gridView]="gridView()"
+<app-entity [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
@@ -30,7 +29,7 @@
           <span class='text-base font-bold text-primary dark:text-primary-dark'>{{ entity()._name }}</span>
         </div>
         <app-project-actions
-          *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+          *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
           [entity]="entity()"
           [isExpanded]="false"/>
       </div>
@@ -61,7 +60,7 @@
       }
     </mat-card-content>
   </mat-card>
-  <app-project-actions extra-actions *showIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
+  <app-project-actions extra-actions *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
                        [entity]="entity()"
                        [isExpanded]="true"/>
 </app-entity>

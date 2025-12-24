@@ -1,14 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
-import {AppClient} from '../models/client';
+import {AppClient, RadarClient} from '../models/client';
 import {ClientService} from './client.service';
 import {ClientDialogComponent} from '../containers/client-dialog/client-dialog.component';
 import {BaseDialogService} from '../../../services/base-dialog.service';
 import {ClientConfigService} from './client-config.service';
 
 @Injectable({providedIn: 'root'})
-export class ClientDialogService extends BaseDialogService<AppClient, ClientDialogComponent>{
+export class ClientDialogService extends BaseDialogService<AppClient, RadarClient, ClientDialogComponent>{
   override entityService = inject(ClientService);
   override configService = inject(ClientConfigService);
 

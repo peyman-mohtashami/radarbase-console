@@ -1,7 +1,7 @@
 <div class="text-sm" [class]="!isMenuOpen() ? 'md:[&_.item-label]:hidden' : ''">
   @for (navGroupItem of navGroupItems(); track navGroupItem) {
     <div class="m-2">
-      <ng-container *showIfHasRole="navGroupItem.permission">
+      <ng-container *appShowIfHasRole="navGroupItem.permission">
         <mat-expansion-panel class="hover:bg-black/20! bg-white/10!" [class.mat-elevation-z0]="true" [expanded]="!navGroupItem.close">
           <mat-expansion-panel-header class="py-2! bg-transparent! h-auto! text-on-tertiary" [class]="isMenuOpen() ? 'px-4!': 'px-2!'">
             <div class="flex gap-2 items-center w-full!" [class]="!isMenuOpen() ? 'md:justify-start' : ''">
@@ -17,7 +17,7 @@
           </mat-expansion-panel-header>
           <mat-nav-list class="p-0!">
             @for (nav of navGroupItem.navList; track nav) {
-              <div class="border-t border-on-tertiary/50 w-full" *showIfHasRole='nav.permission'>
+              <div class="border-t border-on-tertiary/50 w-full" *appShowIfHasRole='nav.permission'>
                 @if (!nav.external) {
                   <mat-list-item class="px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary! h-auto!"
                                  [routerLink]='nav.route'

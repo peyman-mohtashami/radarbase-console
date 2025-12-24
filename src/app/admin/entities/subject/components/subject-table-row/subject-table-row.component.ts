@@ -14,6 +14,7 @@ import {EntityComponent} from '../../../../components/entity/entity.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-table-row',
@@ -30,9 +31,11 @@ import {SubjectActionsComponent} from '../subject-actions/subject-actions.compon
     TagComponent,
     EntityComponent,
     SubjectActionsComponent,
+    TranslatePipe,
   ]
 })
 export class SubjectTableRowComponent extends BaseEntityComponent<AppSubject> {
   override configService = inject(SubjectConfigService);
-  selection = input.required<SelectionModel<any>>();
+
+  selection = input.required<SelectionModel<AppSubject>>();
 }

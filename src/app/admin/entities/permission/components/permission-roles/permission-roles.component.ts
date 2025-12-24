@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, input} from "@angular/core";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {AppRole, AppUser} from "../../../user/models/user";
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-permission-roles',
@@ -8,6 +9,7 @@ import {AppRole, AppUser} from "../../../user/models/user";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TagComponent,
+    TranslatePipe,
   ]
 })
 export class PermissionRolesComponent {

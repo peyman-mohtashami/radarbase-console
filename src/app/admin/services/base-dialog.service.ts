@@ -5,16 +5,18 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {DialogMode} from '../enums/dialog';
 import {BaseDialogComponent} from '../components/dialog/base-dialog.component';
-// import {BaseEntityService} from './base-entity.service';
+import {BaseEntityService} from './base-entity.service';
 import {BaseConfigService} from './base-config.service';
+import {SelectedEntitiesService} from './selected-entities.service';
 
 @Injectable({providedIn: 'root'})
-export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogComponent<T>> {
+export class BaseDialogService<T extends {_name: string;}, U, V extends BaseDialogComponent<T>> {
   protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
+  protected selectedEntitiesService = inject(SelectedEntitiesService);
 
-  protected entityService!: any; //BaseEntityService<T, any>;
+  protected entityService!: BaseEntityService<T, U>;
   protected configService!: BaseConfigService;
 
   dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
@@ -58,10 +60,7 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
           }
           this.processDialogAction(_action, _entity).subscribe({
             next: (res) => {
-              console.log('Class: BaseDialogService, Function: next, Line 61 res' , res);
               const entity = res ?? _entity;
-              console.log('Class: BaseDialogService, Function: next, Line 63 entity' , entity);
-              // this.dialogUpdateEvent.set({mode, entity: {...entity, projects: entity.projects}})
               this.dialogUpdateEvent.set({mode, entity})
               dialogRef.close();
             },
@@ -97,7 +96,8 @@ export class BaseDialogService<T extends {_name: string;}, U extends BaseDialogC
     }).then();
   }
 
-  createDialogRef(mode: DialogMode | string, data: any): MatDialogRef<U> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  createDialogRef(_mode: DialogMode | string, _entity?: T): MatDialogRef<V> {
     throw new Error('Method not implemented.');
   }
 }

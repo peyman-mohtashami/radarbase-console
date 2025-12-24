@@ -26,8 +26,8 @@ export class EntitiesPageComponent {
   protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
   protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
-  customTemplate = input<TemplateRef<any>>();
-  entities = input<any[]>([]);
+  customTemplate = input<TemplateRef<unknown>>();
+  entities = input<{_name: string}[]>([]);
   tableFields = input<TableElement[]>([]);
   entityMetadata = input.required<EntityRegistry>();
   page = input.required<PageEvent>();
@@ -41,7 +41,7 @@ export class EntitiesPageComponent {
 
   extensionClass = signal('hidden');
 
-  selection = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<unknown>(true, []);
 
   /** Selection Helper Methods */
   isAllSelected() {
@@ -49,6 +49,7 @@ export class EntitiesPageComponent {
   }
 
   masterToggle() {
+    console.log('Class: EntitiesPageComponent, Function: masterToggle, Line 52 ' , );
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
@@ -56,7 +57,7 @@ export class EntitiesPageComponent {
     }
   }
 
-  checkboxLabel(row?: any): string {
+  checkboxLabel(row?: {position: number}): string {
     return row
       ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
       : `${this.isAllSelected() ? 'deselect' : 'select'} all`;

@@ -24,17 +24,17 @@ export interface AppUser extends RadarUser {
 }
 
 export interface RadarRole {
-  id: number;
-  authorityName: string;
-  projectId: number;
-  projectName: string;
-  organizationName: string;
-  organizationId: number;
-  users: any;
-  project: any;
-  organization: any;
-  authority: any;
-  role: string;
+  id?: number;
+  authorityName?: string;
+  projectId?: number;
+  projectName?: string;
+  organizationName?: string;
+  organizationId?: number;
+  users?: any;
+  project?: any;
+  organization?: any;
+  authority?: any;
+  role?: string;
 }
 
 export interface AppRole {

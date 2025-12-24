@@ -4,9 +4,7 @@ export type HealthKey = 'diskSpace' | 'mail' | 'ping' | 'livenessState' | 'readi
 
 export interface RadarHealth {
   status: HealthStatus;
-  components: {
-    [key in HealthKey]: RadarHealthDetails;
-  };
+  components: Record<HealthKey, RadarHealthDetails>;
 }
 
 export interface RadarHealthDetails {

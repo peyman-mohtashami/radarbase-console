@@ -15,8 +15,8 @@ import {Subject} from 'rxjs';
 })
 export class BaseDialogComponent<T> {
   protected configService!: BaseConfigService;
-  protected dialogRef?: MatDialogRef<any>;
-  dialogData?: any;
+  protected dialogRef?: MatDialogRef<BaseDialogComponent<T>>;
+  dialogData!: {mode: DialogMode | string; entity?: T};
 
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
@@ -35,7 +35,7 @@ export class BaseDialogComponent<T> {
 
   init() {
     this.formFields = this.configService.getFormFields();
-    this.form.patchValue(this.dialogData.entity);
+    if (this.dialogData.entity) this.form.patchValue(this.dialogData.entity);
     this.form.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$)).subscribe((value) => {
       if (value) {
         this.error.set(null);

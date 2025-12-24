@@ -3,7 +3,7 @@ import {LoaderComponent} from '../../../../../shared/components/loader/loader.co
 import {ClientService} from '../../services/client.service';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';
-import {AppClient} from '../../models/client';
+import {AppClient, RadarClient} from '../../models/client';
 import {ClientTableRowComponent} from '../../components/client-table-row/client-table-row.component';
 import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
 import {
@@ -23,7 +23,7 @@ import {BaseEntityListPageComponent} from '../../../../components/entity-list-pa
     EntitiesPageComponent,
   ]
 })
-export class ClientListPageComponent extends BaseEntityListPageComponent<AppClient> implements OnInit, OnDestroy {
+export class ClientListPageComponent extends BaseEntityListPageComponent<AppClient, RadarClient> implements OnInit, OnDestroy {
 
   override entityService = inject(ClientService);
   override configService = inject(ClientConfigService);

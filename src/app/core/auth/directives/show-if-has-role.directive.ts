@@ -11,7 +11,7 @@ import {AuthService} from '../services/auth.service';
 import {ManagementPortalUser} from '../models/auth.model';
 
 @Directive({
-  selector: '[showIfHasRole]',
+  selector: '[appShowIfHasRole]',
 })
 export class PermissionDirective implements OnDestroy {
 
@@ -19,21 +19,17 @@ export class PermissionDirective implements OnDestroy {
   private templateRef = inject(TemplateRef<never>);
   private _viewContainer = inject(ViewContainerRef);
 
-  private _thenTemplateRef: TemplateRef<any> | null = null;
-  private _elseTemplateRef: TemplateRef<any> | null = null;
+  private readonly _thenTemplateRef: TemplateRef<any> | null = null;
+  private _elseTemplateRef: TemplateRef<never> | null = null;
   private _thenViewRef: EmbeddedViewRef<any> | null = null;
-  private _elseViewRef: EmbeddedViewRef<any> | null = null;
+  private _elseViewRef: EmbeddedViewRef<never> | null = null;
 
   private _user: ManagementPortalUser | null = this.authService.user()
   private _roles?: { role: string; entityName?: string }[];
   private _hasPermission?: boolean;
-  // private hasView = false;
   private _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-    // private templateRef: TemplateRef<never>,
-    // private _viewContainer: ViewContainerRef,
-    // private authService: AuthService
   ) {
     this._thenTemplateRef = this.templateRef;
 
@@ -42,16 +38,6 @@ export class PermissionDirective implements OnDestroy {
       this.checkPermission();
       this._updateView();
     });
-    // this._user = this.authService.user()
-    // this.checkPermission();
-    // this._updateView();
-    // this.authService.getUserFromStore().pipe(takeUntil(this._destroy$)).subscribe({
-    //   next: (user) => {
-    //     this._user = user;
-    //     this.checkPermission();
-    //     this._updateView();
-    //   },
-    // });
   }
 
   ngOnDestroy(): void {
@@ -59,7 +45,7 @@ export class PermissionDirective implements OnDestroy {
     this._destroy$.complete();
   }
 
-  @Input() set showIfHasRole(
+  @Input() set appShowIfHasRole(
     roles: { role: string; entityName?: string }[] | undefined
   ) {
       if (!roles) {
@@ -78,7 +64,7 @@ export class PermissionDirective implements OnDestroy {
    * A template to show if the condition expression evaluates to false.
    */
   @Input()
-  set showIfHasRoleElse(templateRef: TemplateRef<any> | null) {
+  set showIfHasRoleElse(templateRef: TemplateRef<never> | null) {
     this._elseTemplateRef = templateRef;
     this._elseViewRef = null; // clear previous view if any.
     this.checkPermission();
@@ -86,18 +72,12 @@ export class PermissionDirective implements OnDestroy {
   }
 
   private checkPermission() {
-    // if (!this._user) {
-    //   this._hasPermission = undefined;
-    //   return;
-    // }
-
     if (!this._roles) {
       this._hasPermission = true;
       return;
     }
 
     let hasRole = false;
-    // console.log(this._user?.roles);
     this._user?.roles.forEach((role) => {
       this._roles?.forEach((_role) => {
         if (_role.role === role.authorityName) {
@@ -117,7 +97,6 @@ export class PermissionDirective implements OnDestroy {
   }
 
   private _updateView() {
-      // console.log('Class: showIfHasRoleDirective, Function: _updateView, Line 104 this._hasPermission' , this._hasPermission);
     if (this._hasPermission === undefined && this._user === undefined) {
       this._viewContainer.clear();
       return;

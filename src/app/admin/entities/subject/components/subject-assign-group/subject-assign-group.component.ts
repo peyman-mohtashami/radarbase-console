@@ -1,22 +1,22 @@
 import {Component, inject, input, output} from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AppSubject } from "../../models/subject";
-import { AppGroup } from "../../../group/models/group";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {AppProject} from '../../../project/models/project';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-assign-group',
   templateUrl: './subject-assign-group.component.html',
   imports: [
     MatButton,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ]
 })
 export class SubjectAssignGroupComponent {
-  groups = input<AppGroup[]>([]);
   selection = input<SelectionModel<AppSubject>>(new SelectionModel<AppSubject>(true, []));
   project = input.required<AppProject>();
 
@@ -31,7 +31,7 @@ export class SubjectAssignGroupComponent {
       const subjects = this.selection().selected.map((s) => {
         return { login: s.login };
       });
-      return this.dialogService.openAssignGroupToSubjectsDialog(subjects, this.project(), this.groups())
+      return this.dialogService.openAssignGroupToSubjectsDialog(subjects, this.project())
     }
   }
 }

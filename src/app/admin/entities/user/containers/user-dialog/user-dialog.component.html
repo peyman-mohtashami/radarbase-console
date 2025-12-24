@@ -100,11 +100,12 @@
             </div>
             <div class="w-2/3">
               @if (form.controls._roles.controls._organizationAdmin.value) {
-                <app-mat-select-autocomplete formControlName='_organizations'
-                                            [legend]='"ADMIN.organization.title.plural" | translate'
+                @if (dialogData.organizationFullList | async; as organizations) {
+                  <app-mat-select-autocomplete formControlName='_organizations'
                                             [label]='"ADMIN.organization.title.plural" | translate'
-                                            [options]='(dialogData.organizationFullList | async) ?? []'
+                                            [options]='organizations'
                                             [multiple]="true"/>
+                }
               }
             </div>
           </div>
@@ -118,11 +119,12 @@
             </div>
             <div class="w-2/3">
               @if (form.controls._roles.controls._projectAdmin.value) {
+                @if (dialogData.projectFullList | async; as projects) {
                 <app-mat-select-autocomplete formControlName='_projects'
-                                            [legend]='"ADMIN.project.title.plural" | translate'
                                             [label]='"ADMIN.project.title.plural" | translate'
-                                            [options]='(dialogData.projectFullList | async) ?? []'
+                                            [options]='projects'
                                             [multiple]="true"/>
+                }
               }
             </div>
           </div>
@@ -133,10 +135,9 @@
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ (error()?.error.errorCode | translate) ?? (error()?.error?.message | translate) }}
-  </div>
+  <app-error-message-box>
+    {{ error()?.error.errorCode | translate }} <br>
+  </app-error-message-box>
 }
 
 <app-dialog-actions [dialogMode]='dialogData.mode'

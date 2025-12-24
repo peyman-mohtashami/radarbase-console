@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import { AppSourceType } from "../../models/source-type";
+import {AppSourceType, RadarSourceType} from "../../models/source-type";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -21,7 +21,7 @@ import {SourceTypeActionsComponent} from '../../components/source-type-actions/s
     SourceTypeActionsComponent,
   ]
 })
-export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType> implements OnInit, OnDestroy {
+export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType, RadarSourceType> implements OnInit, OnDestroy {
   override configService = inject(SourceTypeConfigService);
   override dialogService = inject(SourceTypeDialogService);
 
@@ -46,15 +46,4 @@ export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceTy
       ])
       .then();
   }
-
-  override navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin', 'source-types']).then();
-  }
-
-  // override getDialogData(entity?: AppSourceType) {
-  //   return {
-  //     entity,
-  //     // sourceTypes: this.sourceTypeFullList
-  //   }
-  // }
 }

@@ -13,9 +13,9 @@
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
       <span> {{ "ADMIN.protocol.title.singular" | translate }}</span>
-        @if (dialogData.entity?.general?.name) {
-          <span> "{{dialogData.entity.general.name}}"</span>
-        }
+      @if (dialogData.entity?.general?.name) {
+        <span> "{{ dialogData.entity.general.name }}"</span>
+      }
     </span>
     <div>
       @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -23,8 +23,8 @@
           <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
         </button>
       }
-    <button mat-icon-button (click)='close()'>
-      <span class="material-symbols-outlined">close</span>
+      <button mat-icon-button (click)='close()'>
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
     </button>
     </div>
   </span>
@@ -49,28 +49,32 @@
         <mat-stepper labelPosition="bottom" #matStepper [linear]="true">
 
           <mat-step [stepControl]="form.controls.general" errorMessage="Configuration is required.">
-            <ng-template matStepLabel><span class="text-base">Configuration</span></ng-template>
+            <ng-template matStepLabel><span class="text-base">{{ 'ADMIN.protocol.dialog.general.title' | translate }}</span>
+            </ng-template>
             <app-protocol-step-general [formControlName]="'general'" [entities]="dialogData.entities"
-                                            [entity]="dialogData.entity"
-                                            (onDemandTypeUpdated)="updateOnDemand($event)"
-                                            (languagesUpdated)="updateLanguages($event)" />
+                                       [entity]="dialogData.entity"
+                                       (onDemandTypeUpdated)="updateOnDemand($event)"
+                                       (languagesUpdated)="updateLanguages($event)"/>
           </mat-step>
 
           <mat-step [stepControl]="form.controls.content" errorMessage="Content is required.">
-            <ng-template matStepLabel><span class="text-base">Content</span></ng-template>
+            <ng-template matStepLabel><span class="text-base">{{ 'ADMIN.protocol.dialog.content.title' | translate }}</span>
+            </ng-template>
             <app-protocol-step-content [formControlName]="'content'"
-                                            [languages]="languages()"
-                                            [onDemand]="onDemand()"/>
+                                       [languages]="languages()"
+                                       [onDemand]="onDemand()"/>
           </mat-step>
 
           <mat-step [stepControl]="form.controls.questionsGroup" errorMessage="Questions Group is required.">
-            <ng-template matStepLabel><span class="text-base">Question Set</span></ng-template>
+            <ng-template matStepLabel><span
+              class="text-base">{{ 'ADMIN.protocol.dialog.questionsGroup.title' | translate }}</span></ng-template>
             <app-protocol-step-question-set [formControlName]="'questionsGroup'"/>
           </mat-step>
 
           @if (!onDemand()) {
             <mat-step [stepControl]="form.controls.scheduling" errorMessage="Scheduling is required.">
-              <ng-template matStepLabel><span class="text-base">Scheduling</span></ng-template>
+              <ng-template matStepLabel><span
+                class="text-base">{{ 'ADMIN.protocol.dialog.scheduling.title' | translate }}</span></ng-template>
 
               <app-protocol-step-scheduling [formControlName]="'scheduling'"/>
             </mat-step>
@@ -80,21 +84,22 @@
     }
   }
 </mat-dialog-content>
-@if (error()) {
-  <div
-      class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ error()?.error.errorCode | translate }}
-  </div>
-}
 
+@if (error()) {
+  <app-error-message-box>
+    {{ error()?.error.errorCode | translate }}
+  </app-error-message-box>
+}
 
 <app-dialog-actions [dialogMode]='dialogData.mode' [form]='form' (actionTriggered)='onAction($event)'>
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
-    <button mat-stroked-button (click)="previousStep()" [disabled]="!stepper()?.selectedIndex">Back</button>
+    <button mat-stroked-button (click)="previousStep()"
+            [disabled]="!stepper()?.selectedIndex">{{ 'ADMIN.protocol.dialog.backButton' | translate }}
+    </button>
     <button mat-stroked-button
             (click)="nextStep()"
             [disabled]="((stepper()?.steps?.length ?? 0) - 1) <= (stepper()?.selectedIndex ?? 0)">
-      Next
+      {{ 'ADMIN.protocol.dialog.nextButton' | translate }}
     </button>
   }
 </app-dialog-actions>
