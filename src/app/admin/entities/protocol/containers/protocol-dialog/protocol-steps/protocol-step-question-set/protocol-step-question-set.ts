@@ -1,6 +1,5 @@
 import {Component, effect, inject, OnDestroy} from '@angular/core';
 import {
-  AbstractControl,
   ControlValueAccessor,
   FormControl,
   FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,
@@ -20,8 +19,6 @@ import {MatDivider} from "@angular/material/divider";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {debounceTime} from "rxjs/operators";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatButton} from "@angular/material/button";
-import {MatStepperNext} from "@angular/material/stepper";
 import {QuestionnaireService} from '../../../../../questionnaire/services/questionnaire.service';
 import {AppQuestionnaire} from '../../../../../questionnaire/models/questionnaire';
 import {AsyncPipe} from '@angular/common';
@@ -41,8 +38,6 @@ import {AsyncPipe} from '@angular/common';
     MatError,
     TranslatePipe,
     AsyncPipe,
-    // MatButton,
-    // MatStepperNext
   ],
   providers: [
     {
@@ -106,18 +101,7 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
     this.questionnaires = this.questionnaireService.getAll()
   }
 
-  // private applyGithubDependentValidators(githubValue: boolean | null) {
-  //   this.form.controls.questionnaire.controls.name.setValidators(!githubValue ? [] : [CustomValidator.requiredValidator]);
-  //   this.form.controls.questionnaire.controls.name.updateValueAndValidity({ emitEvent: false });
-  //   this.form.controls.questionnaire.controls.repository.setValidators(!githubValue ? [] : [CustomValidator.requiredValidator]);
-  //   this.form.controls.questionnaire.controls.repository.updateValueAndValidity({ emitEvent: false });
-  //   this.form.controls.appQuestionnaire.setValidators(githubValue ? [] : [CustomValidator.requiredValidator]);
-  //   this.form.controls.appQuestionnaire.updateValueAndValidity({ emitEvent: false });
-  // }
-
-
-
-  validate(control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -159,16 +143,12 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   writeValue(value?: Record<string, string>) {
     if (value) {
-      // this.form.patchValue(value, { emitEvent: false });
       this.form.patchValue(value);
-      // const githubValue = this.form.controls.github.getRawValue();
-      // this.applyGithubDependentValidators(githubValue);
-
     } else {
       this.form.reset();
     }
@@ -184,6 +164,4 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
   registerOnTouched(fn: any) {
     this.onTouch = fn;
   }
-
-
 }

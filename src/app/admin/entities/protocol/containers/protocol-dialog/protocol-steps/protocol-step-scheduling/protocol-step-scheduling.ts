@@ -1,6 +1,5 @@
-import {Component, effect, inject, input, OnDestroy} from '@angular/core';
+import {Component, effect, inject, OnDestroy} from '@angular/core';
 import {MatDivider} from "@angular/material/divider";
-import {MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -15,7 +14,6 @@ import {MatError, MatHint, MatInput, MatSuffix} from "@angular/material/input";
 import {
   TimeFromZeroFormArrayComponent
 } from "../../components/custom-form-controls/time-from-zero-form-array/time-from-zero-form-array.component";
-import {MatButton} from "@angular/material/button";
 import {Subscription} from "rxjs";
 import {Validator as CustomValidator, ValidatorHint} from "../../../../../../../shared/utils/validators";
 import {QuestionnaireTimeUnit} from "../../../../models/protocol";
@@ -46,7 +44,6 @@ import {LocaleService} from "../../../../../../../core/locale/services/locale.se
     MatError,
     MatSuffix,
     TranslatePipe,
-    // TranslatePipe,
   ],
   providers: [
     {
@@ -66,8 +63,6 @@ export class ProtocolStepScheduling implements ControlValueAccessor, OnDestroy, 
   protected readonly UNITS = UNITS;
 
   localeService = inject(LocaleService);
-
-  // onDemand = input.required<boolean>();
 
   form = new FormGroup({
     relativeToReferenceTime: new FormControl<boolean>(false),
@@ -175,12 +170,11 @@ export class ProtocolStepScheduling implements ControlValueAccessor, OnDestroy, 
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   writeValue(value?: Record<string, string>) {
     if (value) {
-      // this.initializeLanguageControls();
       this.form.patchValue(value, { emitEvent: true });
     } else {
       this.form.reset();

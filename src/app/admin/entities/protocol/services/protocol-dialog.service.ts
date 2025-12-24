@@ -1,63 +1,25 @@
-import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../enums/dialog';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppProtocol} from "../models/protocol";
+import {AppProtocol, RadarProtocol} from "../models/protocol";
 import {ProtocolService} from "./protocol.service";
-import {AppConfig} from "../../config/models/config";
 import {
   ConfigPublishDialogComponent
 } from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
 import {ProtocolDialogComponent} from "../containers/protocol-dialog/protocol-dialog.component";
-
-export interface UpdateTrigger {
-  mode: DialogMode | string;
-  entity?: AppProtocol;
-}
+import {BaseDialogService} from '../../../services/base-dialog.service';
+import {ProtocolConfigService} from './protocol-config.service';
 
 @Injectable({providedIn: 'root'})
-export class ProtocolDialogService {
-  private entityService = inject(ProtocolService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class ProtocolDialogService extends BaseDialogService<AppProtocol, RadarProtocol, ProtocolDialogComponent> {
+  override entityService = inject(ProtocolService);
+  override configService = inject(ProtocolConfigService);
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
+  override createDialogRef(mode: DialogMode, entity?: AppProtocol): MatDialogRef<ProtocolDialogComponent> {
+    const protocolFullList = this.entityService.getWithQuery();
 
-  openDialog(mode: DialogMode, entity: AppProtocol | undefined, entities: AppProtocol[]) {
-    if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, {entity});
-
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppProtocol }) => {
-        this.dialogUpdateEvent.set({mode: value.action, entity: value.entity});
-        dialogRef.close();
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(mode: DialogMode, data: {entity: AppProtocol | undefined}): MatDialogRef<ProtocolDialogComponent> {
-    const formEntity = data.entity ? this.entityService.appToFormModel(data.entity) : undefined;
-    const protocolFullList = this.entityService.getAll();
-
-    const _data = {mode, entity: formEntity, entities: protocolFullList};
+    const _data = {mode, entity, protocolFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -86,7 +48,7 @@ export class ProtocolDialogService {
   }
 
   openPublishDialog(mode: "publish" | "discard", entities: AppProtocol[], projectId?: string, subjectId?: string) {
-    const dialogRef = this.createPublishDialogRef(mode, entities);
+    const dialogRef = this.createPublishDialogRef(mode);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
       (value) => {
@@ -112,10 +74,15 @@ export class ProtocolDialogService {
     });
   }
 
-  createPublishDialogRef(mode: "publish" | "discard", entities?: AppProtocol[]): MatDialogRef<ConfigPublishDialogComponent> {
+  createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
+    const originalList = this.entityService.cache;
+    const updatedList = this.entityService.updatedList;
     return this.dialog.open(ConfigPublishDialogComponent, {
-      data: {mode, entities},
+      data: {mode, originalList, updatedList},
+      panelClass: 'tailwind-slide-panel',
       width: '50%',
+      height: '100vh',
+      position: {right: '0'},
       hasBackdrop: true,
       disableClose: true,
       autoFocus: false,

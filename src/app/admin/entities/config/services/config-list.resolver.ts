@@ -16,6 +16,7 @@ export class ConfigListResolver implements Resolve<AppConfig[]> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppConfig[]> {
     this.entityService.clearCache();
+
     const client = this.selectedEntitiesService.selectedClient();
     const project = this.selectedEntitiesService.selectedProject();
     const subject = this.selectedEntitiesService.selectedSubject();

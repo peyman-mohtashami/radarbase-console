@@ -90,6 +90,7 @@ export interface AppProtocol extends RadarProtocol {
 }
 
 export interface FormProtocol {
+  _name: string;
   general: {
     name: string;
     languages: QuestionnaireLanguage[];

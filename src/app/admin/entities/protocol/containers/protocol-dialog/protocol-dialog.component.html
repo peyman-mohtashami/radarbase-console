@@ -13,8 +13,8 @@
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
       <span> {{ "ADMIN.protocol.title.singular" | translate }}</span>
-      @if (dialogData.entity?.general?.name) {
-        <span> "{{ dialogData.entity.general.name }}"</span>
+      @if (dialogData.entity?.name) {
+        <span> "{{ dialogData.entity?.name }}"</span>
       }
     </span>
     <div>
@@ -41,7 +41,7 @@
     @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
       <app-dialog-body-description [dialogMode]="dialogData.mode"
                                    [label]="`ADMIN.${entityName}.name.label` | translate"
-                                   [entityName]="dialogData.entity.general.name"/>
+                                   [entityName]="dialogData.entity?.name"/>
     }
 
     @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -51,9 +51,9 @@
           <mat-step [stepControl]="form.controls.general" errorMessage="Configuration is required.">
             <ng-template matStepLabel><span class="text-base">{{ 'ADMIN.protocol.dialog.general.title' | translate }}</span>
             </ng-template>
-            <app-protocol-step-general [formControlName]="'general'" [entities]="dialogData.entities"
+            <app-protocol-step-general [formControlName]="'general'" [entities]="(dialogData.protocolFullList | async) ?? []"
                                        [entity]="dialogData.entity"
-                                       (onDemandTypeUpdated)="updateOnDemand($event)"
+                                       (typeUpdated)="updateOnDemand($event)"
                                        (languagesUpdated)="updateLanguages($event)"/>
           </mat-step>
 

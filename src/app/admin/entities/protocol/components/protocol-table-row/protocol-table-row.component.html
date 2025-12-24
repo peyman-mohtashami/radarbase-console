@@ -1,75 +1,45 @@
-@let tableFields = configService.getTableFields();
-
-<mat-card class="rb-table-row" [class]="
-    (updated() ? 'bg-orange-200! ' : '') +
-    (expanded() ? 'mb-2' : '')
-  ">
-  <div class="rb-table-main-row">
-    @for (tableElement of tableFields; track tableElement.name) {
-      <div [class]="tableElement.tableClass + ' ' + tableElement.width + ' ' + tableElement.classes"
-           [class.flex-1]="!tableElement.width"
-           [class.shrink-0]="!!tableElement.width">
-        @switch (tableElement.name) {
-          @case ('name') {
-            <p class="font-bold text-primary">{{ entity().name || '-' }}</p>
-            <div class="flex items-center flex-wrap gap-2">
-              <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.protocol.availableLanguages' | translate}}</span>
-              @for (l of entity()._languages; track l) {
-                <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{ l.id }}</span></span>
-              }
-            </div>
-          }
-          @case ('questionnaire') {
-            {{ entity().questionnaire?.name }}
-          }
-          @case ('repeatProtocol') {
-            @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
-              <div [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
-              </div>
-            }
-            @if (entity().protocol?.completionWindow; as completionWindow) {
-              <div>
-                {{ 'ADMIN.protocol.completionWindow.tableContent' | translate: {amount: completionWindow.amount, unit: completionWindow.unit} }}
-              </div>
-            }
-          }
-          @case ('completionWindow') {
-            @if (entity().protocol?.completionWindow; as completionWindow) {
-              {{ completionWindow.amount }} {{ completionWindow.unit }}
-            } @else {
-              -
-            }
-          }
-          @case ('actions') {
-            <button mat-icon-button
-                    class="tiny block"
-                    [class.xs:hidden!]="extensionClass() === 'block xs:hidden'"
-                    [class.sm:hidden!]="extensionClass() === 'block sm:hidden'"
-                    [class.md:hidden!]="extensionClass() === 'block md:hidden'"
-                    [class.lg:hidden!]="extensionClass() === 'block lg:hidden'"
-                    [class.xl:hidden!]="extensionClass() === 'block xl:hidden'"
-                    [class.2xl:hidden!]="extensionClass() === 'block 2xl:hidden'"
-                    [class.3xl:hidden!]="extensionClass() === 'block 3xl:hidden'"
-                    (click)="onExpansionClick($event)">
-                <span class="material-symbols-outlined text-xl!">
-                  {{ expanded() ? 'expand_less' : 'expand_more' }}
-                </span>
-            </button>
-            <app-protocol-actions [entity]="entity()" [isExpanded]="true"/>
-          }
-          @default {
-            {{ $any(entity())[tableElement.name] || '-' }}
-          }
+<app-entity [gridView]="gridView()"
+            [tableFields]="configService.getTableFields()"
+            [extensionClass]="extensionClass()"
+            [customTemplate]="entityTemplate"
+            [updated]="updated()">
+  <app-protocol-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
+  <app-protocol-actions extra-actions [entity]="entity()" />
+</app-entity>
+<ng-template #entityTemplate let-property>
+  @switch (property.name) {
+    @case ('name') {
+      <p class="font-bold text-primary">{{ entity().name || '-' }}</p>
+      <div class="flex items-center flex-wrap gap-2">
+        <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.protocol.availableLanguages' | translate}}</span>
+        @for (l of entity()._languages; track l) {
+          <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{ l.id }}</span></span>
         }
       </div>
     }
-  </div>
-
-  @if (expanded()) {
-    <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
-      <app-protocol-details class="py-4"
-                            [entity]='entity()'
-                            [detailType]="DetailType.TABLE" />
-    </div>
+    @case ('questionnaire') {
+      {{ entity().questionnaire?.name }}
+    }
+    @case ('repeatProtocol') {
+      @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
+        <div [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
+        </div>
+      }
+      @if (entity().protocol?.completionWindow; as completionWindow) {
+        <div>
+          {{ 'ADMIN.protocol.completionWindow.tableContent' | translate: {amount: completionWindow.amount, unit: completionWindow.unit} }}
+        </div>
+      }
+    }
+    @case ('completionWindow') {
+      @if (entity().protocol?.completionWindow; as completionWindow) {
+        {{ completionWindow.amount }} {{ completionWindow.unit }}
+      } @else {
+        -
+      }
+    }
+    @default {
+      {{ $any(entity())[property.name] || '-' }}
+    }
   }
-</mat-card>
+</ng-template>

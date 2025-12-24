@@ -12,18 +12,27 @@
   </div>
 
   <div class="text-sm w-1/2">
-    <label for="showIntroduction">{{ 'ADMIN.protocol.dialog.content.showIntroductionLabel' | translate }}</label>
+    <label for="showIntroduction">
+      {{ 'ADMIN.protocol.dialog.content.showIntroductionLabel' | translate }}
+    </label>
     <mat-form-field class='small-input' appearance='outline'>
       <mat-select id="showIntroduction" formControlName="showIntroduction">
-        <mat-option [value]="false">{{ 'ADMIN.protocol.dialog.content.showIntroductionNo' | translate }}</mat-option>
-        <mat-option [value]="true">{{ 'ADMIN.protocol.dialog.content.showIntroductionOnce' | translate }}</mat-option>
-        <mat-option value="always">{{ 'ADMIN.protocol.dialog.content.showIntroductionAlways' | translate }}</mat-option>
+        <mat-option [value]="false">
+          {{ 'ADMIN.protocol.dialog.content.showIntroductionNo' | translate }}
+        </mat-option>
+        <mat-option [value]="true">
+          {{ 'ADMIN.protocol.dialog.content.showIntroductionOnce' | translate }}
+        </mat-option>
+        <mat-option value="always">
+          {{ 'ADMIN.protocol.dialog.content.showIntroductionAlways' | translate }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
   @if (form.controls.showIntroduction.value) {
-    <app-text-form-group class="mb-4" formControlName="startText"
+    <app-text-form-group class="mb-4"
+                         formControlName="startText"
                          [languages]="languages()"
                          [label]="'ADMIN.protocol.dialog.content.startTextLabel' | translate"
                          [textarea]="true"

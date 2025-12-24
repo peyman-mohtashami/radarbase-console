@@ -1,10 +1,7 @@
 import {Component, inject, input, OnDestroy} from '@angular/core';
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatIconButton} from "@angular/material/button";
 import {MatDivider} from "@angular/material/divider";
-import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatStepperPrevious} from "@angular/material/stepper";
 import {
-  AbstractControl,
   ControlValueAccessor,
   FormControl,
   FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,
@@ -15,7 +12,6 @@ import {TextFormGroupComponent} from "../../components/custom-form-controls/text
 import {Subscription} from "rxjs";
 import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {ProtocolStateService} from "../../services/protocol-state.service";
-import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {MatFormField, MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -65,7 +61,7 @@ export class ProtocolStepContent implements ControlValueAccessor, OnDestroy, Val
 
   private valueChangesSub?: Subscription;
 
-  validate(control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -103,7 +99,7 @@ export class ProtocolStepContent implements ControlValueAccessor, OnDestroy, Val
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   writeValue(value?: Record<string, string>) {

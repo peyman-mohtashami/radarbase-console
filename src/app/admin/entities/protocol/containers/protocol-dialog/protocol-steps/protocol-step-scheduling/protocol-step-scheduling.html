@@ -14,8 +14,8 @@
                [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
         <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
         <mat-datepicker #startDatePicker/>
-        @if (form.controls.referenceTimestamp.errors; as errors) {
-          <mat-error>
+<!--        @if (form.controls.referenceTimestamp.errors; as errors) {-->
+<!--          <mat-error>-->
             <!--          @if (errors?.['matDatepickerMin']) {-->
             <!--            Date is out of range. It should be after 2000. &lt;!&ndash; TODO translate &ndash;&gt;-->
             <!--          }-->
@@ -28,19 +28,10 @@
             <!--          @if (errors?.['matStartDateInvalid']) {-->
             <!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
             <!--          }-->
-          </mat-error>
-        }
+<!--          </mat-error>-->
+<!--        }-->
       </mat-form-field>
     </div>
-
-    <!--    <div>-->
-      <!--      <label for="referenceTimestamp" class="text-sm">Reference timestamp *</label>-->
-      <!--      <mat-form-field class='small-input w-1/2'-->
-      <!--                      appearance='outline'>-->
-      <!--        <input id="referenceTimestamp" matInput type="date" formControlName='referenceTimestamp' required/>-->
-      <!--        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>-->
-      <!--      </mat-form-field>-->
-      <!--    </div>-->
   }
   <mat-divider class="mb-2!"/>
 

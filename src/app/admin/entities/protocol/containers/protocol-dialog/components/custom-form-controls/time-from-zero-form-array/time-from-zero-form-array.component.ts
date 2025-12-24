@@ -20,6 +20,8 @@ import {Validator as CustomValidator} from "../../../../../../../../shared/utils
 import {map} from "rxjs/operators";
 import {QuestionnaireTimeUnit} from "../../../../../models/protocol";
 import {MatIconButton} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-time-from-zero-form-array',
@@ -31,6 +33,8 @@ import {MatIconButton} from '@angular/material/button';
     MatFormField,
     MatInput,
     MatIconButton,
+    MatIcon,
+    TranslatePipe,
   ],
   providers: [
     {
@@ -158,12 +162,3 @@ function dayTimeToMinutes(input: { day: number | null | undefined; time: string 
 
   return day * 24 * 60 + hours * 60 + minutes;
 }
-
-// function minutesToDayTime(totalMinutes: number): { day: number; time: string } {
-//   const day = Math.floor(totalMinutes / 1440); // 24 * 60
-//   const minutesFromMidnight = totalMinutes % 1440;
-//   const hours = Math.floor(minutesFromMidnight / 60);
-//   const minutes = minutesFromMidnight % 60;
-//   const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-//   return { day, time };
-// }

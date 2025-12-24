@@ -1433,6 +1433,8 @@
           "repeatProtocolAmount": "Amount",
           "repeatProtocolUnit": "Unit",
           "timeOffsetsLabel": "Time offsets",
+          "timeOffsetsDay": "Day",
+          "timeOffsetsTime": "Time",
           "completionWindowLabel": "Time to complete",
           "completionWindowUnit": "Unit",
           "completionWindowAmount": "Amount",

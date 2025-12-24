@@ -1,25 +1,29 @@
 <app-details [entityMetadata]="configService.getEntityMetadata()"
-            [tableFields]="configService.getTableFields()"
-            [detailType]="detailType()"
-            [customTemplate]="detailsTemplate"/>
+             [tableFields]="configService.getTableFields()"
+             [detailType]="detailType()"
+             [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
   @switch (property.name) {
-    @case('repeatProtocol') {
+    @case ('repeatProtocol') {
       @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
-        <div [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
+        <div
+          [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
         </div>
       }
     }
-
     @case ('completionWindow') {
       @if (entity().protocol?.completionWindow; as completionWindow) {
-        {{ 'ADMIN.protocol.completionWindow.tableContent' | translate: {amount: completionWindow.amount, unit: completionWindow.unit} }}
+        {{
+          'ADMIN.protocol.completionWindow.tableContent' | translate: {
+            amount: completionWindow.amount,
+            unit: completionWindow.unit
+          }
+        }}
       } @else {
         -
       }
     }
-
     @default {
       {{ $any(entity())[property.name] || "-" }}
     }

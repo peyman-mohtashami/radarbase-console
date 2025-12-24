@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {ProtocolsResolver} from "./services/protocols.resolver";
+import {ProtocolListResolver} from "./services/protocol-list.resolver";
 import {ProtocolListPageComponent} from './containers/protocol-list-page/protocol-list-page.component';
 
 export const protocolsRoutes: Routes = [
@@ -7,7 +7,7 @@ export const protocolsRoutes: Routes = [
     path: '',
     component: ProtocolListPageComponent,
     resolve: {
-      entities: ProtocolsResolver,
+      entities: ProtocolListResolver,
     },
   },
 ]

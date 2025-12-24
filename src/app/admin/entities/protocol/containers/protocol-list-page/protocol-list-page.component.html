@@ -1,3 +1,7 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
 <app-entities-page-header [showTitle]="true"
                           [entityMetadata]="configService.getEntityMetadata()"
                           [enableAddButton]="true"
@@ -10,11 +14,11 @@
             color="primary"
             (click)="showHistory()">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined">history</span>
+        <mat-icon class="material-symbols-outlined">history</mat-icon>
       </span>
     </button>
   </div>
-  @if (tableFilters.length && processedEntities().length > MIN_ENTITIES_FOR_FILTERS) {
+  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
     <app-data-table-filter bottom-filter
                            [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
@@ -26,7 +30,7 @@
 @if (isChanged) {
   <div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
     <div class="flex items-center gap-4 text-orange-700">
-      <span class="material-symbols-outlined">error_outline</span>
+      <mat-icon class="material-symbols-outlined">error_outline</mat-icon>
       <span>{{ `ADMIN.protocol.publish.unpublishedMessage` | translate }}</span>
     </div>
     <div class="flex items-center gap-4">
@@ -35,7 +39,7 @@
               color='primary'
               (click)="onPublishDialogAction('discard')">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined font-bold">close</span>
+        <mat-icon class="material-symbols-outlined font-bold">close</mat-icon>
         {{ `ADMIN.protocol.discard.discardAll` | translate }}
       </span>
       </button>
@@ -44,7 +48,7 @@
               color='accent'
               (click)="onPublishDialogAction('publish')">
       <span class="font-bold flex items-center gap-2">
-        <span class="material-symbols-outlined font-bold">publish</span>
+        <mat-icon class="material-symbols-outlined font-bold">publish</mat-icon>
         {{ `ADMIN.protocol.publish.title` | translate }}
       </span>
       </button>
@@ -52,24 +56,22 @@
   </div>
 }
 
-
 @if (loading()) {
   <app-loader/>
 }
 
-
-<app-entities-page [entities]="visibleEntities()"
+<app-entities-page [entities]="entities()"
                    [tableFields]="tableFields"
                    [entityMetadata]="entityMetadata"
                    [page]="page()"
                    [sort]="sort()"
                    (switchPageEvent)="switchPage($event)"
                    (switchSortEvent)="switchSort($event)"
-                   (activeQueryChangeEvent)="handleActiveQueryChange($event)"
                    [customTemplate]="itemTemplate"
-                   [totalEntities]="processedEntities().length"/>
+                   [totalEntities]="entityService.total()"/>
 <ng-template #itemTemplate let-entity>
   <app-protocol-table-row [entity]="entity"
+                          [gridView]="gridView"
                           [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
                           [extensionClass]="extensionClass()" />
 </ng-template>

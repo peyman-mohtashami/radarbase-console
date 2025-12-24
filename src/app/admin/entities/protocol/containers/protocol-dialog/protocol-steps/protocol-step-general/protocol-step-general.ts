@@ -1,12 +1,9 @@
 import {Component, effect, inject, input, OnDestroy, OnInit, output} from '@angular/core';
-import {MatButton} from "@angular/material/button";
-import {MatDivider} from "@angular/material/divider";
 import {MatHint, MatInput} from "@angular/material/input";
 import {
   MatSelectAutocompleteComponent
 } from "../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatStepperNext} from "@angular/material/stepper";
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -26,7 +23,7 @@ import {MatError} from "@angular/material/form-field";
 import {MatFormField} from "@angular/material/select";
 import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {Subscription} from "rxjs";
-import {AppProtocol, FormProtocol} from "../../../../models/protocol";
+import {AppProtocol} from "../../../../models/protocol";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {debounceTime} from "rxjs/operators";
 import {ProtocolStateService} from "../../services/protocol-state.service";
@@ -35,15 +32,12 @@ import {ProtocolStateService} from "../../services/protocol-state.service";
   selector: 'app-protocol-step-general',
   templateUrl: './protocol-step-general.html',
   imports: [
-    // MatButton,
-    // MatDivider,
     MatError,
     MatFormField,
     MatHint,
     MatInput,
     MatSelectAutocompleteComponent,
     MatSlideToggle,
-    // MatStepperNext,
     ReactiveFormsModule,
     TranslatePipe
   ],
@@ -70,10 +64,10 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
   private protocolStateService = inject(ProtocolStateService);
 
   entities = input.required<AppProtocol[]>();
-  entity = input<FormProtocol | undefined>();
+  entity = input<AppProtocol | undefined>();
 
   languagesUpdated = output<RadarOption[]>();
-  onDemandTypeUpdated = output<boolean>();
+  typeUpdated = output<boolean>();
 
   form = new FormGroup({
     name: new FormControl<string>('', {
@@ -102,7 +96,7 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
   constructor() {
     effect(() => {
       const onDemandValue = this.onDemandValueChanges();
-      this.onDemandTypeUpdated.emit(!!onDemandValue);
+      this.typeUpdated.emit(!!onDemandValue);
       const languagesValue = this.languagesValueChanges();
       this.languagesUpdated.emit(languagesValue);
       const selectedLanguage = this.protocolStateService.selectedLanguage();
@@ -115,8 +109,7 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
     this.form.controls.name.addValidators(this.duplicateValidator);
   }
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    console.log('Class: QuestionnaireStepGeneral, Function: validate, Line 101 ',);
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -153,10 +146,8 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {
-  };
-  onTouch = () => {
-  };
+  onChange = () => {};
+  onTouch = () => {};
 
   writeValue(value?: Record<string, string>) {
     if (value) {
@@ -179,7 +170,7 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
 
   private duplicateValidator = (control: AbstractControl) => {
     return this.entities()?.find(entity =>
-      control.value === entity.name && this.entity()?.general.name !== entity.name
+      control.value === entity.name && this.entity()?.name !== entity.name
     )
       ? {duplicate: true}
       : null;

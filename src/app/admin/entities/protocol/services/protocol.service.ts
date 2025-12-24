@@ -1,8 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from "rxjs";
+import { Injectable} from '@angular/core';
+import {Observable, of} from "rxjs";
 
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {
   AppProtocol,
   FormProtocol,
@@ -22,13 +21,15 @@ import {
   getHeaders,
   getUrlSegment
 } from '../../config/services/config.service';
+import {BaseEntityService} from '../../../services/base-entity.service';
+import {Params} from '@angular/router';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];
 
 @Injectable({providedIn: 'root'})
-export class ProtocolService {
+export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtocol> {
+  updatedList: AppProtocol[] = [];
 
-  private http = inject(HttpClient);
   private readonly CLIENT_ID = 'protocol-service';
 
   radarToAppModel(entity: RadarProtocol): AppProtocol {
@@ -47,6 +48,7 @@ export class ProtocolService {
 
   appToFormModel(entity: AppProtocol): FormProtocol {
     return {
+      _name: entity.name,
       general: {
         name: entity.name,
         isDemo: entity.isDemo ?? false,
@@ -197,13 +199,34 @@ export class ProtocolService {
     }
   }
 
-  getAll(projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
+  override getWithQuery(queryParams?: Params, projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
+    const {
+      pageIndex = 0,
+      pageSize = 10,
+      sortField = 'id',
+      sortOrder = 'desc',
+      ...filter
+    } = queryParams ?? {};
+
+    const process = (entities: AppProtocol[]) => {
+      const filteredEntities = this.getFilteredEntities(entities, filter);
+      const sortedEntities = this.applySorting(filteredEntities, {sortField, sortOrder});
+      return this.applyPagination(sortedEntities, {pageSize, pageIndex});
+    };
+
+    if (this.CACHE_ENABLED && this.cacheLoaded) {
+      this.total.set(this.cache.length);
+      return of(queryParams ? process(this.updatedList) : this.updatedList);
+    }
+
     const headers = getHeaders();
     const appConfigBaseUrl = getAppConfigBaseUrl();
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
-    return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockProtocolServer.get(url)).pipe(
+    const radarConfigBundleObservable = !environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockProtocolServer.get(url)
+
+    return radarConfigBundleObservable.pipe(
       map(configBundle => {
           const superProtocolString = getConfigsFromConfigBundle(configBundle)
             .find(config => config.name === 'main');
@@ -211,7 +234,50 @@ export class ProtocolService {
           const protocols = superProtocol?.['protocols'] as RadarProtocol[] || [];
           return protocols.map(p => this.radarToAppModel(p));
         }
-      ));
+      ),
+      tap((entities) => {
+        this.cache = [...entities];
+        this.updatedList = [...entities];
+        this.cacheLoaded = true;
+        this.total.set(entities.length);
+      }),
+      map((entities) => queryParams ? process(entities) : entities)
+    );
+  }
+
+  override getEntity(key: number | string): AppProtocol {
+    const entity = this.updatedList.find(item => item._name === key);
+    if (!entity) throw new Error(`Entity with id ${key} not found`);
+    return entity;
+  }
+
+  override add(entity: AppProtocol): Observable<AppProtocol> {
+    return of(entity)
+      .pipe(
+        map(entity => this.toAppModel(entity)),
+        tap(_entity => {
+          this.total.set(this.total() + 1);
+          this.updatedList.push(_entity);
+        })
+      );
+  }
+
+  override update(update: AppProtocol): Observable<AppProtocol> {
+    return of(update)
+      .pipe(
+        map(entity => this.toAppModel(entity)),
+        tap(() => {
+          this.updatedList = this.updatedList.map((e) => (e._name === update._name ? update : e));
+        })
+      );
+  }
+
+  override delete(entity: AppProtocol): Observable<void> {
+    return of(undefined).pipe(
+      tap(() => {
+        this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
+      })
+    );
   }
 
   publish(protocols: AppProtocol[], projectId?: string, subjectId?: string): Observable<AppProtocol[]> {

@@ -15,9 +15,6 @@ export interface AppQuestionnaire {
   // _defaultLanguage: string; //TODO
 }
 
-export interface FormQuestionnaire {
-}
-
 export interface RadarQuestion {
   field_name: string;
   field_type: string;
