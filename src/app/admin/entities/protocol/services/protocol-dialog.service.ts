@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppProtocol, RadarProtocol} from "../models/protocol";
@@ -8,7 +8,7 @@ import {
   ConfigPublishDialogComponent
 } from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
 import {ProtocolDialogComponent} from "../containers/protocol-dialog/protocol-dialog.component";
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {ProtocolConfigService} from './protocol-config.service';
 
 @Injectable({providedIn: 'root'})

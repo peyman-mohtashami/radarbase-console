@@ -1,5 +1,5 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';

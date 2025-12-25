@@ -3,7 +3,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {DetailType} from "../../enums/detail-type";
 import {RbPageSortEvent, RbSort, TableElement} from "../../models/table.model";
 import {NgTemplateOutlet} from "@angular/common";
-import {EntityRegistry} from "../../../shared/consts/entity-registry";
+import {EntityRegistry} from "../../../../shared/consts/entity-registry";
 import {TableQueryReflectorDirective} from '../../directives/table-query-reflector.directive';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MIN_ENTITIES_FOR_PAGINATION, PAGE_SIZE_OPTIONS} from '../../consts/default-table-values';
@@ -11,8 +11,8 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
-  selector: 'app-entities-page',
-  templateUrl: './entities-page.component.html',
+  selector: 'app-entity-list-page',
+  templateUrl: './entity-list-page.component.html',
   imports: [
     TranslatePipe,
     TableQueryReflectorDirective,
@@ -21,7 +21,7 @@ import {SelectionModel} from '@angular/cdk/collections';
     NgTemplateOutlet,
   ]
 })
-export class EntitiesPageComponent {
+export class EntityListPageComponent {
   protected readonly DetailType = DetailType;
   protected readonly MIN_ENTITIES_FOR_PAGINATION = MIN_ENTITIES_FOR_PAGINATION;
   protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;

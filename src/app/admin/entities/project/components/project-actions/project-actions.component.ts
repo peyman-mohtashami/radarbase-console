@@ -1,5 +1,5 @@
 import {Component, inject, input} from '@angular/core';
-import {DialogMode} from "../../../../enums/dialog";
+import {DialogMode} from "../../../../base-entities/enums/dialog";
 import {AppProject} from "../../models/project";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";

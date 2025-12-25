@@ -5,7 +5,7 @@ import {PercentPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {Thread, ThreadState} from '../../models/radar-metrics.model';
-import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
+import {DetailElementComponent} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 
 @Component({
   selector: 'app-metrics-threads',

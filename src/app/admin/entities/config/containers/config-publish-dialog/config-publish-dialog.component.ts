@@ -16,7 +16,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ConfigConfigService} from '../../services/config-config.service';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
@@ -34,7 +34,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent,
   ]
 })
-export class ConfigPublishDialogComponent extends BaseDialogComponent<AppConfig[]> implements OnInit, AfterViewInit {
+export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppConfig[]> implements OnInit, AfterViewInit {
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

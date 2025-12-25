@@ -1,12 +1,12 @@
 import {Component, inject, input} from '@angular/core';
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
 import {UserCreatedByComponent} from '../../../user/components/user-createdby/user-created-by.component';
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
 import {PermissionConfigService} from "../../services/permission-config.service";
 import {AppUser} from "../../../user/models/user";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
 
 @Component({
@@ -16,14 +16,14 @@ import {UserActivateComponent} from '../../../user/components/user-activate/user
     UserActivatedComponent,
     UserCreatedByComponent,
     LocalDateComponent,
-    DetailsComponent,
+    EntityDetailsComponent,
     UserActivatedComponent,
     UserCreatedByComponent,
     PermissionRolesComponent,
     UserActivateComponent,
   ]
 })
-export class PermissionDetailsComponent extends BaseDetailsComponent<AppUser>{
+export class PermissionDetailsComponent extends BaseEntityDetailsComponent<AppUser>{
   override configService = inject(PermissionConfigService);
 
   organizationName = input<string>();

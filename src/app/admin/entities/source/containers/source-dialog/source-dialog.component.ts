@@ -16,15 +16,15 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {SourceConfigService} from '../../services/source-config.service';
 import {SourceDialogService} from '../../services/source-dialog.service';
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {AppSource} from '../../models/source';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -47,7 +47,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent,
   ]
 })
-export class SourceDialogComponent extends BaseDialogComponent<AppSource> implements OnInit, AfterViewInit {
+export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> implements OnInit, AfterViewInit {
   override configService = inject(SourceConfigService);
   override dialogRef = inject(MatDialogRef<SourceDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

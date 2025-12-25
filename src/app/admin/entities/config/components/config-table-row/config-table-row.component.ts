@@ -2,8 +2,8 @@ import {Component, inject} from "@angular/core";
 import {AppConfig} from '../../models/config';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ConfigConfigService} from "../../services/config-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {MatIcon} from '@angular/material/icon';
 import {ConfigActionsComponent} from '../config-actions/config-actions.component';
 
@@ -12,11 +12,11 @@ import {ConfigActionsComponent} from '../config-actions/config-actions.component
   templateUrl: './config-table-row.component.html',
   imports: [
     MatTooltip,
-    EntityComponent,
+    EntityTableRowComponent,
     MatIcon,
     ConfigActionsComponent,
   ]
 })
-export class ConfigTableRowComponent extends BaseEntityComponent<AppConfig> {
+export class ConfigTableRowComponent extends BaseEntityTableRowComponent<AppConfig> {
   override configService = inject(ConfigConfigService);
 }

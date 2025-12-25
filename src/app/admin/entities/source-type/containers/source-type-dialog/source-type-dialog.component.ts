@@ -3,21 +3,21 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {AppSourceType, SourceTypeScope} from "../../models/source-type";
 import {Validator} from '../../../../../shared/utils/validators';
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
-} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
@@ -41,7 +41,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent
   ]
 })
-export class SourceTypeDialogComponent extends BaseDialogComponent<AppSourceType> implements OnInit, AfterViewInit {
+export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSourceType> implements OnInit, AfterViewInit {
   override configService = inject(SourceTypeConfigService);
   override dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

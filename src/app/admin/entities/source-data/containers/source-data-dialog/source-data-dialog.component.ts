@@ -16,17 +16,17 @@ import {
   MatSelectAutocompleteComponent
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {Validator} from '../../../../../shared/utils/validators';
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
-} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
@@ -49,7 +49,7 @@ import {AsyncPipe} from '@angular/common';
     AsyncPipe,
   ]
 })
-export class SourceDataDialogComponent extends BaseDialogComponent<AppSourceData> implements OnInit, AfterViewInit {
+export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSourceData> implements OnInit, AfterViewInit {
   protected readonly ProcessingState = ProcessingState;
 
   override configService = inject(SourceDataConfigService);

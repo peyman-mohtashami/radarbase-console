@@ -31,7 +31,7 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
-import {DetailType} from '../../../../enums/detail-type';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';

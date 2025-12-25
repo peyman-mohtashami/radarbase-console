@@ -11,8 +11,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {ROLES} from "../../../../../shared/enums/roles";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
-import {TabLink} from "../../../../models/tab-link";
-import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {TabLink} from "../../../../base-entities/models/tab-link";
+import {BaseEntityPageComponent} from '../../../../base-entities/containers/entity-page/base-entity-page.component';
 
 @Component({
   selector: 'app-organization-page',

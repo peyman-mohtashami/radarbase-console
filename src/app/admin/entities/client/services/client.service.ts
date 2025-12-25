@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppClient, RadarClient} from "../models/client";
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})

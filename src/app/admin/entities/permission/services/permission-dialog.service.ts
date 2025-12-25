@@ -1,10 +1,10 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {PermissionDialogComponent} from '../containers/permission-dialog/permission-dialog.component';
 import {AppUser, RadarUser} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {PermissionConfigService} from './permission-config.service';
 
 @Injectable({providedIn: 'root'})

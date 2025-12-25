@@ -11,17 +11,17 @@ import {Validator} from "../../../../../shared/utils/validators";
 import {AppConfig} from "../../models/config";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {DialogMode} from '../../../../enums/dialog';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
-} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {ConfigConfigService} from "../../services/config-config.service";
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 
 @Component({
@@ -40,7 +40,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent
   ]
 })
-export class ConfigDialogComponent extends BaseDialogComponent<AppConfig> implements OnInit, AfterViewInit {
+export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> implements OnInit, AfterViewInit {
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

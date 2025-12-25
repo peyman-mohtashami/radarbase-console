@@ -7,15 +7,15 @@ import {MatCard} from '@angular/material/card';
 import {MatIconButton} from '@angular/material/button';
 
 @Component({
-  selector: 'app-entity',
-  templateUrl: './entity.component.html',
+  selector: 'app-entity-table-row',
+  templateUrl: './entity-table-row.component.html',
   imports: [
     NgTemplateOutlet,
     MatCard,
     MatIconButton,
   ]
 })
-export class EntityComponent {
+export class EntityTableRowComponent {
   @HostBinding('class')
   get hostClasses(): string {
     return `block transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01]`.trim();

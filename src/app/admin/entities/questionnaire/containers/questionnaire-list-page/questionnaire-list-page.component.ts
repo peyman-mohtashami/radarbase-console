@@ -5,14 +5,14 @@ import {PageEvent} from "@angular/material/paginator";
 import {Subject} from "rxjs";
 import {SelectionModel} from "@angular/cdk/collections";
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {RbSort, TableElement} from '../../../../models/table.model';
-import {DialogMode} from '../../../../enums/dialog';
+import {RbSort, TableElement} from '../../../../base-entities/models/table.model';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {ROLES} from "../../../../../shared/enums/roles";
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
   FilterEvent
-} from '../../../../components/data-table-filter/data-table-filter.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 
 import {QuestionnaireService} from "../../services/questionnaire.service";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
@@ -23,18 +23,18 @@ import {
 } from "../../components/questionnaire-table-row/questionnaire-table-row.component";
 import {AppProject} from "../../../project/models/project";
 import {AppSubject} from "../../../subject/models/subject";
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {DEFAULT_PAGE_SIZE, MIN_ENTITIES_FOR_FILTERS} from '../../../../consts/default-table-values';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {DEFAULT_PAGE_SIZE, MIN_ENTITIES_FOR_FILTERS} from '../../../../base-entities/consts/default-table-values';
 
 @Component({
   selector: 'app-questionnaire-list-page',
   templateUrl: './questionnaire-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     QuestionnaireTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class QuestionnaireListPageComponent implements OnInit, OnDestroy {

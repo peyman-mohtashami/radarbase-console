@@ -7,8 +7,8 @@ import {AppSource} from '../../models/source';
 import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SourceConfigService} from "../../services/source-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {SourceActionsComponent} from '../source-actions/source-actions.component';
 
 @Component({
@@ -21,10 +21,10 @@ import {SourceActionsComponent} from '../source-actions/source-actions.component
     SourceDetailsComponent,
     TruncatePipe,
     MatTooltip,
-    EntityComponent,
+    EntityTableRowComponent,
     SourceActionsComponent,
   ]
 })
-export class SourceTableRowComponent extends BaseEntityComponent<AppSource> {
+export class SourceTableRowComponent extends BaseEntityTableRowComponent<AppSource> {
   override configService = inject(SourceConfigService);
 }

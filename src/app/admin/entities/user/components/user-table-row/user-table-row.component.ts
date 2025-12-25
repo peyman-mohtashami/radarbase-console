@@ -5,8 +5,8 @@ import {UserDetailsComponent} from "../user-details/user-details.component";
 import {UserActivatedComponent} from "../user-activated/user-activated.component";
 import {UserRolesComponent} from "../user-roles/user-roles.component";
 import {UserConfigService} from "../../services/user-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {UserActionsComponent} from '../user-actions/user-actions.component';
 import {UserActivateComponent} from '../user-activate/user-activate.component';
 
@@ -18,11 +18,11 @@ import {UserActivateComponent} from '../user-activate/user-activate.component';
     UserDetailsComponent,
     UserActivatedComponent,
     UserRolesComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     UserActionsComponent,
     UserActivateComponent,
   ]
 })
-export class UserTableRowComponent extends BaseEntityComponent<AppUser> {
+export class UserTableRowComponent extends BaseEntityTableRowComponent<AppUser> {
   override configService = inject(UserConfigService);
 }

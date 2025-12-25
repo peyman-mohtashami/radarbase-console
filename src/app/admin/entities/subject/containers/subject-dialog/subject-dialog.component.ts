@@ -24,9 +24,9 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
-import {DetailType} from '../../../../enums/detail-type';
-import {DialogAction} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DialogAction} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -58,7 +58,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent,
   ]
 })
-export class SubjectDialogComponent extends BaseDialogComponent<AppSubject> implements OnInit, AfterViewInit {
+export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject> implements OnInit, AfterViewInit {
   protected readonly SubjectDialogMode = SubjectDialogMode;
   protected readonly DetailType = DetailType;
   protected readonly DialogAction = DialogAction;

@@ -2,7 +2,7 @@ import {Component, output, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {FormGroup} from '@angular/forms';
-import {ValidatorError, ValidatorHint} from '../../../shared/utils/validators';
+import {ValidatorError, ValidatorHint} from '../../../../shared/utils/validators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {DialogAction} from './dialog-actions/dialog-actions.component';
@@ -13,9 +13,9 @@ import {Subject} from 'rxjs';
   selector: 'app-base-dialog',
   template: '',
 })
-export class BaseDialogComponent<T> {
+export class BaseEntityDialogComponent<T> {
   protected configService!: BaseConfigService;
-  protected dialogRef?: MatDialogRef<BaseDialogComponent<T>>;
+  protected dialogRef?: MatDialogRef<BaseEntityDialogComponent<T>>;
   dialogData!: {mode: DialogMode | string; entity?: T};
 
   protected readonly DialogMode = DialogMode;

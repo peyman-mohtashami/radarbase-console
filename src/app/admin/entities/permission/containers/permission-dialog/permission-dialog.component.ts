@@ -5,18 +5,18 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {DetailType} from '../../../../enums/detail-type';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AppUser} from "../../../user/models/user";
-import {DialogAction} from "../../../../components/dialog/dialog-actions/dialog-actions.component";
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {DialogAction} from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {debounceTime} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -39,7 +39,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent,
   ]
 })
-export class PermissionDialogComponent extends BaseDialogComponent<AppUser> implements OnInit, AfterViewInit, OnDestroy {
+export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser> implements OnInit, AfterViewInit, OnDestroy {
   protected readonly DetailType = DetailType;
   protected readonly DialogAction = DialogAction;
 

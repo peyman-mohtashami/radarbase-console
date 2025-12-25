@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AppGroup, RadarGroup} from "../models/group";
 import {Observable} from 'rxjs';
 import {Params} from '@angular/router';
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../environments/environment';
 
 @Injectable({

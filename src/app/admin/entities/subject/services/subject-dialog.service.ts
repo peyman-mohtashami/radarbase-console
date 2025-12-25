@@ -18,7 +18,7 @@ import {
   SubjectDialogAssignGroupComponent
 } from '../containers/subject-dialog-assign-group/subject-dialog-assign-group.component';
 import {AppGroup} from '../../group/models/group';
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {SubjectConfigService} from './subject-config.service';
 import {GroupService} from '../../group/services/group.service';
 import {ClientService} from '../../client/services/client.service';

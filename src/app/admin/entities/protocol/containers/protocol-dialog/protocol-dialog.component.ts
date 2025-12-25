@@ -14,10 +14,10 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {DialogMode} from "../../../../enums/dialog";
+import {DialogMode} from "../../../../base-entities/enums/dialog";
 import {AppProtocol} from "../../models/protocol";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
-import {DialogActionsComponent} from "../../../../components/dialog/dialog-actions/dialog-actions.component";
+import {DialogActionsComponent} from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
 import {EditorComponent} from "ngx-monaco-editor-v2";
 import {MatTooltip} from "@angular/material/tooltip";
 
@@ -35,10 +35,10 @@ import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/ma
 import {ProtocolService} from "../../services/protocol.service";
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {MatIcon} from '@angular/material/icon';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
@@ -76,7 +76,7 @@ import {AsyncPipe} from '@angular/common';
     },
   ],
 })
-export class ProtocolDialogComponent extends BaseDialogComponent<AppProtocol> implements OnInit, AfterViewInit {
+export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtocol> implements OnInit, AfterViewInit {
   private entityService = inject(ProtocolService);
   override configService = inject(ProtocolConfigService);
   override dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);

@@ -6,7 +6,7 @@ import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
 import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {BaseEntityPageComponent} from '../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {SourceTypeActionsComponent} from '../../components/source-type-actions/source-type-actions.component';
 
 @Component({

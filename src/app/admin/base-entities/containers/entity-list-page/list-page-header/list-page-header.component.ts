@@ -2,15 +2,15 @@ import {Component, inject, Input, input, output} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
-import {PermissionDirective} from '../../../core/auth/directives/show-if-has-role.directive';
-import {DialogMode} from '../../enums/dialog';
-import {EntityRegistry} from "../../../shared/consts/entity-registry";
+import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
+import {DialogMode} from '../../../enums/dialog';
+import {EntityRegistry} from "../../../../../shared/consts/entity-registry";
 import {MatIcon} from '@angular/material/icon';
-import {ROLES} from '../../../shared/enums/roles';
+import {ROLES} from '../../../../../shared/enums/roles';
 
 @Component({
   selector: 'app-entities-page-header',
-  templateUrl: './entities-page-header.component.html',
+  templateUrl: './list-page-header.component.html',
   imports: [
     TranslatePipe,
     MatIconButton,
@@ -19,7 +19,7 @@ import {ROLES} from '../../../shared/enums/roles';
     MatIcon
   ]
 })
-export class EntitiesPageHeaderComponent {
+export class ListPageHeaderComponent {
   public router = inject(Router);
   public route = inject(ActivatedRoute);
 

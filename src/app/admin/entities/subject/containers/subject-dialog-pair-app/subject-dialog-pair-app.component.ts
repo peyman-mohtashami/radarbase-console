@@ -36,12 +36,12 @@ import {ClientPairService} from '../../../client/services/client-pair.service';
 import {Observable} from 'rxjs';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {ClientService} from '../../../client/services/client.service';
-import {DetailType} from '../../../../enums/detail-type';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
-import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
+import {DetailElementComponent} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 
 @Component({
   selector: 'app-subject-dialog-pair-app',

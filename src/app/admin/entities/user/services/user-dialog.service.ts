@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 import {UserService} from './user.service';
 import {AppUser, RadarUser} from '../models/user';
 import {UserDialogComponent} from '../containers/user-dialog/user-dialog.component';
 import {UserActivateDialogComponent} from '../containers/user-activate-dialog/user-activate-dialog.component';
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {UserConfigService} from './user-config.service';
 import {ProjectService} from '../../project/services/project.service';
 import {OrganizationService} from '../../organization/services/organization.service';

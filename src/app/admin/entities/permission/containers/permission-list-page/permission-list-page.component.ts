@@ -5,24 +5,24 @@ import {PermissionDialogService} from '../../services/permission-dialog.service'
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {PermissionTableRowComponent} from '../../components/permission-table-row/permission-table-row.component';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 import {AppUser, RadarUser} from "../../../user/models/user";
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {PermissionService} from '../../services/permission.service';
 
 @Component({
   selector: 'app-permission-list-page',
   templateUrl: './permission-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     PermissionTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class PermissionListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppOrganization, RadarOrganization} from "../models/organization";
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../environments/environment';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';

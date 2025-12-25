@@ -1,9 +1,9 @@
 import {Component, inject} from "@angular/core";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireDetailsComponent} from "../questionnaire-details/questionnaire-details.component";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {QuestionnaireConfigService} from '../../services/questionnaire-config.service';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
 import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionnaire-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -13,12 +13,12 @@ import {TranslatePipe} from '@ngx-translate/core';
   templateUrl: './questionnaire-table-row.component.html',
   imports: [
     QuestionnaireDetailsComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     PermissionDirective,
     QuestionnaireActionsComponent,
     TranslatePipe,
   ]
 })
-export class QuestionnaireTableRowComponent extends BaseEntityComponent<AppQuestionnaire> {
+export class QuestionnaireTableRowComponent extends BaseEntityTableRowComponent<AppQuestionnaire> {
   override configService = inject(QuestionnaireConfigService);
 }

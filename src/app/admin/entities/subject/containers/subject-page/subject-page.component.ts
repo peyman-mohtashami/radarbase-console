@@ -11,8 +11,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatPrefix} from '@angular/material/input';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {TabLink} from "../../../../models/tab-link";
-import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {TabLink} from "../../../../base-entities/models/tab-link";
+import {BaseEntityPageComponent} from '../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
 import {MatIcon} from '@angular/material/icon';
 

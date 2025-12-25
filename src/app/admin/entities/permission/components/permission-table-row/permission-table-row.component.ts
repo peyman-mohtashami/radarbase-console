@@ -4,8 +4,8 @@ import {UserActivatedComponent} from '../../../user/components/user-activated/us
 import {PermissionDetailsComponent} from '../permission-details/permission-details.component';
 import {AppUser} from "../../../user/models/user";
 import {PermissionConfigService} from "../../services/permission-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {PermissionActionsComponent} from '../permission-actions/permission-actions.component';
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
 
@@ -16,12 +16,12 @@ import {UserActivateComponent} from '../../../user/components/user-activate/user
     UserActivatedComponent,
     PermissionRolesComponent,
     PermissionDetailsComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     PermissionActionsComponent,
     UserActivateComponent,
   ]
 })
-export class PermissionTableRowComponent extends BaseEntityComponent<AppUser>{
+export class PermissionTableRowComponent extends BaseEntityTableRowComponent<AppUser>{
   override configService = inject(PermissionConfigService);
 
   organizationName = input<string>();

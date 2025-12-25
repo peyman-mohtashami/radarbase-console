@@ -1,5 +1,5 @@
 import {Component, input} from "@angular/core";
-import {DetailType} from "../../../../enums/detail-type";
+import {DetailType} from "../../../../base-entities/enums/detail-type";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({

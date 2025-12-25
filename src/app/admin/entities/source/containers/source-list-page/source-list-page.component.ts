@@ -9,20 +9,20 @@ import {AppSourceType} from '../../../source-type/models/source-type';
 import {AppProject} from '../../../project/models/project';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 
 @Component({
   selector: 'app-source-list-page',
   templateUrl: './source-list-page.component.html',
   imports: [
     DataTableFilterComponent,
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     LoaderComponent,
     SourceTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource, RadarSource> implements OnInit, OnDestroy {

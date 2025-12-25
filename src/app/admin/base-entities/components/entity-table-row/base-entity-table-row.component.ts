@@ -1,15 +1,15 @@
 import {Component, effect, input, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
-import {ROLES} from '../../../shared/enums/roles';
-import {SubjectDialogMode} from '../../entities/subject/enums/dialog';
+import {ROLES} from '../../../../shared/enums/roles';
+import {SubjectDialogMode} from '../../../entities/subject/enums/dialog';
 import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
-  selector: 'app-base-entity',
+  selector: 'app-base-entity-table-row',
   template: '',
 })
-export class BaseEntityComponent<T extends ({_name: string;})> {
+export class BaseEntityTableRowComponent<T extends ({_name: string;})> {
   protected readonly ROLES = ROLES;
   protected readonly DialogMode = DialogMode;
   protected readonly DetailType = DetailType;

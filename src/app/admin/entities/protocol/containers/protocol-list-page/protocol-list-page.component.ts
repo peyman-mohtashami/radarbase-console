@@ -1,11 +1,11 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
-import {DialogMode} from '../../../../enums/dialog';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 import {ProtocolService} from "../../services/protocol.service";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {ProtocolDialogService} from "../../services/protocol-dialog.service";
@@ -14,21 +14,21 @@ import {AppProject} from "../../../project/models/project";
 import {AppSubject} from "../../../subject/models/subject";
 import {MatButton} from "@angular/material/button";
 import {ProtocolTableRowComponent} from "../../components/protocol-table-row/protocol-table-row.component";
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-protocol-list-page',
   templateUrl: './protocol-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     TranslatePipe,
     MatButton,
     ProtocolTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
     MatIcon,
   ]
 })

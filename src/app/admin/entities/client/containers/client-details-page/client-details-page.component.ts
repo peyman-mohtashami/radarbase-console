@@ -1,6 +1,6 @@
 import {Component, effect, inject} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ClientDialogService} from '../../services/client-dialog.service';

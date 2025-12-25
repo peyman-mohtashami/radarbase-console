@@ -1,17 +1,17 @@
 import {Component, inject} from '@angular/core';
 
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {AppAudit} from '../../models/audit';
 import {AuditConfigService} from "../../services/audit-config.service";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-audit-details',
   templateUrl: './audit-details.component.html',
   imports: [
-    DetailsComponent,
+    EntityDetailsComponent,
   ]
 })
-export class AuditDetailsComponent extends BaseDetailsComponent<AppAudit> {
+export class AuditDetailsComponent extends BaseEntityDetailsComponent<AppAudit> {
   override configService = inject(AuditConfigService);
 }

@@ -7,7 +7,7 @@ import {map, tap} from "rxjs/operators";
 import {AppConfig, RadarConfig, RadarConfigBundle} from "../models/config";
 import {environment} from "../../../../../environments/environment";
 import {Params} from '@angular/router';
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {

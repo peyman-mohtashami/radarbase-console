@@ -3,7 +3,7 @@ import {DialogMode} from "../../../enums/dialog";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
-import {EntityRegistry} from "../../../../shared/consts/entity-registry";
+import {EntityRegistry} from "../../../../../shared/consts/entity-registry";
 import {MatIcon} from '@angular/material/icon';
 
 @Component({

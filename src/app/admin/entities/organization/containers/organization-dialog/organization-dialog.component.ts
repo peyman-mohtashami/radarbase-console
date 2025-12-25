@@ -6,17 +6,17 @@ import {Validator} from '../../../../../shared/utils/validators';
 import { AppOrganization } from "../../models/organization";
 import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
-} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -38,7 +38,7 @@ import {Observable} from 'rxjs';
     ErrorMessageBoxComponent,
   ]
 })
-export class OrganizationDialogComponent extends BaseDialogComponent<AppOrganization> implements OnInit, AfterViewInit {
+export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOrganization> implements OnInit, AfterViewInit {
   override configService = inject(OrganizationConfigService);
   override dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

@@ -1,18 +1,18 @@
 import {Component, inject} from '@angular/core';
 import { AppOrganization } from "../../models/organization";
 import {OrganizationProjectsComponent} from "../organization-projects/organization-projects.component";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {OrganizationConfigService} from "../../services/organization-config.service";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-organization-details',
   templateUrl: './organization-details.component.html',
   imports: [
     OrganizationProjectsComponent,
-    DetailsComponent,
+    EntityDetailsComponent,
   ]
 })
-export class OrganizationDetailsComponent extends BaseDetailsComponent<AppOrganization>{
+export class OrganizationDetailsComponent extends BaseEntityDetailsComponent<AppOrganization>{
   override configService = inject(OrganizationConfigService);
 }

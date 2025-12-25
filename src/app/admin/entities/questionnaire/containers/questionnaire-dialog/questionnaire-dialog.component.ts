@@ -21,16 +21,16 @@ import {MatFormField, MatInput} from "@angular/material/input";
 import {HttpErrorResponse} from "@angular/common/http";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {debounceTime} from "rxjs/operators";
-import {DialogMode} from "../../../../enums/dialog";
+import {DialogMode} from "../../../../base-entities/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestion, AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from "../../models/questionnaire";
 import {
   DialogBodyDescriptionComponent
-} from "../../../../components/dialog/dialog-body-description/dialog-body-description.component";
+} from "../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component";
 import {
   DialogAction,
   DialogActionsComponent
-} from "../../../../components/dialog/dialog-actions/dialog-actions.component";
+} from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
 import {
   MatSelectAutocompleteComponent
 } from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";

@@ -18,8 +18,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {DialogMode} from '../../../../enums/dialog';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 
 @Component({
   selector: 'app-user-activate-dialog',
@@ -35,7 +35,7 @@ import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.com
     MatProgressSpinner,
   ]
 })
-export class UserActivateDialogComponent extends BaseDialogComponent<AppUser> implements AfterViewInit {
+export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUser> implements AfterViewInit {
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode | string;

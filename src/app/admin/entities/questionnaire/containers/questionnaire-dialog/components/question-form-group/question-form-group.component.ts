@@ -23,7 +23,7 @@ import {TextFormGroupComponent} from "../text-form-group/text-form-group.compone
 import {AnnotationFormGroupComponent} from "../annotation-form-group/annotation-form-group.component";
 import {RangeFormGroupComponent} from "../range-form-group/range-form-group.component";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
-import {DialogMode} from '../../../../../../enums/dialog';
+import {DialogMode} from '../../../../../../base-entities/enums/dialog';
 import {TagComponent} from '../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
 

@@ -21,7 +21,7 @@ import {
   getHeaders,
   getUrlSegment
 } from '../../config/services/config.service';
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {Params} from '@angular/router';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];

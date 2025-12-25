@@ -5,22 +5,22 @@ import {OrganizationConfigService} from '../../services/organization-config.serv
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
 import {AppOrganization, RadarOrganization} from '../../models/organization';
 import {OrganizationTableRowComponent} from '../../components/organization-table-row/organization-table-row.component';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 
 @Component({
   selector: 'app-organization-list-page',
   templateUrl: './organization-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     OrganizationTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class OrganizationListPageComponent extends BaseEntityListPageComponent<AppOrganization, RadarOrganization> implements OnInit, OnDestroy {

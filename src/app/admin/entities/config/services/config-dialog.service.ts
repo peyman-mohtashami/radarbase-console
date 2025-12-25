@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppConfig, RadarConfig} from '../models/config';
 import {ConfigService} from './config.service';
 import {ConfigDialogComponent} from '../containers/config-dialog/config-dialog.component';
 import {ConfigPublishDialogComponent} from '../containers/config-publish-dialog/config-publish-dialog.component';
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {ConfigConfigService} from './config-config.service';
 
 @Injectable({providedIn: 'root'})

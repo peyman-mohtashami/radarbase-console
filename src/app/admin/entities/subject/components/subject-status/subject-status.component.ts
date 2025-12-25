@@ -1,5 +1,5 @@
 import {Component, input} from "@angular/core";
-import {DetailType} from "../../../../enums/detail-type";
+import {DetailType} from "../../../../base-entities/enums/detail-type";
 import {MatTooltip} from "@angular/material/tooltip";
 import {SubjectStatus} from '../../models/subject';
 import {MatIcon} from '@angular/material/icon';

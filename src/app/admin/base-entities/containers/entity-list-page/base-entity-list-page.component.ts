@@ -3,23 +3,23 @@ import {DialogMode} from '../../enums/dialog';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {PageEvent} from '@angular/material/paginator';
 import {FilterItem, RbSort, TableElement} from '../../models/table.model';
-import {FilterEvent} from '../data-table-filter/data-table-filter.component';
+import {FilterEvent} from './data-table-filter/data-table-filter.component';
 import {Subject} from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE, MIN_ENTITIES_FOR_FILTERS,
 } from '../../consts/default-table-values';
 import {skip, takeUntil} from 'rxjs/operators';
-import {ROLES} from '../../../shared/enums/roles';
+import {ROLES} from '../../../../shared/enums/roles';
 import {SelectionModel} from '@angular/cdk/collections';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {BaseEntityService} from '../../services/base-entity.service';
 import {BaseConfigService} from '../../services/base-config.service';
 import {BaseDialogService} from '../../services/base-dialog.service';
-import {BaseDialogComponent} from '../dialog/base-dialog.component';
-import {SelectedEntitiesService} from '../../services/selected-entities.service';
+import {BaseEntityDialogComponent} from '../entity-dialog/base-entity-dialog.component';
+import {SelectedEntitiesService} from '../../../services/selected-entities.service';
 
 @Component({
-  selector: 'app-base-entities-page',
+  selector: 'app-base-entity-list-page',
   template: '',
 })
 export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
@@ -32,7 +32,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
 
   protected entityService!: BaseEntityService<T, U>;
   protected configService!: BaseConfigService;
-  protected dialogService!: BaseDialogService<T, U, BaseDialogComponent<T>>;
+  protected dialogService!: BaseDialogService<T, U, BaseEntityDialogComponent<T>>;
 
   protected GRID_VIEW_ENABLED = false;
   gridView = false;

@@ -7,8 +7,8 @@ import {
 import {SourceTypeDetailsComponent} from "../source-type-details/source-type-details.component";
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeConfigService} from "../../services/source-type-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {SourceTypeActionsComponent} from '../source-type-actions/source-type-actions.component';
 
 @Component({
@@ -19,10 +19,10 @@ import {SourceTypeActionsComponent} from '../source-type-actions/source-type-act
     SourceTypeScopeComponent,
     SourceTypeSourceRegistrationComponent,
     SourceTypeDetailsComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     SourceTypeActionsComponent,
   ]
 })
-export class SourceTypeTableRowComponent extends BaseEntityComponent<AppSourceType>{
+export class SourceTypeTableRowComponent extends BaseEntityTableRowComponent<AppSourceType>{
   override configService = inject(SourceTypeConfigService);
 }

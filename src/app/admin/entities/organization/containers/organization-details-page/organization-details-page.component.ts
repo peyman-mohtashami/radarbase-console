@@ -3,7 +3,7 @@ import {MatCard, MatCardContent} from "@angular/material/card";
 import {OrganizationDetailsComponent} from "../../components/organization-details/organization-details.component";
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {OrganizationDialogService} from '../../services/organization-dialog.service';
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Component({

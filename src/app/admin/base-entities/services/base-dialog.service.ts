@@ -4,13 +4,13 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {DialogMode} from '../enums/dialog';
-import {BaseDialogComponent} from '../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../containers/entity-dialog/base-entity-dialog.component';
 import {BaseEntityService} from './base-entity.service';
 import {BaseConfigService} from './base-config.service';
-import {SelectedEntitiesService} from './selected-entities.service';
+import {SelectedEntitiesService} from '../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
-export class BaseDialogService<T extends {_name: string;}, U, V extends BaseDialogComponent<T>> {
+export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEntityDialogComponent<T>> {
   protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);

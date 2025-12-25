@@ -3,7 +3,7 @@ import {DecimalPipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {GarbageCollector} from '../../models/radar-metrics.model';
-import {DetailElementComponent} from '../../../../components/detail-element/detail-element.component';
+import {DetailElementComponent} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 
 @Component({
   selector: 'app-metrics-garbage-collector',

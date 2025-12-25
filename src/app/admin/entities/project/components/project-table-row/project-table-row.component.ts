@@ -8,8 +8,8 @@ import {ProjectDetailsComponent} from "../project-details/project-details.compon
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {ProjectConfigService} from "../../services/project-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {ProjectActionsComponent} from '../project-actions/project-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -26,12 +26,12 @@ import {MatIcon} from '@angular/material/icon';
     PermissionDirective,
     LocalDateComponent,
     MatCardContent,
-    EntityComponent,
+    EntityTableRowComponent,
     ProjectActionsComponent,
     MatIcon,
     TranslatePipe,
   ]
 })
-export class ProjectTableRowComponent extends BaseEntityComponent<AppProject> {
+export class ProjectTableRowComponent extends BaseEntityTableRowComponent<AppProject> {
   override configService = inject(ProjectConfigService);
 }

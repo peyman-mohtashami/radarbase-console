@@ -27,14 +27,14 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {map} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DetailType} from '../../../../enums/detail-type';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {SourceService} from '../../../source/services/source.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AppProject} from '../../../project/models/project';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
 @Component({

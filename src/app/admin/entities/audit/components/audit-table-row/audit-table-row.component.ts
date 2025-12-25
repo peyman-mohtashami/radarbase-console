@@ -3,8 +3,8 @@ import {AppAudit} from "../../models/audit";
 import {JsonPipe} from "@angular/common";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {AuditConfigService} from "../../services/audit-config.service";
-import {EntityComponent} from '../../../../components/entity/entity.component';
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {AuditDetailsComponent} from '../audit-details/audit-details.component';
 
 @Component({
@@ -13,10 +13,10 @@ import {AuditDetailsComponent} from '../audit-details/audit-details.component';
   imports: [
     LocalDateComponent,
     JsonPipe,
-    EntityComponent,
+    EntityTableRowComponent,
     AuditDetailsComponent,
   ]
 })
-export class AuditTableRowComponent extends BaseEntityComponent<AppAudit> {
+export class AuditTableRowComponent extends BaseEntityTableRowComponent<AppAudit> {
   override configService = inject(AuditConfigService);
 }

@@ -4,9 +4,9 @@ import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-d
 import {
   SourceDataProcessingStateComponent
 } from "../source-data-processing-state/source-data-processing-state.component";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-source-data-details',
@@ -14,9 +14,9 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
   imports: [
     SourceDataSourceTypeComponent,
     SourceDataProcessingStateComponent,
-    DetailsComponent,
+    EntityDetailsComponent,
   ]
 })
-export class SourceDataDetailsComponent extends BaseDetailsComponent<AppSourceData>{
+export class SourceDataDetailsComponent extends BaseEntityDetailsComponent<AppSourceData>{
   override configService = inject(SourceDataConfigService);
 }

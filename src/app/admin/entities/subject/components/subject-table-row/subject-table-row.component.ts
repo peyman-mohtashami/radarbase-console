@@ -9,8 +9,8 @@ import {SubjectDetailsComponent} from "../subject-details/subject-details.compon
 import {MatTooltip} from "@angular/material/tooltip";
 import {TruncatePipe} from '../../../../../shared/pipes/truncate-pipe';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
@@ -29,12 +29,12 @@ import {TranslatePipe} from '@ngx-translate/core';
     TruncatePipe,
     MatTooltip,
     TagComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     SubjectActionsComponent,
     TranslatePipe,
   ]
 })
-export class SubjectTableRowComponent extends BaseEntityComponent<AppSubject> {
+export class SubjectTableRowComponent extends BaseEntityTableRowComponent<AppSubject> {
   override configService = inject(SubjectConfigService);
 
   selection = input.required<SelectionModel<AppSubject>>();

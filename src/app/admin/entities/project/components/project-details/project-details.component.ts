@@ -3,10 +3,10 @@ import { AppProject } from "../../models/project";
 import {ProjectStatusComponent} from "../project-status/project-status.component";
 import {ProjectSourceTypesComponent} from "../project-source-types/project-source-types.component";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {JsonPipe} from "@angular/common";
 import {ProjectConfigService} from "../../services/project-config.service";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-project-details',
@@ -15,10 +15,10 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
     ProjectStatusComponent,
     ProjectSourceTypesComponent,
     LocalDateComponent,
-    DetailsComponent,
+    EntityDetailsComponent,
     JsonPipe,
   ]
 })
-export class ProjectDetailsComponent extends BaseDetailsComponent<AppProject>{
+export class ProjectDetailsComponent extends BaseEntityDetailsComponent<AppProject>{
   override configService = inject(ProjectConfigService);
 }

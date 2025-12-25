@@ -7,7 +7,7 @@ import {AppProject, ProjectStatus} from "../../models/project";
 import {AppOrganization, RadarOrganization} from "../../../organization/models/organization";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ProjectConfigService} from '../../services/project-config.service';
-import {DialogMode} from '../../../../enums/dialog';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
 import {
   MatSelectAutocompleteComponent
@@ -15,15 +15,15 @@ import {
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
-} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -57,7 +57,7 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
     ErrorMessageBoxComponent,
   ]
 })
-export class ProjectDialogComponent extends BaseDialogComponent<AppProject> implements OnInit, AfterViewInit {
+export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject> implements OnInit, AfterViewInit {
   protected localeService = inject(LocaleService);
   override configService = inject(ProjectConfigService);
   override dialogRef = inject(MatDialogRef<ProjectDialogComponent>);

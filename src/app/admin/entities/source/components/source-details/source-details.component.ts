@@ -4,9 +4,9 @@ import { AppSource } from "../../models/source";
 import {SourceAssignedComponent} from "../source-assigned/source-assigned.component";
 import {KeyValuePipe} from "@angular/common";
 import {SourceSourceTypeComponent} from "../source-source-type/source-source-type.component";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {SourceConfigService} from "../../services/source-config.service";
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-source-details',
@@ -15,9 +15,9 @@ import {BaseDetailsComponent} from '../../../../components/details/base-details.
     SourceAssignedComponent,
     KeyValuePipe,
     SourceSourceTypeComponent,
-    DetailsComponent,
+    EntityDetailsComponent,
   ]
 })
-export class SourceDetailsComponent extends BaseDetailsComponent<AppSource> {
+export class SourceDetailsComponent extends BaseEntityDetailsComponent<AppSource> {
   override configService = inject(SourceConfigService);
 }

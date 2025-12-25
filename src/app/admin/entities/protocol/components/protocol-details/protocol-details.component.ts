@@ -1,18 +1,18 @@
 import {Component, inject} from '@angular/core';
 import {AppProtocol} from "../../models/protocol";
-import {DetailsComponent} from "../../../../components/details/details.component";
+import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {TranslatePipe} from '@ngx-translate/core';
-import {BaseDetailsComponent} from '../../../../components/details/base-details.component';
+import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
 
 @Component({
   selector: 'app-protocol-details',
   templateUrl: './protocol-details.component.html',
   imports: [
-    DetailsComponent,
+    EntityDetailsComponent,
     TranslatePipe,
   ]
 })
-export class ProtocolDetailsComponent extends BaseDetailsComponent<AppProtocol> {
+export class ProtocolDetailsComponent extends BaseEntityDetailsComponent<AppProtocol> {
   override configService = inject(ProtocolConfigService);
 }

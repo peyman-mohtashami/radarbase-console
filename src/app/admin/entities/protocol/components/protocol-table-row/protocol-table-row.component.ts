@@ -4,8 +4,8 @@ import {AppProtocol} from "../../models/protocol";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {ProtocolActionsComponent} from '../protocol-actions/protocol-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {ProtocolDetailsComponent} from '../protocol-details/protocol-details.component';
 
 @Component({
@@ -14,10 +14,10 @@ import {ProtocolDetailsComponent} from '../protocol-details/protocol-details.com
   imports: [
     ProtocolActionsComponent,
     TranslatePipe,
-    EntityComponent,
+    EntityTableRowComponent,
     ProtocolDetailsComponent,
   ]
 })
-export class ProtocolTableRowComponent extends BaseEntityComponent<AppProtocol> {
+export class ProtocolTableRowComponent extends BaseEntityTableRowComponent<AppProtocol> {
   override configService = inject(ProtocolConfigService);
 }

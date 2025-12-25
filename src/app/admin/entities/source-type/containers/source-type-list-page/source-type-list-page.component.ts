@@ -6,20 +6,20 @@ import {SourceTypeConfigService} from '../../services/source-type-config.service
 import {SourceTypeService} from '../../services/source-type.service';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {SourceTypeTableRowComponent} from '../../components/source-type-table-row/source-type-table-row.component';
 
 @Component({
   selector: 'app-source-type-list-page',
   templateUrl: './source-type-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
     SourceTypeTableRowComponent,
   ]
 })

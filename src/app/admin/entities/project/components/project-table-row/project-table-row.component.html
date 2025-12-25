@@ -1,6 +1,6 @@
 @let configFields = configService.getFormFields();
 
-<app-entity [gridView]="gridView()"
+<app-entity-table-row [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
@@ -63,7 +63,7 @@
   <app-project-actions extra-actions *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: entity().projectName}]"
                        [entity]="entity()"
                        [isExpanded]="true"/>
-</app-entity>
+</app-entity-table-row>
 
 <ng-template #entityTemplate let-property>
   @switch (property.name) {

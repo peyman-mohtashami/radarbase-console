@@ -16,10 +16,10 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DetailType} from '../../../../enums/detail-type';
+import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 
 @Component({
   selector: 'app-subject-dialog-discontinue-dialog',

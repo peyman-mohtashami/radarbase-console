@@ -5,22 +5,22 @@ import {SourceDataService} from '../../services/source-data.service';
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
 import {AppSourceData, RadarSourceData} from '../../models/source-data';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 
 @Component({
   selector: 'app-source-data-list-page',
   templateUrl: './source-data-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     SourceDataTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class SourceDataListPageComponent extends BaseEntityListPageComponent<AppSourceData, RadarSourceData> implements OnInit, OnDestroy {

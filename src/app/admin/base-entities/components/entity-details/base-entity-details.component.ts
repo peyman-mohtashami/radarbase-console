@@ -4,10 +4,10 @@ import {DetailType} from '../../enums/detail-type';
 import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
-  selector: 'app-base-details',
+  selector: 'app-base-entity-details',
   template: '',
 })
-export class BaseDetailsComponent<T> {
+export class BaseEntityDetailsComponent<T> {
   protected readonly DetailType = DetailType;
 
   protected configService!: BaseConfigService;

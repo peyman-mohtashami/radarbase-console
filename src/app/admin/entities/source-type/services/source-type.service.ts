@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppSourceType, RadarSourceType} from "../models/source-type";
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {environment} from '../../../../../environments/environment';

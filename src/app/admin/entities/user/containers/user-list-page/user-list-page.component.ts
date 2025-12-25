@@ -5,22 +5,22 @@ import {UserConfigService} from '../../services/user-config.service';
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppUser, RadarUser} from '../../models/user';
 import {UserTableRowComponent} from '../../components/user-table-row/user-table-row.component';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 
 @Component({
   selector: 'app-user-list-page',
   templateUrl: './user-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     UserTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class UserListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {

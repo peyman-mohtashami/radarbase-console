@@ -25,14 +25,14 @@ import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
 import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
-import {ValidatorError} from '../../../shared/utils/validators';
-import {FormFieldType} from '../../models/dialog.model';
-import {FilterItem} from '../../models/table.model';
+import {ValidatorError} from '../../../../../shared/utils/validators';
+import {FormFieldType} from '../../../models/dialog.model';
+import {FilterItem} from '../../../models/table.model';
 import {format, isValid, Locale, parse} from 'date-fns';
 import {enGB, nl, faIR} from 'date-fns/locale';
-import {LocalDateComponent} from '../../../core/locale/components/local-date/local-date.component';
-import {TagComponent} from '../../../shared/components/tag/tag.component';
-import {LocaleService} from "../../../core/locale/services/locale.service";
+import {LocalDateComponent} from '../../../../../core/locale/components/local-date/local-date.component';
+import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {LocaleService} from "../../../../../core/locale/services/locale.service";
 
 export type FilterEvent = Record<string, string | null | undefined>
 

@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import { DialogMode } from '../../../../enums/dialog';
+import { DialogMode } from '../../../../base-entities/enums/dialog';
 import { ConfigService } from '../../services/config.service';
 import {AppConfig, RadarConfig} from "../../models/config";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -9,16 +9,16 @@ import {MatButton} from "@angular/material/button";
 import {ConfigTableRowComponent} from "../../components/config-table-row/config-table-row.component";
 import {
   DataTableFilterComponent,
-} from "../../../../components/data-table-filter/data-table-filter.component";
-import {EntitiesPageHeaderComponent} from "../../../../components/entities-page-header/entities-page-header.component";
+} from "../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component";
+import {ListPageHeaderComponent} from "../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
 import {AppClient} from "../../../client/models/client";
 import {AppProject} from '../../../project/models/project';
 import {AppSubject} from "../../../subject/models/subject";
 import {MatIcon} from '@angular/material/icon';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 
 @Component({
   selector: 'app-config-list-page',
@@ -28,11 +28,11 @@ import {EntitiesPageComponent} from '../../../../components/entity-list-page/ent
     TranslatePipe,
     ReactiveFormsModule,
     ConfigTableRowComponent,
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     MatButton,
     MatIcon,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> implements OnInit, OnDestroy {

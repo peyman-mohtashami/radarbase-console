@@ -1,10 +1,10 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../enums/dialog';
+import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {AppClient, RadarClient} from '../models/client';
 import {ClientService} from './client.service';
 import {ClientDialogComponent} from '../containers/client-dialog/client-dialog.component';
-import {BaseDialogService} from '../../../services/base-dialog.service';
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {ClientConfigService} from './client-config.service';
 
 @Injectable({providedIn: 'root'})

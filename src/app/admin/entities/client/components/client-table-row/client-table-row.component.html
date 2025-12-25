@@ -1,4 +1,4 @@
-<app-entity [tableFields]="configService.getTableFields()"
+<app-entity-table-row [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
@@ -7,7 +7,7 @@
                       [entity]='entity()'
                       [detailType]="DetailType.TABLE" />
   <app-client-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
-</app-entity>
+</app-entity-table-row>
 
 <ng-template #entityTemplate let-property>
   @switch (property.name) {

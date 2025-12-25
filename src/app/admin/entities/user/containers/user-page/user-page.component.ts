@@ -6,7 +6,7 @@ import {UserConfigService} from '../../services/user-config.service';
 import {UserDialogService} from '../../services/user-dialog.service';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatPrefix} from '@angular/material/input';
-import {BaseEntityPageComponent} from '../../../../components/entity-page/base-entity-page.component';
+import {BaseEntityPageComponent} from '../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {UserActionsComponent} from '../../components/user-actions/user-actions.component';
 
 @Component({

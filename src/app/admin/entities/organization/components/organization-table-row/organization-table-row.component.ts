@@ -8,8 +8,8 @@ import {OrganizationDetailsComponent} from "../organization-details/organization
 import {OrganizationActionsComponent} from "../organization-actions/organization-actions.component";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {OrganizationConfigService} from "../../services/organization-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 
@@ -24,11 +24,11 @@ import {MatIcon} from '@angular/material/icon';
     MatCardContent,
     OrganizationActionsComponent,
     PermissionDirective,
-    EntityComponent,
+    EntityTableRowComponent,
     MatIcon,
     TranslatePipe,
   ]
 })
-export class OrganizationTableRowComponent extends BaseEntityComponent<AppOrganization> {
+export class OrganizationTableRowComponent extends BaseEntityTableRowComponent<AppOrganization> {
   override configService = inject(OrganizationConfigService);
 }

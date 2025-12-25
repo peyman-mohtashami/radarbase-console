@@ -9,15 +9,15 @@ import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from "@angular/mat
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatButton} from "@angular/material/button";
-import {DialogMode} from '../../../../enums/dialog';
-import {DialogTitleComponent} from '../../../../components/dialog/dialog-title/dialog-title.component';
+import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogTitleComponent} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   DialogBodyDescriptionComponent
-} from '../../../../components/dialog/dialog-body-description/dialog-body-description.component';
-import {DialogActionsComponent} from '../../../../components/dialog/dialog-actions/dialog-actions.component';
+} from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
+import {DialogActionsComponent} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from '../../services/client-config.service';
-import {BaseDialogComponent} from '../../../../components/dialog/base-dialog.component';
+import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -41,7 +41,7 @@ import {Observable} from 'rxjs';
     MatSuffix
   ]
 })
-export class ClientDialogComponent extends BaseDialogComponent<AppClient> implements OnInit, AfterViewInit {
+export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> implements OnInit, AfterViewInit {
   override configService = inject(ClientConfigService);
   override dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

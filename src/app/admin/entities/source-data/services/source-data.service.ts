@@ -3,7 +3,7 @@ import {AppSourceData, RadarSourceData} from "../models/source-data";
 import {Params} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
-import {BaseEntityService} from '../../../services/base-entity.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../environments/environment';
 
 @Injectable({providedIn: 'root'})

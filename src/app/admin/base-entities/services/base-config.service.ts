@@ -1,7 +1,7 @@
 import {computed, inject, Injectable} from '@angular/core';
-import {ENTITY_REGISTRY} from '../../shared/consts/entity-registry';
+import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
 import {FilterItem, TableElement} from '../models/table.model';
-import {ConfigurationService} from '../../core/configuration/services/configuration.service';
+import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseConfigService {

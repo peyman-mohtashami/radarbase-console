@@ -5,8 +5,8 @@ import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-d
 import {SourceDataProcessingStateComponent} from "../source-data-processing-state/source-data-processing-state.component";
 import {SourceDataDetailsComponent} from "../source-data-details/source-data-details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
-import {BaseEntityComponent} from '../../../../components/entity/base-entity.component';
-import {EntityComponent} from '../../../../components/entity/entity.component';
+import {BaseEntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {SourceDataActionsComponent} from '../source-data-actions/source-data-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -18,11 +18,11 @@ import {TranslatePipe} from '@ngx-translate/core';
     SourceDataSourceTypeComponent,
     SourceDataProcessingStateComponent,
     SourceDataDetailsComponent,
-    EntityComponent,
+    EntityTableRowComponent,
     SourceDataActionsComponent,
     TranslatePipe,
   ]
 })
-export class SourceDataTableRowComponent extends BaseEntityComponent<AppSourceData>{
+export class SourceDataTableRowComponent extends BaseEntityTableRowComponent<AppSourceData>{
   override configService = inject(SourceDataConfigService);
 }

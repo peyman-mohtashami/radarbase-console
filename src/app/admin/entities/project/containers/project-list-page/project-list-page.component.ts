@@ -6,22 +6,22 @@ import {ProjectDialogService} from '../../services/project-dialog.service';
 import {AppProject, RadarProject} from '../../models/project';
 import {ProjectTableRowComponent} from '../../components/project-table-row/project-table-row.component';
 import {AppOrganization} from '../../../organization/models/organization';
-import {EntitiesPageHeaderComponent} from '../../../../components/entities-page-header/entities-page-header.component';
+import {ListPageHeaderComponent} from '../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
-} from '../../../../components/data-table-filter/data-table-filter.component';
-import {BaseEntityListPageComponent} from '../../../../components/entity-list-page/base-entity-list-page.component';
-import {EntitiesPageComponent} from '../../../../components/entity-list-page/entities-page.component';
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {BaseEntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
+import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 
 @Component({
   selector: 'app-project-list-page',
   templateUrl: './project-list-page.component.html',
   imports: [
-    EntitiesPageHeaderComponent,
+    ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     ProjectTableRowComponent,
-    EntitiesPageComponent,
+    EntityListPageComponent,
   ]
 })
 export class ProjectListPageComponent extends BaseEntityListPageComponent<AppProject, RadarProject> implements OnInit, OnDestroy {
