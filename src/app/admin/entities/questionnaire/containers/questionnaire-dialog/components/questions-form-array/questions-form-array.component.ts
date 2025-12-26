@@ -45,7 +45,7 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
 
   form = new FormArray<FormControl<AppQuestion | undefined>>([]);
 
-  onChange = () => {};
+  onChange = (value: AppQuestion[]) => {};
   onTouch = () => {};
 
   validate(): ValidationErrors | null {
@@ -107,14 +107,14 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
     }
   }
 
-  registerOnChange(fn: any) {
+  registerOnChange(fn: (value: (AppQuestion | undefined)[]) => void) {
     this.onChange = fn;
     this.form.valueChanges.subscribe(value => {
       fn(value);
     });
   }
 
-  registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void) {
     this.onTouch = fn;
   }
 
@@ -133,9 +133,5 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
 
   onDrop(event: CdkDragDrop<string[]>) {
     moveItemInFormArray(this.form, event.previousIndex, event.currentIndex);
-  }
-
-  protected selectQuestion(questionIndex: number) {
-    this.questionnaireStateService.selectedQuestionIndex.set(questionIndex);
   }
 }

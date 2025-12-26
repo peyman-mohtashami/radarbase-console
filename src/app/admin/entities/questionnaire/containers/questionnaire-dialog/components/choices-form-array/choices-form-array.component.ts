@@ -55,40 +55,6 @@ export class ChoicesFormArrayComponent implements ControlValueAccessor, Validato
   onChange = () => {};
   onTouch = () => {};
 
-  // validate(): ValidationErrors | null {
-  //   const errors: ValidationErrors = {};
-  //
-  //   // Check main form controls
-  //   Object.keys(this.form.controls).forEach(key => {
-  //     const ctrl = this.form.get(key);
-  //     if (ctrl?.errors) {
-  //       errors[key] = ctrl.errors;
-  //     }
-  //
-  //     // Check nested form groups
-  //     if (ctrl instanceof FormGroup) {
-  //       Object.keys(ctrl.controls).forEach(nestedKey => {
-  //         const nestedCtrl = ctrl.get(nestedKey);
-  //         if (nestedCtrl?.errors) {
-  //           errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
-  //         }
-  //
-  //         // Handle nested form groups (like timer)
-  //         if (nestedCtrl instanceof FormGroup) {
-  //           Object.keys(nestedCtrl.controls).forEach(deepKey => {
-  //             const deepCtrl = nestedCtrl.get(deepKey);
-  //             if (deepCtrl?.errors) {
-  //               errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
-  //             }
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  //
-  //   return Object.keys(errors).length > 0 ? errors : null;
-  // }
-
   validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
@@ -180,12 +146,12 @@ export class ChoicesFormArrayComponent implements ControlValueAccessor, Validato
     }
   }
 
-  registerOnChange(fn: any) {
+  registerOnChange(fn: () => void) {
     this.onChange = fn;
     this.form.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void) {
     this.onTouch = fn;
   }
 

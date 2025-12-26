@@ -71,7 +71,11 @@ export abstract class BaseFormGroupComponent<T = any> implements ControlValueAcc
   }
 
   setDisabledState(isDisabled: boolean): void {
-    isDisabled ? this.form.disable() : this.form.enable();
+    if (isDisabled) {
+      this.form.disable();
+    } else {
+      this.form.enable();
+    }
   }
 
   ngOnDestroy(): void {

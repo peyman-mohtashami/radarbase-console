@@ -57,7 +57,7 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
     time: FormControl<string | null>;
   }>>([]);
 
-  onChange = () => {};
+  onChange = (value: number[] | null) => {};
   onTouch = () => {};
 
   validate(): ValidationErrors | null {
@@ -104,7 +104,7 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
     }
   }
 
-  registerOnChange(fn: any) {
+  registerOnChange(fn: (value: number[] | null) => void) {
     this.onChange = fn;
     this.form.valueChanges
       .pipe(
@@ -117,7 +117,7 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
       .subscribe(fn);
   }
 
-  registerOnTouched(fn: any) {
+  registerOnTouched(fn: () => void) {
     this.onTouch = fn;
   }
 

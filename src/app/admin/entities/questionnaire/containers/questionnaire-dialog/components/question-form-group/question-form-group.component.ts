@@ -4,16 +4,15 @@ import {
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, Validator, NG_VALIDATORS, ValidationErrors
+  ReactiveFormsModule, Validator, NG_VALIDATORS,
 } from '@angular/forms';
 import {MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatSelect, MatOption} from "@angular/material/select";
 import {TranslatePipe} from "@ngx-translate/core";
-import {Subscription} from "rxjs";
 import {ChoicesFormArrayComponent} from "../choices-form-array/choices-form-array.component";
-import {ValidatorError, Validator as CustomValidator} from "../../../../../../../shared/utils/validators";
+import {Validator as CustomValidator} from "../../../../../../../shared/utils/validators";
 import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {QuestionForm, QuestionFormAnnotation, QuestionFormRange} from "../../models/question-form";
 import {AppQuestion} from "../../../../models/questionnaire";
@@ -27,6 +26,9 @@ import {DialogMode} from '../../../../../../base-entities/enums/dialog';
 import {TagComponent} from '../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatIcon} from '@angular/material/icon';
+import {
+  BaseFormGroupComponent
+} from '../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
 
 @Component({
   selector: 'app-question-form-group',
@@ -62,12 +64,13 @@ import {MatIcon} from '@angular/material/icon';
     }
   ]
 })
-export class QuestionFormGroupComponent implements ControlValueAccessor, Validator, OnDestroy {
+export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuestion> implements ControlValueAccessor, Validator, OnDestroy {
 
   questionnaireStateService = inject(QuestionnaireStateService);
 
+  editMode = signal(false);
+  protected readonly DialogMode = DialogMode;
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
-  protected readonly ValidatorError = ValidatorError;
 
   FIELD_TYPE_MAP: Record<string, string> = {
     'radio': 'Radio',
@@ -97,42 +100,6 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
     branching_logic: new FormControl<string>('', {nonNullable: true}),
   });
 
-  private valueChangesSub?: Subscription;
-
-  validate(): ValidationErrors | null {
-    const errors: ValidationErrors = {};
-
-    // Check main form controls
-    Object.keys(this.form.controls).forEach(key => {
-      const ctrl = this.form.get(key);
-      if (ctrl?.errors) {
-        errors[key] = ctrl.errors;
-      }
-
-      // Check nested form groups
-      if (ctrl instanceof FormGroup) {
-        Object.keys(ctrl.controls).forEach(nestedKey => {
-          const nestedCtrl = ctrl.get(nestedKey);
-          if (nestedCtrl?.errors) {
-            errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
-          }
-
-          // Handle nested form groups (like timer)
-          if (nestedCtrl instanceof FormGroup) {
-            Object.keys(nestedCtrl.controls).forEach(deepKey => {
-              const deepCtrl = nestedCtrl.get(deepKey);
-              if (deepCtrl?.errors) {
-                errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
-              }
-            });
-          }
-        });
-      }
-    });
-
-    return Object.keys(errors).length > 0 ? errors : null;
-  }
-
   // Optional: Implement registerOnValidatorChange if you need to update validation when external conditions change
   registerOnValidatorChange?(fn: () => void): void {
     this.onValidatorChange = fn;
@@ -141,6 +108,7 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
   private onValidatorChange: (() => void) | undefined;
 
   constructor() {
+    super();
     // Notify parent about validation changes, but don't trigger updateValueAndValidity
     if (this.onValidatorChange) {
       this.onValidatorChange();
@@ -154,13 +122,6 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
       }
     });
   }
-
-  ngOnDestroy() {
-    this.valueChangesSub?.unsubscribe();
-  }
-
-  onChange = () => {};
-  onTouch = () => {};
 
   updateFormControls(type?: string) {
     if (!type) return;
@@ -190,27 +151,8 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
     }
   }
 
-  writeValue(question?: AppQuestion) {
+  override writeValue(question: AppQuestion) {
     this.updateFormControls(question?.field_type);
-    if (question) {
-      this.form.patchValue(question, {emitEvent: true});
-    } else {
-      this.form.reset();
-    }
+    super.writeValue(question);
   }
-
-  registerOnChange(fn: any) {
-    this.valueChangesSub?.unsubscribe();
-    this.valueChangesSub = this.form.valueChanges.subscribe(value => {
-      fn(value);
-    });
-  }
-
-  registerOnTouched(fn: any) {
-    this.onTouch = fn;
-  }
-
-  editMode = signal(false);
-  protected readonly DialogMode = DialogMode;
-
 }
