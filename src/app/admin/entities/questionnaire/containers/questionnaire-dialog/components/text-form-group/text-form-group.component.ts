@@ -52,7 +52,7 @@ export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, 
   textareaRows = input<number>(3);
   textareaAutosize = input<boolean>(false);
 
-  form = new FormGroup<{[p: string]: FormControl<string | null>}>({});
+  form = new FormGroup<Record<string, FormControl<string | null>>>({});
 
   private valueChangesSub?: Subscription;
 
@@ -62,7 +62,7 @@ export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, 
     });
   }
 
-  validate(control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -100,7 +100,7 @@ export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, 
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   writeValue(value?: Record<string, string>) {

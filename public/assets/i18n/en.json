@@ -498,7 +498,6 @@
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No Organization found",
       "noItemFoundWithTheFilter": "No Organization found with the filter",
-
       "filters": {
         "search": "Search"
       }
@@ -1498,6 +1497,42 @@
         "tableLabel": "Question Count",
         "label": "Question Count"
       },
+      "dialog": {
+        "nameLabel": "Name",
+        "languagesLabel": "Languages",
+        "questionsLabel": "Questions",
+        "addQuestionButtonLabel": "Add Question",
+        "questionLabelLabel": "Question Label",
+        "questionHeaderLabel": "Question Header",
+        "questionChoicesLabel": "Choices",
+        "questionFieldNameLabel": "Field Name",
+        "questionFieldTypeLabel": "Field Type",
+        "questionTextValidationLabel": "text_validation_type_or_show_slider_number",
+        "questionTextValidationText": "Text",
+        "questionTextValidationNumber": "Number",
+        "questionTextValidationDate": "Date",
+        "questionTextValidationDateTime": "DateTime",
+        "questionTextValidationTime": "Time",
+        "questionTextValidationDuration": "Duration",
+        "questionTextValidationMin": "text_validation_min",
+        "questionTextValidationMax": "text_validation_max",
+        "questionConditionalLogic": "Conditional Logic",
+        "questionRangeLabel": "Range",
+        "questionRangeMin": "Min",
+        "questionRangeMax": "Max",
+        "questionRangeStep": "Step",
+        "questionChoiceCode": "Code",
+        "questionChoiceLabel": "Label",
+        "questionFieldAnnotationLabel": "Field Annotation",
+        "questionFieldAnnotationImage": "Image",
+        "questionFieldAnnotationTimerUnit": "Timer Unit",
+        "questionFieldAnnotationTimerStart": "Timer Start",
+        "questionFieldAnnotationTimerEnd": "Timer End"
+      },
+      "filters": {
+        "search": "Search"
+      },
+      "availableLanguages": "Languages",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Questionnaire",
       "edit": "Edit",

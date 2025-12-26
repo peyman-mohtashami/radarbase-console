@@ -1,119 +1,26 @@
-import {inject, Injectable, signal, WritableSignal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../base-entities/enums/dialog';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AppQuestionnaire} from "../models/questionnaire";
+import {MatDialogRef} from '@angular/material/dialog';
+import {AppQuestionnaire, RadarQuestionnaire} from "../models/questionnaire";
 import {QuestionnaireService} from "./questionnaire.service";
 import {
   QuestionnaireDialogComponent
 } from "../containers/questionnaire-dialog/questionnaire-dialog.component";
-import {
-  ConfigPublishDialogComponent
-} from "../../config/containers/config-publish-dialog/config-publish-dialog.component";
-import {Observable, of} from "rxjs";
-
-export interface UpdateTrigger {
-  mode: DialogMode | string;
-  entity?: AppQuestionnaire;
-}
+import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
+import {QuestionnaireConfigService} from './questionnaire-config.service';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireDialogService {
-  private entityService = inject(QuestionnaireService);
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialog = inject(MatDialog);
+export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, RadarQuestionnaire, QuestionnaireDialogComponent> {
+  override entityService = inject(QuestionnaireService);
+  override configService = inject(QuestionnaireConfigService);
 
-  dialogUpdateEvent: WritableSignal<UpdateTrigger | undefined> = signal(undefined);
-
-  openDialog(
+  override createDialogRef(
     mode: DialogMode,
-    entity: AppQuestionnaire | undefined,
-    entities: AppQuestionnaire[],
-    language = 'en'
-  ) {
-    if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
-      return;
-    }
-
-    const dialogRef = this.createDialogRef(mode, {entity, language});
-
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
-        this.processDialogAction(value.action, value.entity, entities).subscribe({
-          next: (res) => {
-            // const entity = res ?? value.entity;
-            this.dialogUpdateEvent.set({mode, entity})
-            dialogRef.close();
-          },
-          error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-        });
-      }
-      // next: (value: { action: DialogMode; entity: AppQuestionnaire }) => {
-      //   this.dialogUpdateEvent.set({mode, entity: entity ? value.entity : value.entity});
-      //   dialogRef.close();
-      // }
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  private processDialogAction(actionType: DialogMode, entity: AppQuestionnaire, entities: AppQuestionnaire[]): Observable<AppQuestionnaire[] | void> {
-
-    switch (actionType) {
-      case DialogMode.ADD: {
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 71 ' , );
-        const updated = [...entities, entity];
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 73 updated' , updated);
-        return this.entityService.publish(updated);
-      }
-      case DialogMode.EDIT: {
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 77 ' , );
-        const updated = [...entities];
-        const idx = updated.findIndex(e => e.name === entity.name); // use your unique key
-        if (idx !== -1) {
-          updated.splice(idx, 1, entity);
-        } else {
-          updated.push(entity);
-        }
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 85 updated' , updated);
-        return this.entityService.publish(updated);
-      }
-      case DialogMode.DELETE: {
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 89 ' , );
-        const updated = [...entities];
-        const idx = updated.findIndex(e => e.name === entity.name);
-        if (idx !== -1) {
-          updated.splice(idx, 1);
-        }
-        console.log('Class: QuestionnaireDialogService, Function: processDialogAction, Line 94 updated' , updated);
-        return this.entityService.publish(updated);
-      }
-      default:
-        this.clearFragmentUrl();
-        return of();
-    }
-  }
-
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
-
-  createDialogRef(
-    mode: DialogMode,
-    data: {entity: AppQuestionnaire | undefined, language: string},
+    entity?: AppQuestionnaire,
   ): MatDialogRef<QuestionnaireDialogComponent> {
-    const questionnairesFullList = this.entityService.getAll();
+    const questionnaireFullList = this.entityService.getWithQuery();
 
-    const _data = {mode, entity: data.entity, questionnairesFullList, language: data.language};
+    const _data = {mode, entity, questionnaireFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -138,51 +45,5 @@ export class QuestionnaireDialogService {
           restoreFocus: false
         });
     }
-  }
-
-  // openPublishDialog(
-  //   mode: "publish" | "discard",
-  //   entities: AppQuestionnaire[],
-  //   projectId?: string,
-  //   subjectId?: string
-  // ) {
-  //   const dialogRef = this.createPublishDialogRef(mode, entities);
-  //
-  //   const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-  //     next: (value: { action: DialogMode | string; entity: AppConfig }) => {
-  //       if (value.action === 'publish') {
-  //         if (entities) {
-  //           this.entityService.publish(entities, projectId, subjectId).subscribe({
-  //             next: (res) => {
-  //               this.dialogUpdateEvent$.set({mode: 'published', entity: undefined});
-  //               dialogRef.close();
-  //             },
-  //             error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-  //           })
-  //         }
-  //       } else if (value.action === 'discard') {
-  //         this.dialogUpdateEvent$.set({mode: 'discarded', entity: undefined});
-  //         dialogRef.close();
-  //       }
-  //     }
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(() => {
-  //     dialogActionSubscription.unsubscribe();
-  //   });
-  // }
-
-  createPublishDialogRef(
-    mode: "publish" | "discard",
-    entities?: AppQuestionnaire[]
-  ): MatDialogRef<ConfigPublishDialogComponent> {
-    return this.dialog.open(ConfigPublishDialogComponent, {
-      data: {mode, entities},
-      width: '50%',
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
   }
 }

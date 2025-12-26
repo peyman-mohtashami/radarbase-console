@@ -41,6 +41,9 @@ import {MatIcon} from '@angular/material/icon';
 import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
+import {
+  DialogTitleComponent
+} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 
 @Component({
   selector: 'app-protocol-dialog',
@@ -68,6 +71,7 @@ import {AsyncPipe} from '@angular/common';
     MatIcon,
     ErrorMessageBoxComponent,
     AsyncPipe,
+    DialogTitleComponent,
   ],
   providers: [
     {

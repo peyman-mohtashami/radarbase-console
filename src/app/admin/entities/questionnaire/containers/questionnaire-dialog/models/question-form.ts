@@ -5,7 +5,7 @@ export interface QuestionForm {
   field_type: FormControl<string>;
   field_label: FormControl<Record<string, string>>;
   section_header: FormControl<Record<string, string>>;
-  select_choices_or_calculations?: FormControl<Array<QuestionFormChoice>>;
+  select_choices_or_calculations?: FormControl<QuestionFormChoice[]>;
   field_annotation?: FormControl<QuestionFormAnnotation>;
   range?: FormControl<QuestionFormRange>;
   branching_logic_enabled?: FormControl<boolean>;

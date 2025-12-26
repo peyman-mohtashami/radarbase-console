@@ -14,11 +14,13 @@
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
       <span> {{ label()?.singular! | translate }} {{ "ADMIN." + entityMetadata()?.name + ".title.singular" | translate }}</span>
-      <ng-content/>
+      <span> {{ entityName() ? `"${entityName()}"` : `` }}</span>
     </span>
-    <button mat-icon-button
-            (click)='close()'>
-      <mat-icon class="material-symbols-outlined">close</mat-icon>
-    </button>
+    <div>
+      <ng-content/>
+      <button mat-icon-button (click)='close()'>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </div>
   </span>
 </h2>

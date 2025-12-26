@@ -13,6 +13,8 @@ import {RadarOption} from "../../../../../../../shared/components/mat-dynamic-in
 import {moveItemInFormArray} from "../../questionnaire-dialog.component";
 import {TextFormGroupComponent} from "../text-form-group/text-form-group.component";
 import {MatIconButton} from '@angular/material/button';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-choices-form-array',
@@ -25,6 +27,8 @@ import {MatIconButton} from '@angular/material/button';
     MatInput,
     TextFormGroupComponent,
     MatIconButton,
+    TranslatePipe,
+    MatIcon,
   ],
   providers: [
     {

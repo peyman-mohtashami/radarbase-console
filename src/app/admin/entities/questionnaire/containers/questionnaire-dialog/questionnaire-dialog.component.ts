@@ -1,26 +1,19 @@
 import {
   AfterViewInit,
   Component,
-  effect,
-  EventEmitter,
   inject,
   OnInit,
-  Output,
-  signal,
 } from '@angular/core';
 import {
   AbstractControl,
   FormArray, FormControl,
   FormGroup, FormsModule, ReactiveFormsModule,
 } from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
-import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
+import {Validator} from '../../../../../shared/utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {HttpErrorResponse} from "@angular/common/http";
-import {toSignal} from "@angular/core/rxjs-interop";
-import {debounceTime} from "rxjs/operators";
 import {DialogMode} from "../../../../base-entities/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestion, AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from "../../models/questionnaire";
@@ -28,7 +21,6 @@ import {
   DialogBodyDescriptionComponent
 } from "../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component";
 import {
-  DialogAction,
   DialogActionsComponent
 } from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
 import {
@@ -40,6 +32,13 @@ import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {QuestionsFormArrayComponent} from './components/questions-form-array/questions-form-array.component';
 import {Observable} from 'rxjs';
+import {
+  BaseEntityDialogComponent
+} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {
+  DialogTitleComponent
+} from '../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 
 export interface RadarCondition {
   conditionField: string;
@@ -61,23 +60,20 @@ export interface RadarCondition {
     QuestionsFormArrayComponent,
     EditorComponent,
     FormsModule,
-    MatDialogTitle,
     MatIconButton,
     MatTooltip,
+    ErrorMessageBoxComponent,
+    DialogTitleComponent,
   ]
 })
-export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
-  private configService = inject(QuestionnaireConfigService);
-  private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
-  public dialogData = inject(MAT_DIALOG_DATA) as {
+export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> implements OnInit, AfterViewInit {
+  override configService = inject(QuestionnaireConfigService);
+  override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
+  override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppQuestionnaire;
+    entity?: AppQuestionnaire;
     questionnaireFullList: Observable<AppQuestionnaire[]>;
   };
-
-  protected readonly DialogMode = DialogMode;
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
   protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
@@ -90,108 +86,39 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   };
   protected showCode = false;
 
-  updatedValue?: AppQuestionnaire;
+  // updatedValue?: AppQuestionnaire;
   updatedCode = '';
 
-  formFields = this.configService.getFormFields();
+  override formFields = this.configService.getFormFields();
 
-  form = new FormGroup({
+  override form = new FormGroup({
     name: new FormControl<string>('', {validators: [Validator.requiredValidator, Validator.stringIdValidator], nonNullable: true}),
     languages: new FormControl<RadarOption[]>([this.DEFAULT_LANG], {nonNullable: true}),
     questions: new FormControl<AppQuestion[]>([], {nonNullable: true}),
   });
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  @Output()
-  dialogActionEvent = new EventEmitter<{ action: DialogMode, entity?: AppQuestionnaire }>();
-
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
   questionnaireFullList: AppQuestionnaire[] = [];
-
-  constructor() {
-    effect(() => {
-      if (this.formValueChanges?.()) {
-        this.error.set(null);
-      }
-    });
-  }
 
   ngOnInit() {
     this.dialogData.questionnaireFullList.subscribe(questionnaires => {
-      this.questionnaireFullList = questionnaires;
-      this.form.controls.name.addValidators(this.duplicateValidator);
-    })
-
-    const updatedEntity: AppQuestionnaire = {
-      ...this.dialogData.entity,
-    };
-    this.updatedValue = {...updatedEntity};
-    this.updatedCode = JSON.stringify(this.updatedValue, null, 2);
-    this.form.controls.languages.setValue(updatedEntity.languages ?? [this.DEFAULT_LANG]);
-    this.form.patchValue(updatedEntity);
-  }
-
-  ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
-    setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
+        this.questionnaireFullList = questionnaires;
+        this.form.controls.name.addValidators(this.duplicateValidator);
+        this.form.controls.name.updateValueAndValidity();
     });
-  }
 
-  onAction($event: DialogAction) {
-    this.error.set(null);
-    this.loading.set(true);
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        this.handleSaveAction();
-        break;
+    if (this.dialogData.entity) {
+      const updatedEntity: AppQuestionnaire = {
+        ...this.dialogData.entity,
+      };
+      // this.updatedValue = {...updatedEntity};
+      // this.updatedCode = JSON.stringify(this.updatedValue, null, 2);
+      this.form.controls.languages.setValue(updatedEntity.languages ?? [this.DEFAULT_LANG]);
+      this.form.patchValue(updatedEntity);
     }
   }
 
-
-  private handleSaveAction(): void {
-    const value = this.form.getRawValue();
-    const updatedEntity: AppQuestionnaire = {
-      ...this.dialogData.entity,
-      ...value,
-    };
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: updatedEntity,
-    });
-  }
-
-  private handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
-  close() {
-    this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
-
-    setTimeout(() => {
-      this.dialogActionEvent.emit({action: DialogMode.CLOSE});
-      this.dialogRef.close();
-    }, 300);
-  }
-
-  errorHappened(error: HttpErrorResponse): void {
-    this.loading.set(false);
-    this.error.set(error);
+  ngAfterViewInit() {
+    super.afterViewInit();
   }
 
   private duplicateValidator = (control: AbstractControl) => {
@@ -204,11 +131,11 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 
   protected toggleCodeView() {
-    const value = this.form.getRawValue();
-    const json = {...value, languages: undefined};
-    this.updatedValue = {...value, _name: value.name , _search: value.name, languages: value.languages};
-    this.updatedCode = JSON.stringify(json, null, 2);
-    this.showCode = !this.showCode
+    // const value = this.form.getRawValue();
+    // const json = {...value, languages: undefined};
+    // this.updatedValue = {...value, _name: value.name , _search: value.name, languages: value.languages};
+    // this.updatedCode = JSON.stringify(json, null, 2);
+    // this.showCode = !this.showCode
   }
 }
 

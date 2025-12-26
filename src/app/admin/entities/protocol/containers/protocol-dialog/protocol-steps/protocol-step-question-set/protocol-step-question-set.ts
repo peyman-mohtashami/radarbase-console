@@ -98,7 +98,7 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
     // Also notify when the inner form’s status changes (covers field edits)
     this.statusSub = this.form.statusChanges.subscribe(() => this.validatorChange());
 
-    this.questionnaires = this.questionnaireService.getAll()
+    this.questionnaires = this.questionnaireService.getWithQuery()
   }
 
   validate(): ValidationErrors | null {

@@ -1,5 +1,4 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {
   AppQuestion,
   AppQuestionnaire,
@@ -7,8 +6,8 @@ import {
   RadarQuestion,
   RadarQuestionnaire,
 } from "../models/questionnaire";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, of} from "rxjs";
+import {map, tap} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
 import {MockQuestionnaireServer} from "../mock/mockQuestionnaireServer";
@@ -18,21 +17,43 @@ import {
   getHeaders,
   getUrlSegment
 } from '../../config/services/config.service';
+import {BaseEntityService} from '../../../base-entities/services/base-entity.service';
+import {Params} from '@angular/router';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireService {
+export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, RadarQuestionnaire> {
+  updatedList: AppQuestionnaire[] = [];
 
-  private http = inject(HttpClient);
   private readonly CLIENT_ID = 'questionnaire-service';
 
+  override getWithQuery(queryParams?: Params, projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
+    const {
+      pageIndex = 0,
+      pageSize = 10,
+      sortField = 'id',
+      sortOrder = 'desc',
+      ...filter
+    } = queryParams ?? {};
 
-  getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
+    const process = (entities: AppQuestionnaire[]) => {
+      const filteredEntities = this.getFilteredEntities(entities, filter);
+      const sortedEntities = this.applySorting(filteredEntities, {sortField, sortOrder});
+      return this.applyPagination(sortedEntities, {pageSize, pageIndex});
+    };
+
+    if (this.CACHE_ENABLED && this.cacheLoaded) {
+      this.total.set(this.cache.length);
+      return of(queryParams ? process(this.updatedList) : this.updatedList);
+    }
+
     const headers = getHeaders();
     const appConfigBaseUrl = getAppConfigBaseUrl();
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
-    return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)).pipe(
+    const radarConfigBundleObservable = !environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)
+
+    return radarConfigBundleObservable.pipe(
       map(configBundle => {
           const radarConfigs = getConfigsFromConfigBundle(configBundle);
           const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
@@ -50,8 +71,78 @@ export class QuestionnaireService {
           });
           return questionnaireArray.map(q => this.radarToAppModel(q));
         }
-      ));
+      ),
+      tap((entities) => {
+        this.cache = [...entities];
+        this.updatedList = [...entities];
+        this.cacheLoaded = true;
+        this.total.set(entities.length);
+      }),
+      map((entities) => queryParams ? process(entities) : entities)
+    );
   }
+
+  override getEntity(key: number | string): AppQuestionnaire {
+    const entity = this.updatedList.find(item => item._name === key);
+    if (!entity) throw new Error(`Entity with id ${key} not found`);
+    return entity;
+  }
+
+  override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
+    return of(entity)
+      .pipe(
+        // map(entity => this.toAppModel(entity)),
+        tap(_entity => {
+          this.total.set(this.total() + 1);
+          this.updatedList.push(_entity);
+        })
+      );
+  }
+
+  override update(update: AppQuestionnaire): Observable<AppQuestionnaire> {
+    return of(update)
+      .pipe(
+        // map(entity => this.toAppModel(entity)),
+        tap(() => {
+          this.updatedList = this.updatedList.map((e) => (e._name === update._name ? update : e));
+        })
+      );
+  }
+
+  override delete(entity: AppQuestionnaire): Observable<void> {
+    return of(undefined).pipe(
+      tap(() => {
+        this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
+      })
+    );
+  }
+
+  // getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
+  //   const headers = getHeaders();
+  //   const appConfigBaseUrl = getAppConfigBaseUrl();
+  //   const urlSegment = getUrlSegment(projectId, subjectId);
+  //   const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
+  //
+  //   return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)).pipe(
+  //     map(configBundle => {
+  //         const radarConfigs = getConfigsFromConfigBundle(configBundle);
+  //         const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
+  //           const name = cur.name;
+  //           const {base, lang} = parseName(name);
+  //           acc[base] = {...acc[base], [lang]: JSON.parse(cur.value)};
+  //           return acc;
+  //         }, {});
+  //         const questionnaireArray: RadarQuestionnaire[] = Object.keys(groupedQuestionnaires).map(key => {
+  //           return {
+  //             name: key,
+  //             languages: Object.keys(groupedQuestionnaires[key]),
+  //             questions: groupedQuestionnaires[key]
+  //           }
+  //         });
+  //         return questionnaireArray.map(q => this.radarToAppModel(q));
+  //       }
+  //     ));
+  // }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
     const headers = getHeaders();
@@ -67,7 +158,7 @@ export class QuestionnaireService {
       }
     ));
 
-    let configs: RadarConfig[] = [];
+    const configs: RadarConfig[] = [];
     radarQuestionnaires.forEach(q => {
       const name = q.name;
       Object.keys(q.questions).forEach(lang => {
@@ -145,13 +236,13 @@ export class QuestionnaireService {
     };
   }
 
-  appToRadarModel(entity: AppQuestionnaire): RadarQuestionnaire {
-    return {
-      name: entity.name,
-      languages: entity.languages.map(l => l.id.toString()),
-      questions: this.toQuestionRadarModel(entity.questions)
-    };
-  }
+  // appToRadarModel(entity: AppQuestionnaire): RadarQuestionnaire {
+  //   return {
+  //     name: entity.name,
+  //     languages: entity.languages.map(l => l.id.toString()),
+  //     questions: this.toQuestionRadarModel(entity.questions)
+  //   };
+  // }
 
   private toQuestionRadarModel(appQuestions: AppQuestion[]): Record<string, RadarQuestion[]> {
     const languages = Object.keys(appQuestions[0].field_label!);

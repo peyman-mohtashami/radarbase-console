@@ -5,13 +5,18 @@ import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
 import {BaseConfigService} from '../../../base-entities/services/base-config.service';
 
 export const TableElements: TableElement[] = [
-  { name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true },
-  { name: 'questionCount', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden", sortable: true},
+  {name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true},
+  {
+    name: 'questionCount',
+    width: "w-32",
+    tableClass: "hidden lg:block",
+    extensionClass: "block lg:hidden",
+  },
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
 ];
 
 export const filters: FilterItem[] = [
-  { name: '_search', label: 'ADMIN.organization.filters.search', type: FormFieldType.INPUT },
+  {name: '_search', label: 'ADMIN.questionnaire.filters.search', type: FormFieldType.INPUT},
 ]
 
 

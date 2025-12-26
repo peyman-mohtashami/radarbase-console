@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Resolve} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {QuestionnaireService} from "./questionnaire.service";
 import {AppQuestionnaire} from "../models/questionnaire";
@@ -10,9 +10,9 @@ export class QuestionnairesResolver implements Resolve<AppQuestionnaire[]> {
   private entityService = inject(QuestionnaireService);
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  resolve(): Observable<AppQuestionnaire[]> {
+  resolve(route: ActivatedRouteSnapshot): Observable<AppQuestionnaire[]> {
     const project = this.selectedEntitiesService.selectedProject();
     const subject = this.selectedEntitiesService.selectedSubject();
-    return this.entityService.getAll(project?._name, subject?._name);
+    return this.entityService.getWithQuery(route.queryParams, project?._name, subject?._name);
   }
 }

@@ -1,10 +1,10 @@
-import {Component, inject, Input, input, OnDestroy, output, signal} from '@angular/core';
+import {Component, inject, input, OnDestroy, output, signal} from '@angular/core';
 import {
   ControlValueAccessor,
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, Validator, NG_VALIDATORS, AbstractControl, ValidationErrors
+  ReactiveFormsModule, Validator, NG_VALIDATORS, ValidationErrors
 } from '@angular/forms';
 import {MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField} from "@angular/material/form-field";
@@ -26,6 +26,7 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {DialogMode} from '../../../../../../base-entities/enums/dialog';
 import {TagComponent} from '../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-question-form-group',
@@ -47,8 +48,7 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatRadioGroup,
     TagComponent,
     MatTooltip,
-    // MatSlideToggle,
-    // BranchingLogicFormGroupComponent
+    MatIcon,
   ],
   providers: [
     {
@@ -99,7 +99,7 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
 
   private valueChangesSub?: Subscription;
 
-  validate(control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -159,7 +159,7 @@ export class QuestionFormGroupComponent implements ControlValueAccessor, Validat
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   updateFormControls(type?: string) {

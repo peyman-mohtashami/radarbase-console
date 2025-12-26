@@ -1,12 +1,13 @@
 <div [formGroup]="form">
   @if (label()) {
-    <label for="startText" class="text-sm">{{ label() }} {{required() ? '*' : ''}}</label>
+    <label for="startText" class="text-sm">{{ label() }} {{ required() ? '*' : '' }}</label>
   }
   @for (language of languages(); track language) {
     @if (language.id === questionnaireStateService.selectedLanguage()) {
       <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
         @if (textarea()) {
-          <textarea matInput [cdkTextareaAutosize]="textareaAutosize()" [rows]="textareaRows()" [formControlName]='language.id'></textarea>
+          <textarea matInput [cdkTextareaAutosize]="textareaAutosize()" [rows]="textareaRows()"
+                    [formControlName]='language.id'></textarea>
         } @else {
           <input matInput [formControlName]='language.id'>
         }

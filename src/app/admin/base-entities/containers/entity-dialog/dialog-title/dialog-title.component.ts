@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {DialogMode} from "../../../enums/dialog";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -20,12 +20,13 @@ export class DialogTitleComponent {
   protected readonly DialogMode = DialogMode;
 
   dialogMode = input<DialogMode>();
+  entityName = input<string>();
   entityMetadata = input<EntityRegistry>();
   label = input<{ singular: string; plural: string }>();
 
-  @Output() closeClicked = new EventEmitter();
+  closeEvent = output<void>();
 
   close() {
-    this.closeClicked.emit();
+    this.closeEvent.emit();
   }
 }

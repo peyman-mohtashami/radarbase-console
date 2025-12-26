@@ -4,7 +4,7 @@ import {
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, AbstractControl, ValidationErrors, NG_VALIDATORS, Validator
+  ReactiveFormsModule, ValidationErrors, NG_VALIDATORS, Validator
 } from '@angular/forms';
 import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -48,7 +48,7 @@ export class AnnotationFormGroupComponent implements ControlValueAccessor, OnDes
 
   private valueChangesSub?: Subscription;
 
-  validate(control: AbstractControl): ValidationErrors | null {
+  validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
     // Check main form controls
@@ -86,7 +86,7 @@ export class AnnotationFormGroupComponent implements ControlValueAccessor, OnDes
     this.valueChangesSub?.unsubscribe();
   }
 
-  onChange = (value: any) => {};
+  onChange = () => {};
   onTouch = () => {};
 
   writeValue(value?: {image: string; timer: {start: number; end: number;}; unit: string;} | null) {
@@ -108,3 +108,5 @@ export class AnnotationFormGroupComponent implements ControlValueAccessor, OnDes
     this.onTouch = fn;
   }
 }
+
+

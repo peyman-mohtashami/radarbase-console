@@ -1,8 +1,11 @@
-<label for="unit" class="text-sm">Range</label>
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }}</label>
 <fieldset [formGroup]="form" class="p-2 rounded-sm border">
   <div class="grid grid-cols-3 gap-4">
     <div>
-      <label for="select_choices_or_calculations" class="text-sm">Min *</label>
+      <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeMin` | translate }}
+        *</label>
       <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='min' required/>
         @if (form.controls.min.errors; as errors) {
@@ -11,7 +14,7 @@
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMin` | translate} }}
             }
           </mat-error>
         }
@@ -19,7 +22,8 @@
     </div>
 
     <div>
-      <label for="select_choices_or_calculations" class="text-sm">Max *</label>
+      <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeMax` | translate }}
+        *</label>
       <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='max' required/>
         @if (form.controls.max.errors; as errors) {
@@ -28,7 +32,7 @@
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMax` | translate} }}
             }
           </mat-error>
         }
@@ -36,7 +40,8 @@
     </div>
 
     <div>
-      <label for="select_choices_or_calculations" class="text-sm">Step *</label>
+      <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeStep` | translate }}
+        *</label>
       <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='step' required/>
         @if (form.controls.step.errors; as errors) {
@@ -45,7 +50,7 @@
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.organization.name.label' | translate} }}
+              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeStep` | translate} }}
             }
           </mat-error>
         }
