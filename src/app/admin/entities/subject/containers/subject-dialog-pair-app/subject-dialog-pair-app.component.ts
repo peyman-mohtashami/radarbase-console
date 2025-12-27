@@ -40,8 +40,8 @@ import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {
   DialogBodyDescriptionComponent
 } from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
-import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {DetailElementComponent} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
+import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 
 @Component({
   selector: 'app-subject-dialog-pair-app',
@@ -52,7 +52,6 @@ import {DetailElementComponent} from '../../../../base-entities/components/entit
     DetailElementComponent,
     TranslatePipe,
     DatePipe,
-    DhmsPipe,
     ReactiveFormsModule,
     MatDialogClose,
     MatButton,
@@ -65,7 +64,8 @@ import {DetailElementComponent} from '../../../../base-entities/components/entit
     MatOption,
     SubjectDetailsComponent,
     AsyncPipe,
-    QrCodeComponent
+    QrCodeComponent,
+    DurationPipe
   ]
 })
 export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit {

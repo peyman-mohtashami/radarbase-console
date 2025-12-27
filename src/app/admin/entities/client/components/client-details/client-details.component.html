@@ -25,10 +25,10 @@
       <app-client-tags [tags]="entity().autoApproveScopes" colorClass="bg-secondary/10 text-primary dark:bg-secondary-dark/10 dark:text-primary-dark"/>
     }
     @case ('accessTokenValiditySeconds') {
-      {{ entity().accessTokenValiditySeconds | dhms }}
+      {{ entity().accessTokenValiditySeconds | duration:'s' }}
     }
     @case ('refreshTokenValiditySeconds') {
-      {{ entity().refreshTokenValiditySeconds | dhms }}
+      {{ entity().refreshTokenValiditySeconds | duration:'s' }}
     }
     @case ('registeredRedirectUri') {
       <app-client-tags [tags]="entity().registeredRedirectUri" colorClass="bg-neutral-100 text-neutral-700"/>

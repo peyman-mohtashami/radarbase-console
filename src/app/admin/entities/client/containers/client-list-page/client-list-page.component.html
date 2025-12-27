@@ -21,16 +21,16 @@
 }
 
 <app-entity-list-page [entities]="entities()"
-                   [tableFields]="tableFields"
-                   [entityMetadata]="entityMetadata"
-                   [page]="page()"
-                   [sort]="sort()"
-                   (switchPageEvent)="switchPage($event)"
-                   (switchSortEvent)="switchSort($event)"
-                   [customTemplate]="itemTemplate"
-                   [totalEntities]="entityService.total()"/>
+                      [tableFields]="tableFields"
+                      [entityMetadata]="entityMetadata"
+                      [page]="page()"
+                      [sort]="sort()"
+                      (switchPageEvent)="switchPage($event)"
+                      (switchSortEvent)="switchSort($event)"
+                      [customTemplate]="itemTemplate"
+                      [totalEntities]="entityService.total()"/>
 <ng-template #itemTemplate let-entity>
   <app-client-table-row [entity]="entity"
                         [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
-                        [extensionClass]="extensionClass()" />
+                        [extensionClass]="extensionClass()"/>
 </ng-template>

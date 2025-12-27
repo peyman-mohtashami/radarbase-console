@@ -185,6 +185,18 @@
       "duplicateValidator": "",
       "dateOutOfMinRange": "Date is out of range. It should be after 2000.",
       "dateOutOfMaxRange": "Date is out of range. It should be before 2050."
+    },
+    "UNIT": {
+      "week": "week",
+      "weeks": "weeks",
+      "day": "day",
+      "days": "days",
+      "hour": "hour",
+      "hours": "hours",
+      "minute": "minute",
+      "minutes": "minutes",
+      "second": "second",
+      "seconds": "seconds"
     }
   },
   "ADMIN": {
@@ -237,7 +249,12 @@
         "plural": "OAuth Clients"
       },
       "clientId": {
-        "tableLabel": "ID",
+        "tableLabel": "Client ID",
+        "label": "Client ID",
+        "duplicate": "Client ID exists"
+      },
+      "id": {
+        "tableLabel": "Client ID",
         "label": "Client ID",
         "duplicate": "Client ID exists"
       },

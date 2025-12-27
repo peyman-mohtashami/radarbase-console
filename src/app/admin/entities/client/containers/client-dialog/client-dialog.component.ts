@@ -15,10 +15,11 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
-import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from '../../services/client-config.service';
 import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 
 @Component({
   selector: 'app-client-dialog',
@@ -34,11 +35,12 @@ import {Observable} from 'rxjs';
     MatFormField,
     MatError,
     MatInput,
-    DhmsPipe,
     MatHint,
     MatSlideToggle,
     MatButton,
-    MatSuffix
+    MatSuffix,
+    ErrorMessageBoxComponent,
+    DurationPipe
   ]
 })
 export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> implements OnInit, AfterViewInit {
@@ -53,7 +55,10 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
   override formFields = this.configService.getFormFields();
 
   override form = new FormGroup({
-    clientId: new FormControl<string>({value: '', disabled: this.dialogData.mode !== DialogMode.ADD}, {nonNullable: true, validators: [Validator.requiredValidator, Validator.stringIdValidator]}),
+    clientId: new FormControl<string>(
+      {value: '', disabled: this.dialogData.mode !== DialogMode.ADD},
+      {nonNullable: true, validators: [Validator.requiredValidator, Validator.stringIdValidator]}
+    ),
     enableEmptySecret: new FormControl<boolean>(false),
     clientSecret: new FormControl<string>(''),
     scope: new FormControl<string[]>([], {validators: [Validator.requiredValidator]}),
@@ -68,8 +73,12 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
     ),
     registeredRedirectUri: new FormControl<string[]>([]),
     autoApproveScopes: new FormControl<string[]>([]),
-    accessTokenValiditySeconds: new FormControl<number | null>(null, {validators: [Validator.requiredValidator]}),
-    refreshTokenValiditySeconds: new FormControl<number | null>(null, {validators: [Validator.requiredValidator]}),
+    accessTokenValiditySeconds: new FormControl<number | null>(
+      null, {validators: [Validator.requiredValidator]}
+    ),
+    refreshTokenValiditySeconds: new FormControl<number | null>(
+      null, {validators: [Validator.requiredValidator]}
+    ),
     additionalInformation: new FormGroup({
       dynamic_registration: new FormControl<boolean>(false),
     })

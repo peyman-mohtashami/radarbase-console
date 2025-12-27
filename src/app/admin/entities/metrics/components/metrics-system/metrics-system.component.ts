@@ -4,7 +4,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {ProcessMetrics} from '../../models/radar-metrics.model';
 import {DetailElementComponent} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
-import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
+import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 
 @Component({
   selector: 'app-metrics-system',
@@ -12,10 +12,10 @@ import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
   imports: [
     DetailElementComponent,
     TranslatePipe,
-    DhmsPipe,
     LocalDateComponent,
     PercentPipe,
-    DecimalPipe
+    DecimalPipe,
+    DurationPipe
   ]
 })
 export class MetricsSystemComponent {

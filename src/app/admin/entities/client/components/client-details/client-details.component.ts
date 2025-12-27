@@ -4,9 +4,9 @@ import { AppClient } from "../../models/client";
 import {ClientTagsComponent} from "../client-resource-ids/client-tags.component";
 import {MatIcon} from "@angular/material/icon";
 import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
-import {DhmsPipe} from '../../../../../shared/pipes/dhms.pipe';
 import {ClientConfigService} from "../../services/client-config.service";
 import {BaseEntityDetailsComponent} from '../../../../base-entities/components/entity-details/base-entity-details.component';
+import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 
 @Component({
   selector: 'app-client-details',
@@ -14,8 +14,8 @@ import {BaseEntityDetailsComponent} from '../../../../base-entities/components/e
   imports: [
     MatIcon,
     ClientTagsComponent,
-    DhmsPipe,
     EntityDetailsComponent,
+    DurationPipe,
   ]
 })
 export class ClientDetailsComponent extends BaseEntityDetailsComponent<AppClient> {

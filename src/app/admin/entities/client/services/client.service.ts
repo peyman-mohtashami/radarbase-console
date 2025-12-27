@@ -24,6 +24,10 @@ export class ClientService extends BaseEntityService<AppClient, RadarClient>{
   }
 
   override toRadarModel(entity: AppClient): RadarClient {
+    const additionalInformation: Record<string, boolean> = {};
+    if (entity.additionalInformation['dynamic_registration']) {
+      additionalInformation['dynamic_registration'] = true;
+    }
     return {
       ...entity,
       authorizedGrantTypes: Object.keys(entity._authorizedGrantTypes ?? {}).filter(
@@ -34,9 +38,7 @@ export class ClientService extends BaseEntityService<AppClient, RadarClient>{
       resourceIds: this.customSplit(entity.resourceIds),
       autoApproveScopes: this.customSplit(entity.autoApproveScopes),
       registeredRedirectUri: this.customSplit(entity.registeredRedirectUri),
-      additionalInformation: {
-        ...entity.additionalInformation,
-      }
+      additionalInformation,
     };
   }
 

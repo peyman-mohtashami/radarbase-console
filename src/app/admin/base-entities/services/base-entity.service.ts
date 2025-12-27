@@ -79,6 +79,8 @@ export class BaseEntityService<T extends {_name: string}, U> {
   }
 
   protected applySorting(entities: T[], sort: RbSort): T[] {
+    console.log('Class: BaseEntityService, Function: applySorting, Line 82 entities' , entities);
+    console.log('Class: BaseEntityService, Function: applySorting, Line 83 sort' , sort);
     const {sortField, sortOrder} = sort;
     const collator = new Intl.Collator('en', {numeric: true, sensitivity: 'base'})
     return entities.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {

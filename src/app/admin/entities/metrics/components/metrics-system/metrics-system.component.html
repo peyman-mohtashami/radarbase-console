@@ -4,7 +4,7 @@
       class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
       <app-detail-element>
         <ng-container label>{{ 'ADMIN.metrics.processMetrics.process.uptime' | translate }}</ng-container>
-        <ng-container value>{{ systemMetrics["process.uptime"] / 1000 | dhms }}</ng-container>
+        <ng-container value>{{ systemMetrics["process.uptime"] / 1000 | duration:'s' }}</ng-container>
       </app-detail-element>
 
       <app-detail-element>

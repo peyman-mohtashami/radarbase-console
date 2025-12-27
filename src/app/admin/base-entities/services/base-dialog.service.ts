@@ -63,6 +63,9 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
               const entity = res ?? _entity;
               this.dialogUpdateEvent.set({mode, entity})
               dialogRef.close();
+              setTimeout(() => {
+                this.dialogUpdateEvent.set(undefined);
+              })
             },
             error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
           });

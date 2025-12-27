@@ -43,7 +43,7 @@
         </app-detail-element>
         <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.validity' | translate }}</ng-container>
-          <ng-container value>{{ (pairInfo.timeout / 1000 | dhms) || '-' }}</ng-container>
+          <ng-container value>{{ (pairInfo.timeout / 1000 | duration) || '-' }}</ng-container>
         </app-detail-element>
       </div>
     </app-dialog-body-description>

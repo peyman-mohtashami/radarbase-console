@@ -161,21 +161,9 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleDialogUpdate(updated: { mode: DialogMode | string, entity?: T }) {
     this.refreshEntities();
-    // switch (updated.mode) {
-    //   case DialogMode.ADD:
-    //     this.refreshEntities();
-    //     // this.addEntityToView(updated.entity);
-    //     break;
-    //   case DialogMode.EDIT:
-    //     this.refreshEntities();
-    //     // this.updateEntityInView(updated.entity);
-    //     break;
-    //   case DialogMode.DELETE:
-    //     this.refreshEntities();
-    //     break;
-    // }
     this.removeFragmentUrl();
     this.loading.set(false);
     this.selection.clear();
