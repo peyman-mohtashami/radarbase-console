@@ -1,0 +1,66 @@
+<nav aria-label="breadcrumb" class="px-4 py-2 flex flex-wrap items-center bg-white dark:bg-background-dark">
+  <div class='flex flex-wrap gap-2 items-center'>
+    <button class="h-6! text-xs! font-bold! rounded-sm! bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'organizations']">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITY_REGISTRY.organization.icon }}</span>
+            <span>{{ `ADMIN.organization.title.plural` | translate }}</span>
+          </span>
+    </button>
+    <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
+    <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name ]">{{ organization?.name }}</a>
+    <button class="h-6! text-xs! font-bold! rounded-sm! bg-neutral-100! dark:bg-neutral-600! dark:text-white!" mat-flat-button
+            [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITY_REGISTRY.project.icon }}</span>
+            <span>{{ `ADMIN.project.title.plural` | translate }}</span>
+          </span>
+    </button>
+    <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
+    <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">{{ project?.projectName }}</a>
+  </div>
+</nav>
+
+<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-app-background dark:bg-app-background-dark'>
+  <div class='flex flex-wrap gap-2 items-center'>
+          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
+            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.organization.icon }}</span>
+            <span>{{ 'ADMIN.subject.title.singular' | translate }}</span>
+          </span>
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+          @if (entity().externalId) {
+            <span>{{entity().externalId}}</span>
+          }
+          @if (entity().personName) {
+            <span>[{{entity().personName}}]</span>
+          }
+          {{entity().login}}
+    </h2>
+  </div>
+  <div class='flex gap-1 ml-auto'>
+    <ng-container *appShowIfHasRole='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity().login}]'>
+      <app-subject-actions [entity]="entity()" />
+    </ng-container>
+  </div>
+</div>
+
+<div class="m-4">
+  <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+       mat-tab-nav-bar
+       mat-stretch-tabs="false"
+       [tabPanel]="tabPanel">
+    @for (link of links; track link) {
+      <a mat-tab-link
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive"
+         [routerLink]="link.path">
+        <h2 class='flex items-center gap-2 m-0 text-base font-bold '>
+          {{ link.label }}
+        </h2>
+      </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+  </mat-tab-nav-panel>
+</div>

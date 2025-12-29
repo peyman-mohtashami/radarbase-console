@@ -1,0 +1,97 @@
+@let _prefix = "ADMIN.organization";
+
+@if (dialogData.mode) {
+  <app-dialog-title [dialogMode]='dialogData.mode'
+                    [entityMetadata]="configService.getEntityMetadata()"
+                    [entityName]="dialogData.entity?._name"
+                    (closeEvent)='close()'/>
+
+  <mat-dialog-content>
+    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+      <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                   [label]="`${_prefix}.name.label` | translate"
+                                   [entityName]="dialogData.entity.name"/>
+    }
+
+    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+      <form [formGroup]='form' novalidate>
+        @if (dialogData.mode !== DialogMode.ADD) {
+          <label for="organization-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+          <mat-form-field appearance='fill'>
+            <input matInput id="organization-id" formControlName='id'>
+          </mat-form-field>
+        }
+
+        <label for="organization-name" class="text-sm">{{ `${_prefix}.name.label` | translate }} *</label>
+        <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+          <input matInput id="organization-id" autocomplete="off" data-lpignore="true"
+                 formControlName='name'
+                 required
+                 type="text">
+          <mat-hint align="start">{{ ValidatorHint.normalTextValidator | translate }}</mat-hint>
+
+          @if (form.controls.name.errors; as errors) {
+            <mat-error>
+              @if (errors?.['duplicate']) {
+                {{ ValidatorError.duplicateValidator | translate:{value: form.controls.name.value} }}
+              }
+              @if (errors?.['pattern']) {
+                {{ ValidatorError.normalTextValidator | translate }}
+              }
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.name.label` | translate} }}
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+          <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
+          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+            <input matInput id="location" autocomplete="off" data-lpignore="true"
+                   formControlName='location'
+                   type="text">
+            @if (form.controls.location.errors; as errors) {
+              <mat-error>
+                @if (errors?.['pattern']) {
+                  {{ ValidatorError.normalTextValidator | translate }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+
+        @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+          <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
+          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+          <textarea matInput #description
+                    formControlName='description'
+                    id="description"
+                    rows='3'
+                    maxlength='255'></textarea>
+            <mat-hint align="start">{{ ValidatorHint.longTextValidator | translate }}</mat-hint>
+            <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+
+            @if (form.controls.description.errors; as errors) {
+              <mat-error>
+                @if (errors?.['pattern']) {
+                  {{ ValidatorError.longTextValidator | translate }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      </form>
+    }
+  </mat-dialog-content>
+
+  @if (error()) {
+    <app-error-message-box>
+      {{ error()?.error.errorCode | translate }}
+    </app-error-message-box>
+  }
+
+  <app-dialog-actions [dialogMode]='dialogData.mode'
+                      [form]='form'
+                      (actionTriggered)='onAction($event)'/>
+}

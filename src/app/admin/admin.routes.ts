@@ -18,81 +18,81 @@ export const adminRoutes: Routes = [
       {
         path: 'organizations',
         loadChildren: () =>
-          import('./entities/organization/organization.routes').then((m) => m.organizationRoutes),
+          import('./entities/main-scope/organization/organization.routes').then((m) => m.organizationRoutes),
       },
       {
         path: 'projects',
         loadChildren: () =>
-          import('./entities/project/projects.routes').then((m) => m.projectRoutes),
+          import('./entities/main-scope/project/projects.routes').then((m) => m.projectRoutes),
       },
       {
         path: 'source-types',
         loadChildren: () =>
-          import('./entities/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
+          import('./entities/main-scope/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
       },
       {
         path: 'source-data',
         loadChildren: () =>
-          import('./entities/source-data/source-data.routes').then((m) => m.sourceDataRoutes),
+          import('./entities/main-scope/source-data/source-data.routes').then((m) => m.sourceDataRoutes),
       },
       {
         path: 'users',
         loadChildren: () =>
-          import('./entities/user/user.routes').then((m) => m.userRoutes),
+          import('./entities/main-scope/user/user.routes').then((m) => m.userRoutes),
       },
       {
         path: 'clients',
-        loadChildren: () => import('./entities/client/client.routes').then((m) => m.clientRoutes),
+        loadChildren: () => import('./entities/main-scope/client/client.routes').then((m) => m.clientRoutes),
       },
       {
         path: 'global-config',
         loadChildren: () =>
-          import('./entities/client/app-config.routes').then((m) => m.appConfigRoutes),
+          import('./entities/main-scope/client/app-config.routes').then((m) => m.appConfigRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
       {
         path: 'questionnaires',
         loadChildren: () =>
-          import('./entities/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
+          import('./entities/configuration-scope/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: 'protocols',
         loadChildren: () =>
-          import('./entities/protocol/protocols.route').then((m) => m.protocolsRoutes),
+          import('./entities/configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
 
       {
         path: 'logs',
-        loadChildren: () => import('./entities/log/log.routes').then((m) => m.logRoutes),
+        loadChildren: () => import('./entities/monitoring-scope/log/log.routes').then((m) => m.logRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: 'revisions',
-        loadChildren: () => import('./entities/revision/revision.routes').then((m) => m.revisionRoutes),
+        loadChildren: () => import('./entities/main-scope/revision/revision.routes').then((m) => m.revisionRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: 'audits',
-        loadChildren: () => import('./entities/audit/audit.routes').then((m) => m.auditRoutes),
+        loadChildren: () => import('./entities/monitoring-scope/audit/audit.routes').then((m) => m.auditRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: 'metrics',
-        loadChildren: () => import('./entities/metrics/metrics.routes').then((m) => m.metricsRoutes),
+        loadChildren: () => import('./entities/monitoring-scope/metrics/metrics.routes').then((m) => m.metricsRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },
       {
         path: 'health',
-        loadChildren: () => import('./entities/health/health.routes').then((m) => m.healthRoutes),
+        loadChildren: () => import('./entities/monitoring-scope/health/health.routes').then((m) => m.healthRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },

@@ -2,7 +2,7 @@
 // import { RadarProject } from './radar-project.model';
 // import { RadarOrganization } from './radar-organization.model';
 
-import {RadarRole} from '../../../admin/entities/user/models/user';
+import {RadarRole} from '../../../admin/entities/main-scope/user/models/user';
 
 // export interface AuthOptionsModel {
 //   backendBaseUrl?: string;

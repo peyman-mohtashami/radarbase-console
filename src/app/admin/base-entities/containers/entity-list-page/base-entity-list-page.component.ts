@@ -39,23 +39,16 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
 
   entities = signal<T[]>([]);
 
-  page = signal<PageEvent>({
-    pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
-    pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? DEFAULT_PAGE_SIZE,
-    length: 0,
-  });
-  sort = signal<RbSort>({
-    sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
-    sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
-  });
+  page = signal<PageEvent | undefined>(undefined);
+  sort = signal<RbSort | undefined>(undefined);
   filter = signal<FilterEvent | undefined>(undefined);
 
   params = computed(() => {
     const params: Params = {
-      pageIndex: this.page().pageIndex,
-      pageSize: this.page().pageSize,
-      sortField: this.sort().sortField,
-      sortOrder: this.sort().sortOrder,
+      pageIndex: this.page()?.pageIndex,
+      pageSize: this.page()?.pageSize,
+      sortField: this.sort()?.sortField,
+      sortOrder: this.sort()?.sortOrder,
       ...this.filter(),
     };
     return params;
@@ -85,8 +78,18 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
   }
 
   init() {
+    this.gridView = this.configService.getViewMode() === 'grid';
     const tableFields = this.configService.getTableFields();
     const tableFilters: FilterItem[] = this.configService.getTableFilters();
+    this.page = signal<PageEvent>({
+      pageIndex: this.activatedRoute.snapshot.queryParams['pageIndex'] ?? 0,
+      pageSize: this.activatedRoute.snapshot.queryParams['pageSize'] ?? this.configService.getStoredPageSize() ?? DEFAULT_PAGE_SIZE,
+      length: 0,
+    });
+    this.sort = signal<RbSort>({
+      sortField: this.activatedRoute.snapshot.queryParams['sortField'] ?? 'id',
+      sortOrder: this.activatedRoute.snapshot.queryParams['sortOrder'] ?? 'desc',
+    });
     this.filter = signal<FilterEvent>(
       tableFilters.reduce((map: Record<string, string | undefined>, filterItem) => {
         map[filterItem.name] = this.activatedRoute.snapshot.queryParams[filterItem.name];
@@ -212,6 +215,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
   }
 
   switchPage(page: PageEvent) {
+    this.configService.setStoredPageSize(page.pageSize);
     this.page.set(page);
   }
 
@@ -226,22 +230,8 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
     this.filterEnabled = $event;
   }
 
-  // /** Selection Helper Methods */
-  // isAllSelected() {
-  //   return this.selection.selected.length === this.entities().length;
-  // }
-  //
-  // masterToggle() {
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //   } else {
-  //     this.selection.select(...this.entities());
-  //   }
-  // }
-  //
-  // checkboxLabel(row?: any): string {
-  //   return row
-  //     ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
-  //     : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-  // }
+  toggleViewMode() {
+    this.gridView = !this.gridView;
+    this.configService.setViewMode(this.gridView ? 'grid' : 'list');
+  }
 }

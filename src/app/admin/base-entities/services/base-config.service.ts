@@ -40,4 +40,28 @@ export class BaseConfigService {
   getEntityMetadata() {
     return this.entityMetadata;
   }
+
+  getStoredPageSize() {
+    return +(localStorage.getItem(`${this.entityMetadata.name}_pageSize`) || '10');
+  }
+
+  getViewMode() {
+    return localStorage.getItem(`${this.entityMetadata.name}_viewMode`) || 'list';
+  }
+
+  getLatestFormEntry() {
+    return localStorage.getItem(`${this.entityMetadata.name}_formEntry`);
+  }
+
+  setStoredPageSize(pageSize: number) {
+    localStorage.setItem(`${this.entityMetadata.name}_pageSize`, pageSize.toString());
+  }
+
+  setViewMode(viewMode: 'grid' | 'list') {
+    localStorage.setItem(`${this.entityMetadata.name}_viewMode`, viewMode);
+  }
+
+  setLatestFormEntry(value: any) {
+    return localStorage.setItem(`${this.entityMetadata.name}_formEntry`, value);
+  }
 }

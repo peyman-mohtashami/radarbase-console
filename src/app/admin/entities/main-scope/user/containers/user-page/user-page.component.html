@@ -1,0 +1,46 @@
+<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>
+  <div class='flex flex-wrap gap-2 items-center'>
+    <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2"
+       [routerLink]="['/admin', 'users']">
+      <span class="material-symbols-outlined text-lg!"
+            matPrefix>{{ configService.getEntityMetadata().icon }}</span>
+      <span>{{ 'ADMIN.user.title.singular' | translate }}</span>
+    </a>
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+      {{ entity().login }}
+    </h2>
+  </div>
+
+  <div class='flex gap-1 ml-auto'>
+    <app-user-actions [entity]="entity()"/>
+  </div>
+</div>
+
+<!--<mat-card class="m-4 p-4 text-sm border">-->
+<!--  <mat-card-content>-->
+<!--    <app-user-details [entity]='entity()'/>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->
+
+<div [class]="'m-4'">
+<!--  @if (!hasSubject()) {-->
+    <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+         mat-tab-nav-bar
+         mat-stretch-tabs="false"
+         [tabPanel]="tabPanel">
+      @for (link of links; track link) {
+        <a mat-tab-link
+           routerLinkActive #rla="routerLinkActive"
+           [active]="rla.isActive"
+           [routerLink]="['/', 'admin', 'users', entity()._name, link.path]">
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            {{ link.label | translate }}
+          </h2>
+        </a>
+      }
+    </nav>
+<!--  }-->
+  <mat-tab-nav-panel #tabPanel class="">
+    <router-outlet/>
+  </mat-tab-nav-panel>
+</div>

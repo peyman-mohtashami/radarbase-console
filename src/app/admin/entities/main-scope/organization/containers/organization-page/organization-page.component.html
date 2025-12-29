@@ -1,0 +1,45 @@
+@if (!hasProject()) {
+  <div
+    class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-app-background dark:bg-app-background-dark'>
+    <div class='flex flex-wrap gap-2 items-center'>
+      <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2"
+         [routerLink]="['/admin', 'organizations']">
+        <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.organization.icon }}</span>
+        <span>{{ `ADMIN.${ENTITY_REGISTRY.organization.name}.title.singular` | translate }}</span>
+      </a>
+      <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+        {{ entity().name }}
+      </h2>
+    </div>
+
+    <div class='flex gap-1 ml-auto'>
+      <ng-container
+        *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'>
+        <app-organization-actions [entity]="entity()"/>
+      </ng-container>
+    </div>
+  </div>
+}
+
+<div [class]="!hasProject()? 'm-4' : ''">
+  @if (!hasProject()) {
+    <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
+         mat-tab-nav-bar
+         mat-stretch-tabs="false"
+         [tabPanel]="tabPanel">
+      @for (link of links; track link) {
+        <a mat-tab-link *appShowIfHasRole="link.permissions"
+           [routerLink]="link.path"
+           routerLinkActive #rla="routerLinkActive"
+           [active]="rla.isActive">
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            {{ link.label | translate }}
+          </h2>
+        </a>
+      }
+    </nav>
+  }
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet/>
+  </mat-tab-nav-panel>
+</div>

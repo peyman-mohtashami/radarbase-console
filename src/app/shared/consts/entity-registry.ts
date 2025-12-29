@@ -7,7 +7,7 @@ export interface EntityRegistry {
 export const ENTITY_REGISTRY = {
   organization: {name: "organization", icon: "corporate_fare", route: "/admin/organizations"},
   project: {name: "project", icon: "folder_open", route: "/admin/projects"},
-  user: {name: "user", icon: "person", route: "/admin/users", permissions: [{role: ROLES.SYS_ADMIN}]},
+  user: {name: "user", icon: "person", route: "/admin/users", permission: [{role: ROLES.SYS_ADMIN}]},
   subject: {name: "subject", icon: "person_outline", route: ""},
   source: {name: "source", icon: "source", route: ""},
   group: {name: "group", icon: "portrait", route: ""},

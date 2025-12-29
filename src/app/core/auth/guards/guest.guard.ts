@@ -4,14 +4,14 @@ import {
 } from '@angular/router';
 
 import {AuthService } from "../services/auth.service";
-import {StorageService} from "../../storage/services/storage.service";
+import {LastUrlService} from '../../navigation-tracker/services/last-url.service';
 
 export const guestGuard = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    router.navigate([StorageService.getLastLocation() || '/admin']).then();
+    router.navigate([LastUrlService.getLastUrl() || '/admin']).then();
     return false;
   }
   return true;

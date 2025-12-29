@@ -18,5 +18,5 @@ import {SidebarNavComponent} from "./shared/components/sidebar-nav/sidebar-nav.c
   ],
 })
 export class AppComponent {
-    isMenuOpened = true;
+  isMenuOpened = true;
 }

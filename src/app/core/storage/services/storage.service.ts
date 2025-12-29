@@ -5,7 +5,6 @@ export enum AuthStorageItem {
   ACCESS_TOKEN = 'accessToken',
   REFRESH_TOKEN = 'refreshToken',
   USER = 'user',
-  LAST_LOCATION = 'lastLocation',
 }
 
 @Injectable({ providedIn: 'root' })
@@ -61,26 +60,4 @@ export class StorageService {
   // static clearUser(): void {
   //   localStorage.removeItem(AuthStorageItem.USER);
   // }
-
-  static getLastLocation(): string {
-    return localStorage.getItem(AuthStorageItem.LAST_LOCATION) as string;
-  }
-
-  // static setLastLocation(location: Location): void {
-  //   const lastLocation = location.href.replace(location.origin, '');
-  //   if (lastLocation !== '/login') {
-  //     localStorage.setItem(AuthStorageItem.LAST_LOCATION, lastLocation);
-  //   }
-  // }
-
-  static setLastLocation(location: string): void {
-    // const lastLocation = location.href.replace(location.origin, '');
-    if (location !== '/login') {
-      localStorage.setItem(AuthStorageItem.LAST_LOCATION, location);
-    }
-  }
-
-  static clearLastLocation(): void {
-    localStorage.removeItem(AuthStorageItem.LAST_LOCATION);
-  }
 }

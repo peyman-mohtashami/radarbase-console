@@ -169,3 +169,9 @@
 .input-select .mat-form-field-infix {
   display: inherit;
 }
+
+
+.filter-has-value.mat-form-field-appearance-outline {
+  --mat-form-field-outlined-outline-color: var(--rb-primary) !important;
+  --mat-form-field-outlined-outline-width: 2px !important;
+}

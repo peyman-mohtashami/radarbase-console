@@ -46,7 +46,9 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
       return;
     }
 
-    const dialogRef = this.createDialogRef(mode, entity);
+    const storedEntityString = this.configService.getLatestFormEntry();
+    const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as T) : undefined;
+    const dialogRef = this.createDialogRef(mode, storedEntity ?? entity);
 
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
@@ -54,12 +56,15 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
           const _entity = value.entity;
           const _action = value.action;
           if (!_entity) {
+            this.configService.setLatestFormEntry(null);
             dialogRef.close();
             this.clearFragmentUrl();
             return;
           }
+          this.configService.setLatestFormEntry(_entity);
           this.processDialogAction(_action, _entity).subscribe({
             next: (res) => {
+              this.configService.setLatestFormEntry(null);
               const entity = res ?? _entity;
               this.dialogUpdateEvent.set({mode, entity})
               dialogRef.close();
@@ -67,7 +72,10 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
                 this.dialogUpdateEvent.set(undefined);
               })
             },
-            error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+            error: (error: HttpErrorResponse) => {
+              this.configService.setLatestFormEntry(null);
+              dialogRef.componentInstance.errorHappened(error)
+            },
           });
         }
       );

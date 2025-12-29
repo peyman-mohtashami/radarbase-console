@@ -1,0 +1,43 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="configService.getEntityMetadata()"
+                          [enableAddButton]="true"
+                          [isGridView]="undefined"
+                          [permission]="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: project.organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: project.projectName}]">
+  @if (tableFilters.length) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</app-entities-page-header>
+
+@if (loading()) {
+  <app-loader/>
+}
+
+@if (entities().length) {
+  <app-subject-assign-group [selection]="selection" [project]="project"/>
+}
+
+<app-entity-list-page [entities]="entities()"
+                      [tableFields]="tableFields"
+                      [entityMetadata]="entityMetadata"
+                      [page]="page()!"
+                      [sort]="sort()!"
+                      (switchPageEvent)="switchPage($event)"
+                      (switchSortEvent)="switchSort($event)"
+                      [customTemplate]="itemTemplate"
+                      [gridView]="gridView"
+                      [totalEntities]="entityService.total()"/>
+<ng-template #itemTemplate let-entity>
+  <app-subject-table-row [entity]="entity"
+                         [gridView]="gridView"
+                         [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
+                         [extensionClass]="extensionClass()"
+                         [selection]="selection"/>
+</ng-template>

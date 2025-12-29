@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {PermissionDirective} from "../../../core/auth/directives/show-if-has-role.directive";
 import {
   MatExpansionPanel,
@@ -11,6 +11,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RouterLinkExactActiveDirective} from "../../directives/router-link-exact-active.directive";
 import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 import {MatIcon} from '@angular/material/icon';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -28,9 +29,13 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ]
 })
-export class SidebarNavComponent {
+export class SidebarNavComponent implements OnInit{
 
   navGroupItems = inject(ConfigurationService).navGroupItems;
 
   isMenuOpen = input<boolean>(false);
+
+  ngOnInit() {
+    console.log('Class: SidebarNavComponent, Function: ngOnInit, Line 40 this.navGroupItems' , this.navGroupItems());
+  }
 }

@@ -1,0 +1,38 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="configService.getEntityMetadata()"
+                          [enableAddButton]="true"
+                          [isGridView]="undefined"
+                          [permission]="[{role: ROLES.SYS_ADMIN}]">
+  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+</app-entities-page-header>
+
+@if (loading()) {
+  <app-loader/>
+}
+
+<app-entity-list-page [entities]="entities()"
+                      [tableFields]="tableFields"
+                      [entityMetadata]="entityMetadata"
+                      [page]="page()!"
+                      [sort]="sort()!"
+                      (switchPageEvent)="switchPage($event)"
+                      (switchSortEvent)="switchSort($event)"
+                      [customTemplate]="itemTemplate"
+                      [gridView]="gridView"
+                      [totalEntities]="entityService.total()"/>
+<ng-template #itemTemplate let-entity>
+  <app-source-type-table-row [entity]="entity"
+                             [gridView]="gridView"
+                             [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
+                             [extensionClass]="extensionClass()"/>
+</ng-template>

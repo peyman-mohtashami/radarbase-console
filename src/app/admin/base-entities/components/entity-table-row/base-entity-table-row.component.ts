@@ -2,7 +2,7 @@ import {Component, effect, input, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 import {ROLES} from '../../../../shared/enums/roles';
-import {SubjectDialogMode} from '../../../entities/subject/enums/dialog';
+import {SubjectDialogMode} from '../../../entities/project-scope/subject/enums/dialog';
 import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({

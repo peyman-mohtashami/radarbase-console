@@ -4,10 +4,11 @@ import {Params} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {RbSort} from '../models/table.model';
-import {DEFAULT_PAGE_SIZE} from '../consts/default-table-values';
+import {BaseConfigService} from './base-config.service';
 
 export class BaseEntityService<T extends {_name: string}, U> {
   protected http = inject(HttpClient);
+  protected configService!: BaseConfigService;
 
   total = signal(0);
 
@@ -26,7 +27,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
   getWithQuery(queryParams?: Params): Observable<T[]> {
     const {
       pageIndex = 0,
-      pageSize = 10,
+      pageSize = this.configService.getStoredPageSize(),
       sortField = 'id',
       sortOrder = 'desc',
       ...filter
@@ -79,8 +80,6 @@ export class BaseEntityService<T extends {_name: string}, U> {
   }
 
   protected applySorting(entities: T[], sort: RbSort): T[] {
-    console.log('Class: BaseEntityService, Function: applySorting, Line 82 entities' , entities);
-    console.log('Class: BaseEntityService, Function: applySorting, Line 83 sort' , sort);
     const {sortField, sortOrder} = sort;
     const collator = new Intl.Collator('en', {numeric: true, sensitivity: 'base'})
     return entities.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
@@ -92,17 +91,18 @@ export class BaseEntityService<T extends {_name: string}, U> {
   protected applyPagination(entities: T[], page: { pageSize: number; pageIndex: number }): T[] {
     const {pageSize, pageIndex} = page;
     const startIndex = pageSize * pageIndex;
-    return entities.slice(startIndex, startIndex + pageSize);
+    return entities.slice(startIndex, (+startIndex) + (+pageSize));
   }
 
   getEntity(key: number | string): T {
-    console.log('Class: BaseEntityService, Function: getEntity, Line 97 key, this.cache' , key, this.cache);
     const entity = this.cache.find(item => item._name === key);
     if (!entity) throw new Error(`Entity with id ${key} not found`);
     return entity;
   }
 
   getByKey(key: number | string): Observable<T> {
+    const entity = this.cache.find(item => `${item._name}` === key);
+    if (entity) return of(entity);
     return this.http.get<U>(`${this.getResourceUrl()}/${encodeURIComponent(key)}`)
       .pipe(
         map((entity) => this.toAppModel(entity)),
@@ -152,7 +152,7 @@ export class BaseEntityService<T extends {_name: string}, U> {
     let httpParams = new HttpParams();
     httpParams = httpParams.append(
       'size',
-      params?.['pageSize'] || DEFAULT_PAGE_SIZE
+      params?.['pageSize'] || this.configService.getStoredPageSize()
     );
     httpParams = httpParams.append('page', params?.['pageIndex'] || '0');
     if (

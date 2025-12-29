@@ -1,0 +1,43 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<app-entities-page-header [showTitle]="true"
+                          [entityMetadata]="configService.getEntityMetadata()"
+                          [enableAddButton]="false"
+                          [isGridView]="undefined"
+                          [permission]="[{role: ROLES.SYS_ADMIN}]">
+  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter bottom-filter
+                           [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'
+                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+  }
+  <div extra-buttons class='flex gap-2 items-center ml-auto'>
+    <app-tag class="bg-green-100 text-green-700">{{ 'ADMIN.revision.added' | translate }}</app-tag>
+    <app-tag class="bg-cyan-100 text-cyan-700">{{ 'ADMIN.revision.modified' | translate }}</app-tag>
+    <app-tag class="bg-red-100 text-red-700">{{ 'ADMIN.revision.deleted' | translate }}</app-tag>
+  </div>
+</app-entities-page-header>
+
+@if (loading()) {
+  <app-loader/>
+}
+
+<app-entity-list-page [entities]="entities()"
+                      [tableFields]="tableFields"
+                      [entityMetadata]="entityMetadata"
+                      [page]="page()!"
+                      [sort]="sort()!"
+                      (switchPageEvent)="switchPage($event)"
+                      (switchSortEvent)="switchSort($event)"
+                      [customTemplate]="itemTemplate"
+                      [gridView]="gridView"
+                      [totalEntities]="entityService.total()"/>
+<ng-template #itemTemplate let-entity>
+  <app-revision-table-row [entity]="entity"
+                          [gridView]="gridView"
+                          [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
+                          [extensionClass]="extensionClass()"/>
+</ng-template>

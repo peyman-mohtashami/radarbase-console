@@ -182,7 +182,7 @@
       "urlValidator": "Enter a valid URL",
       "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
       "longTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 1 max 256)",
-      "duplicateValidator": "",
+      "duplicateValidator": "'{{value}}' already exists. Try another one.",
       "dateOutOfMinRange": "Date is out of range. It should be after 2000.",
       "dateOutOfMaxRange": "Date is out of range. It should be before 2050."
     },
@@ -316,13 +316,15 @@
         "label": "Dynamic Registration"
       },
       "selectClient": "Select an OAuth Client",
+      "details": "Details",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add OAuth Client",
       "edit": "Edit",
       "delete": "Delete",
       "deleteMessage": "You are going to delete OAuth Client",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No OAuth Client Found",
+      "noItemFound": "No OAuth Client found",
+      "noItemFoundWithTheFilter": "No OAuth Client found with the filter",
       "filters": {
         "search": "Search"
       }
@@ -362,7 +364,8 @@
       "delete": "Delete",
       "deleteMessage": "You are going to delete OAuth Client",
       "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Group Found"
+      "noItemFound": "No Group found",
+      "noItemFoundWithTheFilter": "No Group found with the filter"
     },
     "health": {
       "title": {
@@ -691,6 +694,7 @@
         "externalProjectId": "External Project ID",
         "privacyPolicyUrl": "Privacy Policy URL"
       },
+      "dateNotSet": "Date not set",
       "noItemFound": "No Project Found",
       "noItemFoundWithTheFilter": "No Project found with the filter",
       "details": "Details",
@@ -872,6 +876,7 @@
         "externalProjectId": "External Project ID",
         "privacyPolicyUrl": "Privacy Policy URL"
       },
+      "details": "Details",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Source Data",
       "edit": "Edit",
@@ -949,6 +954,7 @@
       "error": {
         "sourceTypeInUse": "Remove sourceType from these projects first:\n"
       },
+      "details": "Details",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Source Type",
       "edit": "Edit",
@@ -1241,6 +1247,7 @@
         "organizationAdmin": "ORGANIZATION ADMIN",
         "projectAdmin": "PROJECT ADMIN"
       },
+      "details": "Details",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add User",
       "edit": "Edit",

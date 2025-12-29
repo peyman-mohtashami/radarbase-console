@@ -1,5 +1,5 @@
 import {
-  Component, effect,
+  Component,
   inject,
   input,
   OnDestroy,
@@ -10,7 +10,7 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
-import {DateAdapter, MatOption} from '@angular/material/core';
+import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
@@ -28,8 +28,7 @@ import {MatIconButton} from "@angular/material/button";
 import {ValidatorError} from '../../../../../shared/utils/validators';
 import {FormFieldType} from '../../../models/dialog.model';
 import {FilterItem} from '../../../models/table.model';
-import {format, isValid, Locale, parse} from 'date-fns';
-import {enGB, nl, faIR} from 'date-fns/locale';
+import {format, isValid, parse} from 'date-fns';
 import {LocalDateComponent} from '../../../../../core/locale/components/local-date/local-date.component';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
@@ -69,9 +68,10 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   protected readonly FilterType = FormFieldType;
 
   localeService = inject(LocaleService);
+
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private dateAdapter = inject(DateAdapter<unknown>);
+  // private dateAdapter = inject(DateAdapter<unknown>);
 
   filters = input<FilterItem[]>([]);
   filterOpened = input<boolean>(true);
@@ -82,20 +82,11 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   form?: FormGroup;
 
   filterEnabled = false;
+  advFilterEnabled = false;
 
   advancedFilterEnabled = false;
 
   _destroy$: Subject<void> = new Subject<void>();
-
-  constructor() {
-    effect(() => {
-      const rawLocale = this.localeService.currentLocale()?.locale;
-      const angularLocaleId = rawLocale === 'en-GB' ? 'en-GB' : rawLocale?.substring(0, 2);
-      const dfLocaleMap: Record<string, Locale> = {'en': enGB, 'en-GB': enGB, 'nl': nl, 'fa': faIR};
-      const dfLocale = angularLocaleId ? (dfLocaleMap[angularLocaleId] || enGB) : enGB;
-      this.dateAdapter?.setLocale(dfLocale);
-    });
-  }
 
   ngOnInit(): void {
     this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
@@ -140,6 +131,15 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
         if (this.form?.controls) {
           this.filterEnabled = Object.keys(this.form?.controls).some(
             (formKey) => this.form?.controls[formKey].value
+          );
+          this.advFilterEnabled = Object.keys(this.form?.controls).some(
+            (formKey) => {
+              console.log('Class: DataTableFilterComponent, Function: , Line 146 formKey' , formKey);
+              const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
+              console.log('Class: DataTableFilterComponent, Function: , Line 149 t' , t);
+              if (!t) return false;
+              return this.form?.controls[formKey].value
+            }
           );
           this.filterEnableChanged.emit(this.filterEnabled);
         }

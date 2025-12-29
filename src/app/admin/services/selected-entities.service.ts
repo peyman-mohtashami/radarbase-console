@@ -1,8 +1,8 @@
 import {Injectable, signal} from '@angular/core';
-import {AppOrganization} from '../entities/organization/models/organization';
-import {AppProject} from '../entities/project/models/project';
-import {AppSubject} from '../entities/subject/models/subject';
-import {AppClient} from '../entities/client/models/client';
+import {AppOrganization} from '../entities/main-scope/organization/models/organization';
+import {AppProject} from '../entities/main-scope/project/models/project';
+import {AppSubject} from '../entities/project-scope/subject/models/subject';
+import {AppClient} from '../entities/main-scope/client/models/client';
 
 @Injectable({ providedIn: 'root' })
 export class SelectedEntitiesService  {

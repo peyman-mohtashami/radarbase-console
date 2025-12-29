@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {take} from "rxjs/operators";
 import {ROLES} from '../../../shared/enums/roles';
 import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
-import {getAppConfigBaseUrl} from '../../../admin/entities/config/services/config.service';
+import {getAppConfigBaseUrl} from '../../../admin/entities/configuration-scope/config/services/config.service';
 import {NavGroupItem} from '../models/nav-group-item.model';
 import {
   DEFAULT_DEPLOYMENT_CONFIGURATION,

@@ -4,7 +4,6 @@ import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {first} from "rxjs/operators";
-import {StorageService} from "../../../storage/services/storage.service";
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/select";
@@ -16,6 +15,7 @@ import {MatButton} from "@angular/material/button";
 import {CredentialAuthRequest} from '../../models/auth.model';
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
+import {LastUrlService} from '../../../navigation-tracker/services/last-url.service';
 
 @Component({
   selector: 'app-login-page',
@@ -69,9 +69,11 @@ export class LoginPageComponent implements OnInit {
       .subscribe({
         next: () => {
           this.error.set(null);
-          const lastLocation = StorageService.getLastLocation();
+          const lastLocation = LastUrlService.getLastUrl();
+          console.log('Class: LoginPageComponent, Function: next, Line 73 lastLocation' , lastLocation);
           this.router.navigateByUrl(lastLocation || '/admin').then(() => {
-            StorageService.clearLastLocation();
+            console.log('Class: LoginPageComponent, Function: , Line 75 ' , );
+            LastUrlService.clearLastUrl();
           });
         },
         error: (error) => {
