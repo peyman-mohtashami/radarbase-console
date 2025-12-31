@@ -175,3 +175,44 @@
   --mat-form-field-outlined-outline-color: var(--rb-primary) !important;
   --mat-form-field-outlined-outline-width: 2px !important;
 }
+
+@media print {
+  body.print-dialog-only {
+    /* Hide the whole app by default */
+    * {
+      visibility: hidden !important;
+    }
+
+    /* Don’t print the dimmed backdrop */
+    .cdk-overlay-backdrop {
+      display: none !important;
+    }
+
+    /* Show overlay contents (dialog) */
+    .cdk-overlay-container,
+    .cdk-overlay-container * {
+      visibility: visible !important;
+    }
+
+    /* Make dialog flow as a normal page */
+    .cdk-overlay-pane {
+      position: static !important;
+      transform: none !important;
+      width: 100% !important;
+      height: auto !important;
+      max-width: none !important;
+    }
+
+    .mat-mdc-dialog-surface {
+      box-shadow: none !important;
+      overflow: visible !important;
+      background: #fff !important;
+      color: #000 !important;
+    }
+
+    /* Hide anything you tagged as not-for-print */
+    .print-hide {
+      display: none !important;
+    }
+  }
+}

@@ -1,24 +1,15 @@
-<div>
-  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-    <span class='inline-flex items-center justify-between w-full'>
-      <span class="text-lg">
-        <span>{{ 'ADMIN.subject.pairApp.title' | translate }}</span>
-      </span>
-      <span class="flex items-center justify-end gap-2">
-        @if (pairInfo()) {
-          <button mat-icon-button color="primary"
-                  (click)='close()'>
-        <mat-icon class="material-symbols-outlined">print</mat-icon>
-      </button>
-        }
-        <button mat-icon-button
-                (click)='close()'>
-        <mat-icon class="material-symbols-outlined">close</mat-icon>
-      </button>
-      </span>
-    </span>
-  </h2>
-</div>
+<app-dialog-title class="print-hide"
+                  [dialogMode]='SubjectDialogMode.PAIR_APP'
+                  [entityMetadata]="configService.getEntityMetadata()"
+                  [entityName]="dialogData.entity._name"
+                  [customLabel]="'ADMIN.subject.pairApp.title' | translate"
+                  (closeEvent)='close()'>
+  @if (pairInfo()) {
+    <button mat-icon-button color="primary" (click)='print()'>
+      <mat-icon class="material-symbols-outlined">print</mat-icon>
+    </button>
+  }
+</app-dialog-title>
 
 <mat-dialog-content>
   @if (pairInfo(); as pairInfo) {
@@ -49,8 +40,6 @@
     </app-dialog-body-description>
   }
 
-
-
   <form [formGroup]="form" novalidate>
     <label for="client"
            class="text-sm">{{ 'ADMIN.subject.pairApp.client' | translate }}</label>
@@ -58,10 +47,12 @@
                     subscriptSizing="dynamic"
                     appearance="outline">
       <mat-select formControlName='client'>
-        @for (client of clients$ | async; track client.clientId) {
-          <mat-option [value]='client'>
-            {{ client.clientId }}
-          </mat-option>
+        @if (dialogData.clientFullList | async; as clients) {
+          @for (client of clients; track client.clientId) {
+            <mat-option [value]='client'>
+              {{ client.clientId }}
+            </mat-option>
+          }
         }
       </mat-select>
     </mat-form-field>
@@ -72,25 +63,20 @@
                         [entity]='dialogData.entity'
                         [detailType]="DetailType.SUMMARY" />
   </app-dialog-body-description>
-
-
 </mat-dialog-content>
 
-
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
 
-<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+<div class='print-hide px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
     <button mat-stroked-button
-            color='primary'
+            color='accent'
             type='button'
             class='close-button'
-            [mat-dialog-close]='true'
             (click)='close()'>
       {{ 'ADMIN.subject.pairApp.cancel' | translate }}
     </button>

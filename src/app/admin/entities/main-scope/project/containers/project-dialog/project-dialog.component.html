@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
@@ -35,8 +35,8 @@
                       [appearance]='dialogData.entity ? "fill": "outline"'>
         <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
         <input id="project-name" matInput formControlName='projectName' required>
-        @if (form.controls.projectName.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.projectName.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ ValidatorError.duplicateValidator | translate:{value: form.controls.projectName.value} }}
             }
@@ -46,8 +46,8 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.projectName.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
 
@@ -57,13 +57,13 @@
         </label>
         <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
           <input id="humanReadableProjectName" matInput formControlName='humanReadableProjectName'/>
-          @if (form.controls.humanReadableProjectName.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.humanReadableProjectName.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
         <span class="block text-xs leading-3 -mt-3 mb-4">
           {{ `${_prefix}.humanReadableProjectName.hint` | translate }}
@@ -73,19 +73,20 @@
       @if (!formFields || formFields['description'] === undefined || formFields['description']) {
         <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
         <mat-form-field class='small-input w-ful' subscriptSizing="fixed" appearance='outline'>
-          <textarea id="description" matInput #description formControlName='description' rows='3' maxlength='255'></textarea>
+          <textarea id="description" matInput #description formControlName='description' rows='3'
+                    maxlength='255'></textarea>
           <mat-hint align="start">{{ ValidatorHint.longTextValidator | translate }}</mat-hint>
           <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
-          @if (form.controls.description.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.description.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.longTextValidator | translate }}
               }
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.description.label` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -93,16 +94,16 @@
         <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
         <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
           <input id="location" matInput formControlName='location'>
-          @if (form.controls.location.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.location.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.longTextValidator | translate }}
               }
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.location.label` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -143,8 +144,8 @@
                  [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
           <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
           <mat-datepicker #startDatePicker/>
-          @if (form.controls.startDate.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.startDate.errors; as errors) {
               @if (errors?.['matDatepickerMin']) {
                 {{ ValidatorError.dateOutOfMinRange | translate }}
               }
@@ -157,8 +158,8 @@
               @if (errors?.['matStartDateInvalid']) {
                 {{ `${_prefix}.startDate.startDateInvalid` | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -173,8 +174,8 @@
                  [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
           <mat-datepicker-toggle matSuffix [for]='endDatePicker'/>
           <mat-datepicker #endDatePicker/>
-          @if (form.controls.endDate.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.endDate.errors; as errors) {
               @if (errors?.['matDatepickerMin']) {
                 {{ ValidatorError.dateOutOfMinRange | translate }}
               }
@@ -187,8 +188,8 @@
               @if (errors?.['matStartDateInvalid']) {
                 {{ `${_prefix}.startDate.startDateInvalid` | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -209,13 +210,13 @@
               </label>
               <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
                 <input id="workPackage" matInput formControlName='Work-package'>
-                @if (form.controls.attributes.controls?.['Work-package']?.errors; as errors) {
-                  <mat-error>
+                <mat-error>
+                  @if (form.controls.attributes.controls?.['Work-package']?.errors; as errors) {
                     @if (errors?.['pattern']) {
                       {{ ValidatorError.normalTextValidator | translate }}
                     }
-                  </mat-error>
-                }
+                  }
+                </mat-error>
               </mat-form-field>
             }
 
@@ -223,13 +224,13 @@
               <label for="phase" class="text-sm">{{ `${_prefix}.attributes.phase` | translate }}</label>
               <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
                 <input id="phase" matInput formControlName='Phase'>
-                @if (form.controls.attributes.controls?.['Phase']?.errors; as errors) {
-                  <mat-error>
+                <mat-error>
+                  @if (form.controls.attributes.controls?.['Phase']?.errors; as errors) {
                     @if (errors?.['pattern']) {
                       {{ ValidatorError.normalTextValidator | translate }}
                     }
-                  </mat-error>
-                }
+                  }
+                </mat-error>
               </mat-form-field>
             }
 
@@ -239,13 +240,13 @@
               </label>
               <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
                 <input id="externalProjectUrl" matInput formControlName='External-project-url'/>
-                @if (form.controls.attributes.controls?.['External-project-url']?.errors; as errors) {
-                  <mat-error>
+                <mat-error>
+                  @if (form.controls.attributes.controls?.['External-project-url']?.errors; as errors) {
                     @if (errors?.['pattern']) {
                       {{ ValidatorError.urlValidator }}
                     }
-                  </mat-error>
-                }
+                  }
+                </mat-error>
               </mat-form-field>
             }
 
@@ -255,13 +256,13 @@
               </label>
               <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
                 <input id="externalProjectId" matInput formControlName='External-project-id'/>
-                @if (form.controls.attributes.controls?.['External-project-id']?.errors; as errors) {
-                  <mat-error>
+                <mat-error>
+                  @if (form.controls.attributes.controls?.['External-project-id']?.errors; as errors) {
                     @if (errors?.['pattern']) {
                       {{ ValidatorError.stringIdValidator | translate }}
                     }
-                  </mat-error>
-                }
+                  }
+                </mat-error>
               </mat-form-field>
             }
 
@@ -271,13 +272,13 @@
               </label>
               <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
                 <input id="privacyPolicyUrl" matInput formControlName='Privacy-policy-url'/>
-                @if (form.controls.attributes.controls?.['Privacy-policy-url']?.errors; as errors) {
-                  <mat-error>
+                <mat-error>
+                  @if (form.controls.attributes.controls?.['Privacy-policy-url']?.errors; as errors) {
                     @if (errors?.['pattern']) {
                       {{ ValidatorError.urlValidator }}
                     }
-                  </mat-error>
-                }
+                  }
+                </mat-error>
               </mat-form-field>
             }
           </fieldset>

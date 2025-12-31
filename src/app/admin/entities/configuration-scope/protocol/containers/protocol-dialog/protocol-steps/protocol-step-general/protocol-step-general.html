@@ -3,8 +3,8 @@
     <label for="name" class="text-sm">{{ 'ADMIN.protocol.dialog.general.nameLabel' | translate }} *</label>
     <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
       <input id="name" matInput formControlName='name' required/>
-      @if (form.controls['name']?.errors; as errors) {
-        <mat-error>
+      <mat-error>
+        @if (form.controls['name']?.errors; as errors) {
           @if (errors?.['duplicate']) {
             {{ "Protocol name exists" }}
           }
@@ -12,12 +12,14 @@
             {{ ValidatorError.normalTextValidator }}
           }
           @if (errors?.['required']) {
-            {{ ValidatorError.requiredValidator | translate:{
-              value: 'ADMIN.protocol.dialog.general.nameLabel' | translate
-            } }}
+            {{
+              ValidatorError.requiredValidator | translate:{
+                value: 'ADMIN.protocol.dialog.general.nameLabel' | translate
+              }
+            }}
           }
-        </mat-error>
-      }
+        }
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -27,7 +29,7 @@
                                  [label]="'Languages *'"
                                  [required]="true"
                                  [multiple]="true"
-                                 [notRemovable]="DEFAULT_LANG" />
+                                 [notRemovable]="DEFAULT_LANG"/>
   </div>
 
 

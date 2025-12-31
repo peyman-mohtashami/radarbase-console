@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
@@ -27,8 +27,8 @@
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='producer' required id="sourcetype-producer"
                autocomplete="off" data-lpignore="true">
-        @if (form.controls.producer.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.producer.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ `${_prefix}.producer.duplicate` | translate }}
             }
@@ -38,16 +38,16 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.producer.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="sourcetype-model" class="text-sm">{{ `${_prefix}.model.label` | translate }} *</label>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='model' required id="sourcetype-model"
                autocomplete="off" data-lpignore="true">
-        @if (form.controls.model.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.model.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ `${_prefix}.model.duplicate` | translate }}
             }
@@ -57,8 +57,8 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.model.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="sourcetype-catalog-version" class="text-sm">{{ `${_prefix}.catalogVersion.label` | translate }}
@@ -66,8 +66,8 @@
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='catalogVersion' required id="sourcetype-catalog-version"
                autocomplete="off" data-lpignore="true">
-        @if (form.controls.catalogVersion.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.catalogVersion.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ `${_prefix}.catalogVersion.duplicate` | translate }}
             }
@@ -77,8 +77,8 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.catalogVersion.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="sourcetype-scope" class="text-sm">
@@ -89,13 +89,13 @@
           <mat-option [value]="'PASSIVE'">{{ `${_prefix}.sourceTypeScope.PASSIVE` | translate }}</mat-option>
           <mat-option [value]="'ACTIVE'">{{ `${_prefix}.sourceTypeScope.ACTIVE` | translate }}</mat-option>
         </mat-select>
-        @if (form.controls.sourceTypeScope.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.sourceTypeScope.errors; as errors) {
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.sourceTypeScope.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <mat-slide-toggle color="primary" formControlName='canRegisterDynamically'>
@@ -109,13 +109,13 @@
         <label for="sourcetype-name" class="text-sm">{{ `${_prefix}.name.label` | translate }}</label>
         <mat-form-field subscriptSizing="fixed" appearance='outline'>
           <input matInput formControlName='name' id="sourcetype-name" autocomplete="off" data-lpignore="true">
-          @if (form.controls.name.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.name.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -129,13 +129,13 @@
                     rows='3' maxlength='255'></textarea>
           <mat-hint align="start">{{ ValidatorHint.longTextValidator }}</mat-hint>
           <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
-          @if (form.controls.description.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.description.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.longTextValidator | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -145,13 +145,13 @@
         <mat-form-field subscriptSizing="fixed" appearance='outline'>
           <input matInput formControlName='assessmentType' id="sourcetype-assessment-type"
                  autocomplete="off" data-lpignore="true">
-          @if (form.controls.assessmentType.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.assessmentType.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -161,13 +161,13 @@
         <mat-form-field subscriptSizing="fixed" appearance='outline'>
           <input matInput formControlName='appProvider' id="sourcetype-assessment-app-provider"
                  autocomplete="off" data-lpignore="true">
-          @if (form.controls.appProvider.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.appProvider.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator | translate }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
     </form>

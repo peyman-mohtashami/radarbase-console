@@ -10,7 +10,7 @@ import {
   Validator
 } from "@angular/forms";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatError, MatHint, MatInput, MatSuffix} from "@angular/material/input";
+import {MatHint, MatInput, MatSuffix} from "@angular/material/input";
 import {
   TimeFromZeroFormArrayComponent
 } from "../../components/custom-form-controls/time-from-zero-form-array/time-from-zero-form-array.component";
@@ -41,7 +41,6 @@ import {LocaleService} from "../../../../../../../../core/locale/services/locale
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
-    MatError,
     MatSuffix,
     TranslatePipe,
   ],

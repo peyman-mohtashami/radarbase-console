@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { NGXLogger } from "ngx-logger";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogService {
-
-  constructor(private logger: NGXLogger) {
-  }
+  private logger = inject(NGXLogger);
 
   logError(error: Error){
     this.logger.error(error);

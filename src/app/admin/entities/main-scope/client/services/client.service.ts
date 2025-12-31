@@ -1,8 +1,11 @@
 import {inject, Injectable} from '@angular/core';
-import {AppClient, RadarClient} from "../models/client";
+import {AppClient, RadarClient, RadarPairInfo} from "../models/client";
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../../environments/environment';
 import {ClientConfigService} from './client-config.service';
+import {AppSubject} from '../../../project-scope/subject/models/subject';
+import {Observable} from 'rxjs';
+import {HttpParams} from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class ClientService extends BaseEntityService<AppClient, RadarClient>{
@@ -49,5 +52,20 @@ export class ClientService extends BaseEntityService<AppClient, RadarClient>{
     if (!str) return [];
     if (Array.isArray(str)) return str;
     return str.split(token);
+  }
+
+  getClientPairInfo(client: AppClient, subject: AppSubject, persistent: boolean): Observable<RadarPairInfo> {
+    let params = new HttpParams();
+
+    if (subject.login) {
+      params = params.append('clientId', client.clientId);
+      params = params.append('login', subject.login);
+      params = params.append('persistent', persistent.toString());
+    }
+    return this.http.get<RadarPairInfo>(`${environment.apiUrl}api/oauth-clients/pair`, { params });
+  }
+
+  deletePairInfoToken(tokenName: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}api/meta-token/${tokenName}`);
   }
 }

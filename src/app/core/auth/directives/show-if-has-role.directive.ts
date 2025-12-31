@@ -19,9 +19,9 @@ export class PermissionDirective implements OnDestroy {
   private templateRef = inject(TemplateRef<never>);
   private _viewContainer = inject(ViewContainerRef);
 
-  private readonly _thenTemplateRef: TemplateRef<any> | null = null;
+  private readonly _thenTemplateRef: TemplateRef<unknown> | null = null;
   private _elseTemplateRef: TemplateRef<never> | null = null;
-  private _thenViewRef: EmbeddedViewRef<any> | null = null;
+  private _thenViewRef: EmbeddedViewRef<unknown> | null = null;
   private _elseViewRef: EmbeddedViewRef<never> | null = null;
 
   private _user: ManagementPortalUser | null = this.authService.user()

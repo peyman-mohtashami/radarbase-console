@@ -19,10 +19,11 @@ import {MatIcon} from '@angular/material/icon';
 export class DialogTitleComponent {
   protected readonly DialogMode = DialogMode;
 
-  dialogMode = input<DialogMode>();
+  dialogMode = input<DialogMode | string>();
   entityName = input<string>();
   entityMetadata = input<EntityRegistry>();
-  label = input<{ singular: string; plural: string }>();
+  customLabel = input<string>();
+  // label = input<{ singular: string; plural: string }>();
 
   closeEvent = output<void>();
 

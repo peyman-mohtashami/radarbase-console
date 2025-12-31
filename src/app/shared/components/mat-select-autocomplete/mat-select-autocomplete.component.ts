@@ -69,7 +69,7 @@ export class MatSelectAutocompleteComponent
   // floatLabel = input<boolean>(false);
   notRemovable = input<{ id: string; _name: string }>();
 
-  form: any; // = new FormControl<RadarOption[]>([]);
+  form = new FormControl<any>(null); // = new FormControl<RadarOption[]>([]);
 
   multiFilterCtrl: FormControl = new FormControl();
 
@@ -138,10 +138,14 @@ export class MatSelectAutocompleteComponent
 
   removeChip(option: RadarOption) {
     if(this.form.value && this.notRemovable()?.id !== option.id) {
-      const formValue = [...this.form.value];
-      const index = formValue.indexOf(option);
-      formValue.splice(index, 1);
-      this.form.patchValue(formValue);
+      if (Array.isArray(this.form.value)) {
+        const formValue = [...this.form.value];
+        const index = formValue?.indexOf(option);
+        formValue.splice(index, 1);
+        this.form.patchValue(formValue);
+      } else {
+        this.form.patchValue(null);
+      }
     }
   }
 

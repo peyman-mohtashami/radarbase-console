@@ -2,14 +2,14 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?.sourceName"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
                                  [label]="'Source'"
-                                 [entityName]="dialogData.entity.sourceName" />
+                                 [entityName]="dialogData.entity.sourceName"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -74,13 +74,13 @@
             </label>
             <mat-form-field class='w-full' subscriptSizing="fixed" appearance='outline'>
               <input id="External-identifier" matInput formControlName='External-identifier'/>
-              @if (form.controls.attributes.controls['External-identifier'].errors; as errors) {
-                <mat-error>
+              <mat-error>
+                @if (form.controls.attributes.controls['External-identifier'].errors; as errors) {
                   @if (errors?.['pattern']) {
                     {{ ValidatorError.normalTextValidator | translate }}
                   }
-                </mat-error>
-              }
+                }
+              </mat-error>
             </mat-form-field>
           }
         </fieldset>

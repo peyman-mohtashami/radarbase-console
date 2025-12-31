@@ -1,52 +1,52 @@
-export interface RestSourceUserRequest {
-  projectId?: string;
-  userId: string;
-  sourceId?: string;
-  startDate: string;
-  endDate?: string;
-  sourceType: string;
-}
-
-export interface RestSourceUserResponse {
-  id: number;
-  projectId: string;
-  userId: string;
-  sourceId: string;
-  startDate: string;
-  endDate?: string;
-  sourceType: string;
-  createdAt: string;
-  humanReadableUserId: string;
-  externalId: string;
-  serviceUserId?: string;
-  isAuthorized: boolean;
-  timesReset: number;
-  version: string;
-}
-
-export interface RegistrationCreateRequest {
-  userId: number; // matches RestSourceUserResponse.id
-  persistent?: boolean; // set to true to get a long-living token
-}
-
-export interface RegistrationResponse {
-  token: string;
-  secret?: string; // only defined if the registration is persistent
-  userId: number;
-  authEndpointUrl?: string; // only defined if the registration is not persistent
-  expiresAt: string;
-  persistent: boolean;
-  project?: any;
-  sourceType?: string;
-}
-
-export interface RegistrationRequest {
-  secret: string;
-}
-
-export interface AuthorizeRequest {
-  code?: string;
-  oauth_token?: string;
-  oauth_verifier?: string;
-  oauth_token_secret?: string;
-}
+// export interface RestSourceUserRequest {
+//   projectId?: string;
+//   userId: string;
+//   sourceId?: string;
+//   startDate: string;
+//   endDate?: string;
+//   sourceType: string;
+// }
+//
+// export interface RestSourceUserResponse {
+//   id: number;
+//   projectId: string;
+//   userId: string;
+//   sourceId: string;
+//   startDate: string;
+//   endDate?: string;
+//   sourceType: string;
+//   createdAt: string;
+//   humanReadableUserId: string;
+//   externalId: string;
+//   serviceUserId?: string;
+//   isAuthorized: boolean;
+//   timesReset: number;
+//   version: string;
+// }
+//
+// export interface RegistrationCreateRequest {
+//   userId: number; // matches RestSourceUserResponse.id
+//   persistent?: boolean; // set to true to get a long-living token
+// }
+//
+// export interface RegistrationResponse {
+//   token: string;
+//   secret?: string; // only defined if the registration is persistent
+//   userId: number;
+//   authEndpointUrl?: string; // only defined if the registration is not persistent
+//   expiresAt: string;
+//   persistent: boolean;
+//   project?: any;
+//   sourceType?: string;
+// }
+//
+// export interface RegistrationRequest {
+//   secret: string;
+// }
+//
+// export interface AuthorizeRequest {
+//   code?: string;
+//   oauth_token?: string;
+//   oauth_verifier?: string;
+//   oauth_token_secret?: string;
+// }

@@ -134,9 +134,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
           );
           this.advFilterEnabled = Object.keys(this.form?.controls).some(
             (formKey) => {
-              console.log('Class: DataTableFilterComponent, Function: , Line 146 formKey' , formKey);
               const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
-              console.log('Class: DataTableFilterComponent, Function: , Line 149 t' , t);
               if (!t) return false;
               return this.form?.controls[formKey].value
             }

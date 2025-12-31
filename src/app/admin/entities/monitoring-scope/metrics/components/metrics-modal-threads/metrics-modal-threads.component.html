@@ -8,37 +8,37 @@
   -->
 
 <div class="modal-header">
-  <h4 class="modal-title" [translate]="'metrics.jvm.threads.dump.title'">Threads dump</h4>
+  <h4 class="modal-title" [translate]="'metrics.jvm.threads.dump.title'">{{ 'Threads dump' | translate }}</h4>
 
   <button type="button" class="close" (click)="dismiss()">&times;</button>
 </div>
 
 <div class="modal-body">
   <div class="mb-3">
-    <span class="badge badge-primary hand" (click)="threadStateFilter = undefined">
+    <button class="badge badge-primary hand" (click)="threadStateFilter = undefined">
 <!--      <fa-icon *ngIf="threadStateFilter === undefined" icon="check"></fa-icon>-->
-      All&nbsp;<span class="badge badge-pill badge-default">{{ threadDumpAll }}</span>
-    </span>
+      {{ 'All' | translate }} <span class="badge badge-pill badge-default">{{ threadDumpAll }}</span>
+    </button>
 
-    <span class="badge badge-success hand" (click)="threadStateFilter = ThreadState.Runnable">
+    <button class="badge badge-success hand" (click)="threadStateFilter = ThreadState.Runnable">
 <!--      <fa-icon *ngIf="threadStateFilter === ThreadState.Runnable" icon="check"></fa-icon>-->
-      Runnable&nbsp;<span class="badge badge-pill badge-default">{{ threadDumpRunnable }}</span>
-    </span>
+      {{ 'Runnable' | translate }} <span class="badge badge-pill badge-default">{{ threadDumpRunnable }}</span>
+    </button>
 
-    <span class="badge badge-info hand" (click)="threadStateFilter = ThreadState.Waiting">
+    <button class="badge badge-info hand" (click)="threadStateFilter = ThreadState.Waiting">
 <!--      <fa-icon *ngIf="threadStateFilter === ThreadState.Waiting" icon="check"></fa-icon>-->
-      Waiting&nbsp;<span class="badge badge-pill badge-default">{{ threadDumpWaiting }}</span>
-    </span>
+      {{ 'Waiting' | translate }} <span class="badge badge-pill badge-default">{{ threadDumpWaiting }}</span>
+    </button>
 
-    <span class="badge badge-warning hand" (click)="threadStateFilter = ThreadState.TimedWaiting">
+    <button class="badge badge-warning hand" (click)="threadStateFilter = ThreadState.TimedWaiting">
 <!--      <fa-icon *ngIf="threadStateFilter === ThreadState.TimedWaiting" icon="check"></fa-icon>-->
-      Timed Waiting&nbsp;<span class="badge badge-pill badge-default">{{ threadDumpTimedWaiting }}</span>
-    </span>
+      {{ 'Timed Waiting' | translate }} <span class="badge badge-pill badge-default">{{ threadDumpTimedWaiting }}</span>
+    </button>
 
-    <span class="badge badge-danger hand" (click)="threadStateFilter = ThreadState.Blocked">
+    <button class="badge badge-danger hand" (click)="threadStateFilter = ThreadState.Blocked">
 <!--      <fa-icon *ngIf="threadStateFilter === ThreadState.Blocked" icon="check"></fa-icon>-->
-      Blocked&nbsp;<span class="badge badge-pill badge-default">{{ threadDumpBlocked }}</span>
-    </span>
+      {{ 'Blocked' | translate }}<span class="badge badge-pill badge-default">{{ threadDumpBlocked }}</span>
+    </button>
   </div>
 
   @for (thread of getThreads(); track thread.threadId) {
@@ -46,11 +46,11 @@
       <h6>
         <span class="badge" [ngClass]="getBadgeClass(thread.threadState)">{{ thread.threadState }}</span>
 
-        &nbsp;{{ thread.threadName }} (ID {{ thread.threadId }})
+        &nbsp;{{ thread.threadName }} ({{ 'ID' | translate }} {{ thread.threadId }})
 
         <a (click)="thread.showThreadDump = !thread.showThreadDump" href="javascript:void(0);">
-          <span [hidden]="thread.showThreadDump" [translate]="'metrics.jvm.threads.dump.show'">Show StackTrace</span>
-          <span [hidden]="!thread.showThreadDump" [translate]="'metrics.jvm.threads.dump.hide'">Hide StackTrace</span>
+          <span [hidden]="thread.showThreadDump" [translate]="'metrics.jvm.threads.dump.show'">{{ 'Show StackTrace' | translate }}</span>
+          <span [hidden]="!thread.showThreadDump" [translate]="'metrics.jvm.threads.dump.hide'">{{ 'Hide StackTrace' | translate }}</span>
         </a>
       </h6>
 
@@ -65,14 +65,14 @@
         </div>
       </div>
       <table class="table table-sm table-responsive">
-        <caption>Threads dump: {{ thread.threadName }}</caption>
+        <caption>{{ 'Threads dump' | translate }}: {{ thread.threadName }}</caption>
         <thead>
         <tr>
-          <th scope="col" [translate]="'metrics.jvm.threads.dump.blockedtime'">Blocked Time</th>
-          <th scope="col" [translate]="'metrics.jvm.threads.dump.blockedcount'">Blocked Count</th>
-          <th scope="col" [translate]="'metrics.jvm.threads.dump.waitedtime'">Waited Time</th>
-          <th scope="col" [translate]="'metrics.jvm.threads.dump.waitedcount'">Waited Count</th>
-          <th scope="col" [translate]="'metrics.jvm.threads.dump.lockname'">Lock Name</th>
+          <th scope="col" [translate]="'metrics.jvm.threads.dump.blockedtime'">{{ 'Blocked Time' | translate }}</th>
+          <th scope="col" [translate]="'metrics.jvm.threads.dump.blockedcount'">{{ 'Blocked Count' | translate }}</th>
+          <th scope="col" [translate]="'metrics.jvm.threads.dump.waitedtime'">{{ 'Waited Time' | translate }}</th>
+          <th scope="col" [translate]="'metrics.jvm.threads.dump.waitedcount'">{{ 'Waited Count' | translate }}</th>
+          <th scope="col" [translate]="'metrics.jvm.threads.dump.lockname'">{{ 'Lock Name' | translate }}</th>
         </tr>
         </thead>
         <tbody>
@@ -91,5 +91,5 @@
   }
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary float-left" data-dismiss="modal" (click)="dismiss()">Done</button>
+  <button type="button" class="btn btn-secondary float-left" data-dismiss="modal" (click)="dismiss()">{{ 'Done' | translate }}</button>
 </div>

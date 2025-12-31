@@ -13,18 +13,20 @@
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
           <input id="questionnaire-name" matInput formControlName='name' required/>
-          @if (form.controls.questionnaire.controls.name.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.questionnaire.controls.name.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
-                {{ ValidatorError.requiredValidator | translate:{
-                  value: 'ADMIN.protocol.dialog.questionGroup.questionnaireNameLabel' | translate
-                } }}
+                {{
+                  ValidatorError.requiredValidator | translate:{
+                    value: 'ADMIN.protocol.dialog.questionGroup.questionnaireNameLabel' | translate
+                  }
+                }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -34,18 +36,20 @@
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
           <input id="questionnaire-repository" matInput formControlName='repository' required/>
-          @if (form.controls.questionnaire.controls.repository.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.questionnaire.controls.repository.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
-                {{ ValidatorError.requiredValidator | translate:{
-                  value: 'ADMIN.protocol.dialog.questionGroup.questionnaireRepositoryLabel' | translate
-                } }}
+                {{
+                  ValidatorError.requiredValidator | translate:{
+                    value: 'ADMIN.protocol.dialog.questionGroup.questionnaireRepositoryLabel' | translate
+                  }
+                }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -62,18 +66,20 @@
         <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
         <mat-select id="appQuestionnaire" formControlName='appQuestionnaire' [required]="!githubValueChanges()">
           @for (q of questionnaires | async; track q.name) {
-            <mat-option [value]="q.name">{{q.name}}</mat-option>
+            <mat-option [value]="q.name">{{ q.name }}</mat-option>
           }
         </mat-select>
-        @if (form.controls.appQuestionnaire.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.appQuestionnaire.errors; as errors) {
             @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate:{
-                value: 'ADMIN.protocol.dialog.questionGroup.appQuestionnaireLabel' | translate
-              } }}
+              {{
+                ValidatorError.requiredValidator | translate:{
+                  value: 'ADMIN.protocol.dialog.questionGroup.appQuestionnaireLabel' | translate
+                }
+              }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
 

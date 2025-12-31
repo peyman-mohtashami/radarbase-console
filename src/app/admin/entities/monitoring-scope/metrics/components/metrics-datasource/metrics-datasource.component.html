@@ -3,20 +3,20 @@
     <table class="w-full text-xs">
       <thead class="border-b border-gray-500">
       <tr>
-        <th class="text-start">
+        <th class="text-start" i18n>
           <span>{{ 'ADMIN.metrics.databases.connectionPoolUsage' | translate }}</span>
           ({{ 'ADMIN.metrics.databases.active' | translate }}: {{ datasourceMetrics.active.value }},
           min: {{ datasourceMetrics.min.value }}, max: {{ datasourceMetrics.max.value }}
           , {{ 'ADMIN.metrics.databases.idle' | translate }}: {{ datasourceMetrics.idle.value }})
         </th>
-        <th class="text-start">Count</th>
-        <th class="text-start">Mean</th>
-        <th class="text-start">Min</th>
-        <th class="text-start">p50</th>
-        <th class="text-start">p75</th>
-        <th class="text-start">p95</th>
-        <th class="text-start">p99</th>
-        <th class="text-start">Max</th>
+        <th class="text-start">{{ 'Count' }}</th>
+        <th class="text-start">{{ 'Mean' }}</th>
+        <th class="text-start">{{ 'Min' }}</th>
+        <th class="text-start">{{ 'p50' }}</th>
+        <th class="text-start">{{ 'p75' }}</th>
+        <th class="text-start">{{ 'p95' }}</th>
+        <th class="text-start">{{ 'p99' }}</th>
+        <th class="text-start">{{ 'Max' }}</th>
       </tr>
       </thead>
       <tbody>

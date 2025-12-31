@@ -57,8 +57,8 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
     time: FormControl<string | null>;
   }>>([]);
 
-  onChange = (value: number[] | null) => {};
-  onTouch = () => {};
+  onChange: (value: number[] | null) => void = () => undefined;
+  onTouch: () => void = () => undefined;
 
   validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};

@@ -12,7 +12,7 @@ export class BaseConfigService {
   private readonly configurationService = inject(ConfigurationService);
 
   private config = computed(() => {
-    return this.configurationService.entitiesCustomization()[this.entityMetadata?.name];
+    return this.configurationService.entitiesCustomization()?.[this.entityMetadata?.name];
   })
 
   getFormFields(): Record<string, boolean> {
@@ -61,7 +61,7 @@ export class BaseConfigService {
     localStorage.setItem(`${this.entityMetadata.name}_viewMode`, viewMode);
   }
 
-  setLatestFormEntry(value: any) {
-    return localStorage.setItem(`${this.entityMetadata.name}_formEntry`, value);
+  setLatestFormEntry(value: unknown | null | undefined = null) {
+    return localStorage.setItem(`${this.entityMetadata.name}_formEntry`, (value as string));
   }
 }

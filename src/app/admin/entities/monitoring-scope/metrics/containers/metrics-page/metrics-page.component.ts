@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import { combineLatest } from 'rxjs';
 
 import { MetricsService } from '../../services/metrics.service';
@@ -25,6 +25,7 @@ import {MetricsCacheComponent} from "../../components/metrics-cache/metrics-cach
 import {MetricsDatasourceComponent} from "../../components/metrics-datasource/metrics-datasource.component";
 import {MatButton} from "@angular/material/button";
 import {Metrics, Thread} from '../../models/radar-metrics.model';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-metrics-page',
@@ -44,28 +45,29 @@ import {Metrics, Thread} from '../../models/radar-metrics.model';
     MetricsCacheComponent,
     MetricsDatasourceComponent,
     JsonPipe,
-    MatButton, MatExpansionPanelHeader
+    MatButton, MatExpansionPanelHeader,
+    MatIcon
   ]
 })
 export class MetricsPageComponent implements OnInit {
-  loading$ = signal(true);
+  private metricsService = inject(MetricsService);
+
+  loading = signal(true);
 
   metrics?: Metrics;
   threads?: Thread[];
-
-  constructor(private metricsService: MetricsService) {}
 
   ngOnInit(): void {
     this.refresh();
   }
 
   refresh(): void {
-    this.loading$.set(true);
+    this.loading.set(true);
     combineLatest([this.metricsService.getMetrics(), this.metricsService.threadDump()])
       .subscribe(([metrics, threadDump]) => {
         this.metrics = metrics;
         this.threads = threadDump.threads;
-        this.loading$.set(false);
+        this.loading.set(false);
     });
   }
 }

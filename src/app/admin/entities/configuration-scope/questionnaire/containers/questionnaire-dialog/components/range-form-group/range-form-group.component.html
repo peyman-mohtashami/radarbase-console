@@ -8,16 +8,16 @@
         *</label>
       <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='min' required/>
-        @if (form.controls.min.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.min.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMin` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -26,16 +26,16 @@
         *</label>
       <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='max' required/>
-        @if (form.controls.max.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.max.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMax` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -44,16 +44,16 @@
         *</label>
       <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
         <input matInput formControlName='step' required/>
-        @if (form.controls.step.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.step.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeStep` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
   </div>

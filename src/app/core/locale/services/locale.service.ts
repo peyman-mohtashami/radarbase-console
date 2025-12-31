@@ -65,7 +65,7 @@ export class LocaleService {
     return languages.find(lang => lang.code === selectedLang) || languages[0];
   }
 
-  private getAngularLocaleLoader(localeId: string): (() => Promise<{ default: any }>) | undefined {
+  private getAngularLocaleLoader(localeId: string): (() => Promise<{ default: unknown }>) | undefined {
     switch (localeId) {
       case 'en':
         return () => import('@angular/common/locales/en');

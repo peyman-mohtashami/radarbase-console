@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>

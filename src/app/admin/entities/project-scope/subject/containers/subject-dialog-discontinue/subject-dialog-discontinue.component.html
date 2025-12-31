@@ -1,15 +1,8 @@
-<div>
-  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span class='inline-flex items-center justify-between w-full'>
-    <span class="text-lg">
-      <span>{{ 'ADMIN.subject.discontinue.title' | translate }}</span>
-    </span>
-    <button mat-icon-button (click)='close()'>
-      <mat-icon class="material-symbols-outlined">close</mat-icon>
-    </button>
-  </span>
-  </h2>
-</div>
+<app-dialog-title [dialogMode]='SubjectDialogMode.DISCONTINUE'
+                  [entityMetadata]="configService.getEntityMetadata()"
+                  [entityName]="dialogData.entity._name"
+                  [customLabel]="'ADMIN.subject.discontinue.title' | translate"
+                  (closeEvent)='close()'/>
 
 <mat-dialog-content>
   <p class="mb-4">
@@ -18,26 +11,24 @@
   </p>
   <app-dialog-body-description>
     <app-subject-details class="py-4"
-                        [entity]='dialogData.entity'
-                        [detailType]="DetailType.SUMMARY" />
+                         [entity]='dialogData.entity'
+                         [detailType]="DetailType.SUMMARY"/>
   </app-dialog-body-description>
   <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
 </mat-dialog-content>
 
 @if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm break-words bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
+  <app-error-message-box>
     {{ error()?.error.errorCode | translate }}
-  </div>
+  </app-error-message-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
     <button mat-stroked-button
-            color='primary'
+            color='accent'
             type='button'
             class='close-button'
-            [mat-dialog-close]='true'
             (click)='close()'>
       {{ 'ADMIN.subject.discontinue.no' | translate }}
     </button>
@@ -46,13 +37,13 @@
     <button mat-raised-button
             color='warn'
             [disabled]='loading()'
-            (click)='onAction("delete")'>
+            (click)='onAction(DialogAction.DELETE)'>
       @if (loading()) {
         <ng-container>
-        <mat-icon>
-          <mat-spinner diameter='20'/>
-        </mat-icon>
-        {{ 'ADMIN.subject.discontinue.deleting' | translate }}
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+          {{ 'ADMIN.subject.discontinue.deleting' | translate }}
         </ng-container>
       } @else {
         {{ 'ADMIN.subject.discontinue.discontinue' | translate }}

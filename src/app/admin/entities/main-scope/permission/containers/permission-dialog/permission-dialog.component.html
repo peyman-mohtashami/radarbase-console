@@ -25,8 +25,9 @@
     <div class='mb-4 text-base'>
       @if (dialogData.mode === DialogMode.DELETE) {
         <div class="mt-4">
-          <p>{{ `${_prefix}.removeMessage` | translate}} {{ `ADMIN.user.title.singular` | translate }}: <strong>{{dialogData.entity.login}}</strong>.</p>
-          <p>{{ `SHARED.dialog.deleteWarning` | translate}}</p>
+          <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:
+            <strong>{{ dialogData.entity.login }}</strong>.</p>
+          <p>{{ `SHARED.dialog.deleteWarning` | translate }}</p>
         </div>
       }
     </div>
@@ -38,55 +39,59 @@
       <mat-form-field subscriptSizing="fixed"
                       appearance='outline'>
         <input matInput formControlName='email' required/>
-        @if (form.controls.email.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.email.errors; as errors) {
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.search.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </form>
 
     <div>
       @if (selectedUser(); as user) {
         <div class="text-sm">
-          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div
+            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
               {{ `ADMIN.user.login.label` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
-              {{user.login}}
+              {{ user.login }}
             </span>
           </div>
-          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div
+            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
               {{ `ADMIN.user.email.label` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
-              {{user.email}}
+              {{ user.email }}
             </span>
           </div>
-          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div
+            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
               {{ `ADMIN.user.firstName.label` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
-              {{user.firstName}}
+              {{ user.firstName }}
             </span>
           </div>
-          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div
+            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
               {{ `ADMIN.user.lastName.label` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
-              {{user.lastName}}
+              {{ user.lastName }}
             </span>
           </div>
         </div>
       } @else {
         @if (form.dirty) {
-          {{`${_prefix}.noUserFound` | translate}}
+          {{ `${_prefix}.noUserFound` | translate }}
         }
       }
     </div>
@@ -105,9 +110,10 @@
             mat-stroked-button
             color="accent"
             type="button">
-      {{ dialogData.mode !== DialogMode.DELETE ?
-      (`SHARED.dialog.cancel` | translate) :
-      (`SHARED.dialog.no` | translate)
+      {{
+        dialogData.mode !== DialogMode.DELETE ?
+          (`SHARED.dialog.cancel` | translate) :
+          (`SHARED.dialog.no` | translate)
       }}
     </button>
   </div>
@@ -120,11 +126,13 @@
               type="button">
         @if (loading()) {
           <ng-container>
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+            <mat-icon>
+              <mat-spinner diameter='20'/>
+            </mat-icon>
             {{ `SHARED.dialog.deletingButton` | translate }}
           </ng-container>
         } @else {
-            {{ `ADMIN.permission.remove` | translate }}
+          {{ `ADMIN.permission.remove` | translate }}
         }
       </button>
     }
@@ -135,9 +143,11 @@
               mat-raised-button
               type="button">
         @if (loading()) {
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
         }
-        {{ `ADMIN.permission.create` | translate}}
+        {{ `ADMIN.permission.create` | translate }}
       </button>
     }
   </div>

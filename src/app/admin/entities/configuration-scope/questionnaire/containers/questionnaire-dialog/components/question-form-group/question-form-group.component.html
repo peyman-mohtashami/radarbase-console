@@ -200,13 +200,13 @@
           <label for="field_name" class="text-sm">{{ `${_prefix}.questionConditionalLogic` | translate }}</label>
           <mat-form-field class='small-input w-1/2' appearance="outline">
             <textarea matInput formControlName='branching_logic' rows="2"></textarea>
-            @if (form.controls.branching_logic?.errors; as errors) {
-              <mat-error>
+            <mat-error>
+              @if (form.controls.branching_logic?.errors; as errors) {
                 @if (errors?.['required']) {
                   {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
         </div>
       }

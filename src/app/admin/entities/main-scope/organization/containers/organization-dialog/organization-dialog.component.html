@@ -3,7 +3,7 @@
 @if (dialogData.mode) {
   <app-dialog-title [dialogMode]='dialogData.mode'
                     [entityMetadata]="configService.getEntityMetadata()"
-                    [entityName]="dialogData.entity?._name"
+                    [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                     (closeEvent)='close()'/>
 
   <mat-dialog-content>
@@ -30,8 +30,8 @@
                  type="text">
           <mat-hint align="start">{{ ValidatorHint.normalTextValidator | translate }}</mat-hint>
 
-          @if (form.controls.name.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.name.errors; as errors) {
               @if (errors?.['duplicate']) {
                 {{ ValidatorError.duplicateValidator | translate:{value: form.controls.name.value} }}
               }
@@ -41,8 +41,8 @@
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.name.label` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
 
         @if (!formFields || formFields['location'] === undefined || formFields['location']) {
@@ -51,13 +51,13 @@
             <input matInput id="location" autocomplete="off" data-lpignore="true"
                    formControlName='location'
                    type="text">
-            @if (form.controls.location.errors; as errors) {
-              <mat-error>
+            <mat-error>
+              @if (form.controls.location.errors; as errors) {
                 @if (errors?.['pattern']) {
                   {{ ValidatorError.normalTextValidator | translate }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
         }
 
@@ -72,13 +72,13 @@
             <mat-hint align="start">{{ ValidatorHint.longTextValidator | translate }}</mat-hint>
             <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
 
-            @if (form.controls.description.errors; as errors) {
-              <mat-error>
+            <mat-error>
+              @if (form.controls.description.errors; as errors) {
                 @if (errors?.['pattern']) {
                   {{ ValidatorError.longTextValidator | translate }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
         }
       </form>

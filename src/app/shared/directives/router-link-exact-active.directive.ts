@@ -1,21 +1,19 @@
-import {Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2} from "@angular/core";
+import {Directive, ElementRef, inject, Input, OnDestroy, OnInit, Renderer2} from "@angular/core";
 import { Subscription, filter } from "rxjs";
 import {NavigationEnd, Router} from "@angular/router";
 
 @Directive({
-    selector: '[routerLinkExactActive]',
+    selector: '[appRouterLinkExactActive]',
 })
 export class RouterLinkExactActiveDirective implements OnInit, OnDestroy {
-  @Input('routerLinkExactActive') activeClass = 'routerLinkActive';
+  private router = inject(Router);
+  private el = inject(ElementRef);
+  private renderer = inject(Renderer2);
+
+  @Input('appRouterLinkExactActive') activeClass = 'routerLinkActive';
   @Input() targetUrl?: string;
 
   private sub?: Subscription;
-
-  constructor(
-    private router: Router,
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) {}
 
   ngOnInit() {
     this.sub = this.router.events

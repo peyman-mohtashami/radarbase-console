@@ -78,7 +78,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     if (managementPortalError && managementPortalParams) {
       return [`ERROR.${managementPortalParams}.${managementPortalError}`];
     } else {
-      return ['ERROR.' + (error.error.error || error.error.message || error.error.error_description || error.error.statusText || error.message || (error as any).error_description || error.error)];
+      return ['ERROR.' + (error.error.error || error.error.message || error.error.error_description || error.error.statusText || error.message || (error as unknown as { error_description?: string }).error_description || error.error)];
     }
   }
 }

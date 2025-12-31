@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
@@ -25,7 +24,6 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   imports: [
     MatDialogTitle,
     MatIconButton,
-    MatDialogClose,
     MatDialogContent,
     MatButton,
     TranslatePipe,

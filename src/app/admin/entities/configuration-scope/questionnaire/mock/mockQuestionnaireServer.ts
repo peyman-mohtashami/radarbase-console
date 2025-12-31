@@ -5,13 +5,12 @@ import {adhd_medication_side_effects} from "./questionnaires/adhd_medication_sid
 import {adhd_medication_use} from "./questionnaires/adhd_medication_use/main";
 import {audio} from "./questionnaires/audio/main";
 import {cns_covid19_baseline} from './questionnaires/cns_covid19_baseline/main';
-import {sample_field_types_en} from './questionnaires/sample-field-types/sample-field-types_armt';
 import {sample_field_types} from './questionnaires/sample-field-types/main';
 
 export class MockQuestionnaireServer {
   static get(url: string): Observable<RadarConfigBundle>{
     const segments = url.split("/");
-    let scope: string = 'global';
+    let scope = 'global';
     if (segments.find(segment => segment === 'projects')) scope = segments[segments.indexOf('projects') + 1];
 
     if (scope === 'global') return of(globalRadarQuestionnaireBundle);
@@ -20,7 +19,7 @@ export class MockQuestionnaireServer {
 
   static post(url: string, config: {config: RadarConfig[]}): Observable<RadarConfigBundle>{
     const segments = url.split("/");
-    let scope: string = 'global';
+    let scope = 'global';
     if (segments.find(segment => segment === 'projects')) scope = segments[segments.indexOf('projects') + 1];
 
     if (scope === 'global') return of(globalRadarQuestionnaireBundle);

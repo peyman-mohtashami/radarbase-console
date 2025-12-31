@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
@@ -18,18 +18,20 @@ import {AppGroup} from '../../../group/models/group';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {AppProject} from '../../../../main-scope/project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {MatDynamicInputComponent} from '../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {LocaleService} from "../../../../../../core/locale/services/locale.service";
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {DetailType} from '../../../../../base-entities/enums/detail-type';
-import {DialogAction} from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
+import {
+  DialogActionsComponent
+} from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
+import {
+  DialogTitleComponent
+} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 
 @Component({
   selector: 'app-subject-dialog',
@@ -46,22 +48,18 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatSelect,
     MatOption,
     MatError,
-    MatButton,
-    MatIcon,
-    MatProgressSpinner,
-    MatDialogTitle,
-    MatIconButton,
     MatSuffix,
     SubjectDetailsComponent,
     MatDynamicInputComponent,
     AsyncPipe,
     ErrorMessageBoxComponent,
+    DialogTitleComponent,
+    DialogActionsComponent,
   ]
 })
 export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject> implements OnInit, AfterViewInit {
   protected readonly SubjectDialogMode = SubjectDialogMode;
   protected readonly DetailType = DetailType;
-  protected readonly DialogAction = DialogAction;
 
   localeService = inject(LocaleService);
 

@@ -17,19 +17,21 @@ import {
 import {
   SubjectDialogAssignGroupComponent
 } from '../containers/subject-dialog-assign-group/subject-dialog-assign-group.component';
-import {AppGroup} from '../../group/models/group';
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {SubjectConfigService} from './subject-config.service';
 import {GroupService} from '../../group/services/group.service';
 import {ClientService} from '../../../main-scope/client/services/client.service';
+import {map} from 'rxjs/operators';
+import {SourceService} from '../../source/services/source.service';
 
 @Injectable({providedIn: 'root'})
-export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSubject, SubjectDialogComponent> {
+export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSubject, SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
   override entityService = inject(SubjectService);
   override configService = inject(SubjectConfigService);
 
   groupService = inject(GroupService);
   clientService = inject(ClientService);
+  sourceService = inject(SourceService);
 
   override processUrlFragment(fragment: string) {
     const entityMetadata = this.configService.getEntityMetadata()
@@ -79,7 +81,9 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     }
   }
 
-  override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject): MatDialogRef<any> {
+  // override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject): MatDialogRef<any> {
+  override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject):
+    MatDialogRef<SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
     const project = this.selectedEntitiesService.selectedProject();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
@@ -125,7 +129,9 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   createPairAppDialogRef(_data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
-    const clientFullList = this.clientService.getWithQuery();
+    const clientFullList = this.clientService.getWithQuery().pipe(
+      map(clients => clients.filter(c => c.additionalInformation?.['dynamic_registration'] && c.additionalInformation?.['dynamic_registration'] === 'true'))
+    );
     return this.dialog.open(SubjectDialogPairAppComponent, {
       data: {..._data, clientFullList},
       panelClass: 'tailwind-slide-panel',
@@ -140,8 +146,12 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   createPairSourceDialogRef(_data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
+    const sourcesFullList = this.sourceService.getWithQuery(undefined, _data.project?.projectName).pipe(
+      map(sources => sources.filter(s => !s.assigned))
+    );
+
     return this.dialog.open(SubjectDialogPairSourceComponent, {
-      data: _data,
+      data: {..._data, sourcesFullList},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -156,10 +166,10 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   openAssignGroupToSubjectsDialog(subjects: { login: string; }[], project: AppProject) {
     const dialogRef = this.createAssignGroupToSubjectsDialogRef();
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe({
-      next: (value: { group?: AppGroup }) => {
-        if (value.group) {
-          this.entityService.addSubjectsToGroup(project.projectName, value.group.name, subjects).subscribe({
+    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
+      (value) => {
+        if (value.entity) {
+          this.entityService.addSubjectsToGroup(project.projectName, value.entity.name, subjects).subscribe({
             next: () => {
               this.dialogUpdateEvent.set({mode: SubjectDialogMode.ASSIGN_GROUP, entity: undefined})
               dialogRef.close();
@@ -170,19 +180,19 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
           dialogRef.close();
         }
       }
-    });
+    );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();
     });
   }
 
-  createAssignGroupToSubjectsDialogRef() {
+  createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
     const project = this.selectedEntitiesService.selectedProject();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {
-      data: {groups: groupFullList},
+      data: {groups: groupFullList, selectedSubjects},
       panelClass: ['w-full', 'max-w-[700px]!', 'sm:w-1/2'],
       hasBackdrop: true,
       disableClose: true,

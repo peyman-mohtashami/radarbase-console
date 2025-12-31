@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {TranslateLoader} from '@ngx-translate/core';
+import {TranslateLoader, TranslationObject} from '@ngx-translate/core';
 import {from, Observable, switchMap} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {ConfigurationService} from '../configuration/services/configuration.service';
@@ -10,13 +10,13 @@ export class RuntimeConfigTranslateLoader implements TranslateLoader {
   private configurationService = inject(ConfigurationService)
   private http = inject(HttpClient);
 
-  getTranslation(lang: string): Observable<any> {
+  getTranslation(lang: string): Observable<TranslationObject> {
     const localeCustomization = this.configurationService.localeCustomization();
     const base = localeCustomization.translationsBaseUrl || this.defaultBase();
     const url = this.joinUrl(base, `${lang}.json`);
 
     if (!environment.localDeployment) {
-     return this.http.get(url);
+     return this.http.get<TranslationObject>(url);
     } else {
       return from(
         fetch(url, {
@@ -35,9 +35,9 @@ export class RuntimeConfigTranslateLoader implements TranslateLoader {
 
   private defaultBase(): string {
     // Use document.baseURI when available to build absolute URL under the deployed subpath
-    if (typeof document !== 'undefined' && (document as any).baseURI) {
+    if (typeof document !== 'undefined' && document.baseURI) {
       try {
-        return new URL('assets/i18n/', (document as any).baseURI).href;
+        return new URL('assets/i18n/', document.baseURI).href;
       } catch {
         return 'assets/i18n/';
       }

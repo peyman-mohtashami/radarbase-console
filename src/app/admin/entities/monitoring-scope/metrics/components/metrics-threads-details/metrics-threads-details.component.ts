@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { MetricsService } from '../../services/metrics.service';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
@@ -19,6 +19,8 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
   ]
 })
 export class MetricsThreadsDetailsComponent implements OnInit {
+  private metricsService = inject(MetricsService);
+
   ThreadState = ThreadState;
   threadStateFilter?: ThreadState;
   filteredThreads: Thread[] = [];
@@ -29,8 +31,6 @@ export class MetricsThreadsDetailsComponent implements OnInit {
   threadDumpRunnable = 0;
   threadDumpTimedWaiting = 0;
   threadDumpWaiting = 0;
-
-  constructor(private metricsService: MetricsService) {}
 
   ngOnInit(): void {
     this.metricsService.threadDump().subscribe({

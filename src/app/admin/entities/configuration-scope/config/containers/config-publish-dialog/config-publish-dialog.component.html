@@ -4,9 +4,7 @@
     <span class="text-lg">
       <span>{{ (dialogData.mode === "publish" ? "ADMIN.config.publishDialog.title" : "ADMIN.config.discardDialog.title") | translate }}</span>
     </span>
-    <button mat-icon-button
-            (click)='close()'
-            [mat-dialog-close]='true'>
+    <button mat-icon-button (click)='close()'>
       <mat-icon class="material-symbols-outlined">close</mat-icon>
     </button>
   </span>
@@ -55,7 +53,6 @@
               color='primary'
               type='button'
               class='close-button'
-              [mat-dialog-close]='true'
               (click)='close()'>
         {{ 'ADMIN.config.publishDialog.cancel' | translate }}
       </button>

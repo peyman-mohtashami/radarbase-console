@@ -178,8 +178,13 @@ export class ConfigurationService {
   }
 }
 
-const enabled = (config: boolean | undefined | {url: string}, item: any) => {
+const enabled = (config: boolean | undefined | {url: string}, item: {
+  name: string;
+  icon: string;
+  route: string;
+}) => {
   if (config === undefined || config === true) return item;
   if (config === false) return undefined;
   if (config.url) return {...item, external: true, route: config.url};
+  return item;
 }

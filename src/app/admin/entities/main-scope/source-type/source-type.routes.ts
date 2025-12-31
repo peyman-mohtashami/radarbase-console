@@ -5,9 +5,6 @@ import {SourceTypeListResolver} from './services/source-type-list.resolver';
 import {SourceTypeResolver} from './services/source-type.resolver';
 import {SourceTypeListPageComponent} from './containers/source-type-list-page/source-type-list-page.component';
 import {RADAR_ROLES} from '../../../../core/auth/models/auth.model';
-import {
-  ProjectDetailsPageComponent
-} from '../project/containers/project-details-page/project-details-page.component';
 import {SourceTypeDetailsPageComponent} from './containers/source-type-details-page/source-type-details-page.component';
 
 export const sourceTypeRoutes: Routes = [

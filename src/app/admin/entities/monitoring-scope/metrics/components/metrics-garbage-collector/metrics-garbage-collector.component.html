@@ -2,7 +2,7 @@
   class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-neutral-100 dark:[&_app-detail-element:nth-child(even)>div]:bg-neutral-600 p-4">
   @if (garbageCollectorMetrics) {
     <app-detail-element>
-      <ng-container label>
+      <ng-container label i18n>
         {{ 'ADMIN.metrics.garbageCollector.max.data.size' | translate }}
         ({{ garbageCollectorMetrics['jvm.gc.live.data.size'] / 1048576 | number: '1.0-0' }}M /
         {{ garbageCollectorMetrics['jvm.gc.max.data.size'] / 1048576 | number: '1.0-0' }}M)
@@ -25,7 +25,7 @@
   }
   @if (garbageCollectorMetrics) {
     <app-detail-element>
-      <ng-container label>
+      <ng-container label i18n>
         {{ 'ADMIN.metrics.garbageCollector.memory.allocated' | translate }}
         ({{ garbageCollectorMetrics['jvm.gc.memory.promoted'] / 1048576 | number: '1.0-0' }}M /
         {{ garbageCollectorMetrics['jvm.gc.memory.allocated'] / 1048576 | number: '1.0-0' }}M)
@@ -77,19 +77,19 @@
         <thead class="border-b border-gray-500">
         <tr class="[&>th]:text-start">
           <th></th>
-          <th>Count</th>
-          <th>Mean</th>
-          <th>Min</th>
-          <th>p50</th>
-          <th>p75</th>
-          <th>p95</th>
-          <th>p99</th>
-          <th>Max</th>
+          <th>{{ 'Count' }}</th>
+          <th>{{ 'Mean' }}</th>
+          <th>{{ 'Min' }}</th>
+          <th>{{ 'p50' }}</th>
+          <th>{{ 'p75' }}</th>
+          <th>{{ 'p95' }}</th>
+          <th>{{ 'p99' }}</th>
+          <th>{{ 'Max' }}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>jvm.gc.pause</td>
+          <td>{{ 'jvm.gc.pause' }}</td>
           <td>{{ garbageCollectorMetrics['jvm.gc.pause'].count }}</td>
           <td>{{ garbageCollectorMetrics['jvm.gc.pause'].mean | number: '1.0-3' }}</td>
           <td>{{ garbageCollectorMetrics['jvm.gc.pause']['0.0'] | number: '1.0-3' }}</td>

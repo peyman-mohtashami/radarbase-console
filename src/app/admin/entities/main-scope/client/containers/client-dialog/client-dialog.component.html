@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
@@ -18,8 +18,8 @@
       </label>
       <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
         <input id="clientId" matInput formControlName='clientId' required>
-        @if (form.controls.clientId.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.clientId.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ `${_prefix}.clientId.duplicate` | translate }}
             }
@@ -29,8 +29,8 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.clientId.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <mat-slide-toggle formControlName='enableEmptySecret' color="primary">
@@ -48,13 +48,13 @@
           <button type='button' matSuffix mat-button class="text-sm mx-2" (click)='generateRandomSecret(36)'>
             {{ `${_prefix}.clientSecret.generateKey` | translate }}
           </button>
-          @if (form.controls.clientSecret.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.clientSecret.errors; as errors) {
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.clientSecret.label` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       }
 
@@ -63,16 +63,16 @@
       </label>
       <mat-form-field subscriptSizing="fixed" class="mb-16" appearance='outline'>
         <textarea id="scope" rows="3" matInput formControlName='scope' required></textarea>
-        @if (form.controls.scope.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.scope.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator | translate }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.scope.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
         <mat-hint class="text-xs leading-3">{{ `${_prefix}.scope.hint` | translate }}</mat-hint>
       </mat-form-field>
 
@@ -81,16 +81,16 @@
       </label>
       <mat-form-field class="mb-4" subscriptSizing="fixed" appearance='outline'>
         <input id="resourceIds" matInput formControlName='resourceIds' required>
-        @if (form.controls.resourceIds.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.resourceIds.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator | translate }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.resourceIds.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
         <mat-hint>{{ `${_prefix}.resourceIds.hint` | translate }}</mat-hint>
       </mat-form-field>
 
@@ -152,13 +152,13 @@
       </label>
       <mat-form-field id="accessTokenValiditySeconds" subscriptSizing="fixed" class="mb-4" appearance='outline'>
         <input matInput formControlName='accessTokenValiditySeconds' type='number' required>
-        @if (form.controls.accessTokenValiditySeconds.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.accessTokenValiditySeconds.errors; as errors) {
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.accessTokenValiditySeconds.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
         <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
           {{ form.controls.accessTokenValiditySeconds.value | duration:'s' }}
         </span>
@@ -171,13 +171,13 @@
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input id="refreshTokenValiditySeconds" matInput formControlName='refreshTokenValiditySeconds' type='number'
                required>
-        @if (form.controls.refreshTokenValiditySeconds.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.refreshTokenValiditySeconds.errors; as errors) {
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.refreshTokenValiditySeconds.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
         <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
           {{ form.controls.refreshTokenValiditySeconds.value | duration:'s' }}
         </span>

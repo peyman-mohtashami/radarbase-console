@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
@@ -24,16 +24,16 @@
       <label for="group-name" class="text-sm">{{ `${_prefix}.name.label` | translate }} *</label>
       <mat-form-field subscriptSizing="fixed" appearance="outline">
         <input id="group-name" matInput formControlName='name' required>
-        @if (form.controls.name.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.name.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ ValidatorError.duplicateValidator | translate:{value: form.controls.name.value} }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.name.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </form>
   }

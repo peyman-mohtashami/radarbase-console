@@ -21,7 +21,7 @@
                 @if (!nav.external) {
                   <mat-list-item class="px-0! py-2! rounded-sm! transition-all! hover:text-primary! dark:hover:text-primary! h-auto!"
                                  [routerLink]='nav.route'
-                                 routerLinkExactActive="routerLinkActive" [targetUrl]="nav.route">
+                                 appRouterLinkExactActive="routerLinkActive" [targetUrl]="nav.route">
                     <span class="text-white! flex items-center gap-2"
                           [class]="isMenuOpen() ? 'px-4! pl-8!' : 'md:justify-start px-4!'">
                       <span class="material-symbols-outlined"

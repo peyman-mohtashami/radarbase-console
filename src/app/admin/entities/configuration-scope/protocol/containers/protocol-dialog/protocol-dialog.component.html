@@ -2,42 +2,12 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity?._name : undefined"
                   (closeEvent)='close()'>
   <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
     <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
   </button>
 </app-dialog-title>
-
-<!--<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">-->
-<!--  <span class='inline-flex items-center justify-between w-full'>-->
-<!--    <span class="text-lg">-->
-<!--      @if (dialogData.mode === DialogMode.EDIT) {-->
-<!--        <span>{{ "SHARED.dialog.edit" | translate }}</span>-->
-<!--      }-->
-<!--      @if (dialogData.mode === DialogMode.ADD) {-->
-<!--        <span>{{ "SHARED.dialog.add" | translate }}</span>-->
-<!--      }-->
-<!--      @if (dialogData.mode === DialogMode.DELETE) {-->
-<!--        <span>{{ "SHARED.dialog.delete" | translate }}</span>-->
-<!--      }-->
-<!--      <span> {{ "ADMIN.protocol.title.singular" | translate }}</span>-->
-<!--      @if (dialogData.entity?.name) {-->
-<!--        <span> "{{ dialogData.entity?.name }}"</span>-->
-<!--      }-->
-<!--    </span>-->
-<!--    <div>-->
-<!--      @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {-->
-<!--        <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">-->
-<!--          <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>-->
-<!--        </button>-->
-<!--      }-->
-<!--      <button mat-icon-button (click)='close()'>-->
-<!--      <mat-icon class="material-symbols-outlined">close</mat-icon>-->
-<!--    </button>-->
-<!--    </div>-->
-<!--  </span>-->
-<!--</h2>-->
 
 <mat-dialog-content>
   @if (showCode) {

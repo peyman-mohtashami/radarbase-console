@@ -13,7 +13,11 @@
       @if (dialogMode() === DialogMode.DELETE) {
         <span>{{ "SHARED.dialog.delete" | translate }}</span>
       }
-      <span> {{ label()?.singular! | translate }} {{ "ADMIN." + entityMetadata()?.name + ".title.singular" | translate }}</span>
+      @if (customLabel()) {
+        <span>{{ customLabel() }}</span>
+      }
+<!--      <span> {{ label()?.singular! | translate }} {{ "ADMIN." + entityMetadata()?.name + ".title.singular" | translate }}</span>-->
+      <span> {{ `ADMIN.${entityMetadata()?.name}.title.singular` | translate }}</span>
       <span> {{ entityName() ? `"${entityName()}"` : `` }}</span>
     </span>
     <div>

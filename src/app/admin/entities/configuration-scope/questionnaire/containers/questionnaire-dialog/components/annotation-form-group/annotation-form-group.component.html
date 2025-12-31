@@ -7,16 +7,16 @@
     <label for="image" class="text-sm">{{ `${_prefix}}.questionFieldAnnotationImage` | translate }} *</label>
     <mat-form-field class='small-input w-1/2' appearance='outline'>
       <input matInput formControlName='image' required/>
-      @if (form.controls.image.errors; as errors) {
-        <mat-error>
+      <mat-error>
+        @if (form.controls.image.errors; as errors) {
           @if (errors?.['pattern']) {
             {{ ValidatorError.normalTextValidator }}
           }
           @if (errors?.['required']) {
             {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}}.questionFieldAnnotationImage` | translate} }}
           }
-        </mat-error>
-      }
+        }
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -25,16 +25,16 @@
       <label for="unit" class="text-sm">{{ `${_prefix}}.questionFieldAnnotationTimerUnit` | translate }} *</label>
       <mat-form-field class='small-input' appearance='outline'>
         <input matInput formControlName='unit' required/>
-        @if (form.controls.unit.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.unit.errors; as errors) {
             @if (errors?.['pattern']) {
               {{ ValidatorError.normalTextValidator }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}}.questionFieldAnnotationTimerUnit` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -43,16 +43,16 @@
         <label for="start" class="text-sm">{{ `${_prefix}}.questionFieldAnnotationTimerStart` | translate }} *</label>
         <mat-form-field class='small-input' appearance='outline'>
           <input matInput formControlName='start' required/>
-          @if (form.controls.timer.controls.start.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.timer.controls.start.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}}.questionFieldAnnotationTimerStart` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -60,16 +60,16 @@
         <label for="end" class="text-sm">{{ `${_prefix}}.questionFieldAnnotationTimerEnd` | translate }} *</label>
         <mat-form-field class='small-input' appearance='outline'>
           <input matInput formControlName='end' required/>
-          @if (form.controls.timer.controls.end.errors; as errors) {
-            <mat-error>
+          <mat-error>
+            @if (form.controls.timer.controls.end.errors; as errors) {
               @if (errors?.['pattern']) {
                 {{ ValidatorError.normalTextValidator }}
               }
               @if (errors?.['required']) {
                 {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}}.questionFieldAnnotationTimerEnd` | translate} }}
               }
-            </mat-error>
-          }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
     </ng-container>

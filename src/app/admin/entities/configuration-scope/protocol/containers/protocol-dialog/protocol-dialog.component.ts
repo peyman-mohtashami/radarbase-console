@@ -10,12 +10,12 @@ import {
   FormGroup, FormsModule,
   ReactiveFormsModule
 } from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
-import {AppProtocol} from "../../models/protocol";
+import {AppProtocol, FormProtocol} from "../../models/protocol";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {DialogActionsComponent} from "../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
 import {EditorComponent} from "ngx-monaco-editor-v2";
@@ -37,7 +37,6 @@ import {
   DialogBodyDescriptionComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
-import {MatIcon} from '@angular/material/icon';
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
@@ -56,7 +55,6 @@ import {
     DialogActionsComponent,
     MatIconButton,
     FormsModule,
-    MatDialogTitle,
     EditorComponent,
     MatTooltip,
     MatStepper,
@@ -68,7 +66,6 @@ import {
     MatStepLabel,
     MatButton,
     DialogBodyDescriptionComponent,
-    MatIcon,
     ErrorMessageBoxComponent,
     AsyncPipe,
     DialogTitleComponent,
@@ -108,10 +105,10 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
   override formFields = this.configService.getFormFields();
 
   override form = new FormGroup({
-    general: new FormControl<any>({}, {nonNullable: true}),
-    questionsGroup: new FormControl<any>({}, {nonNullable: true}),
-    scheduling: new FormControl<any>({}),
-    content: new FormControl<any>({}, {nonNullable: true}),
+    general: new FormControl<FormProtocol['general']>(null!, {nonNullable: true}),
+    questionsGroup: new FormControl<FormProtocol['questionsGroup']>(null!, {nonNullable: true}),
+    scheduling: new FormControl<FormProtocol['scheduling'] | null>(null),
+    content: new FormControl<FormProtocol['content']>(null!, {nonNullable: true}),
   });
 
   ngOnInit() {

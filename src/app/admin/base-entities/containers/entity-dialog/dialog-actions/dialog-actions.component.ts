@@ -26,7 +26,7 @@ export enum DialogAction {
 export class DialogActionsComponent {
   protected readonly DialogMode = DialogMode;
 
-  dialogMode = input<DialogMode>();
+  dialogMode = input<DialogMode | string>();
   label = input<{singular: string; plural: string;}>();
   form = input<UntypedFormGroup>();
 

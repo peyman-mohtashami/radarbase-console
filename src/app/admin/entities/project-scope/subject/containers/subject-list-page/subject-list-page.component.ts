@@ -13,7 +13,6 @@ import {ListPageHeaderComponent} from '../../../../../base-entities/containers/e
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
- import {ROLES} from '../../../../../../shared/enums/roles';
 
 @Component({
   selector: 'app-subject-list-page',

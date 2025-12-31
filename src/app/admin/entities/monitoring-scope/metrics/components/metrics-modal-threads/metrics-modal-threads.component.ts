@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {Thread, ThreadState} from '../../models/radar-metrics.model';
 import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-metrics-thread-modal',
   templateUrl: './metrics-modal-threads.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass
+    NgClass,
+    TranslatePipe
   ]
 })
 export class MetricsModalThreadsComponent implements OnInit {

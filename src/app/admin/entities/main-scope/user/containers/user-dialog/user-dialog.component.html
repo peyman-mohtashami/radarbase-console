@@ -2,7 +2,7 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
+                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
@@ -27,8 +27,8 @@
       <label for="login" class="text-sm">{{ `${_prefix}.login.label` | translate }} *</label>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='login' required>
-        @if (form.controls.login.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.login.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ ValidatorError.duplicateValidator | translate:{value: form.controls.login.value} }}
             }
@@ -38,39 +38,39 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: (`${_prefix}.login.label` | translate)} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="firstName" class="text-sm">{{ `${_prefix}.firstName.label` | translate }}</label>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='firstName'>
-        @if (form.controls.firstName.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.firstName.errors; as errors) {
             @if (errors['pattern']) {
               {{ ValidatorError.normalTextValidator | translate }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="lastName" class="text-sm">{{ `${_prefix}.lastName.label` | translate }}</label>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='lastName'>
-        @if (form.controls.lastName.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.lastName.errors; as errors) {
             @if (errors['pattern']) {
               {{ ValidatorError.normalTextValidator | translate }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input matInput formControlName='email' required>
-        @if (form.controls.email.errors; as errors) {
-          <mat-error>
+        <mat-error>
+          @if (form.controls.email.errors; as errors) {
             @if (errors?.['duplicate']) {
               {{ "ADMIN.user.email.duplicate" }}
             }
@@ -80,8 +80,8 @@
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.email.label` | translate} }}
             }
-          </mat-error>
-        }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>

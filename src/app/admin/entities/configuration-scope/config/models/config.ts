@@ -15,6 +15,5 @@ export interface RadarConfig {
 export interface AppConfig extends RadarConfig {
   id: string;
   _name: string;
-  // _changed?: boolean;
   _search?: string;
 }

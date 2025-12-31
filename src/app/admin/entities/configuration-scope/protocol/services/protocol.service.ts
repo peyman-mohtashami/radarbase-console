@@ -104,18 +104,8 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
   }
 
   appToRadarModel(entity: AppProtocol): RadarProtocol {
-    const {
-      _languages,
-      _onDemand,
-      _github,
-      _repeatedProtocol,
-      _relativeToReferenceTime,
-      _reminderEnabled,
-      ...rest
-    } = entity;
-
     // Remove keys with undefined values recursively
-    const pruneUndefined = (obj: any): any => {
+    const pruneUndefined = (obj: unknown): unknown => {
       if (Array.isArray(obj)) {
         return obj
           .map(pruneUndefined)
@@ -123,19 +113,23 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       }
       if (obj && typeof obj === 'object') {
         return Object.entries(obj).reduce((acc, [k, v]) => {
+          if (k.startsWith('_')) {
+            return acc;
+          }
           const cleaned = pruneUndefined(v);
           if (cleaned !== undefined) {
-            (acc as any)[k] = cleaned;
+            (acc as Record<string, unknown>)[k] = cleaned;
           }
           return acc;
-        }, {} as Record<string, any>);
+        }, {} as Record<string, unknown>);
       }
       return obj === undefined ? undefined : obj;
     };
 
-    return pruneUndefined(rest) as RadarProtocol;
+    return pruneUndefined(entity) as RadarProtocol;
   }
 
+  /*
   formToAppModel(entity: FormProtocol): AppProtocol {
     return {
       _name: entity.general.name,
@@ -198,7 +192,7 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       _reminderEnabled: entity.scheduling?.reminders?.enabled ?? false,
     }
   }
-
+*/
   override getWithQuery(queryParams?: Params, projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
     const {
       pageIndex = 0,
@@ -381,10 +375,10 @@ export function toTimestamp(referenceTimestamp: {timestamp: string; format: stri
   return undefined;
 }
 
-export function toReferenceTimestamp(timestamp: string | null): {timestamp: string; format: string} {
-  if (!timestamp) return {timestamp: '', format: 'date'};
-  return {
-    timestamp: '',
-    format: 'date'
-  };
-}
+// export function toReferenceTimestamp(timestamp: string | null): {timestamp: string; format: string} {
+//   if (!timestamp) return {timestamp: '', format: 'date'};
+//   return {
+//     timestamp: '',
+//     format: 'date'
+//   };
+// }
