@@ -9,8 +9,7 @@ import {
 import {Observable, of} from "rxjs";
 import {map, tap} from "rxjs/operators";
 import {environment} from "../../../../../../environments/environment";
-import {RadarConfig, RadarConfigBundle} from "../../config/models/config";
-import {MockQuestionnaireServer} from "../mock/mockQuestionnaireServer";
+import {AppConfig, RadarConfigBundle} from "../../config/models/config";
 import {
   getAppConfigBaseUrl,
   getConfigsFromConfigBundle,
@@ -19,6 +18,7 @@ import {
 } from '../../config/services/config.service';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {Params} from '@angular/router';
+import {getQuestionnaires, postAppQuestionnaires} from '../mock/mock-questionnaire';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, RadarQuestionnaire> {
@@ -27,6 +27,9 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   private readonly CLIENT_ID = 'questionnaire-service';
 
   override getWithQuery(queryParams?: Params, projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
+    this.cacheLoaded = false;
+    this.cache = [];
+
     const {
       pageIndex = 0,
       pageSize = 10,
@@ -51,7 +54,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
-    const radarConfigBundleObservable = !environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)
+    let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    if (environment.localDeployment) {
+      radarConfigBundleObservable = of(getQuestionnaires(this.CLIENT_ID, projectId, subjectId));
+    }
 
     return radarConfigBundleObservable.pipe(
       map(configBundle => {
@@ -59,7 +65,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
           const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
             const name = cur.name;
             const {base, lang} = parseName(name);
-            acc[base] = {...acc[base], [lang]: JSON.parse(cur.value)};
+            acc[base] = {...acc[base], [lang]: JSON.parse(JSON.parse(cur.value))};
             return acc;
           }, {});
           const questionnaireArray: RadarQuestionnaire[] = Object.keys(groupedQuestionnaires).map(key => {
@@ -91,7 +97,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
     return of(entity)
       .pipe(
-        // map(entity => this.toAppModel(entity)),
         tap(_entity => {
           this.total.set(this.total() + 1);
           this.updatedList.push(_entity);
@@ -102,7 +107,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   override update(update: AppQuestionnaire): Observable<AppQuestionnaire> {
     return of(update)
       .pipe(
-        // map(entity => this.toAppModel(entity)),
         tap(() => {
           this.updatedList = this.updatedList.map((e) => (e._name === update._name ? update : e));
         })
@@ -116,33 +120,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
       })
     );
   }
-
-  // getAll(projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
-  //   const headers = getHeaders();
-  //   const appConfigBaseUrl = getAppConfigBaseUrl();
-  //   const urlSegment = getUrlSegment(projectId, subjectId);
-  //   const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
-  //
-  //   return (!environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockQuestionnaireServer.get(url)).pipe(
-  //     map(configBundle => {
-  //         const radarConfigs = getConfigsFromConfigBundle(configBundle);
-  //         const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
-  //           const name = cur.name;
-  //           const {base, lang} = parseName(name);
-  //           acc[base] = {...acc[base], [lang]: JSON.parse(cur.value)};
-  //           return acc;
-  //         }, {});
-  //         const questionnaireArray: RadarQuestionnaire[] = Object.keys(groupedQuestionnaires).map(key => {
-  //           return {
-  //             name: key,
-  //             languages: Object.keys(groupedQuestionnaires[key]),
-  //             questions: groupedQuestionnaires[key]
-  //           }
-  //         });
-  //         return questionnaireArray.map(q => this.radarToAppModel(q));
-  //       }
-  //     ));
-  // }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
     const headers = getHeaders();
@@ -158,22 +135,26 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
       }
     ));
 
-    const configs: RadarConfig[] = [];
+    const configs: AppConfig[] = [];
     radarQuestionnaires.forEach(q => {
       const name = q.name;
       Object.keys(q.questions).forEach(lang => {
-        configs.push({name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
+        configs.push({_name: '', id: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
       })
     });
 
-    return this.http.post<RadarConfigBundle>(url, {config: configs}, {headers}).pipe(
+    let radarConfigBundleObservable = this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
+    if (environment.localDeployment) {
+      radarConfigBundleObservable = of(postAppQuestionnaires(configs, this.CLIENT_ID, projectId, subjectId));
+    }
+    return radarConfigBundleObservable.pipe(
       map(() => {
         return questionnaires;
       })
     );
   }
 
-  private toQuestionAppModel(source:  Record<string, RadarQuestion[]>): AppQuestion[] {
+  private toQuestionAppModel(source: Record<string, RadarQuestion[]>): AppQuestion[] {
     const languages = Object.keys(source);
     const firstLang = languages[0];
     return source[firstLang].map((item) => {
@@ -206,11 +187,17 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     });
   }
 
-  customReducer2(source: Record<string, RadarQuestion[]>, item: RadarQuestion, choice: {code: string; label: string;}): Record<string, string> {
+  customReducer2(source: Record<string, RadarQuestion[]>, item: RadarQuestion, choice: {
+    code: string;
+    label: string;
+  }): Record<string, string> {
     const languages = Object.keys(source);
     return languages.reduce((acc, lang) => {
       const matchingItem = source[lang].find(x => x.field_name === item.field_name);
-      const matchingChoice: {code: string; label: string;} | undefined = matchingItem?.select_choices_or_calculations?.find(c => c.code === choice.code);
+      const matchingChoice: {
+        code: string;
+        label: string;
+      } | undefined = matchingItem?.select_choices_or_calculations?.find(c => c.code === choice.code);
       acc[lang] = matchingChoice?.label || "";//matchingItem?.select_choices_or_calculations?.[key] || '';
       return acc;
     }, {} as Record<string, string>);
@@ -219,14 +206,13 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   customReducer(key: string, source: Record<string, RadarQuestion[]>, item: RadarQuestion) {
     const languages = Object.keys(source);
     return languages.reduce((acc, lang) => {
-      const matchingItem: any = source[lang].find(x => x.field_name === item.field_name);
-      acc[lang] = matchingItem?.[key] || '';
+      const matchingItem = source[lang].find(x => x.field_name === item.field_name);
+      acc[lang] = (matchingItem as unknown as Record<string, string>)?.[key] || '';
       return acc;
     }, {} as Record<string, string>);
   }
 
   radarToAppModel(entity: RadarQuestionnaire): AppQuestionnaire {
-    console.log('Class: QuestionnaireService, Function: radarToAppModel, Line 272 entity' , entity);
     return {
       name: entity.name,
       languages: entity.languages.map(l => ISO_LANGUAGES_MAP[l]),
@@ -284,5 +270,5 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
 
 function parseName(name: string): { base: string; lang: string } {
   const m = name.match(/^(.*)_(.+)$/);
-  return m ? { base: m[1], lang: m[2] } : { base: name, lang: 'en' };
+  return m ? {base: m[1], lang: m[2]} : {base: name, lang: 'en'};
 }

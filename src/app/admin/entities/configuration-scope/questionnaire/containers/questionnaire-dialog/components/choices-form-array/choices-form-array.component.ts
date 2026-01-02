@@ -52,8 +52,8 @@ export class ChoicesFormArrayComponent implements ControlValueAccessor, Validato
     label: FormControl<Record<string, string> | undefined>
   }>>([]);
 
-  onChange = () => {};
-  onTouch = () => {};
+  onChange: () => void = () => undefined;
+  onTouch: () => void = () => undefined;
 
   validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
@@ -62,8 +62,9 @@ export class ChoicesFormArrayComponent implements ControlValueAccessor, Validato
     this.form.controls.forEach((group) => {
       const codeCtrl = group.get('code');
       if (codeCtrl?.hasError('duplicateCode')) {
-        const { duplicateCode, ...rest } = codeCtrl.errors ?? {};
-        codeCtrl.setErrors(Object.keys(rest).length ? rest : null);
+        const _errors = codeCtrl?.errors ?? {}
+        delete _errors['duplicateCode'];
+        codeCtrl.setErrors(Object.keys(_errors).length ? _errors : null);
       }
     });
 

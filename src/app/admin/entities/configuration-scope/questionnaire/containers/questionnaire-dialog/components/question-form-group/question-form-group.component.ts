@@ -1,10 +1,9 @@
-import {Component, inject, input, OnDestroy, output, signal} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, Validator, NG_VALIDATORS,
+  ReactiveFormsModule, NG_VALIDATORS,
 } from '@angular/forms';
 import {MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField} from "@angular/material/form-field";
@@ -64,7 +63,7 @@ import {
     }
   ]
 })
-export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuestion> implements ControlValueAccessor, Validator, OnDestroy {
+export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuestion> {
 
   questionnaireStateService = inject(QuestionnaireStateService);
 
@@ -101,9 +100,9 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
   });
 
   // Optional: Implement registerOnValidatorChange if you need to update validation when external conditions change
-  registerOnValidatorChange?(fn: () => void): void {
-    this.onValidatorChange = fn;
-  }
+  // registerOnValidatorChange?(fn: () => void): void {
+  //   this.onValidatorChange = fn;
+  // }
 
   private onValidatorChange: (() => void) | undefined;
 

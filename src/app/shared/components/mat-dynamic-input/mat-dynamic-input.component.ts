@@ -1,27 +1,18 @@
-import {
-  Component, computed, input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,
-} from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Component, computed, input, OnDestroy, OnInit,} from '@angular/core';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {MatFormField, MatHint, MatOption, MatSelect} from '@angular/material/select';
 import {Validator, ValidatorError, ValidatorHint} from '../../utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
-import {DatePipe} from "@angular/common";
 import {MatError} from "@angular/material/form-field";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ToDatePipe} from "../../pipes/to-date.pipe";
 import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
+import {ExtraFieldCustomConfiguration} from '../../../core/configuration/models/custom-configuration.model';
 
 export interface RadarOption {
   id: number | string;
@@ -58,7 +49,6 @@ export interface RadarOption {
     MatInput,
     MatSlideToggle,
     ToDatePipe,
-    DatePipe,
     MatSelectAutocompleteComponent,
     MatSuffix
   ],
@@ -70,7 +60,7 @@ export class MatDynamicInputComponent
 
   entityName = input.required<string>();
 
-  field = input.required<any>();
+  field = input.required<ExtraFieldCustomConfiguration>();
   // @Input() legend?: string;
   // @Input() label?: string;
 
@@ -87,7 +77,7 @@ export class MatDynamicInputComponent
 
   // floatLabel = input<boolean>(false);
 
-  form: any; // = new FormControl<RadarOption[]>([]);
+  form!: FormControl<string | null>; // = new FormControl<RadarOption[]>([]);
   // name = 'project'
   dateFormat = 'mm/dd/yyy';
 
@@ -195,7 +185,7 @@ export class MatDynamicInputComponent
     }
   }
 
-  writeValue(value: any) {
+  writeValue(value: string) {
     console.log(value);
     if (value) {
     //   if (Array.isArray(value)) {
@@ -219,34 +209,32 @@ export class MatDynamicInputComponent
     }
   }
 
-  validate(control: AbstractControl) {
-    // TODO
-    if (this.form.valid) {
-      return null;
-    }
-
-    const errors: any = {};
-
-    // errors = this.addControlErrors(errors, "addressLine1");
-    // errors = this.addControlErrors(errors, "addressLine2");
-    // errors = this.addControlErrors(errors, "zipCode");
-    // errors = this.addControlErrors(errors, "city");
-
-    return errors;
-  }
+  // validate() {
+  //   // TODO
+  //   if (this.form.valid) {
+  //     return null;
+  //   }
+  //
+  //   // errors = this.addControlErrors(errors, "addressLine1");
+  //   // errors = this.addControlErrors(errors, "addressLine2");
+  //   // errors = this.addControlErrors(errors, "zipCode");
+  //   // errors = this.addControlErrors(errors, "city");
+  //
+  //   return {};
+  // }
 
   // TODO
 
-  addControlErrors(allErrors: any, controlName: string) {
-    const errors = { ...allErrors };
-
-    const controlErrors = this.form.get(controlName)?.errors;
-
-    if (controlErrors) {
-      errors[controlName] = controlErrors;
-    }
-
-    return errors;
-  }
+  // addControlErrors(allErrors: any, controlName: string) {
+  //   const errors = { ...allErrors };
+  //
+  //   const controlErrors = this.form.get(controlName)?.errors;
+  //
+  //   if (controlErrors) {
+  //     errors[controlName] = controlErrors;
+  //   }
+  //
+  //   return errors;
+  // }
   protected readonly ValidatorHint = ValidatorHint;
 }

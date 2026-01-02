@@ -3,12 +3,12 @@ import {FormControl, FormGroup} from "@angular/forms";
 export interface QuestionForm {
   field_name: FormControl<string>;
   field_type: FormControl<string>;
-  field_label: FormControl<Record<string, any>>;
-  section_header: FormControl<Record<string, any>>;
-  select_choices_or_calculations?: FormControl<Array<{
+  field_label: FormControl<Record<string, string>>;
+  section_header: FormControl<Record<string, string>>;
+  select_choices_or_calculations?: FormControl<{
     code: string;
     label: Record<string, string>;
-  }>>;
+  }[]>;
   field_annotation?: FormGroup<{
     image: FormControl<string | null>;
     timer: FormGroup<{

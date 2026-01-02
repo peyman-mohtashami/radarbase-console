@@ -19,6 +19,7 @@ import {AppSubject} from "../../../../project-scope/subject/models/subject";
 import {MatIcon} from '@angular/material/icon';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {DEFAULT_PAGE_SIZE} from '../../../../../base-entities/consts/default-table-values';
 
 @Component({
   selector: 'app-config-list-page',
@@ -51,6 +52,7 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   ngOnInit() {
     super.init();
     this.activatedRoute.data.subscribe(() => {
+      this.page.set({pageIndex: 0, pageSize: this.page()?.pageSize ?? DEFAULT_PAGE_SIZE, length: this.page()?.length ?? 0});
       this.refreshEntities();
       this.dialogService.dialogUpdateEvent.set(undefined);
     })

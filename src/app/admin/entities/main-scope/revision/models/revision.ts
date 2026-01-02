@@ -3,8 +3,8 @@ export interface RadarRevision {
   author: string;
   timestamp: Date;
   revisionType: string;
-  entity: any;
-  changes: any;
+  entity: unknown;
+  changes: unknown;
 }
 
 export interface AppRevision extends RadarRevision {

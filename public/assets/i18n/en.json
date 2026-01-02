@@ -1080,6 +1080,7 @@
         "cancel": "Cancel",
         "save": "Save"
       },
+      "details": "Details",
       "actions": {"tableLabel":  "Actions", "label":  "Actions"},
       "create": "Add Subject",
       "edit": "Edit",
@@ -1416,9 +1417,14 @@
         "unpublishedMessage": "Unpublished changes"
       },
       "dialog": {
+        "showCode": "Show code",
+        "showForm": "Show form",
         "general": {
           "title": "Configuration",
+          "errorMessage": "Configuration is required.",
           "nameLabel": "Name",
+          "": "Protocol name exists",
+          "languagesLabel": "Languages",
           "orderLabel": "Display Order",
           "onDemandLabel": "On Demand",
           "showInCalendarLabel": "Show In Calendar",
@@ -1426,6 +1432,7 @@
         },
         "content": {
           "title": "Content",
+          "errorMessage": "Content is required.",
           "showIntroductionLabel": "Show Introduction",
           "showIntroductionNo": "No",
           "showIntroductionOnce": "Once",
@@ -1437,8 +1444,9 @@
           "notificationTitleLabel": "Title (per language)",
           "notificationMessageLabel": "Message (per language)"
         },
-        "questionGroup": {
+        "questionsGroup": {
           "title": "Question Set",
+          "errorMessage": "Question set is required.",
           "githubLabel": "Use GitHub repository",
           "githubPropertiesLabel": "Github Properties",
           "questionnaireNameLabel": "Questionnaire Name",
@@ -1449,8 +1457,9 @@
         },
         "scheduling": {
           "title": "Scheduling",
+          "errorMessage": "Scheduling is required.",
           "relativeToReferenceTimeLabel": "Relative To reference timestamp",
-          "": "Reference timestamp",
+          "referenceTimeLabel": "Reference timestamp",
           "repeatedProtocolLabel": "Enable repeating",
           "repeatProtocolLabel": "Repeat every",
           "repeatProtocolAmount": "Amount",
@@ -1551,7 +1560,8 @@
         "questionFieldAnnotationImage": "Image",
         "questionFieldAnnotationTimerUnit": "Timer Unit",
         "questionFieldAnnotationTimerStart": "Timer Start",
-        "questionFieldAnnotationTimerEnd": "Timer End"
+        "questionFieldAnnotationTimerEnd": "Timer End",
+        "questionHasConditionalLogic": "This question has conditional logic"
       },
       "filters": {
         "search": "Search"
@@ -1564,6 +1574,24 @@
       "deleteMessage": "You are going to delete Questionnaire",
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No Questionnaire Found"
+    },
+    "dataDownload": {
+      "title": {
+        "singular": "Download",
+        "plural": "Download"
+      }
+    },
+    "dataCompliance": {
+      "title": {
+        "singular": "Compliance",
+        "plural": "Compliance"
+      }
+    },
+    "dataVisualization": {
+      "title": {
+        "singular": "Data",
+        "plural": "Data"
+      }
     },
     "sourceAuthorizerSubject": {
       "title": {

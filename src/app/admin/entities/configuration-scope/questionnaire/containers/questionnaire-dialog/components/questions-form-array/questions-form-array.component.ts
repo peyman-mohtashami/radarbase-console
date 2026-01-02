@@ -45,8 +45,8 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
 
   form = new FormArray<FormControl<AppQuestion | undefined>>([]);
 
-  onChange = (value: AppQuestion[]) => {};
-  onTouch = () => {};
+  onTouch: () => void = () => undefined;
+  onChange: (value: (AppQuestion | undefined)[]) => void = () => undefined;
 
   validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};

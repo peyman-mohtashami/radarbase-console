@@ -19,6 +19,7 @@ export class ProjectListResolver implements Resolve<AppProject[]> {
     if (!organizationInRoute) {
       this.selectedEntitiesService.clearAllSelected();
     }
+    this.selectedEntitiesService.selectedProject.set(undefined);
     const organization: AppOrganization | undefined = this.selectedEntitiesService.selectedOrganization();
     return this.entityService.getWithQuery(route.queryParams, organization?._name);
   }

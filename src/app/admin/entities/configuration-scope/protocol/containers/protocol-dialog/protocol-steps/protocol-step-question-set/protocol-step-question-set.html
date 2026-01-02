@@ -1,27 +1,29 @@
+@let _prefix = 'ADMIN.protocol.dialog.questionsGroup';
+
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
 
   <mat-slide-toggle formControlName='github' class="my-4" color="primary">
-    {{ 'ADMIN.protocol.dialog.questionGroup.githubLabel' | translate }}
+    {{ `${_prefix}.githubLabel` | translate }}
   </mat-slide-toggle>
 
   @if (githubValueChanges()) {
-    <p class="text-base">{{ 'ADMIN.protocol.dialog.questionGroup.githubPropertiesLabel' | translate }}</p>
+    <p class="text-base">{{ `${_prefix}.githubPropertiesLabel` | translate }}</p>
     <div class="mb-2" [formGroup]="form.controls.questionnaire">
       <div>
         <label for="questionnaire-name" class="text-sm">
-          {{ 'ADMIN.protocol.dialog.questionGroup.questionnaireNameLabel' | translate }} *
+          {{ `${_prefix}.questionnaireNameLabel` | translate }} *
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
-          <input id="questionnaire-name" matInput formControlName='name' required/>
+          <input id="questionnaire-name" matInput formControlName='name' required>
           <mat-error>
             @if (form.controls.questionnaire.controls.name.errors; as errors) {
               @if (errors?.['pattern']) {
-                {{ ValidatorError.normalTextValidator }}
+                {{ ValidatorError.normalTextValidator | translate }}
               }
               @if (errors?.['required']) {
                 {{
                   ValidatorError.requiredValidator | translate:{
-                    value: 'ADMIN.protocol.dialog.questionGroup.questionnaireNameLabel' | translate
+                    value: `${_prefix}.questionnaireNameLabel` | translate
                   }
                 }}
               }
@@ -32,19 +34,19 @@
 
       <div>
         <label for="questionnaire-repository" class="text-sm">
-          {{ 'ADMIN.protocol.dialog.questionGroup.questionnaireRepositoryLabel' | translate }} *
+          {{ `${_prefix}.questionnaireRepositoryLabel` | translate }} *
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
-          <input id="questionnaire-repository" matInput formControlName='repository' required/>
+          <input id="questionnaire-repository" matInput formControlName='repository' required>
           <mat-error>
             @if (form.controls.questionnaire.controls.repository.errors; as errors) {
               @if (errors?.['pattern']) {
-                {{ ValidatorError.normalTextValidator }}
+                {{ ValidatorError.normalTextValidator | translate }}
               }
               @if (errors?.['required']) {
                 {{
                   ValidatorError.requiredValidator | translate:{
-                    value: 'ADMIN.protocol.dialog.questionGroup.questionnaireRepositoryLabel' | translate
+                    value: `${_prefix}.questionnaireRepositoryLabel` | translate
                   }
                 }}
               }
@@ -59,11 +61,9 @@
 
     <div>
       <label for="appQuestionnaire" class="text-sm">
-        {{ 'ADMIN.protocol.dialog.questionGroup.appQuestionnaireLabel' | translate }} *
+        {{ `${_prefix}.appQuestionnaireLabel` | translate }} *
       </label>
-      <mat-form-field class='small-input w-full'
-                      appearance='outline' subscriptSizing="dynamic">
-        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
         <mat-select id="appQuestionnaire" formControlName='appQuestionnaire' [required]="!githubValueChanges()">
           @for (q of questionnaires | async; track q.name) {
             <mat-option [value]="q.name">{{ q.name }}</mat-option>
@@ -74,7 +74,7 @@
             @if (errors?.['required']) {
               {{
                 ValidatorError.requiredValidator | translate:{
-                  value: 'ADMIN.protocol.dialog.questionGroup.appQuestionnaireLabel' | translate
+                  value: `${_prefix}.appQuestionnaireLabel` | translate
                 }
               }}
             }
@@ -82,21 +82,17 @@
         </mat-error>
       </mat-form-field>
     </div>
-
   }
 
   <div>
     <label for="estimatedCompletionTime" class="text-sm">
-      {{ 'ADMIN.protocol.dialog.questionGroup.estimatedCompletionTimeLabel' | translate }}
+      {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
     </label>
-    <mat-form-field class='small-input w-full'
-                    appearance='outline'>
-      <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
-      <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'/>
+    <mat-form-field class='small-input w-full' appearance='outline'>
+      <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>
       <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-        {{ 'ADMIN.protocol.dialog.questionGroup.minutes' | translate }}
+        {{ `${_prefix}.minutes` | translate }}
       </span>
     </mat-form-field>
   </div>
-
 </div>

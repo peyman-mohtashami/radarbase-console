@@ -18,7 +18,7 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
 export class LogTableRowComponent extends BaseEntityTableRowComponent<AppLog>{
   override configService = inject(LogConfigService);
 
-  updateAction(log: AppLog, level: string) {
-    //TODO
-  }
+  // updateAction(log: AppLog, level: string) {
+  //   //TODO
+  // }
 }

@@ -56,6 +56,10 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
     super.destroy();
   }
 
+  override getEntities() {
+    return this.entityService.getWithQuery(this.params(), this.project?._name, this.subject?._name);
+  }
+
   protected showHistory() {
     // TODO
   }

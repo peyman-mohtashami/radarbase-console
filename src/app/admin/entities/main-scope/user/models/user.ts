@@ -1,4 +1,6 @@
 import {RadarOption} from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
+import {RadarProject} from '../../project/models/project';
+import {RadarOrganization} from '../../organization/models/organization';
 
 export interface RadarUser {
   id: number | string;
@@ -30,10 +32,10 @@ export interface RadarRole {
   projectName?: string;
   organizationName?: string;
   organizationId?: number;
-  users?: any;
-  project?: any;
-  organization?: any;
-  authority?: any;
+  users?: unknown;
+  project?: RadarProject;
+  organization?: RadarOrganization;
+  authority?: {name: string};
   role?: string;
 }
 

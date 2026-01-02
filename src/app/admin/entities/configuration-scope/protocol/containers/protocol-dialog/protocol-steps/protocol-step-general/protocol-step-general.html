@@ -1,20 +1,23 @@
+@let _prefix = 'ADMIN.protocol.dialog.general';
+
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
   <div>
-    <label for="name" class="text-sm">{{ 'ADMIN.protocol.dialog.general.nameLabel' | translate }} *</label>
+    <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
     <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-      <input id="name" matInput formControlName='name' required/>
+      <input id="name" matInput formControlName='name' required>
+      <mat-hint align="start">{{ ValidatorHint.stringIdValidator | translate }}</mat-hint>
       <mat-error>
         @if (form.controls['name']?.errors; as errors) {
           @if (errors?.['duplicate']) {
-            {{ "Protocol name exists" }}
+            {{ `${_prefix}.duplicate` | translate }}
           }
           @if (errors?.['pattern']) {
-            {{ ValidatorError.normalTextValidator }}
+            {{ ValidatorError.normalTextValidator | translate }}
           }
           @if (errors?.['required']) {
             {{
               ValidatorError.requiredValidator | translate:{
-                value: 'ADMIN.protocol.dialog.general.nameLabel' | translate
+                value: `${_prefix}.nameLabel` | translate
               }
             }}
           }
@@ -26,7 +29,7 @@
   <div>
     <app-mat-select-autocomplete formControlName="languages"
                                  [options]="ISO_LANGUAGES"
-                                 [label]="'Languages *'"
+                                 [label]="`${_prefix}.languagesLabel` | translate"
                                  [required]="true"
                                  [multiple]="true"
                                  [notRemovable]="DEFAULT_LANG"/>
@@ -36,25 +39,23 @@
   <div class="grid grid-cols-2 gap-4">
     <div>
       <label for="order" class="text-sm">
-        {{ 'ADMIN.protocol.dialog.general.orderLabel' | translate }}
+        {{ `${_prefix}.orderLabel` | translate }}
       </label>
-      <mat-form-field class='small-input w-1/2'
-                      appearance='outline' subscriptSizing="fixed">
-        <input id="order" matInput type="number" formControlName='order'/>
-        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
+      <mat-form-field class='small-input w-1/2' appearance='outline' subscriptSizing="fixed">
+        <input id="order" matInput type="number" formControlName='order'>
       </mat-form-field>
     </div>
   </div>
 
   <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">
-    {{ 'ADMIN.protocol.dialog.general.onDemandLabel' | translate }}
+    {{ `${_prefix}.onDemandLabel` | translate }}
   </mat-slide-toggle>
 
   <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">
-    {{ 'ADMIN.protocol.dialog.general.showInCalendarLabel' | translate }}
+    {{ `${_prefix}.showInCalendarLabel` | translate }}
   </mat-slide-toggle>
 
   <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">
-    {{ 'ADMIN.protocol.dialog.general.isDemoLabel' | translate }}
+    {{ `${_prefix}.isDemoLabel` | translate }}
   </mat-slide-toggle>
 </div>

@@ -4,7 +4,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormRecord, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatOption} from '@angular/material/core';
 
@@ -85,46 +85,52 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
     externalId: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     externalLink: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    attributes: new FormGroup({
+    // attributes: new FormGroup<Record<string, FormControl<string | undefined>>>({
+    //   humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
+    //   participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
+    // }),
+    attributes: new FormRecord<FormControl<string | undefined>>({
       humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
       participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     }),
+    // attributes: new FormGroup({
+    //   humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
+    //   participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
+    // }),
   });
 
   ngOnInit() {
-    // this.store?.select(locale)
-    //   // ?.getLocale()
-    //   // .pipe(takeUntil(this.subscription$))
-    //   .subscribe((locale) => {
-    //     // this.dateAdapter?.setLocale(locale.currentLanguage?.locale);
-    //     this.dateFormat = locale.currentLanguage?.dateFormat || 'mm/dd/yyy';
-    //   });
-
-    this.extraFields.forEach((field: any) => {
-      this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));
+    this.extraFields?.forEach((field: { name: string }) => {
+      this.form.controls.attributes.addControl(
+        field.name,
+        new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true})
+      );
     });
+    // this.extraFields?.forEach((field: any) => {
+    //   this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));
+    // });
     super.init();
-    // const extraFieldsControls = this.extraFields.reduce((acc: any, cur: any) => {
-    //   acc[cur.name] = new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true});
-    //   return acc;
-    // }, {});
-    //
-    // console.log('Class: SubjectDialogComponent, Function: ngOnInit, Line 142 extraFieldsControls' , extraFieldsControls);
-    // this.form.addControl()
-
-
-    // this.form.controls.name.addValidators(this.duplicateValidator);
-    // this.form.patchValue(this.dialogData.entity);
   }
 
   ngAfterViewInit() {
     super.afterViewInit();
   }
 
+  // override handleSaveAction(): void {
+  //   this.dialogActionEvent.emit({
+  //     action: this.dialogData.mode,
+  //     entity: {...this.dialogData.entity, ...this.form?.value, project: this.dialogData.project}, // TODO if project is not set (DialogMode ADD)
+  //   });
+  // }
+
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value, project: this.dialogData.project}, // TODO if project is not set (DialogMode ADD)
+      entity: {
+        ...(this.dialogData.entity ?? ({} as AppSubject)),
+        ...(this.form.getRawValue() as Partial<AppSubject>),
+        enableEmptySecret: null,
+      } as AppSubject,
     });
   }
 

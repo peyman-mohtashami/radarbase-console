@@ -1,19 +1,15 @@
-import {Component, effect, inject, OnDestroy} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormControl,
   FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, ValidationErrors,
-  Validator
+  ReactiveFormsModule,
 } from "@angular/forms";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatError, MatHint, MatInput} from "@angular/material/input";
+import {MatError, MatInput} from "@angular/material/input";
 import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {
-  ValidatorHint,
   Validator as CustomValidator,
-  ValidatorError
 } from "../../../../../../../../shared/utils/validators";
 import {MatDivider} from "@angular/material/divider";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -22,6 +18,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {QuestionnaireService} from '../../../../../questionnaire/services/questionnaire.service';
 import {AppQuestionnaire} from '../../../../../questionnaire/models/questionnaire';
 import {AsyncPipe} from '@angular/common';
+import {
+  BaseFormGroupComponent
+} from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
+import {SelectedEntitiesService} from '../../../../../../../services/selected-entities.service';
 
 @Component({
   selector: 'app-protocol-step-question-set',
@@ -30,7 +30,6 @@ import {AsyncPipe} from '@angular/common';
     ReactiveFormsModule,
     MatSlideToggle,
     MatFormField,
-    MatHint,
     MatInput,
     MatSelect,
     MatOption,
@@ -52,11 +51,10 @@ import {AsyncPipe} from '@angular/common';
     }
   ],
 })
-export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy, Validator {
-  protected readonly ValidatorError = ValidatorError;
-  protected readonly ValidatorHint = ValidatorHint;
+export class ProtocolStepQuestionSet extends BaseFormGroupComponent<Record<string, string>> {
 
   private questionnaireService = inject(QuestionnaireService);
+  private selectedEntitiesService = inject(SelectedEntitiesService)
 
   form = new FormGroup({
     github: new FormControl<boolean>(false),
@@ -71,17 +69,13 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
 
   questionnaires: Observable<AppQuestionnaire[]>;
 
-  private valueChangesSub?: Subscription;
-
   protected readonly githubValueChanges = toSignal(
     this.form.controls.github.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.controls.github.getRawValue()}
   );
 
-  private validatorChange: () => void = () => {};
-  private statusSub?: Subscription;
-
   constructor() {
+    super();
     effect(() => {
       const githubValue = this.githubValueChanges();
       this.form.controls.questionnaire.controls.name.setValidators(!githubValue ? [] : [CustomValidator.requiredValidator]);
@@ -98,70 +92,9 @@ export class ProtocolStepQuestionSet implements ControlValueAccessor, OnDestroy,
     // Also notify when the inner form’s status changes (covers field edits)
     this.statusSub = this.form.statusChanges.subscribe(() => this.validatorChange());
 
-    this.questionnaires = this.questionnaireService.getWithQuery()
-  }
-
-  validate(): ValidationErrors | null {
-    const errors: ValidationErrors = {};
-
-    // Check main form controls
-    Object.keys(this.form.controls).forEach(key => {
-      const ctrl = this.form.get(key);
-      if (ctrl?.errors) {
-        errors[key] = ctrl.errors;
-      }
-
-      // Check nested form groups
-      if (ctrl instanceof FormGroup) {
-        Object.keys(ctrl.controls).forEach(nestedKey => {
-          const nestedCtrl = ctrl.get(nestedKey);
-          if (nestedCtrl?.errors) {
-            errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
-          }
-
-          // Handle nested form groups (like timer)
-          if (nestedCtrl instanceof FormGroup) {
-            Object.keys(nestedCtrl.controls).forEach(deepKey => {
-              const deepCtrl = nestedCtrl.get(deepKey);
-              if (deepCtrl?.errors) {
-                errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
-              }
-            });
-          }
-        });
-      }
-    });
-
-    return Object.keys(errors).length > 0 ? errors : null;
-  }
-
-  registerOnValidatorChange(fn: () => void): void {
-    this.validatorChange = fn;
-  }
-
-  ngOnDestroy() {
-    this.valueChangesSub?.unsubscribe();
-  }
-
-  onChange = () => {};
-  onTouch = () => {};
-
-  writeValue(value?: Record<string, string>) {
-    if (value) {
-      this.form.patchValue(value);
-    } else {
-      this.form.reset();
-    }
-  }
-
-  registerOnChange(fn: any) {
-    this.valueChangesSub?.unsubscribe();
-    this.valueChangesSub = this.form.valueChanges.subscribe(value => {
-      fn(value);
-    });
-  }
-
-  registerOnTouched(fn: any) {
-    this.onTouch = fn;
+    const projectId = this.selectedEntitiesService.selectedProject()?.projectName;
+    const subjectId = this.selectedEntitiesService.selectedSubject()?.login;
+    console.log('Class: ProtocolStepQuestionSet, Function: constructor, Line 97 projectId, subjectId' , projectId, subjectId);
+    this.questionnaires = this.questionnaireService.getWithQuery(undefined, projectId, subjectId);
   }
 }

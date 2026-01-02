@@ -1,12 +1,6 @@
-<label for="" class="text-sm">{{ label() }}
-  @if (required()) {
-    <span>*</span>
-  }
-</label>
+<label for="" class="text-sm">{{ label() }} {{ required() ? "*" : "" }}</label>
 
-<mat-form-field class='small-input w-full'
-                subscriptSizing="fixed"
-                appearance="outline">
+<mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance="outline">
   <mat-select [formControl]="form"
               placeholder=""
               [multiple]="multiple()"
@@ -15,7 +9,7 @@
     @if (multiple()) {
       <mat-select-trigger>
         <div class="flex flex-wrap gap-1">
-          @for (selected of form?.value; track selected._name) {
+          @for (selected of (Array.isArray(form.value) ? form.value : []); track selected._name) {
             <app-tag class="font-bold text-primary bg-primary/10">
               {{ selected["_name"] }}
               <button mat-icon-button class="tiny" [disabled]="selected.id === notRemovable()?.id"
@@ -38,7 +32,7 @@
       </mat-option>
     }
   </mat-select>
-  @if (form?.hasError('required')) {
+  @if (form.hasError('required')) {
     <mat-error>
       {{ ValidatorError.requiredValidator | translate: {value: label()} }}
     </mat-error>

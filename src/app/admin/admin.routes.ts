@@ -56,14 +56,14 @@ export const adminRoutes: Routes = [
         loadChildren: () =>
           import('./entities/configuration-scope/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
         canActivate: [roleGuard],
-        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
       {
         path: 'protocols',
         loadChildren: () =>
           import('./entities/configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
         canActivate: [roleGuard],
-        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
+        data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
 
       {

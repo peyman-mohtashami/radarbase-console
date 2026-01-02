@@ -12,9 +12,8 @@ import {
 } from "../models/protocol";
 import {ISO_LANGUAGES_MAP} from "../../questionnaire/models/questionnaire";
 import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {RadarConfigBundle} from "../../config/models/config";
+import {AppConfig, RadarConfigBundle} from "../../config/models/config";
 import {environment} from "../../../../../../environments/environment";
-import {MockProtocolServer} from "../mock/mockProtocolServer";
 import {
   getAppConfigBaseUrl,
   getConfigsFromConfigBundle,
@@ -23,6 +22,7 @@ import {
 } from '../../config/services/config.service';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {Params} from '@angular/router';
+import {getProtocols, postAppProtocols} from '../mock/mock-protocols';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];
 
@@ -218,7 +218,10 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
-    const radarConfigBundleObservable = !environment.localDeployment ? this.http.get<RadarConfigBundle>(url, {headers}) : MockProtocolServer.get(url)
+    let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    if (environment.localDeployment) {
+      radarConfigBundleObservable = of(getProtocols(this.CLIENT_ID, projectId, subjectId));
+    }
 
     return radarConfigBundleObservable.pipe(
       map(configBundle => {
@@ -288,9 +291,17 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       version: null,
       protocols: radarProtocols
     };
-    const configs = [{name: 'main', value: JSON.stringify(radarProtocolWrapper)}];
+    const configs: AppConfig[] = [{
+      name: 'main', value: JSON.stringify(radarProtocolWrapper),
+      id: "",
+      _name: ""
+    }];
 
-    return this.http.post<RadarConfigBundle>(url, {config: configs}, {headers}).pipe(
+    let radarConfigBundleObservable = this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
+    if (environment.localDeployment) {
+      radarConfigBundleObservable = of(postAppProtocols(configs, this.CLIENT_ID, projectId, subjectId));
+    }
+    return radarConfigBundleObservable.pipe(
       map(configBundle => {
           const superProtocolString = getConfigsFromConfigBundle(configBundle).find(config => config.name === 'main');
           const superProtocol = superProtocolString ? JSON.parse(superProtocolString.value) : [];

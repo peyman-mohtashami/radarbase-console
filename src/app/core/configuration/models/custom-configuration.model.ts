@@ -13,5 +13,24 @@ export interface CustomConfiguration {
     languages: Language[];
     translationsBaseUrl?: string;
   };
-  entities?: any;
+  entities?: Record<string, EntityCustomConfiguration>;
+}
+
+export interface EntityCustomConfiguration {
+  fields: Record<string, boolean>;
+  extraFields?: ExtraFieldCustomConfiguration[]
+}
+
+
+export interface ExtraFieldCustomConfiguration {
+  name: string,
+  type: string;
+  validators?: Record<string, boolean>,
+  maxDate?: string,
+  minDate?: string,
+  hint?: string,
+  rows?: number,
+  maxlength?: number,
+  required?: boolean,
+  placeholder?: string,
 }

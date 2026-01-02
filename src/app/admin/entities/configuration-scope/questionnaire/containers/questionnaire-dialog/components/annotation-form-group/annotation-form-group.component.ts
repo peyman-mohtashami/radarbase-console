@@ -1,10 +1,9 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, NG_VALIDATORS, Validator
+  ReactiveFormsModule, NG_VALIDATORS
 } from '@angular/forms';
 import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -35,7 +34,7 @@ import {
       useExisting: AnnotationFormGroupComponent
     }]
 })
-export class AnnotationFormGroupComponent extends BaseFormGroupComponent<{image: string; timer: {start: number; end: number;}; unit: string;} | null> implements ControlValueAccessor, OnDestroy, Validator {
+export class AnnotationFormGroupComponent extends BaseFormGroupComponent<{image: string; timer: {start: number; end: number;}; unit: string;} | null> {
 
   form = new FormGroup({
     image: new FormControl<string | null>(null, {validators: [CustomValidator.requiredValidator]}),

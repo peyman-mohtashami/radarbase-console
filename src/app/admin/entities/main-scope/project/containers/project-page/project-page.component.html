@@ -10,16 +10,17 @@
           </span>
       </button>
       <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
-      <a class="text-xs font-bold" [routerLink]="">{{ entity().organization.name }}</a>
+      <a class="text-xs font-bold" [routerLink]="['/admin', 'organizations', entity().organization.name]">{{ entity().organization.name }}</a>
     </div>
   </nav>
 
   <div class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-app-background dark:bg-app-background-dark'>
     <div class='flex flex-wrap gap-2 items-center'>
-          <span class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2">
-            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.project.icon }}</span>
-            <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.singular` | translate }}</span>
-          </span>
+      <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2"
+         [routerLink]="['/admin', 'organizations', entity().organization.name, 'projects']">
+        <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.project.icon }}</span>
+        <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.singular` | translate }}</span>
+      </a>
       <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
         {{ entity().projectName }}
       </h2>

@@ -17,7 +17,7 @@ export class RevisionService extends BaseEntityService<AppRevision, RadarRevisio
   }
 
   override toAppModel(entity: RadarRevision): AppRevision {
-    return { ...entity, _name: entity.entity, _search: `${entity.author} ${entity.changes} ${entity.revisionType}` };
+    return { ...entity, _name: entity.entity as string, _search: `${entity.author} ${entity.changes} ${entity.revisionType}` };
   }
 
   override getWithQuery(queryParams: Params): Observable<AppRevision[]> {

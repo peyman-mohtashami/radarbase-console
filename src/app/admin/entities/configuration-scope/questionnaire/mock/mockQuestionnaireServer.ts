@@ -17,14 +17,14 @@ export class MockQuestionnaireServer {
     return of(radarRadarQuestionnaireBundle);
   }
 
-  static post(url: string, config: {config: RadarConfig[]}): Observable<RadarConfigBundle>{
-    const segments = url.split("/");
-    let scope = 'global';
-    if (segments.find(segment => segment === 'projects')) scope = segments[segments.indexOf('projects') + 1];
-
-    if (scope === 'global') return of(globalRadarQuestionnaireBundle);
-    return of(radarRadarQuestionnaireBundle);
-  }
+  // static post(url: string, config: {config: RadarConfig[]}): Observable<RadarConfigBundle>{
+  //   const segments = url.split("/");
+  //   let scope = 'global';
+  //   if (segments.find(segment => segment === 'projects')) scope = segments[segments.indexOf('projects') + 1];
+  //
+  //   if (scope === 'global') return of(globalRadarQuestionnaireBundle);
+  //   return of(radarRadarQuestionnaireBundle);
+  // }
 }
 
 const globalQuestionnaires: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...audio, ...cns_covid19_baseline, ...sample_field_types];

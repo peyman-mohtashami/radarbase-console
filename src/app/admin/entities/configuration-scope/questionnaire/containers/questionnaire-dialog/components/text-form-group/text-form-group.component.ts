@@ -1,10 +1,9 @@
-import {Component, effect, inject, input, OnDestroy} from '@angular/core';
+import {Component, effect, inject, input} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, NG_VALIDATORS, Validator
+  ReactiveFormsModule, NG_VALIDATORS
 } from '@angular/forms';
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -38,7 +37,7 @@ import {
     }
   ]
 })
-export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string, string>> implements ControlValueAccessor, OnDestroy, Validator {
+export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string, string>> {
 
   questionnaireStateService = inject(QuestionnaireStateService);
 

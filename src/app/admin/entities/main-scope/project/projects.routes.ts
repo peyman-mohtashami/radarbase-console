@@ -62,6 +62,13 @@ export const projectRoutes: Routes = [
         path: 'protocols',
         loadChildren: () =>
           import('../../configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
+        data: {scope: 'project'}
+      },
+      {
+        path: 'questionnaires',
+        loadChildren: () =>
+          import('../../configuration-scope/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
+        data: {scope: 'project'}
       },
       {
         path: 'details',

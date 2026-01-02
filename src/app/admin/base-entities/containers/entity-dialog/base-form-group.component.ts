@@ -7,7 +7,7 @@ import {
   Validator
 } from '@angular/forms';
 import { Subscription } from "rxjs";
-import { ValidatorError } from '../../../../shared/utils/validators';
+import {ValidatorError, ValidatorHint} from '../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-base-form-group',
@@ -15,17 +15,20 @@ import { ValidatorError } from '../../../../shared/utils/validators';
   standalone: true,
   imports: [ReactiveFormsModule],
 })
-export abstract class BaseFormGroupComponent<T = any> implements ControlValueAccessor, Validator, OnDestroy {
+export abstract class BaseFormGroupComponent<T> implements ControlValueAccessor, Validator, OnDestroy {
   protected readonly ValidatorError = ValidatorError;
+  protected readonly ValidatorHint = ValidatorHint;
 
   // Each child component will define its specific controls
   abstract form: FormGroup;
 
   protected valueChangesSub?: Subscription;
+  protected statusSub?: Subscription;
 
-  onChange = (value: T | null) => {};
-  onTouch = () => {};
+  // onChange: () => void = () => undefined;
+  onTouch: () => void = () => undefined;
 
+  protected validatorChange: () => void = () => undefined;
   /**
    * Recursively collects errors from the form and nested groups.
    */
@@ -80,5 +83,9 @@ export abstract class BaseFormGroupComponent<T = any> implements ControlValueAcc
 
   ngOnDestroy(): void {
     this.valueChangesSub?.unsubscribe();
+  }
+
+  registerOnValidatorChange(fn: () => void): void {
+    this.validatorChange = fn;
   }
 }

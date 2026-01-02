@@ -15,6 +15,16 @@ export class ProtocolListResolver implements Resolve<AppProtocol[]> {
   resolve(route: ActivatedRouteSnapshot): Observable<AppProtocol[]> {
     this.entityService.clearCache();
 
+    const scope = route.data['scope'];
+    if (scope === 'global') {
+      this.selectedEntitiesService.clearAllSelected();
+    } else if (scope === 'project') {
+      this.selectedEntitiesService.selectedClient.set(undefined);
+      this.selectedEntitiesService.selectedSubject.set(undefined);
+    } else {
+      this.selectedEntitiesService.selectedClient.set(undefined);
+    }
+
     const project = this.selectedEntitiesService.selectedProject();
     const subject = this.selectedEntitiesService.selectedSubject();
     return this.entityService.getWithQuery(route.queryParams, project?._name, subject?._name);

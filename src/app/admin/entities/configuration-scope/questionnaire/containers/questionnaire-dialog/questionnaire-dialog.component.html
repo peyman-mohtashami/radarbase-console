@@ -1,5 +1,4 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let entityName = configService.getEntityMetadata().name;
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
@@ -21,7 +20,7 @@
   } @else {
     @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
       <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                   [label]="`ADMIN.${entityName}.name.label` | translate"
+                                   [label]="`ADMIN.questionnaire.name.label` | translate"
                                    [entityName]="dialogData.entity?._name"/>
     }
 
@@ -31,7 +30,7 @@
         <div class="">
           <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
           <mat-form-field class='small-input w-1/2' appearance='outline'>
-            <input matInput formControlName='name' required/>
+            <input matInput formControlName='name' required>
           </mat-form-field>
         </div>
 

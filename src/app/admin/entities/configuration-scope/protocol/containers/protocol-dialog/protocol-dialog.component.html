@@ -1,10 +1,12 @@
-@let entityName = configService.getEntityMetadata().name;
+@let _prefix = 'ADMIN.protocol.dialog';
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
                   [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity?._name : undefined"
                   (closeEvent)='close()'>
-  <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
+  <button mat-icon-button
+          (click)="toggleCodeView()"
+          [matTooltip]="showCode ? (`${_prefix}.showForm` | translate) : (`${_prefix}.showCode` | translate)">
     <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
   </button>
 </app-dialog-title>
@@ -19,7 +21,7 @@
   } @else {
     @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
       <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                   [label]="`ADMIN.${entityName}.name.label` | translate"
+                                   [label]="`ADMIN.protocol.name.label` | translate"
                                    [entityName]="dialogData.entity?.name"/>
     }
 
@@ -27,34 +29,42 @@
       <form [formGroup]="form" novalidate>
         <mat-stepper labelPosition="bottom" #matStepper [linear]="true">
 
-          <mat-step [stepControl]="form.controls.general" errorMessage="Configuration is required.">
-            <ng-template matStepLabel><span class="text-base">{{ 'ADMIN.protocol.dialog.general.title' | translate }}</span>
+          <mat-step [stepControl]="form.controls.general"
+                    [errorMessage]="`${_prefix}.general.errorMessage` | translate">
+            <ng-template matStepLabel>
+              <span class="text-base">{{ `${_prefix}.general.title` | translate }}</span>
             </ng-template>
-            <app-protocol-step-general [formControlName]="'general'" [entities]="(dialogData.protocolFullList | async) ?? []"
+            <app-protocol-step-general [formControlName]="'general'"
+                                       [entities]="(dialogData.protocolFullList | async) ?? []"
                                        [entity]="dialogData.entity"
                                        (typeUpdated)="updateOnDemand($event)"
                                        (languagesUpdated)="updateLanguages($event)"/>
           </mat-step>
 
-          <mat-step [stepControl]="form.controls.content" errorMessage="Content is required.">
-            <ng-template matStepLabel><span class="text-base">{{ 'ADMIN.protocol.dialog.content.title' | translate }}</span>
+          <mat-step [stepControl]="form.controls.content"
+                    [errorMessage]="`${_prefix}.content.errorMessage` | translate">
+            <ng-template matStepLabel>
+              <span class="text-base">{{ `${_prefix}.content.title` | translate }}</span>
             </ng-template>
             <app-protocol-step-content [formControlName]="'content'"
                                        [languages]="languages()"
                                        [onDemand]="onDemand()"/>
           </mat-step>
 
-          <mat-step [stepControl]="form.controls.questionsGroup" errorMessage="Questions Group is required.">
-            <ng-template matStepLabel><span
-              class="text-base">{{ 'ADMIN.protocol.dialog.questionsGroup.title' | translate }}</span></ng-template>
+          <mat-step [stepControl]="form.controls.questionsGroup"
+                    [errorMessage]="`${_prefix}.questionsGroup.errorMessage` | translate">
+            <ng-template matStepLabel>
+              <span class="text-base">{{ `${_prefix}.questionsGroup.title` | translate }}</span>
+            </ng-template>
             <app-protocol-step-question-set [formControlName]="'questionsGroup'"/>
           </mat-step>
 
           @if (!onDemand()) {
-            <mat-step [stepControl]="form.controls.scheduling" errorMessage="Scheduling is required.">
-              <ng-template matStepLabel><span
-                class="text-base">{{ 'ADMIN.protocol.dialog.scheduling.title' | translate }}</span></ng-template>
-
+            <mat-step [stepControl]="form.controls.scheduling"
+                      [errorMessage]="`${_prefix}.scheduling.errorMessage` | translate">
+              <ng-template matStepLabel>
+                <span class="text-base">{{ `${_prefix}.scheduling.title` | translate }}</span>
+              </ng-template>
               <app-protocol-step-scheduling [formControlName]="'scheduling'"/>
             </mat-step>
           }
@@ -72,13 +82,14 @@
 
 <app-dialog-actions [dialogMode]='dialogData.mode' [form]='form' (actionTriggered)='onAction($event)'>
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
-    <button mat-stroked-button (click)="previousStep()"
-            [disabled]="!stepper()?.selectedIndex">{{ 'ADMIN.protocol.dialog.backButton' | translate }}
+    <button mat-stroked-button
+            (click)="previousStep()"
+            [disabled]="!stepper()?.selectedIndex">{{ `${_prefix}.backButton` | translate }}
     </button>
     <button mat-stroked-button
             (click)="nextStep()"
             [disabled]="((stepper()?.steps?.length ?? 0) - 1) <= (stepper()?.selectedIndex ?? 0)">
-      {{ 'ADMIN.protocol.dialog.nextButton' | translate }}
+      {{ `${_prefix}.nextButton` | translate }}
     </button>
   }
 </app-dialog-actions>

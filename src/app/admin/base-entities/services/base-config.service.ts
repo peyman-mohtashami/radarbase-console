@@ -15,14 +15,14 @@ export class BaseConfigService {
     return this.configurationService.entitiesCustomization()?.[this.entityMetadata?.name];
   })
 
-  getFormFields(): Record<string, boolean> {
-    return this.config();
+  getFormFields() {
+    return this.config()?.fields;
   }
 
   getTableFields() {
     return this.tableElements.filter(e => {
       if (e.editable) {
-        return this.config()?.[e.name] !== false;
+        return this.config()?.fields[e.name] !== false;
       } else {
         return true;
       }
@@ -30,11 +30,11 @@ export class BaseConfigService {
   }
 
   getTableFilters() {
-    return this.filters.filter(f => this.config()?.[f.name] !== false);
+    return this.filters.filter(f => this.config()?.fields[f.name] !== false);
   }
 
   getExtraFields() {
-    return this.config().extraFields;
+    return this.config()?.extraFields;
   }
 
   getEntityMetadata() {

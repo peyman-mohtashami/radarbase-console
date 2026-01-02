@@ -26,9 +26,9 @@ export interface RadarQuestion {
   text_validation_type_or_show_slider_number?: string;
   text_validation_min?: string;
   text_validation_max?: string;
-  field_annotation?: any;
+  field_annotation?: {timer: {start: number; end: number;}; unit: string; image: string;};
   field_note?: string;
-  range?: any;
+  range?: {min: number; max: number; step: number;};
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
@@ -47,14 +47,13 @@ export interface AppQuestion {
   text_validation_max?: string;
   field_annotation?: {image: string; timer: {start: number; end: number;}; unit: string;};
   field_note?: string;
-  range?: any;
-  matrix_group_name?: string;
+  range?: {min: number; max: number; step: number;};  matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
 }
 
 //--------------------------
-export const ISO_LANGUAGES_MAP: Record<string, any> = {
+export const ISO_LANGUAGES_MAP: Record<string, {id: string; _name: string; nativeName: string;}> = {
   // "ab": {
   //   "id": "ab",
   //   "_name": "Abkhaz",

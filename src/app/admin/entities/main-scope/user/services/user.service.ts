@@ -66,18 +66,18 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
     if (roles === null) return defaultAppRole;
 
     return roles.reduce((acc: AppRole, role: RadarRole) => {
-      const authorityName = role.authorityName ?? role.authority.name;
+      const authorityName = role.authorityName ?? role.authority?.name;
       if (authorityName === ROLES.SYS_ADMIN) {
         acc._sysAdmin = true;
       } else if (authorityName === ROLES.ORGANIZATION_ADMIN) {
-        const organizationId = role.organizationId ?? role.organization.id;
-        const organizationName = role.organizationName ?? role.organization.name;
+        const organizationId = role.organizationId ?? role.organization?.id ?? '';
+        const organizationName = role.organizationName ?? role.organization?.name ?? '';
         acc._organizationAdmin = true;
         acc._organizations = acc._organizations || [];
         acc._organizations.push({ id: organizationId, _name: organizationName });
       } else if (authorityName === ROLES.PROJECT_ADMIN) {
-        const projectId = role.projectId ?? role.project.id;
-        const projectName = role.projectName ?? role.project.projectName;
+        const projectId = role.projectId ?? role.project?.id ?? '';
+        const projectName = role.projectName ?? role.project?.projectName ?? '';
         acc._projectAdmin = true;
         acc._projects = acc._projects || [];
         acc._projects.push({id: projectId, _name: projectName});

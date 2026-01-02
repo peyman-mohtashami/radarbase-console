@@ -15,6 +15,7 @@ import {TabLink} from "../../../../../base-entities/models/tab-link";
 import {BaseEntityPageComponent} from '../../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
 import {MatIcon} from '@angular/material/icon';
+import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
 
 @Component({
   selector: 'app-subject-page',
@@ -39,11 +40,12 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, Ra
   override dialogService = inject(SubjectDialogService);
 
   links: TabLink[] = [
-    { path: 'download', label: 'Download' },
-    { path: 'data', label: 'Data' },
-    { path: 'compliance', label: 'Compliance' },
-    { path: 'app-config', label: 'App Configs' },
-    { path: 'details', label: 'Details' },
+    { path: 'download', label: `ADMIN.${ENTITY_REGISTRY.dataDownload.name}.title.plural` },
+    { path: 'data', label: `ADMIN.${ENTITY_REGISTRY.dataVisualization.name}.title.plural` },
+    { path: 'compliance', label: `ADMIN.${ENTITY_REGISTRY.dataCompliance.name}.title.plural` },
+    { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` },
+    { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
+    { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.details` },
   ];
 
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);

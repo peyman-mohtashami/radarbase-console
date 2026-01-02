@@ -40,11 +40,11 @@ import {
   DialogTitleComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 
-export interface RadarCondition {
-  conditionField: string;
-  conditionOperator: string;
-  conditionValue: string;
-}
+// export interface RadarCondition {
+//   conditionField: string;
+//   conditionOperator: string;
+//   conditionValue: string;
+// }
 @Component({
   selector: 'app-questionnaire-dialog',
   templateUrl: './questionnaire-dialog.component.html',

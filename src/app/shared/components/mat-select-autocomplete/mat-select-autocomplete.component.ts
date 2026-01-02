@@ -69,7 +69,7 @@ export class MatSelectAutocompleteComponent
   // floatLabel = input<boolean>(false);
   notRemovable = input<{ id: string; _name: string }>();
 
-  form = new FormControl<any>(null); // = new FormControl<RadarOption[]>([]);
+  form = new FormControl<RadarOption | RadarOption[] | null>(null); // = new FormControl<RadarOption[]>([]);
 
   multiFilterCtrl: FormControl = new FormControl();
 
@@ -81,9 +81,7 @@ export class MatSelectAutocompleteComponent
 
   protected _destroy$ = new Subject<void>();
 
-  onTouched = () => {
-    // TODO
-  };
+  onTouched: () => void = () => undefined;
 
   ngOnInit(): void {
     if(this.multiple()){
@@ -226,4 +224,5 @@ export class MatSelectAutocompleteComponent
   //   return errors;
   // }
 
+  protected readonly Array = Array;
 }

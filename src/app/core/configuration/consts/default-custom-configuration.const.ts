@@ -129,49 +129,49 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
         }
       ]
     },
-    "__subject": {
-      "fields": {
-        "personName": {"enabled": false},
-        "externalId": {"enabled": true, "required": true},
-        "externalLink": {"enabled": false},
-        "dateOfBirth": {"enabled": false}
-      },
-      "extraFields": {
-        "email": {
-          "type": "text",
-          "required": true,
-          "validators": {}
-        },
-        "lastInjectionDate": {
-          "type": "date",
-          "required": false,
-          "validators": {},
-          "minDate": "01-01-2023",
-          "maxDate": "01-01-2026"
-        }
-      }
-    },
-    "___subject": {
-      "fields": [
-        {"name": "personName", "enabled": false},
-        {"name": "externalId", "enabled": false, "required": true},
-        {"name": "externalLink", "enabled": false},
-        {"name": "dateOfBirth", "enabled": false},
-        {"name": "attributes.humanReadableIdentifier", "enabled": false},
-        {"name": "attributes.participant_group", "enabled": false}
-      ],
-      "extraFields": [
-        {"name": "email", "type": "text", "required": true, "validators": {}},
-        {
-          "name": "lastInjectionDate",
-          "type": "date",
-          "required": false,
-          "validators": {},
-          "minDate": "01-01-2023",
-          "maxDate": "01-01-2026"
-        }
-      ]
-    },
+    // "__subject": {
+    //   "fields": {
+    //     "personName": {"enabled": false},
+    //     "externalId": {"enabled": true, "required": true},
+    //     "externalLink": {"enabled": false},
+    //     "dateOfBirth": {"enabled": false}
+    //   },
+    //   "extraFields": {
+    //     "email": {
+    //       "type": "text",
+    //       "required": true,
+    //       "validators": {}
+    //     },
+    //     "lastInjectionDate": {
+    //       "type": "date",
+    //       "required": false,
+    //       "validators": {},
+    //       "minDate": "01-01-2023",
+    //       "maxDate": "01-01-2026"
+    //     }
+    //   }
+    // },
+    // "___subject": {
+    //   "fields": [
+    //     {"name": "personName", "enabled": false},
+    //     {"name": "externalId", "enabled": false, "required": true},
+    //     {"name": "externalLink", "enabled": false},
+    //     {"name": "dateOfBirth", "enabled": false},
+    //     {"name": "attributes.humanReadableIdentifier", "enabled": false},
+    //     {"name": "attributes.participant_group", "enabled": false}
+    //   ],
+    //   "extraFields": [
+    //     {"name": "email", "type": "text", "required": true, "validators": {}},
+    //     {
+    //       "name": "lastInjectionDate",
+    //       "type": "date",
+    //       "required": false,
+    //       "validators": {},
+    //       "minDate": "01-01-2023",
+    //       "maxDate": "01-01-2026"
+    //     }
+    //   ]
+    // },
     "user": {
       "fields": {
         "firstName": true,
@@ -183,31 +183,31 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
         "langKey": false
       }
     },
-    "_project": {
-      "fields": [
-        {"name": "humanReadableProjectName", "enabled": false},
-        {"name": "startDate", "enabled": false},
-        {"name": "endDate", "enabled": false},
-        {"name": "projectStatus", "enabled": false},
-        {"name": "organizationName", "enabled": false},
-        {"name": "attributes", "enabled": false},
-        {"name": "attributes.Work-package", "enabled": false},
-        {"name": "attributes.Phase", "enabled": false},
-        {"name": "attributes.External-project-url", "enabled": false},
-        {"name": "attributes.External-project-id", "enabled": false},
-        {"name": "attributes.Privacy-policy-url", "enabled": false}
-      ],
-      "extraFields": [
-        {"name": "midDate", "type": "date", "validators": {}, "minDate": "01-01-2023", "maxDate": "01-01-2026"},
-        {
-          "name": "projectState", "type": "simpleSelect", "validators": {}, "options": [
-            {"value": "active", "label": "Active"},
-            {"value": "inactive", "label": "Inactive"},
-            {"value": "archived", "label": "Archived"}
-          ]
-        }
-      ]
-    },
+    // "_project": {
+    //   "fields": [
+    //     {"name": "humanReadableProjectName", "enabled": false},
+    //     {"name": "startDate", "enabled": false},
+    //     {"name": "endDate", "enabled": false},
+    //     {"name": "projectStatus", "enabled": false},
+    //     {"name": "organizationName", "enabled": false},
+    //     {"name": "attributes", "enabled": false},
+    //     {"name": "attributes.Work-package", "enabled": false},
+    //     {"name": "attributes.Phase", "enabled": false},
+    //     {"name": "attributes.External-project-url", "enabled": false},
+    //     {"name": "attributes.External-project-id", "enabled": false},
+    //     {"name": "attributes.Privacy-policy-url", "enabled": false}
+    //   ],
+    //   "extraFields": [
+    //     {"name": "midDate", "type": "date", "validators": {}, "minDate": "01-01-2023", "maxDate": "01-01-2026"},
+    //     {
+    //       "name": "projectState", "type": "simpleSelect", "validators": {}, "options": [
+    //         {"value": "active", "label": "Active"},
+    //         {"value": "inactive", "label": "Inactive"},
+    //         {"value": "archived", "label": "Archived"}
+    //       ]
+    //     }
+    //   ]
+    // },
     "sourceType": {
       "fields": {
         "description": true,

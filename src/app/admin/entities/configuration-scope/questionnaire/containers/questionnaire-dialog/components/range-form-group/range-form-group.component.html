@@ -7,11 +7,11 @@
       <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeMin` | translate }}
         *</label>
       <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-        <input matInput formControlName='min' required/>
+        <input matInput formControlName='min' required>
         <mat-error>
           @if (form.controls.min.errors; as errors) {
             @if (errors?.['pattern']) {
-              {{ ValidatorError.normalTextValidator }}
+              {{ ValidatorError.normalTextValidator | translate }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMin` | translate} }}
@@ -25,11 +25,11 @@
       <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeMax` | translate }}
         *</label>
       <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
-        <input matInput formControlName='max' required/>
+        <input matInput formControlName='max' required>
         <mat-error>
           @if (form.controls.max.errors; as errors) {
             @if (errors?.['pattern']) {
-              {{ ValidatorError.normalTextValidator }}
+              {{ ValidatorError.normalTextValidator | translate }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMax` | translate} }}
@@ -43,11 +43,11 @@
       <label for="select_choices_or_calculations" class="text-sm">{{ `${_prefix}.questionRangeStep` | translate }}
         *</label>
       <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
-        <input matInput formControlName='step' required/>
+        <input matInput formControlName='step' required>
         <mat-error>
           @if (form.controls.step.errors; as errors) {
             @if (errors?.['pattern']) {
-              {{ ValidatorError.normalTextValidator }}
+              {{ ValidatorError.normalTextValidator | translate }}
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeStep` | translate} }}

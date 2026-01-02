@@ -39,19 +39,31 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
 
   override entity = signal<AppProject>(this.activatedRoute.snapshot.data['project']);
 
-  links: TabLink[] = [
-    { path: 'subjects', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.title.plural` },
-    { path: 'groups', label: `ADMIN.${ENTITY_REGISTRY.group.name}.title.plural` },
-    { path: 'sources', label: `ADMIN.${ENTITY_REGISTRY.source.name}.title.plural` },
-    { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` },
-    { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
-    { path: 'users', label: `ADMIN.${ENTITY_REGISTRY.permission.name}.title.plural`},
-    { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` },
-  ];
+  links: TabLink[] = [];
 
   hasSubject = this.selectedEntitiesService.selectedSubject;
 
   ngOnInit() {
+    const protocolAndQuestionnaireTabLinks =
+      this.entity().sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT') ?
+        [
+          { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
+          { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
+        ] : [];
+
+    this.links = [
+      ...[
+        { path: 'subjects', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.title.plural` },
+        { path: 'groups', label: `ADMIN.${ENTITY_REGISTRY.group.name}.title.plural` },
+        { path: 'sources', label: `ADMIN.${ENTITY_REGISTRY.source.name}.title.plural` },
+        { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` }
+      ],
+      ...protocolAndQuestionnaireTabLinks,
+      ...[
+        { path: 'users', label: `ADMIN.${ENTITY_REGISTRY.permission.name}.title.plural`},
+        { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` }
+      ],
+    ];
     super.init();
   }
 

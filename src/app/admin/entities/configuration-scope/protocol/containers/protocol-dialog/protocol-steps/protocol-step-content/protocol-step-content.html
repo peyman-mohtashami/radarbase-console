@@ -1,7 +1,10 @@
+@let _prefix = 'ADMIN.protocol.dialog.content';
+
 <div [formGroup]="form" class="grid grid-cols-1 min-w-[500px] w-1/2 mx-auto">
   <div class='small-input text-sm flex justify-end gap-1 sticky top-0 z-10 bg-white'>
     @for (language of languages(); track language.id) {
-      <button mat-icon-button class="tiny uppercase"
+      <button mat-icon-button
+              class="tiny uppercase"
               (click)='switchLanguage($event, language)'
               [class]="protocolStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
               <span class="h-full flex items-center justify-center">
@@ -13,18 +16,18 @@
 
   <div class="text-sm w-1/2">
     <label for="showIntroduction">
-      {{ 'ADMIN.protocol.dialog.content.showIntroductionLabel' | translate }}
+      {{ `${_prefix}.showIntroductionLabel` | translate }}
     </label>
     <mat-form-field class='small-input' appearance='outline'>
       <mat-select id="showIntroduction" formControlName="showIntroduction">
         <mat-option [value]="false">
-          {{ 'ADMIN.protocol.dialog.content.showIntroductionNo' | translate }}
+          {{ `${_prefix}.showIntroductionNo` | translate }}
         </mat-option>
         <mat-option [value]="true">
-          {{ 'ADMIN.protocol.dialog.content.showIntroductionOnce' | translate }}
+          {{ `${_prefix}.showIntroductionOnce` | translate }}
         </mat-option>
         <mat-option value="always">
-          {{ 'ADMIN.protocol.dialog.content.showIntroductionAlways' | translate }}
+          {{ `${_prefix}.showIntroductionAlways` | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -34,7 +37,7 @@
     <app-text-form-group class="mb-4"
                          formControlName="startText"
                          [languages]="languages()"
-                         [label]="'ADMIN.protocol.dialog.content.startTextLabel' | translate"
+                         [label]="`${_prefix}.startTextLabel` | translate"
                          [textarea]="true"
                          [textareaAutosize]="true"/>
   }
@@ -42,30 +45,30 @@
   <app-text-form-group class="mb-4"
                        formControlName="endText"
                        [languages]="languages()"
-                       [label]="'ADMIN.protocol.dialog.content.endTextLabel' | translate"
+                       [label]="`${_prefix}.endTextLabel` | translate"
                        [textarea]="true"
                        [textareaAutosize]="true"/>
 
   <app-text-form-group formControlName="warn"
                        [languages]="languages()"
-                       [label]="'ADMIN.protocol.dialog.content.warningTextLabel' | translate"
+                       [label]="`${_prefix}.warningTextLabel` | translate"
                        [textarea]="true"
                        [textareaAutosize]="true"/>
 
   @if (!onDemand()) {
     <mat-divider class="mt-4!"/>
     <div formGroupName="notification" class="mt-4">
-      <p class="text-base">{{ 'ADMIN.protocol.dialog.content.notificationLabel' | translate }}</p>
+      <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>
       <app-text-form-group class="mb-4"
                            formControlName="title"
                            [languages]="languages()"
-                           [label]="'ADMIN.protocol.dialog.content.notificationTitleLabel' | translate"
+                           [label]="`${_prefix}.notificationTitleLabel` | translate"
                            [textarea]="true"
                            [textareaAutosize]="true"/>
 
       <app-text-form-group formControlName="text"
                            [languages]="languages()"
-                           [label]="'ADMIN.protocol.dialog.content.notificationMessageLabel' | translate"
+                           [label]="`${_prefix}.notificationMessageLabel` | translate"
                            [textarea]="true"
                            [textareaAutosize]="true"/>
     </div>

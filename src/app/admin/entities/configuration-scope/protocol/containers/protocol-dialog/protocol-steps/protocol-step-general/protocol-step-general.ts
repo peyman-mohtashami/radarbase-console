@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, effect, inject, input, OnInit, output} from '@angular/core';
 import {MatHint, MatInput} from "@angular/material/input";
 import {
   MatSelectAutocompleteComponent
@@ -6,27 +6,25 @@ import {
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {
   AbstractControl,
-  ControlValueAccessor,
   FormControl,
   FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
-  ValidationErrors, Validator
 } from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
   Validator as CustomValidator,
-  ValidatorError,
-  ValidatorHint
 } from "../../../../../../../../shared/utils/validators";
 import {DEFAULT_LANGUAGE, ISO_LANGUAGES} from "../../../../../questionnaire/models/questionnaire";
 import {MatError} from "@angular/material/form-field";
 import {MatFormField} from "@angular/material/select";
 import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {Subscription} from "rxjs";
 import {AppProtocol} from "../../../../models/protocol";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {debounceTime} from "rxjs/operators";
 import {ProtocolStateService} from "../../services/protocol-state.service";
+import {
+  BaseFormGroupComponent
+} from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
 
 @Component({
   selector: 'app-protocol-step-general',
@@ -34,12 +32,12 @@ import {ProtocolStateService} from "../../services/protocol-state.service";
   imports: [
     MatError,
     MatFormField,
-    MatHint,
     MatInput,
     MatSelectAutocompleteComponent,
     MatSlideToggle,
     ReactiveFormsModule,
-    TranslatePipe
+    TranslatePipe,
+    MatHint
   ],
   providers: [
     {
@@ -54,10 +52,8 @@ import {ProtocolStateService} from "../../services/protocol-state.service";
     }
   ],
 })
-export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDestroy, Validator {
+export class ProtocolStepGeneral extends BaseFormGroupComponent<Record<string, string>> implements OnInit {
 
-  protected readonly ValidatorHint = ValidatorHint;
-  protected readonly ValidatorError = ValidatorError;
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
   protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
 
@@ -91,9 +87,8 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
     {initialValue: this.form.controls.languages.getRawValue()}
   );
 
-  private valueChangesSub?: Subscription;
-
   constructor() {
+    super();
     effect(() => {
       const onDemandValue = this.onDemandValueChanges();
       this.typeUpdated.emit(!!onDemandValue);
@@ -109,64 +104,6 @@ export class ProtocolStepGeneral implements OnInit, ControlValueAccessor, OnDest
     this.form.controls.name.addValidators(this.duplicateValidator);
   }
 
-  validate(): ValidationErrors | null {
-    const errors: ValidationErrors = {};
-
-    // Check main form controls
-    Object.keys(this.form.controls).forEach(key => {
-      const ctrl = this.form.get(key);
-      if (ctrl?.errors) {
-        errors[key] = ctrl.errors;
-      }
-
-      // Check nested form groups
-      if (ctrl instanceof FormGroup) {
-        Object.keys(ctrl.controls).forEach(nestedKey => {
-          const nestedCtrl = ctrl.get(nestedKey);
-          if (nestedCtrl?.errors) {
-            errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
-          }
-
-          // Handle nested form groups (like timer)
-          if (nestedCtrl instanceof FormGroup) {
-            Object.keys(nestedCtrl.controls).forEach(deepKey => {
-              const deepCtrl = nestedCtrl.get(deepKey);
-              if (deepCtrl?.errors) {
-                errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
-              }
-            });
-          }
-        });
-      }
-    });
-    return Object.keys(errors).length > 0 ? errors : null;
-  }
-
-  ngOnDestroy() {
-    this.valueChangesSub?.unsubscribe();
-  }
-
-  onChange = () => {};
-  onTouch = () => {};
-
-  writeValue(value?: Record<string, string>) {
-    if (value) {
-      this.form.patchValue(value, {emitEvent: true});
-    } else {
-      this.form.reset();
-    }
-  }
-
-  registerOnChange(fn: any) {
-    this.valueChangesSub?.unsubscribe();
-    this.valueChangesSub = this.form.valueChanges.subscribe(value => {
-      fn(value);
-    });
-  }
-
-  registerOnTouched(fn: any) {
-    this.onTouch = fn;
-  }
 
   private duplicateValidator = (control: AbstractControl) => {
     return this.entities()?.find(entity =>

@@ -1,18 +1,19 @@
-import {Component, effect, inject, input, OnDestroy} from '@angular/core';
+import {Component, effect, inject, input} from '@angular/core';
 import {
-  ControlValueAccessor,
   FormGroup,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, ValidationErrors, NG_VALIDATORS, Validator
+  ReactiveFormsModule, NG_VALIDATORS
 } from '@angular/forms';
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {Subscription} from "rxjs";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {ValidatorError, Validator as CustomValidator} from "../../../../../../../../../shared/utils/validators";
+import {Validator as CustomValidator} from "../../../../../../../../../shared/utils/validators";
 import {RadarOption} from "../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 import {ProtocolStateService} from "../../../services/protocol-state.service";
+import {
+  BaseFormGroupComponent
+} from '../../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
 
 @Component({
   selector: 'app-text-form-group',
@@ -34,11 +35,9 @@ import {ProtocolStateService} from "../../../services/protocol-state.service";
       useExisting: TextFormGroupComponent
     }]
 })
-export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, Validator {
+export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string, string>> {
 
   protocolStateService = inject(ProtocolStateService);
-
-  protected readonly ValidatorError = ValidatorError;
 
   languages = input.required<RadarOption[]>();
 
@@ -52,56 +51,14 @@ export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, 
 
   form = new FormGroup<Record<string, FormControl<string | null>>>({});
 
-  private valueChangesSub?: Subscription;
-
   constructor() {
+    super();
     effect(() => {
       this.initializeLanguageControls();
     });
   }
 
-  validate(): ValidationErrors | null {
-    const errors: ValidationErrors = {};
-
-    // Check main form controls
-    Object.keys(this.form.controls).forEach(key => {
-      const ctrl = this.form.get(key);
-      if (ctrl?.errors) {
-        errors[key] = ctrl.errors;
-      }
-
-      // Check nested form groups
-      if (ctrl instanceof FormGroup) {
-        Object.keys(ctrl.controls).forEach(nestedKey => {
-          const nestedCtrl = ctrl.get(nestedKey);
-          if (nestedCtrl?.errors) {
-            errors[`${key}.${nestedKey}`] = nestedCtrl.errors;
-          }
-
-          // Handle nested form groups (like timer)
-          if (nestedCtrl instanceof FormGroup) {
-            Object.keys(nestedCtrl.controls).forEach(deepKey => {
-              const deepCtrl = nestedCtrl.get(deepKey);
-              if (deepCtrl?.errors) {
-                errors[`${key}.${nestedKey}.${deepKey}`] = deepCtrl.errors;
-              }
-            });
-          }
-        });
-      }
-    });
-
-    return Object.keys(errors).length > 0 ? errors : null;
-  }
-
-  ngOnDestroy() {
-    this.valueChangesSub?.unsubscribe();
-  }
-
-  onChange = () => {};
-  onTouch = () => {};
-
-  writeValue(value?: Record<string, string>) {
+  override writeValue(value: Record<string, string>) {
     if (value) {
       this.initializeLanguageControls();
       this.form.patchValue(value, { emitEvent: false });
@@ -110,16 +67,16 @@ export class TextFormGroupComponent implements ControlValueAccessor, OnDestroy, 
     }
   }
 
-  registerOnChange(fn: any) {
-    this.valueChangesSub?.unsubscribe();
-    this.valueChangesSub = this.form.valueChanges.subscribe(value => {
-      fn(value);
-    });
-  }
-
-  registerOnTouched(fn: any) {
-    this.onTouch = fn;
-  }
+  // registerOnChange(fn: any) {
+  //   this.valueChangesSub?.unsubscribe();
+  //   this.valueChangesSub = this.form.valueChanges.subscribe(value => {
+  //     fn(value);
+  //   });
+  // }
+  //
+  // registerOnTouched(fn: any) {
+  //   this.onTouch = fn;
+  // }
 
 
   private initializeLanguageControls() {

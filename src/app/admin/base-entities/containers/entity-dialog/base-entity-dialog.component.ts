@@ -1,7 +1,7 @@
 import {Component, output, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormGroup} from '@angular/forms';
 import {ValidatorError, ValidatorHint} from '../../../../shared/utils/validators';
 import {HttpErrorResponse} from '@angular/common/http';
 import {debounceTime, takeUntil} from 'rxjs/operators';
@@ -22,9 +22,10 @@ export class BaseEntityDialogComponent<T> {
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
-  formFields?: Record<string, boolean>;
+  formFields?: Record<string, boolean> | undefined;
 
-  form = new FormGroup<any>({});
+
+  form: AbstractControl<unknown> = new FormGroup({});
 
   loading = signal(false);
   error = signal<HttpErrorResponse | null>(null);
@@ -74,7 +75,11 @@ export class BaseEntityDialogComponent<T> {
   protected handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.value, enableEmptySecret: null},
+      entity: {
+        ...(this.dialogData.entity ?? ({} as T)),
+        ...(this.form.getRawValue() as Partial<T>),
+        enableEmptySecret: null,
+      } as T,
     });
   }
 

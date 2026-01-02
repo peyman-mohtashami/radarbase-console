@@ -27,6 +27,10 @@ export const ENTITY_REGISTRY = {
   questionnaire: {name: "questionnaire", icon: "pending_actions", route: "/admin/questionnaires"},
   protocol: {name: "protocol", icon: "content_paste", route: "/admin/protocols"},
 
+  dataDownload: {name: "dataDownload", icon: "file_download", route: ""},
+  dataVisualization: {name: "dataVisualization", icon: "show_chart", route: ""},
+  dataCompliance: {name: "dataCompliance", icon: "policy", route: ""},
+
   uploadPortal: {name: "uploadPortal", icon: "backup", route: "", external: true},
   dataStorage: {name: "dataStorage", icon: "storage", route: "", external: true},
   systemMonitor: {name: "systemMonitor", icon: "open_in_new", route: "", external: true},
