@@ -1,4 +1,4 @@
-import {Component, OnDestroy, inject, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {RevisionService} from '../../services/revision.service';
@@ -26,13 +26,9 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
     EntityListPageComponent,
   ]
 })
-export class RevisionListPageComponent extends BaseEntityListPageComponent<AppRevision, RadarRevision> implements OnDestroy {
+export class RevisionListPageComponent extends BaseEntityListPageComponent<AppRevision, RadarRevision> {
   override entityService = inject(RevisionService);
   override configService = inject(RevisionConfigService);
 
   override entities = signal<AppRevision[]>(this.activatedRoute.snapshot.data['revisionList']);
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

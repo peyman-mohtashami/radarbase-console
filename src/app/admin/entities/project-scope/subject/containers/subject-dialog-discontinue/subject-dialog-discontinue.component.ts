@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -43,7 +43,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent
   ]
 })
-export class SubjectDialogDiscontinueComponent extends BaseEntityDialogComponent<AppSubject> implements AfterViewInit {
+export class SubjectDialogDiscontinueComponent extends BaseEntityDialogComponent<AppSubject> {
   protected readonly DetailType = DetailType;
   protected readonly SubjectDialogMode = SubjectDialogMode;
   protected readonly DialogAction = DialogAction;
@@ -55,10 +55,6 @@ export class SubjectDialogDiscontinueComponent extends BaseEntityDialogComponent
     entity: AppSubject;
     project: AppProject;
   };
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override handleDeleteAction(): void {
     this.dialogActionEvent.emit({

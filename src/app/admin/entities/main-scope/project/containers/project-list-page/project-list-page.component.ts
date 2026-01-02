@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {ProjectService} from '../../services/project.service';
 import {ProjectConfigService} from '../../services/project-config.service';
@@ -24,7 +24,7 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
     EntityListPageComponent,
   ]
 })
-export class ProjectListPageComponent extends BaseEntityListPageComponent<AppProject, RadarProject> implements OnInit, OnDestroy {
+export class ProjectListPageComponent extends BaseEntityListPageComponent<AppProject, RadarProject> {
   override entityService = inject(ProjectService);
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
@@ -35,14 +35,6 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 
   protected override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.organization?.name);

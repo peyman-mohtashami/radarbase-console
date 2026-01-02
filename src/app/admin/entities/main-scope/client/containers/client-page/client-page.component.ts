@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppClient, RadarClient} from "../../models/client";
@@ -31,7 +31,7 @@ import {ClientActionsComponent} from '../../components/client-actions/client-act
     RouterLinkActive,
   ]
 })
-export class ClientPageComponent extends BaseEntityPageComponent<AppClient, RadarClient> implements OnInit, OnDestroy {
+export class ClientPageComponent extends BaseEntityPageComponent<AppClient, RadarClient> {
   override configService = inject(ClientConfigService);
   override dialogService = inject(ClientDialogService);
 
@@ -41,12 +41,4 @@ export class ClientPageComponent extends BaseEntityPageComponent<AppClient, Rada
     { path: 'configs', label: `ADMIN.${ENTITY_REGISTRY.config.name}.title.plural` },
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.client.name}.details` },
   ];
-
-  ngOnInit(): void {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

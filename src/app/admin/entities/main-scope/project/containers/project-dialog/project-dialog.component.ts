@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, OnInit} from "@angular/core";
+import {Component, inject} from "@angular/core";
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
 
@@ -57,7 +57,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent,
   ]
 })
-export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject> implements OnInit, AfterViewInit {
+export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject> {
   protected localeService = inject(LocaleService);
   override configService = inject(ProjectConfigService);
   override dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
@@ -109,16 +109,12 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
 
   projectFullList: AppProject[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.projectFullList.subscribe(projects => {
       this.projectFullList = projects;
       this.form.controls.projectName.addValidators(this.duplicateValidator);
     })
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
+    super.ngOnInit();
   }
 
   override handleSaveAction(): void {

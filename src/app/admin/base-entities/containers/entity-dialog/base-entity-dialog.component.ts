@@ -1,4 +1,4 @@
-import {Component, output, signal} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, output, signal} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {AbstractControl, FormGroup} from '@angular/forms';
@@ -13,7 +13,7 @@ import {Subject} from 'rxjs';
   selector: 'app-base-dialog',
   template: '',
 })
-export class BaseEntityDialogComponent<T> {
+export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDestroy {
   protected configService!: BaseConfigService;
   protected dialogRef?: MatDialogRef<BaseEntityDialogComponent<T>>;
   dialogData!: {mode: DialogMode | string; entity?: T};
@@ -34,7 +34,7 @@ export class BaseEntityDialogComponent<T> {
 
   _destroy$: Subject<void> = new Subject<void>();
 
-  init() {
+  ngOnInit() {
     this.formFields = this.configService.getFormFields();
     if (this.dialogData.entity) this.form.patchValue(this.dialogData.entity);
     this.form.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$)).subscribe((value) => {
@@ -44,14 +44,14 @@ export class BaseEntityDialogComponent<T> {
     })
   }
 
-  afterViewInit() {
+  ngAfterViewInit() {
     const dialogContainer = document.querySelector('.tailwind-slide-panel');
     setTimeout(() => {
       dialogContainer?.classList.add('dialog-enter-active');
     });
   }
 
-  destroy() {
+  ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
   }

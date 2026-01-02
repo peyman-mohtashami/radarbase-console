@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -41,7 +39,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent
   ]
 })
-export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> implements OnInit, AfterViewInit {
+export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> {
   override configService = inject(GroupConfigService);
   override dialogRef = inject(MatDialogRef<GroupDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -59,16 +57,12 @@ export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> im
 
   groupFullList: AppGroup[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.groupFullList.subscribe(groups => {
       this.groupFullList = groups;
       this.form.controls.name.addValidators(this.duplicateValidator);
     })
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
+    super.ngOnInit();
   }
 
   override handleSaveAction(): void {

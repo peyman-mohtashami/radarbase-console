@@ -34,3 +34,12 @@ export interface ExtraFieldCustomConfiguration {
   required?: boolean,
   placeholder?: string,
 }
+
+export enum ExtraFieldType {
+  TEXT = 'text',
+  NUMBER = 'number',
+  DATE = 'date',
+  CHECKBOX = 'checkbox',
+  SELECT = 'select',
+  MULTISELECT = 'multiselect',
+}

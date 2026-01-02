@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
@@ -39,7 +39,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent,
   ]
 })
-export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser> implements OnInit, AfterViewInit, OnDestroy {
+export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser> {
   protected readonly DetailType = DetailType;
   protected readonly DialogAction = DialogAction;
 
@@ -63,7 +63,7 @@ export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser
 
   usersFullList: AppUser[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.userFullList.subscribe(users => {
       this.usersFullList = users;
     })
@@ -77,14 +77,6 @@ export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser
         this.selectedUser.set(user);
       }
     })
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 
   override handleSaveAction(): void {

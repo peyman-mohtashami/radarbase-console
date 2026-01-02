@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
-  inject, OnDestroy,
-  OnInit,
+  inject,
   signal
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
@@ -67,7 +65,7 @@ import {
     ErrorMessageBoxComponent
   ]
 })
-export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<AppSubject> implements OnInit, AfterViewInit, OnDestroy {
+export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<AppSubject> {
   override configService = inject(SubjectConfigService);
   override dialogRef = inject(MatDialogRef<SubjectDialogPairAppComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -89,13 +87,9 @@ export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<App
     client: new FormControl<AppClient | undefined>(undefined, {nonNullable: true}),
   });
 
-  ngOnInit() {
-    super.init();
+  override ngOnInit() {
+    super.ngOnInit();
     document.body.classList.add(this.printBodyClass);
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
   }
 
   generateQRCode(persistent: boolean) {
@@ -120,7 +114,7 @@ export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<App
   }
 
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     document.body.classList.remove(this.printBodyClass);
   }
 

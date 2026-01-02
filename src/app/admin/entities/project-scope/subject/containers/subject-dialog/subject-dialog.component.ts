@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, FormRecord, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
@@ -57,7 +55,7 @@ import {
     DialogActionsComponent,
   ]
 })
-export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject> implements OnInit, AfterViewInit {
+export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject> {
   protected readonly SubjectDialogMode = SubjectDialogMode;
   protected readonly DetailType = DetailType;
 
@@ -99,7 +97,7 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
     // }),
   });
 
-  ngOnInit() {
+  override ngOnInit() {
     this.extraFields?.forEach((field: { name: string }) => {
       this.form.controls.attributes.addControl(
         field.name,
@@ -109,11 +107,7 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
     // this.extraFields?.forEach((field: any) => {
     //   this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));
     // });
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
+    super.ngOnInit();
   }
 
   override handleSaveAction(): void {

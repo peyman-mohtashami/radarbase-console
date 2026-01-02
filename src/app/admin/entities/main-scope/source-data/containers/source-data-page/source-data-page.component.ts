@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {AppSourceData, RadarSourceData} from "../../models/source-data";
 
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
@@ -27,7 +27,7 @@ import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
     RouterOutlet
   ]
 })
-export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData, RadarSourceData> implements OnInit, OnDestroy {
+export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData, RadarSourceData> {
 
   override configService = inject(SourceDataConfigService);
   override dialogService = inject(SourceDataDialogService);
@@ -37,13 +37,4 @@ export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceDa
   links: TabLink[] = [
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.sourceData.name}.details` },
   ];
-
-  ngOnInit(): void {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
-
 }

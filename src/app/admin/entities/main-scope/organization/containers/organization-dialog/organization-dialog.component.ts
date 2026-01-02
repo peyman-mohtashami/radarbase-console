@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
@@ -38,7 +38,7 @@ import {Observable} from 'rxjs';
     ErrorMessageBoxComponent,
   ]
 })
-export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOrganization> implements OnInit, AfterViewInit {
+export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOrganization> {
   override configService = inject(OrganizationConfigService);
   override dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -58,16 +58,12 @@ export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOr
 
   organizations: AppOrganization[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.organizationFullList.subscribe(organizations => {
       this.organizations = organizations;
       this.form.controls.name.addValidators(this.duplicateValidator);
     });
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
+    super.ngOnInit();
   }
 
   override handleSaveAction(): void {

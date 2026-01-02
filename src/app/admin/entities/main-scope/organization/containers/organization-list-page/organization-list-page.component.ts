@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {OrganizationService} from '../../services/organization.service';
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -23,7 +23,7 @@ import {BaseEntityListPageComponent} from '../../../../../base-entities/containe
     EntityListPageComponent,
   ]
 })
-export class OrganizationListPageComponent extends BaseEntityListPageComponent<AppOrganization, RadarOrganization> implements OnInit, OnDestroy {
+export class OrganizationListPageComponent extends BaseEntityListPageComponent<AppOrganization, RadarOrganization> {
 
   override entityService = inject(OrganizationService);
   override configService = inject(OrganizationConfigService);
@@ -33,12 +33,4 @@ export class OrganizationListPageComponent extends BaseEntityListPageComponent<A
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

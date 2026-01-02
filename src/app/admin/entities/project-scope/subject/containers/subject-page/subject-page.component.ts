@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
@@ -35,28 +35,36 @@ import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
     MatIcon,
   ]
 })
-export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, RadarSubject> implements OnInit, OnDestroy {
+export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, RadarSubject> {
   override configService = inject(SubjectConfigService);
   override dialogService = inject(SubjectDialogService);
 
-  links: TabLink[] = [
-    { path: 'download', label: `ADMIN.${ENTITY_REGISTRY.dataDownload.name}.title.plural` },
-    { path: 'data', label: `ADMIN.${ENTITY_REGISTRY.dataVisualization.name}.title.plural` },
-    { path: 'compliance', label: `ADMIN.${ENTITY_REGISTRY.dataCompliance.name}.title.plural` },
-    { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` },
-    { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
-    { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.details` },
-  ];
+  links: TabLink[] = [];
 
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
   project?: AppProject = this.selectedEntitiesService.selectedProject();
   organization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
 
-  ngOnInit(): void {
-    super.init();
-  }
+  override ngOnInit(): void {
+    const protocolAndQuestionnaireTabLinks =
+      this.entity().project?.sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
+        [
+          { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
+          { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
+        ] : [];
 
-  ngOnDestroy() {
-    super.destroy();
+    this.links = [
+      ...[
+        { path: 'download', label: `ADMIN.${ENTITY_REGISTRY.dataDownload.name}.title.plural` },
+        { path: 'data', label: `ADMIN.${ENTITY_REGISTRY.dataVisualization.name}.title.plural` },
+        { path: 'compliance', label: `ADMIN.${ENTITY_REGISTRY.dataCompliance.name}.title.plural` },
+        { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` },
+      ],
+      ...protocolAndQuestionnaireTabLinks,
+      ...[
+        { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.details` },
+      ],
+    ];
+    super.ngOnInit();
   }
 }

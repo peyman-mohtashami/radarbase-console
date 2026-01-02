@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {AppUser, RadarUser} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
 import {UserConfigService} from '../../services/user-config.service';
@@ -27,7 +27,7 @@ import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
     RouterOutlet,
   ]
 })
-export class UserPageComponent extends BaseEntityPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {
+export class UserPageComponent extends BaseEntityPageComponent<AppUser, RadarUser> {
   override configService = inject(UserConfigService);
   override dialogService = inject(UserDialogService);
 
@@ -36,12 +36,4 @@ export class UserPageComponent extends BaseEntityPageComponent<AppUser, RadarUse
   links: TabLink[] = [
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.user.name}.details` },
   ];
-
-  ngOnInit(): void {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

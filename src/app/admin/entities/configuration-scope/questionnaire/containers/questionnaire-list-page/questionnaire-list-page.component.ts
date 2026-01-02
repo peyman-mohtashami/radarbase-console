@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
@@ -34,7 +34,7 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ]
 })
-export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<AppQuestionnaire, RadarQuestionnaire> implements OnInit, OnDestroy {
+export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<AppQuestionnaire, RadarQuestionnaire> {
   override entityService = inject(QuestionnaireService);
   override configService = inject(QuestionnaireConfigService);
   override dialogService = inject(QuestionnaireDialogService);
@@ -44,16 +44,12 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
   project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
   subject: AppSubject | undefined = this.selectedEntitiesService.selectedSubject();
 
-  ngOnInit() {
-    super.init();
+  override ngOnInit() {
+    super.ngOnInit();
     this.activatedRoute.data.subscribe(() => {
       this.refreshEntities();
       this.dialogService.dialogUpdateEvent.set(undefined);
     })
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 
   override getEntities() {

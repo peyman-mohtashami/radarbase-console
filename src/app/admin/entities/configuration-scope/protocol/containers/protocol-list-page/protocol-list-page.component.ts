@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
@@ -32,7 +32,7 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ]
 })
-export class ProtocolListPageComponent extends BaseEntityListPageComponent<AppProtocol, RadarProtocol> implements OnInit, OnDestroy {
+export class ProtocolListPageComponent extends BaseEntityListPageComponent<AppProtocol, RadarProtocol> {
   override entityService = inject(ProtocolService);
   override configService = inject(ProtocolConfigService);
   override dialogService = inject(ProtocolDialogService);
@@ -44,16 +44,12 @@ export class ProtocolListPageComponent extends BaseEntityListPageComponent<AppPr
 
   isChanged = false;
 
-  ngOnInit() {
-    super.init();
+  override ngOnInit() {
+    super.ngOnInit();
     this.activatedRoute.data.subscribe(() => {
       this.refreshEntities();
       this.dialogService.dialogUpdateEvent.set(undefined);
     })
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 
   override getEntities() {

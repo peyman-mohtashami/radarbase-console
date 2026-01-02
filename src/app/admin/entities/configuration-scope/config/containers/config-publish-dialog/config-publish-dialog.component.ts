@@ -1,7 +1,6 @@
 import {
-  AfterViewInit,
   Component,
-  inject, OnInit,
+  inject,
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -32,7 +31,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent,
   ]
 })
-export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppConfig[]> implements OnInit, AfterViewInit {
+export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppConfig[]> {
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -45,7 +44,7 @@ export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppC
 
   differences: { name: string; originalValue?: string; newValue?: string;}[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.updatedList.forEach(config => {
       const originalConfig = this.dialogData.originalList.find(originalConfig => originalConfig.name === config.name);
       if (originalConfig?._name !== config._name || originalConfig?.value !== config.value) {
@@ -66,10 +65,6 @@ export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppC
         })
       }
     })
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
   }
 
   publish() {

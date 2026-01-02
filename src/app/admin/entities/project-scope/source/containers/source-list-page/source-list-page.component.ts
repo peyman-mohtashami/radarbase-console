@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {SourceService} from '../../services/source.service';
 import {SourceConfigService} from '../../services/source-config.service';
@@ -25,7 +25,7 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
     EntityListPageComponent,
   ]
 })
-export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource, RadarSource> implements OnInit, OnDestroy {
+export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource, RadarSource> {
   override entityService = inject(SourceService);
   override configService = inject(SourceConfigService);
   override dialogService = inject(SourceDialogService);
@@ -40,17 +40,13 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     if (!this.project) throw new Error('Project not found');
     this.sourceTypes = this.project.sourceTypes?.map(s => ({
       ...s,
       _name: `${s.producer}/${s.model}/${s.catalogVersion}`,
       _search: `${s.producer}/${s.model}/${s.catalogVersion}`
     })) ?? [];
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
+    super.ngOnInit();
   }
 }

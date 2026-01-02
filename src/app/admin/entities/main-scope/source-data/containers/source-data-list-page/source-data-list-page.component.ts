@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
 import {SourceDataService} from '../../services/source-data.service';
@@ -23,19 +23,11 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
     EntityListPageComponent,
   ]
 })
-export class SourceDataListPageComponent extends BaseEntityListPageComponent<AppSourceData, RadarSourceData> implements OnInit, OnDestroy {
+export class SourceDataListPageComponent extends BaseEntityListPageComponent<AppSourceData, RadarSourceData> {
 
   override entityService = inject(SourceDataService);
   override configService = inject(SourceDataConfigService);
   override dialogService = inject(SourceDataDialogService);
 
   override entities = signal<AppSourceData[]>(this.activatedRoute.snapshot.data['sourceDataList']);
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

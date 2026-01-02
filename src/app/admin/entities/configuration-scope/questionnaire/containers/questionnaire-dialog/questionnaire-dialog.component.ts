@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -66,7 +64,7 @@ import {
     DialogTitleComponent,
   ]
 })
-export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> implements OnInit, AfterViewInit {
+export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
   override configService = inject(QuestionnaireConfigService);
   override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -99,7 +97,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
 
   questionnaireFullList: AppQuestionnaire[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.questionnaireFullList.subscribe(questionnaires => {
         this.questionnaireFullList = questionnaires;
         this.form.controls.name.addValidators(this.duplicateValidator);
@@ -115,10 +113,6 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
       this.form.controls.languages.setValue(updatedEntity.languages ?? [this.DEFAULT_LANG]);
       this.form.patchValue(updatedEntity);
     }
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
   }
 
   private duplicateValidator = (control: AbstractControl) => {

@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {ClientService} from '../../services/client.service';
 import {ClientConfigService} from '../../services/client-config.service';
@@ -23,19 +23,11 @@ import {BaseEntityListPageComponent} from '../../../../../base-entities/containe
     EntityListPageComponent,
   ]
 })
-export class ClientListPageComponent extends BaseEntityListPageComponent<AppClient, RadarClient> implements OnInit, OnDestroy {
+export class ClientListPageComponent extends BaseEntityListPageComponent<AppClient, RadarClient>{
 
   override entityService = inject(ClientService);
   override configService = inject(ClientConfigService);
   override dialogService = inject(ClientDialogService);
 
   override entities = signal<AppClient[]>(this.activatedRoute.snapshot.data['clientList']);
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
@@ -50,7 +48,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent,
   ]
 })
-export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> implements OnInit, AfterViewInit {
+export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
   override configService = inject(UserConfigService);
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -78,14 +76,6 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> impl
       _projects: new FormControl<RadarOption[]>([]),
     }),
   });
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({

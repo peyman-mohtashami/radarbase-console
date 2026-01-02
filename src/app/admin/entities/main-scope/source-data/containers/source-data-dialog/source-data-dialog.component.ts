@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -51,7 +49,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent,
   ]
 })
-export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSourceData> implements OnInit, AfterViewInit {
+export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSourceData> {
   protected readonly ProcessingState = ProcessingState;
 
   override configService = inject(SourceDataConfigService);
@@ -78,18 +76,6 @@ export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSour
     frequency: new FormControl<string>(''),
     unit: new FormControl<string>(''),
   });
-
-  // sourceTypesOptions: RadarOption[] = (this.dialogData.sourceTypeFullList as AppSourceType[]).sort((a, b) =>
-  //   a._name.localeCompare(b._name)
-  // );
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   protected override handleSaveAction(): void {
     this.dialogActionEvent.emit({

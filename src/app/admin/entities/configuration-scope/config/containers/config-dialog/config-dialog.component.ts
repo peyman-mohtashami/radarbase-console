@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
@@ -40,7 +38,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent
   ]
 })
-export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> implements OnInit, AfterViewInit {
+export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> {
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -55,12 +53,4 @@ export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> 
     name: new FormControl<string | undefined>(undefined, {nonNullable: true, validators: [Validator.requiredValidator]}),
     value: new FormControl<string | undefined>(undefined, {nonNullable: true}),
   });
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 }

@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {GroupTableRowComponent} from '../../components/group-table-row/group-table-row.component';
 import {GroupService} from '../../services/group.service';
@@ -24,7 +24,7 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
     EntityListPageComponent,
   ]
 })
-export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup, RadarGroup> implements OnInit, OnDestroy {
+export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup, RadarGroup> {
   override entityService = inject(GroupService);
   override configService = inject(GroupConfigService);
   override dialogService = inject(GroupDialogService);
@@ -33,15 +33,6 @@ export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup
   project?: AppProject = this.selectedEntitiesService.selectedProject();
 
   override getEntities() {
-    console.log('Class: GroupListPageComponent, Function: getEntities, Line 36 this.project' , this.project);
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);
-  }
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 }

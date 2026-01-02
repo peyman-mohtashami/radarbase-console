@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppProject, RadarProject} from "../../models/project";
@@ -33,7 +33,7 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ]
 })
-export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, RadarProject> implements OnInit, OnDestroy {
+export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, RadarProject> {
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
 
@@ -43,9 +43,9 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
 
   hasSubject = this.selectedEntitiesService.selectedSubject;
 
-  ngOnInit() {
+  override ngOnInit() {
     const protocolAndQuestionnaireTabLinks =
-      this.entity().sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT') ?
+      this.entity().sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
         [
           { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
           { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
@@ -64,10 +64,6 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
         { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` }
       ],
     ];
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
+    super.ngOnInit();
   }
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {AppSourceType, SourceTypeScope} from "../../models/source-type";
@@ -41,7 +41,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     ErrorMessageBoxComponent
   ]
 })
-export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSourceType> implements OnInit, AfterViewInit {
+export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSourceType> {
   override configService = inject(SourceTypeConfigService);
   override dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -64,14 +64,6 @@ export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSour
     assessmentType: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
     appProvider: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
-
-  ngOnInit() {
-    super.init()
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({

@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -48,7 +46,7 @@ import {AppProject} from '../../../../main-scope/project/models/project';
     ErrorMessageBoxComponent,
   ]
 })
-export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> implements OnInit, AfterViewInit {
+export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> {
   override configService = inject(SourceConfigService);
   override dialogRef = inject(MatDialogRef<SourceDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -70,15 +68,6 @@ export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> 
       "External-identifier": new FormControl<string | undefined>(undefined, {nonNullable: true, validators: [Validator.normalTextValidator]}),
     }),
   });
-
-  ngOnInit() {
-    // this.form.controls.name.addValidators(this.duplicateValidator);
-    super.init();
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({

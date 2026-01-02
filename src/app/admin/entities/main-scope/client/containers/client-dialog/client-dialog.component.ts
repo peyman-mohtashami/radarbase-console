@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
@@ -43,7 +43,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
     DurationPipe
   ]
 })
-export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> implements OnInit, AfterViewInit {
+export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> {
   override configService = inject(ClientConfigService);
   override dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -86,13 +86,13 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
 
   clientFullList: AppClient[] = [];
 
-  ngOnInit() {
+  override ngOnInit() {
     this.dialogData.clientFullList.subscribe(clients => {
       this.clientFullList = clients;
       this.form.controls.clientId.addValidators(this.duplicateValidator);
     });
 
-    super.init();
+    super.ngOnInit();
 
     this.form.controls.enableEmptySecret?.valueChanges.subscribe((value) => {
       this.form.controls.clientSecret?.setValidators(
@@ -100,10 +100,6 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
       );
       this.form.controls.clientSecret?.updateValueAndValidity();
     });
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit();
   }
 
   override handleSaveAction(): void {

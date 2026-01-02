@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {LogConfigService} from '../../services/log-config.service';
 import {AppLog, RadarLog} from '../../models/log';
@@ -22,17 +22,9 @@ import {LogService} from '../../services/log.service';
     EntityListPageComponent,
   ]
 })
-export class LogListPageComponent extends BaseEntityListPageComponent<AppLog, RadarLog> implements OnInit, OnDestroy {
+export class LogListPageComponent extends BaseEntityListPageComponent<AppLog, RadarLog> {
   override configService = inject(LogConfigService);
   override entityService = inject(LogService);
 
   override entities = signal<AppLog[]>(this.activatedRoute.snapshot.data['logList']);
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 }

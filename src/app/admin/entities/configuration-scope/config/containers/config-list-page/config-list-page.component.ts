@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import { DialogMode } from '../../../../../base-entities/enums/dialog';
 import { ConfigService } from '../../services/config.service';
 import {AppConfig, RadarConfig} from "../../models/config";
@@ -36,7 +36,7 @@ import {DEFAULT_PAGE_SIZE} from '../../../../../base-entities/consts/default-tab
     EntityListPageComponent,
   ]
 })
-export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> implements OnInit, OnDestroy {
+export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> {
   override entityService = inject(ConfigService);
   override configService = inject(ConfigConfigService);
   override dialogService = inject(ConfigDialogService);
@@ -49,17 +49,13 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
 
   isChanged = false;
 
-  ngOnInit() {
-    super.init();
+  override ngOnInit() {
+    super.ngOnInit();
     this.activatedRoute.data.subscribe(() => {
       this.page.set({pageIndex: 0, pageSize: this.page()?.pageSize ?? DEFAULT_PAGE_SIZE, length: this.page()?.length ?? 0});
       this.refreshEntities();
       this.dialogService.dialogUpdateEvent.set(undefined);
     })
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 
   override getEntities() {

@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {AppSourceType, RadarSourceType} from "../../models/source-type";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
@@ -26,7 +26,7 @@ import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
     RouterOutlet,
   ]
 })
-export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType, RadarSourceType> implements OnInit, OnDestroy {
+export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType, RadarSourceType> {
   override configService = inject(SourceTypeConfigService);
   override dialogService = inject(SourceTypeDialogService);
 
@@ -35,14 +35,6 @@ export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceTy
   links: TabLink[] = [
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.sourceType.name}.details` },
   ];
-
-  ngOnInit(): void {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
-  }
 
   override navigateOnUpdateSuccess(entity: AppSourceType) {
     this.router

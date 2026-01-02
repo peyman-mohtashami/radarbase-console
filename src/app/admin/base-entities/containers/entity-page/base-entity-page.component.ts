@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal, untracked} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subject} from 'rxjs';
@@ -14,7 +14,7 @@ import {SelectedEntitiesService} from '../../../services/selected-entities.servi
   selector: 'app-base-entity-page',
   template: '',
 })
-export class BaseEntityPageComponent<T extends { _name: string; }, U> {
+export class BaseEntityPageComponent<T extends { _name: string; }, U> implements OnInit, OnDestroy {
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
@@ -34,11 +34,11 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> {
     this.initializeDialogEffect();
   }
 
-  init() {
+  ngOnInit() {
     this.handleDialogUrlFragment();
   }
 
-  destroy() {
+  ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
   }

@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   inject,
 } from '@angular/core';
@@ -50,7 +49,7 @@ import {AppSubject} from '../../models/subject';
     ErrorMessageBoxComponent
   ]
 })
-export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent<AppGroup> implements AfterViewInit {
+export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent<AppGroup> {
   protected readonly SubjectDialogMode = SubjectDialogMode;
 
   override configService = inject(SubjectConfigService);
@@ -70,10 +69,6 @@ export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent
   override form = new FormGroup({
     group: new FormControl<AppGroup | undefined>(undefined, {nonNullable: true})
   });
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override onAction() { //TODO DIALOG_ACTION
     this.error.set(null);

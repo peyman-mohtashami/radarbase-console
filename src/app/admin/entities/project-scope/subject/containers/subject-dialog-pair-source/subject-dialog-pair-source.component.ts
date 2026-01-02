@@ -1,7 +1,6 @@
 import {
-  AfterViewInit,
   Component,
-  inject, OnInit, signal,
+  inject, signal,
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -69,7 +68,7 @@ export interface AvailableSource {
     ErrorMessageBoxComponent,
   ]
 })
-export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<AppSubject> implements OnInit, AfterViewInit {
+export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<AppSubject> {
   protected readonly SubjectDialogMode = SubjectDialogMode;
 
   override configService = inject(SubjectConfigService);
@@ -90,8 +89,8 @@ export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<
   unassignedSources = signal<AvailableSource[]>([]);
   availableSources = signal<AvailableSource[]>([]) ;
 
-  ngOnInit() {
-    super.init();
+  override ngOnInit() {
+    super.ngOnInit();
     this.dialogData.sourcesFullList.subscribe(sources => {
       this.unassignedSources.set(sources.filter(s => !s.assigned).map(s => {
         return {
@@ -109,12 +108,8 @@ export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<
       const alreadyAssignedSources = this.dialogData.entity.sources ?? [];
       this.availableSources.set([...alreadyAssignedSources, ...this.unassignedSources()]);
     })
-
   }
 
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override handleSaveAction(): void {
     const subject = {...this.dialogData.entity, project: this.dialogData.project};

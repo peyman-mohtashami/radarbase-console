@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppOrganization, RadarOrganization} from "../../models/organization";
@@ -30,7 +30,7 @@ import {BaseEntityPageComponent} from '../../../../../base-entities/containers/e
     RouterLinkActive,
   ]
 })
-export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrganization, RadarOrganization> implements OnInit, OnDestroy {
+export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrganization, RadarOrganization> {
   override configService = inject(OrganizationConfigService);
   override dialogService = inject(OrganizationDialogService);
 
@@ -40,7 +40,7 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
 
   hasProject = this.selectedEntitiesService.selectedProject;
 
-  ngOnInit() {
+  override ngOnInit() {
       this.links = [
       {path: 'projects', label: `ADMIN.${ENTITY_REGISTRY.project.name}.title.plural`},
       {
@@ -51,10 +51,6 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
       {path: 'details', label: `ADMIN.${ENTITY_REGISTRY.organization.name}.details`},
     ];
 
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
+    super.ngOnInit();
   }
 }

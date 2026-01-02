@@ -1,4 +1,4 @@
- import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+ import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {AppProject} from '../../../../main-scope/project/models/project';
 import {SubjectService} from '../../services/subject.service';
@@ -26,7 +26,7 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
     SubjectAssignGroupComponent,
   ]
 })
-export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSubject, RadarSubject> implements OnInit, OnDestroy {
+export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSubject, RadarSubject> {
   override entityService = inject(SubjectService);
   override configService = inject(SubjectConfigService);
   override dialogService = inject(SubjectDialogService);
@@ -37,14 +37,6 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);
-  }
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 }
 

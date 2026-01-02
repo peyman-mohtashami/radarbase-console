@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   inject,
 } from '@angular/core';
@@ -35,7 +34,7 @@ import {BaseEntityDialogComponent} from '../../../../../base-entities/containers
     MatProgressSpinner,
   ]
 })
-export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUser> implements AfterViewInit {
+export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUser> {
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode | string;
@@ -44,10 +43,6 @@ export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUs
     projects: AppProject[];
     organizations: AppOrganization[];
   };
-
-  ngAfterViewInit() {
-    super.afterViewInit();
-  }
 
   override onAction() {
     this.error.set(null);

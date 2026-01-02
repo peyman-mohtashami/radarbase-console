@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, inject, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
@@ -25,7 +25,7 @@ import {PermissionService} from '../../services/permission.service';
     EntityListPageComponent,
   ]
 })
-export class PermissionListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> implements OnInit, OnDestroy {
+export class PermissionListPageComponent extends BaseEntityListPageComponent<AppUser, RadarUser> {
   override entityService = inject(PermissionService);
   override configService = inject(PermissionConfigService);
   override dialogService = inject(PermissionDialogService);
@@ -37,13 +37,5 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.currentOrganization, this.currentProject);
-  }
-
-  ngOnInit() {
-    super.init();
-  }
-
-  ngOnDestroy() {
-    super.destroy();
   }
 }

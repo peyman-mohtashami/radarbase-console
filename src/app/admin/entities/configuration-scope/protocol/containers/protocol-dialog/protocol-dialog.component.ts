@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   Component,
   inject,
-  OnInit,
   signal, viewChild,
 } from '@angular/core';
 import {
@@ -77,7 +75,7 @@ import {
     },
   ],
 })
-export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtocol> implements OnInit, AfterViewInit {
+export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtocol> {
   private entityService = inject(ProtocolService);
   override configService = inject(ProtocolConfigService);
   override dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);
@@ -111,7 +109,7 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
     content: new FormControl<FormProtocol['content']>(null!, {nonNullable: true}),
   });
 
-  ngOnInit() {
+  override ngOnInit() {
     const formEntity = this.dialogData.entity ? this.entityService.appToFormModel(this.dialogData.entity) : undefined;
     // const updatedEntity = {
     //   ...this.dialogData.entity,
@@ -121,10 +119,6 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
     const onDemand = !!formEntity?.general?.onDemand;
     this.onDemand.set(onDemand);
     this.adjustSchedulingDisabled(onDemand);
-  }
-
-  ngAfterViewInit() {
-    super.afterViewInit()
   }
 
   // private handleSaveAction(): void {

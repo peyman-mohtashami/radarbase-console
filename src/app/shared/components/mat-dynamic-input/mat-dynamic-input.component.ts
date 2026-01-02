@@ -53,41 +53,23 @@ export interface RadarOption {
     MatSuffix
   ],
 })
-export class MatDynamicInputComponent
-  implements ControlValueAccessor, OnInit, OnDestroy //, Validator AfterViewInit
-{
-  ValidatorError = ValidatorError;
+export class MatDynamicInputComponent implements ControlValueAccessor, OnInit, OnDestroy { //, Validator AfterViewInit {
+  protected readonly ValidatorHint = ValidatorHint;
+  protected readonly ValidatorError = ValidatorError;
 
   entityName = input.required<string>();
-
   field = input.required<ExtraFieldCustomConfiguration>();
-  // @Input() legend?: string;
-  // @Input() label?: string;
-
   options = input<RadarOption[]>([]);
+
   _options = computed(() => {
     return this.options().map(o => {
-      console.log('Class: MatDynamicInputComponent, Function: , Line 99 o' , o);
       return {id: o.id, _name: o._name}
     })
   })
 
-  // @Input() multiple = false;
-  // @Input() required = false;
+  form!: FormControl<string | null>;
 
-  // floatLabel = input<boolean>(false);
-
-  form!: FormControl<string | null>; // = new FormControl<RadarOption[]>([]);
-  // name = 'project'
   dateFormat = 'mm/dd/yyy';
-
-  // multiFilterCtrl: FormControl = new FormControl();
-
-  // filteredMulti$: ReplaySubject<RadarOption[]> = new ReplaySubject<
-  //   RadarOption[]
-  // >(1);
-
-  // @ViewChild('multiSelect', { static: true }) multiSelect!: MatSelect;
 
   protected _destroy$ = new Subject<void>();
 
@@ -96,9 +78,6 @@ export class MatDynamicInputComponent
   };
 
   ngOnInit(): void {
-    // if(this.multiple){
-    //   this.form = new FormControl<RadarOption[]>([]);
-    // }else {
     const validators: ValidatorFn[] = [];
     if (this.field()['validators']?.['requiredValidator']) {
       validators.push(Validator.requiredValidator);
@@ -107,60 +86,7 @@ export class MatDynamicInputComponent
       validators.push(Validator.normalTextValidator);
     }
     this.form = new FormControl("", [...validators]);
-    // }
-    // this.filteredMulti$.next(this.options.slice());
-
-    // this.multiFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._destroy$))
-    //   .subscribe(() => {
-    //     this.filterMulti();
-    //   });
   }
-
-  // ngAfterViewInit() {
-  //   this.setInitialValue();
-  // }
-
-  // protected setInitialValue() {
-  //   // this.filteredMulti$
-  //   //   .pipe(take(1), takeUntil(this._destroy$))
-  //   //   .subscribe(() => {
-  //   //     // setting the compareWith property to a comparison function
-  //   //     // triggers initializing the selection according to the initial value of
-  //   //     // the form control (i.e. _initializeSelection())
-  //   //     // this needs to be done after the filteredBanks are loaded initially
-  //   //     // and after the mat-option elements are available
-  //   //     this.multiSelect.compareWith = (a, b) => a && b && a === b;
-  //   //   });
-  // }
-
-  // protected filterMulti() {
-  //   if (!this.options) {
-  //     return;
-  //   }
-  //   // get the search keyword
-  //   let search = this.multiFilterCtrl.value;
-  //   if (!search) {
-  //     this.filteredMulti$.next(this.options.slice());
-  //     return;
-  //   } else {
-  //     search = search.toLowerCase();
-  //   }
-  //   this.filteredMulti$.next(
-  //     this.options.filter(
-  //       (option) => option.name.toLowerCase().indexOf(search) > -1
-  //     )
-  //   );
-  // }
-
-  // removeChip(option: RadarOption) {
-  //   if(this.form.value) {
-  //     const formValue = [...this.form.value];
-  //     const index = formValue.indexOf(option);
-  //     formValue.splice(index, 1);
-  //     this.form.patchValue(formValue);
-  //   }
-  // }
 
   ngOnDestroy() {
     this._destroy$.next();
@@ -188,24 +114,7 @@ export class MatDynamicInputComponent
   writeValue(value: string) {
     console.log(value);
     if (value) {
-    //   if (Array.isArray(value)) {
-    //     const options = value.map((v: RadarOption) => {
-    //       return this.options.find((o) => o.id === v.id);
-    //     })
-    //     const _options = options.filter((option) => {
-    //       console.log(option);
-    //       return !!option
-    //     }) as RadarOption[];
-    //     this.form.setValue(_options, { emitEvent: false });
-    //   } else {
-    //     console.log('not array', this.options)
-    //     const _value = this.options.find((o) => o.id === value.id);
-    //     console.log(_value)
-    //     if (_value) {
-          this.form.setValue(value, { emitEvent: false });
-    //     }
-    //     // this.form.setValue(_value ? [_value] : [], { emitEvent: false });
-    //   }
+      this.form.setValue(value, { emitEvent: false });
     }
   }
 
@@ -236,5 +145,5 @@ export class MatDynamicInputComponent
   //
   //   return errors;
   // }
-  protected readonly ValidatorHint = ValidatorHint;
+
 }

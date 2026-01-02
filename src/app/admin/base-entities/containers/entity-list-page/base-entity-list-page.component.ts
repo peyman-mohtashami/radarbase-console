@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {PageEvent} from '@angular/material/paginator';
@@ -22,7 +22,7 @@ import {SelectedEntitiesService} from '../../../services/selected-entities.servi
   selector: 'app-base-entity-list-page',
   template: '',
 })
-export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
+export class BaseEntityListPageComponent<T extends { _name: string; }, U> implements OnInit, OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
@@ -77,7 +77,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
     this.initializeDialogEffect();
   }
 
-  init() {
+  ngOnInit() {
     this.gridView = this.configService.getViewMode() === 'grid';
     const tableFields = this.configService.getTableFields();
     const tableFilters: FilterItem[] = this.configService.getTableFilters();
@@ -100,12 +100,11 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> {
     this.handleDialogUrlFragment();
   }
 
-  destroy() {
+  ngOnDestroy() {
     this.dialogService?.dialogUpdateEvent.set(undefined);
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 
   /**
    * Determines the highest priority extension class from a list of table fields
