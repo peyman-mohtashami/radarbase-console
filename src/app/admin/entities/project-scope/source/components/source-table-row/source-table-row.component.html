@@ -3,9 +3,7 @@
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
-  <app-source-details class="py-4" extension-row
-                      [entity]='entity()'
-                      [detailType]="DetailType.TABLE" />
+  <app-source-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
   <app-source-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
 </app-entity-table-row>
 

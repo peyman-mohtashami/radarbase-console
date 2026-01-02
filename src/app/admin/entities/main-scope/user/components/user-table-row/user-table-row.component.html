@@ -5,7 +5,7 @@
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
-  <app-user-details extension-row class="py-4" [entity]='entity()' [detailType]="DetailType.TABLE" />
+  <app-user-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE" />
   <app-user-actions extra-actions [entity]="entity()" />
 </app-entity-table-row>
 

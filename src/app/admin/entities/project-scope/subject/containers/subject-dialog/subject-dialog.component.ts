@@ -116,20 +116,13 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
     super.afterViewInit();
   }
 
-  // override handleSaveAction(): void {
-  //   this.dialogActionEvent.emit({
-  //     action: this.dialogData.mode,
-  //     entity: {...this.dialogData.entity, ...this.form?.value, project: this.dialogData.project}, // TODO if project is not set (DialogMode ADD)
-  //   });
-  // }
-
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {
         ...(this.dialogData.entity ?? ({} as AppSubject)),
         ...(this.form.getRawValue() as Partial<AppSubject>),
-        enableEmptySecret: null,
+        project: this.dialogData.project
       } as AppSubject,
     });
   }

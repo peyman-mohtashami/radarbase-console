@@ -5,9 +5,7 @@
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
-  <app-subject-details extension-row class="py-4"
-                       [entity]='entity()'
-                       [detailType]="DetailType.TABLE"/>
+  <app-subject-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>
   <app-subject-actions extra-actions [entity]="entity()" [isExpanded]="false"/>
 </app-entity-table-row>
 
