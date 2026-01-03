@@ -14,8 +14,8 @@ export class PermissionDialogService extends BaseDialogService<AppUser, RadarUse
 
   override createDialogRef(mode: DialogMode, entity?: AppUser): MatDialogRef<PermissionDialogComponent> {
     const userFullList = this.entityService.getWithQuery();
-    const project = this.selectedEntitiesService.selectedProject();
-    const organization = this.selectedEntitiesService.selectedOrganization();
+    const project = this.selectedEntitiesService.getSelected().project();
+    const organization = this.selectedEntitiesService.getSelected().organization();
 
     const _data = {mode, entity, project, organization, userFullList};
 

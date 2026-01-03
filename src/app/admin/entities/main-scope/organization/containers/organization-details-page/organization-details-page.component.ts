@@ -20,7 +20,7 @@ export class OrganizationDetailsPageComponent {
   private dialogService = inject(OrganizationDialogService);
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  entity = this.selectedEntitiesService.selectedOrganization;
+  entity = this.selectedEntitiesService.getSelected().organization;
   tableFields = this.configService.getTableFields();
 
   constructor() {

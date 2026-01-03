@@ -39,8 +39,8 @@ export class ProtocolListPageComponent extends BaseEntityListPageComponent<AppPr
 
   override entities = signal<AppProtocol[]>(this.activatedRoute.snapshot.data['protocolList']);
 
-  project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
-  subject: AppSubject | undefined = this.selectedEntitiesService.selectedSubject();
+  project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
+  subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
 
   isChanged = false;
 

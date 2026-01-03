@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 
 import {LogService} from './log.service';
 import {AppLog} from "../models/log";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class LogListResolver implements Resolve<AppLog[]> {
@@ -12,7 +12,7 @@ export class LogListResolver implements Resolve<AppLog[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppLog[]> {
-    this.selectedEntitiesService.clearAllSelected();
+    this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

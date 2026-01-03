@@ -1,4 +1,4 @@
-import {Component, computed, input, OnDestroy, OnInit,} from '@angular/core';
+import {Component, computed, inject, input, OnDestroy, OnInit,} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -13,6 +13,7 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ToDatePipe} from "../../pipes/to-date.pipe";
 import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
 import {ExtraFieldCustomConfiguration} from '../../../core/configuration/models/custom-configuration.model';
+import {LocaleService} from '../../../core/locale/services/locale.service';
 
 export interface RadarOption {
   id: number | string;
@@ -57,6 +58,8 @@ export class MatDynamicInputComponent implements ControlValueAccessor, OnInit, O
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
+  localeService = inject(LocaleService);
+
   entityName = input.required<string>();
   field = input.required<ExtraFieldCustomConfiguration>();
   options = input<RadarOption[]>([]);
@@ -69,7 +72,7 @@ export class MatDynamicInputComponent implements ControlValueAccessor, OnInit, O
 
   form!: FormControl<string | null>;
 
-  dateFormat = 'mm/dd/yyy';
+  // dateFormat = 'mm/dd/yyy';
 
   protected _destroy$ = new Subject<void>();
 

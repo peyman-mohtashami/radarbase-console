@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppClient} from "../models/client";
 import {ClientService} from "./client.service";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class ClientFullListResolver implements Resolve<AppClient[]> {
@@ -13,12 +13,11 @@ export class ClientFullListResolver implements Resolve<AppClient[]> {
   resolve(route: ActivatedRouteSnapshot): Observable<AppClient[]> {
     const scope = route.data['scope'];
     if (scope === 'global') {
-      this.selectedEntitiesService.clearAllSelected();
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT]);
     } else if (scope === 'project') {
-      this.selectedEntitiesService.selectedClient.set(undefined);
-      this.selectedEntitiesService.selectedSubject.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, ]);
     } else {
-      this.selectedEntitiesService.selectedClient.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT]);
     }
     return this.entityService.getWithQuery();
   }

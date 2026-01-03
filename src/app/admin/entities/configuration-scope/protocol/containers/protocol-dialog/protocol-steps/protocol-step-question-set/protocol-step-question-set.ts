@@ -92,8 +92,8 @@ export class ProtocolStepQuestionSet extends BaseFormGroupComponent<Record<strin
     // Also notify when the inner form’s status changes (covers field edits)
     this.statusSub = this.form.statusChanges.subscribe(() => this.validatorChange());
 
-    const projectId = this.selectedEntitiesService.selectedProject()?.projectName;
-    const subjectId = this.selectedEntitiesService.selectedSubject()?.login;
+    const projectId = this.selectedEntitiesService.getSelected().project()?.projectName;
+    const subjectId = this.selectedEntitiesService.getSelected().subject()?.login;
     console.log('Class: ProtocolStepQuestionSet, Function: constructor, Line 97 projectId, subjectId' , projectId, subjectId);
     this.questionnaires = this.questionnaireService.getWithQuery(undefined, projectId, subjectId);
   }

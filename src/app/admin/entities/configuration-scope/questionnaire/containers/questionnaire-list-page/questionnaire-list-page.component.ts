@@ -41,8 +41,8 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
 
   override entities = signal<AppQuestionnaire[]>(this.activatedRoute.snapshot.data['questionnaireList']);
 
-  project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
-  subject: AppSubject | undefined = this.selectedEntitiesService.selectedSubject();
+  project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
+  subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
 
   override ngOnInit() {
     super.ngOnInit();

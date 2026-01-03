@@ -33,7 +33,7 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
 
   override entities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['subjectList']);
 
-  project: AppProject = this.selectedEntitiesService.selectedProject()!;
+  project: AppProject = this.selectedEntitiesService.getSelected().project()!;
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);

@@ -84,7 +84,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   // override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject): MatDialogRef<any> {
   override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject):
     MatDialogRef<SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
-    const project = this.selectedEntitiesService.selectedProject();
+    const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
     const _data = {mode, entity, project, groupFullList};
@@ -188,7 +188,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
-    const project = this.selectedEntitiesService.selectedProject();
+    const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {

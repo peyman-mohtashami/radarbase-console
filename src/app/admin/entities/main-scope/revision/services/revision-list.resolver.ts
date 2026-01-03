@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { RevisionService } from './revision.service';
 import { AppRevision } from "../models/revision";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class RevisionListResolver implements Resolve<AppRevision[]> {
@@ -15,7 +15,7 @@ export class RevisionListResolver implements Resolve<AppRevision[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppRevision[]> {
-    this.selectedEntitiesService.clearAllSelected();
+    this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

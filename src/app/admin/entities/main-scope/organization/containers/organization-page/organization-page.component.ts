@@ -38,7 +38,7 @@ export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrgani
 
   links: TabLink[] = [];
 
-  hasProject = this.selectedEntitiesService.selectedProject;
+  hasProject = this.selectedEntitiesService.getSelected().project;
 
   override ngOnInit() {
       this.links = [

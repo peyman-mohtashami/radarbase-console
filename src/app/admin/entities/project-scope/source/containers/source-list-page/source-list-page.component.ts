@@ -31,7 +31,7 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
   override dialogService = inject(SourceDialogService);
 
   override entities = signal<AppSource[]>(this.activatedRoute.snapshot.data['sourceList']);
-  project?: AppProject = this.selectedEntitiesService.selectedProject();
+  project?: AppProject = this.selectedEntitiesService.getSelected().project();
 
   sourceTypes: AppSourceType[] = [];
 

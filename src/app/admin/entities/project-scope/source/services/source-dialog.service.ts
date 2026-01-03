@@ -16,7 +16,7 @@ export class SourceDialogService extends BaseDialogService<AppSource, RadarSourc
   sourceTypeService = inject(SourceTypeService);
 
   override createDialogRef(mode: DialogMode, entity?: AppSource): MatDialogRef<SourceDialogComponent> {
-    const project = this.selectedEntitiesService.selectedProject();
+    const project = this.selectedEntitiesService.getSelected().project()
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
 
     const _data = {mode, entity, sourceTypeFullList, project};

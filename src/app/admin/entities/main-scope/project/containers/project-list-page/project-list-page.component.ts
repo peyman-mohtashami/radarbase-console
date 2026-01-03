@@ -31,7 +31,7 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
 
   override entities = signal<AppProject[]>(this.activatedRoute.snapshot.data['projectList']);
 
-  organization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
+  organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;

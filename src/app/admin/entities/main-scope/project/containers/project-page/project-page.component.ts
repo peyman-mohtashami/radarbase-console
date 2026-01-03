@@ -41,7 +41,7 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
 
   links: TabLink[] = [];
 
-  hasSubject = this.selectedEntitiesService.selectedSubject;
+  hasSubject = this.selectedEntitiesService.getSelected().subject;
 
   override ngOnInit() {
     const protocolAndQuestionnaireTabLinks =

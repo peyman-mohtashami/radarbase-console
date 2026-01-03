@@ -43,9 +43,9 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
 
   override entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
 
-  client: AppClient = this.selectedEntitiesService.selectedClient()!;
-  project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
-  subject: AppSubject | undefined = this.selectedEntitiesService.selectedSubject();
+  client: AppClient = this.selectedEntitiesService.getSelected().client()!;
+  project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
+  subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
 
   isChanged = false;
 

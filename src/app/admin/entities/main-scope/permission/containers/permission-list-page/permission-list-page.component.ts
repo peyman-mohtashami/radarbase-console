@@ -32,8 +32,8 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
 
   override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
 
-  currentOrganization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
-  currentProject?: AppProject = this.selectedEntitiesService.selectedProject();
+  currentOrganization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
+  currentProject?: AppProject = this.selectedEntitiesService.getSelected().project();
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.currentOrganization, this.currentProject);

@@ -30,7 +30,7 @@ export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup
   override dialogService = inject(GroupDialogService);
 
   override entities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['groupList']);
-  project?: AppProject = this.selectedEntitiesService.selectedProject();
+  project?: AppProject = this.selectedEntitiesService.getSelected().project();
 
   override getEntities() {
     return this.entityService.getWithQuery(this.params(), this.project?.projectName);

@@ -23,7 +23,7 @@ export class ProjectDialogService extends BaseDialogService<AppProject, RadarPro
     const projectFullList = this.entityService.getWithQuery();
     const organizationFullList = this.organizationService.getWithQuery();
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
-    const organization = this.selectedEntitiesService.selectedOrganization();
+    const organization = this.selectedEntitiesService.getSelected().organization();
 
     const _data = {mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList};
 

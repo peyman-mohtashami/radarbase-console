@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {AppOrganization} from "../models/organization";
 import {OrganizationService} from "./organization.service";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationListResolver implements Resolve<AppOrganization[]> {
@@ -11,7 +11,7 @@ export class OrganizationListResolver implements Resolve<AppOrganization[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization[]> {
-    this.selectedEntitiesService.clearAllSelected();
+    this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
     return this.entityService.getWithQuery(route.queryParams);
   }
 }

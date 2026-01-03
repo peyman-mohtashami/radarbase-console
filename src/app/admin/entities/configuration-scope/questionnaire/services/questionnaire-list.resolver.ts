@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
 import {Observable} from "rxjs";
 import {QuestionnaireService} from "./questionnaire.service";
 import {AppQuestionnaire} from "../models/questionnaire";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnaireListResolver implements Resolve<AppQuestionnaire[]> {
@@ -15,16 +15,15 @@ export class QuestionnaireListResolver implements Resolve<AppQuestionnaire[]> {
 
     const scope = route.data['scope'];
     if (scope === 'global') {
-      this.selectedEntitiesService.clearAllSelected();
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT]);
     } else if (scope === 'project') {
-      this.selectedEntitiesService.selectedClient.set(undefined);
-      this.selectedEntitiesService.selectedSubject.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT]);
     } else {
-      this.selectedEntitiesService.selectedClient.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT]);
     }
 
-    const project = this.selectedEntitiesService.selectedProject();
-    const subject = this.selectedEntitiesService.selectedSubject();
+    const project = this.selectedEntitiesService.getSelected().project();
+    const subject = this.selectedEntitiesService.getSelected().subject();
     return this.entityService.getWithQuery(route.queryParams, project?._name, subject?._name);
   }
 }

@@ -1,13 +1,10 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
-import { Observable } from "rxjs";
-import { AppClient } from "../models/client";
+import {ActivatedRouteSnapshot, Resolve,} from '@angular/router';
+import {Observable} from "rxjs";
+import {AppClient} from "../models/client";
 import {ClientService} from "./client.service";
 import {map} from "rxjs/operators";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClientResolver implements Resolve<AppClient> {
@@ -19,7 +16,7 @@ export class ClientResolver implements Resolve<AppClient> {
       map(clients => {
         const client = clients.find(client => client.clientId === route.params['id']);
         if (client) {
-          this.selectedEntitiesService.setSelectedClient(client);
+          this.selectedEntitiesService.setSelected(SelectedEntities.CLIENT, client);
           return client;
         } else {
           throw new Error('Client not found');

@@ -42,8 +42,8 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, Ra
   links: TabLink[] = [];
 
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
-  project?: AppProject = this.selectedEntitiesService.selectedProject();
-  organization?: AppOrganization = this.selectedEntitiesService.selectedOrganization();
+  project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
 
   override ngOnInit(): void {
     const protocolAndQuestionnaireTabLinks =

@@ -1,13 +1,10 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-} from '@angular/router';
-import { Observable} from "rxjs";
-import { AppProject } from "../models/project";
+import {ActivatedRouteSnapshot, Resolve,} from '@angular/router';
+import {Observable} from "rxjs";
+import {AppProject} from "../models/project";
 import {ProjectService} from "./project.service";
 import {AppOrganization} from '../../organization/models/organization';
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectListResolver implements Resolve<AppProject[]> {
@@ -17,10 +14,10 @@ export class ProjectListResolver implements Resolve<AppProject[]> {
   resolve(route: ActivatedRouteSnapshot): Observable<AppProject[]> {
     const organizationInRoute = route.pathFromRoot.find(route => route.data['organization']);
     if (!organizationInRoute) {
-      this.selectedEntitiesService.clearAllSelected();
+      this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
     }
-    this.selectedEntitiesService.selectedProject.set(undefined);
-    const organization: AppOrganization | undefined = this.selectedEntitiesService.selectedOrganization();
+    this.selectedEntitiesService.clearSelected([SelectedEntities.PROJECT]);
+    const organization: AppOrganization | undefined = this.selectedEntitiesService.getSelected().organization();
     return this.entityService.getWithQuery(route.queryParams, organization?._name);
   }
 }

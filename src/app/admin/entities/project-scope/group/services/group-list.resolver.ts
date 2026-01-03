@@ -1,13 +1,10 @@
 import {inject, Injectable} from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-} from '@angular/router';
-import { Observable } from "rxjs";
-import { GroupService } from './group.service';
-import { AppGroup } from "../models/group";
+import {ActivatedRouteSnapshot, Resolve,} from '@angular/router';
+import {Observable} from "rxjs";
+import {GroupService} from './group.service';
+import {AppGroup} from "../models/group";
 import {AppProject} from '../../../main-scope/project/models/project';
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({ providedIn: 'root' })
 export class GroupListResolver implements Resolve<AppGroup[]> {
@@ -15,10 +12,9 @@ export class GroupListResolver implements Resolve<AppGroup[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppGroup[]> {
-    this.selectedEntitiesService.selectedSubject.set(undefined);
-    this.selectedEntitiesService.selectedClient.set(undefined);
+    this.selectedEntitiesService.clearSelected([SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
 
-    const project: AppProject | undefined = this.selectedEntitiesService.selectedProject();
+    const project: AppProject | undefined = this.selectedEntitiesService.getSelected().project()
     console.log('Class: GroupListResolver, Function: resolve, Line 22 project' , project);
     return this.entityService.getWithQuery(route.queryParams, project?.projectName);
   }

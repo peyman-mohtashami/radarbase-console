@@ -12,7 +12,7 @@ export class BaseEntityDetailsComponent<T> {
 
   protected configService!: BaseConfigService;
 
-  entity = input.required<T>();
+  entity = input.required<T | undefined>();
   dialogMode = input<DialogMode>();
   detailType = input<DetailType>();
 }

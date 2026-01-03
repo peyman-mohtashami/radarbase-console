@@ -20,7 +20,7 @@ export class SubjectDetailsPageComponent {
   private dialogService = inject(SubjectDialogService);
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
-  entity = this.selectedEntitiesService.selectedSubject;
+  entity = this.selectedEntitiesService.getSelected().subject;
   tableFields = this.configService.getTableFields();
 
   constructor() {

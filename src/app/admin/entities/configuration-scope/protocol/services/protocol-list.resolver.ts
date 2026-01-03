@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 
 import {ProtocolService} from './protocol.service';
 import {AppProtocol} from "../models/protocol";
-import {SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class ProtocolListResolver implements Resolve<AppProtocol[]> {
@@ -17,16 +17,15 @@ export class ProtocolListResolver implements Resolve<AppProtocol[]> {
 
     const scope = route.data['scope'];
     if (scope === 'global') {
-      this.selectedEntitiesService.clearAllSelected();
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT]);
     } else if (scope === 'project') {
-      this.selectedEntitiesService.selectedClient.set(undefined);
-      this.selectedEntitiesService.selectedSubject.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, ]);
     } else {
-      this.selectedEntitiesService.selectedClient.set(undefined);
+      this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT]);
     }
 
-    const project = this.selectedEntitiesService.selectedProject();
-    const subject = this.selectedEntitiesService.selectedSubject();
+    const project = this.selectedEntitiesService.getSelected().project();
+    const subject = this.selectedEntitiesService.getSelected().subject();
     return this.entityService.getWithQuery(route.queryParams, project?._name, subject?._name);
   }
 }

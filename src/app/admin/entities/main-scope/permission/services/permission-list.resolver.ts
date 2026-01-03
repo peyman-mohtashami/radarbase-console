@@ -11,8 +11,8 @@ export class PermissionListResolver implements Resolve<AppUser[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppUser[]> {
-    const organization = this.selectedEntitiesService.selectedOrganization();
-    const project = this.selectedEntitiesService.selectedProject();
+    const organization = this.selectedEntitiesService.getSelected().organization();
+    const project = this.selectedEntitiesService.getSelected().project();
 
     return this.entityService.getWithQuery(route.queryParams, organization, project);
   }

@@ -20,7 +20,7 @@ export class ProjectDetailsPageComponent {
   private selectedEntitiesService = inject(SelectedEntitiesService);
   private dialogService = inject(ProjectDialogService);
 
-  entity = this.selectedEntitiesService.selectedProject;
+  entity = this.selectedEntitiesService.getSelected().project;
   tableFields = this.configService.getTableFields();
 
   constructor() {
