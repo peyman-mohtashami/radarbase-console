@@ -1,6 +1,8 @@
+import {DeploymentConfiguration} from '../models/deployment-configuration.model';
+
 export const DEFAULT_DEPLOYMENT_CONFIGURATION_URL = 'config-assets/frontend-config.json'
 
-export const DEFAULT_DEPLOYMENT_CONFIGURATION = {
+export const DEFAULT_DEPLOYMENT_CONFIGURATION: DeploymentConfiguration = {
   "internal": {
     // "_comments": [
     //   "Enable/disable navigation items. Missing or true = enabled; false = disabled.",
@@ -26,7 +28,7 @@ export const DEFAULT_DEPLOYMENT_CONFIGURATION = {
     "systemLogs": {
       "url": "http://grafana.localhost"
     },
-    "_systemStatus": {
+    "systemStatus": {
       "url": "http://graylog.localhost"
     },
     "uploadPortal": {

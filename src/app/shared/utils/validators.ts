@@ -1,7 +1,6 @@
 import {Validators} from '@angular/forms';
 
 export const Validator = {
-  // requiredNumber: requiredNumber,
   requiredValidator: Validators.required,
   emailValidator: Validators.email,
   stringIdValidator: Validators.pattern(
@@ -40,4 +39,6 @@ export const ValidatorError = {
   duplicateValidator: 'SHARED.validatorError.duplicateValidator',
   dateOutOfMinRange: 'SHARED.validatorError.dateOutOfMinRange',
   dateOutOfMaxRange: 'SHARED.validatorError.dateOutOfMaxRange',
+  minValidator: 'SHARED.validatorError.numberOutOfMinRange',
+  maxValidator: 'SHARED.validatorError.numberOutOfMaxRange',
 };

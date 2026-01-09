@@ -35,6 +35,7 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> implements
   }
 
   ngOnInit() {
+    this.updateTabLinks();
     this.handleDialogUrlFragment();
   }
 
@@ -47,11 +48,17 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> implements
   initializeDialogEffect() {
     effect(() => {
       const updated = this.dialogService?.dialogUpdateEvent();
-      if (updated) untracked(() => this.handleDialogUpdate(updated));
+      // if (updated) untracked(() => {
+      //   this.handleDialogUpdate(updated);
+      // });
+      if (updated) {
+        this.handleDialogUpdate(updated);
+      }
     });
   }
 
   handleDialogUpdate(updated: { mode: DialogMode | string, entity?: T }) {
+    this.updateTabLinks(updated.entity);
     switch (updated.mode) {
       case DialogMode.EDIT:
         if (updated?.entity) {
@@ -98,5 +105,10 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> implements
       queryParamsHandling: 'preserve',
       fragment: undefined
     }).then();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  updateTabLinks(_entity?: T) {
+    return;
   }
 }

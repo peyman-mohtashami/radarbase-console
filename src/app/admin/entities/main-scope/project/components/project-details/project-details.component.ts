@@ -4,7 +4,7 @@ import {ProjectStatusComponent} from "../project-status/project-status.component
 import {ProjectSourceTypesComponent} from "../project-source-types/project-source-types.component";
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
 import {EntityDetailsComponent} from "../../../../../base-entities/components/entity-details/entity-details.component";
-import {JsonPipe} from "@angular/common";
+import {KeyValuePipe} from "@angular/common";
 import {ProjectConfigService} from "../../services/project-config.service";
 import {BaseEntityDetailsComponent} from '../../../../../base-entities/components/entity-details/base-entity-details.component';
 
@@ -16,7 +16,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
     ProjectSourceTypesComponent,
     LocalDateComponent,
     EntityDetailsComponent,
-    JsonPipe,
+    KeyValuePipe,
   ]
 })
 export class ProjectDetailsComponent extends BaseEntityDetailsComponent<AppProject>{

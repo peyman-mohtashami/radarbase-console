@@ -43,9 +43,10 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
 
   hasSubject = this.selectedEntitiesService.getSelected().subject;
 
-  override ngOnInit() {
+  override updateTabLinks(_entity?: AppProject) {
+    console.log('Class: ProjectPageComponent, Function: updateTabLinks, Line 71 ' , );
     const protocolAndQuestionnaireTabLinks =
-      this.entity().sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
+      (_entity ?? this.entity()).sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
         [
           { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
           { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
@@ -64,6 +65,6 @@ export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, Ra
         { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` }
       ],
     ];
-    super.ngOnInit();
+    console.log('Class: ProjectPageComponent, Function: updateTabLinks, Line 92 this.links' , this.links);
   }
 }

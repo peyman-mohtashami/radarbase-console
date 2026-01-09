@@ -3,25 +3,27 @@
 @if (_field) {
   @switch (_field.type) {
     @case ('slideToggle') {
-      <p>{{ `ADMIN.${entityName()}}.${_field.name}.label` | translate }}</p>
+      <p class="text-base">{{ `ADMIN.${entityName()}.${_field.name}.label` | translate }}</p>
       <div>
-        <mat-slide-toggle color="primary" [formControl]="form"/>
+        <mat-slide-toggle class="mb-0!" color="primary" [formControl]="form"/>
       </div>
-      <mat-hint align="start">
-        @if (_field.hint) {
-          {{ _field.hint | translate }}
-        }
-      </mat-hint>
+      <div class="mb-2">
+        <mat-hint align="start">
+          @if (_field.hint) {
+            {{ _field.hint | translate }}
+          }
+        </mat-hint>
+      </div>
     }
-    @case ('select') {
-      <app-mat-select-autocomplete [formControl]="form"
-                                   [label]="`ADMIN.${entityName()}.${_field.name}.label` | translate"
-                                   [options]="_options()"
-                                   [required]="!!_field.validators?.['requiredValidator']"/>
-    }
+<!--    @case ('select') {-->
+<!--      <app-mat-select-autocomplete [formControl]="form"-->
+<!--                                   [label]="`ADMIN.${entityName()}.${_field.name}.label` | translate"-->
+<!--                                   [options]="_options()"-->
+<!--                                   [required]="!!_field.validators?.['requiredValidator']"/>-->
+<!--    }-->
     @default {
       <label [for]="_field.name" class="text-sm">
-        {{ `ADMIN.${entityName()}}.${_field.name}.label` | translate }}
+        {{ `ADMIN.${entityName()}.${_field.name}.label` | translate }} {{_field.required ? '*' : ''}}
       </label>
       <mat-form-field appearance='outline'>
         @switch (_field.type) {
@@ -34,6 +36,19 @@
                    [required]="!!_field.required"
                    [attr.maxlength]="_field.maxlength"
                    type="text"
+                   (blur)="form.markAsTouched()">
+          }
+          @case ('number') {
+            <input matInput
+                   [id]="field.name"
+                   autocomplete="off" data-lpignore="true"
+                   [formControl]="form"
+                   [placeholder]="(_field.placeholder ?? '') | translate"
+                   [required]="!!_field.required"
+                   [attr.maxlength]="_field.maxlength"
+                   type="number"
+                   [min]="_field.min ?? null"
+                   [max]="_field.max ?? null"
                    (blur)="form.markAsTouched()">
           }
           @case ('textarea') {
@@ -49,13 +64,13 @@
           @case ('date') {
             <input matInput [matDatepicker]="datePicker"
                    [formControl]="form"
-                   [min]="(_field.minDate ?? '') | toDate" [max]="(_field.maxDate ?? '') | toDate"
+                   [min]="(_field.min ?? '') | toDate" [max]="(_field.max ?? '') | toDate"
                    [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
           }
-          @case ('simpleSelect') {
+          @case ('select') {
             <mat-select [formControl]="form">
-              @for (option of _options(); track option._name) {
-                <mat-option [value]="option._name">{{ option._name | translate }}</mat-option>
+              @for (option of _field.options; track option) {
+                <mat-option [value]="option">{{ option | translate }}</mat-option>
               }
             </mat-select>
           }
@@ -70,12 +85,12 @@
         <mat-datepicker #datePicker/>
         <mat-hint align="start">
           @if (_field.hint) {
-            {{ ValidatorHint.normalTextValidator }}
+            {{ _field.hint | translate }}
           }
         </mat-hint>
         <mat-hint align="end">
           @if (_field.maxlength) {
-            <!--          {{(form.valueChanges | async)?.length ?? 0}} / {{config.maxlength ?? 255}}-->
+            {{(form.valueChanges | async)?.length ?? 0}} / {{_field.maxlength}}
           }
         </mat-hint>
 
@@ -89,17 +104,24 @@
           @if (_field.validators?.['normalTextValidator'] && form.errors?.['pattern']) {
             {{ ValidatorError.normalTextValidator }}
           }
-          @if (_field.validators?.['requiredValidator'] && form.errors?.['required']) {
+          @if (_field.type === 'number') {
+            @if (form.errors?.['min']) {
+              {{ ValidatorError.minValidator | translate:{value: form.errors?.['min']['min']} }}
+            }
+            @if (form.errors?.['max']) {
+              {{ ValidatorError.maxValidator | translate:{value: form.errors?.['max']['max']} }}
+            }
+          }
+          @if (form.errors?.['required']) {
+<!--            @if (_field.validators?.['requiredValidator'] && form.errors?.['required']) {-->
             {{ ValidatorError.requiredValidator | translate:{value: 'ADMIN.' + entityName() + '.' + _field.name + '.label' | translate} }}
           }
           @if (_field.type === 'date') {
             @if (form.errors?.['matDatepickerMin']) {
-              {{ ValidatorError.dateOutOfMinRange | translate }}
-<!--              Date is out of range. It should be after {{ (_field.minDate ?? '') | toDate | date }}. &lt;!&ndash; TODO translate &ndash;&gt;-->
+              {{ ValidatorError.dateOutOfMinRange | translate:{value: form.errors?.['matDatepickerMin']['min'] | date: localeService.currentLocale()?.dateFormat} }}
             }
             @if (form.errors?.['matDatepickerMax']) {
-              {{ ValidatorError.dateOutOfMaxRange | translate }}
-<!--              Date is out of range. It should be before {{ (_field.maxDate ?? '') | toDate | date }}. &lt;!&ndash; TODO translate &ndash;&gt;-->
+              {{ ValidatorError.dateOutOfMaxRange | translate:{value: form.errors?.['matDatepickerMax']['max'] | date: localeService.currentLocale()?.dateFormat} }}
             }
             @if (form.errors?.['matDatepickerParse']) {
               {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}

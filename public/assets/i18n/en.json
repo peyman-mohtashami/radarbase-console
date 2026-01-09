@@ -183,8 +183,10 @@
       "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
       "longTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 1 max 256)",
       "duplicateValidator": "'{{value}}' already exists. Try another one.",
-      "dateOutOfMinRange": "Date is out of range. It should be after 2000.",
-      "dateOutOfMaxRange": "Date is out of range. It should be before 2050."
+      "dateOutOfMinRange": "Date is out of range. It should be after {{value}}.",
+      "dateOutOfMaxRange": "Date is out of range. It should be before {{value}}.",
+      "numberOutOfMinRange": "Number is out of range. It should be greater than {{value}}.",
+      "numberOutOfMaxRange": "Number is out of range. It should be less than {{value}}."
     },
     "UNIT": {
       "week": "week",

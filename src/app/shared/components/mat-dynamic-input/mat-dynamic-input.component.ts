@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnDestroy, OnInit,} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit,} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -11,9 +11,9 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ToDatePipe} from "../../pipes/to-date.pipe";
-import {MatSelectAutocompleteComponent} from "../mat-select-autocomplete/mat-select-autocomplete.component";
-import {ExtraFieldCustomConfiguration} from '../../../core/configuration/models/custom-configuration.model';
+import {ExtraFieldConfiguration} from '../../../core/configuration/models/custom-configuration.model';
 import {LocaleService} from '../../../core/locale/services/locale.service';
+import {AsyncPipe, DatePipe} from '@angular/common';
 
 export interface RadarOption {
   id: number | string;
@@ -50,8 +50,9 @@ export interface RadarOption {
     MatInput,
     MatSlideToggle,
     ToDatePipe,
-    MatSelectAutocompleteComponent,
-    MatSuffix
+    MatSuffix,
+    DatePipe,
+    AsyncPipe
   ],
 })
 export class MatDynamicInputComponent implements ControlValueAccessor, OnInit, OnDestroy { //, Validator AfterViewInit {
@@ -61,33 +62,40 @@ export class MatDynamicInputComponent implements ControlValueAccessor, OnInit, O
   localeService = inject(LocaleService);
 
   entityName = input.required<string>();
-  field = input.required<ExtraFieldCustomConfiguration>();
-  options = input<RadarOption[]>([]);
-
-  _options = computed(() => {
-    return this.options().map(o => {
-      return {id: o.id, _name: o._name}
-    })
-  })
+  field = input.required<ExtraFieldConfiguration>();
 
   form!: FormControl<string | null>;
 
-  // dateFormat = 'mm/dd/yyy';
-
   protected _destroy$ = new Subject<void>();
 
-  onTouched = () => {
-    // TODO
-  };
+  onTouched: () => void = () => undefined;
 
   ngOnInit(): void {
     const validators: ValidatorFn[] = [];
-    if (this.field()['validators']?.['requiredValidator']) {
+    if (this.field().required) {
       validators.push(Validator.requiredValidator);
     }
     if (this.field()['validators']?.['normalTextValidator']) {
       validators.push(Validator.normalTextValidator);
     }
+    if (this.field()['validators']?.['emailValidator']) {
+      validators.push(Validator.emailValidator);
+    }
+    if (this.field()['validators']?.['stringIdValidator']) {
+      validators.push(Validator.stringIdValidator);
+    }
+    if (this.field()['validators']?.['urlValidator']) {
+      validators.push(Validator.urlValidator);
+    }
+    if (this.field()['validators']?.['longTextValidator']) {
+      validators.push(Validator.longTextValidator);
+    }
+    // if (this.field().type === 'date' && this.field().max) {
+    //   validators.push(Validator.dateOutOfMaxRange);
+    // }
+    // if (this.field().type === 'date' && this.field().min) {
+    //   validators.push(Validator.dateOutOfMinRange);
+    // }
     this.form = new FormControl("", [...validators]);
   }
 

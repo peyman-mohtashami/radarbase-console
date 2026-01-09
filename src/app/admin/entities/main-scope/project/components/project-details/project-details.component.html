@@ -1,27 +1,37 @@
 <app-entity-details [entityMetadata]="configService.getEntityMetadata()"
-            [tableFields]="configService.getTableFields()"
-            [detailType]="detailType()"
-            [customTemplate]="detailsTemplate"/>
+                    [tableFields]="configService.getTableFields()"
+                    [detailType]="detailType()"
+                    [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
-  @switch (property.name) {
-    @case ('startDate') {
-      <app-local-date [date]="entity().startDate" [format]="'mediumDate'"/>
-    }
-    @case ('endDate') {
-      <app-local-date [date]="entity().endDate" [format]="'mediumDate'"/>
-    }
-    @case ('projectStatus') {
-      <app-project-status [projectStatus]="entity().projectStatus"/>
-    }
-    @case ('sourceTypes') {
-      <app-project-source-types [sourceTypes]="entity().sourceTypes"/>
-    }
-    @case ('attributes') {
-      {{ entity().attributes | json }}
-    }
-    @default {
-      {{ $any(entity())[property.name] || "-" }}
+  @if (entity(); as _entity) {
+    @switch (property.name) {
+      @case ('startDate') {
+        <app-local-date [date]="_entity.startDate" [format]="'mediumDate'"/>
+      }
+      @case ('endDate') {
+        <app-local-date [date]="_entity.endDate" [format]="'mediumDate'"/>
+      }
+      @case ('projectStatus') {
+        <app-project-status [projectStatus]="_entity.projectStatus"/>
+      }
+      @case ('sourceTypes') {
+        <app-project-source-types [sourceTypes]="_entity.sourceTypes"/>
+      }
+      @case ('attributes') {
+        <div>
+          @for (attribute of _entity.attributes | keyvalue; track attribute.key) {
+            @if (configService.getFormFields()[`attributes.${attribute.key}`] !== false) {
+              <div class="flex flex-wrap gap-1 py-1">
+                <span class="w-40">{{ attribute.key }}</span><span>{{ attribute.value || '-' }}</span>
+              </div>
+            }
+          }
+        </div>
+      }
+      @default {
+        {{ $any(entity())[property.name] || "-" }}
+      }
     }
   }
 </ng-template>

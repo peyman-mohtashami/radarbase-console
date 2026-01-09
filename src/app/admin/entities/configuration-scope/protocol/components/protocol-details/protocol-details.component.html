@@ -4,16 +4,17 @@
              [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
+  @if (entity(); as _entity) {
   @switch (property.name) {
     @case ('repeatProtocol') {
-      @if (entity().protocol?.repeatProtocol; as repeatProtocol) {
+      @if (_entity.protocol?.repeatProtocol; as repeatProtocol) {
         <div
           [innerHTML]="'ADMIN.protocol.repeatProtocol.tableContent' | translate: {amount: repeatProtocol.amount, unit: repeatProtocol.unit}">
         </div>
       }
     }
     @case ('completionWindow') {
-      @if (entity().protocol?.completionWindow; as completionWindow) {
+      @if (_entity.protocol?.completionWindow; as completionWindow) {
         {{
           'ADMIN.protocol.completionWindow.tableContent' | translate: {
             amount: completionWindow.amount,
@@ -25,7 +26,8 @@
       }
     }
     @default {
-      {{ $any(entity())[property.name] || "-" }}
+      {{ $any(_entity)[property.name] || "-" }}
     }
+  }
   }
 </ng-template>

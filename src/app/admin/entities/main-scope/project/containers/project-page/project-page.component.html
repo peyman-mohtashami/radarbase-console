@@ -40,7 +40,7 @@
          mat-tab-nav-bar
          mat-stretch-tabs="false"
          [tabPanel]="tabPanel">
-      @for (link of links; track link) {
+      @for (link of links; track link.label) {
         <a mat-tab-link
            routerLinkActive #rla="routerLinkActive"
            [active]="rla.isActive"

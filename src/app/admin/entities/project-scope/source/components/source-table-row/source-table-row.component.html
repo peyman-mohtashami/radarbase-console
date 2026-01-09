@@ -11,7 +11,7 @@
   @switch (property.name) {
     @case ('sourceName') {
       <p class='font-bold text-primary dark:text-primary-dark'>{{ entity().sourceName || '-' }}</p>
-      <p class='' [matTooltip]="entity().sourceId">{{ entity().sourceId | truncate:13 }}</p>
+      <p class='' [matTooltip]="entity().sourceId">{{ entity().sourceId }}</p>
     }
 
     @case ('sourceId') {

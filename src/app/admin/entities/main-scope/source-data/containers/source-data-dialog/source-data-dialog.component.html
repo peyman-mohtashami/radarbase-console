@@ -37,7 +37,7 @@
 
       @if (dialogData.sourceTypeFullList | async; as sourceTypes) {
         <app-mat-select-autocomplete formControlName='sourceType'
-                                     [label]="(`${_prefix}.sourceType.label` | translate) + ' *'"
+                                     [label]="`${_prefix}.sourceType.label` | translate"
                                      [options]='sourceTypes'
                                      [required]="true" />
       }
@@ -78,15 +78,15 @@
         </mat-form-field>
       }
 
-      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {
+<!--      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {-->
         <label for="topic" class="text-sm">{{ `${_prefix}.topic.label` | translate  }}</label>
         <mat-form-field subscriptSizing="fixed" appearance="outline">
           <input matInput formControlName='topic' id="topic"
                  autocomplete="off" data-lpignore="true">
         </mat-form-field>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['keySchema'] === undefined || formFields['keySchema']) {
+<!--      @if (!formFields || formFields['keySchema'] === undefined || formFields['keySchema']) {-->
         <label for="key-schema" class="text-sm">
           {{ `${_prefix}.keySchema.label` | translate }}
         </label>
@@ -94,9 +94,9 @@
           <input matInput formControlName='keySchema' id="key-schema"
                  autocomplete="off" data-lpignore="true">
         </mat-form-field>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['valueSchema'] === undefined || formFields['valueSchema']) {
+<!--      @if (!formFields || formFields['valueSchema'] === undefined || formFields['valueSchema']) {-->
         <label for="value-schema" class="text-sm">
           {{ `${_prefix}.valueSchema.label` | translate  }}
         </label>
@@ -104,9 +104,9 @@
           <input matInput formControlName='valueSchema' id="value-schema"
                  autocomplete="off" data-lpignore="true">
         </mat-form-field>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['frequency'] === undefined || formFields['frequency']) {
+<!--      @if (!formFields || formFields['frequency'] === undefined || formFields['frequency']) {-->
         <label for="frequency" class="text-sm">
           {{ `${_prefix}.frequency.label` | translate }}
         </label>
@@ -114,15 +114,15 @@
           <input matInput formControlName='frequency' id="frequency"
                  autocomplete="off" data-lpignore="true">
         </mat-form-field>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['unit'] === undefined || formFields['unit']) {
+<!--      @if (!formFields || formFields['unit'] === undefined || formFields['unit']) {-->
         <label for="unit" class="text-sm">{{ `${_prefix}.unit.label` | translate  }}</label>
         <mat-form-field subscriptSizing="fixed" appearance="outline">
           <input matInput formControlName='unit' id="unit"
                  autocomplete="off" data-lpignore="true">
         </mat-form-field>
-      }
+<!--      }-->
     </form>
   }
 </mat-dialog-content>

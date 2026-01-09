@@ -24,10 +24,16 @@
                     (click)="switchSort(tableField)">
               <span>{{ `ADMIN.${entityMetadata().name}.${tableField.name}.tableLabel` | translate }}</span>
               @if (tableField.sortable) {
-                <div class="rb-table-sort" [class.opacity-0]="sort().sortField !== tableField.name">
-                      <span class="rb-sort-icon material-symbols-outlined">
-                        {{ sort().sortField === tableField.name && sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
-                      </span>
+                <div class="rb-table-sort">
+                  @if (sort().sortField !== tableField.name) {
+                    <mat-icon class="opacity-40 w-4! h-4! text-base! material-symbols-outlined">
+                      swap_vert
+                    </mat-icon>
+                  } @else {
+                    <mat-icon class="rb-sort-icon material-symbols-outlined">
+                      {{ sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+                    </mat-icon>
+                  }
                 </div>
               }
             </button>

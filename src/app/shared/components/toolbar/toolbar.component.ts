@@ -8,9 +8,10 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {ThemeService} from "../../../core/theme/services/theme.service";
 import {LocaleService} from "../../../core/locale/services/locale.service";
 import {AuthService} from "../../../core/auth/services/auth.service";
-import {Language} from '../../../core/locale/models/locale.model';
+// import {Language} from '../../../core/locale/models/locale.model';
 import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 import {MatIcon} from '@angular/material/icon';
+import {Language} from '../../../core/configuration/models/custom-configuration.model';
 
 @Component({
   selector: 'app-toolbar',

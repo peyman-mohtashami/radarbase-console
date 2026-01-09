@@ -18,7 +18,7 @@
         <app-subject-group [group]="_entity['group']"/>
       }
       @case ('sources') {
-        @if (_entity.sources && _entity.sources?.length) {
+        @if (_entity.sources && _entity.sources.length) {
           @for (source of _entity.sources; track source.sourceName) {
             <app-tag class="bg-primary/10 text-primary">{{ source.sourceName }}</app-tag>
           }
@@ -30,9 +30,13 @@
         <div>
           @if (_entity.attributes && (_entity.attributes | keyvalue)?.length) {
             @for (attribute of _entity.attributes | keyvalue; track attribute.key) {
+              @if (configService.getFormFields()[`attributes.${attribute.key}`] !== false) {
               <div class="flex flex-wrap gap-1 border-b border-neutral-200 py-1">
-                <span class="w-40">{{ attribute.key }}</span><span>{{ attribute.value || '-' }}</span>
+                <div class="flex flex-wrap gap-1 py-1">
+                  <span class="w-40">{{ attribute.key }}</span><span>{{ attribute.value || '-' }}</span>
+                </div>
               </div>
+              }
             }
           } @else {
             -

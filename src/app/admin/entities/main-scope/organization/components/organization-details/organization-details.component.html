@@ -4,15 +4,17 @@
             [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
+  @if (entity(); as _entity) {
   @switch (property.name) {
     @case ('projectCount') {
-      {{ entity().projects?.length }}
+      {{ _entity.projects?.length }}
     }
     @case ('projects') {
-      <app-organization-projects [organization]="entity().name" [projects]="entity().projects"/>
+      <app-organization-projects [organization]="_entity.name" [projects]="_entity.projects"/>
     }
     @default {
-      {{ $any(entity())[property.name] || "-" }}
+      {{ $any(_entity)[property.name] || "-" }}
     }
+  }
   }
 </ng-template>

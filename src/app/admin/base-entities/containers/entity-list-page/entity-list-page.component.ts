@@ -9,6 +9,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MIN_ENTITIES_FOR_PAGINATION, PAGE_SIZE_OPTIONS} from '../../consts/default-table-values';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-entity-list-page',
@@ -19,6 +20,7 @@ import {SelectionModel} from '@angular/cdk/collections';
     MatCheckbox,
     MatPaginator,
     NgTemplateOutlet,
+    MatIcon,
   ]
 })
 export class EntityListPageComponent {

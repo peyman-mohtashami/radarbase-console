@@ -1,44 +1,46 @@
 <app-entity-details [entityMetadata]="configService.getEntityMetadata()"
-            [tableFields]="configService.getTableFields()"
-            [detailType]="detailType()"
-            [customTemplate]="detailsTemplate" />
+                    [tableFields]="configService.getTableFields()"
+                    [detailType]="detailType()"
+                    [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
-  @switch (property.name) {
-    @case ('email') {
-      @if (entity().email) {
-        <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
-      } @else {
-        -
+  @if (entity(); as _entity) {
+    @switch (property.name) {
+      @case ('email') {
+        @if (_entity.email) {
+          <a class="underline" href="mailto:{{ _entity.email}}" target="_blank">{{ _entity.email || '-' }}</a>
+        } @else {
+          -
+        }
       }
-    }
-    @case ('activated') {
-      <span class="flex items-center gap-1">
-        <app-user-activated class="inline-flex" [activated]="entity().activated" />
-        <app-user-activate [entity]="entity()" />
+      @case ('activated') {
+        <span class="flex items-center gap-1">
+        <app-user-activated class="inline-flex" [activated]="_entity.activated"/>
+        <app-user-activate [entity]="_entity"/>
       </span>
 
-    }
-    @case ('langKey') {
-      {{ entity().langKey?.toUpperCase() || '-' }}
-    }
-    @case ('roles') {
-      <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
-    }
-    @case ('createdBy') {
-      <app-user-created-by [createdBy]="entity().createdBy" />
-    }
-    @case ('createdDate') {
-      <app-local-date [date]="entity().createdDate" [format]="'long'" />
-    }
-    @case ('lastModifiedBy') {
-      <app-user-created-by [createdBy]="entity().lastModifiedBy" />
-    }
-    @case ('lastModifiedDate') {
-      <app-local-date [date]="entity().lastModifiedDate" [format]="'long'" />
-    }
-    @default {
-      {{ $any(entity())[property.name] || '-' }}
+      }
+      @case ('langKey') {
+        {{ _entity.langKey?.toUpperCase() || '-' }}
+      }
+      @case ('roles') {
+        <app-permission-roles [roles]="_entity._roles" [organization]="organizationName()" [project]="projectName()"/>
+      }
+      @case ('createdBy') {
+        <app-user-created-by [createdBy]="_entity.createdBy"/>
+      }
+      @case ('createdDate') {
+        <app-local-date [date]="_entity.createdDate" [format]="'long'"/>
+      }
+      @case ('lastModifiedBy') {
+        <app-user-created-by [createdBy]="_entity.lastModifiedBy"/>
+      }
+      @case ('lastModifiedDate') {
+        <app-local-date [date]="_entity.lastModifiedDate" [format]="'long'"/>
+      }
+      @default {
+        {{ $any(_entity)[property.name] || '-' }}
+      }
     }
   }
 </ng-template>

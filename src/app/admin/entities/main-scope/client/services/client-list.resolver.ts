@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {AppClient} from "../models/client";
 import {ClientService} from "./client.service";
 import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {tap} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ClientListResolver implements Resolve<AppClient[]> {
@@ -11,7 +12,10 @@ export class ClientListResolver implements Resolve<AppClient[]> {
   private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppClient[]> {
-    this.selectedEntitiesService.clearSelected([ SelectedEntities.CLIENT, SelectedEntities.SUBJECT, SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT]);
-    return this.entityService.getWithQuery(route.queryParams);
+    return this.entityService.getWithQuery(route.queryParams).pipe(
+      tap(() => {
+        this.selectedEntitiesService.clearSelected([SelectedEntities.CLIENT, SelectedEntities.SUBJECT, SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT]);
+      })
+    );
   }
 }

@@ -1,30 +1,32 @@
 <app-entity-details [entityMetadata]="configService.getEntityMetadata()"
-             [tableFields]="configService.getTableFields()"
-             [detailType]="detailType()"
-             [customTemplate]="detailsTemplate"/>
+                    [tableFields]="configService.getTableFields()"
+                    [detailType]="detailType()"
+                    [customTemplate]="detailsTemplate"/>
 
 <ng-template #detailsTemplate let-property>
-  @switch (property.name) {
-    @case ('assigned') {
-      <app-source-assigned [assigned]="entity().assigned"/>
-    }
-    @case ('sourceType') {
-      <app-source-source-type [sourceType]="entity().sourceType"/>
-    }
-    @case ('attributes') {
-      @if (entity().attributes) {
-        @for (attribute of entity().attributes | keyvalue; track attribute.key) {
-          <div>
-            {{ attribute.key }}: {{ attribute.value || '-' }}
-          </div>
+  @if (entity(); as _entity) {
+    @switch (property.name) {
+      @case ('assigned') {
+        <app-source-assigned [assigned]="_entity.assigned"/>
+      }
+      @case ('sourceType') {
+        <app-source-source-type [sourceType]="_entity.sourceType"/>
+      }
+      @case ('attributes') {
+        @if (_entity.attributes) {
+          @for (attribute of _entity.attributes | keyvalue; track attribute.key) {
+            <div>
+              {{ attribute.key }}: {{ attribute.value || '-' }}
+            </div>
+          }
+        }
+        @if (!_entity.attributes || !(_entity.attributes | keyvalue)?.length) {
+          -
         }
       }
-      @if (!entity().attributes || !(entity().attributes | keyvalue)?.length) {
-        -
+      @default {
+        {{ $any(_entity)[property.name] || '-' }}
       }
-    }
-    @default {
-      {{ $any(entity())[property.name] || '-' }}
     }
   }
 </ng-template>

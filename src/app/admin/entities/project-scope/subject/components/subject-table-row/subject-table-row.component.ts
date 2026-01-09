@@ -7,7 +7,6 @@ import {LocalDateComponent} from "../../../../../../core/locale/components/local
 import {SubjectGroupComponent} from "../subject-group/subject-group.component";
 import {SubjectDetailsComponent} from "../subject-details/subject-details.component";
 import {MatTooltip} from "@angular/material/tooltip";
-import {TruncatePipe} from '../../../../../../shared/pipes/truncate-pipe';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {EntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/entity-table-row.component';
@@ -26,7 +25,6 @@ import {TranslatePipe} from '@ngx-translate/core';
     LocalDateComponent,
     SubjectGroupComponent,
     SubjectDetailsComponent,
-    TruncatePipe,
     MatTooltip,
     TagComponent,
     EntityTableRowComponent,

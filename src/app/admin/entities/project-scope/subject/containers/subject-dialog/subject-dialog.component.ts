@@ -83,18 +83,10 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
     externalId: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     externalLink: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    // attributes: new FormGroup<Record<string, FormControl<string | undefined>>>({
-    //   humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    //   participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    // }),
     attributes: new FormRecord<FormControl<string | undefined>>({
       humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
       participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
     }),
-    // attributes: new FormGroup({
-    //   humanReadableIdentifier: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    //   participant_group: new FormControl<string | undefined>(undefined, {nonNullable: true}),
-    // }),
   });
 
   override ngOnInit() {
@@ -104,9 +96,6 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
         new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true})
       );
     });
-    // this.extraFields?.forEach((field: any) => {
-    //   this.form.controls.attributes.addControl(field.name, new FormControl<string | undefined>(undefined, {validators: null, nonNullable: true}));
-    // });
     super.ngOnInit();
   }
 

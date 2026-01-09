@@ -21,21 +21,21 @@ export const TableElements: TableElement[] = [
 ];
 
 export const filters: FilterItem[] = [
+  // {
+  //   name: '_search',
+  //   label: 'ADMIN.user.filters.search',
+  //   type: FormFieldType.INPUT,
+  // },
   {
-    name: '_search',
-    label: 'ADMIN.user.filters.search',
+    name: 'login',
+    label: 'ADMIN.user.login.tableLabel',
     type: FormFieldType.INPUT,
   },
-  // {
-  //   name: 'login',
-  //   label: 'ADMIN.user.login.tableLabel',
-  //   type: FormFieldType.INPUT,
-  // },
-  // {
-  //   name: 'email',
-  //   label: 'ADMIN.user.email.tableLabel',
-  //   type: FormFieldType.INPUT,
-  // },
+  {
+    name: 'email',
+    label: 'ADMIN.user.email.tableLabel',
+    type: FormFieldType.INPUT,
+  },
   {
     name: 'authority',
     advanced: true,

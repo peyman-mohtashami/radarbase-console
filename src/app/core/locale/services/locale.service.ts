@@ -1,11 +1,12 @@
 import {inject, Injectable, signal} from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import { DateAdapter } from '@angular/material/core';
 import {registerLocaleData} from "@angular/common";
 import {Locale} from 'date-fns';
 
-import {Language} from '../models/locale.model';
+// import {Language} from '../models/locale.model';
 import {ConfigurationService} from '../../configuration/services/configuration.service';
+import {Language} from '../../configuration/models/custom-configuration.model';
 
 @Injectable({providedIn: 'root'})
 export class LocaleService {

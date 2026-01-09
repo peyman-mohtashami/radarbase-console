@@ -8,8 +8,8 @@
 <mat-dialog-content>
   @if (dialogData.mode === SubjectDialogMode.VIEW || dialogData.mode === SubjectDialogMode.DELETE) {
     <app-subject-details class="py-4"
-                        [entity]='dialogData.entity'
-                        [detailType]="DetailType.SUMMARY" />
+                         [entity]='dialogData.entity'
+                         [detailType]="DetailType.SUMMARY"/>
     @if (dialogData.mode === SubjectDialogMode.DELETE) {
       <p class="mt-4">{{ `${_prefix}}.deleteWarning` | translate }}</p>
     }
@@ -84,14 +84,14 @@
         </mat-form-field>
       }
 
-      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
-        <div formGroupName='attributes'>
-          @for (field of extraFields; track field.name) {
-            <app-mat-dynamic-input [entityName]="configService.getEntityMetadata().name"
-                                   [field]="field"
-                                   [formControlName]="field.name"/>
-          }
+      <div [formGroup]="form.controls.attributes">
+        @for (field of extraFields; track field.name) {
+          <app-mat-dynamic-input [entityName]="configService.getEntityMetadata().name"
+                                 [field]="field"
+                                 [formControlName]="field.name"/>
+        }
 
+        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
           <label for="subject-attributes" class="text-sm">
             {{ `${_prefix}.attributes.label` | translate }}
           </label>
@@ -114,8 +114,8 @@
               </mat-form-field>
             }
           </fieldset>
-        </div>
-      }
+        }
+      </div>
     </form>
   }
 </mat-dialog-content>

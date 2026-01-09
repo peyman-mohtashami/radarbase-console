@@ -22,7 +22,8 @@
       <div class="flex flex-wrap gap-1 items-center">
         <app-subject-status [status]="entity().status" [detailType]="DetailType.TABLE"/>
         <a [routerLink]='[entity().login]' class="underline font-bold text-primary dark:text-primary-dark">
-          <span class='' [matTooltip]="entity().login">{{ entity().login | truncate:14 }}</span>
+<!--          <span class='' [matTooltip]="entity().login">{{ entity().login | truncate:14 }}</span>-->
+          <span class='' [matTooltip]="entity().login">{{ entity().login }}</span>
         </a>
       </div>
     }

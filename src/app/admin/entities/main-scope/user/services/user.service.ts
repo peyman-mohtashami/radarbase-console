@@ -106,7 +106,9 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
       return of(queryParams ? process(this.cache) : this.cache);
     }
 
-    return this.http.get<RadarUser[]>(`${environment.apiUrl}api/users?includeProvenance=false`).pipe(
+    const url = queryParams ? `${environment.apiUrl}api/users` :`${environment.apiUrl}api/users?includeProvenance=false`;
+
+    return this.http.get<RadarUser[]>(url).pipe(
       map((entities) => this.customFilter(entities)),
       map((entities) => entities.map((entity) => this.toAppModel(entity))),
       tap((entities) => {
