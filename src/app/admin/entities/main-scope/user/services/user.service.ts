@@ -8,6 +8,7 @@ import {ROLES} from "../../../../../shared/enums/roles";
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../../environments/environment';
 import {UserConfigService} from './user-config.service';
+import {HttpParams} from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class UserService extends BaseEntityService<AppUser, RadarUser> {
@@ -106,7 +107,8 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
       return of(queryParams ? process(this.cache) : this.cache);
     }
 
-    const url = queryParams ? `${environment.apiUrl}api/users` :`${environment.apiUrl}api/users?includeProvenance=false`;
+    // const url = queryParams ? `${environment.apiUrl}api/users` :`${environment.apiUrl}api/users?includeProvenance=false`;
+    const url = `${environment.apiUrl}api/users?includeProvenance=false`;
 
     return this.http.get<RadarUser[]>(url).pipe(
       map((entities) => this.customFilter(entities)),
@@ -118,6 +120,64 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
       }),
       map((entities) => queryParams ? process(entities) : entities)
     );
+  }
+
+  override getByKey(key: number | string): Observable<AppUser> {
+    return this.http.get<RadarUser>(`${this.getResourceUrl()}/${encodeURIComponent(key)}`)
+      .pipe(
+        map((entity) => this.toAppModel(entity)),
+        // tap((entity) => {
+        //   this.cache = [entity];
+        // })
+      );
+  }
+
+  override convertFilterParamsToHttpParams(
+    params: HttpParams,
+    queryParams?: Params
+  ) {
+    if (queryParams?.['login'] && queryParams['login'] !== '') {
+      params = params.append('login', queryParams['login']);
+    }
+    if (queryParams?.['email'] && queryParams['email'] !== '') {
+      params = params.append('email', queryParams['email']);
+    }
+    if (queryParams?.['authority'] && queryParams['authority'] !== '') {
+      params = params.append('authority', queryParams['authority']);
+    }
+    // if (
+    //   queryParams &&
+    //   queryParams['dateOfBirth.is'] &&
+    //   queryParams['dateOfBirth.is'] !== ''
+    // ) {
+    //   if (isValid(parse(queryParams['dateOfBirth.is'], 'yyyy-MM-dd', new Date()))) {
+    //     params = params.append('dateOfBirth.is', queryParams['dateOfBirth.is']);
+    //   }
+    // }
+    // if (
+    //   queryParams &&
+    //   queryParams['enrollmentDate.from'] &&
+    //   queryParams['enrollmentDate.from'] !== ''
+    // ) {
+    //   params = params.append(
+    //     'enrollmentDate.from',
+    //     queryParams['enrollmentDate.from']
+    //   );
+    // }
+    // if (
+    //   queryParams &&
+    //   queryParams['enrollmentDate.to'] &&
+    //   queryParams['enrollmentDate.to'] !== ''
+    // ) {
+    //   params = params.append(
+    //     'enrollmentDate.to',
+    //     queryParams['enrollmentDate.to']
+    //   );
+    // }
+    // if (queryParams?.['groupId'] && queryParams['groupId'] !== '') {
+    //   params = params.append('groupId', queryParams['groupId']);
+    // }
+    return params;
   }
 
   sendActivationEmail(entity: AppUser): Observable<void> {

@@ -1,11 +1,7 @@
 import {inject, Injectable, signal} from "@angular/core";
 import { DOCUMENT } from "@angular/common";
-// import tinycolor from "tinycolor2";
 
-// import {ThemeConfig} from "../models/theme.model";
 import {ConfigurationService} from '../../configuration/services/configuration.service';
-// import {DEFAULT_CUSTOM_CONFIGURATION} from '../../configuration/consts/default-custom-configuration.const';
-// import {ThemeConfig} from 'tailwindcss/plugin';
 import {ThemesConfiguration} from '../../configuration/models/custom-configuration.model';
 
 @Injectable({providedIn: 'root'})
@@ -22,7 +18,6 @@ export class ThemeService {
     this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
 
     const themeCustomization = this.appCustomizationService.themeCustomization();
-    // const validatedThemeCustomization = validateTheme(themeCustomization);
     setTheme(themeCustomization);
   }
 
@@ -62,32 +57,3 @@ export function hexToRgb(hex: string): string {
 
   return `${r}, ${g}, ${b}`;
 }
-
-
-// export function validateTheme(themeConfig: ThemeConfig, defaultTheme: ThemeConfig = DEFAULT_CUSTOM_CONFIGURATION.theme): ThemeConfig {
-//   const {light, dark} = themeConfig;
-//   const {light: defaultLight, dark: defaultDark} = defaultTheme;
-//
-//   return {
-//     light: {
-//       "primary": getValidateColor(light.primary, defaultLight.primary),
-//       "on-primary": getValidateColor(light["on-primary"], defaultLight["on-primary"]),
-//       "accent": getValidateColor(light.accent, defaultLight.accent),
-//       "on-accent": getValidateColor(light["on-accent"], defaultLight["on-accent"]),
-//       "tertiary": getValidateColor(light.tertiary, defaultLight.tertiary),
-//       "on-tertiary": getValidateColor(light["on-tertiary"], defaultLight["on-tertiary"]),
-//     },
-//     dark: {
-//       "primary": getValidateColor(dark.primary, defaultDark.primary),
-//       "on-primary": getValidateColor(dark["on-primary"], defaultDark["on-primary"]),
-//       "accent": getValidateColor(dark.accent, defaultDark.accent),
-//       "on-accent": getValidateColor(dark["on-accent"], defaultDark["on-accent"]),
-//       "tertiary": getValidateColor(dark.tertiary, defaultDark.tertiary),
-//       "on-tertiary": getValidateColor(dark["on-tertiary"], defaultDark["on-tertiary"]),
-//     }
-//   };
-// }
-
-// export function getValidateColor(color: string | undefined, defaultColor: string | undefined = '#000000') {
-//   return color && tinycolor(color).isValid() ? color : defaultColor;
-// }

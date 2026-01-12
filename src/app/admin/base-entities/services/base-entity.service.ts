@@ -1,7 +1,7 @@
 import {inject, signal} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Params} from '@angular/router';
-import {delay, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {RbSort} from '../models/table.model';
 import {BaseConfigService} from './base-config.service';
@@ -45,7 +45,6 @@ export class BaseEntityService<T extends {_name: string}, U> {
     }
 
     return this.http.get<U[]>(this.getResourceUrl()).pipe(
-      // delay(2000),
       map((entities) => this.customFilter(entities)),
       map((entities) => entities.map((entity) => this.toAppModel(entity))),
       tap((entities) => {
@@ -197,14 +196,14 @@ export class BaseEntityService<T extends {_name: string}, U> {
     this.total.set(this.cache.length);
   }
 
-  private removeFromCache(key: string | number): void {
-    if (!this.CACHE_ENABLED) return;
-
-    const before = this.cache.length;
-    this.cache = this.cache.filter(e => `${e._name}` !== `${key}`);
-
-    if (this.cacheLoaded && this.cache.length !== before) {
-      this.total.set(this.cache.length);
-    }
-  }
+  // private removeFromCache(key: string | number): void {
+  //   if (!this.CACHE_ENABLED) return;
+  //
+  //   const before = this.cache.length;
+  //   this.cache = this.cache.filter(e => `${e._name}` !== `${key}`);
+  //
+  //   if (this.cacheLoaded && this.cache.length !== before) {
+  //     this.total.set(this.cache.length);
+  //   }
+  // }
 }

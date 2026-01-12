@@ -28,7 +28,6 @@ export class SelectedEntitiesService  {
   }
 
   setSelected(entityName: SelectedEntities, entity: unknown) {
-    console.log('Class: SelectedEntitiesService, Function: setSelected, Line 31 entityName, entity' , entityName, entity);
     switch (entityName) {
       case 'organization': {
         this._selectedOrganization.set(entity as AppOrganization);
@@ -50,7 +49,6 @@ export class SelectedEntitiesService  {
   }
 
   clearSelected(entitiesName: SelectedEntities[]) {
-    console.log('Class: SelectedEntitiesService, Function: clearSelected, Line 52 entitiesName' , entitiesName);
     entitiesName.forEach(entityName => {
       switch (entityName) {
         case 'organization': this._selectedOrganization.set(undefined); break;

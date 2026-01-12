@@ -13,10 +13,10 @@ export const TableElements: TableElement[] = [
   { name: 'lastName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true},
   { name: 'langKey', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'roles', width: 'w-64', tableClass: "hidden xl:block", extensionClass: "block xl:hidden", editable: false},
-  { name: 'createdBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
-  { name: 'createdDate', tableClass: "hidden", extensionClass: "block", editable: true },
-  { name: 'lastModifiedBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
-  { name: 'lastModifiedDate', tableClass: "hidden", extensionClass: "block", editable: true },
+  // { name: 'createdBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
+  // { name: 'createdDate', tableClass: "hidden", extensionClass: "block", editable: true },
+  // { name: 'lastModifiedBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },
+  // { name: 'lastModifiedDate', tableClass: "hidden", extensionClass: "block", editable: true },
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
 ];
 
@@ -33,11 +33,12 @@ export const filters: FilterItem[] = [
   },
   {
     name: 'email',
+    advanced: true,
     label: 'ADMIN.user.email.tableLabel',
     type: FormFieldType.INPUT,
   },
   {
-    name: 'authority',
+    name: 'authorities',
     advanced: true,
     label: 'ADMIN.user.authority.tableLabel',
     type: FormFieldType.SELECT,
@@ -47,12 +48,12 @@ export const filters: FilterItem[] = [
       { value: 'ROLE_PROJECT_ADMIN', label: 'ROLE_PROJECT_ADMIN' },
     ],
   },
-  {
-    name: 'projectOrOrganization',
-    advanced: true,
-    label: 'ADMIN.user.projectOrOrganization.tableLabel',
-    type: FormFieldType.INPUT,
-  },
+  // {
+  //   name: 'projectOrOrganization',
+  //   advanced: true,
+  //   label: 'ADMIN.user.projectOrOrganization.tableLabel',
+  //   type: FormFieldType.INPUT,
+  // },
 ];
 
 @Injectable({providedIn: 'root'})

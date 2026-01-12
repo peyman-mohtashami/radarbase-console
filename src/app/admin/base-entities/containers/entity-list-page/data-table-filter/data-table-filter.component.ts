@@ -71,7 +71,6 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  // private dateAdapter = inject(DateAdapter<unknown>);
 
   filters = input<FilterItem[]>([]);
   filterOpened = input<boolean>(true);

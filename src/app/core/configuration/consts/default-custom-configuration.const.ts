@@ -122,19 +122,19 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `attributes.External-project-id`",
       // ],
       fields: {
-        location: false,
-        description: false,
-        startDate: false,
-        endDate: false,
-        projectStatus: false,
-        sourceTypes: false,
-        humanReadableProjectName: false,
-        attributes: false,
-        "attributes.Privacy-policy-url": false,
-        "attributes.Work-package": false,
-        "attributes.Phase": false,
-        "attributes.External-project-url": false,
-        "attributes.External-project-id": false
+        location: true,
+        description: true,
+        startDate: true,
+        endDate: true,
+        projectStatus: true,
+        sourceTypes: true,
+        humanReadableProjectName: true,
+        attributes: true,
+        "attributes.Privacy-policy-url": true,
+        "attributes.Work-package": true,
+        "attributes.Phase": true,
+        "attributes.External-project-url": true,
+        "attributes.External-project-id": true
         // attributes: {
         //   "Privacy-policy-url": false,
         //   "Work-package": false,
@@ -158,14 +158,14 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `registeredRedirectUri`",
       // ],
       fields: {
-        resourceIds: false,
-        authorizedGrantTypes: false,
-        dynamic_registration: false,
-        accessTokenValiditySeconds: false,
-        refreshTokenValiditySeconds: false,
-        scope: false,
-        autoApproveScopes: false,
-        registeredRedirectUri: false
+        resourceIds: true,
+        authorizedGrantTypes: true,
+        dynamic_registration: true,
+        accessTokenValiditySeconds: true,
+        refreshTokenValiditySeconds: true,
+        scope: true,
+        autoApproveScopes: true,
+        registeredRedirectUri: true
       }
     },
     subject: {
@@ -191,15 +191,15 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `extraFields[]` (array of UI-defined fields)",
       // ],
       fields: {
-        personName: false,
-        externalLink: false,
-        dateOfBirth: false,
-        group: false,
-        status: false,
+        personName: true,
+        externalLink: true,
+        dateOfBirth: true,
+        group: true,
+        status: true,
         sources: true,
-        attributes: false,
-        "attributes.participant_group": false,
-        "attributes.humanReadableIdentifier": false,
+        attributes: true,
+        "attributes.participant_group": true,
+        "attributes.humanReadableIdentifier": true,
         enrollmentDate: false,
         createdBy: false,
         createdDate: false,
@@ -237,13 +237,13 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `langKey`",
       // ],
       "fields": {
-        "firstName": false,
-        "lastName": false,
-        "createdBy": false,
-        "createdDate": false,
-        "lastModifiedBy": false,
-        "lastModifiedDate": false,
-        "langKey": false
+        "firstName": true,
+        "lastName": true,
+        "createdBy": true,
+        "createdDate": true,
+        "lastModifiedBy": true,
+        "lastModifiedDate": true,
+        "langKey": true
       }
     },
     "sourceType": {
@@ -259,13 +259,13 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `sourceData`",
       // ],
       "fields": {
-        "description": false,
-        "appProvider": false,
-        "assessmentType": false,
-        "name": false,
-        "sourceTypeScope": false,
-        "canRegisterDynamically": false,
-        "sourceData": false
+        "description": true,
+        "appProvider": true,
+        "assessmentType": true,
+        "name": true,
+        "sourceTypeScope": true,
+        "canRegisterDynamically": true,
+        "sourceData": true
       }
     },
     "sourceData": {
@@ -280,12 +280,12 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `unit`",
       // ],
       "fields": {
-        "topic": false,
-        "processingState": false,
-        "keySchema": false,
-        "valueSchema": false,
-        "frequency": false,
-        "unit": false
+        "topic": true,
+        "processingState": true,
+        "keySchema": true,
+        "valueSchema": true,
+        "frequency": true,
+        "unit": true
       }
     },
     "source": {
@@ -297,7 +297,7 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       //   "- `attributes.External-identifier`",
       // ],
       "fields": {
-        "expectedSourceName": false,
+        "expectedSourceName": true,
         "attributes": true,
         "attributes.External-identifier": true
       }

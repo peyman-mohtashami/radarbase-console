@@ -14,9 +14,9 @@ export class ProjectListResolver implements Resolve<AppProject[]> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppProject[]> {
     const organization: AppOrganization | undefined = this.selectedEntitiesService.getSelected().organization();
-    return this.entityService.getWithQuery(route.queryParams, organization?._name).pipe(
+    const organizationInRoute = route.pathFromRoot.find(route => route.data['organization']);
+    return this.entityService.getWithQuery(route.queryParams, organizationInRoute ? organization?._name : undefined).pipe(
       tap(() => {
-        const organizationInRoute = route.pathFromRoot.find(route => route.data['organization']);
         if (!organizationInRoute) {
           this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
         } else {
