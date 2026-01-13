@@ -46,7 +46,7 @@ export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSour
   override dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppSourceType;
+    entity?: AppSourceType;
     sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
@@ -64,15 +64,4 @@ export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSour
     assessmentType: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
     appProvider: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
-
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.value},
-    });
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
 }

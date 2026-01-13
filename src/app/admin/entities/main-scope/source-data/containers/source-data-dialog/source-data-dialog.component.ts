@@ -56,7 +56,7 @@ export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSour
   override dialogRef = inject(MatDialogRef<SourceDataDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppSourceData;
+    entity?: AppSourceData;
     sourceTypeFullList: Observable<AppSourceType[]>;
   };
 
@@ -76,15 +76,4 @@ export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSour
     frequency: new FormControl<string>(''),
     unit: new FormControl<string>(''),
   });
-
-  protected override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.value},
-    });
-  }
-
-  protected override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
 }

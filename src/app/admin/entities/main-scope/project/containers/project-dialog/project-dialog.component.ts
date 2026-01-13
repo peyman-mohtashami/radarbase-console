@@ -63,7 +63,7 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
   override dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppProject;
+    entity?: AppProject;
     organization: RadarOrganization;
     projectFullList: Observable<AppProject[]>;
     organizationFullList: Observable<AppOrganization[]>;
@@ -117,16 +117,16 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
     super.ngOnInit();
   }
 
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value},
-    });
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
+  // override handleSaveAction(): void {
+  //   this.dialogActionEvent.emit({
+  //     action: this.dialogData.mode,
+  //     entity: {...this.dialogData.entity, ...this.form?.value},
+  //   });
+  // }
+  //
+  // override handleDeleteAction(): void {
+  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  // }
 
   private duplicateValidator = (control: AbstractControl) => {
     return this.projectFullList.find(

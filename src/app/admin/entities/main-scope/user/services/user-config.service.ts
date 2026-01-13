@@ -60,5 +60,5 @@ export const filters: FilterItem[] = [
 export class UserConfigService extends BaseConfigService {
   override tableElements = TableElements;
   override filters = filters;
-  override entityMetadata = ENTITY_REGISTRY.user;
+  override entityMetadata = ENTITY_REGISTRY["user"];
 }

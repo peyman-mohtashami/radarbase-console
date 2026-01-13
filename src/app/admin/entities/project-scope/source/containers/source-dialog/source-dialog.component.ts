@@ -51,7 +51,7 @@ export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> 
   override dialogRef = inject(MatDialogRef<SourceDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppSource;
+    entity?: AppSource;
     project: AppProject;
     sourceTypeFullList: Observable<AppSourceType[]>;
   };
@@ -72,13 +72,17 @@ export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> 
   override handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value, project: this.dialogData.project},
+      entity: {
+        ...(this.dialogData.entity ?? ({} as AppSource)),
+        ...(this.form.getRawValue() as Partial<AppSource>),
+        project: this.dialogData.project
+      } as AppSource,
     });
   }
 
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
+  // override handleDeleteAction(): void {
+  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  // }
 
   // private duplicateValidator = (control: AbstractControl) => {
   //   return this.dialogData.entities?.find(

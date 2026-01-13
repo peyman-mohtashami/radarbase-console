@@ -48,7 +48,7 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
   override dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppClient;
+    entity: AppClient | undefined;
     clientFullList: Observable<AppClient[]>;
   };
 
@@ -94,23 +94,12 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
 
     super.ngOnInit();
 
-    this.form.controls.enableEmptySecret?.valueChanges.subscribe((value) => {
-      this.form.controls.clientSecret?.setValidators(
+    this.form.controls.enableEmptySecret.valueChanges.subscribe((value) => {
+      this.form.controls.clientSecret.setValidators(
         value ? null : Validator.requiredValidator
       );
-      this.form.controls.clientSecret?.updateValueAndValidity();
+      this.form.controls.clientSecret.updateValueAndValidity();
     });
-  }
-
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.value},
-    });
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
   }
 
   generateRandomSecret(length: number) {
@@ -121,7 +110,7 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
     for (let i = 0; i < length; i++) {
       text.push(possible.charAt(Math.floor(Math.random() * possible.length)));
     }
-    this.form?.patchValue({
+    this.form.patchValue({
       clientSecret: text.join(''),
     });
   }

@@ -43,7 +43,7 @@ export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOr
   override dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppOrganization;
+    entity: AppOrganization | undefined;
     organizationFullList: Observable<AppOrganization[]>;
   };
 
@@ -56,29 +56,18 @@ export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOr
     location: new FormControl<string>("", {validators: [Validator.normalTextValidator]}),
   });
 
-  organizations: AppOrganization[] = [];
+  organizationFullList: AppOrganization[] = [];
 
   override ngOnInit() {
     this.dialogData.organizationFullList.subscribe(organizations => {
-      this.organizations = organizations;
+      this.organizationFullList = organizations;
       this.form.controls.name.addValidators(this.duplicateValidator);
     });
     super.ngOnInit();
   }
 
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.value},
-    });
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
-
   private duplicateValidator = (control: AbstractControl) => {
-    return this.organizations.find(
+    return this.organizationFullList.find(
       (entity) =>
         control.value === entity.name && this.dialogData.entity?.name !== entity.name
     )

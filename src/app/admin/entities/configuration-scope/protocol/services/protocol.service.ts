@@ -129,7 +129,6 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
     return pruneUndefined(entity) as RadarProtocol;
   }
 
-  /*
   formToAppModel(entity: FormProtocol): AppProtocol {
     return {
       _name: entity.general.name,
@@ -192,7 +191,7 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       _reminderEnabled: entity.scheduling?.reminders?.enabled ?? false,
     }
   }
-*/
+
   override getWithQuery(queryParams?: Params, projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
     const {
       pageIndex = 0,

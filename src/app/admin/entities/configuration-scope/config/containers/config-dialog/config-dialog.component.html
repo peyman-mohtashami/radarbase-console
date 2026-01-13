@@ -1,25 +1,23 @@
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
+                  [entityName]="dialogData.entity?._name"
                   (closeEvent)='close()'/>
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
                                  [label]="'Config'"
-                                 [entityName]="dialogData.entity._name"/>
+                                 [entityName]="dialogData.entity?._name"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]="form" novalidate>
       <label for="name" class="text-sm">{{ 'ADMIN.config.name.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline">
-        <input matInput formControlName='name' required/>
+      <mat-form-field subscriptSizing="fixed" appearance="outline">
+        <input matInput formControlName='name' required>
       </mat-form-field>
 
       <label for="name" class="text-sm">{{ 'ADMIN.config.value.label' | translate }}</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance="outline">
+      <mat-form-field subscriptSizing="fixed" appearance="outline">
         <textarea cdkTextareaAutosize matInput rows="1" formControlName='value'></textarea>
       </mat-form-field>
     </form>

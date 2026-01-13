@@ -125,32 +125,47 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
   updateFormControls(type?: string) {
     if (!type) return;
 
-    ['text_validation_type_or_show_slider_number', 'text_validation_min', 'text_validation_max', 'field_annotation', 'select_choices_or_calculations', 'range'].forEach(controlName => {
-      if (this.form.contains(controlName)) {
-        this.form.removeControl(controlName as keyof QuestionForm);
-      }
-    });
+    // ['text_validation_type_or_show_slider_number', 'text_validation_min', 'text_validation_max', 'field_annotation', 'select_choices_or_calculations', 'range'].forEach(controlName => {
+    //   if (this.form.contains(controlName)) {
+    //     this.form.removeControl(controlName as keyof QuestionForm);
+    //   }
+    // });
 
     if (type === 'timed') {
       this.form.addControl('field_annotation' as keyof QuestionForm, new FormControl<QuestionFormAnnotation | null>(null));
+    } else {
+      this.form.removeControl('field_annotation' as keyof QuestionForm);
     }
     if (type === 'slider') {
       this.form.addControl('range' as keyof QuestionForm, new FormControl<QuestionFormRange | null>(null));
+    } else {
+      this.form.removeControl('range' as keyof QuestionForm);
     }
     if (['radio', 'checkbox', 'info', 'range', 'slider', 'range-info'].includes(type)) {
-      this.form.addControl('select_choices_or_calculations' as keyof QuestionForm, new FormControl([], {validators: [CustomValidator.requiredValidator]}));
+      this.form.addControl('select_choices_or_calculations' as keyof QuestionForm, new FormControl([],{nonNullable: true, validators: [CustomValidator.requiredValidator]}));
+    } else {
+      this.form.removeControl('select_choices_or_calculations' as keyof QuestionForm);
     }
     if (['text'].includes(type)) {
       this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
       this.form.addControl('text_validation_min' as keyof QuestionForm, new FormControl<string>(''));
       this.form.addControl('text_validation_max' as keyof QuestionForm, new FormControl<string>(''));
+    } else {
+      this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
+      this.form.removeControl('text_validation_min' as keyof QuestionForm);
+      this.form.removeControl('text_validation_max' as keyof QuestionForm);
     }
     if (['datetime'].includes(type)) {
       this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
+    } else {
+      this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
     }
   }
 
   override writeValue(question: AppQuestion) {
+    if (!question) {
+      this.editMode.set(true);
+    }
     this.updateFormControls(question?.field_type);
     super.writeValue(question);
   }

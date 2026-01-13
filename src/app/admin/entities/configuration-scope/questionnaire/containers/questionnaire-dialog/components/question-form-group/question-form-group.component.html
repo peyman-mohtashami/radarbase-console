@@ -11,11 +11,11 @@
       </button>
       <app-tag class="bg-secondary/20 text-primary cursor-pointer"
                (click)='editMode.set(!editMode())'>
-        {{ this.form.controls.field_name?.value }}
+        {{ form.controls.field_name?.value || '-' }}
       </app-tag>
     </div>
     <div class="flex gap-2 items-center">
-      @if (this.form.controls.branching_logic?.value) {
+      @if (form.controls.branching_logic?.value) {
         <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
                   [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
           rule
@@ -23,7 +23,7 @@
       }
 
       <app-tag class="bg-secondary/20 text-primary">
-        @if (this.form.controls.field_type?.value; as type) {
+        @if (form.controls.field_type?.value; as type) {
           {{ FIELD_TYPE_MAP[type] }}
         } @else {
           ?
@@ -40,22 +40,24 @@
 
   @if (!editMode()) {
     <div class="grid grid-cols-[max-content_1fr] gap-x-2 gap-y-0 text-black">
-      <span class="text-neutral-500">{{ `${_prefix}.questionLabelLabel` | translate }}</span>
-      <span
-        class="font-bold">{{ this.form.controls.field_label?.value?.[questionnaireStateService.selectedLanguage()] }}</span>
-      @if (this.form.controls.section_header?.value?.[questionnaireStateService.selectedLanguage()]; as section_header) {
+      @if (form.controls.field_label?.value?.[questionnaireStateService.selectedLanguage()]; as field_label) {
+        <span class="text-neutral-500">{{ `${_prefix}.questionLabelLabel` | translate }}</span>
+        <span class="font-bold">{{ field_label }}</span>
+      }
+
+      @if (form.controls.section_header?.value?.[questionnaireStateService.selectedLanguage()]; as section_header) {
         <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}</span>
         <span>{{ section_header }}</span>
       }
 
-      @if (this.form.controls.select_choices_or_calculations?.value; as choices) {
+      @if (form.controls.select_choices_or_calculations?.value; as choices) {
         <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>
         <div class="flex flex-wrap gap-x-2">
           @for (choice of choices; track choice.code) {
             @if (choice.code) {
               <span class="inline-flex gap-1">
               <mat-icon class="material-symbols-outlined text-base!">
-                @switch (this.form.controls.field_type?.value) {
+                @switch (form.controls.field_type?.value) {
                   @case ('radio') {
                     radio_button_unchecked
                   }

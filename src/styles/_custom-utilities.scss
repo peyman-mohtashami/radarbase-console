@@ -44,40 +44,40 @@
   /*#endregion*/
 
   /*#region TABLE*/
-  .rb-table {
-    @apply w-full text-sm relative px-4;
-  }
+  //.rb-table {
+  //  @apply w-full text-sm relative px-4;
+  //}
 
-  .rb-table-header {
-    @apply sticky top-[72px] z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark;
-  }
+  //.rb-table-header {
+  //  @apply sticky top-[72px] z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark;
+  //}
 
-  .rb-table-head {
-    @apply flex items-center gap-2;
-  }
+  //.rb-table-head {
+  //  @apply flex items-center gap-2;
+  //}
 
-  .rb-table-sort {
-    @apply group-hover:opacity-70 transition-opacity duration-500;
-  }
+  //.rb-table-sort {
+  //  @apply group-hover:opacity-70 transition-opacity duration-500;
+  //}
 
-  .rb-sort-icon {
-    @apply w-3.5! h-3.5! text-base!;
-  }
+  //.rb-sort-icon {
+  //  @apply w-3.5! h-3.5! text-base!;
+  //}
 
-  .rb-table-main-row {
-    @apply flex gap-4 items-center py-2 px-4 border-t border-t-neutral-300 dark:border-neutral-500;
-  }
+  //.rb-table-main-row {
+  //  @apply flex gap-4 items-center py-2 px-4 border-t border-t-neutral-300 dark:border-neutral-500;
+  //}
 
   /*.rb-table-extension-row {*/
   /*  @apply px-4 mt-0.5 overflow-hidden transition-[height] duration-500 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)];*/
   /*}*/
-  .rb-table-extension-row {
-    @apply px-4 mt-0.5 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)] grid;
-  }
+  //.rb-table-extension-row {
+  //  @apply px-4 mt-0.5 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)] grid;
+  //}
 
-  .rb-table-extension-row > * {
-    overflow: hidden;
-  }
+  //.rb-table-extension-row > * {
+  //  overflow: hidden;
+  //}
 
   .expand-in-anim {
     animation: expand-in 0.3s ease-out forwards;
@@ -86,10 +86,10 @@
   .expand-out-anim {
     animation: expand-in 0.3s ease-out reverse;
   }
-
-  .grid-container {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 px-4 text-base items-stretch;
-  }
+  //
+  //.grid-container {
+  //  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 px-4 text-base items-stretch;
+  //}
   /*#endregion*/
 
   /*#region SLIDE PANEL*/

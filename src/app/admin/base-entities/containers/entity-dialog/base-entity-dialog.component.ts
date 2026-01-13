@@ -22,8 +22,7 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
   protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
-  formFields?: Record<string, boolean> | undefined;
-
+  formFields: Record<string, boolean> | undefined;
 
   form: AbstractControl<unknown> = new FormGroup({});
 
@@ -73,12 +72,12 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
   }
 
   protected handleSaveAction(): void {
+    console.log('Class: BaseEntityDialogComponent, Function: handleSaveAction, Line 76 this.dialogData.mode, this.dialogData.entity, this.form.getRawValue() ' , this.dialogData.mode, this.dialogData.entity, this.form.getRawValue() );
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {
         ...(this.dialogData.entity ?? ({} as T)),
         ...(this.form.getRawValue() as Partial<T>),
-        enableEmptySecret: null,
       } as T,
     });
   }

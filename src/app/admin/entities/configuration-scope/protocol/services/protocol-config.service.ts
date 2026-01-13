@@ -6,7 +6,7 @@ import {BaseConfigService} from '../../../../base-entities/services/base-config.
 
 export const TableElements: TableElement[] = [
   { name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true },
-  { name: 'questionnaire', width: "w-64", tableClass: "hidden md:block", extensionClass: "block md:hidden", sortable: true },
+  { name: 'questionnaire', width: "w-80", tableClass: "hidden md:block", extensionClass: "block md:hidden", sortable: true },
   { name: 'repeatProtocol', width:"w-64", tableClass: "hidden xl:block", extensionClass: "block xl:hidden" },
   { name: 'completionWindow', tableClass: "hidden", extensionClass: "block" },
   {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},

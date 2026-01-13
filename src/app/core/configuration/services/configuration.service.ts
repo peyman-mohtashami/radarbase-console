@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {take} from "rxjs/operators";
 import {ROLES} from '../../../shared/enums/roles';
-import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
+import {ENTITY_REGISTRY, EntityRegistry} from '../../../shared/consts/entity-registry';
 import {getAppConfigBaseUrl} from '../../../admin/entities/configuration-scope/config/services/config.service';
 import {NavGroupItem} from '../models/nav-group-item.model';
 import {
@@ -361,11 +361,7 @@ export function sanitizeEntityExtraFields(raw: unknown, defaults: ExtraFieldConf
   return validated;
 }
 
-const enabled = (config: boolean | undefined | { url: string }, item: {
-  name: string;
-  icon: string;
-  route: string;
-}) => {
+const enabled = (config: boolean | undefined | { url: string }, item: EntityRegistry) => {
   if (config === undefined || config === true) return item;
   if (config === false) return undefined;
   if (config.url) return {...item, external: true, route: config.url};

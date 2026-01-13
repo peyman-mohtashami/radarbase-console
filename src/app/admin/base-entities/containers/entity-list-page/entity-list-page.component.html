@@ -1,11 +1,11 @@
-<div [class]="!gridView() ? 'rb-table': 'grid-container'"
+<div [class]="!gridView() ? 'w-full text-sm relative px-4': 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-4 px-4 text-base items-stretch'"
      appTableQueryReflector
      [page]="page()"
      [sort]="sort()"
      (activeQueryParams)="handleActiveQueryChange($event)">
 
   @if (!gridView() && entities().length) {
-    <div class="rb-table-header mat-app-background">
+    <div class="sticky top-[72px] z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background dark:bg-background-dark mat-app-background">
       @for (tableField of tableFields(); track tableField.name) {
         @if (tableField.name === 'checkbox') {
           <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
@@ -20,17 +20,17 @@
           <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
                [class.flex-1]="!tableField.width"
                [class.shrink-0]="!!tableField.width">
-            <button class="rb-table-head group" [class]="tableField.sortable ? 'cursor-pointer': ''"
+            <button class="flex items-center gap-2 group" [class]="tableField.sortable ? 'cursor-pointer': ''"
                     (click)="switchSort(tableField)">
               <span>{{ `ADMIN.${entityMetadata().name}.${tableField.name}.tableLabel` | translate }}</span>
               @if (tableField.sortable) {
-                <div class="rb-table-sort">
+                <div class="group-hover:opacity-70 transition-opacity duration-500">
                   @if (sort().sortField !== tableField.name) {
                     <mat-icon class="opacity-40 w-4! h-4! text-base! material-symbols-outlined">
                       swap_vert
                     </mat-icon>
                   } @else {
-                    <mat-icon class="rb-sort-icon material-symbols-outlined">
+                    <mat-icon class="w-3.5! h-3.5! text-base! material-symbols-outlined">
                       {{ sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
                     </mat-icon>
                   }

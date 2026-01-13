@@ -43,10 +43,9 @@ export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> 
   override dialogRef = inject(MatDialogRef<ConfigDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppConfig;
+    entity?: AppConfig;
   };
 
-  tableFields = this.configService.getTableFields();
   override formFields = this.configService.getFormFields();
 
   override form = new FormGroup({

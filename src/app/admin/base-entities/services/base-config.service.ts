@@ -1,5 +1,5 @@
 import {computed, inject, Injectable} from '@angular/core';
-import {ENTITY_REGISTRY} from '../../../shared/consts/entity-registry';
+import {EntityRegistry} from '../../../shared/consts/entity-registry';
 import {FilterItem, TableElement} from '../models/table.model';
 import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 
@@ -7,7 +7,7 @@ import {ConfigurationService} from '../../../core/configuration/services/configu
 export class BaseConfigService {
   protected readonly tableElements: TableElement[] = [];
   protected readonly filters: FilterItem[] = [];
-  protected readonly entityMetadata: {name: string; icon: string; route: string} = ENTITY_REGISTRY.organization;
+  protected readonly entityMetadata!: EntityRegistry;
 
   private readonly configurationService = inject(ConfigurationService);
 

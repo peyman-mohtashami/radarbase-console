@@ -3,7 +3,7 @@
     (updated() ? 'bg-primary/5! ' : '') +
     (expanded() ? 'mb-2' : '')
   ">
-    <div class="rb-table-main-row">
+    <div class="flex gap-4 items-center py-2 px-4 border-t border-t-neutral-300 dark:border-neutral-500">
       @for (property of tableFields(); track property.name) {
         <div [class]="property.tableClass + ' ' + property.width + ' ' + property.classes"
              [class.flex-1]="!property.width"
@@ -32,9 +32,9 @@
     </div>
 
     @if (expanded()) {
-      <div class="rb-table-extension-row" animate.enter="expand-in-anim" animate.leave="expand-out-anim">
+      <div class="px-4 mt-0.5 border-t border-t-neutral-300 dark:border-neutral-500 w-full max-w-[calc(100vw-56px)] grid [&>*]:overflow-hidden"
+           animate.enter="expand-in-anim" animate.leave="expand-out-anim">
         <ng-content select="[extension-row]"/>
-
       </div>
     }
   </mat-card>

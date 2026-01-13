@@ -105,7 +105,7 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
   override form = new FormGroup({
     general: new FormControl<FormProtocol['general']>(null!, {nonNullable: true}),
     questionsGroup: new FormControl<FormProtocol['questionsGroup']>(null!, {nonNullable: true}),
-    scheduling: new FormControl<FormProtocol['scheduling'] | null>(null),
+    scheduling: new FormControl<FormProtocol['scheduling'] | undefined>(undefined, {nonNullable: true}),
     content: new FormControl<FormProtocol['content']>(null!, {nonNullable: true}),
   });
 
@@ -121,27 +121,30 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
     this.adjustSchedulingDisabled(onDemand);
   }
 
-  // private handleSaveAction(): void {
-  //   const value = this.form.getRawValue();
-  //   const updatedEntity: FormProtocol = {
-  //     //...this.dialogData.entity,
-  //     ...value
-  //   };
-  //   // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 172 updatedEntity' , updatedEntity);
-  //   // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 173 this.entityService' , this.entityService.toRadarModel(updatedEntity));
-  //   const appProtocol = this.entityService.formToAppModel(updatedEntity);
-  //   console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 177 appProtocol' , appProtocol);
-  //   const radarProtocol = this.entityService.appToRadarModel(appProtocol);
-  //   console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 179 radarProtocol' , radarProtocol);
-  //   this.dialogActionEvent.emit({
-  //     action: this.dialogData.mode,
-  //     entity: appProtocol,
-  //   });
-  // }
-  //
-  // private handleDeleteAction(): void {
-  //   const appProtocol = this.entityService.formToAppModel(this.dialogData.entity);
-  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: appProtocol});
+  override handleSaveAction(): void {
+    const value = this.form.getRawValue();
+    const updatedEntity: FormProtocol = {
+      //...this.dialogData.entity,
+      _name: value.general.name,
+      ...value
+    };
+    // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 172 updatedEntity' , updatedEntity);
+    // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 173 this.entityService' , this.entityService.toRadarModel(updatedEntity));
+    const appProtocol = this.entityService.formToAppModel(updatedEntity);
+    console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 177 appProtocol' , appProtocol);
+    const radarProtocol = this.entityService.appToRadarModel(appProtocol);
+    console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 179 radarProtocol' , radarProtocol);
+    this.dialogActionEvent.emit({
+      action: this.dialogData.mode,
+      entity: appProtocol,
+    });
+  }
+
+  // override handleDeleteAction(): void {
+  //   if(this.dialogData.entity) {
+  //     const appProtocol = this.entityService.formToAppModel(this.dialogData.entity);
+  //     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: appProtocol});
+  //   }
   // }
 
   protected toggleCodeView() {

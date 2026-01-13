@@ -2,14 +2,14 @@
 
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"
+                  [entityName]="dialogData.entity?._name"
                   (closeEvent)='close()'/>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
     <app-dialog-body-description [dialogMode]="dialogData.mode"
                                  [label]="`${_prefix}.name.label` | translate"
-                                 [entityName]="dialogData.entity.name"/>
+                                 [entityName]="dialogData.entity?.name"/>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {

@@ -53,7 +53,7 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppUser;
+    entity?: AppUser;
     userFullList: Observable<AppUser[]>;
     projectFullList: Observable<AppProject[]>;
     organizationFullList: Observable<AppOrganization[]>;
@@ -76,14 +76,4 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
       _projects: new FormControl<RadarOption[]>([]),
     }),
   });
-
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form.getRawValue()}});
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
 }

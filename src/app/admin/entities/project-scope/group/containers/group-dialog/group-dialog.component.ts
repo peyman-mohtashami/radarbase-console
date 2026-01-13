@@ -44,7 +44,7 @@ export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> {
   override dialogRef = inject(MatDialogRef<GroupDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
     mode: DialogMode;
-    entity: AppGroup;
+    entity?: AppGroup;
     groupFullList: Observable<AppGroup[]>;
   };
 
@@ -65,16 +65,16 @@ export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> {
     super.ngOnInit();
   }
 
-  override handleSaveAction(): void {
-    this.dialogActionEvent.emit({
-      action: this.dialogData.mode,
-      entity: {...this.dialogData.entity, ...this.form?.value},
-    });
-  }
-
-  override handleDeleteAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  }
+  // override handleSaveAction(): void {
+  //   this.dialogActionEvent.emit({
+  //     action: this.dialogData.mode,
+  //     entity: {...this.dialogData.entity, ...this.form?.value},
+  //   });
+  // }
+  //
+  // override handleDeleteAction(): void {
+  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  // }
 
   private duplicateValidator = (control: AbstractControl) => {
     return this.groupFullList.find(

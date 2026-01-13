@@ -1377,10 +1377,15 @@
         "label": "Schedule's Description",
         "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
       },
+      "oneTimeProtocol": {
+        "tableLabel": "Schedule's Description",
+        "label": "Schedule's Description",
+        "tableContent": "Once at specific times"
+      },
       "completionWindow": {
         "tableLabel": "Completion Window",
         "label": "Completion Window",
-        "tableContent": "{{ amount }} {{ unit }}(s) after the start of the protocol"
+        "tableContent": "Expires after {{ amount }} {{ unit }}(s)"
       },
       "questionnaire": {
         "tableLabel": "Questionnaire",

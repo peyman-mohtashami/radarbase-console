@@ -7,6 +7,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {EntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {ProtocolDetailsComponent} from '../protocol-details/protocol-details.component';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-protocol-table-row',
@@ -16,6 +18,8 @@ import {ProtocolDetailsComponent} from '../protocol-details/protocol-details.com
     TranslatePipe,
     EntityTableRowComponent,
     ProtocolDetailsComponent,
+    MatIcon,
+    MatTooltip,
   ]
 })
 export class ProtocolTableRowComponent extends BaseEntityTableRowComponent<AppProtocol> {
