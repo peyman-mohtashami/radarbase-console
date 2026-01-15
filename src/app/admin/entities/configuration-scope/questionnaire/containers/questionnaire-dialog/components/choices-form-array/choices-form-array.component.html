@@ -14,26 +14,12 @@
 
     @if (form.controls.length) {
       @for (choice of form.controls; let i = $index; track choice) {
-        <div class="w-full flex items-center gap-1" cdkDrag [formGroup]="choice">
-          <button mat-icon-button class="w-[28px]! flex-grow-0 flex-shrink-0 cursor-move tiny">
-            <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>
-          </button>
-          <mat-form-field class='small-input w-3/12! flex-grow-0' appearance='outline' subscriptSizing="dynamic">
-            <input matInput formControlName="code">
-          </mat-form-field>
-
-          <app-text-form-group class='small-input flex-grow-1'
-                               formControlName="label"
+        <app-choice-form-group class="block"
+                               [formControl]="choice"
+                               [questionIndex]="i"
                                [languages]="languages()"
-                               [label]="undefined"/>
-
-          <button mat-icon-button class="tiny w-[28px]! flex-grow-0 flex-shrink-0 material-symbols-outlined"
-                  color="warn"
-                  [disabled]="form.controls.length === 1"
-                  (click)="removeItem(i)">
-            <mat-icon class="material-symbols-outlined">remove_circle</mat-icon>
-          </button>
-        </div>
+                               [choiceFullList]="form.value"
+                               (remove)="removeItem(i)"/>
       }
     }
     <div class="flex items-center gap-1 w-full">

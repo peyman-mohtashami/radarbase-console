@@ -11,7 +11,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput} from "@angular/material/input";
+import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestion, AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from "../../models/questionnaire";
@@ -57,6 +57,7 @@ import {
     MatTooltip,
     ErrorMessageBoxComponent,
     DialogTitleComponent,
+    MatError,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
@@ -109,6 +110,22 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
       this.form.patchValue(updatedEntity);
     }
   }
+
+  // override handleSaveAction(): void {
+  //   console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 114 ' , this.dialogData.mode, this.dialogData.entity, this.form.getRawValue());
+  //   this.dialogActionEvent.emit({
+  //     action: this.dialogData.mode,
+  //     entity: {
+  //       ...(this.dialogData.entity ?? ({} as AppQuestionnaire)),
+  //       ...(this.form.getRawValue() as Partial<AppQuestionnaire>),
+  //     } as AppQuestionnaire,
+  //   });
+  // }
+  //
+  // override handleDeleteAction(): void {
+  //   console.log('Class: QuestionnaireDialogComponent, Function: handleDeleteAction, Line 125 ' , this.dialogData.mode, this.dialogData.entity);
+  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  // }
 
   private duplicateValidator = (control: AbstractControl) => {
     return this.questionnaireFullList.find(

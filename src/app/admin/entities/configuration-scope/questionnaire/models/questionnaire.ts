@@ -8,12 +8,10 @@ export interface RadarQuestionnaire {
 
 export interface AppQuestionnaire {
   name: string;
-  // languages: string[];
   questions: AppQuestion[];
   _name: string;
   _search: string;
   languages: RadarOption[];
-  // _defaultLanguage: string; //TODO
 }
 
 export interface RadarQuestion {

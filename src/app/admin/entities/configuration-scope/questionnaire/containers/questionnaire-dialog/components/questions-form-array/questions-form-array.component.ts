@@ -4,7 +4,7 @@ import {
   FormArray,
   FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ReactiveFormsModule, ValidationErrors, Validator
+  ReactiveFormsModule, ValidationErrors, Validator,
 } from '@angular/forms';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -48,20 +48,77 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
   onTouch: () => void = () => undefined;
   onChange: (value: (AppQuestion | undefined)[]) => void = () => undefined;
 
+  // private readonly questionIsValidValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  //   // Return errors if the control itself has errors (from the QuestionFormGroupComponent)
+  //   return control.errors;
+  // };
+
+  // validate(): ValidationErrors | null {
+  //   const errors: ValidationErrors = {};
+  //
+  //   // 1) Require at least one question
+  //   if (this.form.length === 0) {
+  //     errors['required'] = 'At least one Question is required';
+  //     return errors;
+  //   }
+  //
+  //   // 2) Collect duplicate field_name values
+  //   const nameMap = new Map<string, number[]>();
+  //
+  //   this.form.controls.forEach((control, index) => {
+  //     const rawName = control.value?.field_name ?? '';
+  //     const name = rawName.trim();
+  //     if (!name) {
+  //       return; // ignore empty names
+  //     }
+  //
+  //     const indexes = nameMap.get(name) ?? [];
+  //     indexes.push(index);
+  //     nameMap.set(name, indexes);
+  //   });
+  //
+  //   const duplicateIndexes: number[] = [];
+  //   const duplicateNames: string[] = [];
+  //
+  //   nameMap.forEach((indexes, name) => {
+  //     if (indexes.length > 1) {
+  //       duplicateIndexes.push(...indexes);
+  //       duplicateNames.push(name);
+  //     }
+  //   });
+  //
+  //   if (duplicateIndexes.length) {
+  //     errors['duplicateFieldNames'] = {
+  //       message: 'field_name values must be unique',
+  //       names: duplicateNames,
+  //       indexes: duplicateIndexes,
+  //     };
+  //   }
+  //
+  //   // 3) Collect any child control errors (if you need them at array level)
+  //   this.form.controls.forEach((control, index) => {
+  //     if (control.errors) {
+  //       errors[`question${index}`] = control.errors;
+  //     }
+  //   });
+  //
+  //   return Object.keys(errors).length > 0 ? errors : null;
+  // }
+
   validate(): ValidationErrors | null {
     const errors: ValidationErrors = {};
 
-    // 1) Require at least one question
+    // 1) Require at least one question row
     if (this.form.length === 0) {
       errors['required'] = 'At least one Question is required';
       return errors;
     }
 
-    // 2) Collect duplicate field_name values
+    // 2) Collect duplicate field_name values (among non-empty names)
     const nameMap = new Map<string, number[]>();
 
     this.form.controls.forEach((control, index) => {
-      const rawName = control.value?.field_name ?? '';
+      const rawName = (control.value?.field_name ?? '');
       const name = rawName.trim();
       if (!name) {
         return; // ignore empty names
@@ -90,7 +147,7 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
       };
     }
 
-    // 3) Collect any child control errors (if you need them at array level)
+    // 3) Collect any child control errors
     this.form.controls.forEach((control, index) => {
       if (control.errors) {
         errors[`question${index}`] = control.errors;
@@ -100,11 +157,22 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
     return Object.keys(errors).length > 0 ? errors : null;
   }
 
+  // writeValue(questions: AppQuestion[]) {
+  //   if (questions) {
+  //     this.form.clear();
+  //     questions.forEach(question => this.addQuestion(question));
+  //   }
+  // }
   writeValue(questions: AppQuestion[]) {
-    if (questions) {
-      this.form.clear();
-      questions.forEach(question => this.addQuestion(question));
+    this.form.clear();
+
+    // Ensure there's always at least one row to edit
+    if (!questions || questions.length === 0) {
+      this.addQuestion(undefined);
+      return;
     }
+
+    questions.forEach(question => this.addQuestion(question));
   }
 
   registerOnChange(fn: (value: (AppQuestion | undefined)[]) => void) {
@@ -118,8 +186,14 @@ export class QuestionsFormArrayComponent implements ControlValueAccessor, Valida
     this.onTouch = fn;
   }
 
+  // addQuestion(question?: AppQuestion) {
+  //   this.form.push(new FormControl(question, {nonNullable: true}));
+  // }
   addQuestion(question?: AppQuestion) {
-    this.form.push(new FormControl(question, {nonNullable: true}));
+    this.form.push(new FormControl(question, {
+      nonNullable: true,
+      // validators: [this.questionIsValidValidator],
+    }));
   }
 
   removeQuestion(index: number) {

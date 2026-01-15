@@ -183,6 +183,7 @@
       "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
       "longTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 1 max 256)",
       "duplicateValidator": "'{{value}}' already exists. Try another one.",
+      "duplicateValidatorShort": "'{{value}}' already exists.",
       "dateOutOfMinRange": "Date is out of range. It should be after {{value}}.",
       "dateOutOfMaxRange": "Date is out of range. It should be before {{value}}.",
       "numberOutOfMinRange": "Number is out of range. It should be greater than {{value}}.",
@@ -1568,7 +1569,8 @@
         "questionFieldAnnotationTimerUnit": "Timer Unit",
         "questionFieldAnnotationTimerStart": "Timer Start",
         "questionFieldAnnotationTimerEnd": "Timer End",
-        "questionHasConditionalLogic": "This question has conditional logic"
+        "questionHasConditionalLogic": "This question has conditional logic",
+        "code": "Code"
       },
       "filters": {
         "search": "Search"

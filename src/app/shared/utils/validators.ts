@@ -37,6 +37,7 @@ export const ValidatorError = {
   // longTextValidator: 'SHARED.validatorError.requiredValidator',
   longTextValidator: 'SHARED.validatorError.longTextValidator',
   duplicateValidator: 'SHARED.validatorError.duplicateValidator',
+  duplicateValidatorShort: 'SHARED.validatorError.duplicateValidatorShort',
   dateOutOfMinRange: 'SHARED.validatorError.dateOutOfMinRange',
   dateOutOfMaxRange: 'SHARED.validatorError.dateOutOfMaxRange',
   minValidator: 'SHARED.validatorError.numberOutOfMinRange',

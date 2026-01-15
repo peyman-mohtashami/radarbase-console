@@ -95,30 +95,19 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
-    return of(entity)
-      .pipe(
-        tap(_entity => {
-          this.total.set(this.total() + 1);
-          this.updatedList.push(_entity);
-        })
-      );
+    this.total.set(this.total() + 1);
+    this.updatedList.push(entity);
+    return this.publish(this.updatedList).pipe(map(() => entity));
   }
 
   override update(update: AppQuestionnaire): Observable<AppQuestionnaire> {
-    return of(update)
-      .pipe(
-        tap(() => {
-          this.updatedList = this.updatedList.map((e) => (e._name === update._name ? update : e));
-        })
-      );
+    this.updatedList = this.updatedList.map((e) => (e._name === update._name ? update : e));
+    return this.publish(this.updatedList).pipe(map(() => update));
   }
 
   override delete(entity: AppQuestionnaire): Observable<void> {
-    return of(undefined).pipe(
-      tap(() => {
-        this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
-      })
-    );
+    this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
+    return this.publish(this.updatedList).pipe(map(() => undefined));
   }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
@@ -139,7 +128,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     radarQuestionnaires.forEach(q => {
       const name = q.name;
       Object.keys(q.questions).forEach(lang => {
-        configs.push({_name: '', id: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
+        configs.push({_name: '', id: '', name: `${name}_${lang}`, value: JSON.stringify(JSON.stringify(q.questions[lang]))});
       })
     });
 

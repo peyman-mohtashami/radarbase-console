@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import {DialogMode} from "../../../enums/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -30,7 +30,7 @@ export class DialogActionsComponent {
   label = input<{singular: string; plural: string;}>();
   form = input<UntypedFormGroup>();
 
-  @Output() actionTriggered = new EventEmitter<DialogAction>(); //TODO
+  actionTriggered = output<DialogAction>();
 
   isLoading = false;
 

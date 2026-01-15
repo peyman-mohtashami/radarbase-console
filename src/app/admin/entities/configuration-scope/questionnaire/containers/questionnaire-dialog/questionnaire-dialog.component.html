@@ -31,6 +31,14 @@
           <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
           <mat-form-field class='small-input w-1/2' appearance='outline'>
             <input matInput formControlName='name' required>
+
+            <mat-error>
+              @if (form.controls.name.errors; as errors) {
+                @if (errors['required']) {
+                  {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
+                }
+              }
+            </mat-error>
           </mat-form-field>
         </div>
 

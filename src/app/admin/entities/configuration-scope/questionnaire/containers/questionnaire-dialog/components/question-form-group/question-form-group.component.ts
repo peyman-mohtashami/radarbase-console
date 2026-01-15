@@ -94,31 +94,21 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
   form = new FormGroup<Partial<QuestionForm>>({
     field_name: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
     field_type: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
-    field_label: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    field_label: new FormControl<Record<string, string>>({}, {validators: [CustomValidator.requiredValidator], nonNullable: true}),
     section_header: new FormControl<Record<string, string>>({}, {nonNullable: true}),
     branching_logic: new FormControl<string>('', {nonNullable: true}),
   });
 
-  // Optional: Implement registerOnValidatorChange if you need to update validation when external conditions change
-  // registerOnValidatorChange?(fn: () => void): void {
-  //   this.onValidatorChange = fn;
-  // }
-
-  private onValidatorChange: (() => void) | undefined;
-
   constructor() {
     super();
-    // Notify parent about validation changes, but don't trigger updateValueAndValidity
-    if (this.onValidatorChange) {
-      this.onValidatorChange();
-    }
+
+    this.form.statusChanges.subscribe(() => {
+      this.validatorChange();
+    });
 
     this.form.controls.field_type?.valueChanges.subscribe(type => {
       this.updateFormControls(type);
-      // Notify parent about validation changes, but don't trigger updateValueAndValidity
-      if (this.onValidatorChange) {
-        this.onValidatorChange();
-      }
+      this.validatorChange();
     });
   }
 
