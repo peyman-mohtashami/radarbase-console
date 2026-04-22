@@ -47,6 +47,7 @@ export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> 
   override configService = inject(ClientConfigService);
   override dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity: AppClient | undefined;
     clientFullList: Observable<AppClient[]>;

@@ -16,7 +16,7 @@ import {Subject} from 'rxjs';
 export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDestroy {
   protected configService!: BaseConfigService;
   protected dialogRef?: MatDialogRef<BaseEntityDialogComponent<T>>;
-  dialogData!: {mode: DialogMode | string; entity?: T};
+  dialogData!: {id: string; mode: DialogMode | string; entity?: T};
 
   protected readonly DialogMode = DialogMode;
   protected readonly ValidatorHint = ValidatorHint;
@@ -44,9 +44,15 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
   }
 
   ngAfterViewInit() {
-    const dialogContainer = document.querySelector('.tailwind-slide-panel');
+    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 47 ' , );
+    const containerId = this.dialogData.id;
+    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 49 ' , containerId);
+    const innerContainer = document.getElementById(containerId);
+    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 51 ' , innerContainer);
+    const panel = innerContainer?.closest('.tailwind-slide-panel');
+    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 53 panel' , panel);
     setTimeout(() => {
-      dialogContainer?.classList.add('dialog-enter-active');
+      panel?.classList.add('dialog-enter-active');
     });
   }
 
@@ -88,9 +94,11 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
 
   close() {
     this.loading.set(false);
-    const container = document.querySelector('.tailwind-slide-panel');
-    container?.classList.remove('dialog-enter-active');
-    container?.classList.add('dialog-exit-active');
+    const containerId = this.dialogData.id;
+    const innerContainer = document.getElementById(containerId);
+    const panel = innerContainer?.closest('.tailwind-slide-panel');
+    panel?.classList.remove('dialog-enter-active');
+    panel?.classList.add('dialog-exit-active');
 
     setTimeout(() => {
       this.dialogActionEvent.emit({action: DialogMode.CLOSE});

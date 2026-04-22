@@ -17,7 +17,7 @@ export class PermissionDialogService extends BaseDialogService<AppUser, RadarUse
     const project = this.selectedEntitiesService.getSelected().project();
     const organization = this.selectedEntitiesService.getSelected().organization();
 
-    const _data = {mode, entity, project, organization, userFullList};
+    const _data = {id: 'permission-dialog', mode, entity, project, organization, userFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -31,6 +31,7 @@ export class PermissionDialogService extends BaseDialogService<AppUser, RadarUse
         });
       default:
         return this.dialog.open(PermissionDialogComponent, {
+          id: 'permission-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',

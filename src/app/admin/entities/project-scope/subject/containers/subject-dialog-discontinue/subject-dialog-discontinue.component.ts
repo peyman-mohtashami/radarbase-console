@@ -51,6 +51,7 @@ export class SubjectDialogDiscontinueComponent extends BaseEntityDialogComponent
   protected override configService = inject(SubjectConfigService);
   protected override dialogRef = inject(MatDialogRef<SubjectDialogDiscontinueComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: SubjectDialogMode;
     entity: AppSubject;
     project: AppProject;

@@ -20,7 +20,7 @@ export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnai
   ): MatDialogRef<QuestionnaireDialogComponent> {
     const questionnaireFullList = this.entityService.getWithQuery();
 
-    const _data = {mode, entity, questionnaireFullList};
+    const _data = {id: 'questionnaire-dialog', mode, entity, questionnaireFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -34,6 +34,7 @@ export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnai
         });
       default:
         return this.dialog.open(QuestionnaireDialogComponent, {
+          id: 'questionnaire-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '80%',

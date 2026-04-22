@@ -14,7 +14,7 @@ export class ClientDialogService extends BaseDialogService<AppClient, RadarClien
 
   override createDialogRef(mode: DialogMode, entity?: AppClient): MatDialogRef<ClientDialogComponent> {
     const clientFullList = this.entityService.getWithQuery();
-    const _data = {mode, entity, clientFullList};
+    const _data = {id: 'client-dialog', mode, entity, clientFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -28,6 +28,7 @@ export class ClientDialogService extends BaseDialogService<AppClient, RadarClien
         });
       default:
         return this.dialog.open(ClientDialogComponent, {
+          id: 'client-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',

@@ -70,8 +70,8 @@ const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];
 const radarQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
 export const sub29QuestionnairesRadarConfigs = [...audio];
 
-const globalQuestionnaires = globalQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: JSON.stringify(c.value), client: 'questionnaire-service', project: undefined, subject: undefined}));
-const radarQuestionnaires = radarQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: JSON.stringify(c.value), client: 'questionnaire-service', project: 'radar', subject: undefined}));
-const sub29Questionnaires = sub29QuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: JSON.stringify(c.value), client: 'questionnaire-service', project: 'radar', subject: 'sub-29'}));
+const globalQuestionnaires = globalQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: undefined, subject: undefined}));
+const radarQuestionnaires = radarQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: 'radar', subject: undefined}));
+const sub29Questionnaires = sub29QuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: 'radar', subject: 'sub-29'}));
 
 export const QUESTIONNAIRES: MockConfig[] = [...globalQuestionnaires, ...radarQuestionnaires, ...sub29Questionnaires];

@@ -18,7 +18,7 @@
       }
 <!--      <span> {{ label()?.singular! | translate }} {{ "ADMIN." + entityMetadata()?.name + ".title.singular" | translate }}</span>-->
       <span> {{ `ADMIN.${entityMetadata()?.name}.title.singular` | translate }}</span>
-      <span> {{ entityName() ? `"${entityName()}"` : `` }}</span>
+      <code class="italic text-secondary"> {{ entityName() ? `${entityName()}` : `` }}</code>
     </span>
     <div>
       <ng-content/>

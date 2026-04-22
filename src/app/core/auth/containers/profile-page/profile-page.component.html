@@ -1,13 +1,13 @@
 @if (authService.user(); as user) {
   <div class="flex justify-center items-center h-[calc(100vh-64px)]">
-    <mat-card appearance="outlined" class="w-[400px]">
+    <mat-card appearance="outlined" class="w-2/3 max-w-[800px]">
       <mat-card-header class='block! text-center'>
         <mat-card-title class="text-lg">
           {{ 'CORE.AUTH.PROFILE_PAGE.title' | translate }}
         </mat-card-title>
-        <mat-card-subtitle>
-          {{ 'CORE.AUTH.PROFILE_PAGE.subtitle' | translate }}: {{ user.login }}
-        </mat-card-subtitle>
+<!--        <mat-card-subtitle>-->
+<!--          {{ 'CORE.AUTH.PROFILE_PAGE.subtitle' | translate }}: {{ user.login }}-->
+<!--        </mat-card-subtitle>-->
       </mat-card-header>
 
       <mat-card-content>
@@ -20,7 +20,7 @@
           <label for="login" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.login' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
-                          appearance='outline'>
+                          appearance='fill'>
             <input matInput formControlName='login'>
           </mat-form-field>
 
@@ -29,14 +29,14 @@
                           subscriptSizing="fixed"
                           appearance='outline'>
             <input matInput formControlName='firstName'>
-            <mat-hint align="start">
-              {{ ValidatorHint.normalTextValidator }}
-            </mat-hint>
+<!--            <mat-hint align="start">-->
+<!--              {{ ValidatorHint.normalTextValidator | translate }}-->
+<!--            </mat-hint>-->
             @if (form.controls.firstName.errors; as errors) {
               <mat-error>
                 @if (errors['required']) {
                 } @else if (errors['pattern']) {
-                  {{ ValidatorError.normalTextValidator }}
+                  {{ ValidatorError.normalTextValidator | translate }}
                 }
               </mat-error>
             }
@@ -47,14 +47,14 @@
                           subscriptSizing="fixed"
                           appearance='outline'>
             <input matInput formControlName='lastName'/>
-            <mat-hint align="start">
-              {{ ValidatorHint.normalTextValidator }}
-            </mat-hint>
+<!--            <mat-hint align="start">-->
+<!--              {{ ValidatorHint.normalTextValidator }}-->
+<!--            </mat-hint>-->
             @if (form.controls.lastName.errors; as errors) {
               <mat-error>
                 @if (errors['required']) {
                 } @else if (errors['pattern']) {
-                  {{ ValidatorError.normalTextValidator }}
+                  {{ ValidatorError.normalTextValidator | translate }}
                 }
               </mat-error>
             }
@@ -63,14 +63,14 @@
           <label for="email" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.email' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
-                          appearance='outline'>
+                          appearance='fill'>
             <input matInput formControlName='email' required>
             @if (form.controls.email.errors; as errors) {
               <mat-error>
                 @if (errors['required']) {
                   {{ ValidatorError.requiredValidator | translate: {value: 'CORE.AUTH.PROFILE_PAGE.email' | translate} }}
                 } @else if (errors['email']) {
-                  {{ ValidatorError.emailValidator }}
+                  {{ ValidatorError.emailValidator | translate }}
                 }
               </mat-error>
             }

@@ -28,6 +28,8 @@ import {MatIcon} from '@angular/material/icon';
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
+import {ConditionalLogicDialogComponent} from '../conditional-logic-dialog/conditional-logic-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-question-form-group',
@@ -158,5 +160,60 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
     }
     this.updateFormControls(question?.field_type);
     super.writeValue(question);
+  }
+
+  protected dialog = inject(MatDialog);
+
+  protected editBranchingLogic() {
+   this.openBranchingLogicDialog();
+  }
+
+  openBranchingLogicDialog() {
+    this.dialog.open(ConditionalLogicDialogComponent, {
+      id: 'conditional-logic-dialog',
+      data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, mode: DialogMode.EDIT},
+      panelClass: 'tailwind-slide-panel',
+      width: '70%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    // const dialogActionSubscription =
+    //   dialogRef.componentInstance.dialogActionEvent.subscribe(
+    //     (value) => {
+    //       const _entity = value.entity;
+    //       const _action = value.action;
+    //       if (!_entity) {
+    //         this.configService.setLatestFormEntry(null);
+    //         dialogRef.close();
+    //         this.clearFragmentUrl();
+    //         return;
+    //       }
+    //       this.configService.setLatestFormEntry(_entity);
+    //       this.processDialogAction(_action, _entity).subscribe({
+    //         next: (res) => {
+    //           this.configService.setLatestFormEntry(null);
+    //           const entity = res ?? _entity;
+    //           this.dialogUpdateEvent.set({mode, entity})
+    //           dialogRef.close();
+    //           setTimeout(() => {
+    //             this.dialogUpdateEvent.set(undefined);
+    //           })
+    //         },
+    //         error: (error: HttpErrorResponse) => {
+    //           this.configService.setLatestFormEntry(null);
+    //           dialogRef.componentInstance.errorHappened(error)
+    //         },
+    //       });
+    //     }
+    //   );
+
+    // dialogRef.afterClosed().subscribe(() => {
+    //   dialogActionSubscription.unsubscribe();
+    // });
   }
 }

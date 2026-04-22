@@ -81,13 +81,12 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     }
   }
 
-  // override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject): MatDialogRef<any> {
   override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject):
     MatDialogRef<SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
     const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
-    const _data = {mode, entity, project, groupFullList};
+    const _data = {id: 'subject-dialog', mode, entity, project, groupFullList};
 
     if (mode === SubjectDialogMode.DISCONTINUE) {
       return this.createDiscontinueDialogRef(_data);
@@ -97,6 +96,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
       return this.createPairSourceDialogRef(_data);
     } else {
       return this.dialog.open(SubjectDialogComponent, {
+        id: 'subject-dialog',
         data: _data,
         panelClass: 'tailwind-slide-panel',
         width: '50%',
@@ -110,12 +110,15 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     }
   }
 
-  createDiscontinueDialogRef(_data: {
+  createDiscontinueDialogRef(data: {
     mode: SubjectDialogMode,
     entity?: AppSubject,
     project?: AppProject
   }): MatDialogRef<SubjectDialogDiscontinueComponent> {
+    const _data = {id: 'subject-discontinue-dialog', mode: data.mode, entity: data.entity, project: data.project};
+
     return this.dialog.open(SubjectDialogDiscontinueComponent, {
+      id: 'subject-discontinue-dialog',
       data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
@@ -128,12 +131,15 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     });
   }
 
-  createPairAppDialogRef(_data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
+  createPairAppDialogRef(data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
     const clientFullList = this.clientService.getWithQuery().pipe(
       map(clients => clients.filter(c => c.additionalInformation?.['dynamic_registration'] && c.additionalInformation?.['dynamic_registration'] === 'true'))
     );
+    const _data = {id: 'subject-pair-app-dialog', mode: data.mode, entity: data.entity, project: data.project, clientFullList};
+
     return this.dialog.open(SubjectDialogPairAppComponent, {
-      data: {..._data, clientFullList},
+      id: 'subject-pair-app-dialog',
+      data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',
@@ -145,12 +151,14 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     });
   }
 
-  createPairSourceDialogRef(_data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
-    const sourcesFullList = this.sourceService.getWithQuery(undefined, _data.project?.projectName).pipe(
+  createPairSourceDialogRef(data: { mode: SubjectDialogMode, entity?: AppSubject, project?: AppProject }) {
+    const sourcesFullList = this.sourceService.getWithQuery(undefined, data.project?.projectName).pipe(
       map(sources => sources.filter(s => !s.assigned))
     );
+    const _data = {id: 'subject-pair-source-dialog', mode: data.mode, entity: data.entity, project: data.project, sourcesFullList};
 
     return this.dialog.open(SubjectDialogPairSourceComponent, {
+      id: 'subject-pair-source-dialog',
       data: {..._data, sourcesFullList},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
@@ -190,9 +198,11 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
     const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
+    const _data = {id: 'subject-assign-group-dialog', groups: groupFullList, selectedSubjects};
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {
-      data: {groups: groupFullList, selectedSubjects},
+      id: 'subject-assign-group-dialog',
+      data: _data,
       panelClass: ['w-full', 'max-w-[700px]!', 'sm:w-1/2'],
       hasBackdrop: true,
       disableClose: true,

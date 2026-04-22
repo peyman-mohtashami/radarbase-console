@@ -56,7 +56,7 @@ export class ProfilePageComponent implements OnInit {
     login: new FormControl({value: '', disabled: true}),
     firstName: new FormControl('', [Validator.normalTextValidator]),
     lastName: new FormControl('', [Validator.normalTextValidator]),
-    email: new FormControl('', [Validator.requiredValidator, Validator.emailValidator]),
+    email: new FormControl({value: '', disabled: true}, [Validator.requiredValidator, Validator.emailValidator]),
   })
 
   private readonly formValueChanges = toSignal(

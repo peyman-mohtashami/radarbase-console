@@ -50,6 +50,7 @@ export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> 
   override configService = inject(SourceConfigService);
   override dialogRef = inject(MatDialogRef<SourceDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppSource;
     project: AppProject;

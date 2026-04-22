@@ -55,6 +55,7 @@ export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent
   override configService = inject(SubjectConfigService);
   override dialogRef = inject(MatDialogRef<SubjectDialogAssignGroupComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: string;
     entity: AppGroup;
     groupFullList: Observable<AppGroup[]>;

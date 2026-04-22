@@ -15,9 +15,10 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, RadarConfi
   override configService = inject(ConfigConfigService);
 
   override createDialogRef(mode: DialogMode, entity?: AppConfig): MatDialogRef<ConfigDialogComponent> {
-    const _data = {mode, entity};
+    const _data = {id: 'config-dialog', mode, entity};
 
     return this.dialog.open(ConfigDialogComponent, {
+      id: 'config-dialog',
       data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',
@@ -31,6 +32,7 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, RadarConfi
   }
 
   openPublishDialog(mode: "publish" | "discard", entities: AppConfig[], clientId: string, projectId?: string, subjectId?: string) {
+    console.log('Class: ConfigDialogService, Function: openPublishDialog, Line 35 mode, entities, clientId, projectId, subjectId' , mode, entities, clientId, projectId, subjectId);
     const dialogRef = this.createPublishDialogRef(mode);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
@@ -58,10 +60,13 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, RadarConfi
   }
 
   createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
+    console.log('Class: ConfigDialogService, Function: createPublishDialogRef, Line 63 mode' , mode);
     const originalList = this.entityService.cache;
     const updatedList = this.entityService.updatedList;
+    const _data = {id: 'publish-dialog', mode, originalList, updatedList};
     return this.dialog.open(ConfigPublishDialogComponent, {
-      data: {mode, originalList, updatedList},
+      id: 'publish-dialog',
+      data: _data, //{mode, originalList, updatedList},
       panelClass: 'tailwind-slide-panel',
       width: '50%',
       height: '100vh',

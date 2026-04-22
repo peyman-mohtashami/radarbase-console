@@ -28,6 +28,8 @@ import {BaseEntityDialogComponent} from '../../../../../base-entities/containers
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
+import {UserDetailsComponent} from '../../components/user-details/user-details.component';
+import {DetailType} from '../../../../../base-entities/enums/detail-type';
 
 @Component({
   selector: 'app-user-dialog',
@@ -46,12 +48,14 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatSelectAutocompleteComponent,
     AsyncPipe,
     ErrorMessageBoxComponent,
+    UserDetailsComponent,
   ]
 })
 export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
   override configService = inject(UserConfigService);
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppUser;
     userFullList: Observable<AppUser[]>;
@@ -66,7 +70,9 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
     login: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.normalTextValidator]}),
     firstName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
     lastName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
-    email: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator, Validator.emailValidator]}),
+    email: new FormControl<string>(
+      {value: '', disabled: this.dialogData.mode !== DialogMode.ADD},
+      {nonNullable: true, validators: [Validator.requiredValidator, Validator.emailValidator]}),
     langKey: new FormControl<string>(''),
     _roles: new FormGroup({
       _sysAdmin: new FormControl<boolean>(false),
@@ -76,4 +82,5 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
       _projects: new FormControl<RadarOption[]>([]),
     }),
   });
+  protected readonly DetailType = DetailType;
 }

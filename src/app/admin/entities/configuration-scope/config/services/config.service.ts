@@ -1,5 +1,4 @@
-import {Injectable} from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
 import { Observable, of } from "rxjs";
 
 import {getAppConfiguration, postAppConfiguration} from "../mock/mock-configs";
@@ -8,9 +7,13 @@ import {AppConfig, RadarConfig, RadarConfigBundle} from "../models/config";
 import {environment} from "../../../../../../environments/environment";
 import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
+import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
+
+  private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
+
   override CACHE_ENABLED = true;
 
   updatedList: AppConfig[] = [];
@@ -45,12 +48,7 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
       return of(queryParams ? process(this.updatedList) : this.updatedList);
     }
 
-    const headers = getHeaders();
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const urlSegment = getUrlSegment(projectId, subjectId);
-    const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
-
-    let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    let radarConfigBundleObservable = this.radarbaseAppConfigService.getRadarConfigBundle(clientId, projectId, subjectId);// this.http.get<RadarConfigBundle>(url, {headers});
     if (environment.localDeployment) {
       radarConfigBundleObservable = of(getAppConfiguration(clientId, projectId, subjectId));
     }
@@ -106,12 +104,12 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
   }
 
   publish(configs: AppConfig[], clientId: string, projectId?: string, subjectId?: string): Observable<AppConfig[]>{
-    const headers = getHeaders();
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const urlSegment = getUrlSegment(projectId, subjectId);
-    const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`
+    // const headers = getHeaders();
+    // const appConfigBaseUrl = getAppConfigBaseUrl();
+    // const urlSegment = getUrlSegment(projectId, subjectId);
+    // const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`
 
-    let radarConfigBundleObservable = this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
+    let radarConfigBundleObservable = this.radarbaseAppConfigService.postConfig(configs, clientId, projectId, subjectId); //this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
     if (environment.localDeployment) {
       radarConfigBundleObservable = of(postAppConfiguration(configs, clientId, projectId, subjectId));
     }
@@ -126,25 +124,6 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
     this.cache = [];
     this.updatedList = [];
   }
-}
-
-export function getUrlSegment(projectId?: string, subjectId?: string) {
-  let urlSegment = `global`;
-  if (projectId) {
-    urlSegment = `projects/${projectId}`;
-    if (subjectId) {
-      urlSegment = `${urlSegment}/users/${subjectId}`;
-    }
-  }
-  return urlSegment;
-}
-
-export function getAppConfigBaseUrl() {
-  return typeof window !== 'undefined' ? `${window.location.origin}/appconfig/api` : '/appconfig/api';
-}
-
-export function getHeaders() {
-  return new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
 }
 
 export function getConfigsFromConfigBundle(configBundle: RadarConfigBundle): RadarConfig[] {

@@ -98,6 +98,11 @@
     transform: translateX(100%);
   }
 
+  .tailwind-slide-panel-child {
+    @apply fixed top-0 right-0 h-screen m-0 rounded-none bg-white shadow-lg overflow-hidden;
+    transform: translateX(100%);
+  }
+
   .dialog-enter-active {
     animation: slideInRight 0.3s ease-out forwards;
   }

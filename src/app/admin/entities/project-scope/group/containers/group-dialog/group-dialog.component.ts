@@ -43,6 +43,7 @@ export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> {
   override configService = inject(GroupConfigService);
   override dialogRef = inject(MatDialogRef<GroupDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppGroup;
     groupFullList: Observable<AppGroup[]>;

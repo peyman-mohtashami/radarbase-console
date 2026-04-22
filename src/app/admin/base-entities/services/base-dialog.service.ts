@@ -49,7 +49,6 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
     const storedEntityString = this.configService.getLatestFormEntry();
     const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as T) : undefined;
     const dialogRef = this.createDialogRef(mode, storedEntity ?? entity);
-
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
         (value) => {

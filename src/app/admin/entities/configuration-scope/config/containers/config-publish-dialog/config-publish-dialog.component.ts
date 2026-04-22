@@ -35,6 +35,7 @@ export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppC
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: "publish" | "discard";
     originalList: AppConfig[];
     updatedList: AppConfig[];
@@ -45,6 +46,7 @@ export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppC
   differences: { name: string; originalValue?: string; newValue?: string;}[] = [];
 
   override ngOnInit() {
+    console.log('Class: ConfigPublishDialogComponent, Function: ngOnInit, Line 49 this.dialogData' , this.dialogData);
     this.dialogData.updatedList.forEach(config => {
       const originalConfig = this.dialogData.originalList.find(originalConfig => originalConfig.name === config.name);
       if (originalConfig?._name !== config._name || originalConfig?.value !== config.value) {

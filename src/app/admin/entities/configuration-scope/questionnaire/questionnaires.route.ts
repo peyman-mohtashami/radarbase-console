@@ -7,7 +7,7 @@ export const questionnaireRoutes: Routes = [
     path: '',
     component: QuestionnaireListPageComponent,
     resolve: {
-      entities: QuestionnaireListResolver,
+      questionnaireList: QuestionnaireListResolver,
     },
   },
 ]

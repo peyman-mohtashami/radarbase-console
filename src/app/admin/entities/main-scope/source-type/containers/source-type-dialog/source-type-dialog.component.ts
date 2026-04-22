@@ -45,6 +45,7 @@ export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSour
   override configService = inject(SourceTypeConfigService);
   override dialogRef = inject(MatDialogRef<SourceTypeDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppSourceType;
     sourceTypeFullList: Observable<AppSourceType[]>;

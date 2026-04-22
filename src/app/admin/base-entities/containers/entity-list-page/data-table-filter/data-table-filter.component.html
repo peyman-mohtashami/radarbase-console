@@ -3,7 +3,7 @@
     @if (form) {
       <form [formGroup]="form" novalidate autocomplete="off" class='w-full flex gap-1 justify-between'>
         <div
-          class="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 text-base items-stretch">
+          class="grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 text-base items-stretch">
           @for (filter of filters(); track filter) {
             @if (!filter.advanced) {
               @if (filter.type === FilterType.SELECT) {
@@ -28,7 +28,7 @@
                 <mat-form-field class="m-0! small no-subscript"
                                 [class.filter-has-value]="form.controls[filter.name]?.value"
                                 appearance="outline">
-                  <mat-icon fontSet='material-icons-outlined' class="text-neutral-300" matPrefix>search</mat-icon>
+                  <mat-icon fontSet='material-symbols-outlined' class="text-neutral-300" matPrefix>search</mat-icon>
                   <input [id]="filter.name + '-search'" class=""
                          type="search"
                          [formControlName]='filter.name'
@@ -37,7 +37,7 @@
                   @if (form.controls[filter.name]?.value) {
                     <button matSuffix matIconButton aria-label="Clear" class="mx-2 tiny"
                             (click)="form.controls[filter.name].setValue('')">
-                      <mat-icon>close</mat-icon>
+                      <mat-icon fontSet='material-symbols-outlined'>close</mat-icon>
                     </button>
                   }
                 </mat-form-field>
@@ -228,7 +228,7 @@
                 class='shrink-0 filter-reset-button tiny'
                 [disabled]='!filterEnabled'
                 (click)='resetFilters()'>
-          <mat-icon fontSet='material-icons-outlined'>filter_alt_off</mat-icon>
+          <mat-icon fontSet='material-symbols-outlined'>filter_alt_off</mat-icon>
         </button>
       }
     </div>

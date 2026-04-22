@@ -2,8 +2,8 @@
   <ng-content/>
   @if (dialogMode() === DialogMode.DELETE) {
     <div class="mt-4">
-      <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ label() }}: <strong>{{ entityName() }}</strong>.</p>
-      <p>{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ label() }}: <code class="italic text-secondary">{{ entityName() }}</code>.</p>
+      <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
     </div>
   }
 </div>

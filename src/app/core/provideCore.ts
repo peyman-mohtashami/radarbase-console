@@ -1,6 +1,5 @@
 import {inject, makeEnvironmentProviders, provideAppInitializer} from "@angular/core";
 import {ThemeService} from "./theme/services/theme.service";
-import {firstValueFrom} from "rxjs";
 import {provideAuth} from "./auth/provideAuth";
 import {provideError} from "./error/provideError";
 import {provideLocale} from "./locale/provideLocale";
@@ -12,7 +11,7 @@ import {LastUrlService} from './navigation-tracker/services/last-url.service';
 
 function configInitializerFn(_lastUrlService: LastUrlService, customizationService: ConfigurationService, themeService: ThemeService, localeService: LocaleService) {
   return async () => {
-    await firstValueFrom(customizationService.init());
+    await customizationService.init();
     themeService.init();
     localeService.init();
   };

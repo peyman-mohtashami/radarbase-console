@@ -1,10 +1,9 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from "rxjs";
-import {take} from "rxjs/operators";
+import {HttpClient, HttpContext} from '@angular/common/http';
+import {firstValueFrom} from "rxjs";
+import {SKIP_AUTH} from '../../auth/interceptors/auth.interceptor';
 import {ROLES} from '../../../shared/enums/roles';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../../shared/consts/entity-registry';
-import {getAppConfigBaseUrl} from '../../../admin/entities/configuration-scope/config/services/config.service';
 import {NavGroupItem} from '../models/nav-group-item.model';
 import {
   DEFAULT_DEPLOYMENT_CONFIGURATION,
@@ -19,10 +18,13 @@ import {
   ThemesConfiguration
 } from '../models/custom-configuration.model';
 import {DeploymentConfiguration} from '../models/deployment-configuration.model';
+import {RadarbaseAppConfigService} from './radarbase-app-config.service';
+import {SKIP_ERROR} from '../../auth/interceptors/server-error.interceptor';
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
 
+  private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
   private http = inject(HttpClient);
 
   private _navGroupItems = signal<NavGroupItem[]>([]);
@@ -34,80 +36,41 @@ export class ConfigurationService {
   localeCustomization = computed(() => this.appCustomization().locale);
   entitiesCustomization = computed(() => this.appCustomization()?.entities);
 
-  init(): Observable<CustomConfiguration> {
-    this.applyDeploymentConfiguration();
-    return this.applyCustomConfiguration();
+  async init(): Promise<void> {
+    await this.applyDeploymentConfiguration();
+    await this.applyCustomConfiguration();
   }
 
-  private applyCustomConfiguration() {
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const managementPortalClientId = 'ManagementPortalapp';
-    const appConfigUrl = `${appConfigBaseUrl}/global/config/${managementPortalClientId}`;
-
-    const accessToken = localStorage.getItem('accessToken');
-
-    return new Observable<CustomConfiguration>((observer) => {
-      fetch(appConfigUrl, {
-        method: 'GET',
-        headers: {
-          ...(accessToken ? {Authorization: `Bearer ${accessToken}`} : {})
-        }
-      })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error(`AppConfig request failed with status ${response.status}`);
-          }
-
-          const bundle = await response.json() as {
-            config: { name: string; value: string }[];
-          };
-
-          const configEntry = bundle.config?.find(c => c.name === 'config');
-
-          if (!configEntry?.value) {
-            throw new Error('No "config" entry in AppConfig bundle');
-          }
-
-          fetch(configEntry.value, {method: 'GET'})
-            .then(async (configResponse) => {
-              if (!configResponse.ok) {
-                throw new Error(`ConfigUrl request failed with status ${configResponse.status}`);
-              }
-              try {
-                const parsed = await configResponse.json();
-                const validated = sanitizeCustomConfiguration(parsed, DEFAULT_CUSTOM_CONFIGURATION);
-                this.appCustomization.set(validated);
-                observer.next(validated);
-                observer.complete();
-              } catch {
-                throw new Error('Failed to parse config JSON from configUrl***');
-              }
-            }).catch(() => {
-            this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
-            observer.next(DEFAULT_CUSTOM_CONFIGURATION);
-            observer.complete();
-          })
-        })
-        .catch(() => {
-          this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
-          observer.next(DEFAULT_CUSTOM_CONFIGURATION);
-          observer.complete();
-        });
-    });
+  private async applyCustomConfiguration() {
+    try {
+      const context = new HttpContext().set(SKIP_ERROR, true);
+      const radarConfigBundle = await firstValueFrom(this.radarbaseAppConfigService.getRadarConfigBundle('ManagementPortalapp', undefined, undefined, context));
+      const radarConfig = this.radarbaseAppConfigService.getConfig(radarConfigBundle, 'config')
+      const brandingUrl = radarConfig?.value;
+      if (!brandingUrl) {
+        this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
+        return;
+      }
+      const customization = await firstValueFrom(this.http.get<unknown>(brandingUrl, {
+        context: new HttpContext().set(SKIP_AUTH, true)
+      }));
+      const validatedCustomization = sanitizeCustomConfiguration(customization, DEFAULT_CUSTOM_CONFIGURATION);
+      this.appCustomization.set(validatedCustomization);
+      return;
+    } catch {
+      this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
+      return;
+    }
   }
 
-  private applyDeploymentConfiguration() {
-    this.http.get<unknown>(DEFAULT_DEPLOYMENT_CONFIGURATION_URL).pipe(
-      take(1)
-    ).subscribe({
-      next: (config) => {
-        const validatedConfig = sanitizeDeploymentConfiguration(config, DEFAULT_DEPLOYMENT_CONFIGURATION)
-        this.setNavGroupItems(validatedConfig);
-      },
-      error: () => {
-        this.setNavGroupItems(DEFAULT_DEPLOYMENT_CONFIGURATION);
-      },
-    });
+  private async applyDeploymentConfiguration() {
+    try {
+      const config = await firstValueFrom(this.http.get<unknown>(DEFAULT_DEPLOYMENT_CONFIGURATION_URL));
+      const validatedConfig = sanitizeDeploymentConfiguration(config, DEFAULT_DEPLOYMENT_CONFIGURATION)
+      this.setNavGroupItems(validatedConfig);
+    } catch {
+      this.setNavGroupItems(DEFAULT_DEPLOYMENT_CONFIGURATION);
+    }
   }
 
   private setNavGroupItems(config: DeploymentConfiguration) {

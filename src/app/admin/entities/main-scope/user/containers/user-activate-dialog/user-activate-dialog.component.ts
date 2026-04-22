@@ -19,6 +19,7 @@ import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-activate-dialog',
@@ -37,12 +38,23 @@ import {BaseEntityDialogComponent} from '../../../../../base-entities/containers
 export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUser> {
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode | string;
     entity: AppUser;
     entities: AppUser[];
     projects: AppProject[];
     organizations: AppOrganization[];
   };
+
+  override ngOnInit() {
+    // this.formFields = this.configService.getFormFields();
+    // if (this.dialogData.entity) this.form.patchValue(this.dialogData.entity);
+    // this.form.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$)).subscribe((value) => {
+    //   if (value) {
+    //     this.error.set(null);
+    //   }
+    // })
+  }
 
   override onAction() {
     this.error.set(null);

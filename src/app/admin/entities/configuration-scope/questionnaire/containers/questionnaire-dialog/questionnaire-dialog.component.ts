@@ -37,6 +37,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 import {
   DialogTitleComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
+import {QuestionnaireStateService} from './services/questionnaire-state.service';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -61,9 +62,11 @@ import {
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
+  protected questionnaireStateService = inject(QuestionnaireStateService);
   override configService = inject(QuestionnaireConfigService);
   override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppQuestionnaire;
     questionnaireFullList: Observable<AppQuestionnaire[]>;
@@ -109,6 +112,10 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
       this.form.controls.languages.setValue(updatedEntity.languages ?? [this.DEFAULT_LANG]);
       this.form.patchValue(updatedEntity);
     }
+
+    this.form.controls.questions.valueChanges.subscribe((questions) => {
+      this.questionnaireStateService.questions.set(questions);
+    })
   }
 
   // override handleSaveAction(): void {

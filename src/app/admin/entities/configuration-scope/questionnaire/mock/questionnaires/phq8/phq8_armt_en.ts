@@ -66,7 +66,7 @@ export const PHQ8_EN = [
     "text_validation_min": "",
     "text_validation_max": "",
     "identifier": "",
-    "branching_logic": "[phq8_1] = 1",
+    "branching_logic": "[phq8_1] = '1'",
     "required_field": "",
     "custom_alignment": "",
     "question_number": "",

@@ -19,7 +19,7 @@ export class ProtocolDialogService extends BaseDialogService<AppProtocol, RadarP
   override createDialogRef(mode: DialogMode, entity?: AppProtocol): MatDialogRef<ProtocolDialogComponent> {
     const protocolFullList = this.entityService.getWithQuery();
 
-    const _data = {mode, entity, protocolFullList};
+    const _data = {id: 'protocol-dialog', mode, entity, protocolFullList};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -33,6 +33,7 @@ export class ProtocolDialogService extends BaseDialogService<AppProtocol, RadarP
         });
       default:
         return this.dialog.open(ProtocolDialogComponent, {
+          id: 'protocol-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '80%',

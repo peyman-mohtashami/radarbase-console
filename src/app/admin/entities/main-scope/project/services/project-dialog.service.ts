@@ -25,9 +25,10 @@ export class ProjectDialogService extends BaseDialogService<AppProject, RadarPro
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
     const organization = this.selectedEntitiesService.getSelected().organization();
 
-    const _data = {mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList};
+    const _data = {id: 'project-dialog', mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList};
 
     return this.dialog.open(ProjectDialogComponent, {
+      id: 'project-dialog',
       data: _data,
       panelClass: 'tailwind-slide-panel',
       width: '50%',

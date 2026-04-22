@@ -1,0 +1,39 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<div class="">
+  <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">
+    <span class="font-bold">Show this question if</span>
+    <div class="flex gap-2 items-center">
+      <div class='small-input text-sm flex justify-end gap-1'>
+<!--        @for (language of languages(); track language) {-->
+<!--          <button mat-icon-button class="tiny uppercase"-->
+<!--                  (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'-->
+<!--                  [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
+<!--            <span class="h-full flex items-center justify-center">-->
+<!--              <span class="text-sm font-bold">{{ language.id }}</span>-->
+<!--            </span>-->
+<!--          </button>-->
+<!--        }-->
+      </div>
+<!--      <button type="button" mat-stroked-button color="primary" (click)="addQuestion()">-->
+<!--        <mat-icon>add</mat-icon>-->
+<!--        <span class="font-bold">{{ `${_prefix}.addQuestionButtonLabel` | translate }}</span>-->
+<!--      </button>-->
+    </div>
+  </div>
+  <div cdkDropList (cdkDropListDropped)="onDrop($event)">
+    @for (question of form.controls; let i = $index; track question) {
+
+      <app-conditional-logic-and-form-array [formControl]="question"/>
+<!--      <app-question-form-group class="block"-->
+<!--                               [formControl]="question"-->
+<!--                               [questionIndex]="i"-->
+<!--                               [languages]="languages()"-->
+<!--                               (remove)="removeQuestion(i)"/>-->
+    }
+  </div>
+  <button type="button" mat-stroked-button color="primary" (click)="addQuestion()">
+    <mat-icon>add</mat-icon>
+    <span class="font-bold">OR</span>
+  </button>
+</div>

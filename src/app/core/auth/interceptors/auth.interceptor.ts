@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  HttpContextToken,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -9,6 +10,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { StorageService } from '../../storage/services/storage.service';
+
+export const SKIP_AUTH = new HttpContextToken<boolean>(() => false);
 
 @Injectable({providedIn: 'root'})
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,6 +28,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    if (request.context.get(SKIP_AUTH)) {
+      return next.handle(request).pipe(catchError((error) => throwError(() => error)));
+    }
+
     const token = StorageService.getAccessToken();
     if (token) {
       request = AuthInterceptor.addToken(request, token);

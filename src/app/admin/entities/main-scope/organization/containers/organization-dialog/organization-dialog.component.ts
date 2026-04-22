@@ -42,6 +42,7 @@ export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOr
   override configService = inject(OrganizationConfigService);
   override dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity: AppOrganization | undefined;
     organizationFullList: Observable<AppOrganization[]>;

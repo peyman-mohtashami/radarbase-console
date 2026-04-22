@@ -3,7 +3,7 @@
 <div class="border-2 border-gray-200 hover:border-secondary/50 rounded-2xl px-4 py-1 mt-2 text-sm!"
      [class]="editMode() ? 'border-secondary!': 'border-gray-200'">
   <div class="flex items-center gap-2 w-full justify-between mb-2">
-    <div class="flex gap-2 items-center flex-grow-1">
+    <div class="flex gap-2 items-center grow">
       <button class="tiny"
               mat-icon-button color="primary"
               (click)='editMode.set(!editMode())'>
@@ -199,7 +199,7 @@
 
 
       @if (questionIndex() > 0) {
-        <div>
+        <div class="flex">
           <label for="field_name" class="text-sm">{{ `${_prefix}.questionConditionalLogic` | translate }}</label>
           <mat-form-field class='small-input w-1/2' appearance="outline">
             <textarea matInput formControlName='branching_logic' rows="2"></textarea>
@@ -211,6 +211,10 @@
               }
             </mat-error>
           </mat-form-field>
+          <button mat-icon-button color="primary" (click)="editBranchingLogic()">
+            <mat-icon>edit</mat-icon>
+          </button>
+
         </div>
       }
       <!--        </div>-->

@@ -80,6 +80,7 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
   override configService = inject(ProtocolConfigService);
   override dialogRef = inject(MatDialogRef<ProtocolDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppProtocol;
     protocolFullList: Observable<AppProtocol[]>;

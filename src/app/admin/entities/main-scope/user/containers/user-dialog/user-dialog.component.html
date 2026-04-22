@@ -10,7 +10,8 @@
     <app-dialog-body-description [dialogMode]="dialogData.mode"
                                  [label]="`${_prefix}.title.singular` | translate"
                                  [entityName]="dialogData.entity?._name">
-      <!--      <rb-user-details [mode]='mode' [entity]='entity' [config]="configFields" />-->
+      <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY" />
+<!--        <app-user-details [mode]='mode' [entity]='entity' [config]="configFields" />-->
     </app-dialog-body-description>
   }
 
@@ -71,8 +72,8 @@
       }
 
       <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
-      <mat-form-field subscriptSizing="fixed" appearance='outline'>
-        <input matInput formControlName='email' required>
+      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input matInput formControlName='email' required >
         <mat-error>
           @if (form.controls.email.errors; as errors) {
             @if (errors?.['duplicate']) {

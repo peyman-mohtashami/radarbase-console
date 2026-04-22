@@ -62,6 +62,7 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
   override configService = inject(ProjectConfigService);
   override dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppProject;
     organization: RadarOrganization;
@@ -96,11 +97,11 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
     endDate: new FormControl<string>(''),
     sourceTypes: new FormControl<RadarSourceType[]>([]),
     attributes: new FormGroup<Record<string, FormControl<string | null | undefined>> | null | undefined>({
-      "Work-package": new FormControl<string>(''),//TODO, validators: [Validator.normalTextValidator]}),
-      "Phase": new FormControl<string>(''),//TODO, validators: [Validator.normalTextValidator]}),
-      "External-project-url": new FormControl<string>(''),//TODO, validators: [Validator.urlValidator]}),
-      "External-project-id": new FormControl<string>(''),//TODO, validators: [Validator.stringIdValidator]}),
-      "Privacy-policy-url": new FormControl<string>(''),//TODO, validators: [Validator.urlValidator]}),
+      "Work-package": new FormControl<string | null>(null),//TODO, validators: [Validator.normalTextValidator]}),
+      "Phase": new FormControl<string | null>(null),//TODO, validators: [Validator.normalTextValidator]}),
+      "External-project-url": new FormControl<string | null>(null),//TODO, validators: [Validator.urlValidator]}),
+      "External-project-id": new FormControl<string | null>(null),//TODO, validators: [Validator.stringIdValidator]}),
+      "Privacy-policy-url": new FormControl<string | null>(null),//TODO, validators: [Validator.urlValidator]}),
     }),
   });
 

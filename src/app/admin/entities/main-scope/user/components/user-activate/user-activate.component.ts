@@ -22,7 +22,7 @@ export class UserActivateComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',
-      fragment: `/activate/user/${this.entity().id}`
+      fragment: `/activate/user/${this.entity()._name}`
     }).then()
   }
 }

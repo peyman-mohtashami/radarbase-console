@@ -46,6 +46,7 @@ export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser
   override configService = inject(PermissionConfigService);
   override dialogRef = inject(MatDialogRef<PermissionDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity: AppUser;
     project?: AppProject;

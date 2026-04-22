@@ -64,6 +64,7 @@ export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject
   override configService = inject(SubjectConfigService);
   override dialogRef = inject(MatDialogRef<SubjectDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: SubjectDialogMode;
     entity?: AppSubject;
     project: AppProject;

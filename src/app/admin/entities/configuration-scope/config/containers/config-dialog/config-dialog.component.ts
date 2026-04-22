@@ -42,6 +42,7 @@ export class ConfigDialogComponent extends BaseEntityDialogComponent<AppConfig> 
   override configService = inject(ConfigConfigService);
   override dialogRef = inject(MatDialogRef<ConfigDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
     mode: DialogMode;
     entity?: AppConfig;
   };

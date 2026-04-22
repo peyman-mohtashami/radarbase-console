@@ -13,7 +13,7 @@ export class LastUrlService implements OnDestroy {
     this.sub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e) => {
-        if (e.urlAfterRedirects !== '/auth/login') {
+        if (!e.urlAfterRedirects.includes("/auth")) { //} !== '/auth/login') {
           localStorage.setItem(LAST_LOCATION, e.urlAfterRedirects);
         }
       });

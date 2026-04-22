@@ -6,11 +6,11 @@ import {BaseConfigService} from '../../../../base-entities/services/base-config.
 
 export const TableElements: TableElement[] = [
   { name: 'id', width: 'w-16', tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true, editable: false},
-  { name: 'login', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false},
-  { name: 'email', width: 'w-64', tableClass: "hidden md:block", extensionClass: "block md:hidden", sortable: true, editable: false},
+  { name: 'login', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false, showInSummary: true},
+  { name: 'email', width: 'w-64', tableClass: "hidden md:block", extensionClass: "block md:hidden", sortable: true, editable: false, showInSummary: true},
   { name: 'activated', tableClass: "hidden", extensionClass: "hidden", editable: false},
-  { name: 'firstName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true},
-  { name: 'lastName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true},
+  { name: 'firstName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true, showInSummary: true},
+  { name: 'lastName', width: 'w-32', tableClass: "hidden", extensionClass: "hidden", editable: true, showInSummary: true},
   { name: 'langKey', tableClass: "hidden", extensionClass: "block", editable: true },
   { name: 'roles', width: 'w-64', tableClass: "hidden xl:block", extensionClass: "block xl:hidden", editable: false},
   // { name: 'createdBy', width: 'w-32', tableClass: "hidden", extensionClass: "block", editable: true },

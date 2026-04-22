@@ -8,7 +8,7 @@ WORKDIR /code
 
 COPY package*.json /code/
 
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --legacy-peer-deps
 
 COPY . /code/
 

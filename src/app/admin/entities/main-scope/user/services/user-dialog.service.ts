@@ -61,7 +61,7 @@ export class UserDialogService extends BaseDialogService<AppUser, RadarUser, Use
     const userFullList = this.entityService.getWithQuery();
     const projectFullList = this.projectService.getWithQuery();
     const organizationFullList = this.organizationService.getWithQuery();
-    const _data = {mode, entity, userFullList, projectFullList, organizationFullList};
+    const _data = {id: 'user-dialog', mode, entity, userFullList, projectFullList, organizationFullList};
 
     switch (mode) {
       case 'activate':
@@ -84,6 +84,7 @@ export class UserDialogService extends BaseDialogService<AppUser, RadarUser, Use
         });
       default:
         return this.dialog.open(UserDialogComponent, {
+          id: 'user-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',

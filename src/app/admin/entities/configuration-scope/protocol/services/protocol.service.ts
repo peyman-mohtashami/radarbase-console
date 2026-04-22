@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
 
 import {map, tap} from "rxjs/operators";
@@ -12,22 +12,22 @@ import {
 } from "../models/protocol";
 import {ISO_LANGUAGES_MAP} from "../../questionnaire/models/questionnaire";
 import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {AppConfig, RadarConfigBundle} from "../../config/models/config";
+import {AppConfig} from "../../config/models/config";
 import {environment} from "../../../../../../environments/environment";
 import {
-  getAppConfigBaseUrl,
   getConfigsFromConfigBundle,
-  getHeaders,
-  getUrlSegment
 } from '../../config/services/config.service';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {Params} from '@angular/router';
 import {getProtocols, postAppProtocols} from '../mock/mock-protocols';
+import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
 
 export const DEFAULT_LANGUAGE = ISO_LANGUAGES_MAP['en'];
 
 @Injectable({providedIn: 'root'})
 export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtocol> {
+  private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
+
   updatedList: AppProtocol[] = [];
 
   private readonly CLIENT_ID = 'protocol-service';
@@ -212,12 +212,17 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       return of(queryParams ? process(this.updatedList) : this.updatedList);
     }
 
-    const headers = getHeaders();
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const urlSegment = getUrlSegment(projectId, subjectId);
-    const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
+    // const headers = getHeaders();
+    // const appConfigBaseUrl = getAppConfigBaseUrl();
+    // const urlSegment = getUrlSegment(projectId, subjectId);
+    // const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
+    //
+    // let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    // if (environment.localDeployment) {
+    //   radarConfigBundleObservable = of(getProtocols(this.CLIENT_ID, projectId, subjectId));
+    // }
 
-    let radarConfigBundleObservable = this.http.get<RadarConfigBundle>(url, {headers});
+    let radarConfigBundleObservable = this.radarbaseAppConfigService.getRadarConfigBundle(this.CLIENT_ID, projectId, subjectId);// this.http.get<RadarConfigBundle>(url, {headers});
     if (environment.localDeployment) {
       radarConfigBundleObservable = of(getProtocols(this.CLIENT_ID, projectId, subjectId));
     }
@@ -277,10 +282,10 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
   }
 
   publish(protocols: AppProtocol[], projectId?: string, subjectId?: string): Observable<AppProtocol[]> {
-    const headers = getHeaders();
-    const appConfigBaseUrl = getAppConfigBaseUrl();
-    const urlSegment = getUrlSegment(projectId, subjectId);
-    const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
+    // const headers = getHeaders();
+    // const appConfigBaseUrl = getAppConfigBaseUrl();
+    // const urlSegment = getUrlSegment(projectId, subjectId);
+    // const url = `${appConfigBaseUrl}/${urlSegment}/config/${this.CLIENT_ID}`;
 
     const radarProtocols = protocols.map(p => this.appToRadarModel(p));
     const radarProtocolWrapper: RadarProtocolWrapper = {
@@ -296,7 +301,7 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
       _name: ""
     }];
 
-    let radarConfigBundleObservable = this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
+    let radarConfigBundleObservable = this.radarbaseAppConfigService.postConfig(configs, this.CLIENT_ID, projectId, subjectId);
     if (environment.localDeployment) {
       radarConfigBundleObservable = of(postAppProtocols(configs, this.CLIENT_ID, projectId, subjectId));
     }

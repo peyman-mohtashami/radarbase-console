@@ -16,7 +16,7 @@ export class GroupDialogService extends BaseDialogService<AppGroup, RadarGroup, 
     const project = this.selectedEntitiesService.getSelected().project();
     console.log('Class: GroupDialogService, Function: createDialogRef, Line 16 ' , project);
     const groupFullList = this.entityService.getWithQuery(undefined, project?._name);
-    const _data = {mode, entity, groupFullList};
+    const _data = {id: 'group-dialog', mode, entity, groupFullList};
     switch (mode) {
       case DialogMode.DELETE:
         return this.dialog.open(GroupDialogComponent, {
@@ -29,6 +29,7 @@ export class GroupDialogService extends BaseDialogService<AppGroup, RadarGroup, 
         });
       default:
         return this.dialog.open(GroupDialogComponent, {
+          id: 'group-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',

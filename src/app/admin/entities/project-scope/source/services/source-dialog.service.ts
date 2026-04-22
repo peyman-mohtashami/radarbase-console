@@ -19,7 +19,7 @@ export class SourceDialogService extends BaseDialogService<AppSource, RadarSourc
     const project = this.selectedEntitiesService.getSelected().project()
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
 
-    const _data = {mode, entity, sourceTypeFullList, project};
+    const _data = {id: 'source-dialog', mode, entity, sourceTypeFullList, project};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -33,6 +33,7 @@ export class SourceDialogService extends BaseDialogService<AppSource, RadarSourc
         });
       default:
         return this.dialog.open(SourceDialogComponent, {
+          id: 'source-dialog',
           data: _data,
           panelClass: 'tailwind-slide-panel',
           width: '50%',
