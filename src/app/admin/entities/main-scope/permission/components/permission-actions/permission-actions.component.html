@@ -3,7 +3,8 @@
     <button class="tiny"
             [matTooltip]="`ADMIN.${entityName}.delete` | translate"
             mat-icon-button color="warn"
-            (click)='onAction(DialogMode.DELETE)'>
+            (click)='onAction(DialogMode.DELETE)'
+            [disabled]="disabled()">
       <mat-icon class="material-symbols-outlined text-xl!">close</mat-icon>
     </button>
   </div>

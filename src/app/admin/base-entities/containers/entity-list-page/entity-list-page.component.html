@@ -12,8 +12,8 @@
                [class.flex-1]="!tableField.width"
                [class.shrink-0]="!!tableField.width">
             <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [checked]="selection().hasValue() && isAllSelected()"
+                          [indeterminate]="selection().hasValue() && !isAllSelected()"
                           [aria-label]="checkboxLabel()"/>
           </div>
         } @else {

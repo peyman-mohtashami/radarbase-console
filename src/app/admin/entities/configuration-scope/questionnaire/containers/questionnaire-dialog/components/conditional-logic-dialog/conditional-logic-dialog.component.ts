@@ -93,7 +93,6 @@ export class ConditionalLogicDialogComponent extends BaseEntityDialogComponent<{
 
   override ngOnInit() {
     const orArray = this.parseConditionalLogic(this.dialogData.entity?.value ?? '');
-    console.log('Class: ConditionalLogicDialogComponent, Function: ngOnInit, Line 96 orArray' , orArray);
     this.form.patchValue({orArray});
   //   // this.formFields = this.configService.getFormFields();
   //   if (this.dialogData.entity) this.form.patchValue({orArray});
@@ -105,28 +104,22 @@ export class ConditionalLogicDialogComponent extends BaseEntityDialogComponent<{
   }
 
   private parseConditionalLogic(input: string): ConditionalLogicItem[][] {
-    console.log('Class: ConditionalLogicDialogComponent, Function: parseConditionalLogic, Line 107 input' , input);
     if (!input || input.trim() === '') {
       return [];
     }
 
     // Split by 'or' (case-insensitive) to get OR groups
     const orGroups = input.split(/\s+or\s+/i);
-    console.log('Class: ConditionalLogicDialogComponent, Function: parseConditionalLogic, Line 114 orGroups' , orGroups);
 
     return orGroups.map(orGroup => {
-      console.log('Class: ConditionalLogicDialogComponent, Function: , Line 117 orGroup' , orGroup);
       // Split by 'and' (case-insensitive) to get AND conditions
       const andConditions = orGroup.split(/\s+and\s+/i);
-      console.log('Class: ConditionalLogicDialogComponent, Function: , Line 120 andConditions' , andConditions);
 
       return andConditions.map(condition => {
-        console.log('Class: ConditionalLogicDialogComponent, Function: , Line 123 condition' , condition);
         // Parse each condition: [field_name] <operator> 'value'
         // Supports: ===, ==, !==, !=, <>, <=, >=, <, >
         const match = condition.match(/\[([^\]]+)\]\s*(===|==|=|!==|!=|<>|<=|>=|<|>)\s*(?:'([^']*)'|"([^"]*)"|(\S+))/);
         // const match = condition.match(/\[([^\]]+)\]\s*(===|==|!==|!=|<>|<=|>=|<|>)\s*'([^']*)'/);
-        console.log('Class: ConditionalLogicDialogComponent, Function: , Line 126 match' , match);
 
         // return {
         //   operand: 'match[1]',

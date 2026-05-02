@@ -13,6 +13,7 @@ import {AppUser, RadarUser} from "../../../user/models/user";
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {PermissionService} from '../../services/permission.service';
+import {AuthService} from '../../../../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-permission-list-page',
@@ -29,6 +30,8 @@ export class PermissionListPageComponent extends BaseEntityListPageComponent<App
   override entityService = inject(PermissionService);
   override configService = inject(PermissionConfigService);
   override dialogService = inject(PermissionDialogService);
+
+  protected authService = inject(AuthService);
 
   override entities = signal<AppUser[]>(this.activatedRoute.snapshot.data['permissionList']);
 

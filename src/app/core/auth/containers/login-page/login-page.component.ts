@@ -70,9 +70,7 @@ export class LoginPageComponent implements OnInit {
         next: () => {
           this.error.set(null);
           const lastLocation = LastUrlService.getLastUrl();
-          console.log('Class: LoginPageComponent, Function: next, Line 73 lastLocation' , lastLocation);
           this.router.navigateByUrl(lastLocation || '/admin').then(() => {
-            console.log('Class: LoginPageComponent, Function: , Line 75 ' , );
             LastUrlService.clearLastUrl();
           });
         },

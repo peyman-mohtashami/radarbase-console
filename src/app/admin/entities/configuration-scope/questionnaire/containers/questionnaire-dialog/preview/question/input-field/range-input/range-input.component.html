@@ -1,0 +1,23 @@
+<div class="flex flex-nowrap items-center">
+  @for (item of items; track item) {
+    <div
+      class="flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+      [class]="(selectedValue === item ? 'bg-primary/30' : '') + ' ' + (isDisabled ? 'opacity-70' : '')"
+      (click)="onInputChange(+item)">
+      <span class="ion-text-wrap text-center" [innerHtml]="item | replacePlaceholders"></span>
+    </div>
+  }
+</div>
+
+@if (!labelsDisabled() && question().select_choices_or_calculations; as choices) {
+  <div class="flex justify-between mt-2">
+    <div class="w-1/2" [innerHtml]="choices[0].label | replacePlaceholders"></div>
+    <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label | replacePlaceholders"></div>
+  </div>
+}
+
+@if (!isDisabled) {
+  <button matButton class="m-4" (click)="onReset()" color="danger" size="small">
+    Clear
+  </button>
+}

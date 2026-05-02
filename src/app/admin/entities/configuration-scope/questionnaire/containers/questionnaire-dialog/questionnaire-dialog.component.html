@@ -9,15 +9,10 @@
   </button>
 </app-dialog-title>
 
-
-<mat-dialog-content class="h-full overflow-auto">
-  @if (showCode) {
-    <div class="h-full">
-      <ngx-monaco-editor style="display:block;height:100%"
-                         [options]="editorOptions"
-                         [(ngModel)]="updatedCode"/>
-    </div>
-  } @else {
+<mat-dialog-content class="h-full overflow-auto p-0!">
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms"
+               class="h-full [&>.mat-mdc-tab-body-wrapper]:h-full! [&>mat-tab-header]:border-b-2 [&>mat-tab-header]:border-neutral-200 [&>mat-tab-header]:dark:border-neutral-600 [&>.mat-mdc-tab-body-wrapper]:p-4!">
+  <mat-tab label="Design" class="">
     @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
       <app-dialog-body-description [dialogMode]="dialogData.mode"
                                    [label]="`ADMIN.questionnaire.name.label` | translate"
@@ -56,8 +51,72 @@
                                   [languages]="form.controls.languages.value"/>
       </form>
     }
-  }
+  </mat-tab>
+  <mat-tab label="Preview">
+      <app-page-questions [questions]="form.controls.questions.value" [questionnaireName]="form.controls.name.value"/>
+  </mat-tab>
+  <mat-tab label="Logic">
+      Logic
+  </mat-tab>
+  <mat-tab label="JSON Editor">
+<!--    <div class="h-full">-->
+<!--      <ngx-monaco-editor style="display:block;height:100%"-->
+<!--                         [options]="editorOptions"-->
+<!--                         [(ngModel)]="updatedCode"/>-->
+<!--    </div>-->
+  </mat-tab>
+</mat-tab-group>
 </mat-dialog-content>
+
+<!--<mat-dialog-content class="h-full overflow-auto">-->
+
+<!--  @if (showCode) {-->
+<!--    <div class="h-full">-->
+<!--      <ngx-monaco-editor style="display:block;height:100%"-->
+<!--                         [options]="editorOptions"-->
+<!--                         [(ngModel)]="updatedCode"/>-->
+<!--    </div>-->
+<!--  } @else {-->
+<!--    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {-->
+<!--      <app-dialog-body-description [dialogMode]="dialogData.mode"-->
+<!--                                   [label]="`ADMIN.questionnaire.name.label` | translate"-->
+<!--                                   [entityName]="dialogData.entity?._name"/>-->
+<!--    }-->
+
+<!--    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {-->
+<!--      <form [formGroup]='form' novalidate class="grid grid-cols-2 grid-rows-[auto_1fr] h-full gap-4">-->
+
+<!--        <div class="">-->
+<!--          <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>-->
+<!--          <mat-form-field class='small-input w-1/2' appearance='outline'>-->
+<!--            <input matInput formControlName='name' required>-->
+
+<!--            <mat-error>-->
+<!--              @if (form.controls.name.errors; as errors) {-->
+<!--                @if (errors['required']) {-->
+<!--                  {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
+<!--        <div class="">-->
+<!--          <app-mat-select-autocomplete formControlName="languages"-->
+<!--                                       [options]="ISO_LANGUAGES"-->
+<!--                                       [label]="`${_prefix}.languagesLabel` | translate"-->
+<!--                                       [required]="true"-->
+<!--                                       [multiple]="true"-->
+<!--                                       [notRemovable]="DEFAULT_LANG"/>-->
+<!--        </div>-->
+
+<!--        <app-questions-form-array class="col-span-2"-->
+<!--                                  formControlName="questions"-->
+<!--                                  [languages]="form.controls.languages.value"/>-->
+<!--      </form>-->
+<!--    }-->
+<!--  }-->
+<!--</mat-dialog-content>-->
 
 @if (error()) {
   <app-error-message-box>

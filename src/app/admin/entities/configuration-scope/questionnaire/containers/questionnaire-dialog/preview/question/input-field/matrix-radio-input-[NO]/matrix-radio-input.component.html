@@ -1,0 +1,16 @@
+<div class="flex flex-nowrap items-center">
+  @for (option of question().select_choices_or_calculations; track option.code) {
+    <div class="flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+      [class]="(selectedValue === option.code ? 'bg-primary/30' : '') + ' ' + (isDisabled ? 'opacity-70' : '')"
+      (click)="onInputChange(option.code)">
+      <span class="ion-text-wrap text-center" [innerHtml]="option.label | replacePlaceholders"></span>
+    </div>
+  }
+</div>
+
+
+@if (!isDisabled) {
+  <ion-button class="mt-4" (click)="onReset()" color="danger" size="small">
+    Clear
+  </ion-button>
+}

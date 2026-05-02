@@ -1,0 +1,38 @@
+<section class="example-section">
+  @for (item of items; track item.code) {
+    <p>
+    <mat-checkbox class="w-full"
+                  (click)="onCheckboxClick(item)"
+                  [disabled]="isDisabled"
+                  [checked]="item.checked">
+<!--                  [value]="item.code"-->
+      <span class="ion-text-wrap" [innerHtml]="item.label | replacePlaceholders"></span>
+    </mat-checkbox>
+    </p>
+  }
+<!--  <mat-checkbox class="example-margin" [disabled]="true">Disabled</mat-checkbox>-->
+</section>
+@if (!isDisabled) {
+  <button matButton class="m-4" (click)="onReset()" color="danger" size="small">
+    Clear
+  </button>
+}
+
+
+<!--@for (item of items; track item.code) {-->
+<!--  <ion-item>-->
+<!--    <ion-checkbox justify="space-between"-->
+<!--                  [value]="item.code"-->
+<!--                  (click)="onCheckboxClick(item)"-->
+<!--                  [disabled]="isDisabled"-->
+<!--                  [checked]="item.checked">-->
+<!--      <span class="ion-text-wrap" [innerHtml]="item.label | replacePlaceholders"></span>-->
+<!--    </ion-checkbox>-->
+<!--  </ion-item>-->
+<!--}-->
+
+<!--@if (!isDisabled) {-->
+<!--  <ion-button class="mt-4" (click)="onReset()" color="danger" size="small">-->
+<!--    Clear-->
+<!--  </ion-button>-->
+<!--}-->

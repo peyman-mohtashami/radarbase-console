@@ -58,7 +58,6 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
         getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
       ),
       tap((entities) => {
-        console.log('Class: ConfigService, Function: , Line 68 entities' , entities);
         this.cache = [...entities];
         this.updatedList = [...entities];
         this.cacheLoaded = true;

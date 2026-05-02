@@ -99,7 +99,6 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   }
 
   onPublishDialogAction(mode: "discard" | "publish") {
-    console.log('Class: ConfigListPageComponent, Function: onPublishDialogAction, Line 102 mode' , mode);
     return this.dialogService.openPublishDialog(mode, this.entities(), this.client._name, this.project?._name, this.subject?._name);
   }
 

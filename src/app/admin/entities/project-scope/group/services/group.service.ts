@@ -17,7 +17,6 @@ export class GroupService extends BaseEntityService<AppGroup, RadarGroup> {
   projectName?: string;
 
   override getResourceUrl(): string {
-    console.log('Class: GroupService, Function: getResourceUrl, Line 17 this.projectName' , this.projectName);
     return `${environment.apiUrl}api/projects/${this.projectName}/groups`;
   }
 
@@ -30,7 +29,6 @@ export class GroupService extends BaseEntityService<AppGroup, RadarGroup> {
   }
 
   override getWithQuery(queryParams?: Params, projectName?: string): Observable<AppGroup[]> {
-    console.log('Class: GroupService, Function: getWithQuery, Line 30 projectName' , projectName);
     this.projectName = projectName;
     return super.getWithQuery(queryParams);
   }

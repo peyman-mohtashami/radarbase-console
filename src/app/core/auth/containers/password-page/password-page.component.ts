@@ -5,7 +5,7 @@ import {
 } from "@angular/forms";
 import {debounceTime} from 'rxjs/operators';
 import {ProfileService} from '../../services/profile.service';
-import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField} from "@angular/material/select";
 import {MatError} from "@angular/material/form-field";
@@ -33,7 +33,6 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
     MatButton,
     MatProgressSpinner,
     MatInput,
-    MatCardSubtitle,
     MatCardTitle,
     ErrorMessageBoxComponent
   ]

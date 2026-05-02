@@ -32,6 +32,7 @@ export class PermissionActionsComponent {
 
   entity = input.required<AppUser>();
   isExpanded = input<boolean>(true);
+  disabled = input<boolean>(false);
 
   entityName = this.configService.getEntityMetadata().name;
 

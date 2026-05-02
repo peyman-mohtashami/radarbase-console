@@ -10,7 +10,7 @@ import { routes } from './app.routes';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {provideCore} from './core/provideCore';
-import {provideMonacoEditor} from "ngx-monaco-editor-v2";
+// import {provideMonacoEditor} from "ngx-monaco-editor-v2";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +27,7 @@ export const appConfig: ApplicationConfig = {
         // serverLogLevel: NgxLoggerLevel.ERROR
       }),
     ),
-    provideMonacoEditor({ baseUrl: '/assets/monaco/min/vs' }), //TODO only for protocol questionnaire builder
+    // provideMonacoEditor({ baseUrl: '/assets/monaco/min/vs' }), //TODO only for protocol questionnaire builder
     provideCore(),
     provideRouter(routes)
   ]

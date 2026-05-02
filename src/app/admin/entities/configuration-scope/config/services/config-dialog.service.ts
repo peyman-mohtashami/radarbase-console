@@ -32,7 +32,6 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, RadarConfi
   }
 
   openPublishDialog(mode: "publish" | "discard", entities: AppConfig[], clientId: string, projectId?: string, subjectId?: string) {
-    console.log('Class: ConfigDialogService, Function: openPublishDialog, Line 35 mode, entities, clientId, projectId, subjectId' , mode, entities, clientId, projectId, subjectId);
     const dialogRef = this.createPublishDialogRef(mode);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
@@ -60,7 +59,6 @@ export class ConfigDialogService extends BaseDialogService<AppConfig, RadarConfi
   }
 
   createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
-    console.log('Class: ConfigDialogService, Function: createPublishDialogRef, Line 63 mode' , mode);
     const originalList = this.entityService.cache;
     const updatedList = this.entityService.updatedList;
     const _data = {id: 'publish-dialog', mode, originalList, updatedList};

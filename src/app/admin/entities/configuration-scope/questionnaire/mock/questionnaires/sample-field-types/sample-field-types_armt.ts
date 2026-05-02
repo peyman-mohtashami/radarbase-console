@@ -1,25 +1,25 @@
 export const sample_field_types_en = [
-  {
-    "field_name": "progress_report4",
-    "form_name": "progress_report_4",
-    "section_header": "",
-    "field_type": "descriptive",
-    "field_label": "Congratulations! You have completed the final week of our Mobile Measures Month. Thank you for participating. We just have some final questions about your experience with our mobile measures system. These will be available for you to answer for the next week.",
-    "select_choices_or_calculations": "",
-    "field_note": "",
-    "text_validation_type_or_show_slider_number": "",
-    "text_validation_min": "",
-    "text_validation_max": "",
-    "identifier": "",
-    "branching_logic": "",
-    "required_field": "",
-    "custom_alignment": "",
-    "question_number": "",
-    "matrix_group_name": "",
-    "matrix_ranking": "",
-    "field_annotation": "",
-    "evaluated_logic": ""
-  },
+  // {
+  //   "field_name": "progress_report4",
+  //   "form_name": "progress_report_4",
+  //   "section_header": "",
+  //   "field_type": "descriptive",
+  //   "field_label": "Congratulations! You have completed the final week of our Mobile Measures Month. Thank you for participating. We just have some final questions about your experience with our mobile measures system. These will be available for you to answer for the next week.",
+  //   "select_choices_or_calculations": "",
+  //   "field_note": "",
+  //   "text_validation_type_or_show_slider_number": "",
+  //   "text_validation_min": "",
+  //   "text_validation_max": "",
+  //   "identifier": "",
+  //   "branching_logic": "",
+  //   "required_field": "",
+  //   "custom_alignment": "",
+  //   "question_number": "",
+  //   "matrix_group_name": "",
+  //   "matrix_ranking": "",
+  //   "field_annotation": "",
+  //   "evaluated_logic": ""
+  // },
   {
     "field_name": "phq8_1",
     "form_name": "phq8",
@@ -225,68 +225,68 @@ export const sample_field_types_en = [
     "field_annotation": "",
     "evaluated_logic": ""
   },
-  {
-    "field_name": "audio_2",
-    "form_name": "audio",
-    "section_header": "Speech test",
-    "field_type": "audio",
-    "field_label": "",
-    "select_choices_or_calculations": [
-      {
-        "label": "Go placidly amid the noise and haste, and remember what peace there may be in silence. As far as possible, without surrender, be on good terms with all persons. Speak your truth quietly and clearly; and listen to others, even to the dull and ignorant; they too have their story.",
-        "code": "P1"
-      },
-      {
-        "label": "Avoid loud and aggressive persons, they are vexations to the spirit. If you compare yourself with others, you may become vain and bitter, for always there will be greater and lesser persons than yourself. Enjoy your achievements as well as your plans.",
-        "code": "P2"
-      },
-      {
-        "label": "Keep interested in your own career, however humble; it is a real possession in the changing fortunes of time. Exercise caution in your business affairs, for the world is full of trickery. But let this not blind you to what virtue there is; many persons strive for high ideals, and everywhere life is full of heroism.",
-        "code": "P3"
-      }
-    ],
-    "field_note": "",
-    "text_validation_type_or_show_slider_number": "",
-    "text_validation_min": "",
-    "text_validation_max": "",
-    "identifier": "",
-    "branching_logic": "",
-    "required_field": "",
-    "custom_alignment": "",
-    "question_number": "",
-    "matrix_group_name": "audio",
-    "matrix_ranking": "",
-    "field_annotation": "",
-    "evaluated_logic": ""
-  },
-  {
-    "field_name": "2MW_test_2",
-    "form_name": "2MW_test",
-    "section_header": "2MW Test",
-    "field_type": "timed",
-    "field_label": "Start walking back and forth.",
-    "select_choices_or_calculations": [],
-    "field_note": "",
-    "text_validation_type_or_show_slider_number": "",
-    "text_validation_min": "",
-    "text_validation_max": "",
-    "identifier": "",
-    "branching_logic": "",
-    "required_field": "",
-    "custom_alignment": "",
-    "question_number": "",
-    "matrix_group_name": "2MW",
-    "matrix_ranking": "",
-    "field_annotation": {
-      "image": "assets/imgs/2MWT_walking.png",
-      "timer": {
-        "start": 10,
-        "end": 0
-      },
-      "unit": "sec"
-    },
-    "evaluated_logic": ""
-  },
+  // {
+  //   "field_name": "audio_2",
+  //   "form_name": "audio",
+  //   "section_header": "Speech test",
+  //   "field_type": "audio",
+  //   "field_label": "",
+  //   "select_choices_or_calculations": [
+  //     {
+  //       "label": "Go placidly amid the noise and haste, and remember what peace there may be in silence. As far as possible, without surrender, be on good terms with all persons. Speak your truth quietly and clearly; and listen to others, even to the dull and ignorant; they too have their story.",
+  //       "code": "P1"
+  //     },
+  //     {
+  //       "label": "Avoid loud and aggressive persons, they are vexations to the spirit. If you compare yourself with others, you may become vain and bitter, for always there will be greater and lesser persons than yourself. Enjoy your achievements as well as your plans.",
+  //       "code": "P2"
+  //     },
+  //     {
+  //       "label": "Keep interested in your own career, however humble; it is a real possession in the changing fortunes of time. Exercise caution in your business affairs, for the world is full of trickery. But let this not blind you to what virtue there is; many persons strive for high ideals, and everywhere life is full of heroism.",
+  //       "code": "P3"
+  //     }
+  //   ],
+  //   "field_note": "",
+  //   "text_validation_type_or_show_slider_number": "",
+  //   "text_validation_min": "",
+  //   "text_validation_max": "",
+  //   "identifier": "",
+  //   "branching_logic": "",
+  //   "required_field": "",
+  //   "custom_alignment": "",
+  //   "question_number": "",
+  //   "matrix_group_name": "audio",
+  //   "matrix_ranking": "",
+  //   "field_annotation": "",
+  //   "evaluated_logic": ""
+  // },
+  // {
+  //   "field_name": "2MW_test_2",
+  //   "form_name": "2MW_test",
+  //   "section_header": "2MW Test",
+  //   "field_type": "timed",
+  //   "field_label": "Start walking back and forth.",
+  //   "select_choices_or_calculations": [],
+  //   "field_note": "",
+  //   "text_validation_type_or_show_slider_number": "",
+  //   "text_validation_min": "",
+  //   "text_validation_max": "",
+  //   "identifier": "",
+  //   "branching_logic": "",
+  //   "required_field": "",
+  //   "custom_alignment": "",
+  //   "question_number": "",
+  //   "matrix_group_name": "2MW",
+  //   "matrix_ranking": "",
+  //   "field_annotation": {
+  //     "image": "assets/imgs/2MWT_walking.png",
+  //     "timer": {
+  //       "start": 10,
+  //       "end": 0
+  //     },
+  //     "unit": "sec"
+  //   },
+  //   "evaluated_logic": ""
+  // },
   {
       "field_name": "text_plain",
       "form_name": "plain_text_test",

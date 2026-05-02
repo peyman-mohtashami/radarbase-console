@@ -46,7 +46,6 @@ export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppC
   differences: { name: string; originalValue?: string; newValue?: string;}[] = [];
 
   override ngOnInit() {
-    console.log('Class: ConfigPublishDialogComponent, Function: ngOnInit, Line 49 this.dialogData' , this.dialogData);
     this.dialogData.updatedList.forEach(config => {
       const originalConfig = this.dialogData.originalList.find(originalConfig => originalConfig.name === config.name);
       if (originalConfig?._name !== config._name || originalConfig?.value !== config.value) {

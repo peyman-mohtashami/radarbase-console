@@ -44,13 +44,9 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
   }
 
   ngAfterViewInit() {
-    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 47 ' , );
     const containerId = this.dialogData.id;
-    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 49 ' , containerId);
     const innerContainer = document.getElementById(containerId);
-    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 51 ' , innerContainer);
     const panel = innerContainer?.closest('.tailwind-slide-panel');
-    console.log('Class: BaseEntityDialogComponent, Function: ngAfterViewInit, Line 53 panel' , panel);
     setTimeout(() => {
       panel?.classList.add('dialog-enter-active');
     });
@@ -78,7 +74,6 @@ export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDe
   }
 
   protected handleSaveAction(): void {
-    console.log('Class: BaseEntityDialogComponent, Function: handleSaveAction, Line 76 this.dialogData.mode, this.dialogData.entity, this.form.getRawValue() ' , this.dialogData.mode, this.dialogData.entity, this.form.getRawValue() );
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: {

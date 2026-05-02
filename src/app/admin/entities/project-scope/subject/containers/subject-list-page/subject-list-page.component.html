@@ -33,7 +33,8 @@
                       (switchSortEvent)="switchSort($event)"
                       [customTemplate]="itemTemplate"
                       [gridView]="gridView"
-                      [totalEntities]="entityService.total()"/>
+                      [totalEntities]="entityService.total()"
+                      [selection]="selection"/>
 <ng-template #itemTemplate let-entity>
   <app-subject-table-row [entity]="entity"
                          [gridView]="gridView"

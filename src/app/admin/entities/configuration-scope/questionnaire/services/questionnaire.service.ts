@@ -56,7 +56,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
 
     return radarConfigBundleObservable.pipe(
       map(configBundle => {
-        console.log('Class: QuestionnaireService, Function: , Line 65 configBundle' , configBundle);
           const radarConfigs = getConfigsFromConfigBundle(configBundle);
           const groupedQuestionnaires = radarConfigs.reduce((acc: Record<string, Record<string, RadarQuestion[]>>, cur) => {
             const name = cur.name;
@@ -71,12 +70,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
               questions: groupedQuestionnaires[key]
             }
           });
-          console.log('Class: QuestionnaireService, Function: , Line 80 questionnaireArray' , questionnaireArray);
           return questionnaireArray.map(q => this.radarToAppModel(q));
         }
       ),
       tap((entities) => {
-        console.log('Class: QuestionnaireService, Function: , Line 82 entities' , entities);
         this.cache = [...entities];
         this.updatedList = [...entities];
         this.cacheLoaded = true;
@@ -138,15 +135,11 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   private toQuestionAppModel(source: Record<string, RadarQuestion[]>): AppQuestion[] {
-    console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 151 source' , source);
     const languages = Object.keys(source);
-    console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 153 languages' , languages);
     const firstLang = languages[0];
-    console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 155 firstLang' , firstLang);
     // console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 156 source[firstLang]' , source[firstLang]);
     // console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 156 source[firstLang].toString()' , source[firstLang].toString());
     // console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 157 JSON.parse(source[firstLang].toString()' , JSON.parse(source[firstLang].toString()));
-    console.log('Class: QuestionnaireService, Function: toQuestionAppModel, Line 159 source[firstLang]' , source[firstLang]);
     // return (JSON.parse(source[firstLang].toString()) as RadarQuestion[]).map((item) => {
     return (source[firstLang] as RadarQuestion[]).map((item) => {
       return {
@@ -206,7 +199,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   radarToAppModel(entity: RadarQuestionnaire): AppQuestionnaire {
-    console.log('Class: QuestionnaireService, Function: radarToAppModel, Line 209 entity' , entity);
     return {
       name: entity.name,
       languages: entity.languages.map(l => ISO_LANGUAGES_MAP[l]),

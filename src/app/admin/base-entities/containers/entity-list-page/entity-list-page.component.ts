@@ -37,31 +37,35 @@ export class EntityListPageComponent {
   gridView = input<boolean>(false);
   totalEntities = input.required<number>();
 
+  selection = input<SelectionModel<any>>(new SelectionModel<any>(true, []));
+
   switchPageEvent = output<PageEvent>();
   switchSortEvent = output<TableElement>();
   activeQueryChangeEvent = output<RbPageSortEvent>();
 
   extensionClass = signal('hidden');
 
-  selection = new SelectionModel<unknown>(true, []);
+  // selection = new SelectionModel<unknown>(true, []);
 
   /** Selection Helper Methods */
   isAllSelected() {
-    return this.selection.selected.length === this.entities().length;
+    return this.selection().selected.length === this.entities().length;
   }
 
   masterToggle() {
-    console.log('Class: EntitiesPageComponent, Function: masterToggle, Line 52 ' , );
+    console.log('Class: EntityListPageComponent, Function: masterToggle, Line 54 ' , );
     if (this.isAllSelected()) {
-      this.selection.clear();
+      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 56 ' , );
+      this.selection().clear();
     } else {
-      this.selection.select(...this.entities());
+      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 59 ' , );
+      this.selection().select(...this.entities());
     }
   }
 
   checkboxLabel(row?: {position: number}): string {
     return row
-      ? `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
+      ? `${this.selection().isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`
       : `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   }
 

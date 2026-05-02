@@ -1,0 +1,40 @@
+<!--<div class="flex justify-center mt-8 text-center  value-number">-->
+<!--  <span class="bg-primary text-on-primary rounded-full px-4 py-1 text-lg">{{ selectedValue ?? 'N/A' }}</span>-->
+<!--</div>-->
+
+@if (question().range; as range) {
+  <mat-slider class="w-full"
+    [disabled]="isDisabled"
+    [max]="range.max"
+    [min]="range.min"
+    [step]="range.step ?? 1"
+    [discrete]="true"
+    [showTickMarks]="true"
+    color="primary">
+    <input matSliderThumb [value]="+(selectedValue ?? range.min)" (valueChange)="onInputChange($event)">
+  </mat-slider>
+<!--  <ion-range [min]="range.min"-->
+<!--             [max]="range.max"-->
+<!--             [step]="range.step ?? 1"-->
+<!--             [snaps]="true"-->
+<!--             [pin]="true"-->
+<!--             [ticks]="true"-->
+<!--             color="primary"-->
+<!--             [value]="+(selectedValue ?? range.min)"-->
+<!--             (ionInput)="onInputChange($event.detail.value.toString())"-->
+<!--             [disabled]="isDisabled">-->
+<!--    <ion-label slot="start">{{ range.min }}</ion-label>-->
+<!--    <ion-label slot="end">{{ range.max }}</ion-label>-->
+<!--  </ion-range>-->
+
+  <div class="flex justify-between text-sm">
+    <div class="w-1/2" [innerHtml]="range.labelLeft | replacePlaceholders"></div>
+    <div class="w-1/2 text-right" [innerHtml]="range.labelRight | replacePlaceholders"></div>
+  </div>
+}
+
+@if (!isDisabled) {
+  <button matButton class="m-4" (click)="onReset()" color="danger" size="small">
+    Clear
+  </button>
+}

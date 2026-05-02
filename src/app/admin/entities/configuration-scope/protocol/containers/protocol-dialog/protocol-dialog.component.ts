@@ -16,7 +16,7 @@ import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {AppProtocol, FormProtocol} from "../../models/protocol";
 import {ProtocolConfigService} from "../../services/protocol-config.service";
 import {DialogActionsComponent} from "../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+// import {EditorComponent} from "ngx-monaco-editor-v2";
 import {MatTooltip} from "@angular/material/tooltip";
 
 import {MatStep, MatStepLabel, MatStepper} from "@angular/material/stepper";
@@ -53,7 +53,7 @@ import {
     DialogActionsComponent,
     MatIconButton,
     FormsModule,
-    EditorComponent,
+    // EditorComponent,
     MatTooltip,
     MatStepper,
     ProtocolStepGeneral,
@@ -129,12 +129,8 @@ export class ProtocolDialogComponent extends BaseEntityDialogComponent<AppProtoc
       _name: value.general.name,
       ...value
     };
-    // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 172 updatedEntity' , updatedEntity);
-    // console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 173 this.entityService' , this.entityService.toRadarModel(updatedEntity));
     const appProtocol = this.entityService.formToAppModel(updatedEntity);
-    console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 177 appProtocol' , appProtocol);
     const radarProtocol = this.entityService.appToRadarModel(appProtocol);
-    console.log('Class: ProtocolDialogComponent, Function: handleSaveAction, Line 179 radarProtocol' , radarProtocol);
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
       entity: appProtocol,

@@ -3,13 +3,12 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {debounceTime} from 'rxjs/operators';
 import {
   Validator,
-  ValidatorHint,
   ValidatorError,
 } from '../../../../shared/utils/validators';
 import {ProfileService} from '../../services/profile.service';
-import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatError, MatHint, MatInput} from "@angular/material/input";
+import {MatError, MatInput} from "@angular/material/input";
 import {MatFormField} from "@angular/material/select";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -31,18 +30,15 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
     ReactiveFormsModule,
     MatFormField,
     MatInput,
-    MatHint,
     MatError,
     MatButton,
     MatIcon,
     MatCardTitle,
-    MatCardSubtitle,
     MatProgressSpinner,
     ErrorMessageBoxComponent
   ]
 })
 export class ProfilePageComponent implements OnInit {
-  protected readonly ValidatorHint = ValidatorHint;
   protected readonly ValidatorError = ValidatorError;
 
   private profileService = inject(ProfileService);

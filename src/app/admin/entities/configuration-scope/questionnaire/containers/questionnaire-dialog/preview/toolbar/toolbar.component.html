@@ -1,0 +1,51 @@
+<div class="h-1 toolbar-progress-bar bg-primary"
+     [style.width]="Math.ceil((this.currentQuestionId()) * 100) / this.totalQuestions() + '%'">
+</div>
+
+<mat-toolbar>
+  <button matButton
+          class="text-sm flex items-center"
+          aria-label="Example icon-button with menu icon"
+          [disabled]="isLeftButtonDisabled()"
+          (click)="leftButtonHandler()">
+
+    <span class="flex items-center">
+      @if (!currentQuestionId()) {
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+        <span class="font-bold">{{ 'Close' | translate }}</span>
+      } @else {
+        <mat-icon class="material-symbols-outlined">chevron_left</mat-icon>
+        <div class="mx-2 font-bold">{{ 'Previous' | translate }}</div>
+      }
+    </span>
+  </button>
+
+  <span class="flex-auto">
+    @if (isProgressCountShown()) {
+      {{ currentQuestionId() + 1 + '/' + totalQuestions() }}
+    }
+  </span>
+
+  <button matButton
+          class="text-sm flex items-center"
+          aria-label="Example icon-button with heart icon"
+          [class]="isRightButtonDisabled() ? 'opacity-50' : ''" (click)="rightButtonHandler()">
+    <span class="flex items-center">
+      <span class="mx-2 font-bold">
+        @if (currentQuestionId() === totalQuestions() - 1) {
+          {{ 'Finish' | translate }}
+        } @else {
+          {{ 'Next' | translate }}
+        }
+      </span>
+      <mat-icon class="material-symbols-outlined">chevron_right</mat-icon>
+    </span>
+  </button>
+
+</mat-toolbar>
+
+<!--<ion-alert [isOpen]="isDisabledButtonAlertOpen"-->
+<!--           [header]="'This question is required'"-->
+<!--           [message]="'Please answer this question before proceeding.'"-->
+<!--           [buttons]="[{text: 'BTN_DISMISS' | translate}]"-->
+<!--           (didDismiss)="isDisabledButtonAlertOpen = false"/>-->

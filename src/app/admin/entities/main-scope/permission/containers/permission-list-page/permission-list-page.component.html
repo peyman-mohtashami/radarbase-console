@@ -34,5 +34,8 @@
   <app-permission-table-row [entity]="entity"
                             [gridView]="gridView"
                             [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
-                            [extensionClass]="extensionClass()" />
+                            [extensionClass]="extensionClass()"
+                            [organizationName]="currentOrganization?.name"
+                            [projectName]="currentProject?.projectName"
+                            [user]="authService.user()" />
 </ng-template>

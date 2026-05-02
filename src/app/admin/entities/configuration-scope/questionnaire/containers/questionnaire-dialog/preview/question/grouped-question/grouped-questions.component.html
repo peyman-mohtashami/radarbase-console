@@ -1,0 +1,108 @@
+<p>LLL</p>
+<!--<app-scrollable-content>-->
+<!--&lt;!&ndash;  @if (isHealthKitQuestionsList) {&ndash;&gt;-->
+<!--&lt;!&ndash;    <app-health-input [questionsList]="questionsList"&ndash;&gt;-->
+<!--&lt;!&ndash;                      (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;  } @else {&ndash;&gt;-->
+<!--    @for (question of questionsList; track question; let i = $index) {-->
+<!--      @if (question.showQuestion) {-->
+<!--        <app-question-header [question]="question" [sectionHeader]="i === 0"/>-->
+<!--        @switch (question.field_type) {-->
+<!--          @case ("matrix-radio") {-->
+<!--            @if ((question.select_choices_or_calculations?.length ?? 0) > 2) {-->
+<!--              <app-radio-input [question]="question"-->
+<!--                               (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--            } @else {-->
+<!--              <app-matrix-radio-input [question]="question"-->
+<!--                                      [answer]="answers()?.[question.field_name]?.[0]"-->
+<!--                                      (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--            }-->
+<!--          }-->
+<!--          @case ('yesno') {-->
+<!--            <app-yesno-input [question]="question"-->
+<!--                             (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('checkbox') {-->
+<!--            <app-checkbox-input [question]="question"-->
+<!--                                (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('range') {-->
+<!--            <app-range-input [question]="question"-->
+<!--                             (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('range-info') {-->
+<!--            <app-range-info-input [question]="question"-->
+<!--                                  (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('slider') {-->
+<!--            <app-slider-input [question]="question"-->
+<!--                              (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('text') {-->
+<!--            <app-text-input [question]="question"-->
+<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('duration') {-->
+<!--            <app-time-input [question]="question" [isMeridianEnabled]="false"-->
+<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--            &lt;!&ndash;          <app-duration-input [question$]="question"&ndash;&gt;-->
+<!--              &lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)" />&ndash;&gt;-->
+<!--          }-->
+<!--          @case ('time') {-->
+<!--            <app-time-input [question]="question"-->
+<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--          @case ('date') {-->
+<!--            <app-date-input [question]="question"-->
+<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
+<!--          }-->
+<!--&lt;!&ndash;          @case('health') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                              [questionsList]="questionsList"&ndash;&gt;-->
+<!--&lt;!&ndash;                              (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('healthkit') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;                            [refTimestamp]="0" />&ndash;&gt;-->
+<!--              &lt;!&ndash;                            [currentlyShown]="true"&ndash;&gt;-->
+
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--        }-->
+<!--      }-->
+<!--    }-->
+<!--&lt;!&ndash;  }&ndash;&gt;-->
+<!--</app-scrollable-content>-->
+
+
+<!--&lt;!&ndash;<div [class.fade]="!currentlyShown" [class.content-matrix]="true" style="padding: 16px;">&ndash;&gt;-->
+<!--&lt;!&ndash;  <div class="" style="padding-bottom: 4px;">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    @if (!isSectionHeaderHidden()) {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      <p [innerHtml]="question().section_header | replacePlaceholders"></p>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="field-container" [class.field-container-matrix]="true">&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2>&ndash;&gt;-->
+<!--&lt;!&ndash;        <span [innerHtml]="question().field_label | replacePlaceholders"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;        @if (question().required_field !== 'false') {&ndash;&gt;-->
+<!--&lt;!&ndash;          <span> *</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        } @else {&ndash;&gt;-->
+<!--&lt;!&ndash;          <span> (Optional)</span>&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;      </h2>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  <ion-radio-group (ionChange)="onInputChange($event.detail.value)">&ndash;&gt;-->
+<!--&lt;!&ndash;    <ion-row>&ndash;&gt;-->
+<!--&lt;!&ndash;      @for (item of question().select_choices_or_calculations; track item.code) {&ndash;&gt;-->
+<!--&lt;!&ndash;        <ion-col>&ndash;&gt;-->
+<!--&lt;!&ndash;          &lt;!&ndash;        {{selected}} / {{item.code}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <ion-item color="none" lines="none" class="item-md" [class.checked]="selected === item.code">&ndash;&gt;-->
+<!--&lt;!&ndash;            <ion-radio [value]="item.code">&ndash;&gt;-->
+<!--&lt;!&ndash;              <span class="ion-text-wrap">{{ item.label }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ion-radio>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ion-item>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ion-col>&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+<!--&lt;!&ndash;    </ion-row>&ndash;&gt;-->
+<!--&lt;!&ndash;  </ion-radio-group>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->

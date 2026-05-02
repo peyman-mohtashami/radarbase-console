@@ -7,8 +7,10 @@
             mat-stroked-button
             color='primary'
             (click)='assignGroupToSubjects($event)'>
-      <mat-icon>add</mat-icon>
-      <span>{{ "ADMIN.subject.assignGroupDialog.button" | translate }}</span>
+      <span class="text-sm font-bold flex items-center gap-2">
+        <mat-icon class="text-base! material-symbols-outlined">add</mat-icon>
+        {{ "ADMIN.subject.assignGroupDialog.button" | translate }}
+      </span>
     </button>
   }
 </div>

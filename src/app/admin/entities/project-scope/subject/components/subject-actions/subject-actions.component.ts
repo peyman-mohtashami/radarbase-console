@@ -35,7 +35,6 @@ export class SubjectActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: SubjectDialogMode) {
-    console.log('Class: ActionsComponent, Function: onAction, Line 36 mode' , mode);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'preserve',

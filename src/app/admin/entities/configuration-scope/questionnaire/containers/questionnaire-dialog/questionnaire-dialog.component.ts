@@ -25,7 +25,7 @@ import {
   MatSelectAutocompleteComponent
 } from "../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {RadarOption} from "../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {EditorComponent} from "ngx-monaco-editor-v2";
+// import {EditorComponent} from "ngx-monaco-editor-v2";
 import {MatIconButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {QuestionsFormArrayComponent} from './components/questions-form-array/questions-form-array.component';
@@ -38,6 +38,8 @@ import {
   DialogTitleComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {QuestionnaireStateService} from './services/questionnaire-state.service';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {QuestionsPageComponent} from './preview/questions-page/questions-page.component';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -52,13 +54,16 @@ import {QuestionnaireStateService} from './services/questionnaire-state.service'
     DialogActionsComponent,
     MatSelectAutocompleteComponent,
     QuestionsFormArrayComponent,
-    EditorComponent,
+    // EditorComponent,
     FormsModule,
     MatIconButton,
     MatTooltip,
     ErrorMessageBoxComponent,
     DialogTitleComponent,
     MatError,
+    MatTabGroup,
+    MatTab,
+    QuestionsPageComponent,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
@@ -75,16 +80,16 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
   protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
 
-  editorOptions = {
-    language: 'json',
-    automaticLayout: true,
-    scrollBeyondLastLine: false,
-    wordWrap: 'on'
-  };
+  // editorOptions = {
+  //   language: 'json',
+  //   automaticLayout: true,
+  //   scrollBeyondLastLine: false,
+  //   wordWrap: 'on'
+  // };
   protected showCode = false;
 
   // updatedValue?: AppQuestionnaire;
-  updatedCode = '';
+  // updatedCode = '';
 
   override formFields = this.configService.getFormFields();
 

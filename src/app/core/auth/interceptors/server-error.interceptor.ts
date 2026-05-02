@@ -27,9 +27,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log('Class: ServerErrorInterceptor, Function: intercept, Line 30 request.context.get(SKIP_ERROR)' , request.context.get(SKIP_ERROR));
     if (request.context.get(SKIP_ERROR)) {
-      console.log('Class: ServerErrorInterceptor, Function: intercept, Line 32 ' , );
       return next.handle(request).pipe(catchError((error) => throwError(() => error)));
     }
 
@@ -50,7 +48,6 @@ export class ServerErrorInterceptor implements HttpInterceptor {
               this.logService.logError(error);
               break;
             case 401: {
-              console.log('Class: ServerErrorInterceptor, Function: , Line 53 ' , request.url );
               this.dialogRef.closeAll();
               this.authService.setUser(null);
               if (!request.url.includes('api/account')) {
@@ -59,7 +56,6 @@ export class ServerErrorInterceptor implements HttpInterceptor {
                     error: 'sessionExpired',
                   },
                 };
-                console.log('Class: ServerErrorInterceptor, Function: , Line 62 ' , );
                 this.router.navigate(['/auth/login'], navigationExtras).then();
               }
               break;

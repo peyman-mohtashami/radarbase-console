@@ -10,7 +10,7 @@
                           [detailType]="DetailType.TABLE"
                           [organizationName]="organizationName()"
                           [projectName]="projectName()"/>
-  <app-permission-actions extra-actions [entity]="entity()" [isExpanded]="true"/>
+  <app-permission-actions extra-actions [entity]="entity()" [isExpanded]="true" [disabled]="isDisabled()"/>
 </app-entity-table-row>
 
 <ng-template #entityTemplate let-property>

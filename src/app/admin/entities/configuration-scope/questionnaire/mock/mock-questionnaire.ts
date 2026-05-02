@@ -66,7 +66,7 @@ export function postAppQuestionnaires(configs: AppConfig[], clientId: string, pr
   return getQuestionnaires(clientId, projectId, subjectId);
 }
 
-const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];
+const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
 const radarQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
 export const sub29QuestionnairesRadarConfigs = [...audio];
 

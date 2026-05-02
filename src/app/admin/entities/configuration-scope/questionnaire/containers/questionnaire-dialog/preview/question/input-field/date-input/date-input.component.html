@@ -1,0 +1,23 @@
+<mat-form-field>
+  <mat-label>Choose a date</mat-label>
+  <input matInput [matDatepicker]="picker" [value]="selectedValue" (input)="onDateChange($event)">
+  <mat-hint>MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<!--<ion-datetime class="border-2 rounded-lg"-->
+<!--              #datetime-->
+<!--              [locale]="locale"-->
+<!--              [presentation]="'date'"-->
+<!--              [min]="min"-->
+<!--              [max]="max"-->
+<!--              [value]="selectedValue"-->
+<!--              (ionChange)="onDateChange($event)"-->
+<!--              [disabled]="isDisabled"/>-->
+
+@if (!isDisabled) {
+  <button matButton class="m-4" (click)="onReset()" color="danger" size="small">
+    Clear
+  </button>
+}
