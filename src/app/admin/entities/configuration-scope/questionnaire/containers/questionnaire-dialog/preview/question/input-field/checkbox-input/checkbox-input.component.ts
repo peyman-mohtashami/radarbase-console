@@ -1,22 +1,21 @@
-import { Component, OnInit } from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 
-import { IonButton, IonCheckbox, IonItem } from '@ionic/angular/standalone'
-// import { ReplacePlaceholdersPipe } from '../../../../pipes/replace-placeholders.pipe'
 import { BaseInputComponent } from '../base-input/base-input.component'
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatButton} from '@angular/material/button';
 
 export interface CheckBoxItem {
-  checked: boolean; label: string; code: number | string
+  checked: boolean; label: Record<string, string>; code: number | string
 }
 
 @Component({
   selector: 'app-checkbox-input',
   templateUrl: 'checkbox-input.component.html',
-  imports: [IonItem, IonCheckbox, ReplacePlaceholdersPipe, IonButton, MatCheckbox, MatButton]
+  imports: [ReplacePlaceholdersPipe, MatCheckbox, MatButton]
 })
 export class CheckboxInputComponent extends BaseInputComponent implements OnInit {
+
   items: CheckBoxItem[] = []
   _selectedValue: string[] = []
 

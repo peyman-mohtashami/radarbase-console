@@ -12,7 +12,7 @@ import { RangeInputComponent } from '../range-input/range-input.component'
   imports: [RangeInputComponent]
 })
 export class RangeInfoInputComponent extends RangeInputComponent implements OnInit {
-  itemDescription?: string
+  itemDescription?: Record<string, string>;
 
   override ngOnInit() {
     super.ngOnInit()

@@ -13,8 +13,10 @@ import {Injectable} from '@angular/core'
 // import {KafkaService} from "../../../core/data-ingestion/kafka/kafka.service";
 // import {ScheduleService} from "../../../core/app-lifecycle/schedule/schedule.service";
 import {evaluateConditionalLogic} from "./parsers";
-import {AppQuestion, QuestionType} from '../models/question';
+import {QuestionType} from '../models/question';
 import {AnswerWithTimeLog} from '../models/kafka';
+import {AppQuestion} from '../../../../models/questionnaire';
+
 // import {RemoteConfigService} from "../../../core/configuration/remote-config/remote-config.service";
 // import {ConfigKeys} from "../../../core/configuration/remote-config/enums/config";
 
@@ -28,7 +30,7 @@ export class QuestionsService {
   // private scheduleService = inject(ScheduleService);
 
   async groupQuestionsByMatrixGroup(questions: AppQuestion[]): Promise<Record<string, AppQuestion[]>> {
-    const autoNextQuestionnaireTypes = await this.getAutoNextQuestionnaireTypes();
+    // const autoNextQuestionnaireTypes = await this.getAutoNextQuestionnaireTypes();
     const groupedQuestions: Record<string, AppQuestion[]> = {};
     const fieldNames = new Set<string>();
 
@@ -59,7 +61,7 @@ export class QuestionsService {
       groupedQuestions[key].push({
         ...question,
         section_header: i > 0 && !section_header && matrix_group_name == questions[i - 1].matrix_group_name ? questions[i - 1].section_header : section_header,
-        isAutoNext: autoNextQuestionnaireTypes.has(field_type),
+        // isAutoNext: autoNextQuestionnaireTypes.has(field_type),
       });
     }
 
@@ -72,7 +74,7 @@ export class QuestionsService {
         const healthQuestion: AppQuestion = {
           field_name: firstQuestion.field_name,
           field_type: 'health',
-          field_label: firstQuestion.section_header,
+          field_label: firstQuestion.section_header ?? {},
           field_note: firstQuestion.field_note,
           select_choices_or_calculations: groupedQuestions[key].map(q => ({
             code: q.field_name,

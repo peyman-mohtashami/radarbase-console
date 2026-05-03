@@ -1,8 +1,6 @@
 import {Component, OnInit, output,} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {TranslateModule} from '@ngx-translate/core'
-// import { KeyboardEventType } from '../../../../../../core/data-ingestion/usage/enums/events'
-// import { Keyboard } from '@capacitor/keyboard'
 import {BaseInputComponent} from '../base-input/base-input.component'
 import {EMAIL_REGEX, isValidNHSNumber, URL_REGEX} from './validators'
 import {MatButton} from '@angular/material/button';
@@ -103,13 +101,4 @@ export class TextInputComponent extends BaseInputComponent implements OnInit {
     this.valueChange.emit(error ? null : this.selectedValue);
     this.error = error;
   }
-
-  // async emitKeyboardEvent(value: any) {
-  //   value = value.toLowerCase()
-  //   if (value === KeyboardEventType.ENTER) {
-  //     await Keyboard.hide()
-  //   }
-  //
-  //   this.keyboardEvent.emit(value)
-  // }
 }

@@ -16,17 +16,17 @@ export class CheckboxSvgInputComponent extends BaseInputComponent implements OnI
 
   override ngOnInit() {
     super.ngOnInit();
-    this.safeSvg = this.sanitizer.bypassSecurityTrustHtml(this.question().field_annotation);
-    setTimeout(() => {
-      this.attachClickHandlers();
-      document.querySelectorAll('svg path').forEach(path => {
-        if (this.selectedValue?.includes(path.id)) {
-          path.classList.add('active')
-        } else {
-          path.classList.remove('active')
-        }
-      });
-    }, 0);
+    // this.safeSvg = this.sanitizer.bypassSecurityTrustHtml(this.question().field_annotation);
+    // setTimeout(() => {
+    //   this.attachClickHandlers();
+    //   document.querySelectorAll('svg path').forEach(path => {
+    //     if (this.selectedValue?.includes(path.id)) {
+    //       path.classList.add('active')
+    //     } else {
+    //       path.classList.remove('active')
+    //     }
+    //   });
+    // }, 0);
   }
 
   attachClickHandlers() {

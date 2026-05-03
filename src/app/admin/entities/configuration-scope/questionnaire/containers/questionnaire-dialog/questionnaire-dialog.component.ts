@@ -38,8 +38,19 @@ import {
   DialogTitleComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {QuestionnaireStateService} from './services/questionnaire-state.service';
-import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {
+  MatTab,
+  MatTabContent,
+  MatTabGroup,
+  MatTabLabel,
+  MatTabLink,
+  MatTabNav,
+  MatTabNavPanel
+} from '@angular/material/tabs';
 import {QuestionsPageComponent} from './preview/questions-page/questions-page.component';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {RouterLinkActive, RouterOutlet} from '@angular/router';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -64,6 +75,15 @@ import {QuestionsPageComponent} from './preview/questions-page/questions-page.co
     MatTabGroup,
     MatTab,
     QuestionsPageComponent,
+    MatTabLink,
+    MatTabNav,
+    MatTabNavPanel,
+    PermissionDirective,
+    RouterLinkActive,
+    RouterOutlet,
+    MatTabLabel,
+    MatTabContent,
+    JsonPipe,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {

@@ -29,7 +29,7 @@ import {
 // // import {AnswerWithTimeLog} from "../../../../core/data-ingestion/kafka/models/kafka";
 // // import {SignatureInputComponent} from "./input-field/signature-input/signature-input.component";
 // import {HealthInputComponent} from "./input-field/health-input/health-input.component";
-import {AppQuestion, QuestionType} from '../models/question';
+import {QuestionType} from '../models/question';
 import {NextButtonEventType} from '../models/events';
 import {AnswerWithTimeLog} from '../models/kafka';
 import {ScrollableContentComponent} from './scrolable-content/scrollable-content.component';
@@ -46,6 +46,9 @@ import {TimeInputComponent} from './input-field/time-input/time-input.component'
 import {DateInputComponent} from './input-field/date-input/date-input.component';
 import {NotesInputComponent} from './input-field/notes-input/notes-input.component';
 import {InfoScreenComponent} from './input-field/info-screen/info-screen.component';
+import {AppQuestion} from '../../../../models/questionnaire';
+import {TimedTestComponent} from './input-field/timed-test/timed-test.component';
+import {AudioInputComponent} from './input-field/audio-input/audio-input.component';
 
 @Component({
   selector: 'app-question',
@@ -65,6 +68,8 @@ import {InfoScreenComponent} from './input-field/info-screen/info-screen.compone
     DateInputComponent,
     NotesInputComponent,
     InfoScreenComponent,
+    TimedTestComponent,
+    AudioInputComponent,
     // RadioInputComponent,
     // CheckboxInputComponent,
     // RangeInputComponent,
@@ -112,7 +117,7 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     /** Set question edit-ability based on the assessment settings */
-    this.question().editable = true; //this.protocol().editable
+    // this.question().editable = true; //this.protocol().editable
 
     this.startTime = Date.now()
 

@@ -6,16 +6,16 @@
   <div class="m-4">
     <div class="overflow-hidden rounded-lg text-center">
       @if (!isDisabled) {
-        <span class="text-7xl">{{ taskTimer.displayTime }}</span>
+        <span class="text-7xl">{{ taskTimer.displayTime() }}</span>
       } @else {
         <div class="text-lg">Done!</div>
       }
     </div>
 
     @if (!isDisabled) {
-      <ion-button shape="round" expand="full" (click)="startTimer()" [disabled]="taskTimer.hasStarted">
+      <button matButton class="m-4" (click)="startTimer()" [disabled]="taskTimer.hasStarted()" color="primary" size="small">
         {{ selectedValue ? "Start again" : "Start"}}
-      </ion-button>
+      </button>
     }
   </div>
 

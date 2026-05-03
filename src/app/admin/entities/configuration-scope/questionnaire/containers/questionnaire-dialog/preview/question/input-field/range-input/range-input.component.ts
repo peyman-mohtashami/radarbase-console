@@ -1,6 +1,4 @@
 import { Component, input, OnInit } from '@angular/core'
-// import { IonButton } from '@ionic/angular/standalone'
-// import { ReplacePlaceholdersPipe } from '../../../../pipes/replace-placeholders.pipe';
 import { BaseInputComponent } from '../base-input/base-input.component';
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
 import {MatButton} from '@angular/material/button';
@@ -10,7 +8,6 @@ import {MatButton} from '@angular/material/button';
   templateUrl: 'range-input.component.html',
   imports: [
     ReplacePlaceholdersPipe,
-    // IonButton,
     MatButton,
   ]
 })

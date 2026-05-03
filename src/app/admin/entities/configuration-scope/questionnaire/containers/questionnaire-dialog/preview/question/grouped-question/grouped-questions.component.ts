@@ -14,10 +14,11 @@ import { Component, input, OnInit, output } from '@angular/core'
 // import { SliderInputComponent } from '../input-field/slider-input/slider-input.component'
 // import { TimeInputComponent } from '../input-field/time-input/time-input.component'
 // import { YesnoInputComponent } from '../input-field/yesno-input/yesno-input.component'
-import {AppQuestion} from '../../models/question';
+// import {AppQuestion} from '../../models/question';
 import {AnswerWithTimeLog} from '../../models/kafka';
 import {NextButtonEventType} from '../../models/events';
 import {evaluateConditionalLogic} from '../../services/parsers';
+import {AppQuestion} from '../../../../../models/questionnaire';
 // import {evaluateConditionalLogic} from '../../../services/parsers'
 // import {AnswerWithTimeLog} from "../../../../../core/data-ingestion/kafka/models/kafka";
 

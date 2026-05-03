@@ -13,12 +13,12 @@ import {Component, inject, input, OnInit} from '@angular/core'
 // import {AppTask} from '../../../../core/app-lifecycle/schedule/models/task'
 // import {QuestionsService} from '../../services/questions.service'
 // import {IntroductionComponent} from '../../components/introduction/introduction.component'
-import {JsonPipe, KeyValuePipe} from '@angular/common'
+import {KeyValuePipe} from '@angular/common'
 // import {QuestionComponent} from '../../components/question/question.component'
 // import {ToolbarAction, ToolbarComponent} from '../../components/toolbar/toolbar.component'
 // import {FinishComponent} from '../../components/finish/finish.component'
-import {addIcons} from 'ionicons'
-import {closeCircleOutline, closeOutline} from 'ionicons/icons'
+// import {addIcons} from 'ionicons'
+// import {closeCircleOutline, closeOutline} from 'ionicons/icons'
 // import {GroupedQuestionsComponent} from '../../components/question/grouped-question/grouped-questions.component'
 // import {UsageService} from "../../../../core/data-ingestion/usage/usage.service";
 // import {
@@ -35,13 +35,14 @@ import {QuestionComponent} from '../question/question.component';
 import {GroupedQuestionsComponent} from '../question/grouped-question/grouped-questions.component';
 import {ToolbarAction, ToolbarComponent} from '../toolbar/toolbar.component';
 import {QuestionsService} from '../services/questions.service';
-import {AppQuestion} from '../models/question';
+// import {AppQuestion} from '../models/question';
 import {AnswerWithTimeLog} from '../models/kafka';
 import {NextButtonEventType} from '../models/events';
-import {AppQuestion as AppQuestion2} from '../../../../models/questionnaire';
+import {AppQuestion} from '../../../../models/questionnaire';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
+import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
 // import {AnswerWithTimeLog} from "../../../../core/data-ingestion/kafka/models/kafka";
 
 @Component({
@@ -64,17 +65,22 @@ import {MatIcon} from '@angular/material/icon';
     // IonFooter,
     MatToolbar,
     MatIconButton,
-    MatIcon,
-    JsonPipe,
+    // MatIcon,
+    // JsonPipe,
+    // MatButton,
+    // TranslatePipe,
   ]
 })
 export class QuestionsPageComponent implements OnInit {
 
   loading = true;
-  questions = input.required<any[]>();
+  questions = input.required<AppQuestion[]>();
   questionnaireName = input.required<string>();
+  languages = input.required<RadarOption[]>();
 
   private questionsService = inject(QuestionsService);
+  questionnaireStateService = inject(QuestionnaireStateService);
+
   // private usageService = inject(UsageService);
   // private platform = inject(Platform);
   // private router = inject(Router);
@@ -100,13 +106,13 @@ export class QuestionsPageComponent implements OnInit {
   // protected showFinish = false
 
 
-  constructor() {
-    addIcons({closeCircleOutline, closeOutline});
+  // constructor() {
+  //   addIcons({closeCircleOutline, closeOutline});
     // this.backButtonListener = this.platform.backButton.subscribe(() => {
     //   this.sendCompletionLog().then();
     //   (navigator as any)['app'].exitApp();
     // })
-  }
+  // }
 
   async ngOnInit(): Promise<void> {
     this.showProgressCount = await this.questionsService.getIsProgressCountShown();
@@ -148,18 +154,18 @@ export class QuestionsPageComponent implements OnInit {
     await this.startQuestionnaire();
   }
 
-  modifyQuestions(questions: AppQuestion2[]): AppQuestion[] {
+  modifyQuestions(questions: AppQuestion[]): AppQuestion[] {
     return questions.map(q => {
       return {
         field_name: q.field_name,
         field_type: q.field_type,
-        field_label: q.field_label['en'],
-        section_header: q.section_header?.['en'],
+        field_label: q.field_label,
+        section_header: q.section_header,
         required_field: q.required_field,
         select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
           return {
             code: c.code,
-            label: c.label['en']
+            label: c.label
           }
         }),
         matrix_group_name: q.matrix_group_name,
@@ -245,7 +251,7 @@ export class QuestionsPageComponent implements OnInit {
     const previousKeyName = Object.keys(this.groupedQuestions)[previousKeyIndex];
     this.currentQuestion = {index: previousKeyIndex, name: previousKeyName};
     if (this.questionsService.shouldShowQuestion(this.groupedQuestions[previousKeyName], this.answers)) {
-      this.updateToolbarButtons();
+      this.updateToolbarButtons('ENABLE');
     } else {
       this.previousQuestion();
     }

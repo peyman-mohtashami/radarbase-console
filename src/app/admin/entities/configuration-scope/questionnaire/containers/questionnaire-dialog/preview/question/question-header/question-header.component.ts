@@ -1,8 +1,7 @@
-import { Component, input } from '@angular/core'
-// import { AppQuestion } from '../../../../../core/app-lifecycle/questionnaire/models/question'
-// import { ReplacePlaceholdersPipe } from '../../../pipes/replace-placeholders.pipe'
-import {AppQuestion} from '../../models/question';
+import {Component, inject, input} from '@angular/core'
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
+import {AppQuestion} from '../../../../../models/questionnaire';
+import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
 
 @Component({
   selector: 'app-question-header',
@@ -14,4 +13,7 @@ export class QuestionHeaderComponent {
   label = input<boolean>(true);
   sectionHeader = input<boolean>(true);
   note = input<boolean>(true);
+
+  questionnaireStateService = inject(QuestionnaireStateService);
+
 }

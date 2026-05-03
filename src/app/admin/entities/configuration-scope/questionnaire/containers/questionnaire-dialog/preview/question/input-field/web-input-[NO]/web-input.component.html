@@ -1,19 +1,19 @@
 <div class="items">
-  @if (!inputValid) {
-    <ion-label>Please enter a valid NHS number.</ion-label>
-  }
-  <ion-item color="none" class="input" style="margin: 32px 0;">
-    <ion-input type="text"
-               enterkeyhint="next"
-               [maxlength]="15"
-               placeholder="Enter NHS number"
-               [(ngModel)]="textValue"
-               (ionChange)="emitAnswer('')"
-               (ionFocus)="emitKeyboardEvent('focus')"
-               (ionBlur)="emitKeyboardEvent('blur')"
-               (keyup)="emitKeyboardEvent($event.key)" />
-  </ion-item>
-  <ion-button class="bt bt--full policy" shape="round" expand="full" (click)="openUrl()">
-    Login to NHS
-  </ion-button>
+<!--  @if (!inputValid) {-->
+<!--    <ion-label>Please enter a valid NHS number.</ion-label>-->
+<!--  }-->
+<!--  <ion-item color="none" class="input" style="margin: 32px 0;">-->
+<!--    <ion-input type="text"-->
+<!--               enterkeyhint="next"-->
+<!--               [maxlength]="15"-->
+<!--               placeholder="Enter NHS number"-->
+<!--               [(ngModel)]="textValue"-->
+<!--               (ionChange)="emitAnswer('')"-->
+<!--               (ionFocus)="emitKeyboardEvent('focus')"-->
+<!--               (ionBlur)="emitKeyboardEvent('blur')"-->
+<!--               (keyup)="emitKeyboardEvent($event.key)" />-->
+<!--  </ion-item>-->
+<!--  <ion-button class="bt bt&#45;&#45;full policy" shape="round" expand="full" (click)="openUrl()">-->
+<!--    Login to NHS-->
+<!--  </ion-button>-->
 </div>

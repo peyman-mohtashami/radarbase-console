@@ -1,8 +1,10 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <app-range-input [question]="question()"
                  [answer]="answer()"
                  (valueChange)="onInputChange($event)"
                  [labelsDisabled]="true" />
 
 @if (itemDescription) {
-  <div class="mt-6 p-3 text-base rounded-lg" [innerHTML]="itemDescription"></div>
+  <div class="mt-6 p-3 text-base rounded-lg" [innerHTML]="itemDescription[selectedLanguage]"></div>
 }

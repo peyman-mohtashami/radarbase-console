@@ -5,20 +5,10 @@ import {
 import { FormsModule } from '@angular/forms'
 import { TranslateModule } from '@ngx-translate/core'
 import { BaseInputComponent } from '../base-input/base-input.component'
-import { IonButton, IonDatetime } from '@ionic/angular/standalone'
 import {MatButton} from '@angular/material/button';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
-// import { LocalizationService } from '../../../../../../core/app-lifecycle/localization/localization.service'
 
-export interface TaskTimer {
-  duration: number
-  secondsElapsed: number
-  secondsRemaining: number
-  hasStarted: boolean
-  hasFinished: boolean
-  displayTime: number
-}
 
 
 @Component({
@@ -27,8 +17,8 @@ export interface TaskTimer {
   imports: [
     FormsModule,
     TranslateModule,
-    IonButton,
-    IonDatetime,
+    // IonButton,
+    // IonDatetime,
     MatButton,
     MatFormField,
     MatLabel,
@@ -76,13 +66,13 @@ export class TimeInputComponent extends BaseInputComponent implements OnInit {
   }
 
   private calculateConstraints() {
-    const { field_annotation } = this.question()
-    if (field_annotation.includes("@NOFUTURE")) {
-      this.max = new Date().toISOString();
-    }
-    if (field_annotation.includes("@NOPAST")) {
-      this.min = new Date().toISOString();
-    }
+    // const { field_annotation } = this.question()
+    // if (field_annotation.includes("@NOFUTURE")) {
+    //   this.max = new Date().toISOString();
+    // }
+    // if (field_annotation.includes("@NOPAST")) {
+    //   this.min = new Date().toISOString();
+    // }
   }
 
   // onPickerChange(isoString?: string) {

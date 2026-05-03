@@ -1,8 +1,10 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
   @for (option of question().select_choices_or_calculations; track option.code) {
     <div>
       <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)" [disabled]="isDisabled">
-        <span class="ion-text-wrap" [innerHtml]="option.label | replacePlaceholders"></span>
+        <span class="ion-text-wrap" [innerHtml]="option.label[selectedLanguage] | replacePlaceholders"></span>
       </mat-radio-button>
     </div>
   }

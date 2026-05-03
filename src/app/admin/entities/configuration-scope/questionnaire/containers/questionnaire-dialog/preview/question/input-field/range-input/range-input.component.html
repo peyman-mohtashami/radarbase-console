@@ -1,3 +1,5 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <div class="flex flex-nowrap items-center">
   @for (item of items; track item) {
     <div
@@ -11,8 +13,8 @@
 
 @if (!labelsDisabled() && question().select_choices_or_calculations; as choices) {
   <div class="flex justify-between mt-2">
-    <div class="w-1/2" [innerHtml]="choices[0].label | replacePlaceholders"></div>
-    <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label | replacePlaceholders"></div>
+    <div class="w-1/2" [innerHtml]="choices[0].label[selectedLanguage] | replacePlaceholders"></div>
+    <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label[selectedLanguage] | replacePlaceholders"></div>
   </div>
 }
 

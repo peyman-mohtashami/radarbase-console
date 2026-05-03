@@ -1,13 +1,13 @@
-<ion-textarea class=""
-              fill="outline"
-              [autoGrow]="true"
-              [value]="selectedValue"
-              [rows]="5"
-              (ionInput)="onInputChange($event.detail.value ?? '')"
-              (ionFocus)="emitKeyboardEvent($event)"
-              (ionBlur)="emitKeyboardEvent($event)"
-              (keyup)="emitKeyboardEvent($event)"
-              [disabled]="isDisabled"/>
+<!--<ion-textarea class=""-->
+<!--              fill="outline"-->
+<!--              [autoGrow]="true"-->
+<!--              [value]="selectedValue"-->
+<!--              [rows]="5"-->
+<!--              (ionInput)="onInputChange($event.detail.value ?? '')"-->
+<!--              (ionFocus)="emitKeyboardEvent($event)"-->
+<!--              (ionBlur)="emitKeyboardEvent($event)"-->
+<!--              (keyup)="emitKeyboardEvent($event)"-->
+<!--              [disabled]="isDisabled"/>-->
 
 @if (!isDisabled) {
   <button matButton class="m-4" (click)="onReset()" color="danger" size="small">

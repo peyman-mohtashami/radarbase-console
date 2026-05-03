@@ -1,8 +1,29 @@
-<div class="flex flex-col h-full w-80 m-auto border-2 border-gray-300 rounded-lg">
-<mat-toolbar>
-  <button matIconButton class="" aria-label="Example icon-button with menu icon">
-    <mat-icon class="material-symbols-outlined">close</mat-icon>
-  </button>
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">
+  <span class="font-bold">{{ questionnaireName() }}
+<!--    {{ `${_prefix}.questionsLabel` | translate }}-->
+  </span>
+  <div class="flex gap-2 items-center">
+    <div class='small-input text-sm flex justify-end gap-1'>
+      @for (language of languages(); track language) {
+        <button mat-icon-button class="tiny uppercase"
+                (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'
+                [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+            <span class="h-full flex items-center justify-center">
+              <span class="text-sm font-bold">{{ language.id }}</span>
+            </span>
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col h-[90%] w-80 m-auto border-2 border-gray-300 rounded-lg">
+<mat-toolbar class="shrink-0">
+<!--  <button matIconButton class="" aria-label="Example icon-button with menu icon">-->
+<!--    <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+<!--  </button>-->
   <span>{{ questionnaireName() }}</span>
 <!--  <span class="flex-auto">Questionnaire name</span>-->
 <!--  <button matIconButton class="" aria-label="Example icon-button with heart icon">-->
@@ -37,7 +58,7 @@
 <!--    } @else {-->
 <!--  {{groupedQuestions | json}}-->
 <!--  {{groupedQuestions['progress_report4'] | json}}-->
-  <div class="grow shrink-0 overflow-auto">
+  <div class="grow overflow-auto">
 <!--    @for (item of groupedQuestions | keyvalue: originalOrder; track item; let i = $index) {-->
 <!--      {{item.key | json}}-->
 <!--    }-->

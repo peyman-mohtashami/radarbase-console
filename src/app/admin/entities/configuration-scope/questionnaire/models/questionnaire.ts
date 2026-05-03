@@ -45,7 +45,8 @@ export interface AppQuestion {
   text_validation_max?: string;
   field_annotation?: {image: string; timer: {start: number; end: number;}; unit: string;};
   field_note?: string;
-  range?: {min: number; max: number; step: number;};  matrix_group_name?: string;
+  range?: {min: number; max: number; step: number; labelLeft?: Record<string, string>; labelRight?: Record<string, string>};
+  matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
 }

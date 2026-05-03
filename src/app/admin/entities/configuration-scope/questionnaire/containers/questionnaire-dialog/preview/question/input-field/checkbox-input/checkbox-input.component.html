@@ -1,3 +1,5 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <section class="example-section">
   @for (item of items; track item.code) {
     <p>
@@ -5,12 +7,10 @@
                   (click)="onCheckboxClick(item)"
                   [disabled]="isDisabled"
                   [checked]="item.checked">
-<!--                  [value]="item.code"-->
-      <span class="ion-text-wrap" [innerHtml]="item.label | replacePlaceholders"></span>
+      <span class="ion-text-wrap" [innerHtml]="item.label[selectedLanguage] | replacePlaceholders"></span>
     </mat-checkbox>
     </p>
   }
-<!--  <mat-checkbox class="example-margin" [disabled]="true">Disabled</mat-checkbox>-->
 </section>
 @if (!isDisabled) {
   <button matButton class="m-4" (click)="onReset()" color="danger" size="small">

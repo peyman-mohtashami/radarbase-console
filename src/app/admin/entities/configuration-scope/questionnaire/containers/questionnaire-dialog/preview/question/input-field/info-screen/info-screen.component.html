@@ -1,19 +1,16 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <div class="flex flex-col h-full">
-  <app-scrollable-content class="grow" (timestamp)="onInputChange(+$event)">
+  <app-scrollable-content class="grow">
+<!--    (timestamp)="onInputChange(+$event)">-->
     <app-question-header class="" [question]="question()" />
       @for (item of question().select_choices_or_calculations; track item.code) {
         <mat-card>
-<!--          <ion-card>-->
           <mat-card-content>
-<!--            <ion-card-content>-->
               <p class="text-sm!">{{ item.code }}</p>
-              <p class="text-base! pb-32 text-black" [innerHtml]="item.label | replacePlaceholders"></p>
-<!--            </ion-card-content>-->
+              <p class="text-base! pb-32 text-black" [innerHtml]="item.label[selectedLanguage] | replacePlaceholders"></p>
           </mat-card-content>
-
-<!--          </ion-card>  -->
         </mat-card>
-
       }
   </app-scrollable-content>
 </div>

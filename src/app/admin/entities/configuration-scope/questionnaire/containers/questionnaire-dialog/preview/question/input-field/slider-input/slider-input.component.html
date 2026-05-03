@@ -1,9 +1,11 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
 <!--<div class="flex justify-center mt-8 text-center  value-number">-->
 <!--  <span class="bg-primary text-on-primary rounded-full px-4 py-1 text-lg">{{ selectedValue ?? 'N/A' }}</span>-->
 <!--</div>-->
 
 @if (question().range; as range) {
-  <mat-slider class="w-full"
+  <mat-slider class="w-full! m-0!"
     [disabled]="isDisabled"
     [max]="range.max"
     [min]="range.min"
@@ -28,8 +30,8 @@
 <!--  </ion-range>-->
 
   <div class="flex justify-between text-sm">
-    <div class="w-1/2" [innerHtml]="range.labelLeft | replacePlaceholders"></div>
-    <div class="w-1/2 text-right" [innerHtml]="range.labelRight | replacePlaceholders"></div>
+    <div class="w-1/2" [innerHtml]="range.labelLeft?.[selectedLanguage] | replacePlaceholders"></div>
+    <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[selectedLanguage] | replacePlaceholders"></div>
   </div>
 }
 

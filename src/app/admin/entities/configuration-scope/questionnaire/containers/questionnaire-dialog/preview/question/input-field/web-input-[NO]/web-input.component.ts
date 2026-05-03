@@ -4,19 +4,14 @@ import {Component, OnInit, output,} from '@angular/core'
 // import {Browser, OpenOptions} from '@capacitor/browser'
 // import {Keyboard} from '@capacitor/keyboard'
 import {FormsModule} from '@angular/forms'
-import {IonButton, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone'
 import {BaseInputComponent} from '../base-input/base-input.component'
-import {WebInputType} from '../../../models/question';
+// import {WebInputType} from '../../../models/question';
 
 @Component({
   selector: 'app-web-input',
   templateUrl: 'web-input.component.html',
   imports: [
     FormsModule,
-    IonLabel,
-    IonItem,
-    IonInput,
-    IonButton,
   ]
 })
 export class WebInputComponent extends BaseInputComponent implements OnInit {
@@ -33,10 +28,10 @@ export class WebInputComponent extends BaseInputComponent implements OnInit {
   //   toolbarColor: '#6d9aa5'
   // }
 
-  override ngOnInit() {
-    this.url = this.getWebUrl()
-    this.validator = this.getInputValidator()
-  }
+  // override ngOnInit() {
+    // this.url = this.getWebUrl()
+    // this.validator = this.getInputValidator()
+  // }
 
   emitAnswer(value: string) {
     const valid = this.validator!(this.textValue)
@@ -63,21 +58,21 @@ export class WebInputComponent extends BaseInputComponent implements OnInit {
   }
 
   getWebUrl() {
-    switch (this.question().field_annotation) {
-      case WebInputType.NHS:
-        return this.NHS_URL
-      default:
-        return this.NHS_URL
-    }
+    // switch (this.question().field_annotation) {
+    //   case WebInputType.NHS:
+    //     return this.NHS_URL
+    //   default:
+    //     return this.NHS_URL
+    // }
   }
 
   getInputValidator() {
-    switch (this.question().field_annotation) {
-      case WebInputType.NHS:
-        return this.isValidNHSId
-      default:
-        return this.isValidNHSId
-    }
+    // switch (this.question().field_annotation) {
+    //   case WebInputType.NHS:
+    //     return this.isValidNHSId
+    //   default:
+    //     return this.isValidNHSId
+    // }
   }
 
   isValidNHSId(nhsId: string) {
