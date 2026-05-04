@@ -117,6 +117,7 @@
       </mat-form-field>
 
       <div class="mb-4">
+        <app-text-editor />
         <app-text-form-group formControlName="field_label"
                              [languages]="languages()"
                              label="Field Label"
@@ -217,11 +218,6 @@
 
         </div>
       }
-      <!--        </div>-->
-      <!--        @if (questionIndex > 0) {-->
-      <!--        <app-branching-logic-form-group formControlName="branching_logic" />-->
-      <!--        <mat-slide-toggle formControlName="branching_logic_enabled">Enable conditional logic</mat-slide-toggle>-->
-      <!--        }-->
     </div>
   }
 </div>

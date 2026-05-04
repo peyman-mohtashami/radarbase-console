@@ -8,8 +8,8 @@ import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 
 @Component({
-  selector: 'app-conditional-logic-operator',
-  templateUrl: 'operator.component.html',
+  selector: 'app-conditional-logic-operator-selector',
+  templateUrl: './conditional-logic-operator-selector.component.html',
   imports: [
     FormsModule,
     MatFormField,
@@ -18,7 +18,7 @@ import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logi
     ReactiveFormsModule,
   ],
 })
-export class OperatorComponent {
+export class OperatorSelectorComponent {
 
   question = input.required<AppQuestion>();
   conditionalLogicItem = input<ConditionalLogicItem>();
@@ -38,10 +38,10 @@ export class OperatorComponent {
     {name: 'Greater Than or Equal', value: '>='},
     {name: 'Less Than', value: '<'},
     {name: 'Less Than or Equal', value: '<='},
-    {name: 'Contains', value: 'contains'},
-    {name: 'Does Not Contain', value: 'doesNotContain'},
-    {name: 'Starts With', value: 'startsWith'},
-    {name: 'Ends With', value: 'endsWith'},
-    {name: 'Is Empty', value: 'isEmpty'}
+    // {name: 'Contains', value: 'contains'},
+    // {name: 'Does Not Contain', value: 'doesNotContain'},
+    // {name: 'Starts With', value: 'startsWith'},
+    // {name: 'Ends With', value: 'endsWith'},
+    // {name: 'Is Empty', value: 'isEmpty'}
   ]
 }

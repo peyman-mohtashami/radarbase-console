@@ -1,0 +1,14 @@
+<div class="toolbar">
+  <button (click)="insertQuestion()">Insert Question</button>
+</div>
+
+<div #editor
+     class="editor border border-gray-400 p-2 rounded"
+     contenteditable="true"
+     (input)="onInput()"
+     (click)="onClick($event)">
+</div>
+
+<pre class="output">
+{{ model | json }}
+</pre>

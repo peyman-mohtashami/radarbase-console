@@ -5,10 +5,12 @@ import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logi
 import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
-import {OperatorComponent} from '../operator/operator.component';
 import {QuestionViewComponent} from '../question-view/question-view.component';
 import {AppQuestion} from '../../../../models/questionnaire';
 import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
+import {
+  OperatorSelectorComponent
+} from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 
 @Component({
   selector: 'app-conditional-logic-item',
@@ -19,8 +21,8 @@ import {QuestionnaireStateService} from '../../services/questionnaire-state.serv
     MatIconButton,
     MatOption,
     MatSelect,
-    OperatorComponent,
     QuestionViewComponent,
+    OperatorSelectorComponent,
   ],
 })
 export class ConditionalLogicItemComponent implements OnInit {

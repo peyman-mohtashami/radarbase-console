@@ -1,4 +1,4 @@
-import {Component, inject, input, output, signal} from '@angular/core';
+import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -32,6 +32,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   ConditionalLogicDialogComponent
 } from '../../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
+import {TextEditorComponent} from '../text-editor/text-editor.component';
 
 @Component({
   selector: 'app-question-form-group',
@@ -54,6 +55,7 @@ import {
     TagComponent,
     MatTooltip,
     MatIcon,
+    TextEditorComponent,
   ],
   providers: [
     {
@@ -165,6 +167,7 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
   }
 
   protected dialog = inject(MatDialog);
+  protected conditionalLogicAvailable: any;
 
   protected editConditionalLogic() {
    this.openConditionalLogicDialog();
