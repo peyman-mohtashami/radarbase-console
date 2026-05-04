@@ -1,0 +1,73 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<app-dialog-title [dialogMode]='dialogData.mode'
+                  [entityMetadata]="{name: 'conditionalLogic', icon: ''}"
+                  [entityName]="undefined"
+                  (closeEvent)='close()'>
+</app-dialog-title>
+
+<mat-dialog-content class="h-full overflow-auto">
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                 [label]="`ADMIN.questionnaire.name.label` | translate"
+                                 [entityName]="dialogData.entity?.value"/>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <p class="mb-4">Show this question if:</p>
+    <pre class="text-base mb-4 text-secondary">{{resultString}}</pre>
+
+    @for (conditionalLogicItems of conditionalLogicItemsArray; track conditionalLogicItems; let index = $index; let isLast = $last) {
+      <app-conditional-logic-items class="" [conditionalLogicItems]="conditionalLogicItems" (itemsEvent)="onItemEvent($event, index)"/>
+      <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
+        <div>
+          <app-tag class="text-primary bg-primary/20">OR (|)</app-tag>
+        </div>
+        <div>
+          <button class="tiny"
+                  mat-icon-button color="primary"
+                  (click)='addConditionalLogicItems()'>
+            <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
+        <div></div>
+        <div>
+          <button class="tiny"
+                  mat-icon-button color="primary"
+                  (click)='addConditionalLogicItems()'>
+            <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+  }
+</mat-dialog-content>
+
+@if (error()) {
+  <app-error-message-box>
+    {{ error()?.error.errorCode | translate }}
+  </app-error-message-box>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ 'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <button (click)='handleSaveAction()'
+            mat-raised-button
+            color="primary"
+            type="button">
+      <!--      [disabled]='!form()?.valid || !form()?.dirty || isLoading'-->
+      {{ "SHARED.dialog.update" | translate }}
+    </button>
+  </div>
+</div>

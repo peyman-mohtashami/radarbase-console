@@ -1,0 +1,24 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+<div class="">
+  <div class="w-full flex-col mt-0 mb-1 text-sm">
+    @for (conditionalLogicItem of conditionalLogicItems; let i = $index; track conditionalLogicItem; let isLast = $last) {
+      <app-conditional-logic-item [index]="i"
+                                  [conditionalLogicItem]="conditionalLogicItem"
+                                  (removeEvent)="removeItem(i)"
+                                  (itemEvent)="onItemChange($event, i)"/>
+
+      <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
+        <div>
+          <app-tag class="text-secondary bg-secondary/20">AND (&)</app-tag>
+        </div>
+        <div>
+          <button class="tiny"
+                  mat-icon-button color="accent"
+                  (click)='addItem(i)'>
+            <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

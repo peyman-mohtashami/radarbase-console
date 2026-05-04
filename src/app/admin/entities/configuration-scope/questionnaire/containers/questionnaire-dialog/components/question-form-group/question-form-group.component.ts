@@ -28,8 +28,10 @@ import {MatIcon} from '@angular/material/icon';
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
-import {ConditionalLogicDialogComponent} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {
+  ConditionalLogicDialogComponent
+} from '../../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
 
 @Component({
   selector: 'app-question-form-group',
@@ -164,12 +166,12 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
 
   protected dialog = inject(MatDialog);
 
-  protected editBranchingLogic() {
-   this.openBranchingLogicDialog();
+  protected editConditionalLogic() {
+   this.openConditionalLogicDialog();
   }
 
-  openBranchingLogicDialog() {
-    this.dialog.open(ConditionalLogicDialogComponent, {
+  openConditionalLogicDialog() {
+    const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
       id: 'conditional-logic-dialog',
       data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
@@ -182,38 +184,45 @@ export class QuestionFormGroupComponent extends BaseFormGroupComponent<AppQuesti
       restoreFocus: false
     });
 
-    // const dialogActionSubscription =
-    //   dialogRef.componentInstance.dialogActionEvent.subscribe(
-    //     (value) => {
-    //       const _entity = value.entity;
-    //       const _action = value.action;
-    //       if (!_entity) {
-    //         this.configService.setLatestFormEntry(null);
-    //         dialogRef.close();
-    //         this.clearFragmentUrl();
-    //         return;
-    //       }
-    //       this.configService.setLatestFormEntry(_entity);
-    //       this.processDialogAction(_action, _entity).subscribe({
-    //         next: (res) => {
-    //           this.configService.setLatestFormEntry(null);
-    //           const entity = res ?? _entity;
-    //           this.dialogUpdateEvent.set({mode, entity})
-    //           dialogRef.close();
-    //           setTimeout(() => {
-    //             this.dialogUpdateEvent.set(undefined);
-    //           })
-    //         },
-    //         error: (error: HttpErrorResponse) => {
-    //           this.configService.setLatestFormEntry(null);
-    //           dialogRef.componentInstance.errorHappened(error)
-    //         },
-    //       });
-    //     }
-    //   );
+    const dialogActionSubscription =
+      dialogRef.componentInstance.dialogActionEvent.subscribe(
+        (value) => {
+          console.log('Class: QuestionFormGroupComponent, Function: , Line 190 value' , value);
+          this.form.patchValue({branching_logic: value.entity?.value});
+          // const _entity = value.entity;
+          // const _action = value.action;
+          // if (!_entity) {
+          //   // this.configService.setLatestFormEntry(null);
+            dialogRef.close();
+          //   // this.clearFragmentUrl();
+          //   return;
+          // }
+          // // this.configService.setLatestFormEntry(_entity);
+          // this.processDialogAction(_action, _entity).subscribe({
+          //   next: (res) => {
+          //     // this.configService.setLatestFormEntry(null);
+          //     const entity = res ?? _entity;
+          //     this.dialogUpdateEvent.set({mode, entity})
+          //     dialogRef.close();
+          //     setTimeout(() => {
+          //       this.dialogUpdateEvent.set(undefined);
+          //     })
+          //   },
+          //   error: (error: HttpErrorResponse) => {
+          //     this.configService.setLatestFormEntry(null);
+          //     dialogRef.componentInstance.errorHappened(error)
+          //   },
+          // });
+        }
+      );
 
-    // dialogRef.afterClosed().subscribe(() => {
-    //   dialogActionSubscription.unsubscribe();
-    // });
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
+  protected selectQuestion() {
+    this.editMode.set(!this.editMode());
+    this.questionnaireStateService.selectedQuestionIndex.set(this.editMode() ? this.questionIndex() : undefined);
   }
 }

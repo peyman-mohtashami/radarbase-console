@@ -6,7 +6,7 @@
     <div class="flex gap-2 items-center grow">
       <button class="tiny"
               mat-icon-button color="primary"
-              (click)='editMode.set(!editMode())'>
+              (click)='selectQuestion()'>
         <span class="material-symbols-outlined text-xl!">{{ editMode() ? 'edit_off' : 'edit' }}</span>
       </button>
       <app-tag class="bg-secondary/20 text-primary cursor-pointer"
@@ -211,8 +211,8 @@
               }
             </mat-error>
           </mat-form-field>
-          <button mat-icon-button color="primary" (click)="editBranchingLogic()">
-            <mat-icon>edit</mat-icon>
+          <button mat-icon-button color="primary" (click)="editConditionalLogic()">
+            <mat-icon class="material-symbols-outlined">edit</mat-icon>
           </button>
 
         </div>
@@ -226,3 +226,6 @@
   }
 </div>
 
+<!--{contacted-covid-positive} = 'No' or {date} > '2026-05-21' and {first-name} contains 'kl'-->
+<!--"visibleIf": "{contacted-covid-positive} = 'No' or {date} > '2026-05-21' and {first-name} contains 'kl'",-->
+<!--"visibleIf": "(({tested-covid-positive} = true or {contacted-covid-positive} = 'Yes') or ({symptoms} notempty and {symptoms} notcontains 'none'))",-->

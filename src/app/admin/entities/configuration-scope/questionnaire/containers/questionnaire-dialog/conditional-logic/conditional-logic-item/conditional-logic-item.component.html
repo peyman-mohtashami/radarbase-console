@@ -1,0 +1,47 @@
+<div class="w-full pt-2">
+  <div class="flex items-center gap-2">
+    <div class="grow">
+      @if (operand && operator && value) {
+        <p>[{{ operand }}] {{ operator }} '{{value}}'</p>
+      } @else {
+        <p>Condition is not ready</p>
+      }
+      <div class="w-full my-2 flex items-center gap-2 justify-between">
+        <div class="flex items-center gap-2">
+          <mat-form-field class='small-input w-[256px] grow-0' appearance='outline' subscriptSizing="dynamic">
+            <mat-select (selectionChange)="onOperandChange($event)" [value]="conditionalLogicItem()?.operand">
+              @for (question of questionnaireStateService.questions(); track question; let index = $index) {
+                @if (questionnaireStateService.selectedQuestionIndex() !== undefined) {
+                  @if (index < questionnaireStateService.selectedQuestionIndex()!) {
+                    <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
+                  }
+                }
+              }
+            </mat-select>
+          </mat-form-field>
+
+          @if (selectedQuestion) {
+            <app-conditional-logic-operator [question]="selectedQuestion"
+                                            [conditionalLogicItem]="conditionalLogicItem()"
+                                            (selectionChange)="onOperatorChange($event)" />
+          }
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="tiny"
+                  mat-icon-button color="warn"
+                  (click)='removeItem(index())'>
+            <mat-icon class="material-symbols-outlined text-xl!">do_not_disturb_on</mat-icon>
+          </button>
+        </div>
+      </div>
+      @if (selectedQuestion) {
+        <app-question-view [question]="selectedQuestion"
+                           [conditionalLogicItem]="conditionalLogicItem()"
+                           (selectionChange)="onValueChange($event)" />
+      }
+    </div>
+  </div>
+</div>
+
+

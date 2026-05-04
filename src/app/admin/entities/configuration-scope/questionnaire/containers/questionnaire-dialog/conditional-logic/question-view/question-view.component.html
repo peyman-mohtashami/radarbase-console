@@ -1,0 +1,16 @@
+@let selectedLanguage = questionnaireStateService.selectedLanguage();
+
+<p>{{question().section_header?.[selectedLanguage]}}</p>
+<p>{{ question().field_label?.[selectedLanguage]}}</p>
+
+@switch(question().field_type) {
+  @case('radio') {
+    <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">
+      @for (option of question().select_choices_or_calculations; track option.code) {
+        <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">
+          <span class="ion-text-wrap" [innerHtml]="option.label[selectedLanguage]"></span>
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  }
+}
