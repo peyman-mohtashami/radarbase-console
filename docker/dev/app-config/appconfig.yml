@@ -1,0 +1,23 @@
+baseUri: http://0.0.0.0:8090/appconfig/api
+isJmxEnabled: false
+
+inject:
+  enhancerFactory: org.radarbase.appconfig.inject.ManagementPortalEnhancerFactory
+
+auth:
+  managementPortal:
+    url: http://management-portal:8080/managementportal
+  jwtResourceName: res_appconfig
+
+database:
+  driver: org.postgresql.Driver
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+
+hazelcast:
+  network:
+    port: 5801
+    join:
+      multicastConfig:
+        enabled: false
+      kubernetesConfig:
+        enabled: false

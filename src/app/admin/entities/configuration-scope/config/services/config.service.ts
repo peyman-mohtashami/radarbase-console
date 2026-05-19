@@ -1,10 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import { Observable, of } from "rxjs";
 
-import {getAppConfiguration, postAppConfiguration} from "../mock/mock-configs";
 import {map, tap} from "rxjs/operators";
 import {AppConfig, RadarConfig, RadarConfigBundle} from "../models/config";
-import {environment} from "../../../../../../environments/environment";
 import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
@@ -48,12 +46,7 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
       return of(queryParams ? process(this.updatedList) : this.updatedList);
     }
 
-    let radarConfigBundleObservable = this.radarbaseAppConfigService.getRadarConfigBundle(clientId, projectId, subjectId);// this.http.get<RadarConfigBundle>(url, {headers});
-    if (environment.localDeployment) {
-      radarConfigBundleObservable = of(getAppConfiguration(clientId, projectId, subjectId));
-    }
-
-    return radarConfigBundleObservable.pipe(
+    return this.radarbaseAppConfigService.getRadarConfigBundle(clientId, projectId, subjectId).pipe(
       map(configBundle =>
         getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
       ),
@@ -103,16 +96,7 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
   }
 
   publish(configs: AppConfig[], clientId: string, projectId?: string, subjectId?: string): Observable<AppConfig[]>{
-    // const headers = getHeaders();
-    // const appConfigBaseUrl = getAppConfigBaseUrl();
-    // const urlSegment = getUrlSegment(projectId, subjectId);
-    // const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`
-
-    let radarConfigBundleObservable = this.radarbaseAppConfigService.postConfig(configs, clientId, projectId, subjectId); //this.http.post<RadarConfigBundle>(url, {config: configs}, {headers});
-    if (environment.localDeployment) {
-      radarConfigBundleObservable = of(postAppConfiguration(configs, clientId, projectId, subjectId));
-    }
-    return radarConfigBundleObservable.pipe(
+    return this.radarbaseAppConfigService.postConfig(configs, clientId, projectId, subjectId).pipe(
       map((configBundle) => getConfigsFromConfigBundle(configBundle)),
       map((configs) => configs.map((config) => this.toAppModel(config))),
     )

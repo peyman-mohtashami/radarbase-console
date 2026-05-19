@@ -13,3 +13,4 @@ export const PHQ8 = [
   {name: "phq8_nl", value: JSON.stringify(PHQ8_NL)},
   {name: "phq8_da", value: JSON.stringify(PHQ8_DA)},
 ]
+

@@ -22,7 +22,7 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {DetailType} from '../../../../../base-entities/enums/detail-type';
 import {Observable} from 'rxjs';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, JsonPipe} from '@angular/common';
 import {
   BaseEntityDialogComponent
 } from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
@@ -46,7 +46,8 @@ import {AppSubject} from '../../models/subject';
     MatProgressSpinner,
     AsyncPipe,
     DialogTitleComponent,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    JsonPipe
   ]
 })
 export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent<AppGroup> {

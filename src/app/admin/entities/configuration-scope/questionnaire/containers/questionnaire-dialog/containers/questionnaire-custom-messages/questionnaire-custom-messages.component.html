@@ -1,0 +1,44 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<form [formGroup]='form' novalidate class="w-[500px]">
+  <div class="text-sm w-1/2">
+    <label for="showIntroduction">
+      {{ `${_prefix}.showIntroductionLabel` | translate }}
+    </label>
+    <mat-form-field class='small-input' appearance='outline'>
+      <mat-select id="showIntroduction" formControlName="showIntroduction">
+        <mat-option [value]="false">
+          {{ `${_prefix}.showIntroductionNo` | translate }}
+        </mat-option>
+        <mat-option [value]="true">
+          {{ `${_prefix}.showIntroductionOnce` | translate }}
+        </mat-option>
+        <mat-option value="always">
+          {{ `${_prefix}.showIntroductionAlways` | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (form.controls.showIntroduction.value) {
+    <app-text-form-group class="mb-4"
+                         formControlName="startText"
+                         [languages]="entity()!.languages"
+                         [label]="`${_prefix}.startTextLabel` | translate"
+                         [textarea]="true"
+                         [textareaAutosize]="true"/>
+  }
+  <app-text-form-group class="mb-4"
+                       formControlName="endText"
+                       [languages]="entity()!.languages"
+                       [label]="`${_prefix}.endTextLabel` | translate"
+                       [textarea]="true"
+                       [textareaAutosize]="true"/>
+
+  <app-text-form-group formControlName="warn"
+                       [languages]="entity()!.languages"
+                       [label]="`${_prefix}.warningTextLabel` | translate"
+                       [textarea]="true"
+                       [textareaAutosize]="true"/>
+
+</form>

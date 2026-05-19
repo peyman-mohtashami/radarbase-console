@@ -77,9 +77,12 @@
             }
           },
           "options": {
-            "proxyConfig": "proxy.conf.json",
-            "port": 9000,
-            "buildTarget": "radarbase-console:build"
+            "buildTarget": "radarbase-console:build",
+            "allowedHosts": [
+              "localhost",
+              "radar-console",
+              "host.docker.internal"
+            ]
           },
           "defaultConfiguration": "development"
         },

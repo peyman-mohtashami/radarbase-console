@@ -172,7 +172,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   openAssignGroupToSubjectsDialog(subjects: { login: string; }[], project: AppProject) {
-    const dialogRef = this.createAssignGroupToSubjectsDialogRef();
+    const dialogRef = this.createAssignGroupToSubjectsDialogRef(subjects);
 
     const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
       (value) => {
@@ -198,7 +198,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
     const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
-    const _data = {id: 'subject-assign-group-dialog', groups: groupFullList, selectedSubjects};
+    const _data = {id: 'subject-assign-group-dialog', groupFullList, selectedSubjects};
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {
       id: 'subject-assign-group-dialog',

@@ -9,8 +9,10 @@
         "/swagger-ui",
         "/h2-console"
     ],
-    "target": "http://127.0.0.1:8080/managementportal",
-    "secure": false
+    "target": "http://127.0.0.1:8080",
+    "_target": "http://127.0.0.1:8080/managementportal",
+    "secure": false,
+    "changeOrigin": true
   },
   {
     "/appconfig": {

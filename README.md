@@ -7,8 +7,15 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+#ng serve
+
+ng serve \
+--host 0.0.0.0 \
+--port 9000 \
+--serve-path /radarbase-console/
 ```
+
+
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 

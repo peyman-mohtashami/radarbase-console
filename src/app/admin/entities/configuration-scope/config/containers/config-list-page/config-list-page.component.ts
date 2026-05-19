@@ -13,7 +13,6 @@ import {
 import {ListPageHeaderComponent} from "../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
-import {AppClient} from "../../../../main-scope/client/models/client";
 import {AppProject} from '../../../../main-scope/project/models/project';
 import {AppSubject} from "../../../../project-scope/subject/models/subject";
 import {MatIcon} from '@angular/material/icon';
@@ -43,11 +42,11 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
 
   override entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
 
-  client: AppClient = this.selectedEntitiesService.getSelected().client()!;
+  client = this.selectedEntitiesService.getSelected().client;
   project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
   subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
 
-  isChanged = false;
+  isChanged = signal( false);
 
   override ngOnInit() {
     super.ngOnInit();
@@ -59,7 +58,7 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   }
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.client._name, this.project?._name, this.subject?._name);
+    return this.entityService.getWithQuery(this.params(), this.client()!._name, this.project?._name, this.subject?._name);
   }
 
   override handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppConfig }) {
@@ -67,27 +66,27 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
     if (entity) {
       switch (mode) {
         case DialogMode.ADD:
-          this.isChanged = true;
+          this.isChanged.set(true);
           this.addEntityToView(entity);
           break;
         case DialogMode.EDIT:
-          this.isChanged = true;
+          this.isChanged.set(true);
           this.refreshEntities();
           break;
         case DialogMode.DELETE:
-          this.isChanged = true;
+          this.isChanged.set(true);
           this.refreshEntities();
           break;
       }
     } else {
       switch(mode) {
         case "discarded":
-          this.isChanged = false;
+          this.isChanged.set(false);
           this.entityService.clearCache();
           this.refreshEntities();
           break;
         case "published":
-          this.isChanged = false;
+          this.isChanged.set(false);
           this.entityService.clearCache();
           this.refreshEntities();
           break;
@@ -99,7 +98,7 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   }
 
   onPublishDialogAction(mode: "discard" | "publish") {
-    return this.dialogService.openPublishDialog(mode, this.entities(), this.client._name, this.project?._name, this.subject?._name);
+    return this.dialogService.openPublishDialog(mode, this.entities(), this.client()!._name, this.project?._name, this.subject?._name);
   }
 
 

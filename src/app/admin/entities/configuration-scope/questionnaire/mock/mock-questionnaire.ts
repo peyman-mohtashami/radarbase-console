@@ -1,11 +1,11 @@
 import {AppConfig, RadarConfig} from '../../config/models/config';
 import {MockConfig} from '../../config/mock/mock-configs';
-import {PHQ8} from './questionnaires/phq8/main';
 import {adhd_medication_use} from './questionnaires/adhd_medication_use/main';
 import {adhd_medication_side_effects} from './questionnaires/adhd_medication_side_effects/main';
 import {audio} from './questionnaires/audio/main';
 import {cns_covid19_baseline} from './questionnaires/cns_covid19_baseline/main';
 import {sample_field_types} from './questionnaires/sample-field-types/main';
+import {PHQ8} from './questionnaires/phq8/phq8';
 
 export function getQuestionnaires(clientId: string, projectId?: string, subjectId?: string) {
   if (clientId && projectId && subjectId) return getSubjectQuestionnaires(clientId, projectId, subjectId);
@@ -66,9 +66,9 @@ export function postAppQuestionnaires(configs: AppConfig[], clientId: string, pr
   return getQuestionnaires(clientId, projectId, subjectId);
 }
 
-const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
-const radarQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
-export const sub29QuestionnairesRadarConfigs = [...audio];
+const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
+const radarQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
+export const sub29QuestionnairesRadarConfigs = [...PHQ8];//[...audio];
 
 const globalQuestionnaires = globalQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: undefined, subject: undefined}));
 const radarQuestionnaires = radarQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: 'radar', subject: undefined}));

@@ -1,8 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {TranslateLoader, TranslationObject} from '@ngx-translate/core';
-import {from, Observable, switchMap} from 'rxjs';
-import {environment} from "../../../environments/environment";
+import {Observable} from 'rxjs';
 import {ConfigurationService} from '../configuration/services/configuration.service';
 
 @Injectable({providedIn: 'root'})
@@ -15,22 +14,22 @@ export class RuntimeConfigTranslateLoader implements TranslateLoader {
     const base = localeCustomization.translationsBaseUrl || this.defaultBase();
     const url = this.joinUrl(base, `${lang}.json`);
 
-    if (!environment.localDeployment) {
+    // if (!environment.localDeployment) {
      return this.http.get<TranslationObject>(url);
-    } else {
-      return from(
-        fetch(url, {
-          method: 'GET',
-        })
-      ).pipe(
-        switchMap(response => {
-          if (!response.ok) {
-            throw new Error(`Translation request failed with status ${response.status}`);
-          }
-          return response.json(); // Promise -> Observable via switchMap
-        })
-      );
-    }
+    // } else {
+    //   return from(
+    //     fetch(url, {
+    //       method: 'GET',
+    //     })
+    //   ).pipe(
+    //     switchMap(response => {
+    //       if (!response.ok) {
+    //         throw new Error(`Translation request failed with status ${response.status}`);
+    //       }
+    //       return response.json(); // Promise -> Observable via switchMap
+    //     })
+    //   );
+    // }
   }
 
   private defaultBase(): string {

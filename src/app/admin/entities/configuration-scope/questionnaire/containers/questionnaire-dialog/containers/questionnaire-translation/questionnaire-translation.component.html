@@ -1,0 +1,71 @@
+<!--Tranlsation-->
+<div class="grid w-full grid-cols-{{(entity()?.languages?.length ?? 0) + 1}} text-xs gap-2">
+
+  <div></div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{language._name}}</div>
+  }
+
+  <div>Title</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.title?.[language.id]}}</div>
+  }
+
+  <div>Description</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.description?.[language.id]}}</div>
+  }
+
+  <div>Start Text</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.startText?.[language.id]}}</div>
+  }
+
+  <div>End Text</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.endText?.[language.id]}}</div>
+  }
+
+  <div>Warn</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.warn?.[language.id]}}</div>
+  }
+
+  <div>Notification Title</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.schedule?.notification?.title?.[language.id]}}</div>
+  }
+
+  <div>Notification Text</div>
+  @for (language of entity()?.languages; track language.id) {
+    <div>{{entity()?.schedule?.notification?.text?.[language.id]}}</div>
+  }
+
+  @for (question of entity()?.questions; track question.field_name) {
+    <div class="col-span-7 border-t">Question {{question.field_name}}</div>
+    <div>Field Label</div>
+    @for (language of entity()?.languages; track language.id) {
+      <div>{{question.field_label?.[language.id]}}</div>
+    }
+
+    <div>Section Header</div>
+    @for (language of entity()?.languages; track language.id) {
+      <div>{{question.section_header?.[language.id]}}</div>
+    }
+
+    <div>Field Note</div>
+    @for (language of entity()?.languages; track language.id) {
+      <div>{{question.field_note?.[language.id]}}</div>
+    }
+
+    @for (choice of question.select_choices_or_calculations; track choice.code) {
+      <div>Choice {{choice.code}}</div>
+      @for (language of entity()?.languages; track language.id) {
+        <div>{{choice.label?.[language.id]}}</div>
+      }
+    }
+
+
+  }
+
+</div>

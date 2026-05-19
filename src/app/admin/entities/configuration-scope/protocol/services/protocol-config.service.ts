@@ -21,5 +21,5 @@ export const filters: FilterItem[] = [
 export class ProtocolConfigService extends BaseConfigService {
   override tableElements = TableElements;
   override filters = filters;
-  override entityMetadata = ENTITY_REGISTRY.protocol;
+  override entityMetadata = ENTITY_REGISTRY.questionnaire;//.protocol;
 }

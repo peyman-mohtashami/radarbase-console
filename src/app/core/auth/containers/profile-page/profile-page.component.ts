@@ -49,10 +49,10 @@ export class ProfilePageComponent implements OnInit {
   success = signal(false);
 
   form = new FormGroup({
-    login: new FormControl({value: '', disabled: true}),
-    firstName: new FormControl('', [Validator.normalTextValidator]),
-    lastName: new FormControl('', [Validator.normalTextValidator]),
-    email: new FormControl({value: '', disabled: true}, [Validator.requiredValidator, Validator.emailValidator]),
+    login: new FormControl({value: '', disabled: true}, {nonNullable: true}),
+    firstName: new FormControl('', {validators: [Validator.normalTextValidator], nonNullable: true}),
+    lastName: new FormControl('', {validators: [Validator.normalTextValidator], nonNullable: true}),
+    email: new FormControl({value: '', disabled: true}, {validators: [Validator.requiredValidator, Validator.emailValidator], nonNullable: true}),
   })
 
   private readonly formValueChanges = toSignal(
@@ -78,7 +78,8 @@ export class ProfilePageComponent implements OnInit {
   save(): void {
     this.loading.set(true);
     this.error.set(null);
-    this.profileService.update(this.form.value as ManagementPortalUser).subscribe({
+    const user = {...this.authService.user(), ...this.form.value} as ManagementPortalUser;
+    this.profileService.update(user).subscribe({
       next: () => {
         this.success.set(true);
         this.error.set(null);

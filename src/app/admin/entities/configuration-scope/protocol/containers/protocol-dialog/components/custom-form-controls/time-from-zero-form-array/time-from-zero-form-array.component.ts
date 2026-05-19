@@ -50,7 +50,7 @@ import {MatIcon} from '@angular/material/icon';
   ],
 })
 export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Validator {
-  unit = input<QuestionnaireTimeUnit | null | undefined>(QuestionnaireTimeUnit.min);
+  unit = input<string | null | undefined>(QuestionnaireTimeUnit.min.toString());
 
   form = new FormArray<FormGroup<{
     day: FormControl<number | null>;

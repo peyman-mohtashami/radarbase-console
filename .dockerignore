@@ -3,3 +3,6 @@ node_modules
 documentation
 dist
 .angular/cache
+.git
+.angular
+coverage

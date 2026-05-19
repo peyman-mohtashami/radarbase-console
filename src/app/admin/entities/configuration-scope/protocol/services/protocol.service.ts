@@ -223,9 +223,9 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
     // }
 
     let radarConfigBundleObservable = this.radarbaseAppConfigService.getRadarConfigBundle(this.CLIENT_ID, projectId, subjectId);// this.http.get<RadarConfigBundle>(url, {headers});
-    if (environment.localDeployment) {
-      radarConfigBundleObservable = of(getProtocols(this.CLIENT_ID, projectId, subjectId));
-    }
+    // if (environment.localDeployment) {
+    //   radarConfigBundleObservable = of(getProtocols(this.CLIENT_ID, projectId, subjectId));
+    // }
 
     return radarConfigBundleObservable.pipe(
       map(configBundle => {
@@ -302,9 +302,9 @@ export class ProtocolService extends BaseEntityService<AppProtocol, RadarProtoco
     }];
 
     let radarConfigBundleObservable = this.radarbaseAppConfigService.postConfig(configs, this.CLIENT_ID, projectId, subjectId);
-    if (environment.localDeployment) {
-      radarConfigBundleObservable = of(postAppProtocols(configs, this.CLIENT_ID, projectId, subjectId));
-    }
+    // if (environment.localDeployment) {
+    //   radarConfigBundleObservable = of(postAppProtocols(configs, this.CLIENT_ID, projectId, subjectId));
+    // }
     return radarConfigBundleObservable.pipe(
       map(configBundle => {
           const superProtocolString = getConfigsFromConfigBundle(configBundle).find(config => config.name === 'main');

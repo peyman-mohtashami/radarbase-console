@@ -49,7 +49,7 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, Ra
     const protocolAndQuestionnaireTabLinks =
       this.entity().project?.sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
         [
-          { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
+          // { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
           { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
         ] : [];
 

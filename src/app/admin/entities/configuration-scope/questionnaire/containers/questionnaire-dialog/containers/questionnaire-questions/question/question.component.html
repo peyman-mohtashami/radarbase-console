@@ -1,0 +1,144 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+<div class="" [formGroup]="form">
+      <label for="field_name" class="text-sm">{{ `${_prefix}.questionFieldNameLabel` | translate }} *</label>
+      <mat-form-field class='small-input w-1/2' appearance="outline">
+        <input matInput formControlName='field_name' required/>
+        @if (form.controls.field_name?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionFieldNameLabel` | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <label for="field_type" class="text-sm">{{ `${_prefix}.questionFieldTypeLabel` | translate }} *</label>
+      <mat-form-field class='small-input w-1/2' appearance="outline">
+        <mat-select formControlName='field_type'>
+          @for (type of QUESTION_TYPES; track type) {
+            <mat-option [value]="type.name">{{ type.label }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.field_type?.errors; as errors) {
+          <mat-error>
+            @if (errors?.['pattern']) {
+              {{ ValidatorError.normalTextValidator }}
+            }
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionFieldTypeLabel` | translate} }}
+            }
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <div class="mb-4">
+<!--        <app-text-editor />-->
+        <app-text-form-group formControlName="field_label"
+                             [languages]="languages()"
+                             label="Field Label"
+                             [required]="true"
+                             [textarea]="true"
+                             [textareaAutosize]="true"/>
+      </div>
+
+      <div class="mb-4">
+        <app-text-form-group formControlName="section_header"
+                             [languages]="languages()"
+                             label="Section Header"
+                             [textarea]="true"
+                             [textareaAutosize]="true"/>
+      </div>
+
+      @let fieldType = form.controls.field_type.value;
+
+      @let choicesAvailable = fieldType === 'radio' || fieldType === 'checkbox' || fieldType === 'info' || fieldType === 'range' || fieldType === 'range-info';
+      @if (choicesAvailable) {
+        <app-choices-form-array formControlName="select_choices_or_calculations"
+                                [languages]="languages()"
+                                [selectedLanguage]="questionnaireStateService.selectedLanguage()"/>
+      }
+
+      @let annotationAvailable = fieldType === 'times';
+      @if (annotationAvailable) {
+<!--        @if (form.controls.field_annotation; as field_annotation) {-->
+        <app-annotation-form-group formControlName="field_annotation"/>
+      }
+
+      @let rangeAvailable = fieldType === 'slider';
+      @if (rangeAvailable) {
+<!--      @if (form.controls.range; as range) {-->
+        <app-range-form-group formControlName="range"/>
+      }
+
+      @let textValidationTypeAvailable = fieldType === 'text';
+      @if (textValidationTypeAvailable) {
+<!--      @if (form.controls.text_validation_type_or_show_slider_number; as text_validation_type_or_show_slider_number) {-->
+        <div class="text-sm">
+          <label
+            for="text_validation_type_or_show_slider_number">{{ `${_prefix}.questionTextValidationLabel` | translate }}</label>
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="block"
+            formControlName="text_validation_type_or_show_slider_number">
+            @if (form.controls.field_type?.value === 'text') {
+              <mat-radio-button [value]="''">{{ `${_prefix}.questionTextValidationText` | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="'number'">{{ `${_prefix}.questionTextValidationNumber` | translate }}
+              </mat-radio-button>
+            } @else {
+              <mat-radio-button [value]="'date_dmy'">{{ `${_prefix}.questionTextValidationDate` | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="'datetime_dmy'">{{ `${_prefix}.questionTextValidationDateTime` | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="'time'">{{ `${_prefix}.questionTextValidationTime` | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="'duration'">{{ `${_prefix}.questionTextValidationDuration` | translate }}
+              </mat-radio-button>
+            }
+          </mat-radio-group>
+          <!--          <label for="text_validation_type_or_show_slider_number" class="text-sm">Text Type</label>-->
+          <!--          <mat-form-field class='small-input' appearance="outline">-->
+          <!--            <input id="text_validation_type_or_show_slider_number" matInput [formControl]='text_validation_type_or_show_slider_number'/>-->
+          <!--          </mat-form-field>-->
+        </div>
+      }
+
+      @if (form.controls.text_validation_type_or_show_slider_number?.value === 'number') {
+        @if (form.controls.text_validation_min; as text_validation_min) {
+
+          <label for="text_validation_min"
+                 class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+          <mat-form-field class='small-input' appearance="outline">
+            <input id="text_validation_max" matInput [formControl]='text_validation_min!'/>
+          </mat-form-field>
+        }
+
+        @if (form.controls.text_validation_max; as text_validation_max) {
+          <label for="text_validation_max"
+                 class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+          <mat-form-field class='small-input' appearance="outline">
+            <input id="text_validation_max" matInput [formControl]='text_validation_max!'/>
+          </mat-form-field>
+        }
+      }
+
+      @if ((index() ?? 0) > 0) {
+        <div class="flex">
+          <label for="field_name" class="text-sm">{{ `${_prefix}.questionConditionalLogic` | translate }}</label>
+          <mat-form-field class='small-input w-1/2' appearance="outline">
+            <textarea matInput formControlName='branching_logic' rows="2"></textarea>
+            <mat-error>
+              @if (form.controls.branching_logic?.errors; as errors) {
+                @if (errors?.['required']) {
+                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+          <button mat-icon-button color="primary" (click)="editConditionalLogic()">
+            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          </button>
+
+        </div>
+      }
+    </div>

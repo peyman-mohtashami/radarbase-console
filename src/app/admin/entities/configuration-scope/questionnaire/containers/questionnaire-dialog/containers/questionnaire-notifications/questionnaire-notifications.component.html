@@ -1,0 +1,111 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<div [formGroup]="form" class="w-[500px]">
+  <!--  <div class='small-input text-sm flex justify-end gap-1 sticky top-0 z-10 bg-white'>-->
+  <!--    @for (language of languages(); track language.id) {-->
+  <!--      <button mat-icon-button-->
+  <!--              class="tiny uppercase"-->
+  <!--              (click)='switchLanguage($event, language)'-->
+  <!--              [class]="protocolStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
+  <!--              <span class="h-full flex items-center justify-center">-->
+  <!--                <span class="text-sm font-bold">{{ language.id }}</span>-->
+  <!--              </span>-->
+  <!--      </button>-->
+  <!--    }-->
+  <!--  </div>-->
+
+
+  <!--  @if (!onDemand()) {-->
+  <!--    <mat-divider class="mt-4!"/>-->
+<!--  <div formGroupName="notification" class="mt-4">-->
+<!--    <div class="">-->
+<!--      <label for="name" class="text-sm">{{ `${_prefix}.titleLabel` | translate }}</label>-->
+<!--      <mat-form-field class='small-input' appearance='outline'>-->
+<!--        <input matInput formControlName='title'>-->
+<!--        <mat-error>-->
+<!--          @if (form.controls.notification.controls.title.errors; as errors) {-->
+<!--            &lt;!&ndash;          @if (errors['required']) {&ndash;&gt;-->
+<!--              &lt;!&ndash;            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}&ndash;&gt;-->
+<!--              &lt;!&ndash;          }&ndash;&gt;-->
+<!--          }-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+
+<!--    <div class="">-->
+<!--      <label for="name" class="text-sm">{{ `${_prefix}.textLabel` | translate }}</label>-->
+<!--      <mat-form-field class='small-input' appearance='outline'>-->
+<!--        <input matInput formControlName='text'>-->
+<!--        <mat-error>-->
+<!--          @if (form.controls.notification.controls.text.errors; as errors) {-->
+<!--            &lt;!&ndash;          @if (errors['required']) {&ndash;&gt;-->
+<!--              &lt;!&ndash;            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}&ndash;&gt;-->
+<!--              &lt;!&ndash;          }&ndash;&gt;-->
+<!--          }-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div formGroupName="schedule" class="mt-4">
+      <div formGroupName="notification" class="mt-4">
+        <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>
+        <app-text-form-group class="mb-4"
+                             formControlName="title"
+                             [languages]="entity()!.languages"
+                             [label]="`${_prefix}.notificationTitleLabel` | translate"
+                             [textarea]="true"
+                             [textareaAutosize]="true"/>
+
+        <app-text-form-group formControlName="text"
+                             [languages]="entity()!.languages"
+                             [label]="`${_prefix}.notificationMessageLabel` | translate"
+                             [textarea]="true"
+                             [textareaAutosize]="true"/>
+      </div>
+<!--  </div>-->
+  <!--  }-->
+
+    <div formGroupName="reminders">
+      <p class="text-sm my-2">{{ `${_prefix}.remindersLabel` | translate }}</p>
+      <mat-slide-toggle formControlName='enabled' class="mb-4" color="primary">
+        {{ `${_prefix}.remindersEnableLabel` | translate }}
+      </mat-slide-toggle>
+
+      @if (form.controls.schedule.controls.reminders.controls.enabled.value) {
+<!--        }@if (reminderEnabledValueChanges()) {-->
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label for="reminders-repeat" class="text-sm">
+              {{ `${_prefix}.reminderRepeat` | translate }} *
+            </label>
+            <mat-form-field class='small-input w-1/3'
+                            subscriptSizing="dynamic"
+                            appearance='outline'>
+              <input id="reminders-repeat" matInput type="number" formControlName='repeat' required>
+            </mat-form-field>
+          </div>
+          <div>
+            <label for="reminders-amount" class="text-sm">
+              {{ `${_prefix}.reminderAmount` | translate }} *
+            </label>
+            <mat-form-field class='small-input' appearance='outline'>
+              <input id="reminders-amount" matInput formControlName='amount' type="number" min="1" max="10000" required>
+            </mat-form-field>
+          </div>
+          <div>
+            <label for="reminders-unit" class="text-sm">
+              {{ `${_prefix}.reminderUnit` | translate }} *
+            </label>
+            <mat-form-field class='small-input' appearance='outline'>
+              <mat-select id="reminders-unit" formControlName='unit'>
+                @for (unit of UNITS; track unit.name) {
+                  <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

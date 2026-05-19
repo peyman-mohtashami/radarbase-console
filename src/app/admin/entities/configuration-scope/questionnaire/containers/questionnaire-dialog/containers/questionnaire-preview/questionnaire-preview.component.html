@@ -1,0 +1,118 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+@let _entity = entity();
+@let _selectedLanguage = questionnaireStateService.selectedLanguage();
+
+@if (_entity) {
+<div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">
+  <span class="font-bold">
+<!--    {{ entity()?.name }}-->
+    <!--    {{ `${_prefix}.questionsLabel` | translate }}-->
+  </span>
+  <div class="flex gap-2 items-center">
+    <div class='small-input text-sm flex justify-end gap-1'>
+      @for (language of _entity.languages; track language) {
+        <button mat-icon-button class="tiny uppercase"
+                (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'
+                [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+            <span class="h-full flex items-center justify-center">
+              <span class="text-sm font-bold">{{ language.id }}</span>
+            </span>
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col h-[90%] w-80 m-auto border-2 border-gray-300 rounded-lg">
+  <mat-toolbar class="shrink-0">
+    <!--  <button matIconButton class="" aria-label="Example icon-button with menu icon">-->
+    <!--    <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+    <!--  </button>-->
+    <span>{{ _entity.title?.[_selectedLanguage] ?? _entity.name }}</span>
+    <!--  <span class="flex-auto">Questionnaire name</span>-->
+    <!--  <button matIconButton class="" aria-label="Example icon-button with heart icon">-->
+    <!--    <mat-icon class="material-symbols-outlined"></mat-icon>-->
+    <!--  </button>-->
+    <!--  <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">-->
+    <!--    <mat-icon class="material-symbols-outlined">share</mat-icon>-->
+    <!--  </button>-->
+  </mat-toolbar>
+
+  <!--<ion-header>-->
+  <!--  <ion-toolbar color="primary">-->
+  <!--    <ion-buttons slot="start">-->
+  <!--&lt;!&ndash;      <ion-button fill="clear" (click)="exitQuestionnaire()">&ndash;&gt;-->
+  <!--&lt;!&ndash;        <ion-icon class="text-2xl" name="close-outline"/>&ndash;&gt;-->
+  <!--&lt;!&ndash;      </ion-button>&ndash;&gt;-->
+  <!--    </ion-buttons>-->
+  <!--&lt;!&ndash;    <ion-title class="text-lg font-bold">{{ task.label ?? task.name }}</ion-title>&ndash;&gt;-->
+  <!--    <ion-title class="text-lg font-bold">Hello</ion-title>-->
+  <!--  </ion-toolbar>-->
+  <!--</ion-header>-->
+
+  <!--@if (protocol && groupedQuestions) {-->
+<!--  &#45;&#45;{{groupedQuestions | json}}&#45;&#45;-->
+  @if(!loading) {
+    @if (groupedQuestions) {
+      <!--  <ion-content>-->
+
+        <!--    @if (showIntroduction) {-->
+        <!--      <app-introduction [protocol]="protocol" (startEvent)="startQuestionnaire()"/>-->
+        <!--    } @else if (showFinish) {-->
+        <!--      <app-finish [protocol]="protocol" [task]="task" (exit)="handleFinish()"/>-->
+        <!--    } @else {-->
+        <!--  {{groupedQuestions | json}}-->
+        <!--  {{groupedQuestions['progress_report4'] | json}}-->
+      <div class="grow overflow-auto">
+        <!--    @for (item of groupedQuestions | keyvalue: originalOrder; track item; let i = $index) {-->
+        <!--      {{item.key | json}}-->
+        <!--    }-->
+        @for (item of groupedQuestions | keyvalue: originalOrder; track item.key; let i = $index) {
+          <!--        {{item.key}}-->
+          @if (i === currentQuestion.index) {
+            @if (item.value.length > 1) {
+              <app-grouped-questions [questions]="item.value"
+                                     [groupName]="item.key"
+                                     [answers]="answers"
+                                     (answerEvent)="onGroupAnswer($event)"
+                                     (nextActionEvent)="nextAction($event)"/>
+            } @else {
+              <app-question [question]="item.value[0]"
+                            [answers]="answers"
+                            [answer]="answers[item.key]?.[0]"
+                            (answerEvent)="onAnswer($event)"
+                            (nextActionEvent)="nextAction($event)"/>
+              <!--                          [protocol]="protocol"-->
+            }
+          }
+        }
+      </div>
+
+      <!--    }-->
+
+        <!--  </ion-content>-->
+
+        <!--  @if (!showIntroduction && !showFinish) {-->
+        <!--    <ion-footer>-->
+      <div>
+        <app-toolbar (toolbarEvent)="handleToolbarEvent($event)"
+                     [currentQuestionId]="currentQuestion.index"
+                     [isLeftButtonDisabled]="isLeftButtonDisabled"
+                     [isRightButtonDisabled]="isRightButtonDisabled"
+                     [totalQuestions]="groupedQuestionsSize"
+                     [isProgressCountShown]="showProgressCount"/>
+      </div>
+      <!--    </ion-footer>-->
+
+
+        <!--  }-->
+    } @else {
+      Loading...
+    }
+    <!--(nextEvent)="nextQuestion()"-->
+      <!--(previousEvent)="previousQuestion()"-->
+      <!--(closeEvent)="exitQuestionnaire()"-->
+      <!--(finishEvent)="navigateToFinishPage()"-->
+  }
+</div>
+}

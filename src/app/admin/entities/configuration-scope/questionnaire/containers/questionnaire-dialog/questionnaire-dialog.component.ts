@@ -1,34 +1,22 @@
 import {
   Component,
-  inject,
+  inject, signal,
 } from '@angular/core';
 import {
-  AbstractControl,
-  FormArray, FormControl,
-  FormGroup, FormsModule, ReactiveFormsModule,
+  FormArray
 } from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 
-import {Validator} from '../../../../../../shared/utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
-import {AppQuestion, AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from "../../models/questionnaire";
+import {AppQuestionnaire} from "../../models/questionnaire";
 import {
   DialogBodyDescriptionComponent
 } from "../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component";
 import {
-  DialogActionsComponent
+  DialogAction,
 } from "../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
-import {
-  MatSelectAutocompleteComponent
-} from "../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
-import {RadarOption} from "../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-// import {EditorComponent} from "ngx-monaco-editor-v2";
-import {MatIconButton} from "@angular/material/button";
-import {MatTooltip} from "@angular/material/tooltip";
-import {QuestionsFormArrayComponent} from './components/questions-form-array/questions-form-array.component';
 import {Observable} from 'rxjs';
 import {
   BaseEntityDialogComponent
@@ -43,14 +31,33 @@ import {
   MatTabContent,
   MatTabGroup,
   MatTabLabel,
-  MatTabLink,
-  MatTabNav,
-  MatTabNavPanel
 } from '@angular/material/tabs';
-import {QuestionsPageComponent} from './preview/questions-page/questions-page.component';
-import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
-import {RouterLinkActive, RouterOutlet} from '@angular/router';
-import {JsonPipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
+import {QuestionnaireGeneralComponent} from './containers/questionnaire-general/questionnaire-general.component';
+import {QuestionnaireQuestionsComponent} from './containers/questionnaire-questions/questionnaire-questions.component';
+import {
+  QuestionnaireSchedulingComponent
+} from './containers/questionnaire-scheduling/questionnaire-scheduling.component';
+import {
+  QuestionnaireNotificationsComponent
+} from './containers/questionnaire-notifications/questionnaire-notifications.component';
+import {
+  QuestionnaireInterventionFlowComponent
+} from './containers/questionnaire-intervention-flow/questionnaire-intervention-flow.component';
+import {
+  QuestionnaireJsonEditorComponent
+} from './containers/questionnaire-json-editor/questionnaire-json-editor.component';
+import {
+  QuestionnaireCustomMessagesComponent
+} from './containers/questionnaire-custom-messages/questionnaire-custom-messages.component';
+import {QuestionnairePreviewComponent} from './containers/questionnaire-preview/questionnaire-preview.component';
+import {
+  QuestionnaireTranslationComponent
+} from './containers/questionnaire-translation/questionnaire-translation.component';
+import {MatIcon} from '@angular/material/icon';
+import {MatButton} from '@angular/material/button';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {QUESTIONNAIRES} from '../../mock/mock-questionnaire';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -58,32 +65,28 @@ import {JsonPipe} from '@angular/common';
   imports: [
     TranslatePipe,
     MatDialogContent,
-    ReactiveFormsModule,
-    MatFormField,
-    MatInput,
+    // ReactiveFormsModule,
     DialogBodyDescriptionComponent,
-    DialogActionsComponent,
-    MatSelectAutocompleteComponent,
-    QuestionsFormArrayComponent,
-    // EditorComponent,
-    FormsModule,
-    MatIconButton,
-    MatTooltip,
+    // FormsModule,
     ErrorMessageBoxComponent,
     DialogTitleComponent,
-    MatError,
     MatTabGroup,
     MatTab,
-    QuestionsPageComponent,
-    MatTabLink,
-    MatTabNav,
-    MatTabNavPanel,
-    PermissionDirective,
-    RouterLinkActive,
-    RouterOutlet,
     MatTabLabel,
     MatTabContent,
-    JsonPipe,
+    QuestionnaireGeneralComponent,
+    QuestionnaireQuestionsComponent,
+    QuestionnaireSchedulingComponent,
+    QuestionnaireNotificationsComponent,
+    QuestionnaireInterventionFlowComponent,
+    QuestionnaireJsonEditorComponent,
+    QuestionnaireCustomMessagesComponent,
+    AsyncPipe,
+    QuestionnairePreviewComponent,
+    QuestionnaireTranslationComponent,
+    MatIcon,
+    MatButton,
+    MatProgressSpinner,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
@@ -97,84 +100,43 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
     questionnaireFullList: Observable<AppQuestionnaire[]>;
   };
 
-  protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
-  protected readonly DEFAULT_LANG = DEFAULT_LANGUAGE;
+  entity = signal(this.dialogData.entity);
 
-  // editorOptions = {
-  //   language: 'json',
-  //   automaticLayout: true,
-  //   scrollBeyondLastLine: false,
-  //   wordWrap: 'on'
-  // };
-  protected showCode = false;
-
-  // updatedValue?: AppQuestionnaire;
-  // updatedCode = '';
-
-  override formFields = this.configService.getFormFields();
-
-  override form = new FormGroup({
-    name: new FormControl<string>('', {validators: [Validator.requiredValidator, Validator.stringIdValidator], nonNullable: true}),
-    languages: new FormControl<RadarOption[]>([this.DEFAULT_LANG], {nonNullable: true}),
-    questions: new FormControl<AppQuestion[]>([], {nonNullable: true}),
-  });
-
-  questionnaireFullList: AppQuestionnaire[] = [];
-
-  override ngOnInit() {
-    this.dialogData.questionnaireFullList.subscribe(questionnaires => {
-        this.questionnaireFullList = questionnaires;
-        this.form.controls.name.addValidators(this.duplicateValidator);
-        this.form.controls.name.updateValueAndValidity();
-    });
-
-    if (this.dialogData.entity) {
-      const updatedEntity: AppQuestionnaire = {
-        ...this.dialogData.entity,
-      };
-      // this.updatedValue = {...updatedEntity};
-      // this.updatedCode = JSON.stringify(this.updatedValue, null, 2);
-      this.form.controls.languages.setValue(updatedEntity.languages ?? [this.DEFAULT_LANG]);
-      this.form.patchValue(updatedEntity);
-    }
-
-    this.form.controls.questions.valueChanges.subscribe((questions) => {
-      this.questionnaireStateService.questions.set(questions);
-    })
+  protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
+    const defined = Object.fromEntries(
+      Object.entries(event).filter(([, v]) => v !== undefined)
+    ) as Partial<AppQuestionnaire>;
+    this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
   }
 
-  // override handleSaveAction(): void {
-  //   console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 114 ' , this.dialogData.mode, this.dialogData.entity, this.form.getRawValue());
-  //   this.dialogActionEvent.emit({
-  //     action: this.dialogData.mode,
-  //     entity: {
-  //       ...(this.dialogData.entity ?? ({} as AppQuestionnaire)),
-  //       ...(this.form.getRawValue() as Partial<AppQuestionnaire>),
-  //     } as AppQuestionnaire,
-  //   });
-  // }
-  //
-  // override handleDeleteAction(): void {
-  //   console.log('Class: QuestionnaireDialogComponent, Function: handleDeleteAction, Line 125 ' , this.dialogData.mode, this.dialogData.entity);
-  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  // }
+  isGeneralValid = false;
+  isCustomMessageValid = true;
+  isSchedulingValid = true;
+  isNotificationValid = true;
+  isQuestionsValid = true;
+  protected isLoading = false;
 
-  private duplicateValidator = (control: AbstractControl) => {
-    return this.questionnaireFullList.find(
-      (entity) =>
-        control.value === entity._name && this.dialogData.entity?._name !== entity._name
-    )
-      ? { duplicate: true }
-      : null;
+  protected onGeneralValid(event: boolean) {
+    this.isGeneralValid = event;
   }
 
-  protected toggleCodeView() {
-    // const value = this.form.getRawValue();
-    // const json = {...value, languages: undefined};
-    // this.updatedValue = {...value, _name: value.name , _search: value.name, languages: value.languages};
-    // this.updatedCode = JSON.stringify(json, null, 2);
-    // this.showCode = !this.showCode
+  protected onCustomMessageValid(event: boolean) {
+    this.isCustomMessageValid = event;
   }
+
+  protected onSchedulingValid(event: boolean) {
+    this.isSchedulingValid = event;
+  }
+
+  protected onNotificationValid(event: boolean) {
+    this.isNotificationValid = event;
+  }
+
+  protected onQuestionsValid(event: boolean) {
+    this.isQuestionsValid = event;
+  }
+
+  protected readonly DialogAction = DialogAction;
 }
 
 export function moveItemInFormArray(
@@ -191,3 +153,6 @@ export function moveItemInFormArray(
   }
   formArray.setControl(toIndex, item);
 }
+
+
+console.log('Class: moveItemInFormArray, Function: , Line 157 QUESTIONNAIRES' , QUESTIONNAIRES);

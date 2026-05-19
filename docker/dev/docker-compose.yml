@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+
+  # ── Database ──────────────────────────────────────────────────────────────
+  postgresql:
+    image: postgres:16-alpine
+    env_file:
+      - ./postgresql/.env
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+      - ./postgresql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Dev SMTP (Mailhog – view emails at http://localhost:8025) ─────────────
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+
+  # ── Radar Home ─────────────────────────────────────────────────────────────
+  radar-home:
+    image: ghcr.io/radar-base/radar-home/radar-home:0.1.7
+
+  # ── Management Portal ─────────────────────────────────────────────────────
+  management-portal:
+    image: docker.io/peymanm/management-portal:2.1.38
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    env_file:
+      - ./management-portal/.env
+    volumes:
+      - ./management-portal/keystore.p12:/mp-includes/config/keystore.p12:ro
+      - ./management-portal/oauth_client_details.csv:/secrets/oauth_client_details.csv:ro
+
+  # ── App Config backend ─────────────────────────────────────────────────────
+  app-config:
+    image: ghcr.io/radar-base/radar-app-config/radar-app-config:0.6.1
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      management-portal:
+        condition: service_started
+    env_file:
+      - ./app-config/.env
+    volumes:
+      - ./app-config/appconfig.yml:/etc/radar-app-config/appconfig.yml:ro
+
+  # ── App Config frontend ────────────────────────────────────────────────────
+  app-config-frontend:
+    image: ghcr.io/radar-base/radar-app-config/radar-app-config-frontend:0.6.0
+    env_file:
+      - ./app-config-frontend/.env
+    depends_on:
+      app-config:
+        condition: service_started
+
+
+  #  # ── Radar Console ──────────────────────────────────────────────────────────
+#  radar-console:
+#    image: docker.io/peymanm/radarbase-console:0.0.37
+##    volumes:
+##      - ./radar-console/frontend-config.json:/usr/share/nginx/html/config-assets/frontend-config.json:ro
+
+
+  # ── Radar Console ──────────────────────────────────────────────────────────
+  radar-console:
+    build:
+      context: ../..
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../../src:/code/src
+    depends_on:
+      app-config-frontend:
+        condition: service_started
+
+  # ── Nginx gateway (replaces nginx-ingress) ─────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    depends_on:
+      - management-portal
+      - radar-home
+      - app-config
+      - app-config-frontend
+      - radar-console
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  postgresql-data:

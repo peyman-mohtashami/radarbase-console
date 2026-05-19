@@ -3,207 +3,130 @@
 <app-dialog-title [dialogMode]='dialogData.mode'
                   [entityMetadata]="configService.getEntityMetadata()"
                   [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity?._name : undefined"
-                  (closeEvent)='close()'>
-  <button mat-icon-button (click)="toggleCodeView()" [matTooltip]="showCode ? 'Show form' : 'Show code'">
-    <span class="material-symbols-outlined">{{ showCode ? 'assignment' : 'code_blocks' }}</span>
-  </button>
-</app-dialog-title>
+                  (closeEvent)='close()' />
 
 <mat-dialog-content class="h-full overflow-auto p-0!">
+  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+    <app-dialog-body-description [dialogMode]="dialogData.mode"
+                                 [label]="`ADMIN.questionnaire.name.label` | translate"
+                                 [entityName]="dialogData.entity?._name"/>
+  }
 
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms"
+                   class="h-full [&>.mat-mdc-tab-body-wrapper]:h-full! [&>mat-tab-header]:border-b-2 [&>mat-tab-header]:border-neutral-200 [&>mat-tab-header]:dark:border-neutral-600 [&>.mat-mdc-tab-body-wrapper]:p-4!">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            General
+            @if (!isGeneralValid) {
+              <mat-icon class="material-symbols-outlined">warning</mat-icon>
+            }
+          </h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-general [entity]="entity()"
+                                     [questionnaires]="dialogData.questionnaireFullList | async"
+                                     (changeEvent)="onEntityUpdate($event)"
+                                     (valid)="onGeneralValid($event)" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            Custom Messages
+            @if (!isCustomMessageValid) {
+              <mat-icon class="material-symbols-outlined">warning</mat-icon>
+            }
 
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms"
-                 class="h-full [&>.mat-mdc-tab-body-wrapper]:h-full! [&>mat-tab-header]:border-b-2 [&>mat-tab-header]:border-neutral-200 [&>mat-tab-header]:dark:border-neutral-600 [&>.mat-mdc-tab-body-wrapper]:p-4!">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-          Design
-        </h2>
-      </ng-template>
-      <ng-template matTabContent>
-        @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-          <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                       [label]="`ADMIN.questionnaire.name.label` | translate"
-                                       [entityName]="dialogData.entity?._name"/>
-        }
-
-        @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
-          <form [formGroup]='form' novalidate class="grid grid-cols-2 grid-rows-[auto_1fr] h-full gap-4">
-
-            <div class="">
-              <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
-              <mat-form-field class='small-input w-1/2' appearance='outline'>
-                <input matInput formControlName='name' required>
-
-                <mat-error>
-                  @if (form.controls.name.errors; as errors) {
-                    @if (errors['required']) {
-                      {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
-                    }
-                  }
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="">
-              <app-mat-select-autocomplete formControlName="languages"
-                                           [options]="ISO_LANGUAGES"
-                                           [label]="`${_prefix}.languagesLabel` | translate"
-                                           [required]="true"
-                                           [multiple]="true"
-                                           [notRemovable]="DEFAULT_LANG"/>
-            </div>
-
-            <app-questions-form-array class="col-span-2"
-                                      formControlName="questions"
-                                      [languages]="form.controls.languages.value"/>
-          </form>
-        }
-      </ng-template>
-    </mat-tab>
-    <mat-tab label="Preview">
-      <ng-template mat-tab-label>
-        <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-          Preview
-        </h2>
-      </ng-template>
-      <ng-template matTabContent>
-        <app-page-questions [questions]="form.controls.questions.value"
-                            [questionnaireName]="form.controls.name.value"
-                            [languages]="form.controls.languages.value"
-        />
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-          Logic
-        </h2>
-      </ng-template>
-      <ng-template matTabContent>
-      Logic
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-          JSON Editor
-        </h2>
-      </ng-template>
-      <ng-template matTabContent>
-      <!--    <div class="h-full">-->
-      <!--      <ngx-monaco-editor style="display:block;height:100%"-->
-      <!--                         [options]="editorOptions"-->
-      <!--                         [(ngModel)]="updatedCode"/>-->
-      <!--    </div>-->
-      </ng-template>
-    </mat-tab>
-
-<!--    <mat-tab label="Design" class="">-->
-<!--      @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {-->
-<!--        <app-dialog-body-description [dialogMode]="dialogData.mode"-->
-<!--                                     [label]="`ADMIN.questionnaire.name.label` | translate"-->
-<!--                                     [entityName]="dialogData.entity?._name"/>-->
-<!--      }-->
-
-<!--      @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {-->
-<!--        <form [formGroup]='form' novalidate class="grid grid-cols-2 grid-rows-[auto_1fr] h-full gap-4">-->
-
-<!--          <div class="">-->
-<!--            <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>-->
-<!--            <mat-form-field class='small-input w-1/2' appearance='outline'>-->
-<!--              <input matInput formControlName='name' required>-->
-
-<!--              <mat-error>-->
-<!--                @if (form.controls.name.errors; as errors) {-->
-<!--                  @if (errors['required']) {-->
-<!--                    {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--                  }-->
-<!--                }-->
-<!--              </mat-error>-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-
-<!--          <div class="">-->
-<!--            <app-mat-select-autocomplete formControlName="languages"-->
-<!--                                         [options]="ISO_LANGUAGES"-->
-<!--                                         [label]="`${_prefix}.languagesLabel` | translate"-->
-<!--                                         [required]="true"-->
-<!--                                         [multiple]="true"-->
-<!--                                         [notRemovable]="DEFAULT_LANG"/>-->
-<!--          </div>-->
-
-<!--          <app-questions-form-array class="col-span-2"-->
-<!--                                    formControlName="questions"-->
-<!--                                    [languages]="form.controls.languages.value"/>-->
-<!--        </form>-->
-<!--      }-->
-<!--    </mat-tab>-->
-<!--    <mat-tab label="Preview">-->
-<!--        <app-page-questions [questions]="form.controls.questions.value" [questionnaireName]="form.controls.name.value"/>-->
-<!--    </mat-tab>-->
-<!--    <mat-tab label="Logic">-->
-<!--        Logic-->
-<!--    </mat-tab>-->
-<!--    <mat-tab label="JSON Editor">-->
-  <!--    <div class="h-full">-->
-  <!--      <ngx-monaco-editor style="display:block;height:100%"-->
-  <!--                         [options]="editorOptions"-->
-  <!--                         [(ngModel)]="updatedCode"/>-->
-  <!--    </div>-->
-<!--    </mat-tab>-->
-  </mat-tab-group>
+          </h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-custom-messages [entity]="entity()"
+                                             (changeEvent)="onEntityUpdate($event)"
+                                             (valid)="onCustomMessageValid($event)" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Questions</h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-questions [entity]="entity()"
+                                       (changeEvent)="onEntityUpdate($event)"
+                                       (valid)="onQuestionsValid($event)" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            Scheduling
+            @if (!isSchedulingValid) {
+              <mat-icon class="material-symbols-outlined">warning</mat-icon>
+            }
+          </h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-scheduling [entity]="entity()"
+                                        (changeEvent)="onEntityUpdate($event)"
+                                        (valid)="onSchedulingValid($event)" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="entity()?.schedule?.onDemand || !isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            Notifications
+            @if (!isNotificationValid) {
+              <mat-icon class="material-symbols-outlined">warning</mat-icon>
+            }
+          </h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-notifications [entity]="entity()"
+                                           (changeEvent)="onEntityUpdate($event)"
+                                           (valid)="onNotificationValid($event)" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            Translations
+            @if (!isCustomMessageValid) {
+              <mat-icon class="material-symbols-outlined">warning</mat-icon>
+            }
+          </h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-translation [entity]="entity()"/>
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Intervention Flow</h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-intervention-flow />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Preview</h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-preview [entity]="entity()" />
+        </ng-template>
+      </mat-tab>
+      <mat-tab [disabled]="!isGeneralValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Advanced (JSON) Editor</h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-json-editor />
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  }
 </mat-dialog-content>
-
-<!--<mat-dialog-content class="h-full overflow-auto">-->
-
-<!--  @if (showCode) {-->
-<!--    <div class="h-full">-->
-<!--      <ngx-monaco-editor style="display:block;height:100%"-->
-<!--                         [options]="editorOptions"-->
-<!--                         [(ngModel)]="updatedCode"/>-->
-<!--    </div>-->
-<!--  } @else {-->
-<!--    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {-->
-<!--      <app-dialog-body-description [dialogMode]="dialogData.mode"-->
-<!--                                   [label]="`ADMIN.questionnaire.name.label` | translate"-->
-<!--                                   [entityName]="dialogData.entity?._name"/>-->
-<!--    }-->
-
-<!--    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {-->
-<!--      <form [formGroup]='form' novalidate class="grid grid-cols-2 grid-rows-[auto_1fr] h-full gap-4">-->
-
-<!--        <div class="">-->
-<!--          <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>-->
-<!--          <mat-form-field class='small-input w-1/2' appearance='outline'>-->
-<!--            <input matInput formControlName='name' required>-->
-
-<!--            <mat-error>-->
-<!--              @if (form.controls.name.errors; as errors) {-->
-<!--                @if (errors['required']) {-->
-<!--                  {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--                }-->
-<!--              }-->
-<!--            </mat-error>-->
-<!--          </mat-form-field>-->
-<!--        </div>-->
-
-<!--        <div class="">-->
-<!--          <app-mat-select-autocomplete formControlName="languages"-->
-<!--                                       [options]="ISO_LANGUAGES"-->
-<!--                                       [label]="`${_prefix}.languagesLabel` | translate"-->
-<!--                                       [required]="true"-->
-<!--                                       [multiple]="true"-->
-<!--                                       [notRemovable]="DEFAULT_LANG"/>-->
-<!--        </div>-->
-
-<!--        <app-questions-form-array class="col-span-2"-->
-<!--                                  formControlName="questions"-->
-<!--                                  [languages]="form.controls.languages.value"/>-->
-<!--      </form>-->
-<!--    }-->
-<!--  }-->
-<!--</mat-dialog-content>-->
 
 @if (error()) {
   <app-error-message-box>
@@ -211,6 +134,71 @@
   </app-error-message-box>
 }
 
-<app-dialog-actions [dialogMode]='dialogData.mode'
-                    [form]='form'
-                    (actionTriggered)='onAction($event)'/>
+<!--<app-dialog-actions [dialogMode]='dialogData.mode'-->
+<!--                    [form]='form'-->
+<!--                    (actionTriggered)='onAction($event)'/>-->
+
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ dialogData.mode !== DialogMode.DELETE ?
+      ('SHARED.dialog.cancel' | translate) :
+      ('SHARED.dialog.no' | translate) }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <ng-content />
+    @if (dialogData.mode === DialogMode.DELETE) {
+      <button [disabled]='isLoading'
+              (click)='onAction(DialogAction.DELETE)'
+              color="warn"
+              mat-raised-button
+              type="button">
+        @if (isLoading) {
+          <ng-container>
+            <mat-icon>
+              <mat-spinner diameter='20' />
+            </mat-icon>
+            {{ 'SHARED.dialog.deletingButton' | translate }}
+          </ng-container>
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @if (dialogData.mode === DialogMode.EDIT) {
+      <button
+              (click)='onAction(DialogAction.SAVE)'
+              mat-raised-button
+              color="primary"
+              type="button">
+<!--        [disabled]='!form()?.valid || !form()?.dirty || isLoading'-->
+        @if (isLoading) {
+          <mat-icon>
+            <mat-spinner diameter='20' />
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @if (dialogData.mode === DialogMode.ADD) {
+      <button
+              (click)='onAction(DialogAction.SAVE)'
+              color="primary"
+              mat-raised-button
+              type="button">
+<!--        [disabled]='!form()?.valid || isLoading'-->
+        @if (isLoading) {
+          <mat-icon>
+            <mat-spinner diameter='20' />
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  </div>
+</div>

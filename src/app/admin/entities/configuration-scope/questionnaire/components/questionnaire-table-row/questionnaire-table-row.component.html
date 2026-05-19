@@ -15,7 +15,7 @@
       <p class="font-bold">{{ entity()['name'] || '-' }}</p>
       <div class="flex items-center flex-wrap gap-2">
         <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.questionnaire.availableLanguages' | translate}}</span>
-        @for (l of entity().languages; track l) {
+        @for (l of entity().languages; track l.id) {
           <span>
             <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{l.id}}</span></span>
           </span>

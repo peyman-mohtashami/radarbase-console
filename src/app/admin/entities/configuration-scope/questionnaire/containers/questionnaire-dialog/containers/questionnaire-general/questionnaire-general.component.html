@@ -1,0 +1,86 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<form [formGroup]='form' novalidate class="grid grid-cols-2 gap-4">
+  <div>
+    <div class="">
+      <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput formControlName='name' required>
+        <mat-error>
+          @if (form.controls.name.errors; as errors) {
+            @if (errors['required']) {
+              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="">
+      <app-mat-select-autocomplete formControlName="languages"
+                                   [options]="ISO_LANGUAGES"
+                                   [label]="`${_prefix}.languagesLabel` | translate"
+                                   [required]="true"
+                                   [multiple]="true"
+                                   [notRemovable]="DEFAULT_LANG"/>
+    </div>
+
+    <div class="">
+      <app-text-form-group class="mb-4"
+                           formControlName="title"
+                           [languages]="form.controls.languages.value"
+                           [label]="`${_prefix}.titleLabel` | translate"
+                           [textarea]="false"
+                           [textareaAutosize]="true"/>
+    </div>
+
+
+
+    <div class="">
+      <app-text-form-group class="mb-4"
+                           formControlName="description"
+                           [languages]="form.controls.languages.value"
+                           [label]="`${_prefix}.descriptionLabel` | translate"
+                           [textarea]="true"
+                           [textareaAutosize]="true"/>
+    </div>
+
+    <div>
+      <label for="estimatedCompletionTime" class="text-sm">
+        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
+      </label>
+      <mat-form-field class='small-input w-full' appearance='outline'>
+        <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>
+        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
+        {{ `${_prefix}.minutes` | translate }}
+      </span>
+      </mat-form-field>
+    </div>
+  </div>
+
+<!--  <div>-->
+<!--    <div class="">-->
+<!--      <div>-->
+<!--        <label for="order" class="text-sm">-->
+<!--          {{ `${_prefix}.orderLabel` | translate }}-->
+<!--        </label>-->
+<!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+<!--          <input id="order" matInput type="number" formControlName='order'>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
+<!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
+<!--    </mat-slide-toggle>-->
+
+<!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
+<!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
+<!--    </mat-slide-toggle>-->
+
+<!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
+<!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
+<!--    </mat-slide-toggle>-->
+<!--  </div>-->
+
+</form>

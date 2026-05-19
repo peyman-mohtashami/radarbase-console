@@ -94,7 +94,7 @@ export class ConfigurationService {
           enabled(config.internal.sourceType, ENTITY_REGISTRY.sourceType),
           enabled(config.internal.sourceData, ENTITY_REGISTRY.sourceData),
           enabled(config.internal.appConfig, ENTITY_REGISTRY.appConfig),
-          enabled(config.internal.protocol, ENTITY_REGISTRY.protocol),
+          // enabled(config.internal.protocol, ENTITY_REGISTRY.protocol),
           enabled(config.internal.questionnaire, ENTITY_REGISTRY.questionnaire),
           enabled(config.internal.audit, ENTITY_REGISTRY.audit),
           enabled(config.internal.revision, ENTITY_REGISTRY.revision),
