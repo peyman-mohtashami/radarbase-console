@@ -1,8 +1,5 @@
 import {Component, input, output} from '@angular/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
-import {FormControl, FormGroup} from '@angular/forms';
-import {Validator} from '../../../../../../../../shared/utils/validators';
-import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {JsonPipe} from '@angular/common';
 
 @Component({

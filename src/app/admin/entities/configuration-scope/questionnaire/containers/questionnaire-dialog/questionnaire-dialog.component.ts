@@ -57,7 +57,7 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {QUESTIONNAIRES} from '../../mock/mock-questionnaire';
+import {FormProtocol} from '../../../protocol/models/protocol';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -65,9 +65,7 @@ import {QUESTIONNAIRES} from '../../mock/mock-questionnaire';
   imports: [
     TranslatePipe,
     MatDialogContent,
-    // ReactiveFormsModule,
     DialogBodyDescriptionComponent,
-    // FormsModule,
     ErrorMessageBoxComponent,
     DialogTitleComponent,
     MatTabGroup,
@@ -137,6 +135,43 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   }
 
   protected readonly DialogAction = DialogAction;
+
+  protected override handleSaveAction(): void {
+    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 144 this.entity()' , this.entity());
+    // toValidAppQuestionnaire
+
+    this.dialogActionEvent.emit({
+      action: this.dialogData.mode,
+      entity: this.entity(),
+    });
+    // this.dialogActionEvent.emit({
+    //   action: this.dialogData.mode,
+    //   entity: {
+    //     ...(this.dialogData.entity ?? ({} as T)),
+    //     ...(this.form.getRawValue() as Partial<T>),
+    //   } as T,
+    // });
+  }
+
+  // override handleSaveAction(): void {
+  //   const value = this.form.getRawValue();
+  //   const updatedEntity: FormProtocol = {
+  //     //...this.dialogData.entity,
+  //     _name: value.general.name,
+  //     ...value
+  //   };
+  //   const appProtocol = this.entityService.formToAppModel(updatedEntity);
+  //   const radarProtocol = this.entityService.appToRadarModel(appProtocol);
+  //   this.dialogActionEvent.emit({
+  //     action: this.dialogData.mode,
+  //     entity: appProtocol,
+  //   });
+  // }
+
+  protected override handleDeleteAction(): void {
+    console.log('Class: QuestionnaireDialogComponent, Function: handleDeleteAction, Line 155 ' , );
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  }
 }
 
 export function moveItemInFormArray(
@@ -153,6 +188,3 @@ export function moveItemInFormArray(
   }
   formArray.setControl(toIndex, item);
 }
-
-
-console.log('Class: moveItemInFormArray, Function: , Line 157 QUESTIONNAIRES' , QUESTIONNAIRES);

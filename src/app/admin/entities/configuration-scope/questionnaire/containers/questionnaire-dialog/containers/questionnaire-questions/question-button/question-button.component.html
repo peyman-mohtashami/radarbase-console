@@ -1,6 +1,8 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-<div class="border-2 border-gray-200 hover:border-secondary/50 rounded-2xl px-4 py-1 mt-2 text-sm!"
+<div class="w-full border-2 border-gray-200 hover:border-secondary/50 rounded-2xl px-4 py-1 mt-2 text-sm!"
+     role="button"
+     tabindex="0"
      (click)='selectQuestion()'
      [class]="selected() ? 'border-secondary!': 'border-gray-200'">
   <div class="flex items-center gap-2 w-full justify-between mb-2">
@@ -42,36 +44,38 @@
       }
 
       @if (entity().select_choices_or_calculations; as choices) {
-        <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>
-        <div class="flex flex-wrap gap-x-2">
-          @for (choice of choices; track choice.code) {
-            @if (choice.code) {
-              <span class="inline-flex gap-1">
-              <mat-icon class="material-symbols-outlined text-base!">
-                @switch (entity().field_type) {
-                  @case ('radio') {
-                    radio_button_unchecked
+        @if (choices.length) {
+          <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>
+          <div class="flex flex-wrap gap-x-2">
+            @for (choice of choices; track choice.code) {
+              @if (choice.code) {
+                <span class="inline-flex gap-1">
+                <mat-icon class="material-symbols-outlined text-base!">
+                  @switch (entity().field_type) {
+                    @case ('radio') {
+                      radio_button_unchecked
+                    }
+                    @case ('checkbox') {
+                      check_box_outline_blank
+                    }
+                    @case ('range') {
+                      radio_button_unchecked
+                    }
+                    @case ('range-info') {
+                      radio_button_unchecked
+                    }
+                    @case ('info') {
+                      info
+                    }
                   }
-                  @case ('checkbox') {
-                    check_box_outline_blank
-                  }
-                  @case ('range') {
-                    radio_button_unchecked
-                  }
-                  @case ('range-info') {
-                    radio_button_unchecked
-                  }
-                  @case ('info') {
-                    info
-                  }
-                }
-              </mat-icon>
-              <span class="pt-0.5">{{ choice.code }}
-                : {{ choice.label[questionnaireStateService.selectedLanguage()] }}</span>
-            </span>
+                </mat-icon>
+                <span class="pt-0.5">{{ choice.code }}
+                  : {{ choice.label[questionnaireStateService.selectedLanguage()] }}</span>
+              </span>
+              }
             }
-          }
-        </div>
+          </div>
+        }
       }
     </div>
   }

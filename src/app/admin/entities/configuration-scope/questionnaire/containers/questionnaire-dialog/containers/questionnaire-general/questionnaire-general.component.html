@@ -11,6 +11,12 @@
             @if (errors['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
             }
+            @if (errors['duplicate']) {
+              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
+            }
+            @if (errors['pattern']) {
+              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
+            }
           }
         </mat-error>
       </mat-form-field>

@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, OnInit, output} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Validator as CustomValidator} from '../../../../../../../../shared/utils/validators';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -37,7 +37,7 @@ import {Subscription} from 'rxjs';
     TranslatePipe
   ]
 })
-export class QuestionnaireSchedulingComponent implements OnInit {
+export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
   protected readonly UNITS = UNITS;
 
   entity = input<AppQuestionnaire | undefined>();
@@ -69,76 +69,62 @@ export class QuestionnaireSchedulingComponent implements OnInit {
 
   private subscription?: Subscription;
 
-  protected readonly onDemandValueChanges = toSignal(
+  protected readonly onDemandValue = toSignal(
     this.form.controls.schedule.controls.onDemand.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.controls.schedule.controls.onDemand.getRawValue()}
   );
 
-  protected readonly relativeToReferenceTimeValueChanges = toSignal(
+  protected readonly relativeToReferenceTimeValue = toSignal(
     this.form.controls.schedule.controls.relativeToReferenceTime.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.controls.schedule.controls.relativeToReferenceTime.getRawValue()}
   );
 
-  protected readonly repeatedProtocolValueChanges = toSignal(
+  protected readonly repeatedProtocolValue = toSignal(
     this.form.controls.schedule.controls.repeatedProtocol.valueChanges.pipe(debounceTime(300)),
     {initialValue: this.form.controls.schedule.controls.repeatedProtocol.getRawValue()}
   );
-  //
-  // // protected readonly reminderEnabledValueChanges = toSignal(
-  // //   this.form.controls.reminders.controls.enabled.valueChanges.pipe(debounceTime(300)),
-  // //   {initialValue: this.form.controls.reminders.controls.enabled.getRawValue()}
-  // // );
-  //
-  constructor() {
-    effect(() => {
+
+  protected loading = true;
+
+  ngOnInit() {
+    this.subscription = this.form.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(change => {
+      this.loading = false;
+      this.changeEvent.emit(change);
+
       const {referenceTimestamp, repeatProtocol, repeatQuestionnaire, completionWindow} = this.form.controls.schedule.controls;
 
-      const relativeToReferenceTimeValue = this.relativeToReferenceTimeValueChanges();
-      referenceTimestamp.setValidators(!relativeToReferenceTimeValue ? [] : [CustomValidator.requiredValidator]);
-      referenceTimestamp.updateValueAndValidity({emitEvent: false});
+      const onDemand = change.schedule?.onDemand;
 
-      const repeatedProtocolValue = this.repeatedProtocolValueChanges();
-      const {amount, unit} = repeatProtocol.controls;
-      amount.setValidators(!repeatedProtocolValue ? [] : [CustomValidator.requiredValidator]);
-      amount.updateValueAndValidity({emitEvent: false});
-      unit.setValidators(!repeatedProtocolValue ? [] : [CustomValidator.requiredValidator]);
-      unit.updateValueAndValidity({emitEvent: false});
-
-      const onDemandValueChanges = this.onDemandValueChanges();
       const {unitsFromZero} = repeatQuestionnaire.controls;
-      unitsFromZero.setValidators(!onDemandValueChanges ? [] : [CustomValidator.requiredValidator]);
+      unitsFromZero.setValidators(!onDemand ? [CustomValidator.requiredValidator] : []);
       unitsFromZero.updateValueAndValidity({emitEvent: false});
 
       const {amount: completionWindowAmount, unit: completionWindowUnit} = completionWindow.controls;
-      completionWindowAmount.setValidators(!onDemandValueChanges ? [] : [CustomValidator.requiredValidator]);
+      completionWindowAmount.setValidators(!onDemand ? [CustomValidator.requiredValidator] : []);
       completionWindowAmount.updateValueAndValidity({emitEvent: false});
-      completionWindowUnit.setValidators(!onDemandValueChanges ? [] : [CustomValidator.requiredValidator]);
+      completionWindowUnit.setValidators(!onDemand ? [CustomValidator.requiredValidator] : []);
       completionWindowUnit.updateValueAndValidity({emitEvent: false});
 
-      // const reminderEnabledValue = this.reminderEnabledValueChanges();
-      // this.form.controls.reminders.controls.repeat.setValidators(!reminderEnabledValue ? [] : [CustomValidator.requiredValidator]);
-      // this.form.controls.reminders.controls.repeat.updateValueAndValidity({emitEvent: false});
-      // this.form.controls.reminders.controls.unit.setValidators(!reminderEnabledValue ? [] : [CustomValidator.requiredValidator]);
-      // this.form.controls.reminders.controls.unit.updateValueAndValidity({emitEvent: false});
-      // this.form.controls.reminders.controls.amount.setValidators(!reminderEnabledValue ? [] : [CustomValidator.requiredValidator]);
-      // this.form.controls.reminders.controls.amount.updateValueAndValidity({emitEvent: false});
-    });
-  }
+      const relativeToReferenceTime = change.schedule?.relativeToReferenceTime;
+      referenceTimestamp.setValidators(!relativeToReferenceTime ? [] : [CustomValidator.requiredValidator]);
+      referenceTimestamp.updateValueAndValidity({emitEvent: false});
 
-  ngOnInit() {
+      const repeatedProtocol = change.schedule?.repeatedProtocol;
+      const {amount, unit} = repeatProtocol.controls;
+      amount.setValidators(!repeatedProtocol ? [] : [CustomValidator.requiredValidator]);
+      amount.updateValueAndValidity({emitEvent: false});
+      unit.setValidators(!repeatedProtocol ? [] : [CustomValidator.requiredValidator]);
+      unit.updateValueAndValidity({emitEvent: false});
+
+      this.valid.emit(this.form.valid);
+    });
+
     const entity = this.entity();
     if (entity) {
       this.form.patchValue(entity);
     }
-
-    this.valid.emit(this.form.valid);
-
-    this.subscription = this.form.valueChanges.pipe(
-      debounceTime(0)
-    ).subscribe(change => {
-      this.changeEvent.emit(change);
-      this.valid.emit(this.form.valid);
-    });
   }
 
   ngOnDestroy() {

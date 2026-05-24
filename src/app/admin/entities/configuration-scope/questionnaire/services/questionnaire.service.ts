@@ -89,6 +89,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
+    console.log('Class: QuestionnaireService, Function: add, Line 92 entity' , entity);
     this.total.set(this.total() + 1);
     this.updatedList.push(entity);
     return this.publish(this.updatedList).pipe(map(() => entity));
@@ -105,7 +106,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
-    const radarQuestionnaires: RadarQuestionnaire[] = questionnaires;
+    // const radarQuestionnaires: RadarQuestionnaire[] = questionnaires;
+    const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => {
+      return this.toRadarModel(q);
+    });
     // const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => (
     //   {
     //     name: q.name,
@@ -115,7 +119,12 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     // ));
 
     // const configs: AppConfig[] = [];
-    const configs: AppConfig[] = radarQuestionnaires.map(q => ({_name: '', id: '',name: q.name, value: JSON.stringify(q.questions)}));
+    // const configs: AppConfig[] = radarQuestionnaires.map(q => ({_name: '', id: '',name: q.name, value: JSON.stringify(q.questions)}));
+    const configs: AppConfig[] = radarQuestionnaires.map(q => {
+      // const v: RadarQuestionnaire = {...q, questions: []};
+      return {_name: '', id: '',name: q.name, value: JSON.stringify(q)}
+    });
+    console.log('Class: QuestionnaireService, Function: publish, Line 121 configs' , configs);
     // radarQuestionnaires.forEach(q => {
     //   const name = q.name;
     //   Object.keys(q.questions).forEach(lang => {
@@ -133,6 +142,54 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
         return questionnaires;
       })
     );
+  }
+
+  override toRadarModel(entity: AppQuestionnaire): RadarQuestionnaire {
+    return {
+      name: entity.name,
+      version: entity.version,
+      modelVersion: entity.modelVersion,
+      languages: entity.languages,
+      title: entity.title,
+      description: entity.description,
+      estimatedCompletionTime: entity.estimatedCompletionTime,
+      showInCalendar: entity.showInCalendar,
+      isDemo: entity.isDemo,
+      order: entity.order,
+      showIntroduction: entity.showIntroduction,
+      startText: entity.startText,
+      endText: entity.endText,
+      warn: entity.warn,
+      questions: entity.questions ?? [],
+      schedule: {
+        completionWindow: {
+          unit: entity.schedule?.completionWindow?.unit,
+          amount: entity.schedule?.completionWindow?.amount,
+        },
+        notification: {
+          title: entity.schedule?.notification?.title,
+          text: entity.schedule?.notification?.text,
+        },
+        onDemand: entity.schedule?.onDemand,
+        referenceTimestamp: entity.schedule?.referenceTimestamp,
+        relativeToReferenceTime: entity.schedule?.relativeToReferenceTime,
+        reminders: {
+          enabled: entity.schedule?.reminders?.enabled,
+          unit: entity.schedule?.reminders?.unit,
+          amount: entity.schedule?.reminders?.amount,
+          repeat: entity.schedule?.reminders?.repeat,
+        },
+        repeatProtocol: {
+          unit: entity.schedule?.repeatProtocol?.unit,
+          amount: entity.schedule?.repeatProtocol?.amount,
+        },
+        repeatQuestionnaire: {
+          unit: entity.schedule?.repeatQuestionnaire?.unit,
+          unitsFromZero: entity.schedule?.repeatQuestionnaire?.unitsFromZero ?? [],
+        },
+        repeatedProtocol: entity.schedule?.repeatedProtocol,
+      }
+    }
   }
 
   private toQuestionAppModel(source: RadarQuestion[]): AppQuestion[] {

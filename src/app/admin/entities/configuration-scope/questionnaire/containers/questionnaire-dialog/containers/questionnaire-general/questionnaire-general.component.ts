@@ -11,6 +11,7 @@ import {Validator, ValidatorError} from '../../../../../../../../shared/utils/va
 import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-general',
@@ -23,6 +24,7 @@ import {debounceTime} from 'rxjs/operators';
     ReactiveFormsModule,
     TranslatePipe,
     TextFormGroupComponent,
+    JsonPipe,
   ]
 })
 export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
@@ -42,6 +44,7 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       nonNullable: true
     }),
     languages: new FormControl<RadarOption[]>([this.DEFAULT_LANG], {nonNullable: true}),
+    // languages: new FormControl<RadarOption[]>([], {nonNullable: true}),
     title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
     description: new FormControl<Record<string, string>>({}, {nonNullable: true}),
     estimatedCompletionTime: new FormControl<string>('', {nonNullable: true}),

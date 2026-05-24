@@ -5,7 +5,7 @@ import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {TranslatePipe} from "@ngx-translate/core";
-import {ChoicesFormArrayComponent} from "../choices-form-array/choices-form-array.component";
+// import {ChoicesFormArrayComponent} from "../choices-form-array/choices-form-array.component";
 import {Validator as CustomValidator, ValidatorError} from "../../../../../../../../../shared/utils/validators";
 import {AnnotationFormGroupComponent} from "../annotation-form-group/annotation-form-group.component";
 import {RangeFormGroupComponent} from "../range-form-group/range-form-group.component";
@@ -13,7 +13,7 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {TextFormGroupComponent} from '../../../components/text-form-group/text-form-group.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
 import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {
@@ -23,6 +23,7 @@ import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 import {QUESTION_TYPES} from '../models/question-types';
 import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {QuestionChoices} from '../question-choices/question-choices';
 
 @Component({
   selector: 'app-question',
@@ -36,13 +37,14 @@ import {Subscription} from 'rxjs';
     MatOption,
     MatSelect,
     TranslatePipe,
-    ChoicesFormArrayComponent,
+    // ChoicesFormArrayComponent,
     TextFormGroupComponent,
     AnnotationFormGroupComponent,
     RangeFormGroupComponent,
     MatRadioButton,
     MatRadioGroup,
     MatIcon,
+    QuestionChoices,
   ],
 })
 export class QuestionComponent implements OnInit, OnDestroy {
@@ -68,7 +70,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     text_validation_min: new FormControl('', {nonNullable: true}),
     text_validation_max: new FormControl('', {nonNullable: true}),
     field_annotation: new FormControl<AppQuestion['field_annotation']>('', {nonNullable: true}),
-    select_choices_or_calculations: new FormControl<AppQuestion['select_choices_or_calculations']>([], {nonNullable: true}),
+    // select_choices_or_calculations: new FormControl<AppQuestion['select_choices_or_calculations']>([], {nonNullable: true}),
     range: new FormControl<AppQuestion['range']>(undefined, {nonNullable: true}),
     branching_logic: new FormControl<string>('', {nonNullable: true}),
   });
@@ -83,6 +85,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
       }
       this.valid.emit(this.form.valid);
     });
+
+    // this.form.statusChanges.subscribe(() => {
+    //   // this.validatorChange();
+    // });
+    //
+    // this.form.controls.field_type?.valueChanges.subscribe(type => {
+    //   this.updateFormControls(type);
+    //   // this.validatorChange();
+    // });
   }
 
   ngOnInit() {
@@ -135,45 +146,45 @@ export class QuestionComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  updateFormControls(type?: string) {
-    if (!type) return;
-
-    // ['text_validation_type_or_show_slider_number', 'text_validation_min', 'text_validation_max', 'field_annotation', 'select_choices_or_calculations', 'range'].forEach(controlName => {
-    //   if (this.form.contains(controlName)) {
-    //     this.form.removeControl(controlName as keyof QuestionForm);
-    //   }
-    // });
-
-    // if (type === 'timed') {
-    //   this.form.addControl('field_annotation' as keyof QuestionForm, new FormControl<QuestionFormAnnotation | null>(null));
-    // } else {
-    //   this.form.removeControl('field_annotation' as keyof QuestionForm);
-    // }
-    // if (type === 'slider') {
-    //   this.form.addControl('range' as keyof QuestionForm, new FormControl<QuestionFormRange | null>(null));
-    // } else {
-    //   this.form.removeControl('range' as keyof QuestionForm);
-    // }
-    // if (['radio', 'checkbox', 'info', 'range', 'slider', 'range-info'].includes(type)) {
-    //   this.form.addControl('select_choices_or_calculations' as keyof QuestionForm, new FormControl([],{nonNullable: true, validators: [CustomValidator.requiredValidator]}));
-    // } else {
-    //   this.form.removeControl('select_choices_or_calculations' as keyof QuestionForm);
-    // }
-    // if (['text'].includes(type)) {
-    //   this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
-    //   this.form.addControl('text_validation_min' as keyof QuestionForm, new FormControl<string>(''));
-    //   this.form.addControl('text_validation_max' as keyof QuestionForm, new FormControl<string>(''));
-    // } else {
-    //   this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
-    //   this.form.removeControl('text_validation_min' as keyof QuestionForm);
-    //   this.form.removeControl('text_validation_max' as keyof QuestionForm);
-    // }
-    // if (['datetime'].includes(type)) {
-    //   this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
-    // } else {
-    //   this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
-    // }
-  }
+  // updateFormControls(type?: string) {
+  //   if (!type) return;
+  //
+  //   ['text_validation_type_or_show_slider_number', 'text_validation_min', 'text_validation_max', 'field_annotation', 'select_choices_or_calculations', 'range'].forEach(controlName => {
+  //     if (this.form.contains(controlName)) {
+  //       this.form.removeControl(controlName as keyof AppQuestion);
+  //     }
+  //   });
+  //
+  //   if (type === 'timed') {
+  //     this.form.addControl('field_annotation' as keyof QuestionForm, new FormControl<QuestionFormAnnotation | null>(null));
+  //   } else {
+  //     this.form.removeControl('field_annotation' as keyof QuestionForm);
+  //   }
+  //   if (type === 'slider') {
+  //     this.form.addControl('range' as keyof QuestionForm, new FormControl<QuestionFormRange | null>(null));
+  //   } else {
+  //     this.form.removeControl('range' as keyof QuestionForm);
+  //   }
+  //   if (['radio', 'checkbox', 'info', 'range', 'slider', 'range-info'].includes(type)) {
+  //     this.form.addControl('select_choices_or_calculations' as keyof QuestionForm, new FormControl([],{nonNullable: true, validators: [CustomValidator.requiredValidator]}));
+  //   } else {
+  //     this.form.removeControl('select_choices_or_calculations' as keyof QuestionForm);
+  //   }
+  //   if (['text'].includes(type)) {
+  //     this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
+  //     this.form.addControl('text_validation_min' as keyof QuestionForm, new FormControl<string>(''));
+  //     this.form.addControl('text_validation_max' as keyof QuestionForm, new FormControl<string>(''));
+  //   } else {
+  //     this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
+  //     this.form.removeControl('text_validation_min' as keyof QuestionForm);
+  //     this.form.removeControl('text_validation_max' as keyof QuestionForm);
+  //   }
+  //   if (['datetime'].includes(type)) {
+  //     this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
+  //   } else {
+  //     this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
+  //   }
+  // }
 
   // override writeValue(question: AppQuestion) {
   //   if (!question) {
@@ -255,4 +266,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   // protected removeQuestion() {
   //
   // }
+  protected onChoicesChange($event: AppQuestionChoice[]) {
+
+  }
 }

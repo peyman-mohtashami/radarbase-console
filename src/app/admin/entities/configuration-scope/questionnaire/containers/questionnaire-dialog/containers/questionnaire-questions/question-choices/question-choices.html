@@ -12,22 +12,18 @@
       <div class="w-7 grow-0"></div>
     </div>
 
-    @if (form.controls.length) {
-      @for (choice of form.controls; let i = $index; track choice.value?.code) {
-        <app-choice-form-group class="block"
-                               [formControl]="choice"
-                               [questionIndex]="i"
-                               [languages]="languages()"
-                               [choiceFullList]="form.value"
-                               (remove)="removeItem(i)"/>
-      }
+    @for (choice of choices; let i = $index; track choice.code) {
+      <app-question-choice [choice]="choice" [languages]="languages()" [index]="i" (removeEvent)="removeItem(i)" (valueChange)="onValueChange($event, i)" />
     }
+
     <div class="flex items-center gap-1 w-full">
       <div class="grow"></div>
       <button class="tiny w-7! grow-0 shrink-0 material-symbols-outlined" mat-icon-button
-              (click)="addItem()">
+              (click)="addItem(0)">
         <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
       </button>
     </div>
   </div>
 </div>
+
+

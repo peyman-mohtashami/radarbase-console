@@ -90,7 +90,7 @@ export interface AppQuestion {
   required_field?: string;
   field_label: Record<string, string>;
   section_header?: Record<string, string>;
-  select_choices_or_calculations?: {code: string, label: Record<string, string>;}[];
+  select_choices_or_calculations?: AppQuestionChoice[];
   text_validation_type_or_show_slider_number?: string;
   text_validation_min?: string;
   text_validation_max?: string;
@@ -100,6 +100,10 @@ export interface AppQuestion {
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
+}
+
+export interface AppQuestionChoice {
+  code: string, label: Record<string, string>;
 }
 
 //--------------------------

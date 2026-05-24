@@ -1,7 +1,15 @@
 <div [formGroup]="form">
-  @if (label()) {
-    <label for="startText" class="text-sm">{{ label() }} {{ required() ? '*' : '' }}</label>
-  }
+  <div class="flex gap-2 items-center justify-between">
+    @if (label()) {
+      <label for="startText" class="text-sm">{{ label() }} {{ required() ? '*' : '' }}</label>
+    }
+    <div class="flex gap-2 text-sm">
+    @for (language of languages(); track language) {
+      {{language.id.toString() | uppercase}}
+    }
+    </div>
+  </div>
+
   @for (language of languages(); track language) {
     @if (language.id === questionnaireStateService.selectedLanguage()) {
       <mat-form-field class='small-input w-full' appearance='outline'>

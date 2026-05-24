@@ -32,32 +32,25 @@ const QUESTION_TYPES = [
   ]
 })
 export class QuestionnaireQuestionsComponent implements OnInit {
+  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+
+  protected questionnaireStateService = inject(QuestionnaireStateService);
+
   entity = input<AppQuestionnaire | undefined>();
 
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   questions: AppQuestion[] = [];
+  selectedQuestionIndex = signal<number|undefined>(undefined);
+  selectedQuestion = signal<AppQuestion|undefined>(undefined)
 
   ngOnInit() {
     this.questions = this.entity()?.questions?.map(q => ({...q, id: q.field_name}))?? [];
-    const entity = this.entity();
-    if (entity) {
-    //   this.form.patchValue(entity);
-    }
-    //
-    // this.valid.emit(this.form.valid);
-    //
-    // this.form.valueChanges.subscribe(change => {
-    //   this.changeEvent.emit(change);
-    //   this.valid.emit(this.form.valid);
-    // });
   }
 
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
 
   protected addQuestion(type: string) {
-
     this.questions.push({
       id: `${Date.now()}`,
       field_name: '',
@@ -74,15 +67,6 @@ export class QuestionnaireQuestionsComponent implements OnInit {
     this.changeEvent.emit({questions: this.questions});
   }
 
-  protected onDrop($event: CdkDragDrop<any, any, any>) {
-
-  }
-
-  protected questionnaireStateService = inject(QuestionnaireStateService);
-
-  selectedQuestionIndex = signal<number|undefined>(undefined);
-  selectedQuestion = signal<AppQuestion|undefined>(undefined)
-
   protected selectQuestion(index: number, question: AppQuestion) {
     this.selectedQuestionIndex.set(index);
     this.selectedQuestion.set(question);
@@ -94,5 +78,11 @@ export class QuestionnaireQuestionsComponent implements OnInit {
     if (index === undefined) return;
     this.questions = this.questions.map((q, i) => i === index ? {...q, ...event} : q);
     this.selectedQuestion.set(this.questions[index]);
+
+    this.changeEvent.emit({questions: this.questions});
+  }
+
+  protected onDrop($event: CdkDragDrop<any, any, any>) {
+
   }
 }

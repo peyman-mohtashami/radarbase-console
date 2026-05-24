@@ -15,6 +15,7 @@ import {QuestionnaireStateService} from "../../services/questionnaire-state.serv
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
+import {UpperCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-text-form-group',
@@ -26,6 +27,7 @@ import {
     CdkTextareaAutosize,
     MatError,
     TranslateModule,
+    UpperCasePipe,
   ],
   providers: [
     {

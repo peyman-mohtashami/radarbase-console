@@ -1,37 +1,21 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 <div class="flex h-full gap-1">
-  <div class="w-2/12 p-2 h-full overflow-y-auto flex flex-col gap-2">
+  <div class="w-2/12 p-2 h-full overflow-y-auto flex flex-col gap-2 bg-primary/10">
     <span class="font-bold">Question Types</span>
     @for (type of QUESTION_TYPES; track type.type) {
-      <div class="p-2 border border-gray-300 rounded-lg text-sm font-bold" (click)="addQuestion(type.type)">
+      <div class="p-2 border border-gray-300 rounded-lg text-sm font-bold"
+           role="button"
+           tabindex="0"
+           (click)="addQuestion(type.type)">
         {{ type.label }}
       </div>
     }
   </div>
   <div class="grow w-5/12 h-full overflow-y-auto">
     <div class="p-2 relative">
-      <!--      <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">-->
       <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>
-      <!--        <div class="flex gap-2 items-center">-->
-      <!--          <div class='small-input text-sm flex justify-end gap-1'>-->
-      <!--            @for (language of languages(); track language) {-->
-      <!--              <button mat-icon-button class="tiny uppercase"-->
-      <!--                      (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'-->
-      <!--                      [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">-->
-      <!--            <span class="h-full flex items-center justify-center">-->
-      <!--              <span class="text-sm font-bold">{{ language.id }}</span>-->
-      <!--            </span>-->
-      <!--              </button>-->
-      <!--            }-->
-      <!--          </div>-->
-      <!--          <button type="button" mat-stroked-button color="primary" (click)="addQuestion()">-->
-      <!--            <mat-icon class="material-symbols-outlined">add</mat-icon>-->
-      <!--            <span class="font-bold">{{ `${_prefix}.addQuestionButtonLabel` | translate }}</span>-->
-      <!--          </button>-->
-      <!--        </div>-->
-      <!--      </div>-->
       <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-        @for (question of questions; track question.id; let index = $index) {
+        @for (question of questions; track question.field_name; let index = $index) {
           <app-question-button [entity]="question"
                                (removeEvent)="removeQuestion(index)"
                                (selectEvent)="selectQuestion(index, question)"
@@ -43,7 +27,7 @@
 
 
   </div>
-  <div class=" grow w-5/12 p-2 h-full overflow-y-auto">
+  <div class=" grow w-5/12 p-2 h-full overflow-y-auto border-2 border-secondary rounded-xl">
     <span class="font-bold">Question Settings</span>
     @if (selectedQuestion()) {
       <app-question [languages]="entity()!.languages"

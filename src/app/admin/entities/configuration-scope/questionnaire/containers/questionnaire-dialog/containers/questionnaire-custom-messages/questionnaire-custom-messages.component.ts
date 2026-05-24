@@ -1,7 +1,7 @@
 import {Component, input, OnDestroy, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatFormField} from '@angular/material/input';
+import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
@@ -9,6 +9,8 @@ import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/unit';
 
 @Component({
   selector: 'app-questionnaire-custom-messages',
@@ -20,6 +22,8 @@ import {Subscription} from 'rxjs';
     MatFormField,
     MatOption,
     MatSelect,
+    MatInput,
+    MatSlideToggle,
   ]
 })
 export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
@@ -31,10 +35,24 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
   valid = output<boolean>();
 
   form = new FormGroup({
-    showIntroduction: new FormControl<string>('', {nonNullable: true}),
-    startText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    // showIntroduction: new FormControl<string>('', {nonNullable: true}),
+    // startText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
     endText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    warningEnabled: new FormControl<boolean>(false, {nonNullable: true}),
     warn: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+
+    // schedule: new FormGroup({
+    //   notification: new FormGroup({
+    //     title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    //     text: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    //   }),
+    //   // reminders: new FormGroup({
+    //   //   enabled: new FormControl<boolean>(false, {nonNullable: true}),
+    //   //   unit: new FormControl<string>('', {nonNullable: true}),
+    //   //   amount: new FormControl<string>('', {nonNullable: true}),
+    //   //   repeat: new FormControl<string>('', {nonNullable: true}),
+    //   // }),
+    // }),
   });
 
   private subscription?: Subscription;
@@ -59,4 +77,5 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
+  protected readonly UNITS = UNITS;
 }

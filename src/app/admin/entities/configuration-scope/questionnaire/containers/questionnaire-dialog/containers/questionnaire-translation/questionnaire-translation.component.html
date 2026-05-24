@@ -1,6 +1,5 @@
-<!--Tranlsation-->
+{{entity()?.languages | json}}
 <div class="grid w-full grid-cols-{{(entity()?.languages?.length ?? 0) + 1}} text-xs gap-2">
-
   <div></div>
   @for (language of entity()?.languages; track language.id) {
     <div>{{language._name}}</div>
@@ -42,7 +41,7 @@
   }
 
   @for (question of entity()?.questions; track question.field_name) {
-    <div class="col-span-7 border-t">Question {{question.field_name}}</div>
+    <div class="col-span-full border-t">Question {{question.field_name}}</div>
     <div>Field Label</div>
     @for (language of entity()?.languages; track language.id) {
       <div>{{question.field_label?.[language.id]}}</div>
