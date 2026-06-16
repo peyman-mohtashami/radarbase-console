@@ -13,6 +13,7 @@ import {
 } from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
 import {AppQuestion} from '../../../../../../models/questionnaire';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-conditional-logic-item',
@@ -25,16 +26,19 @@ import {AppQuestion} from '../../../../../../models/questionnaire';
     MatSelect,
     QuestionViewComponent,
     OperatorSelectorComponent,
+    JsonPipe,
   ],
 })
 export class ConditionalLogicItemComponent implements OnInit {
+  questions = input.required<AppQuestion[]>();
   index = input.required<number>();
   conditionalLogicItem = input.required<ConditionalLogicItem>();
+  selectedIndex = input.required<number>();
 
   removeEvent = output<number>();
   itemEvent = output<ConditionalLogicItem>();
 
-  protected questionnaireStateService = inject(QuestionnaireStateService);
+  // protected questionnaireStateService = inject(QuestionnaireStateService);
 
   selectedQuestion?: AppQuestion;
 
@@ -43,7 +47,7 @@ export class ConditionalLogicItemComponent implements OnInit {
   value = '';
 
   ngOnInit() {
-    this.selectedQuestion = this.questionnaireStateService.questions().find((question) => question.field_name === this.conditionalLogicItem().operand);
+    this.selectedQuestion = this.questions().find((question) => question.field_name === this.conditionalLogicItem().operand);
     this.operand = this.conditionalLogicItem().operand;
     this.operator= this.conditionalLogicItem().operator;
     this.value = this.conditionalLogicItem().value;
@@ -55,7 +59,7 @@ export class ConditionalLogicItemComponent implements OnInit {
 
   protected onOperandChange(event: MatSelectChange<string>) {
     this.operand = event.value;
-    this.selectedQuestion = this.questionnaireStateService.questions().find((question) => question.field_name === this.operand);
+    this.selectedQuestion = this.questions().find((question) => question.field_name === this.operand);
     if (this.operand && this.operator && this.value) {
       this.itemEvent.emit({operand: this.operand, operator: this.operator, value: this.value})
     }

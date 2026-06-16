@@ -8,7 +8,14 @@
         @if (errors?.['required']) {
           {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionFieldNameLabel` | translate} }}
         }
+        @if (errors['duplicate']) {
+          {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.questionFieldNameLabel` | translate} }}
+        }
+        @if (errors['pattern']) {
+          {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.questionFieldNameLabel` | translate} }}
+        }
       </mat-error>
+
     }
   </mat-form-field>
 
@@ -35,6 +42,7 @@
     <!--        <app-text-editor />-->
     <app-text-form-group formControlName="field_label"
                          [languages]="languages()"
+                         [language]="language()"
                          label="Field Label"
                          [required]="true"
                          [textarea]="true"
@@ -44,6 +52,7 @@
   <div class="mb-4">
     <app-text-form-group formControlName="section_header"
                          [languages]="languages()"
+                         [language]="language()"
                          label="Section Header"
                          [textarea]="true"
                          [textareaAutosize]="true"/>
@@ -53,27 +62,24 @@
 
   @let choicesAvailable = fieldType === 'radio' || fieldType === 'checkbox' || fieldType === 'info' || fieldType === 'range' || fieldType === 'range-info';
   @if (choicesAvailable) {
-    <app-question-choices [languages]="languages()" [choices]="entity().select_choices_or_calculations ?? []" (valueChange)="onChoicesChange($event)" />
-<!--    <app-choices-form-array formControlName="select_choices_or_calculations"-->
-<!--                            [languages]="languages()"-->
-<!--                            [selectedLanguage]="questionnaireStateService.selectedLanguage()"/>-->
+    <app-question-choices [languages]="languages()"
+                          [language]="language()"
+                          [choices]="entity().select_choices_or_calculations ?? []"
+                          (changeEvent)="onChoicesChange($event)" />
   }
 
-  @let annotationAvailable = fieldType === 'times';
+  @let annotationAvailable = fieldType === 'timed';
   @if (annotationAvailable) {
-    <!--        @if (form.controls.field_annotation; as field_annotation) {-->
     <app-annotation-form-group formControlName="field_annotation"/>
   }
 
   @let rangeAvailable = fieldType === 'slider';
   @if (rangeAvailable) {
-    <!--      @if (form.controls.range; as range) {-->
     <app-range-form-group formControlName="range"/>
   }
 
   @let textValidationTypeAvailable = fieldType === 'text';
   @if (textValidationTypeAvailable) {
-    <!--      @if (form.controls.text_validation_type_or_show_slider_number; as text_validation_type_or_show_slider_number) {-->
     <div class="text-sm">
       <label
         for="text_validation_type_or_show_slider_number">{{ `${_prefix}.questionTextValidationLabel` | translate }}</label>

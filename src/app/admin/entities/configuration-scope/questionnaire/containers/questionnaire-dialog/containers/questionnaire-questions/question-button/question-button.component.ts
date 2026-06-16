@@ -1,12 +1,12 @@
-import {Component, inject, input, output} from '@angular/core';
-import {MatIconButton} from "@angular/material/button";
+import {Component, computed, inject, input, output} from '@angular/core';
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestion} from '../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
 import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
-import {JsonPipe} from '@angular/common';
+import {UpperCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-question-button',
@@ -17,16 +17,18 @@ import {JsonPipe} from '@angular/common';
     MatIcon,
     TagComponent,
     MatTooltip,
-    JsonPipe,
+    UpperCasePipe,
+    MatButton,
   ],
 })
 export class QuestionButtonComponent {
   entity = input.required<AppQuestion>();
   selected = input.required<boolean>();
+  index = input.required<number>();
 
   removeEvent = output<void>();
-  selectEvent = output<void>();
 
+  selectEvent = output<void>();
   questionnaireStateService = inject(QuestionnaireStateService);
 
   protected removeQuestion() {

@@ -1,4 +1,4 @@
-import {Component, effect, inject, Input, input, OnInit, output} from '@angular/core';
+import {Component, effect, inject, input, OnInit, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
@@ -33,20 +33,24 @@ export class QuestionChoice implements OnInit {
   index = input.required<number>();
   choice = input.required<AppQuestionChoice>();
   languages = input.required<RadarOption[]>();
+  language = input.required<RadarOption>();
 
   removeEvent = output<number>();
-  valueChange = output<AppQuestionChoice>();
+  changeEvent = output<AppQuestionChoice>();
+  validEvent = output<boolean>();
 
   form = new FormGroup({
     code: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
-    label: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    label: new FormControl<Record<string, string>>({}, {validators: [CustomValidator.requiredValidator],nonNullable: true}),
   });
 
-  protected questionnaireStateService = inject(QuestionnaireStateService);
+  // protected questionnaireStateService = inject(QuestionnaireStateService);
 
   constructor() {
     effect(() => {
       this.form.patchValue(this.choice());
+      // this.form.updateValueAndValidity();
+      // this.form.markAllAsTouched();
     });
   }
 
@@ -54,7 +58,8 @@ export class QuestionChoice implements OnInit {
     this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe((val) => {
-      this.valueChange.emit((val as AppQuestionChoice));
+      this.changeEvent.emit((val as AppQuestionChoice));
+      this.validEvent.emit(this.form.valid);
     })
   }
 

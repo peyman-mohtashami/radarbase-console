@@ -101,6 +101,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override delete(entity: AppQuestionnaire): Observable<void> {
+    console.log('Class: QuestionnaireService, Function: delete, Line 104 ' , );
     this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
     return this.publish(this.updatedList).pipe(map(() => undefined));
   }
@@ -110,6 +111,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => {
       return this.toRadarModel(q);
     });
+    console.log('Class: QuestionnaireService, Function: publish, Line 113 radarQuestionnaires' , radarQuestionnaires);
     // const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => (
     //   {
     //     name: q.name,
@@ -150,6 +152,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
       version: entity.version,
       modelVersion: entity.modelVersion,
       languages: entity.languages,
+      defaultLanguage: entity.defaultLanguage,
       title: entity.title,
       description: entity.description,
       estimatedCompletionTime: entity.estimatedCompletionTime,

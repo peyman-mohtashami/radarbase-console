@@ -19,6 +19,7 @@ services:
   # ── Dev SMTP (Mailhog – view emails at http://localhost:8025) ─────────────
   mailhog:
     image: mailhog/mailhog
+    platform: linux/amd64
     ports:
       - "8025:8025"
 
@@ -40,6 +41,8 @@ services:
 
   # ── App Config backend ─────────────────────────────────────────────────────
   app-config:
+#    image: docker.io/pvannierop/radar-app-config-versioned:0.2
+#    platform: linux/amd64
     image: ghcr.io/radar-base/radar-app-config/radar-app-config:0.6.1
     depends_on:
       postgresql:

@@ -8,6 +8,7 @@
 <!--    {{ entity()?.name }}-->
     <!--    {{ `${_prefix}.questionsLabel` | translate }}-->
   </span>
+  {{_entity.languages | json}}
   <div class="flex gap-2 items-center">
     <div class='small-input text-sm flex justify-end gap-1'>
       @for (language of _entity.languages; track language) {
@@ -24,11 +25,11 @@
 </div>
 
 <div class="flex flex-col h-[90%] w-80 m-auto border-2 border-gray-300 rounded-lg">
-  <mat-toolbar class="shrink-0">
+<!--  <mat-toolbar class="shrink-0">-->
     <!--  <button matIconButton class="" aria-label="Example icon-button with menu icon">-->
     <!--    <mat-icon class="material-symbols-outlined">close</mat-icon>-->
     <!--  </button>-->
-    <span>{{ _entity.title?.[_selectedLanguage] ?? _entity.name }}</span>
+    <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[_selectedLanguage] ?? _entity.name }}</span>
     <!--  <span class="flex-auto">Questionnaire name</span>-->
     <!--  <button matIconButton class="" aria-label="Example icon-button with heart icon">-->
     <!--    <mat-icon class="material-symbols-outlined"></mat-icon>-->
@@ -36,7 +37,7 @@
     <!--  <button matIconButton class="example-icon" aria-label="Example icon-button with share icon">-->
     <!--    <mat-icon class="material-symbols-outlined">share</mat-icon>-->
     <!--  </button>-->
-  </mat-toolbar>
+<!--  </mat-toolbar>-->
 
   <!--<ion-header>-->
   <!--  <ion-toolbar color="primary">-->

@@ -18,7 +18,10 @@
     <pre class="text-base mb-4 text-secondary">{{resultString}}</pre>
 
     @for (conditionalLogicItems of conditionalLogicItemsArray; track conditionalLogicItems; let index = $index; let isLast = $last) {
-      <app-conditional-logic-items class="" [conditionalLogicItems]="conditionalLogicItems" (itemsEvent)="onItemEvent($event, index)"/>
+      <app-conditional-logic-items class="" [conditionalLogicItems]="conditionalLogicItems"
+                                   [questions]="dialogData.questions"
+                                   [selectedIndex]="dialogData.selectedIndex"
+                                   (itemsEvent)="onItemEvent($event, index)"/>
       <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
         <div>
           <app-tag class="text-primary bg-primary/20">OR (|)</app-tag>

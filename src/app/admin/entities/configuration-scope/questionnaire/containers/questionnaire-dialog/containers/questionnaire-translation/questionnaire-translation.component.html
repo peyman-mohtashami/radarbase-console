@@ -1,70 +1,144 @@
-{{entity()?.languages | json}}
-<div class="grid w-full grid-cols-{{(entity()?.languages?.length ?? 0) + 1}} text-xs gap-2">
-  <div></div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{language._name}}</div>
-  }
+@let _prefix = 'ADMIN.questionnaire.dialog';
+@let defaultLanguage = entity()?.defaultLanguage;
 
-  <div>Title</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.title?.[language.id]}}</div>
-  }
+@if (defaultLanguage) {
+  <form [formGroup]='form' novalidate>
 
-  <div>Description</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.description?.[language.id]}}</div>
-  }
+    <div class="">
+      <app-mat-select-autocomplete formControlName="languages"
+                                   [options]="ISO_LANGUAGES"
+                                   [label]="`${_prefix}.languagesLabel` | translate"
+                                   [required]="true"
+                                   [multiple]="true"
+                                   [notRemovable]="defaultLanguage"/>
+    </div>
 
-  <div>Start Text</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.startText?.[language.id]}}</div>
-  }
+    @let languages = form.controls.languages.value;
+    <div class="w-full overflow-x-auto border border-gray-300">
+      <div [style.grid-template-rows]="`repeat(${numberOfRows}, max-content)`"
+           class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">
+        <div class=""></div>
+        <div class="">Title</div>
+        <div class="">Description</div>
+        <div class="">End Text</div>
+        @if (entity()?.warningEnabled) {
+          <div class="">Warn</div>
+        }
+        <div class="">Notification Title</div>
+        <div class="">Notification Text</div>
+        @for (question of entity()?.questions; track question.field_name) {
+          <div class="border-y">Question {{ question.field_name }}</div>
+          <div>Field Label</div>
+          @if (question.section_header?.[defaultLanguage.id]) {
+            <div>Section Header</div>
+          }
+          @if (question.field_note?.[defaultLanguage.id]) {
+            <div>Field Note</div>
+          }
+          @for (choice of question.select_choices_or_calculations; track choice.code) {
+            <div>Choice {{ choice.code }}</div>
+          }
+        }
+        @for (language of languages; track language.id) {
+          <div>{{ language._name }}</div>
+          <div>
+            <app-text-form-group formControlName="title"
+                                 [languages]="form.controls.languages.value"
+                                 [language]="language"
+                                 [textarea]="false"
+                                 [textareaAutosize]="false"/>
+          </div>
+          <div>
+            <app-text-form-group formControlName="description"
+                                 [languages]="form.controls.languages.value"
+                                 [language]="language"
+                                 [textarea]="true"
+                                 [textareaAutosize]="true"/>
+          </div>
+          <div>
+            <app-text-form-group formControlName="endText"
+                                 [languages]="form.controls.languages.value"
+                                 [language]="language"
+                                 [textarea]="true"
+                                 [textareaAutosize]="true"/>
+          </div>
+          @if (entity()?.warningEnabled) {
+            <div>
+              <app-text-form-group formControlName="warn"
+                                   [languages]="form.controls.languages.value"
+                                   [language]="language"
+                                   [textarea]="true"
+                                   [textareaAutosize]="true"/>
+            </div>
+          }
+          <ng-container formGroupName="schedule">
+            <ng-container formGroupName="notification">
+              <div>
+                <app-text-form-group formControlName="title"
+                                     [languages]="form.controls.languages.value"
+                                     [language]="language"
+                                     [textarea]="true"
+                                     [textareaAutosize]="true"/>
+              </div>
+              <div>
+                <app-text-form-group formControlName="text"
+                                     [languages]="form.controls.languages.value"
+                                     [language]="language"
+                                     [textarea]="true"
+                                     [textareaAutosize]="true"/>
+              </div>
+            </ng-container>
+          </ng-container>
+          <!--      <div>{{ entity()?.schedule?.notification?.title?.[language.id] }}</div>-->
 
-  <div>End Text</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.endText?.[language.id]}}</div>
-  }
-
-  <div>Warn</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.warn?.[language.id]}}</div>
-  }
-
-  <div>Notification Title</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.schedule?.notification?.title?.[language.id]}}</div>
-  }
-
-  <div>Notification Text</div>
-  @for (language of entity()?.languages; track language.id) {
-    <div>{{entity()?.schedule?.notification?.text?.[language.id]}}</div>
-  }
-
-  @for (question of entity()?.questions; track question.field_name) {
-    <div class="col-span-full border-t">Question {{question.field_name}}</div>
-    <div>Field Label</div>
-    @for (language of entity()?.languages; track language.id) {
-      <div>{{question.field_label?.[language.id]}}</div>
-    }
-
-    <div>Section Header</div>
-    @for (language of entity()?.languages; track language.id) {
-      <div>{{question.section_header?.[language.id]}}</div>
-    }
-
-    <div>Field Note</div>
-    @for (language of entity()?.languages; track language.id) {
-      <div>{{question.field_note?.[language.id]}}</div>
-    }
-
-    @for (choice of question.select_choices_or_calculations; track choice.code) {
-      <div>Choice {{choice.code}}</div>
-      @for (language of entity()?.languages; track language.id) {
-        <div>{{choice.label?.[language.id]}}</div>
-      }
-    }
-
-
-  }
-
-</div>
+            <!--      <div>{{ entity()?.schedule?.notification?.text?.[language.id] }}</div>-->
+            <!--          <div>-->
+            <!--            <app-text-form-group class="mb-4"-->
+            <!--                                 formControlName="title"-->
+            <!--                                 [languages]="form.controls.languages.value"-->
+            <!--                                 [label]="`${_prefix}.titleLabel` | translate"-->
+            <!--                                 [textarea]="false"-->
+            <!--                                 [textareaAutosize]="false"/>-->
+            <!--          </div>-->
+          @for (question of form.controls.questions.controls; track $index) {
+            <div class="border-y"></div>
+            <div>
+              <app-text-form-group [formControl]="$any(question.controls['field_label'])"
+                                   [languages]="form.controls.languages.value"
+                                   [language]="language"
+                                   [textarea]="true"
+                                   [textareaAutosize]="true"/>
+            </div>
+            @if (question.controls['section_header']) {
+              <div>
+                <app-text-form-group [formControl]="$any(question.controls['section_header'])"
+                                     [languages]="form.controls.languages.value"
+                                     [language]="language"
+                                     [textarea]="true"
+                                     [textareaAutosize]="true"/>
+              </div>
+            }
+            @if (question.controls['field_note']) {
+              <div>
+                <app-text-form-group [formControl]="$any(question.controls['field_note'])"
+                                     [languages]="form.controls.languages.value"
+                                     [language]="language"
+                                     [textarea]="true"
+                                     [textareaAutosize]="true"/>
+              </div>
+            }
+            @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track choice.code) {
+              <div>
+                <app-text-form-group [formControl]="$any(choice.controls['label'])"
+                                     [languages]="form.controls.languages.value"
+                                     [language]="language"
+                                     [textarea]="false"
+                                     [textareaAutosize]="false"/>
+              </div>
+            }
+          }
+        }
+      </div>
+    </div>
+  </form>
+}

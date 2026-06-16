@@ -2,7 +2,7 @@
      [style.width]="Math.ceil((this.currentQuestionId()) * 100) / this.totalQuestions() + '%'">
 </div>
 
-<mat-toolbar>
+<div class="flex gap-2 items-center p-4">
   <button matButton
           class="text-sm flex items-center"
           aria-label="Example icon-button with menu icon"
@@ -41,8 +41,8 @@
       <mat-icon class="material-symbols-outlined">chevron_right</mat-icon>
     </span>
   </button>
-
-</mat-toolbar>
+</div>
+<!--</mat-toolbar>-->
 
 <!--<ion-alert [isOpen]="isDisabledButtonAlertOpen"-->
 <!--           [header]="'This question is required'"-->

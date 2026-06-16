@@ -1,22 +1,32 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 <div class="flex h-full gap-1">
-  <div class="w-2/12 p-2 h-full overflow-y-auto flex flex-col gap-2 bg-primary/10">
+  <div class="w-2/12 p-2 h-full overflow-y-auto flex flex-col gap-2 bg-primary/5">
     <span class="font-bold">Question Types</span>
-    @for (type of QUESTION_TYPES; track type.type) {
-      <div class="p-2 border border-gray-300 rounded-lg text-sm font-bold"
-           role="button"
-           tabindex="0"
-           (click)="addQuestion(type.type)">
-        {{ type.label }}
+    @for (group of QUESTION_TYPES; track $index) {
+      <div class="flex flex-col gap-2">
+      @for (type of group.types; track type.type) {
+        <button mat-stroked-button color="primary" (click)="addQuestion(type.type)" [disabled]="type.disabled">
+          <span class="text-base">{{ type.label }}</span>
+        </button>
+      }
+        <div class="h-px border-b-2 border-b-gray-300"></div>
+<!--      <div class="p-2 border border-gray-300 rounded-lg text-sm font-bold"-->
+<!--           role="button"-->
+<!--           tabindex="0"-->
+<!--           (click)="addQuestion(type.type)">-->
+<!--        {{ type.label }}-->
+<!--      </div>-->
       </div>
     }
   </div>
+
   <div class="grow w-5/12 h-full overflow-y-auto">
     <div class="p-2 relative">
       <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>
       <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-        @for (question of questions; track question.field_name; let index = $index) {
+        @for (question of questions; track $index; let index = $index) {
           <app-question-button [entity]="question"
+                               [index]="$index"
                                (removeEvent)="removeQuestion(index)"
                                (selectEvent)="selectQuestion(index, question)"
                                [selected]="index === selectedQuestionIndex()"/>
@@ -24,17 +34,21 @@
         }
       </div>
     </div>
-
-
   </div>
-  <div class=" grow w-5/12 p-2 h-full overflow-y-auto border-2 border-secondary rounded-xl">
-    <span class="font-bold">Question Settings</span>
-    @if (selectedQuestion()) {
-      <app-question [languages]="entity()!.languages"
-                    [questions]="entity()?.questions ?? []"
-                    [entity]="selectedQuestion()!"
-                    [index]="selectedQuestionIndex()!"
-                    (changeEvent)="onQuestionChange($event)"/>
+
+  <div class=" grow w-5/12  h-full overflow-y-auto">
+    @for (question of questions; track $index; let index = $index) {
+      @if (selectedQuestionIndex() === index) {
+        <div class="p-2 border-2 border-secondary rounded">
+        <span class="font-bold">Question Settings</span>
+        <app-question [languages]="entity()!.languages"
+                      [language]="entity()?.defaultLanguage!"
+                      [questions]="questions ?? []"
+                      [entity]="question"
+                      [index]="index"
+                      (changeEvent)="onQuestionChange($event)"/>
+        </div>
+      }
     }
   </div>
 </div>

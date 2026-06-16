@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, effect, inject, input, OnDestroy, OnInit, output, untracked} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
 import {MatIconButton} from "@angular/material/button";
 import {MatError, MatFormField} from "@angular/material/form-field";
@@ -24,6 +24,7 @@ import {QUESTION_TYPES} from '../models/question-types';
 import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {QuestionChoices} from '../question-choices/question-choices';
+// import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-question',
@@ -45,6 +46,7 @@ import {QuestionChoices} from '../question-choices/question-choices';
     MatRadioGroup,
     MatIcon,
     QuestionChoices,
+    // JsonPipe,
   ],
 })
 export class QuestionComponent implements OnInit, OnDestroy {
@@ -52,6 +54,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   entity = input.required<AppQuestion>();
   index = input.required<number>();
   languages = input.required<RadarOption[]>();
+  language = input.required<RadarOption>();
 
   questionnaireStateService = inject(QuestionnaireStateService);
 
@@ -59,7 +62,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
 
   changeEvent = output<Partial<AppQuestion>>();
-  valid = output<boolean>();
+  validEvent = output<boolean>();
 
   form = new FormGroup({
     field_name: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
@@ -71,7 +74,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     text_validation_max: new FormControl('', {nonNullable: true}),
     field_annotation: new FormControl<AppQuestion['field_annotation']>('', {nonNullable: true}),
     // select_choices_or_calculations: new FormControl<AppQuestion['select_choices_or_calculations']>([], {nonNullable: true}),
-    range: new FormControl<AppQuestion['range']>(undefined, {nonNullable: true}),
+    range: new FormControl<AppQuestion['range'] | null>(null),
     branching_logic: new FormControl<string>('', {nonNullable: true}),
   });
 
@@ -79,13 +82,33 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      const entity = this.entity();
-      if (entity) {
-        this.form.patchValue(entity);//, {emitEvent: false});
-      }
-      this.valid.emit(this.form.valid);
+
+      const index = this.index();
+      // if (index !== null) {
+        console.log('Class: QuestionComponent, Function: , Line 87 index' , index);
+        untracked(() => {
+          const entity = this.entity();
+          console.log('Class: QuestionComponent, Function: , Line 91 entity' , entity);
+          // this.form.setValue(entity);
+          this.form.setValue({
+            field_name: entity.field_name,
+            field_type: entity.field_type,
+            field_label: entity.field_label ?? {},
+            section_header: entity.section_header ?? {},
+            text_validation_type_or_show_slider_number:
+              entity.text_validation_type_or_show_slider_number ?? '',
+            text_validation_min: entity.text_validation_min ?? '',
+            text_validation_max: entity.text_validation_max ?? '',
+            field_annotation: entity.field_annotation ?? '',
+            range: entity.range ?? null,
+            branching_logic: entity.branching_logic ?? '',
+          });
+        });
+        // this.form.patchValue(entity);
+      // }
     });
 
+      // this.valid.emit(this.form.valid);
     // this.form.statusChanges.subscribe(() => {
     //   // this.validatorChange();
     // });
@@ -97,20 +120,26 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Class: QuestionComponent, Function: ngOnInit, Line 139 ' , );
     this.form.controls.field_name.addValidators(this.duplicateValidator);
     this.form.controls.field_name.updateValueAndValidity();
 
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      this.changeEvent.emit(change);
-      // this.valid.emit(this.form.valid);
+      this.changeEvent.emit({...change, range: change.range ?? undefined, valid: this.form.valid && this.checkChoicesValidity(this.entity().select_choices_or_calculations ?? [])});
     });
   }
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
+  }
+
+  protected onChoicesChange(event: AppQuestionChoice[]) {
+    this.changeEvent.emit({select_choices_or_calculations: event, valid: this.form.valid && this.checkChoicesValidity(event)});
+  }
+
+  checkChoicesValidity(event: AppQuestionChoice[]) {
+    return event.every(choice => choice.code && choice.code.trim() !== '');
   }
 
   private duplicateValidator = (control: AbstractControl) => {
@@ -120,82 +149,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
       ? {duplicate: true}
       : null;
   }
-  //   const question = this.question();
-  //   console.log('Class: QuestionComponent, Function: ngOnInit, Line 119 question' , question);
-  //   if (question) {
-  //     this.form.patchValue(question);
-  //   }
-  //
-  //   this.valid.emit(this.form.valid);
-  //
-  //   this.form.valueChanges.subscribe(change => {
-  //     this.changeEvent.emit(change);
-  //     this.valid.emit(this.form.valid);
-  //   });
-
-  // constructor() {
-  //   super();
-  //
-  //   this.form.statusChanges.subscribe(() => {
-  //     this.validatorChange();
-  //   });
-  //
-  //   this.form.controls.field_type?.valueChanges.subscribe(type => {
-  //     this.updateFormControls(type);
-  //     this.validatorChange();
-  //   });
-  // }
-
-  // updateFormControls(type?: string) {
-  //   if (!type) return;
-  //
-  //   ['text_validation_type_or_show_slider_number', 'text_validation_min', 'text_validation_max', 'field_annotation', 'select_choices_or_calculations', 'range'].forEach(controlName => {
-  //     if (this.form.contains(controlName)) {
-  //       this.form.removeControl(controlName as keyof AppQuestion);
-  //     }
-  //   });
-  //
-  //   if (type === 'timed') {
-  //     this.form.addControl('field_annotation' as keyof QuestionForm, new FormControl<QuestionFormAnnotation | null>(null));
-  //   } else {
-  //     this.form.removeControl('field_annotation' as keyof QuestionForm);
-  //   }
-  //   if (type === 'slider') {
-  //     this.form.addControl('range' as keyof QuestionForm, new FormControl<QuestionFormRange | null>(null));
-  //   } else {
-  //     this.form.removeControl('range' as keyof QuestionForm);
-  //   }
-  //   if (['radio', 'checkbox', 'info', 'range', 'slider', 'range-info'].includes(type)) {
-  //     this.form.addControl('select_choices_or_calculations' as keyof QuestionForm, new FormControl([],{nonNullable: true, validators: [CustomValidator.requiredValidator]}));
-  //   } else {
-  //     this.form.removeControl('select_choices_or_calculations' as keyof QuestionForm);
-  //   }
-  //   if (['text'].includes(type)) {
-  //     this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
-  //     this.form.addControl('text_validation_min' as keyof QuestionForm, new FormControl<string>(''));
-  //     this.form.addControl('text_validation_max' as keyof QuestionForm, new FormControl<string>(''));
-  //   } else {
-  //     this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
-  //     this.form.removeControl('text_validation_min' as keyof QuestionForm);
-  //     this.form.removeControl('text_validation_max' as keyof QuestionForm);
-  //   }
-  //   if (['datetime'].includes(type)) {
-  //     this.form.addControl('text_validation_type_or_show_slider_number' as keyof QuestionForm, new FormControl<string>(''));
-  //   } else {
-  //     this.form.removeControl('text_validation_type_or_show_slider_number' as keyof QuestionForm);
-  //   }
-  // }
-
-  // override writeValue(question: AppQuestion) {
-  //   if (!question) {
-  //     this.editMode.set(true);
-  //   }
-  //   this.updateFormControls(question?.field_type);
-  //   super.writeValue(question);
-  // }
 
   protected dialog = inject(MatDialog);
-  // protected conditionalLogicAvailable: any;
 
   protected editConditionalLogic() {
    this.openConditionalLogicDialog();
@@ -204,7 +159,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   openConditionalLogicDialog() {
     const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
       id: 'conditional-logic-dialog',
-      data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, mode: DialogMode.EDIT},
+      data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.questions(), selectedIndex: this.index(), mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
       height: '100vh',
@@ -220,30 +175,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         (value) => {
           console.log('Class: QuestionFormGroupComponent, Function: , Line 190 value' , value);
           this.form.patchValue({branching_logic: value.entity?.value});
-          // const _entity = value.entity;
-          // const _action = value.action;
-          // if (!_entity) {
-          //   // this.configService.setLatestFormEntry(null);
-            dialogRef.close();
-          //   // this.clearFragmentUrl();
-          //   return;
-          // }
-          // // this.configService.setLatestFormEntry(_entity);
-          // this.processDialogAction(_action, _entity).subscribe({
-          //   next: (res) => {
-          //     // this.configService.setLatestFormEntry(null);
-          //     const entity = res ?? _entity;
-          //     this.dialogUpdateEvent.set({mode, entity})
-          //     dialogRef.close();
-          //     setTimeout(() => {
-          //       this.dialogUpdateEvent.set(undefined);
-          //     })
-          //   },
-          //   error: (error: HttpErrorResponse) => {
-          //     this.configService.setLatestFormEntry(null);
-          //     dialogRef.componentInstance.errorHappened(error)
-          //   },
-          // });
+          dialogRef.close();
         }
       );
 
@@ -252,21 +184,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     });
   }
 
-  // protected selectQuestion() {
-  //   this.editMode.set(!this.editMode());
-  //   this.questionnaireStateService.selectedQuestionIndex.set(this.editMode() ? this.questionIndex() : undefined);
-  // }
   protected readonly ValidatorError = ValidatorError;
   protected selected = false;
 
-  // protected onEdit() {
-  //   this.selected = true;
-  // }
-  //
-  // protected removeQuestion() {
-  //
-  // }
-  protected onChoicesChange($event: AppQuestionChoice[]) {
-
-  }
 }

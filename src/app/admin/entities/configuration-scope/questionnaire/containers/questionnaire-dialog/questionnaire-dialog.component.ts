@@ -101,6 +101,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   entity = signal(this.dialogData.entity);
 
   protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
+    console.log('Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 104 event' , event);
     const defined = Object.fromEntries(
       Object.entries(event).filter(([, v]) => v !== undefined)
     ) as Partial<AppQuestionnaire>;
@@ -112,6 +113,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   isSchedulingValid = true;
   isNotificationValid = true;
   isQuestionsValid = true;
+  isTranslationValid = true;
   protected isLoading = false;
 
   protected onGeneralValid(event: boolean) {
@@ -132,6 +134,10 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
 
   protected onQuestionsValid(event: boolean) {
     this.isQuestionsValid = event;
+  }
+
+  protected onTranslationsValid(event: boolean) {
+    this.isTranslationValid = event;
   }
 
   protected readonly DialogAction = DialogAction;

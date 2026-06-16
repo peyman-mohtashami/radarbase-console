@@ -1,109 +1,65 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
 <form [formGroup]='form' novalidate class="w-125">
-<!--  <div class="text-sm w-1/2">-->
-<!--    <label for="showIntroduction">-->
-<!--      {{ `${_prefix}.showIntroductionLabel` | translate }}-->
-<!--    </label>-->
-<!--    <mat-form-field class='small-input' appearance='outline'>-->
-<!--      <mat-select id="showIntroduction" formControlName="showIntroduction">-->
-<!--        <mat-option [value]="false">-->
-<!--          {{ `${_prefix}.showIntroductionNo` | translate }}-->
-<!--        </mat-option>-->
-<!--        <mat-option [value]="true">-->
-<!--          {{ `${_prefix}.showIntroductionOnce` | translate }}-->
-<!--        </mat-option>-->
-<!--        <mat-option value="always">-->
-<!--          {{ `${_prefix}.showIntroductionAlways` | translate }}-->
-<!--        </mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--  </div>-->
+  <!--  <div class="text-sm w-1/2">-->
+  <!--    <label for="showIntroduction">-->
+  <!--      {{ `${_prefix}.showIntroductionLabel` | translate }}-->
+  <!--    </label>-->
+  <!--    <mat-form-field class='small-input' appearance='outline'>-->
+  <!--      <mat-select id="showIntroduction" formControlName="showIntroduction">-->
+  <!--        <mat-option [value]="false">-->
+  <!--          {{ `${_prefix}.showIntroductionNo` | translate }}-->
+  <!--        </mat-option>-->
+  <!--        <mat-option [value]="true">-->
+  <!--          {{ `${_prefix}.showIntroductionOnce` | translate }}-->
+  <!--        </mat-option>-->
+  <!--        <mat-option value="always">-->
+  <!--          {{ `${_prefix}.showIntroductionAlways` | translate }}-->
+  <!--        </mat-option>-->
+  <!--      </mat-select>-->
+  <!--    </mat-form-field>-->
+  <!--  </div>-->
 
-<!--  @if (form.controls.showIntroduction.value) {-->
-<!--    <app-text-form-group class="mb-4"-->
-<!--                         formControlName="startText"-->
-<!--                         [languages]="entity()!.languages"-->
-<!--                         [label]="`${_prefix}.startTextLabel` | translate"-->
-<!--                         [textarea]="true"-->
-<!--                         [textareaAutosize]="true"/>-->
-<!--  }-->
-  <app-text-form-group class="mb-4"
-                       formControlName="endText"
-                       [languages]="entity()!.languages"
-                       [label]="`${_prefix}.endTextLabel` | translate"
-                       [textarea]="true"
-                       [textareaAutosize]="true"/>
+  <!--  @if (form.controls.showIntroduction.value) {-->
+  <!--    <app-text-form-group class="mb-4"-->
+  <!--                         formControlName="startText"-->
+  <!--                         [languages]="entity()!.languages"-->
+  <!--                         [label]="`${_prefix}.startTextLabel` | translate"-->
+  <!--                         [textarea]="true"-->
+  <!--                         [textareaAutosize]="true"/>-->
+  <!--  }-->
+
+  <div>
+    <label for="estimatedCompletionTime" class="text-sm">
+      {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
+    </label>
+    <mat-form-field class='small-input w-full' appearance='outline'>
+      <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>
+      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
+        {{ `${_prefix}.minutes` | translate }}
+      </span>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-4">
+    <app-text-form-group formControlName="endText"
+                         [languages]="entity()!.languages"
+                         [language]="entity()!.defaultLanguage"
+                         [label]="`${_prefix}.endTextLabel` | translate"
+                         [textarea]="true"
+                         [textareaAutosize]="true"/>
+  </div>
 
   <mat-slide-toggle formControlName='warningEnabled' class="my-4" color="primary">
     {{ `${_prefix}.warningEnabled` | translate }}
   </mat-slide-toggle>
 
   @if (form.controls.warningEnabled.value) {
-    <app-text-form-group formControlName="warn"
-                         [languages]="entity()!.languages"
-                         [label]="`${_prefix}.warningTextLabel` | translate" />
+    <div class="mb-4">
+      <app-text-form-group formControlName="warn"
+                           [languages]="entity()!.languages"
+                           [language]="entity()!.defaultLanguage"
+                           [label]="`${_prefix}.warningTextLabel` | translate"/>
+    </div>
   }
-
-<!--  <div formGroupName="schedule" class="mt-4">-->
-<!--    <div formGroupName="notification" class="mt-4">-->
-<!--      <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>-->
-<!--      <app-text-form-group class="mb-4"-->
-<!--                           formControlName="title"-->
-<!--                           [languages]="entity()!.languages"-->
-<!--                           [label]="`${_prefix}.notificationTitleLabel` | translate" />-->
-
-<!--      <app-text-form-group formControlName="text"-->
-<!--                           [languages]="entity()!.languages"-->
-<!--                           [label]="`${_prefix}.notificationMessageLabel` | translate"-->
-<!--                           [textarea]="true"-->
-<!--                           [textareaAutosize]="true"/>-->
-<!--    </div>-->
-<!--    &lt;!&ndash;  </div>&ndash;&gt;-->
-<!--    &lt;!&ndash;  }&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <div formGroupName="reminders">&ndash;&gt;-->
-<!--&lt;!&ndash;      <p class="text-sm my-2">{{ `${_prefix}.remindersLabel` | translate }}</p>&ndash;&gt;-->
-<!--&lt;!&ndash;      <mat-slide-toggle formControlName='enabled' class="mb-4" color="primary">&ndash;&gt;-->
-<!--&lt;!&ndash;        {{ `${_prefix}.remindersEnableLabel` | translate }}&ndash;&gt;-->
-<!--&lt;!&ndash;      </mat-slide-toggle>&ndash;&gt;-->
-
-<!--&lt;!&ndash;      @if (form.controls.schedule.controls.reminders.controls.enabled.value) {&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;        }@if (reminderEnabledValueChanges()) {&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="grid grid-cols-3 gap-4">&ndash;&gt;-->
-<!--&lt;!&ndash;          <div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <label for="reminders-repeat" class="text-sm">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{ `${_prefix}.reminderRepeat` | translate }} *&ndash;&gt;-->
-<!--&lt;!&ndash;            </label>&ndash;&gt;-->
-<!--&lt;!&ndash;            <mat-form-field class='small-input w-1/3'&ndash;&gt;-->
-<!--&lt;!&ndash;                            subscriptSizing="dynamic"&ndash;&gt;-->
-<!--&lt;!&ndash;                            appearance='outline'>&ndash;&gt;-->
-<!--&lt;!&ndash;              <input id="reminders-repeat" matInput type="number" formControlName='repeat' required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </mat-form-field>&ndash;&gt;-->
-<!--&lt;!&ndash;          </div>&ndash;&gt;-->
-<!--&lt;!&ndash;          <div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <label for="reminders-amount" class="text-sm">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{ `${_prefix}.reminderAmount` | translate }} *&ndash;&gt;-->
-<!--&lt;!&ndash;            </label>&ndash;&gt;-->
-<!--&lt;!&ndash;            <mat-form-field class='small-input' appearance='outline'>&ndash;&gt;-->
-<!--&lt;!&ndash;              <input id="reminders-amount" matInput formControlName='amount' type="number" min="1" max="10000" required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </mat-form-field>&ndash;&gt;-->
-<!--&lt;!&ndash;          </div>&ndash;&gt;-->
-<!--&lt;!&ndash;          <div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <label for="reminders-unit" class="text-sm">&ndash;&gt;-->
-<!--&lt;!&ndash;              {{ `${_prefix}.reminderUnit` | translate }} *&ndash;&gt;-->
-<!--&lt;!&ndash;            </label>&ndash;&gt;-->
-<!--&lt;!&ndash;            <mat-form-field class='small-input' appearance='outline'>&ndash;&gt;-->
-<!--&lt;!&ndash;              <mat-select id="reminders-unit" formControlName='unit'>&ndash;&gt;-->
-<!--&lt;!&ndash;                @for (unit of UNITS; track unit.name) {&ndash;&gt;-->
-<!--&lt;!&ndash;                  <mat-option [value]="unit.name">{{ unit.label }}</mat-option>&ndash;&gt;-->
-<!--&lt;!&ndash;                }&ndash;&gt;-->
-<!--&lt;!&ndash;              </mat-select>&ndash;&gt;-->
-<!--&lt;!&ndash;            </mat-form-field>&ndash;&gt;-->
-<!--&lt;!&ndash;          </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;      }&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--  </div>-->
-
 </form>

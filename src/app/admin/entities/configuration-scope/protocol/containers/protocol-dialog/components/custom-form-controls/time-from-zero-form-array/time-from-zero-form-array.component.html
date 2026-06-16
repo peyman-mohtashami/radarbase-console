@@ -2,8 +2,8 @@
   <div class="w-full flex-col mt-4 mb-1 text-sm">
     <div class="flex items-center gap-1 w-full">
       <div class="w-1/12 grow-0"></div>
-      <div class="w-3/12 grow-0">{{ 'ADMIN.protocol.dialog.scheduling.timeOffsetsDay' | translate }}</div>
-      <div class="w-7/12 grow-0">{{ 'ADMIN.protocol.dialog.scheduling.timeOffsetsTime' | translate }}</div>
+      <div class="w-3/12 grow-0">{{ 'ADMIN.protocol.dialog.scheduling.timeOffsetsDay' | translate }} *</div>
+      <div class="w-7/12 grow-0">{{ 'ADMIN.protocol.dialog.scheduling.timeOffsetsTime' | translate }} *</div>
       <div class="w-1/12 grow-0"></div>
     </div>
     @if (form.controls.length) {
@@ -15,12 +15,12 @@
           <mat-form-field class='small-input w-3/12! grow-0'
                           appearance='outline'
                           subscriptSizing="dynamic">
-            <input class="" matInput type="number" [formControlName]="'day'">
+            <input class="" matInput type="number" [formControlName]="'day'" required>
           </mat-form-field>
           <mat-form-field class='small-input w-7/12!  grow-0'
                           appearance='outline'
                           subscriptSizing="dynamic">
-            <input matInput [formControlName]="'time'" type="time"/>
+            <input matInput [formControlName]="'time'" type="time" required />
           </mat-form-field>
 
           <button mat-icon-button class="tiny w-1/12! grow-0 shrink-0 material-symbols-outlined"

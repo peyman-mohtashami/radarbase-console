@@ -67,7 +67,7 @@ export class MatSelectAutocompleteComponent
   multiple = input<boolean>(false);
   required = input<boolean>(false);
   // floatLabel = input<boolean>(false);
-  notRemovable = input<{ id: string; _name: string }>();
+  notRemovable = input<{ id: string | number; _name: string }>();
 
   form = new FormControl<RadarOption | RadarOption[] | null>(null); // = new FormControl<RadarOption[]>([]);
 

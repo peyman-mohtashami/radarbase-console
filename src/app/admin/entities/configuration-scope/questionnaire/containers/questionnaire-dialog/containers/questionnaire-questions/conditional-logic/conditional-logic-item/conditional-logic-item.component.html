@@ -6,12 +6,14 @@
       } @else {
         <p>Condition is not ready</p>
       }
+      {{questions() | json}}
+      <p>{{selectedIndex()}}</p>
       <div class="w-full my-2 flex items-center gap-2 justify-between">
         <div class="flex items-center gap-2">
-          <mat-form-field class='small-input w-[360px]! grow-0 shrink-0' appearance='outline' subscriptSizing="dynamic">
+          <mat-form-field class='small-input w-90! grow-0 shrink-0' appearance='outline' subscriptSizing="dynamic">
             <mat-select (selectionChange)="onOperandChange($event)" [value]="conditionalLogicItem()?.operand">
-              @for (question of questionnaireStateService.questions(); track question; let index = $index) {
-                @if (index < questionnaireStateService.selectedQuestionIndex()!) {
+              @for (question of questions(); track question; let ind = $index) {
+                @if (ind < selectedIndex()) {
                   <mat-option [value]="question.field_name"
                               [disabled]="question.field_type === 'descriptive' || question.field_type === 'audion' || question.field_type === 'info'">
                     {{ question.field_name }} ({{ question.field_type }})

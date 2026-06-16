@@ -5,6 +5,7 @@ export interface RadarQuestionnaire {
   version: string;
   modelVersion: string;
   languages: RadarOption[];
+  defaultLanguage: RadarOption;
   //
   title?: Record<string, string>;
   description?: Record<string, string>;
@@ -16,6 +17,7 @@ export interface RadarQuestionnaire {
   showIntroduction?: string;
   startText?: Record<string, string>;
   endText?: Record<string, string>;
+  warningEnabled?: boolean;
   warn?: Record<string, string>;
   //
   questions: RadarQuestion[];
@@ -100,6 +102,7 @@ export interface AppQuestion {
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
+  valid?: boolean;
 }
 
 export interface AppQuestionChoice {

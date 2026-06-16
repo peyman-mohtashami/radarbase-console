@@ -23,70 +23,100 @@
     </div>
 
     <div class="">
-      <app-mat-select-autocomplete formControlName="languages"
+      <app-mat-select-autocomplete formControlName="defaultLanguage"
                                    [options]="ISO_LANGUAGES"
-                                   [label]="`${_prefix}.languagesLabel` | translate"
+                                   [label]="`${_prefix}.defaultLanguageLabel` | translate"
                                    [required]="true"
-                                   [multiple]="true"
-                                   [notRemovable]="DEFAULT_LANG"/>
+                                   [multiple]="false"/>
     </div>
 
-    <div class="">
-      <app-text-form-group class="mb-4"
-                           formControlName="title"
-                           [languages]="form.controls.languages.value"
-                           [label]="`${_prefix}.titleLabel` | translate"
-                           [textarea]="false"
-                           [textareaAutosize]="true"/>
-    </div>
+    <div class="mb-4">
+<!--      <app-text-form-group formControlName="title"-->
+<!--                           [languages]="[...languages]"-->
+<!--                           [language]="form.controls.defaultLanguage.value"-->
+<!--                           [label]="`${_prefix}.titleLabel` | translate" />-->
 
-
-
-    <div class="">
-      <app-text-form-group class="mb-4"
-                           formControlName="description"
-                           [languages]="form.controls.languages.value"
-                           [label]="`${_prefix}.descriptionLabel` | translate"
-                           [textarea]="true"
-                           [textareaAutosize]="true"/>
-    </div>
-
-    <div>
-      <label for="estimatedCompletionTime" class="text-sm">
-        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
-      </label>
-      <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>
-        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-        {{ `${_prefix}.minutes` | translate }}
-      </span>
+      <label for="title" class="text-sm">{{ `${_prefix}.titleLabel` | translate }} *</label>
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput formControlName='title' required>
+        <mat-error>
+<!--          @if (form.controls.name.errors; as errors) {-->
+<!--            @if (errors['required']) {-->
+<!--              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+<!--            }-->
+<!--            @if (errors['duplicate']) {-->
+<!--              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+<!--            }-->
+<!--            @if (errors['pattern']) {-->
+<!--              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+<!--            }-->
+<!--          }-->
+        </mat-error>
       </mat-form-field>
     </div>
+
+    <div class="mb-4">
+<!--      <app-text-form-group formControlName="description"-->
+<!--                           [languages]="[...languages]"-->
+<!--                           [language]="form.controls.defaultLanguage.value"-->
+<!--                           [label]="`${_prefix}.descriptionLabel` | translate"-->
+<!--                           [textarea]="true"-->
+<!--                           [textareaAutosize]="true"/>-->
+      <label for="description" class="text-sm">{{ `${_prefix}.descriptionLabel` | translate }} *</label>
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput formControlName='description' required>
+        <mat-error>
+          <!--          @if (form.controls.name.errors; as errors) {-->
+          <!--            @if (errors['required']) {-->
+          <!--              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+          <!--            }-->
+          <!--            @if (errors['duplicate']) {-->
+          <!--              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+          <!--            }-->
+          <!--            @if (errors['pattern']) {-->
+          <!--              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+          <!--            }-->
+          <!--          }-->
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+<!--    <div>-->
+<!--      <label for="estimatedCompletionTime" class="text-sm">-->
+<!--        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}-->
+<!--      </label>-->
+<!--      <mat-form-field class='small-input w-full' appearance='outline'>-->
+<!--        <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>-->
+<!--        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">-->
+<!--        {{ `${_prefix}.minutes` | translate }}-->
+<!--      </span>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
   </div>
 
-<!--  <div>-->
-<!--    <div class="">-->
-<!--      <div>-->
-<!--        <label for="order" class="text-sm">-->
-<!--          {{ `${_prefix}.orderLabel` | translate }}-->
-<!--        </label>-->
-<!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
-<!--          <input id="order" matInput type="number" formControlName='order'>-->
-<!--        </mat-form-field>-->
-<!--      </div>-->
-<!--    </div>-->
+  <!--  <div>-->
+  <!--    <div class="">-->
+  <!--      <div>-->
+  <!--        <label for="order" class="text-sm">-->
+  <!--          {{ `${_prefix}.orderLabel` | translate }}-->
+  <!--        </label>-->
+  <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+  <!--          <input id="order" matInput type="number" formControlName='order'>-->
+  <!--        </mat-form-field>-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-<!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
-<!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
-<!--    </mat-slide-toggle>-->
+  <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
+  <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
 
-<!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
-<!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
-<!--    </mat-slide-toggle>-->
+  <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
+  <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
 
-<!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
-<!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
-<!--    </mat-slide-toggle>-->
-<!--  </div>-->
+  <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
+  <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
+  <!--  </div>-->
 
 </form>

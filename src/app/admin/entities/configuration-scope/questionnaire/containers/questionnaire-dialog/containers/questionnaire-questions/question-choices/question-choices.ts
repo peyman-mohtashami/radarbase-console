@@ -1,4 +1,4 @@
-import {Component, inject, input, Input, output} from '@angular/core';
+import {Component, inject, input, Input, OnInit, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestionChoice} from '../../../../../models/questionnaire';
@@ -19,32 +19,66 @@ import {RadarOption} from '../../../../../../../../../shared/components/mat-dyna
     QuestionChoice,
   ],
 })
-export class QuestionChoices {
-  @Input() choices: AppQuestionChoice[] = [];
+export class QuestionChoices implements OnInit {
+  @Input() choices!: AppQuestionChoice[];
+  _choices!: AppQuestionChoice[];
+
   languages = input.required<RadarOption[]>();
 
-  valueChange = output<AppQuestionChoice[]>();
+  changeEvent = output<AppQuestionChoice[]>();
+  validEvent = output<boolean>();
 
   protected questionnaireStateService = inject(QuestionnaireStateService);
+  language = input.required<RadarOption>();
+
+  ngOnInit() {
+    this._choices = [...this.choices];
+    if (this._choices.length === 0) {
+      this.addItem(0);
+    }
+    // if (this.choices.length === 0) {
+    //   this.addItem(0);
+    // }
+  }
 
   addItem(index: number) {
-    this.choices.splice(index + 1, 0, {
+    // this.choices.splice(index + 1, 0, {
+    //   code: '',
+    //   label: {},
+    // });
+    this._choices.splice(index + 1, 0, {
       code: '',
       label: {},
     });
   }
 
   removeItem(index: number) {
-    this.choices.splice(index, 1);
-    this.valueChange.emit(this.choices);
+    // this.choices.splice(index, 1);
+    this._choices.splice(index, 1);
+    this.validEvent.emit(this.checkValidity());
+    this.changeEvent.emit(this.choices);
   }
 
   protected onValueChange(event: AppQuestionChoice, index: number) {
-    this.choices[index] = event;
-    this.valueChange.emit(this.choices);
+    console.log('Class: QuestionChoices, Function: onValueChange, Line 50 event, index' , event, index);
+    // this.choices[index] = event;
+    const choices = [...this.choices];
+    choices[index] = event
+    this.changeEvent.emit(choices);
+  }
+
+  protected onValidChange($event: boolean, i: number) {
+
+  }
+
+  checkValidity() {
+    // return this.choices.every(choice => choice.code && choice.code.trim() !== '');
+    return this._choices.every(choice => choice.code && choice.code.trim() !== '');
   }
 
   protected onDrop($event: CdkDragDrop<any, any, any>) {
 
   }
+
+
 }

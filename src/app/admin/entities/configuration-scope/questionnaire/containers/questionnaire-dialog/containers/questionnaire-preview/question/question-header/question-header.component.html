@@ -3,7 +3,6 @@
 @if (sectionHeader()) {
   <p class="text-base" [innerHtml]="question().section_header?.[selectedLanguage] | replacePlaceholders"></p>
 }
-
 @if(label() && question().field_label) {
   <p class="text-lg">
     <span [innerHtml]="question().field_label[selectedLanguage] | replacePlaceholders"></span>

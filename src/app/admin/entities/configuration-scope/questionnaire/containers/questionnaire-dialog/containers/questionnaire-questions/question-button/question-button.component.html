@@ -1,15 +1,33 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-
-<div class="w-full border-2 border-gray-200 hover:border-secondary/50 rounded-2xl px-4 py-1 mt-2 text-sm!"
+<div class="flex gap-2 items-center">
+  <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center"
+       [class]="selected() ? 'bg-secondary': ''">
+    <span>{{index() + 1}}</span>
+  </div>
+<div class="w-full border border-primary hover:border-secondary/50 rounded px-4 py-1 mt-2 text-sm!"
      role="button"
      tabindex="0"
      (click)='selectQuestion()'
-     [class]="selected() ? 'border-secondary!': 'border-gray-200'">
+     [class]="selected() ? 'border-2 border-secondary!': ''">
+<!--<div class="w-full border-2 border-gray-200 hover:border-secondary/50 rounded-xl px-4 py-1 mt-2 text-sm!"-->
+<!--     role="button"-->
+<!--     tabindex="0"-->
+<!--     (click)='selectQuestion()'-->
+<!--     [class]="selected() ? 'border-secondary!': 'border-gray-200'">-->
+<!--<button mat-stroked-button color="primary" class="w-full"-->
+<!--     (click)='selectQuestion()'-->
+<!--     [class]="selected() ? 'border-secondary!': 'border-gray-200'">-->
   <div class="flex items-center gap-2 w-full justify-between mb-2">
     <div class="flex gap-2 items-center grow">
       <app-tag class="bg-secondary/20 text-primary cursor-pointer">
         {{ entity().field_name || '-' }}
       </app-tag>
+      @if (!entity().valid) {
+      <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+                [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+        warning
+      </mat-icon>
+      }
     </div>
     <div class="flex gap-2 items-center">
       @if (entity().branching_logic) {
@@ -20,7 +38,7 @@
       }
 
       <app-tag class="bg-secondary/20 text-primary">
-        {{ entity().field_type }}
+        {{ entity().field_type | uppercase }}
       </app-tag>
 
       <button class="tiny"
@@ -72,6 +90,8 @@
                 <span class="pt-0.5">{{ choice.code }}
                   : {{ choice.label[questionnaireStateService.selectedLanguage()] }}</span>
               </span>
+              } @else {
+                N/A
               }
             }
           </div>
@@ -79,4 +99,6 @@
       }
     </div>
   }
+</div>
+<!--</button>-->
 </div>

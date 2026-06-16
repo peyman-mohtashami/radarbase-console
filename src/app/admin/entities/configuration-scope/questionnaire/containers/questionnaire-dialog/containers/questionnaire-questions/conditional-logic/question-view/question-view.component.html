@@ -8,7 +8,7 @@
     <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">
       @for (option of question().select_choices_or_calculations; track option.code) {
         <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">
-          <span>{{ option.code }}</span> | <span [innerHtml]="option.label[selectedLanguage]"></span>
+          <span>[{{ option.code }}]</span> <span [innerHtml]="option.label[selectedLanguage]"></span>
         </mat-radio-button>
       }
     </mat-radio-group>
@@ -122,17 +122,21 @@
              (dateInput)="onDateChange($event)"
              (dateChange)="onDateChange($event)">
       <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker #picker/>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <button matButton="elevated" (click)="picker.open()">Open</button>
+  }
+  @case ('duration') {
+
   }
   @case ('yesno') {
     <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">
-      @for (option of question().select_choices_or_calculations; track option.code) {
+      @for (option of [{code: '1', label: 'Yes'},{code: '0', label: 'No'}]; track option.code) {
         <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">
-          <span>{{ option.code }}</span> | <span [innerHtml]="option.label[selectedLanguage]"></span>
+          <span>{{ option.code }}</span> | <span [innerHtml]="option.label"></span>
         </mat-radio-button>
       }
     </mat-radio-group>
   }
+
 }

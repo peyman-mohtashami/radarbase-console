@@ -1,4 +1,4 @@
-import {Component, inject, Input, output} from '@angular/core';
+import {Component, inject, input, Input, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
@@ -6,6 +6,7 @@ import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logi
 import {ConditionalLogicItemComponent} from '../conditional-logic-item/conditional-logic-item.component';
 import {TagComponent} from '../../../../../../../../../../shared/components/tag/tag.component';
 import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {AppQuestion} from '../../../../../../models/questionnaire';
 // import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
 
 @Component({
@@ -20,9 +21,12 @@ import {QuestionnaireStateService} from '../../../../services/questionnaire-stat
 })
 export class ConditionalLogicItemsComponent {
   @Input() conditionalLogicItems: ConditionalLogicItem[] = [];
+  questions = input.required<AppQuestion[]>();
+  selectedIndex = input.required<number>();
+
   itemsEvent = output<ConditionalLogicItem[]>();
 
-  protected questionnaireStateService = inject(QuestionnaireStateService);
+  // protected questionnaireStateService = inject(QuestionnaireStateService);
 
   addItem(index: number) {
     this.conditionalLogicItems.splice(index + 1, 0, {

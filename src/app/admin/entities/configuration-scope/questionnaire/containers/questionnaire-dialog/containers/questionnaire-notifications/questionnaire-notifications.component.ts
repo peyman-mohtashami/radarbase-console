@@ -4,11 +4,11 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
-// import {QuestionnaireTimeUnit} from '../../../../protocol/models/protocol';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/unit';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-questionnaire-notifications',
@@ -25,9 +25,11 @@ import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/u
   ]
 })
 export class QuestionnaireNotificationsComponent implements OnInit {
+  protected readonly UNITS = UNITS;
   protected readonly ValidatorError = ValidatorError;
 
   entity = input<AppQuestionnaire | undefined>();
+
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
@@ -36,8 +38,6 @@ export class QuestionnaireNotificationsComponent implements OnInit {
       notification: new FormGroup({
         title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
         text: new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        // title: new FormControl<string>('', {nonNullable: true}),
-        // text: new FormControl<string>('', {nonNullable: true}),
       }),
       reminders: new FormGroup({
         enabled: new FormControl<boolean>(false, {nonNullable: true}),
@@ -49,18 +49,16 @@ export class QuestionnaireNotificationsComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.form.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(change => {
+      this.changeEvent.emit(change);
+      this.valid.emit(this.form.valid);
+    });
+
     const entity = this.entity();
     if (entity) {
       this.form.patchValue(entity);
     }
-
-    this.valid.emit(this.form.valid);
-
-    this.form.valueChanges.subscribe(change => {
-      this.changeEvent.emit(change);
-      this.valid.emit(this.form.valid);
-    });
   }
-
-  protected readonly UNITS = UNITS;
 }

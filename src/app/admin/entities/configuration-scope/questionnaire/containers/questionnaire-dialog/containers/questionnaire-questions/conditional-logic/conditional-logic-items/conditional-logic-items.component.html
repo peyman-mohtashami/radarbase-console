@@ -5,7 +5,9 @@
       <app-conditional-logic-item [index]="i"
                                   [conditionalLogicItem]="conditionalLogicItem"
                                   (removeEvent)="removeItem(i)"
-                                  (itemEvent)="onItemChange($event, i)"/>
+                                  (itemEvent)="onItemChange($event, i)"
+                                  [questions]="questions()"
+                                  [selectedIndex]="selectedIndex()"/>
 
       <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
         <div>

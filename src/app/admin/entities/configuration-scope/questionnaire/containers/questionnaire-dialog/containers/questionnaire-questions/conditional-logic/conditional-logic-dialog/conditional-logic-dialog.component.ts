@@ -35,6 +35,7 @@ import {
 import {TagComponent} from '../../../../../../../../../../shared/components/tag/tag.component';
 import {BaseConfigService} from '../../../../../../../../../base-entities/services/base-config.service';
 import {DialogMode} from '../../../../../../../../../base-entities/enums/dialog';
+import {AppQuestion} from '../../../../../../models/questionnaire';
 // import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
 
 export interface ConditionalLogicItem {
@@ -74,6 +75,8 @@ export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { 
     id: string;
     mode: DialogMode;
     entity?: {value: string};
+    questions: AppQuestion[];
+    selectedIndex: number;
   };
 
   conditionalLogicItemsArray: ConditionalLogicItem[][] = [];

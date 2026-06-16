@@ -6,11 +6,21 @@ import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logi
 import {MatButton} from '@angular/material/button';
 import {MatSlider, MatSliderThumb} from '@angular/material/slider';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {MatFormField, MatHint, MatInput, MatLabel} from '@angular/material/input';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerInputEvent} from '@angular/material/datepicker';
+import {MatFormField, MatHint, MatInput, MatInputModule, MatLabel} from '@angular/material/input';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerInputEvent, MatDatepickerModule,
+  MatDatepickerToggle
+} from '@angular/material/datepicker';
 import {ReplacePlaceholdersPipe} from '../../../questionnaire-preview/pipes/replace-placeholders.pipe';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {MatIcon, MatIconModule} from '@angular/material/icon';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import {MatNativeDateModule} from '@angular/material/core';
+import {distinctUntilChanged, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 // import {ReplacePlaceholdersPipe} from '../../questionnaire-preview/pipes/replace-placeholders.pipe';
 
 enum TEXT_INPUT_PRESENTATION_TYPE {
@@ -59,6 +69,12 @@ const TEXT_INPUT_TYPES: Record<string, any> = {
     MatHint,
     MatLabel,
     ReplacePlaceholdersPipe,
+    MatDatepickerToggle,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class QuestionViewComponent implements OnInit {
@@ -70,6 +86,8 @@ export class QuestionViewComponent implements OnInit {
 
   textInputType: any = TEXT_INPUT_PRESENTATION_TYPE.TEXT;
   rangeItems: string[] = [];
+
+  private inputChanges$ = new Subject<string>();
 
   ngOnInit() {
     const { text_validation_type_or_show_slider_number: type } =
@@ -84,14 +102,32 @@ export class QuestionViewComponent implements OnInit {
         (_, i) => `${min + i * (step ?? 1)}`
       );
     }
+
+    this.inputChanges$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.updateValue(value);
+      });
   }
 
   protected onInputChange(value: any) {
     this.selectionChange.emit(value);
   }
 
-  protected onInputStringChange(event: Event) {
-    this.selectionChange.emit((event.target as HTMLInputElement).value);
+  // protected onInputStringChange(event: Event) {
+  //   this.selectionChange.emit((event.target as HTMLInputElement).value);
+  // }
+
+  onInputStringChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.inputChanges$.next(value);
+  }
+
+  private updateValue(value: string): void {
+    this.selectionChange.emit(value);
   }
 
   protected onDateChange(event: MatDatepickerInputEvent<any>) {

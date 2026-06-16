@@ -11,16 +11,15 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {TranslateModule} from "@ngx-translate/core";
 import {Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
 import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
+// import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
 import {UpperCasePipe} from '@angular/common';
-import {isEmpty} from 'rxjs';
 
 @Component({
-  selector: 'app-text-form-group',
-  templateUrl: './text-form-group.component.html',
+  selector: 'app-text-form-group-2',
+  templateUrl: './text-form-group-2.component.html',
   imports: [
     ReactiveFormsModule,
     MatFormField,
@@ -34,22 +33,22 @@ import {isEmpty} from 'rxjs';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: TextFormGroupComponent
+      useExisting: TextFormGroup2Component
     },
     {
       provide: NG_VALIDATORS,
       multi: true,
-      useExisting: TextFormGroupComponent
+      useExisting: TextFormGroup2Component
     }
   ]
 })
-export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string, string>> {
+export class TextFormGroup2Component extends BaseFormGroupComponent<Record<string, string>> {
 
   // questionnaireStateService = inject(QuestionnaireStateService);
 
-  languages = input.required<RadarOption[]>();
   language = input.required<RadarOption>();
-  label = input<string>();
+  // languages = input.required<RadarOption[]>();
+  label = input.required<string | undefined>();
   placeholder = input<string>('');
   required = input<boolean>(false);
   disabled = input<boolean>(false);
@@ -68,13 +67,11 @@ export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string
   }
 
   override writeValue(value: Record<string, string>) {
-    console.log('Class: TextFormGroupComponent, Function: writeValue, Line 70 value' , value);
-    if (Object.keys(value).length) {
+    if (value) {
       this.initializeLanguageControls();
       this.updateValidators();
     }
-    console.log('Class: TextFormGroupComponent, Function: writeValue, Line 75 ' , );
-    super.writeValue(Object.keys(value).length ? value : null);
+    super.writeValue(value || null);
   }
 
   private updateValidators() {
@@ -89,16 +86,11 @@ export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string
   }
 
   private initializeLanguageControls() {
-    this.languages().forEach(lang => {
-      const languageString = lang.id.toString();
+    // this.languages().forEach(lang => {
+      const languageString = this.language().id.toString();
       if (!this.form.contains(languageString)) {
-        this.form.addControl(
-          languageString,
-          new FormControl('', {
-            nonNullable: true
-          })
-        );
+        this.form.addControl(languageString, new FormControl('', {nonNullable: true}));
       }
-    });
+    // });
   }
 }
