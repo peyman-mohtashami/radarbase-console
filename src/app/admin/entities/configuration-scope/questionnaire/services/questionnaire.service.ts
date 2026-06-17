@@ -73,6 +73,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
         }
       ),
       tap((entities) => {
+        console.log('Class: QuestionnaireService, Function: , Line 76 entities' , entities);
         this.cache = [...entities];
         this.updatedList = [...entities];
         this.cacheLoaded = true;
@@ -147,51 +148,55 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override toRadarModel(entity: AppQuestionnaire): RadarQuestionnaire {
-    return {
-      name: entity.name,
-      version: entity.version,
-      modelVersion: entity.modelVersion,
-      languages: entity.languages,
-      defaultLanguage: entity.defaultLanguage,
-      title: entity.title,
-      description: entity.description,
-      estimatedCompletionTime: entity.estimatedCompletionTime,
-      showInCalendar: entity.showInCalendar,
-      isDemo: entity.isDemo,
-      order: entity.order,
-      showIntroduction: entity.showIntroduction,
-      startText: entity.startText,
-      endText: entity.endText,
-      warn: entity.warn,
-      questions: entity.questions ?? [],
-      schedule: {
-        completionWindow: {
-          unit: entity.schedule?.completionWindow?.unit,
-          amount: entity.schedule?.completionWindow?.amount,
-        },
-        notification: {
-          title: entity.schedule?.notification?.title,
-          text: entity.schedule?.notification?.text,
-        },
-        onDemand: entity.schedule?.onDemand,
-        referenceTimestamp: entity.schedule?.referenceTimestamp,
-        relativeToReferenceTime: entity.schedule?.relativeToReferenceTime,
-        reminders: {
-          enabled: entity.schedule?.reminders?.enabled,
-          unit: entity.schedule?.reminders?.unit,
-          amount: entity.schedule?.reminders?.amount,
-          repeat: entity.schedule?.reminders?.repeat,
-        },
-        repeatProtocol: {
-          unit: entity.schedule?.repeatProtocol?.unit,
-          amount: entity.schedule?.repeatProtocol?.amount,
-        },
-        repeatQuestionnaire: {
-          unit: entity.schedule?.repeatQuestionnaire?.unit,
-          unitsFromZero: entity.schedule?.repeatQuestionnaire?.unitsFromZero ?? [],
-        },
-        repeatedProtocol: entity.schedule?.repeatedProtocol,
+    const { _name, _search, ...rest } = entity;
+
+    const schedule = entity.schedule ?? {};
+
+    const onDemand = schedule?.onDemand ?? false;
+
+    const updatedSchedule: Partial<AppQuestionnaire['schedule']> = {onDemand};
+
+    if (!onDemand) {
+      const {
+        completionWindow,
+        repeatQuestionnaire,
+        repeatedProtocol,
+        repeatProtocol,
+        relativeToReferenceTime,
+        referenceTimestamp,
+        notification,
+        reminders
+      } = schedule;
+
+      updatedSchedule.completionWindow = completionWindow ?? {};
+      updatedSchedule.repeatQuestionnaire = repeatQuestionnaire ?? {};
+      updatedSchedule.repeatedProtocol = repeatedProtocol ?? false;
+      if (repeatedProtocol) {
+        updatedSchedule.repeatProtocol = repeatProtocol ?? {};
       }
+      updatedSchedule.relativeToReferenceTime = relativeToReferenceTime ?? false;
+      if (relativeToReferenceTime) {
+        updatedSchedule.referenceTimestamp = `${new Date(referenceTimestamp ?? 0).getTime() ?? ''}`;
+      }
+
+      if (notification) {
+        updatedSchedule.notification = notification;
+      }
+
+      if (reminders) {
+        const {enabled} = reminders;
+        if (enabled) {
+          updatedSchedule.reminders = {...reminders, enabled: true};
+        } else {
+          updatedSchedule.reminders = {enabled: false}
+        }
+      }
+    }
+
+    return {
+      ...rest,
+      schedule: updatedSchedule,
+      questions: entity.questions ?? [],
     }
   }
 
@@ -263,6 +268,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   toAppQuestionnaireModel(entity: RadarQuestionnaire): AppQuestionnaire {
     return {
       ...entity,
+      schedule: {
+        ...entity.schedule,
+        referenceTimestamp: entity.schedule?.referenceTimestamp ? new Date(+(entity.schedule?.referenceTimestamp)).toISOString() : ''
+      },
       _name: entity.name,
       _search: entity.name,
     }

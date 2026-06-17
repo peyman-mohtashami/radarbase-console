@@ -57,7 +57,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
         amount: new FormControl<string>('', {nonNullable: true}),
       }),
       repeatQuestionnaire: new FormGroup({
-        unit: new FormControl<string>('', {nonNullable: true}),
+        unit: new FormControl<string>('min', {nonNullable: true}),
         unitsFromZero: new FormControl<string[]>([], {nonNullable: true}),
       }),
       completionWindow: new FormGroup({
@@ -87,10 +87,13 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
   protected loading = true;
 
   ngOnInit() {
+    const entity = this.entity();
+
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
       this.loading = false;
+
       this.changeEvent.emit(change);
 
       const {referenceTimestamp, repeatProtocol, repeatQuestionnaire, completionWindow} = this.form.controls.schedule.controls;
@@ -121,7 +124,6 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.entity();
     if (entity) {
       this.form.patchValue(entity);
     }

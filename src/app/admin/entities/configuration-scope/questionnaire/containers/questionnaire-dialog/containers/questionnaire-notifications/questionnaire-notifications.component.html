@@ -5,19 +5,53 @@
     <div formGroupName="notification" class="mt-4">
       <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>
       <div class="mb-4">
-        <app-text-form-group class="mb-4"
-                             formControlName="title"
-                             [languages]="entity()!.languages"
-                             [language]="entity()!.defaultLanguage"
-                             [label]="`${_prefix}.notificationTitleLabel` | translate"/>
+        <label for="title" class="text-sm">{{ `${_prefix}.notificationTitleLabel` | translate }}</label>
+        <mat-form-field class='small-input' appearance='outline'>
+          <input matInput formControlName='title' />
+          <mat-error>
+            <!--        @if (form.controls.startText.errors; as errors) {-->
+            <!--          @if (errors['required']) {-->
+            <!--            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--          @if (errors['duplicate']) {-->
+            <!--            {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--          @if (errors['pattern']) {-->
+            <!--            {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--        }-->
+          </mat-error>
+        </mat-form-field>
+<!--        <app-text-form-group class="mb-4"-->
+<!--                             formControlName="title"-->
+<!--                             [languages]="entity()!.languages"-->
+<!--                             [language]="entity()!.defaultLanguage"-->
+<!--                             [label]="`${_prefix}.notificationTitleLabel` | translate"/>-->
       </div>
       <div class="mb-4">
-        <app-text-form-group formControlName="text"
-                             [languages]="entity()!.languages"
-                             [language]="entity()!.defaultLanguage"
-                             [label]="`${_prefix}.notificationMessageLabel` | translate"
-                             [textarea]="true"
-                             [textareaAutosize]="true"/>
+        <label for="text" class="text-sm">{{ `${_prefix}.notificationMessageLabel` | translate }}</label>
+        <mat-form-field class='small-input' appearance='outline'>
+          <textarea matInput formControlName='text'></textarea>
+          <mat-error>
+            <!--        @if (form.controls.startText.errors; as errors) {-->
+            <!--          @if (errors['required']) {-->
+            <!--            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--          @if (errors['duplicate']) {-->
+            <!--            {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--          @if (errors['pattern']) {-->
+            <!--            {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
+            <!--          }-->
+            <!--        }-->
+          </mat-error>
+        </mat-form-field>
+<!--        <app-text-form-group formControlName="text"-->
+<!--                             [languages]="entity()!.languages"-->
+<!--                             [language]="entity()!.defaultLanguage"-->
+<!--                             [label]="`${_prefix}.notificationMessageLabel` | translate"-->
+<!--                             [textarea]="true"-->
+<!--                             [textareaAutosize]="true"/>-->
       </div>
     </div>
 
