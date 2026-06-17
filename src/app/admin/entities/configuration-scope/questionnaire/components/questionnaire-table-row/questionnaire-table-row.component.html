@@ -1,3 +1,5 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
 <app-entity-table-row [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
@@ -14,7 +16,7 @@
     @case ('name') {
       <p class="font-bold">{{ entity()['name'] || '-' }}</p>
       <div class="flex items-center flex-wrap gap-2">
-        <span class="text-xs font-bold text-neutral-400 uppercase">{{'ADMIN.questionnaire.availableLanguages' | translate}}</span>
+        <span class="text-xs font-bold text-neutral-400 uppercase">{{`${_prefix}.availableLanguages` | translate}}</span>
         @for (l of entity().languages; track l.id) {
           <span>
             <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{l.id}}</span></span>
@@ -24,6 +26,48 @@
     }
     @case ('questionCount') {
       {{ entity().questions.length || '-' }}
+    }
+    @case ('repeatProtocol') {
+      @if (entity().schedule?.onDemand) {
+        On Demand
+      } @else {
+        @if (!entity().schedule?.repeatedProtocol) {
+          <div
+            [innerHTML]="`${_prefix}.oneTimeProtocol.tableContent` | translate">
+          </div>
+        } @else {
+  <!--        @if (repeatProtocol.amount === 9999 && repeatProtocol.unit === 'year' ) {-->
+  <!--          <div-->
+  <!--            [innerHTML]="'ADMIN.protocol.oneTimeProtocol.tableContent' | translate">-->
+  <!--          </div>-->
+  <!--        } @else {-->
+          @let repeatProtocol = entity().schedule?.repeatProtocol;
+            <div
+              [innerHTML]="`${_prefix}.repeatProtocol.tableContent` | translate: {amount: repeatProtocol?.amount, unit: repeatProtocol?.unit}">
+            </div>
+          }
+        @if (entity().schedule?.completionWindow; as completionWindow) {
+          <div>
+            {{
+              `${_prefix}.completionWindow.tableContent` | translate: {
+                amount: completionWindow.amount,
+                unit: completionWindow.unit
+              }
+            }}
+          </div>
+        }
+      }
+<!--      } @else {-->
+<!--        {{'On Demand'}}-->
+<!--      }-->
+
+    }
+    @case ('completionWindow') {
+      @if (entity().schedule?.completionWindow; as completionWindow) {
+        {{ completionWindow.amount }} {{ completionWindow.unit }}
+      } @else {
+        -
+      }
     }
     @default {
       {{ $any(entity())[property.name] || '-' }}

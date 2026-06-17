@@ -6,6 +6,8 @@ import {BaseConfigService} from '../../../../base-entities/services/base-config.
 
 export const TableElements: TableElement[] = [
   {name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true},
+  { name: 'repeatProtocol', width:"w-64", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
+  { name: 'completionWindow', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   {
     name: 'questionCount',
     width: "w-32",
