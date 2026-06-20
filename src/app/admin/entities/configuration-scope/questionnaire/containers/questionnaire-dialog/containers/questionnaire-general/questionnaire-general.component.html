@@ -31,56 +31,20 @@
     </div>
 
     <div class="mb-4">
-      <label for="title" class="text-sm">{{ `${_prefix}.titleLabel` | translate }}</label>
-      <mat-form-field class='small-input' appearance='outline'>
-        <input matInput formControlName='title'>
-        <mat-error>
-<!--          @if (form.controls.name.errors; as errors) {-->
-<!--            @if (errors['required']) {-->
-<!--              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--            @if (errors['duplicate']) {-->
-<!--              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--            @if (errors['pattern']) {-->
-<!--              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--          }-->
-        </mat-error>
-      </mat-form-field>
+      <app-text-form-group formControlName="title"
+                           [languages]="languages"
+                           [language]="form.controls.defaultLanguage.value"
+                           [label]="`${_prefix}.titleLabel` | translate"/>
     </div>
 
     <div class="mb-4">
-      <label for="description" class="text-sm">{{ `${_prefix}.descriptionLabel` | translate }}</label>
-      <mat-form-field class='small-input' appearance='outline'>
-        <textarea matInput formControlName='description'></textarea>
-        <mat-error>
-          <!--          @if (form.controls.name.errors; as errors) {-->
-          <!--            @if (errors['required']) {-->
-          <!--              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-          <!--            }-->
-          <!--            @if (errors['duplicate']) {-->
-          <!--              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-          <!--            }-->
-          <!--            @if (errors['pattern']) {-->
-          <!--              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-          <!--            }-->
-          <!--          }-->
-        </mat-error>
-      </mat-form-field>
+      <app-text-form-group formControlName="description"
+                           [languages]="languages"
+                           [language]="form.controls.defaultLanguage.value"
+                           [label]="`${_prefix}.descriptionLabel` | translate"
+                           [textarea]="true"
+                           [textareaAutosize]="true"/>
     </div>
-
-<!--    <div>-->
-<!--      <label for="estimatedCompletionTime" class="text-sm">-->
-<!--        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}-->
-<!--      </label>-->
-<!--      <mat-form-field class='small-input w-full' appearance='outline'>-->
-<!--        <input id="estimatedCompletionTime" matInput type="number" formControlName='estimatedCompletionTime'>-->
-<!--        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">-->
-<!--        {{ `${_prefix}.minutes` | translate }}-->
-<!--      </span>-->
-<!--      </mat-form-field>-->
-<!--    </div>-->
   </div>
 
   <!--  <div>-->

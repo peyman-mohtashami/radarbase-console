@@ -15,7 +15,7 @@ import {QuestionnaireStateService} from "../../services/questionnaire-state.serv
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
-import {UpperCasePipe} from '@angular/common';
+import {JsonPipe, UpperCasePipe} from '@angular/common';
 import {isEmpty} from 'rxjs';
 
 @Component({
@@ -29,6 +29,7 @@ import {isEmpty} from 'rxjs';
     MatError,
     TranslateModule,
     UpperCasePipe,
+    JsonPipe,
   ],
   providers: [
     {
@@ -68,12 +69,10 @@ export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string
   }
 
   override writeValue(value: Record<string, string>) {
-    console.log('Class: TextFormGroupComponent, Function: writeValue, Line 70 value' , value);
     if (Object.keys(value).length) {
       this.initializeLanguageControls();
       this.updateValidators();
     }
-    console.log('Class: TextFormGroupComponent, Function: writeValue, Line 75 ' , );
     super.writeValue(Object.keys(value).length ? value : null);
   }
 
@@ -88,17 +87,39 @@ export class TextFormGroupComponent extends BaseFormGroupComponent<Record<string
     this.validatorChange();
   }
 
+  get currentControl(): FormControl<string | null> {
+    const langId = this.language().id.toString();
+    if (!this.form.contains(langId)) {
+      this.form.addControl(langId, new FormControl('', { nonNullable: true }));
+      this.updateValidators();
+    }
+    return this.form.get(langId) as FormControl<string | null>;
+  }
+
   private initializeLanguageControls() {
-    this.languages().forEach(lang => {
-      const languageString = lang.id.toString();
-      if (!this.form.contains(languageString)) {
+    // [...this.languages(), this.language()].forEach(lang => {
+    // this.languages().forEach(lang => {
+      const languageString = this.language().id.toString();//lang.id.toString();
+      // if (!this.form.contains(languageString)) {
         this.form.addControl(
           languageString,
           new FormControl('', {
             nonNullable: true
           })
         );
-      }
-    });
+      // }
+    // });
+
+    // this.languages().forEach(lang => {
+    //   const languageString = lang.id.toString();
+    //   if (!this.form.contains(languageString)) {
+    //     this.form.addControl(
+    //       languageString,
+    //       new FormControl('', {
+    //         nonNullable: true
+    //       })
+    //     );
+    //   }
+    // });
   }
 }

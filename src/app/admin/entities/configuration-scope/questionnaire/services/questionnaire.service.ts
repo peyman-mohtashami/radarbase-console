@@ -60,12 +60,8 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
           //     questions: groupedQuestionnaires[key]
           //   }
           // });
-        console.log('Class: QuestionnaireService, Function: , Line 63 radarConfigs' , radarConfigs);
 
         return radarConfigs.map(config => {
-          console.log('Class: QuestionnaireService, Function: , Line 66 config' , config);
-          console.log('Class: QuestionnaireService, Function: , Line 67 ' , config.value);
-          console.log('Class: QuestionnaireService, Function: , Line 68 JSON.parse(config.value)' , JSON.parse(config.value));
 
           return this.toAppQuestionnaireModel(JSON.parse(config.value))
         });
@@ -73,7 +69,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
         }
       ),
       tap((entities) => {
-        console.log('Class: QuestionnaireService, Function: , Line 76 entities' , entities);
+        console.log('Class: QuestionnaireService, Function: , Line 72 entities' , entities);
         this.cache = [...entities];
         this.updatedList = [...entities];
         this.cacheLoaded = true;
@@ -90,7 +86,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
-    console.log('Class: QuestionnaireService, Function: add, Line 92 entity' , entity);
     this.total.set(this.total() + 1);
     this.updatedList.push(entity);
     return this.publish(this.updatedList).pipe(map(() => entity));
@@ -102,7 +97,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
   }
 
   override delete(entity: AppQuestionnaire): Observable<void> {
-    console.log('Class: QuestionnaireService, Function: delete, Line 104 ' , );
     this.updatedList = this.updatedList.filter((e) => e._name !== entity._name);
     return this.publish(this.updatedList).pipe(map(() => undefined));
   }
@@ -112,7 +106,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
     const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => {
       return this.toRadarModel(q);
     });
-    console.log('Class: QuestionnaireService, Function: publish, Line 113 radarQuestionnaires' , radarQuestionnaires);
     // const radarQuestionnaires: RadarQuestionnaire[] = questionnaires.map(q => (
     //   {
     //     name: q.name,
@@ -127,7 +120,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ra
       // const v: RadarQuestionnaire = {...q, questions: []};
       return {_name: '', id: '',name: q.name, value: JSON.stringify(q)}
     });
-    console.log('Class: QuestionnaireService, Function: publish, Line 121 configs' , configs);
     // radarQuestionnaires.forEach(q => {
     //   const name = q.name;
     //   Object.keys(q.questions).forEach(lang => {

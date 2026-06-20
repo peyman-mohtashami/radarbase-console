@@ -29,8 +29,8 @@
                      [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"' required>
               <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
               <mat-datepicker #startDatePicker/>
-              <!--        @if (form.controls.referenceTimestamp.errors; as errors) {-->
-              <!--          <mat-error>-->
+                      @if (form.controls.schedule.controls.referenceTimestamp.errors; as errors) {
+                        <mat-error>
               <!--          @if (errors?.['matDatepickerMin']) {-->
               <!--            Date is out of range. It should be after 2000. &lt;!&ndash; TODO translate &ndash;&gt;-->
               <!--          }-->
@@ -43,8 +43,8 @@
               <!--          @if (errors?.['matStartDateInvalid']) {-->
               <!--&lt;!&ndash;            {{ `ADMIN.${entityName}.startDate.startDateInvalid` | translate }}&ndash;&gt;-->
               <!--          }-->
-              <!--          </mat-error>-->
-              <!--        }-->
+                        </mat-error>
+                      }
             </mat-form-field>
           </div>
         }

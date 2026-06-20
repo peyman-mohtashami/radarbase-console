@@ -53,7 +53,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
       }, 0);
       this.numberOfRows = 6 + (this.entity()?.warningEnabled ? 1 : 0) + (t ?? 0);
 
-      const qs = entity.questions?.map(q => {
+      const questionsFormGroup = entity.questions?.map(q => {
         const choices = q.select_choices_or_calculations?.map(c => new FormGroup({
           label: new FormControl<Record<string, string>>({}, {nonNullable: true}),
         })) ?? [];
@@ -82,7 +82,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
             text: new FormControl<Record<string, string>>({}, {nonNullable: true}),
           }),
         }),
-        questions: new FormArray<FormGroup>(qs ?? []),
+        questions: new FormArray<FormGroup>(questionsFormGroup ?? []),
 
       });
 
@@ -92,7 +92,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
     this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      this.changeEvent.emit(change);
+      this.changeEvent.emit({...entity, ...change, schedule: {...entity?.schedule, ...change.schedule}});
       this.valid.emit(this.form.valid);
     });
   }

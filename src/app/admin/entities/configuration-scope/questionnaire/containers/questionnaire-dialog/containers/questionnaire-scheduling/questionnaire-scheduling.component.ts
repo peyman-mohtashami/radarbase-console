@@ -5,7 +5,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {debounceTime} from 'rxjs/operators';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDivider} from '@angular/material/list';
-import {MatFormField, MatInput, MatSuffix} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
@@ -34,7 +34,8 @@ import {Subscription} from 'rxjs';
     MatSuffix,
     ReactiveFormsModule,
     TimeFromZeroFormArrayComponent,
-    TranslatePipe
+    TranslatePipe,
+    MatError
   ]
 })
 export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {

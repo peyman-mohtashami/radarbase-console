@@ -171,21 +171,21 @@ export class MatSelectAutocompleteComponent
   }
 
   writeValue(value: RadarOption | RadarOption[]) {
-    console.log(value);
+    // console.log(value);
     if (value) {
       if (Array.isArray(value)) {
         const options = value.map((v: RadarOption) => {
           return this.options().find((o) => o.id === v.id);
         })
         const _options = options.filter((option) => {
-          console.log(option);
+          // console.log(option);
           return !!option
         }) as RadarOption[];
         this.form.setValue(_options, { emitEvent: false });
       } else {
-        console.log('not array', this.options)
+        // console.log('not array', this.options)
         const _value = this.options().find((o) => o.id === value.id);
-        console.log(_value)
+        // console.log(_value)
         if (_value) {
           this.form.setValue(_value, { emitEvent: false });
         }

@@ -9,14 +9,25 @@
     @if (multiple()) {
       <mat-select-trigger>
         <div class="flex flex-wrap gap-1">
+          @if (notRemovable(); as notRemovable) {
+            <app-tag class="font-bold text-primary bg-primary/10">
+              {{ notRemovable?._name }}
+              <button mat-icon-button class="tiny" [disabled]="true"
+                      (click)="removeChip(notRemovable)">
+                <mat-icon class="text-xl! material-symbols-outlined">cancel</mat-icon>
+              </button>
+            </app-tag>
+          }
           @for (selected of (Array.isArray(form.value) ? form.value : []); track selected._name) {
+            @if (selected.id !== notRemovable()?.id) {
             <app-tag class="font-bold text-primary bg-primary/10">
               {{ selected["_name"] }}
-              <button mat-icon-button class="tiny" [disabled]="selected.id === notRemovable()?.id"
+              <button mat-icon-button class="tiny"
                       (click)="removeChip(selected)">
                 <mat-icon class="text-xl! material-symbols-outlined">cancel</mat-icon>
               </button>
             </app-tag>
+            }
           }
         </div>
       </mat-select-trigger>

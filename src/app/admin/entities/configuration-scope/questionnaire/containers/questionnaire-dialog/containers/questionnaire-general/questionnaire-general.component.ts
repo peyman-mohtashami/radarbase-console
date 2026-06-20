@@ -8,7 +8,8 @@ import {
 import {AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from '../../../../models/questionnaire';
 import {Validator, ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {Subscription} from 'rxjs';
+import {merge, Subscription} from 'rxjs';
+import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
 import {debounceTime} from 'rxjs/operators';
 
 @Component({
@@ -21,6 +22,7 @@ import {debounceTime} from 'rxjs/operators';
     MatSelectAutocompleteComponent,
     ReactiveFormsModule,
     TranslatePipe,
+    TextFormGroupComponent,
   ]
 })
 export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
@@ -40,8 +42,8 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       nonNullable: true
     }),
     defaultLanguage: new FormControl<RadarOption>(DEFAULT_LANGUAGE, {nonNullable: true}),
-    title: new FormControl<string>('', {nonNullable: true}),
-    description: new FormControl<string>('', {nonNullable: true}),
+    title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    description: new FormControl<Record<string, string>>({}, {nonNullable: true}),
   });
 
   defaultLang: RadarOption = DEFAULT_LANGUAGE;
@@ -55,55 +57,51 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
 
     const entity = this.entity();
     if (entity) {
+      this.languages = entity.languages;
       this.defaultLang = entity.defaultLanguage;
-      const formEntity = this.getFormEntity(entity, this.defaultLang);
-      this.form.patchValue(formEntity);
+      this.form.patchValue(entity);
       this.valid.emit(this.form.valid);
     }
 
-    this.subscription = this.form.valueChanges.pipe(
+    this.form.controls.defaultLanguage.valueChanges.pipe(
       debounceTime(300)
-    ).subscribe(change => {
-      if (change.defaultLanguage && change.defaultLanguage.id !== this.defaultLang.id) {
-        this.defaultLang = change.defaultLanguage;
-        if (entity) {
-          const languages = [...entity.languages, this.defaultLang];
-          this.languages = Array.from(
-            new Set(languages.map(item => JSON.stringify(item)))
-          ).map(item => JSON.parse(item));
+    ).subscribe(language => {
+        this.onDefaultLanguageChanged(language, entity);
+    });
 
-          const updated = this.getUpdatedEntity(entity, change);
-          this.changeEvent.emit(updated);
-          this.valid.emit(this.form.valid);
-
-          const newFormEntity = this.getFormEntity(entity, this.defaultLang);
-          this.form.patchValue(newFormEntity);
-        } else {
-          this.languages = [this.defaultLang];
-          const updated = this.getUpdatedEntity(undefined, change);
-          this.changeEvent.emit(updated);
-          this.valid.emit(this.form.valid);
-        }
-      } else {
-        const updated = this.getUpdatedEntity(entity, change);
-        this.changeEvent.emit(updated);
-        this.valid.emit(this.form.valid);
-      }
+    merge(
+      this.form.controls.name.valueChanges,
+      this.form.controls.title.valueChanges,
+      this.form.controls.description.valueChanges
+    ).pipe(
+      debounceTime(300)
+    ).subscribe(() => {
+      this.onOtherFieldsChanged();
     });
   }
 
-  getFormEntity(entity: AppQuestionnaire, language: RadarOption) {
-    return {...entity, defaultLanguage: this.defaultLang, title: entity.title?.[language.id], description: entity.description?.[language.id]};
+  onDefaultLanguageChanged(language: RadarOption, entity?: AppQuestionnaire) {
+    this.defaultLang = language;
+    if (entity) {
+      const languages = [...entity.languages, this.defaultLang];
+      this.languages = Array.from(
+        new Set(languages.map(item => JSON.stringify(item)))
+      ).map(item => JSON.parse(item));
+
+      this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      this.valid.emit(this.form.valid);
+
+      this.form.patchValue({...entity, defaultLanguage: language}, { emitEvent: false });
+    } else {
+      this.languages = [this.defaultLang];
+      this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      this.valid.emit(this.form.valid);
+    }
   }
 
-  getUpdatedEntity(originalEntity: AppQuestionnaire | undefined, formEntity: any): AppQuestionnaire {
-    return {
-      ...originalEntity,
-      ...formEntity,
-      title: {...originalEntity?.title, [this.defaultLang.id]: formEntity.title ?? ''},
-      description: {...originalEntity?.description, [this.defaultLang.id]: formEntity.description ?? ''},
-      languages: this.languages,
-    }
+  onOtherFieldsChanged() {
+    this.changeEvent.emit({...this.form.getRawValue(), languages: this.languages});
+    this.valid.emit(this.form.valid);
   }
 
   private duplicateValidator = (control: AbstractControl) => {

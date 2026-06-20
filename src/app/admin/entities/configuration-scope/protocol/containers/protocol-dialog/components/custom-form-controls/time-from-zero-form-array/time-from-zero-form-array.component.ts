@@ -110,7 +110,7 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
       .pipe(
         map(values =>
           values
-            .map(v => dayTimeToMinutes({ day: v.day ?? 0, time: v.time ?? '' }))
+            .map(v => dayTimeToMinutes({ day: v.day, time: v.time }))
             .filter((x): x is number => x != null)
         )
       )
@@ -148,7 +148,8 @@ export class TimeFromZeroFormArrayComponent implements ControlValueAccessor, Val
 }
 
 function dayTimeToMinutes(input: { day: number | null | undefined; time: string | null | undefined }): number | null {
-  if (input == null) return null;
+  if (input === null) return null;
+  if (input.day === null) return null;
   const day = Number(input.day ?? 0);
   const time = (input.time ?? '').trim();
   if (!time) return null; // or return 0 if you prefer a default

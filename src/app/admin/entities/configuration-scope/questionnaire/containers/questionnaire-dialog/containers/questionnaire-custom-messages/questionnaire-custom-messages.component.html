@@ -34,57 +34,22 @@
   </div>
 
   @if (form.controls.showIntroduction.value !== 'no') {
-    <label for="startText" class="text-sm">{{ `${_prefix}.startTextLabel` | translate }}</label>
-    <mat-form-field class='small-input' appearance='outline'>
-      <textarea matInput formControlName='startText'></textarea>
-      <mat-error>
-        <!--        @if (form.controls.startText.errors; as errors) {-->
-        <!--          @if (errors['required']) {-->
-        <!--            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-        <!--          }-->
-        <!--          @if (errors['duplicate']) {-->
-        <!--            {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-        <!--          }-->
-        <!--          @if (errors['pattern']) {-->
-        <!--            {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-        <!--          }-->
-        <!--        }-->
-      </mat-error>
-    </mat-form-field>
-
-    <!--      <app-text-form-group class="mb-4"-->
-      <!--                           formControlName="startText"-->
-      <!--                           [languages]="entity()!.languages"-->
-      <!--                           [label]="`${_prefix}.startTextLabel` | translate"-->
-      <!--                           [textarea]="true"-->
-      <!--                           [textareaAutosize]="true"/>-->
+    <app-text-form-group class="mb-4"
+                         formControlName="startText"
+                         [languages]="entity()!.languages"
+                         [language]="entity()!.defaultLanguage"
+                         [label]="`${_prefix}.startTextLabel` | translate"
+                         [textarea]="true"
+                         [textareaAutosize]="true"/>
   }
 
   <div class="mb-4">
-    <label for="endText" class="text-sm">{{ `${_prefix}.endTextLabel` | translate }}</label>
-    <mat-form-field class='small-input' appearance='outline'>
-      <textarea matInput formControlName='endText'></textarea>
-      <mat-error>
-<!--        @if (form.controls.endText.errors; as errors) {-->
-<!--          @if (errors['required']) {-->
-<!--            {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--          }-->
-<!--          @if (errors['duplicate']) {-->
-<!--            {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--          }-->
-<!--          @if (errors['pattern']) {-->
-<!--            {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--          }-->
-<!--        }-->
-      </mat-error>
-    </mat-form-field>
-
-<!--    <app-text-form-group formControlName="endText"-->
-<!--                         [languages]="entity()!.languages"-->
-<!--                         [language]="entity()!.defaultLanguage"-->
-<!--                         [label]="`${_prefix}.endTextLabel` | translate"-->
-<!--                         [textarea]="true"-->
-<!--                         [textareaAutosize]="true"/>-->
+    <app-text-form-group formControlName="endText"
+                         [languages]="entity()!.languages"
+                         [language]="entity()!.defaultLanguage"
+                         [label]="`${_prefix}.endTextLabel` | translate"
+                         [textarea]="true"
+                         [textareaAutosize]="true"/>
   </div>
 
   <mat-slide-toggle formControlName='warningEnabled' class="my-4" color="primary">
@@ -93,28 +58,10 @@
 
   @if (form.controls.warningEnabled.value) {
     <div class="mb-4">
-      <label for="warn" class="text-sm">{{ `${_prefix}.warningTextLabel` | translate }}</label>
-      <mat-form-field class='small-input' appearance='outline'>
-        <input matInput formControlName='warn'>
-        <mat-error>
-<!--          @if (form.controls.warn.errors; as errors) {-->
-<!--            @if (errors['required']) {-->
-<!--              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--            @if (errors['duplicate']) {-->
-<!--              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--            @if (errors['pattern']) {-->
-<!--              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}-->
-<!--            }-->
-<!--          }-->
-        </mat-error>
-      </mat-form-field>
-
-<!--      <app-text-form-group formControlName="warn"-->
-<!--                           [languages]="entity()!.languages"-->
-<!--                           [language]="entity()!.defaultLanguage"-->
-<!--                           [label]="`${_prefix}.warningTextLabel` | translate"/>-->
+      <app-text-form-group formControlName="warn"
+                           [languages]="entity()!.languages"
+                           [language]="entity()!.defaultLanguage"
+                           [label]="`${_prefix}.warningTextLabel` | translate"/>
     </div>
   }
 </form>

@@ -14,7 +14,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {TextFormGroupComponent} from '../../../components/text-form-group/text-form-group.component';
 import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
-import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
+// import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {
   ConditionalLogicDialogComponent
@@ -55,8 +55,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
   index = input.required<number>();
   languages = input.required<RadarOption[]>();
   language = input.required<RadarOption>();
-
-  questionnaireStateService = inject(QuestionnaireStateService);
 
   protected readonly DialogMode = DialogMode;
   protected readonly QUESTION_TYPES = QUESTION_TYPES;

@@ -32,7 +32,7 @@ import {
   MatTabGroup,
   MatTabLabel,
 } from '@angular/material/tabs';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, JsonPipe} from '@angular/common';
 import {QuestionnaireGeneralComponent} from './containers/questionnaire-general/questionnaire-general.component';
 import {QuestionnaireQuestionsComponent} from './containers/questionnaire-questions/questionnaire-questions.component';
 import {
@@ -57,7 +57,6 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {FormProtocol} from '../../../protocol/models/protocol';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -85,6 +84,7 @@ import {FormProtocol} from '../../../protocol/models/protocol';
     MatIcon,
     MatButton,
     MatProgressSpinner,
+    JsonPipe,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
@@ -101,49 +101,31 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   entity = signal(this.dialogData.entity);
 
   protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
-    console.log('Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 104 event' , event);
     const defined = Object.fromEntries(
       Object.entries(event).filter(([, v]) => v !== undefined)
     ) as Partial<AppQuestionnaire>;
     this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
   }
 
-  isGeneralValid = false;
-  isCustomMessageValid = true;
-  isSchedulingValid = true;
-  isNotificationValid = true;
-  isQuestionsValid = true;
-  isTranslationValid = true;
+  sectionsValidity: any = {
+    general: false,
+    questions: true,
+    scheduling: true,
+    customMessages: true,
+    notifications: true,
+    translations: true
+  }
+
   protected isLoading = false;
 
-  protected onGeneralValid(event: boolean) {
-    this.isGeneralValid = event;
-  }
-
-  protected onCustomMessageValid(event: boolean) {
-    this.isCustomMessageValid = event;
-  }
-
-  protected onSchedulingValid(event: boolean) {
-    this.isSchedulingValid = event;
-  }
-
-  protected onNotificationValid(event: boolean) {
-    this.isNotificationValid = event;
-  }
-
-  protected onQuestionsValid(event: boolean) {
-    this.isQuestionsValid = event;
-  }
-
-  protected onTranslationsValid(event: boolean) {
-    this.isTranslationValid = event;
+  onSectionValidEvent(name: string, valid: boolean) {
+    console.log('Class: QuestionnaireDialogComponent, Function: onSectionValidEvent, Line 122 name, valid' , name, valid);
+    this.sectionsValidity[name] = valid;
   }
 
   protected readonly DialogAction = DialogAction;
 
   protected override handleSaveAction(): void {
-    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 144 this.entity()' , this.entity());
     // toValidAppQuestionnaire
 
     this.dialogActionEvent.emit({
@@ -175,7 +157,6 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   // }
 
   protected override handleDeleteAction(): void {
-    console.log('Class: QuestionnaireDialogComponent, Function: handleDeleteAction, Line 155 ' , );
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
   }
 }
