@@ -2,7 +2,7 @@ import {Component, effect, inject, input, OnInit, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
-import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {AppQuestionChoice} from '../../../../../models/questionnaire';
 import {CdkDrag} from '@angular/cdk/drag-drop';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';

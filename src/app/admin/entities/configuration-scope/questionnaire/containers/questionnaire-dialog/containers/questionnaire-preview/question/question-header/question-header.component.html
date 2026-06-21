@@ -1,5 +1,6 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
 
+@if (selectedLanguage) {
 @if (sectionHeader()) {
   <p class="text-base" [innerHtml]="question().section_header?.[selectedLanguage] | replacePlaceholders"></p>
 }
@@ -16,4 +17,5 @@
 
 @if (note()) {
 <!--  <p class="text-sm mb-2" [innerHtml]="question().field_note | replacePlaceholders"></p>-->
+}
 }

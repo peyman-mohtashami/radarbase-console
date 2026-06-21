@@ -1,12 +1,13 @@
-import {Component, input, output} from '@angular/core';
+import {Component, effect, input, output, viewChild, ViewContainerRef} from '@angular/core';
 import {MatIconButton} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestion} from '../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
-import {JsonPipe, UpperCasePipe} from '@angular/common';
+import {UpperCasePipe} from '@angular/common';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {QUESTION_COMPONENTS} from './question-type.registry';
 
 @Component({
   selector: 'app-question-button',
@@ -18,7 +19,6 @@ import {RadarOption} from '../../../../../../../../../shared/components/mat-dyna
     TagComponent,
     MatTooltip,
     UpperCasePipe,
-    JsonPipe,
   ],
 })
 export class QuestionButtonComponent {
@@ -27,8 +27,14 @@ export class QuestionButtonComponent {
   index = input.required<number>();
   language = input.required<RadarOption>();
 
+  host = viewChild('questionHost', { read: ViewContainerRef });
+
   removeEvent = output<void>();
   selectEvent = output<void>();
+
+  constructor() {
+    effect(() => this.loadQuestionEditor());
+  }
 
   protected removeQuestion() {
     this.removeEvent.emit();
@@ -36,5 +42,15 @@ export class QuestionButtonComponent {
 
   protected selectQuestion() {
     this.selectEvent.emit();
+  }
+
+  private loadQuestionEditor(): void {
+    const host = this.host();
+    if (!host) return;
+    host.clear();
+    const componentType = QUESTION_COMPONENTS[this.entity().field_type];
+    const componentRef = host.createComponent(componentType);
+    componentRef.instance.language = this.language;
+    componentRef.instance.entity = this.entity;
   }
 }

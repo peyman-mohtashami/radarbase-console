@@ -47,58 +47,62 @@
           <span class="text-neutral-500">{{ `${_prefix}.questionLabelLabel` | translate }}</span>
           <span class="font-bold">{{ field_label }}</span>
         }
+<!---->
 
         @if (entity().section_header?.[language().id]; as section_header) {
           <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}</span>
           <span>{{ section_header }}</span>
         }
 
-        @if (entity().field_type === 'slider') {
-          <span class="text-neutral-500">{{ `${_prefix}.questionRangeLabel` | translate }}</span>
-          <span class="">Min: {{entity().range?.min ?? 'N/A'}}, Max: {{entity().range?.max ?? 'N/A'}}, Step: {{entity().range?.step ?? 'N/A'}}</span>
-        }
+        <ng-container #questionHost></ng-container>
 
-        @if (entity().field_type === 'number') {
-          <span class="text-neutral-500">{{ `${_prefix}.questionValidationLabel` | translate }}</span>
-          <span class="">Min: {{entity().text_validation_min ?? 'N/A'}}, Max: {{entity().text_validation_max ?? 'N/A'}}</span>
-        }
+        <!---->
+<!--        @if (entity().field_type === 'slider') {-->
+<!--          <span class="text-neutral-500">{{ `${_prefix}.questionRangeLabel` | translate }}</span>-->
+<!--          <span class="">Min: {{entity().range?.min ?? 'N/A'}}, Max: {{entity().range?.max ?? 'N/A'}}, Step: {{entity().range?.step ?? 'N/A'}}</span>-->
+<!--        }-->
 
-        @if (entity().select_choices_or_calculations; as choices) {
-          @if (choices.length) {
-            <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>
-            <div class="flex flex-wrap gap-x-2">
-              @for (choice of choices; track choice.code) {
-                @if (choice.code) {
-                  <span class="inline-flex gap-1">
-                <mat-icon class="material-symbols-outlined text-base!">
-                  @switch (entity().field_type) {
-                    @case ('radio') {
-                      radio_button_unchecked
-                    }
-                    @case ('checkbox') {
-                      check_box_outline_blank
-                    }
-                    @case ('range') {
-                      radio_button_unchecked
-                    }
-                    @case ('range-info') {
-                      radio_button_unchecked
-                    }
-                    @case ('info') {
-                      info
-                    }
-                  }
-                </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}
-                  : {{ choice.label[language().id] }}</span>
-              </span>
-                } @else {
-                  N/A
-                }
-              }
-            </div>
-          }
-        }
+<!--        @if (entity().field_type === 'number') {-->
+<!--          <span class="text-neutral-500">{{ `${_prefix}.questionValidationLabel` | translate }}</span>-->
+<!--          <span class="">Min: {{entity().text_validation_min ?? 'N/A'}}, Max: {{entity().text_validation_max ?? 'N/A'}}</span>-->
+<!--        }-->
+
+<!--        @if (entity().select_choices_or_calculations; as choices) {-->
+<!--          @if (choices.length) {-->
+<!--            <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>-->
+<!--            <div class="flex flex-wrap gap-x-2">-->
+<!--              @for (choice of choices; track choice.code) {-->
+<!--                @if (choice.code) {-->
+<!--                  <span class="inline-flex gap-1">-->
+<!--                <mat-icon class="material-symbols-outlined text-base!">-->
+<!--                  @switch (entity().field_type) {-->
+<!--                    @case ('radio') {-->
+<!--                      radio_button_unchecked-->
+<!--                    }-->
+<!--                    @case ('checkbox') {-->
+<!--                      check_box_outline_blank-->
+<!--                    }-->
+<!--                    @case ('range') {-->
+<!--                      radio_button_unchecked-->
+<!--                    }-->
+<!--                    @case ('range-info') {-->
+<!--                      radio_button_unchecked-->
+<!--                    }-->
+<!--                    @case ('info') {-->
+<!--                      info-->
+<!--                    }-->
+<!--                  }-->
+<!--                </mat-icon>-->
+<!--                <span class="pt-0.5">{{ choice.code }}-->
+<!--                  : {{ choice.label[language().id] }}</span>-->
+<!--              </span>-->
+<!--                } @else {-->
+<!--                  N/A-->
+<!--                }-->
+<!--              }-->
+<!--            </div>-->
+<!--          }-->
+<!--        }-->
       </div>
     }
   </div>

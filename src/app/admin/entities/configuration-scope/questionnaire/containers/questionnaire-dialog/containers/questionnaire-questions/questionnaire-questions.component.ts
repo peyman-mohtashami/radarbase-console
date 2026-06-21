@@ -2,7 +2,7 @@ import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {AppQuestion, AppQuestionChoice, AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {TranslatePipe} from '@ngx-translate/core';
-import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {QuestionComponent} from './question/question.component';
 import {QuestionButtonComponent} from './question-button/question-button.component';
 import {MatButton} from '@angular/material/button';

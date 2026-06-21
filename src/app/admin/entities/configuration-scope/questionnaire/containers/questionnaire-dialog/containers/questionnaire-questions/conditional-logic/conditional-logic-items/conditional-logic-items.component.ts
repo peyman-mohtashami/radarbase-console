@@ -5,7 +5,7 @@ import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logi
 // import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
 import {ConditionalLogicItemComponent} from '../conditional-logic-item/conditional-logic-item.component';
 import {TagComponent} from '../../../../../../../../../../shared/components/tag/tag.component';
-import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 // import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
 

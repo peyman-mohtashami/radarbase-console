@@ -2,7 +2,7 @@ import {Component, inject, input, Input, OnInit, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestionChoice} from '../../../../../models/questionnaire';
-import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {TranslatePipe} from '@ngx-translate/core';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {QuestionChoice} from '../question-choice/question-choice';
@@ -28,7 +28,7 @@ export class QuestionChoices implements OnInit {
   changeEvent = output<AppQuestionChoice[]>();
   validEvent = output<boolean>();
 
-  protected questionnaireStateService = inject(QuestionnaireStateService);
+  protected questionnaireStateService = inject(QuestionnaireDialogStateService);
   language = input.required<RadarOption>();
 
   ngOnInit() {

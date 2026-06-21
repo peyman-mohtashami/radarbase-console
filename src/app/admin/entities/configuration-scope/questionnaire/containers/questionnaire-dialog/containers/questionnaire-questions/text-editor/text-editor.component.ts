@@ -14,7 +14,7 @@ import {JsonPipe} from '@angular/common';
 // } from '../../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
 // import {DialogMode} from '../../../../../../../base-entities/enums/dialog';
 import {MatDialog} from '@angular/material/dialog';
-import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {DynamicVariableComponent} from '../dynamic-variable/dynamic-variable-dialog/dynamic-variable.component';
 import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 // import {DynamicVariableComponent} from '../../dynamic-variable/dynamic-variable-dialog/dynamic-variable.component';
@@ -61,7 +61,7 @@ type EditorNode =
 })
 export class TextEditorComponent implements AfterViewInit {
 
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
   protected dialog = inject(MatDialog);
 
   // languages = input.required<RadarOption[]>();

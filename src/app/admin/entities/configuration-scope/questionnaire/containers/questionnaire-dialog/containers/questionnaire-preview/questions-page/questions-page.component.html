@@ -8,8 +8,8 @@
     <div class='small-input text-sm flex justify-end gap-1'>
       @for (language of languages(); track language) {
         <button mat-icon-button class="tiny uppercase"
-                (click)='$event.stopPropagation(); questionnaireStateService.selectedLanguage.set(language.id.toString())'
-                [class]="questionnaireStateService.selectedLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+                (click)='$event.stopPropagation(); questionnaireStateService.defaultLanguage.set(language.id.toString())'
+                [class]="questionnaireStateService.defaultLanguage() === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
             <span class="h-full flex items-center justify-center">
               <span class="text-sm font-bold">{{ language.id }}</span>
             </span>

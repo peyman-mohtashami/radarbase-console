@@ -25,7 +25,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 import {
   DialogTitleComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {QuestionnaireStateService} from './services/questionnaire-state.service';
+// import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-state.service';
 import {
   MatTab,
   MatTabContent,
@@ -88,7 +88,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
-  protected questionnaireStateService = inject(QuestionnaireStateService);
+  // protected questionnaireStateService = inject(QuestionnaireDialogStateService);
   override configService = inject(QuestionnaireConfigService);
   override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {

@@ -1,5 +1,6 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
 
+@if (selectedLanguage) {
 <p>{{ question().section_header?.[selectedLanguage] }}</p>
 <p>{{ question().field_label?.[selectedLanguage] }}</p>
 
@@ -139,4 +140,5 @@
     </mat-radio-group>
   }
 
+}
 }

@@ -1,0 +1,37 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+@if (entity().select_choices_or_calculations; as choices) {
+  @if (choices.length) {
+    <span class="text-neutral-500">{{ `${_prefix}.questionChoicesLabel` | translate }}</span>
+    <div class="flex flex-wrap gap-x-2">
+      @for (choice of choices; track choice.code) {
+        @if (choice.code) {
+          <span class="inline-flex gap-1">
+        <mat-icon class="material-symbols-outlined text-base!">
+          @switch (entity().field_type) {
+            @case ('radio') {
+              radio_button_unchecked
+            }
+            @case ('checkbox') {
+              check_box_outline_blank
+            }
+            @case ('range') {
+              radio_button_unchecked
+            }
+            @case ('range-info') {
+              radio_button_unchecked
+            }
+            @case ('info') {
+              info
+            }
+          }
+        </mat-icon>
+        <span class="pt-0.5">{{ choice.code }}
+          : {{ choice.label[language().id] }}</span>
+      </span>
+        } @else {
+          N/A
+        }
+      }
+    </div>
+  }
+}

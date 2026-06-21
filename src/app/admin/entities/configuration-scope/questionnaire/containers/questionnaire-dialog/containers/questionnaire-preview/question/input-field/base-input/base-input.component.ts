@@ -2,7 +2,7 @@ import {Component, inject, input, OnInit, output} from '@angular/core'
 import {AnswerWithTimeLog} from '../../../models/kafka';
 import {AppQuestion} from '../../../../../../../models/questionnaire';
 import {CheckBoxItem} from '../checkbox-input/checkbox-input.component';
-import {QuestionnaireStateService} from '../../../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-base-input',
@@ -13,7 +13,7 @@ export abstract class BaseInputComponent implements OnInit {
   question = input.required<AppQuestion>();
   answer = input<AnswerWithTimeLog>();
 
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
 
   valueChange = output<string | null>();
 

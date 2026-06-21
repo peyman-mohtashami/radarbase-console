@@ -19,7 +19,7 @@ import {
 import {TranslatePipe} from '@ngx-translate/core';
 import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/unit';
 import {QuestionsService} from './services/questions.service';
-import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {AnswerWithTimeLog} from './models/kafka';
 import {NextButtonEventType} from './models/events';
 import {ToolbarAction, ToolbarComponent} from './toolbar/toolbar.component';
@@ -59,7 +59,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   entity = input<AppQuestionnaire | undefined>();
 
   private questionsService = inject(QuestionsService);
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
 
   loading = true;
 

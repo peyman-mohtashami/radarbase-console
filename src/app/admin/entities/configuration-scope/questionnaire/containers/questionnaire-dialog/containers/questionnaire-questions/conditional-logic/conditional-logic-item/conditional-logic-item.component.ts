@@ -11,7 +11,7 @@ import {QuestionViewComponent} from '../question-view/question-view.component';
 import {
   OperatorSelectorComponent
 } from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
-import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {JsonPipe} from '@angular/common';
 

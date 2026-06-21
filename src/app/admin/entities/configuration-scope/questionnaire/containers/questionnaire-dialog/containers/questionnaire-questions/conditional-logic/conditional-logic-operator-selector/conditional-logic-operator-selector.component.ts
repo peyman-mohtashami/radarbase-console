@@ -7,7 +7,7 @@ import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-conditional-logic-operator-selector',
@@ -27,7 +27,7 @@ export class OperatorSelectorComponent {
 
   selectionChange= output<string>();
 
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
 
   protected onInputChange(event: MatSelectChange<string>) {
     this.selectionChange.emit(event.value);

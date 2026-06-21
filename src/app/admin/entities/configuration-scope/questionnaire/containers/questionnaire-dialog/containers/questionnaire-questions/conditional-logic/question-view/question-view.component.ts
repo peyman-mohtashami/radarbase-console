@@ -15,7 +15,7 @@ import {
 } from '@angular/material/datepicker';
 import {ReplacePlaceholdersPipe} from '../../../questionnaire-preview/pipes/replace-placeholders.pipe';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-import {QuestionnaireStateService} from '../../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatIcon, MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import {MatNativeDateModule} from '@angular/material/core';
@@ -81,7 +81,7 @@ export class QuestionViewComponent implements OnInit {
 
   question = input.required<AppQuestion>();
   conditionalLogicItem = input<ConditionalLogicItem>();
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
   selectionChange = output<any>();
 
   textInputType: any = TEXT_INPUT_PRESENTATION_TYPE.TEXT;

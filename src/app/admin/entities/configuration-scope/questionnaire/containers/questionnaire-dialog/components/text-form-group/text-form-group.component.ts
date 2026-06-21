@@ -1,4 +1,4 @@
-import {Component, effect, inject, input} from '@angular/core';
+import {Component, effect, input} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -10,13 +10,13 @@ import {MatInput} from "@angular/material/input";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {TranslateModule} from "@ngx-translate/core";
 import {Validator as CustomValidator} from "../../../../../../../../shared/utils/validators";
-import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
+// import {QuestionnaireDialogStateService} from "../../services/questionnaire-dialog-state.service";
 import {
   BaseFormGroupComponent
 } from '../../../../../../../base-entities/containers/entity-dialog/base-form-group.component';
-import {JsonPipe, UpperCasePipe} from '@angular/common';
-import {isEmpty} from 'rxjs';
+import {
+  RadarOption
+} from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 
 @Component({
   selector: 'app-text-form-group',
@@ -28,8 +28,6 @@ import {isEmpty} from 'rxjs';
     CdkTextareaAutosize,
     MatError,
     TranslateModule,
-    UpperCasePipe,
-    JsonPipe,
   ],
   providers: [
     {

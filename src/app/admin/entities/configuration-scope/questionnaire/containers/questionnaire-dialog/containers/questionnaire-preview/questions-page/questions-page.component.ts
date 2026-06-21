@@ -42,7 +42,7 @@ import {AppQuestion} from '../../../../../models/questionnaire';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatIconButton} from '@angular/material/button';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {QuestionnaireStateService} from '../../../services/questionnaire-state.service';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 // import {AnswerWithTimeLog} from "../../../../core/data-ingestion/kafka/models/kafka";
 
 @Component({
@@ -79,7 +79,7 @@ export class QuestionsPageComponent implements OnInit {
   languages = input.required<RadarOption[]>();
 
   private questionsService = inject(QuestionsService);
-  questionnaireStateService = inject(QuestionnaireStateService);
+  questionnaireStateService = inject(QuestionnaireDialogStateService);
 
   // private usageService = inject(UsageService);
   // private platform = inject(Platform);
