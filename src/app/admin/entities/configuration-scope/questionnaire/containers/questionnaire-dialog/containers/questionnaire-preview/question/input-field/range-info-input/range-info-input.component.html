@@ -1,4 +1,5 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
+<!--selectedLanguage();-->
 
 <app-range-input [question]="question()"
                  [answer]="answer()"

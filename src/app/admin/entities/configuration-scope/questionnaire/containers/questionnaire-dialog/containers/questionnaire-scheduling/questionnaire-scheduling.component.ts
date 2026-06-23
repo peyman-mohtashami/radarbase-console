@@ -17,6 +17,7 @@ import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/u
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {LocaleService} from '../../../../../../../../core/locale/services/locale.service';
 import {Subscription} from 'rxjs';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-questionnaire-scheduling',
@@ -39,9 +40,11 @@ import {Subscription} from 'rxjs';
   ]
 })
 export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
+  protected dialogState = inject(QuestionnaireDialogStateService);
+
   protected readonly UNITS = UNITS;
 
-  entity = input<AppQuestionnaire | undefined>();
+  // entity = input<AppQuestionnaire | undefined>();
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
@@ -88,7 +91,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
   protected loading = true;
 
   ngOnInit() {
-    const entity = this.entity();
+    const entity = this.dialogState.selectedQuestionnaire();//entity();
 
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)

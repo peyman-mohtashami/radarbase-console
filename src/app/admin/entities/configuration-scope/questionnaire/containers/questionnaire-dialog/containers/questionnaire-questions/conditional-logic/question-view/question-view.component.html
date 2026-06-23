@@ -1,144 +1,147 @@
-@let selectedLanguage = questionnaireStateService.defaultLanguage();
+<!--@let selectedLanguage = 'en';-->
+<!--//{id: 'en', name: 'English'});//questionnaireStateService.defaultLanguage();-->
 
-@if (selectedLanguage) {
-<p>{{ question().section_header?.[selectedLanguage] }}</p>
-<p>{{ question().field_label?.[selectedLanguage] }}</p>
+<!--@if (selectedLanguage) {-->
+<!--<p>{{ question().section_header?.[selectedLanguage] }}</p>-->
+<!--<p>{{ question().field_label?.[selectedLanguage] }}</p>-->
 
-@switch (question().field_type) {
-  @case ('radio') {
-    <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">
-      @for (option of question().select_choices_or_calculations; track option.code) {
-        <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">
-          <span>[{{ option.code }}]</span> <span [innerHtml]="option.label[selectedLanguage]"></span>
-        </mat-radio-button>
-      }
-    </mat-radio-group>
-  }
-  @case ('range') {
-    <div class="flex flex-nowrap items-center mt-2">
-      @if (question().select_choices_or_calculations; as choices) {
-        <div class="mx-2" [innerHtml]="choices[0].label[selectedLanguage]"></div>
-        <div class="flex flex-nowrap items-center">
-          @for (option of choices; track option.code) {
-            <div
-              class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400 cursor-pointer"
-              [class]="(conditionalLogicItem()?.value === option.code ? 'bg-primary/30' : '')"
-              (click)="onInputChange(option.code)">
-              <span class="ion-text-wrap text-center" [innerHtml]="option.code"></span>
-            </div>
-          }
-        </div>
-        <div class="mx-2" [innerHtml]="choices[choices.length - 1].label[selectedLanguage]"></div>
-      } @else {
-        @for (item of rangeItems; track item) {
-          <div
-            class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400"
-            [class]="(conditionalLogicItem()?.value === item ? 'bg-primary/30' : '')"
-            (click)="onInputChange(item)">
-            <span class="ion-text-wrap text-center" [innerHtml]="item"></span>
-          </div>
-        }
-      }
-    </div>
-  }
-  @case ('range-info') {
-    <div class="flex flex-nowrap items-center mt-2">
-      @if (question().select_choices_or_calculations; as choices) {
-        <div class="mx-2" [innerHtml]="choices[0].label[selectedLanguage]"></div>
-        <div class="flex flex-nowrap items-center">
-          @for (option of choices; track option.code) {
-            <div
-              class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400 cursor-pointer"
-              [class]="(conditionalLogicItem()?.value === option.code ? 'bg-primary/30' : '')"
-              (click)="onInputChange(option.code)">
-              <span class="ion-text-wrap text-center" [innerHtml]="option.code"></span>
-            </div>
-          }
-        </div>
-        <div class="mx-2" [innerHtml]="choices[choices.length - 1].label[selectedLanguage]"></div>
-      } @else {
-        @for (item of rangeItems; track item) {
-          <div
-            class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400"
-            [class]="(conditionalLogicItem()?.value === item ? 'bg-primary/30' : '')"
-            (click)="onInputChange(item)">
-            <span class="ion-text-wrap text-center" [innerHtml]="item"></span>
-          </div>
-        }
-      }
-    </div>
-  }
-  @case ('slider') {
-    @if (question().range; as range) {
-      <mat-slider class="w-full! m-0!"
-                  [max]="range.max"
-                  [min]="range.min"
-                  [step]="range.step ?? 1"
-                  [discrete]="true"
-                  [showTickMarks]="true"
-                  color="primary">
-        <input matSliderThumb [value]="conditionalLogicItem()?.value" (valueChange)="onInputChange($event)">
-      </mat-slider>
-      <div class="flex justify-between text-sm">
-        <div class="w-1/2" [innerHtml]="range.labelLeft?.[selectedLanguage] | replacePlaceholders"></div>
-        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[selectedLanguage] | replacePlaceholders"></div>
-      </div>
-    }
-  }
-  @case ('checkbox') {
-    <section class="">
-      @for (option of question().select_choices_or_calculations; track option.code) {
-        <mat-checkbox class=""
-                      (click)="onInputChange(option.code)"
-                      [checked]="conditionalLogicItem()?.value === option.code">
-          <span [innerHtml]="option.label[selectedLanguage]"></span>
-        </mat-checkbox>
-      }
-    </section>
-  }
-  @case ('text') {
-    <mat-form-field subscriptSizing="fixed" appearance="outline">
-      <input matInput maxlength="256"
-             [value]="conditionalLogicItem()?.value"
-             (input)="onInputStringChange($event)"
-             [type]="textInputType"
-      >
-    </mat-form-field>
-  }
-  @case ('date') {
-    <mat-form-field class="example-full-width">
-      <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker" (dateInput)="onDateChange($event)"
-             (dateChange)="onDateChange($event)">
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker #picker/>
-    </mat-form-field>
-    <button matButton="elevated" (click)="picker.open()">Open</button>
-  }
-  @case ('datetime') {
-    <mat-form-field class="" appearance="outline">
-      <mat-label>Choose a date</mat-label>
-      <input matInput
-             [matDatepicker]="picker"
-             (dateInput)="onDateChange($event)"
-             (dateChange)="onDateChange($event)">
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  }
-  @case ('duration') {
+  <ng-container #questionHost></ng-container>
 
-  }
-  @case ('yesno') {
-    <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">
-      @for (option of [{code: '1', label: 'Yes'},{code: '0', label: 'No'}]; track option.code) {
-        <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">
-          <span>{{ option.code }}</span> | <span [innerHtml]="option.label"></span>
-        </mat-radio-button>
-      }
-    </mat-radio-group>
-  }
+<!--@switch (question().field_type) {-->
+<!--  @case ('radio') {-->
+<!--    <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">-->
+<!--      @for (option of question().select_choices_or_calculations; track option.code) {-->
+<!--        <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">-->
+<!--          <span>[{{ option.code }}]</span> <span [innerHtml]="option.label[selectedLanguage]"></span>-->
+<!--        </mat-radio-button>-->
+<!--      }-->
+<!--    </mat-radio-group>-->
+<!--  }-->
+<!--  @case ('range') {-->
+<!--    <div class="flex flex-nowrap items-center mt-2">-->
+<!--      @if (question().select_choices_or_calculations; as choices) {-->
+<!--        <div class="mx-2" [innerHtml]="choices[0].label[selectedLanguage]"></div>-->
+<!--        <div class="flex flex-nowrap items-center">-->
+<!--          @for (option of choices; track option.code) {-->
+<!--            <div-->
+<!--              class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400 cursor-pointer"-->
+<!--              [class]="(conditionalLogicItem()?.value === option.code ? 'bg-primary/30' : '')"-->
+<!--              (click)="onInputChange(option.code)">-->
+<!--              <span class="ion-text-wrap text-center" [innerHtml]="option.code"></span>-->
+<!--            </div>-->
+<!--          }-->
+<!--        </div>-->
+<!--        <div class="mx-2" [innerHtml]="choices[choices.length - 1].label[selectedLanguage]"></div>-->
+<!--      } @else {-->
+<!--        @for (item of rangeItems; track item) {-->
+<!--          <div-->
+<!--            class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400"-->
+<!--            [class]="(conditionalLogicItem()?.value === item ? 'bg-primary/30' : '')"-->
+<!--            (click)="onInputChange(item)">-->
+<!--            <span class="ion-text-wrap text-center" [innerHtml]="item"></span>-->
+<!--          </div>-->
+<!--        }-->
+<!--      }-->
+<!--    </div>-->
+<!--  }-->
+<!--  @case ('range-info') {-->
+<!--    <div class="flex flex-nowrap items-center mt-2">-->
+<!--      @if (question().select_choices_or_calculations; as choices) {-->
+<!--        <div class="mx-2" [innerHtml]="choices[0].label[selectedLanguage]"></div>-->
+<!--        <div class="flex flex-nowrap items-center">-->
+<!--          @for (option of choices; track option.code) {-->
+<!--            <div-->
+<!--              class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400 cursor-pointer"-->
+<!--              [class]="(conditionalLogicItem()?.value === option.code ? 'bg-primary/30' : '')"-->
+<!--              (click)="onInputChange(option.code)">-->
+<!--              <span class="ion-text-wrap text-center" [innerHtml]="option.code"></span>-->
+<!--            </div>-->
+<!--          }-->
+<!--        </div>-->
+<!--        <div class="mx-2" [innerHtml]="choices[choices.length - 1].label[selectedLanguage]"></div>-->
+<!--      } @else {-->
+<!--        @for (item of rangeItems; track item) {-->
+<!--          <div-->
+<!--            class="flex items-center justify-center py-1 px-2 border-2 border-gray-400 text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-gray-400"-->
+<!--            [class]="(conditionalLogicItem()?.value === item ? 'bg-primary/30' : '')"-->
+<!--            (click)="onInputChange(item)">-->
+<!--            <span class="ion-text-wrap text-center" [innerHtml]="item"></span>-->
+<!--          </div>-->
+<!--        }-->
+<!--      }-->
+<!--    </div>-->
+<!--  }-->
+<!--  @case ('slider') {-->
+<!--    @if (question().range; as range) {-->
+<!--      <mat-slider class="w-full! m-0!"-->
+<!--                  [max]="range.max"-->
+<!--                  [min]="range.min"-->
+<!--                  [step]="range.step ?? 1"-->
+<!--                  [discrete]="true"-->
+<!--                  [showTickMarks]="true"-->
+<!--                  color="primary">-->
+<!--        <input matSliderThumb [value]="conditionalLogicItem()?.value" (valueChange)="onInputChange($event)">-->
+<!--      </mat-slider>-->
+<!--      <div class="flex justify-between text-sm">-->
+<!--        <div class="w-1/2" [innerHtml]="range.labelLeft?.[selectedLanguage] | replacePlaceholders"></div>-->
+<!--        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[selectedLanguage] | replacePlaceholders"></div>-->
+<!--      </div>-->
+<!--    }-->
+<!--  }-->
+<!--  @case ('checkbox') {-->
+<!--    <section class="">-->
+<!--      @for (option of question().select_choices_or_calculations; track option.code) {-->
+<!--        <mat-checkbox class=""-->
+<!--                      (click)="onInputChange(option.code)"-->
+<!--                      [checked]="conditionalLogicItem()?.value === option.code">-->
+<!--          <span [innerHtml]="option.label[selectedLanguage]"></span>-->
+<!--        </mat-checkbox>-->
+<!--      }-->
+<!--    </section>-->
+<!--  }-->
+<!--  @case ('text') {-->
+<!--    <mat-form-field subscriptSizing="fixed" appearance="outline">-->
+<!--      <input matInput maxlength="256"-->
+<!--             [value]="conditionalLogicItem()?.value"-->
+<!--             (input)="onInputStringChange($event)"-->
+<!--             [type]="textInputType"-->
+<!--      >-->
+<!--    </mat-form-field>-->
+<!--  }-->
+<!--  @case ('date') {-->
+<!--    <mat-form-field class="example-full-width">-->
+<!--      <mat-label>Choose a date</mat-label>-->
+<!--      <input matInput [matDatepicker]="picker" (dateInput)="onDateChange($event)"-->
+<!--             (dateChange)="onDateChange($event)">-->
+<!--      <mat-hint>MM/DD/YYYY</mat-hint>-->
+<!--      <mat-datepicker #picker/>-->
+<!--    </mat-form-field>-->
+<!--    <button matButton="elevated" (click)="picker.open()">Open</button>-->
+<!--  }-->
+<!--  @case ('datetime') {-->
+<!--    <mat-form-field class="" appearance="outline">-->
+<!--      <mat-label>Choose a date</mat-label>-->
+<!--      <input matInput-->
+<!--             [matDatepicker]="picker"-->
+<!--             (dateInput)="onDateChange($event)"-->
+<!--             (dateChange)="onDateChange($event)">-->
+<!--      <mat-hint>MM/DD/YYYY</mat-hint>-->
+<!--      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--      <mat-datepicker #picker></mat-datepicker>-->
+<!--    </mat-form-field>-->
+<!--  }-->
+<!--  @case ('duration') {-->
 
-}
-}
+<!--  }-->
+<!--  @case ('yesno') {-->
+<!--    <mat-radio-group aria-label="Select an option" [value]="conditionalLogicItem()?.value">-->
+<!--      @for (option of [{code: '1', label: 'Yes'},{code: '0', label: 'No'}]; track option.code) {-->
+<!--        <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)">-->
+<!--          <span>{{ option.code }}</span> | <span [innerHtml]="option.label"></span>-->
+<!--        </mat-radio-button>-->
+<!--      }-->
+<!--    </mat-radio-group>-->
+<!--  }-->
+
+<!--}-->
+<!--}-->

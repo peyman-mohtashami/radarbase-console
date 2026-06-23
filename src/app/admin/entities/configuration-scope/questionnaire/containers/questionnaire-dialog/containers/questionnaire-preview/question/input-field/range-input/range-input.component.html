@@ -1,4 +1,5 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
+<!--selectedLanguage();-->
 
 <div class="flex flex-nowrap items-center">
   @for (item of items; track item) {

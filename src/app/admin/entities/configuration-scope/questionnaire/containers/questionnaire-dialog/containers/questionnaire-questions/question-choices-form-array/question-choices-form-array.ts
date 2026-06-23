@@ -59,8 +59,8 @@ export class QuestionChoicesFormArray implements OnInit {
 
   protected readonly ValidatorError = ValidatorError;
 
-  languages = input.required<RadarOption[]>();
-  language = input.required<RadarOption>();
+  // languages = input.required<RadarOption[]>();
+  // language = input.required<RadarOption>();
   index = input.required<number>();
   _choices = input<AppQuestionChoice[]>();
 

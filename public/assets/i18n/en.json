@@ -1538,6 +1538,21 @@
         "tableLabel": "Question Count",
         "label": "Question Count"
       },
+      "repeatProtocol": {
+        "tableLabel": "Schedule's Description",
+        "label": "Schedule's Description",
+        "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
+      },
+      "oneTimeProtocol": {
+        "tableLabel": "Schedule's Description",
+        "label": "Schedule's Description",
+        "tableContent": "Once at specific times"
+      },
+      "completionWindow": {
+        "tableLabel": "Completion Window",
+        "label": "Completion Window",
+        "tableContent": "Expires after {{ amount }} {{ unit }}(s)"
+      },
       "dialog": {
         "nameLabel": "Name",
         "languagesLabel": "Languages",
@@ -1601,22 +1616,7 @@
         "questionFieldAnnotationTimerEnd": "Timer End",
         "questionHasConditionalLogic": "This question has conditional logic",
         "code": "Code",
-
-        "repeatProtocol": {
-          "tableLabel": "Schedule's Description",
-          "label": "Schedule's Description",
-          "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
-        },
-        "oneTimeProtocol": {
-          "tableLabel": "Schedule's Description",
-          "label": "Schedule's Description",
-          "tableContent": "Once at specific times"
-        },
-        "completionWindow": {
-          "tableLabel": "Completion Window",
-          "label": "Completion Window",
-          "tableContent": "Expires after {{ amount }} {{ unit }}(s)"
-        }
+        "defaultLanguageLabel": "Default Language"
       },
       "filters": {
         "search": "Search"

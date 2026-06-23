@@ -67,10 +67,11 @@
   }
   @case ('form') {
     <app-question-choices-form-array [choices]="choices"
-                                     [languages]="languages"
-                                     [language]="language()"
                                      [index]="index"
                                      [_choices]="entity().select_choices_or_calculations"/>
+<!--    [languages]="languages"-->
+<!--      [language]="language()"-->
+
   }
   @case ('preview') {
 

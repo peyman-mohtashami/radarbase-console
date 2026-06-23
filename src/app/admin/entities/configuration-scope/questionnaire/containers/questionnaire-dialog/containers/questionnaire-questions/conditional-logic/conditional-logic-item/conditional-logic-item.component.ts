@@ -6,14 +6,11 @@ import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionViewComponent} from '../question-view/question-view.component';
-// import {AppQuestion} from '../../../../models/questionnaire';
-// import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
 import {
   OperatorSelectorComponent
 } from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-import {JsonPipe} from '@angular/common';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-conditional-logic-item',
@@ -26,10 +23,11 @@ import {JsonPipe} from '@angular/common';
     MatSelect,
     QuestionViewComponent,
     OperatorSelectorComponent,
-    JsonPipe,
   ],
 })
 export class ConditionalLogicItemComponent implements OnInit {
+  protected dialogState = inject(QuestionnaireDialogStateService);
+
   questions = input.required<AppQuestion[]>();
   index = input.required<number>();
   conditionalLogicItem = input.required<ConditionalLogicItem>();
@@ -37,8 +35,6 @@ export class ConditionalLogicItemComponent implements OnInit {
 
   removeEvent = output<number>();
   itemEvent = output<ConditionalLogicItem>();
-
-  // protected questionnaireStateService = inject(QuestionnaireStateService);
 
   selectedQuestion?: AppQuestion;
 

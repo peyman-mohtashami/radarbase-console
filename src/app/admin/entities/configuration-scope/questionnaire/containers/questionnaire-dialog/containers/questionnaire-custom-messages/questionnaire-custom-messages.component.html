@@ -35,21 +35,17 @@
 
   @if (form.controls.showIntroduction.value !== 'no') {
     <app-text-form-group class="mb-4"
-                         formControlName="startText"
-                         [languages]="entity()!.languages"
-                         [language]="entity()!.defaultLanguage"
                          [label]="`${_prefix}.startTextLabel` | translate"
                          [textarea]="true"
-                         [textareaAutosize]="true"/>
+                         [textareaAutosize]="true"
+                         [textGroup]="form.controls.startText"/>
   }
 
   <div class="mb-4">
-    <app-text-form-group formControlName="endText"
-                         [languages]="entity()!.languages"
-                         [language]="entity()!.defaultLanguage"
-                         [label]="`${_prefix}.endTextLabel` | translate"
+    <app-text-form-group [label]="`${_prefix}.endTextLabel` | translate"
                          [textarea]="true"
-                         [textareaAutosize]="true"/>
+                         [textareaAutosize]="true"
+                         [textGroup]="form.controls.endText"/>
   </div>
 
   <mat-slide-toggle formControlName='warningEnabled' class="my-4" color="primary">
@@ -58,10 +54,8 @@
 
   @if (form.controls.warningEnabled.value) {
     <div class="mb-4">
-      <app-text-form-group formControlName="warn"
-                           [languages]="entity()!.languages"
-                           [language]="entity()!.defaultLanguage"
-                           [label]="`${_prefix}.warningTextLabel` | translate"/>
+      <app-text-form-group [label]="`${_prefix}.warningTextLabel` | translate"
+                           [textGroup]="form.controls.warn"/>
     </div>
   }
 </form>

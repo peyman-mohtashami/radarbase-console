@@ -1,14 +1,14 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 <div class="flex gap-2 items-center">
   <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center"
-       [class]="selected() ? 'bg-secondary': ''">
+       [class]="entity().field_name === dialogState.selectedQuestion()?.field_name ? 'bg-secondary': ''">
     <span>{{ index() + 1 }}</span>
   </div>
   <div class="w-full border border-primary hover:border-secondary/50 rounded px-4 py-1 mt-2 text-sm!"
        role="button"
        tabindex="0"
        (click)='selectQuestion()'
-       [class]="selected() ? 'border-2 border-secondary!': ''">
+       [class]="entity().field_name === dialogState.selectedQuestion()?.field_name ? 'border-2 border-secondary!': ''">
     <div class="flex items-center gap-2 w-full justify-between mb-2">
       <div class="flex gap-2 items-center grow">
         <app-tag class="bg-secondary/20 text-primary cursor-pointer" [class]="!entity().field_name ? 'bg-red-500/20! text-red-500' : ''">
@@ -42,15 +42,15 @@
       </div>
     </div>
 
-    @if (selected() || true) {
+    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {
       <div class="text-black">
         <div class="flex gap-2">
-        @let field_label = entity().field_label?.[language().id];
+        @let field_label = entity().field_label?.[dialogState.selectedQuestionnaire()!.defaultLanguage!.id];
         <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>
         <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
       </div>
       <div class="flex gap-2">
-        @let section_header = entity().section_header?.[language().id];
+        @let section_header = entity().section_header?.[dialogState.selectedQuestionnaire()!.defaultLanguage!.id];
         <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
         <span>{{ section_header || 'N/A' }}</span>
       </div>

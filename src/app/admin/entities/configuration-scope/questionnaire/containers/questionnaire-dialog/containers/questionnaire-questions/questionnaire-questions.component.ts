@@ -8,6 +8,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {QuestionDialogComponent} from './question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../../base-entities/enums/dialog';
 import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 
 type AppUiQuestion = AppQuestion & {
   _dragId: string;
@@ -52,20 +53,23 @@ type AppUiQuestion = AppQuestion & {
 })
 export class QuestionnaireQuestionsComponent implements OnInit {
   protected dialog = inject(MatDialog);
+  protected dialogState = inject(QuestionnaireDialogStateService);
 
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
 
-  entity = input.required<AppQuestionnaire>();
+
+  // entity = input.required<AppQuestionnaire>();
+  // selectedQuestionnaire = this.dialogState.selectedQuestionnaire;
 
   changeEvent = output<Partial<AppQuestionnaire>>();
   validEvent = output<boolean>();
 
   questions: AppUiQuestion[] = [];
-  selectedQuestionIndex = signal<number|undefined>(undefined);
+  // selectedQuestionIndex = signal<number|undefined>(undefined);
 
   ngOnInit() {
     // this.questions = this.entity()?.questions?.map(q => ({...q, id: q.field_name, valid: true}))?? [];
-    this.questions = this.entity()?.questions?.map(q => ({
+    this.questions = this.dialogState.selectedQuestionnaire()?.questions?.map(q => ({
       ...q,
       _dragId: crypto.randomUUID(),
       valid: true,
@@ -112,9 +116,10 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   openQuestionDialog(index: number, question: AppQuestion) {
     const dialogRef = this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      data: {id: 'question-dialog', entity: question, questions: this.questions, language: this.entity().defaultLanguage, languages: this.entity().languages, index: index, mode: DialogMode.EDIT},
+      // data: {id: 'question-dialog', entity: question, questions: this.questions, language: this.entity().defaultLanguage, languages: this.entity().languages, index: index, mode: DialogMode.EDIT},
+      data: {id: 'question-dialog', entity: question, questions: this.questions, index: index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
-      width: '50%',
+      width: '70%',
       height: '100vh',
       position: {top: '0', right: '0'},
       hasBackdrop: true,

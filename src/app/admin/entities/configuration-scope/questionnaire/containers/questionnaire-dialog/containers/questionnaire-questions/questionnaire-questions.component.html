@@ -26,10 +26,9 @@
           <app-question-button [entity]="question"
                                [index]="$index"
                                (removeEvent)="removeQuestion(index)"
-                               (selectEvent)="onSelectQuestion(index, question)"
-                               [language]="entity().defaultLanguage"
-                               [selected]="index === selectedQuestionIndex()"
-                               />
+                               (selectEvent)="onSelectQuestion(index, question)"/>
+<!--                               [language]="entity().defaultLanguage"-->
+<!--                               [selected]="index === selectedQuestionIndex()"-->
           </div>
 
         }

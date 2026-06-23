@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output} from '@angular/core'
+import {Component, effect, inject, input, OnInit, output, signal, viewChild, ViewContainerRef} from '@angular/core'
 // import {AppQuestion} from '../../../../models/questionnaire';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 // import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
@@ -21,6 +21,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import {MatNativeDateModule} from '@angular/material/core';
 import {distinctUntilChanged, Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import {QUESTION_COMPONENTS} from '../../../../components/question-type/question-type.registry';
 // import {ReplacePlaceholdersPipe} from '../../questionnaire-preview/pipes/replace-placeholders.pipe';
 
 enum TEXT_INPUT_PRESENTATION_TYPE {
@@ -80,6 +81,7 @@ const TEXT_INPUT_TYPES: Record<string, any> = {
 export class QuestionViewComponent implements OnInit {
 
   question = input.required<AppQuestion>();
+  operator = input.required<string>();
   conditionalLogicItem = input<ConditionalLogicItem>();
   questionnaireStateService = inject(QuestionnaireDialogStateService);
   selectionChange = output<any>();
@@ -88,6 +90,35 @@ export class QuestionViewComponent implements OnInit {
   rangeItems: string[] = [];
 
   private inputChanges$ = new Subject<string>();
+
+  host = viewChild('questionHost', { read: ViewContainerRef });
+
+  constructor() {
+    effect(() => this.loadQuestionEditor());
+  }
+
+  private loadQuestionEditor(): void {
+    const host = this.host();
+    if (!host) return;
+    host.clear();
+    // console.log('***Class: QuestionViewComponent, Function: loadQuestionEditor, Line 103 this.question()' , this.question());
+    const componentType = QUESTION_COMPONENTS[this.question().field_type];
+    const componentRef = host.createComponent(componentType);
+    componentRef.instance.type = 'cl-view';
+    // componentRef.instance.language = signal();//this.language;
+    componentRef.instance.entity = this.question;
+    componentRef.instance.value = this.conditionalLogicItem()?.value;
+    componentRef.instance.operator = this.operator();
+
+    componentRef.instance.valueChange.subscribe((value: any) => {
+      console.log('Child emitted value:', value);
+
+      // handle it here
+      // this.handleChildValueChange(value);
+      this.selectionChange.emit(value);
+    });
+
+  }
 
   ngOnInit() {
     const { text_validation_type_or_show_slider_number: type } =

@@ -62,23 +62,25 @@
     <div class="mb-4">
       <!--        <app-text-editor />-->
       <app-text-form-group [textGroup]="form.controls.field_label"
-                           [languages]="dialogData.languages"
-                           [language]="dialogData.language"
                            label="Field Label"
                            [required]="true"
                            [textarea]="true"
                            [textareaAutosize]="true"
                            [value]="dialogData.entity.field_label"/>
+<!--      [languages]="dialogData.languages"-->
+<!--      [language]="dialogData.language"-->
+
     </div>
 
     <div class="mb-4">
       <app-text-form-group [textGroup]="form.controls.section_header"
-                           [languages]="dialogData.languages"
-                           [language]="dialogData.language"
                            label="Section Header"
                            [textarea]="true"
                            [textareaAutosize]="true"
                            [value]="dialogData.entity.section_header"/>
+<!--      [languages]="dialogData.languages"-->
+<!--      [language]="dialogData.language"-->
+
     </div>
 
 <!--    <input formControlName="id" placeholder="Id">-->
@@ -88,23 +90,22 @@
     <ng-container #questionHost></ng-container>
 
       @if ((dialogData.index ?? 0) > 0) {
-        <div class="flex">
+        <div class="flex items-center justify-between">
           <label for="field_name" class="text-sm">{{ `${_prefix}.questionConditionalLogic` | translate }}</label>
-          <mat-form-field class='small-input w-1/2' appearance="outline">
-            <textarea matInput formControlName='branching_logic' rows="2"></textarea>
-            <mat-error>
-              @if (form.controls.branching_logic?.errors; as errors) {
-                @if (errors?.['required']) {
-                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}
-                }
-              }
-            </mat-error>
-          </mat-form-field>
-          <button mat-icon-button color="primary" (click)="editConditionalLogic()">
-            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()">
+            <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
           </button>
-    <!---->
         </div>
+        <mat-form-field class='small-input w-1/2' appearance="outline">
+          <input matInput formControlName='branching_logic'/>
+          <mat-error>
+            @if (form.controls.branching_logic?.errors; as errors) {
+              @if (errors?.['required']) {
+                {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
       }
 
   </form>

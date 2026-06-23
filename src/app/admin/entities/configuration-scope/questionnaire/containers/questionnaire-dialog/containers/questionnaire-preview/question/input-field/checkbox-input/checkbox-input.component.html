@@ -1,4 +1,5 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
+<!--selectedLanguage();-->
 
 <section class="example-section">
   @for (item of items; track item.code) {

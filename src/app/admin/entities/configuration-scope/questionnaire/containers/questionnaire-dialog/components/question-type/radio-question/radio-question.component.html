@@ -32,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language()!.id] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -67,14 +67,45 @@
   }
   @case ('form') {
     <app-question-choices-form-array [choices]="choices"
-                                     [languages]="languages"
-                                     [language]="language()"
                                      [index]="index"
                                      [_choices]="entity().select_choices_or_calculations" />
+<!--    [languages]="languages"-->
+<!--      [language]="language()"-->
 
   }
   @case ('preview') {
 
+  }
+  @case ('cl-view') {
+    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+      <mat-select (selectionChange)="onInputChange($event)" [value]="value">
+        @for (option of entity().select_choices_or_calculations; track option.code) {
+<!--          @if (ind < selectedIndex()) {-->
+            <mat-option [value]="option.code">
+<!--                        [disabled]="question.field_type === 'descriptive' || question.field_type === 'audion' || question.field_type === 'info'">-->
+              <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+<!--              <p>{{question.section_header?.['en']}}</p>-->
+<!--              <p>{{question.field_label?.['en']}}</p>-->
+            </mat-option>
+<!--          }-->
+        }
+      </mat-select>
+    </mat-form-field>
+
+<!--    @if (operator === '=' || operator === '!=') {-->
+<!--      <mat-radio-group aria-label="Select an option" [value]="value">-->
+<!--        @for (option of entity().select_choices_or_calculations; track option.code) {-->
+<!--          <mat-radio-button class="block" [value]="option.code" (click)="onInputChange(option.code)">-->
+<!--            <span>[{{ option.code }}]</span> <span [innerHtml]="option.label[language().id]"></span>-->
+<!--          </mat-radio-button>-->
+<!--        }-->
+<!--      </mat-radio-group>-->
+<!--    } @else {-->
+<!--     <mat-form-field appearance="outline">-->
+<!--&lt;!&ndash;      <mat-label>Value</mat-label>&ndash;&gt;-->
+<!--      <input matInput [value]="value" (input)="onValueChange($event)" />-->
+<!--    </mat-form-field>-->
+<!--    }-->
   }
 }
 

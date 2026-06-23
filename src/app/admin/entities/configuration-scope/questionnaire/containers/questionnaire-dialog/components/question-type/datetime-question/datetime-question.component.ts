@@ -1,5 +1,5 @@
 import {Component, inject, Input, InputSignal, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 import {
@@ -15,10 +15,6 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
   selector: 'app-datetime-question',
   imports: [
     ReactiveFormsModule,
-    TranslatePipe,
-    MatIcon,
-    QuestionChoicesFormArray,
-    MatSlideToggle,
   ],
   templateUrl: './datetime-question.component.html'
 })

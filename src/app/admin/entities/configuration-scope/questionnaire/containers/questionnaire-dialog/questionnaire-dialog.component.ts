@@ -57,6 +57,7 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-questionnaire-dialog',
@@ -88,6 +89,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
+  protected dialogState = inject(QuestionnaireDialogStateService);
   // protected questionnaireStateService = inject(QuestionnaireDialogStateService);
   override configService = inject(QuestionnaireConfigService);
   override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
@@ -98,13 +100,20 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
     questionnaireFullList: Observable<AppQuestionnaire[]>;
   };
 
-  entity = signal(this.dialogData.entity);
+  // entity = signal(this.dialogData.entity);
+
+  override ngOnInit() {
+    super.ngOnInit();
+    this.dialogState.selectedQuestionnaire.set(this.dialogData.entity);
+  }
 
   protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
     const defined = Object.fromEntries(
       Object.entries(event).filter(([, v]) => v !== undefined)
     ) as Partial<AppQuestionnaire>;
-    this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
+    const selectedQuestionnaire = this.dialogState.selectedQuestionnaire();
+    this.dialogState.selectedQuestionnaire.set({...selectedQuestionnaire, ...defined} as AppQuestionnaire);
+    // this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
   }
 
   sectionsValidity: any = {
@@ -126,12 +135,12 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected readonly DialogAction = DialogAction;
 
   protected override handleSaveAction(): void {
-    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 129 this.entity()' , this.entity());
+    // console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 129 this.entity()' , this.entity());
     // toValidAppQuestionnaire
 
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: this.entity(),
+      entity: this.dialogState.selectedQuestionnaire(),//this.entity(),
     });
     // this.dialogActionEvent.emit({
     //   action: this.dialogData.mode,

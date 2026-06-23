@@ -1,4 +1,5 @@
-@let selectedLanguage = questionnaireStateService.selectedLanguage();
+@let selectedLanguage = questionnaireStateService.defaultLanguage();
+<!--selectedLanguage();-->
 
 <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
   @for (option of question().select_choices_or_calculations; track option.code) {

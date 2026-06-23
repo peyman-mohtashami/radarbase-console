@@ -1,4 +1,4 @@
-import {Component, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
@@ -8,7 +8,9 @@ import {Subscription} from 'rxjs';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
+import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+// import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-questionnaire-custom-messages',
@@ -22,22 +24,28 @@ import {TextFormGroupComponent} from '../../components/text-form-group/text-form
     MatSelect,
     MatOption,
     TextFormGroupComponent,
+    // TextFormGroupComponent,
   ]
 })
 export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
+  protected dialogState = inject(QuestionnaireDialogStateService);
+
   protected readonly ValidatorError = ValidatorError;
 
-  entity = input<AppQuestionnaire | undefined>();
+  // entity = input<AppQuestionnaire | undefined>();
 
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   form = new FormGroup({
     showIntroduction: new FormControl<string>('no', {nonNullable: true}),
-    startText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    endText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    startText: new FormGroup({}),
+    // startText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    // endText: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    endText: new FormGroup({}),
     warningEnabled: new FormControl<boolean>(false, {nonNullable: true}),
-    warn: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    // warn: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    warn: new FormGroup({}),
     estimatedCompletionTime: new FormControl<string>('', {nonNullable: true}),
   });
 
@@ -51,7 +59,7 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.entity();
+    const entity = this.dialogState.selectedQuestionnaire();//entity();
     if (entity) {
       this.form.patchValue(entity);
       this.valid.emit(this.form.valid);

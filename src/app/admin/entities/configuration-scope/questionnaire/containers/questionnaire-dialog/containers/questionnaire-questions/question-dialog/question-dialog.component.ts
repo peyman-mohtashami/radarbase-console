@@ -34,6 +34,10 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {QUESTION_TYPES} from '../models/question-types';
 import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
 import {TextFormGroupComponent} from '../text-form-group/text-form-group.component';
+import {
+  ConditionalLogicDialogComponent
+} from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-question-dialog',
@@ -57,6 +61,8 @@ import {TextFormGroupComponent} from '../text-form-group/text-form-group.compone
   templateUrl: './question-dialog.component.html'
 })
 export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy {
+  protected dialogState = inject(QuestionnaireDialogStateService);
+
   protected dialog = inject(MatDialog);
 
   protected readonly DialogMode = DialogMode;
@@ -74,8 +80,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     entity: AppQuestion;
     questions: AppQuestion[];
     index: number;
-    languages: RadarOption[],
-    language: RadarOption,
+    // languages: RadarOption[],
+    // language: RadarOption,
   };
 
   changeEvent = output<Partial<AppQuestion>>();
@@ -124,8 +130,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     const componentRef = this.host.createComponent(componentType);
     componentRef.instance.type = 'form';
     componentRef.instance.form = this.form;
-    componentRef.instance.language = signal(this.dialogData.language);
-    componentRef.instance.languages = this.dialogData.languages;
+    // componentRef.instance.language = signal(this.dialogData.language);
+    // componentRef.instance.languages = this.dialogData.languages;
     componentRef.instance.index = this.dialogData.index;
     componentRef.instance.entity = signal(this.dialogData.entity);
   }
@@ -135,6 +141,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
   // }
 
   ngOnInit() {
+    this.dialogState.selectedQuestion.set(this.dialogData.entity);
+    this.dialogState.selectedQuestionIndex.set(this.dialogData.index);
     this.question = this.dialogData.entity;
 
     this.form.controls.field_name.addValidators(this.duplicateValidator);
@@ -143,12 +151,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      console.log('Class: QuestionDialogComponent, Function: , Line 140 change' , change);
+      // console.log('Class: QuestionDialogComponent, Function: , Line 140 change' , change);
       // const updated = {...change, range: change.range ?? undefined, valid: this.form.valid && this.checkChoicesValidity(this.entity().select_choices_or_calculations ?? [])};
       // this.dialogActionEvent.emit({action: this.dialogData.mode, entity: updated});
-      console.log('^^^Class: QuestionDialogComponent, Function: , Line 138 this.form.valid' , this.form.valid);
-      console.log('^^^Class: QuestionDialogComponent, Function: , Line 139 this.form.errors' , this.form.errors);
-      console.log('^^^Class: QuestionDialogComponent, Function: , Line 140 this.form.status' , this.form.status);
+      // console.log('^^^Class: QuestionDialogComponent, Function: , Line 138 this.form.valid' , this.form.valid);
+      // console.log('^^^Class: QuestionDialogComponent, Function: , Line 139 this.form.errors' , this.form.errors);
+      // console.log('^^^Class: QuestionDialogComponent, Function: , Line 140 this.form.status' , this.form.status);
       logErrors(this.form);
       // this.question = {...this.question, ...change, range: change.range ?? undefined, valid: this.form.valid && this.checkChoicesValidity(this.question?.select_choices_or_calculations ?? [])}
       // this.question = {...this.question, ...change, valid: this.form.valid && this.checkChoicesValidity(this.question?.select_choices_or_calculations ?? [])}
@@ -158,7 +166,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     });
 
     if (this.dialogData.entity) {
-      console.log('Class: QuestionDialogComponent, Function: ngOnInit, Line 155 this.dialogData.entity' , this.dialogData.entity);
+      // console.log('Class: QuestionDialogComponent, Function: ngOnInit, Line 155 this.dialogData.entity' , this.dialogData.entity);
       this.form.patchValue(this.dialogData.entity)
     }
   }
@@ -219,31 +227,31 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   openConditionalLogicDialog() {
-    // const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
-    //   id: 'conditional-logic-dialog',
-    //   data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.questions(), selectedIndex: this.index(), mode: DialogMode.EDIT},
-    //   panelClass: 'tailwind-slide-panel',
-    //   width: '70%',
-    //   height: '100vh',
-    //   position: {top: '0', right: '0'},
-    //   hasBackdrop: true,
-    //   disableClose: true,
-    //   autoFocus: false,
-    //   restoreFocus: false
-    // });
-    //
-    // const dialogActionSubscription =
-    //   dialogRef.componentInstance.dialogActionEvent.subscribe(
-    //     (value) => {
-    //       console.log('Class: QuestionFormGroupComponent, Function: , Line 190 value' , value);
-    //       this.form.patchValue({branching_logic: value.entity?.value});
-    //       dialogRef.close();
-    //     }
-    //   );
-    //
-    // dialogRef.afterClosed().subscribe(() => {
-    //   dialogActionSubscription.unsubscribe();
-    // });
+    const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
+      id: 'conditional-logic-dialog',
+      data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
+      panelClass: 'tailwind-slide-panel',
+      width: '60%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    const dialogActionSubscription =
+      dialogRef.componentInstance.dialogActionEvent.subscribe(
+        (value) => {
+          // console.log('Class: QuestionFormGroupComponent, Function: , Line 190 value' , value);
+          this.form.patchValue({branching_logic: value.entity?.value});
+          dialogRef.close();
+        }
+      );
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
   }
 
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
@@ -251,13 +259,13 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
 
 function logErrors(form: FormGroup) {
   Object.keys(form.controls).forEach(key => {
-    console.log('^^^Class: logErrors, Function: , Line 305 key' , key);
+    // console.log('^^^Class: logErrors, Function: , Line 305 key' , key);
     const control = form.get(key);
 
     if (control instanceof FormGroup) {
       logErrors(control);
     } else if (control?.invalid) {
-      console.log('^^^Class: logErrors, Function: , Line 310 key, control.errors' , key, control.errors);
+      // console.log('^^^Class: logErrors, Function: , Line 310 key, control.errors' , key, control.errors);
       console.log(key, control.errors);
     }
   });

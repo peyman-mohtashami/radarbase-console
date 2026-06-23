@@ -8,17 +8,6 @@ import {
 } from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-// import {
-//   DialogTitleComponent
-// } from '../../../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-// import {
-//   ErrorMessageBoxComponent
-// } from '../../../../../../../../shared/components/message-box/error-message-box.component';
-// import {DialogMode} from '../../../../../../../base-entities/enums/dialog';
-// import {
-//   DialogBodyDescriptionComponent
-// } from '../../../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
-// import {BaseConfigService} from '../../../../../../../base-entities/services/base-config.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ConditionalLogicItemsComponent} from '../conditional-logic-items/conditional-logic-items.component';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -36,7 +25,6 @@ import {TagComponent} from '../../../../../../../../../../shared/components/tag/
 import {BaseConfigService} from '../../../../../../../../../base-entities/services/base-config.service';
 import {DialogMode} from '../../../../../../../../../base-entities/enums/dialog';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-// import {TagComponent} from '../../../../../../../../shared/components/tag/tag.component';
 
 export interface ConditionalLogicItem {
   operand: string;

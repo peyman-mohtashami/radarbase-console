@@ -1,6 +1,4 @@
 import {Component, inject, input, output} from '@angular/core'
-// import {AppQuestion} from '../../../../models/questionnaire';
-// import {QuestionnaireStateService} from '../../services/questionnaire-state.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';

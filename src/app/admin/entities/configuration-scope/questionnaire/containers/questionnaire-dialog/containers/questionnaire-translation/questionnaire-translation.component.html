@@ -219,7 +219,7 @@
 
 
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let defaultLanguage = entity()?.defaultLanguage;
+@let defaultLanguage = dialogState.selectedQuestionnaire()?.defaultLanguage;
 
 @if (defaultLanguage) {
   <form [formGroup]='form' novalidate>
@@ -241,12 +241,12 @@
         <div class="">Title</div>
         <div class="">Description</div>
         <div class="">End Text</div>
-        @if (entity()?.warningEnabled) {
+        @if (dialogState.selectedQuestionnaire()?.warningEnabled) {
           <div class="">Warn</div>
         }
         <div class="">Notification Title</div>
         <div class="">Notification Text</div>
-        @for (question of entity()?.questions; track question.field_name) {
+        @for (question of dialogState.selectedQuestionnaire()?.questions; track question.field_name) {
           <div class="border-y">Question {{ question.field_name }}</div>
           <div>Field Label</div>
           @if (question.section_header?.[defaultLanguage.id]) {
@@ -262,54 +262,48 @@
 
 <!--        &#45;&#45;&#45;&#45;-->
 
-        @let language = entity()?.defaultLanguage;
+        @let language = dialogState.selectedQuestionnaire()?.defaultLanguage;
         @if (language) {
           <div>{{ language._name }}</div>
           <div>
-            <app-text-form-group formControlName="title"
-                                 [languages]="form.controls.languages.value"
-                                 [language]="language"
+            <app-text-form-group [language]="language"
                                  [textarea]="false"
-                                 [textareaAutosize]="false"/>
+                                 [textareaAutosize]="false"
+                                 [textGroup]="form.controls.title"/>
           </div>
           <div>
-            <app-text-form-group formControlName="description"
-                                 [languages]="form.controls.languages.value"
-                                 [language]="language"
+            <app-text-form-group [language]="language"
                                  [textarea]="true"
-                                 [textareaAutosize]="true"/>
+                                 [textareaAutosize]="true"
+                                 [textGroup]="form.controls.description"/>
           </div>
           <div>
-            <app-text-form-group formControlName="endText"
-                                 [languages]="form.controls.languages.value"
-                                 [language]="language"
+            <app-text-form-group [language]="language"
                                  [textarea]="true"
-                                 [textareaAutosize]="true"/>
+                                 [textareaAutosize]="true"
+                                 [textGroup]="form.controls.endText"/>
           </div>
-          @if (entity()?.warningEnabled) {
+          @if (dialogState.selectedQuestionnaire()?.warningEnabled) {
             <div>
-              <app-text-form-group formControlName="warn"
-                                   [languages]="form.controls.languages.value"
-                                   [language]="language"
+              <app-text-form-group [language]="language"
                                    [textarea]="true"
-                                   [textareaAutosize]="true"/>
+                                   [textareaAutosize]="true"
+                                   [textGroup]="form.controls.warn"/>
             </div>
           }
           <ng-container formGroupName="schedule">
             <ng-container formGroupName="notification">
               <div>
-                <app-text-form-group formControlName="title"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="form.controls.schedule.controls.notification.controls.title"/>
               </div>
               <div>
-                <app-text-form-group formControlName="text"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="form.controls.schedule.controls.notification.controls.text"/>
               </div>
             </ng-container>
           </ng-container>
@@ -327,90 +321,80 @@
           @for (question of form.controls.questions.controls; track $index) {
             <div class="border-y"></div>
             <div>
-              <app-text-form-group [formControl]="$any(question.controls['field_label'])"
-                                   [languages]="form.controls.languages.value"
-                                   [language]="language"
+              <app-text-form-group [language]="language"
                                    [textarea]="true"
-                                   [textareaAutosize]="true"/>
+                                   [textareaAutosize]="true"
+                                   [textGroup]="asFormGroup(question.controls['field_label'])"/>
             </div>
             @if (question.controls['section_header']) {
               <div>
-                <app-text-form-group [formControl]="$any(question.controls['section_header'])"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="asFormGroup(question.controls['section_header'])"/>
               </div>
             }
             @if (question.controls['field_note']) {
               <div>
-                <app-text-form-group [formControl]="$any(question.controls['field_note'])"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="asFormGroup(question.controls['field_note'])"/>
               </div>
             }
             @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track choice.code) {
               <div>
-                <app-text-form-group [formControl]="$any(choice.controls['label'])"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="false"
-                                     [textareaAutosize]="false"/>
+                                     [textareaAutosize]="false"
+                                     [textGroup]="asFormGroup(choice.controls['label'])"/>
               </div>
             }
           }
         }
 
         @for (language of languages; track language.id) {
-          @if(language.id !== entity()?.defaultLanguage?.id) {
+          @if(language.id !== dialogState.selectedQuestionnaire()?.defaultLanguage?.id) {
             <div>{{ language._name }}</div>
             <div>
-              <app-text-form-group formControlName="title"
-                                   [languages]="form.controls.languages.value"
-                                   [language]="language"
+              <app-text-form-group [language]="language"
                                    [textarea]="false"
-                                   [textareaAutosize]="false"/>
+                                   [textareaAutosize]="false"
+                                   [textGroup]="form.controls.title"/>
             </div>
             <div>
-              <app-text-form-group formControlName="description"
-                                   [languages]="form.controls.languages.value"
-                                   [language]="language"
+              <app-text-form-group [language]="language"
                                    [textarea]="true"
-                                   [textareaAutosize]="true"/>
+                                   [textareaAutosize]="true"
+                                   [textGroup]="form.controls.description"/>
             </div>
             <div>
-              <app-text-form-group formControlName="endText"
-                                   [languages]="form.controls.languages.value"
-                                   [language]="language"
+              <app-text-form-group [language]="language"
                                    [textarea]="true"
-                                   [textareaAutosize]="true"/>
+                                   [textareaAutosize]="true"
+                                   [textGroup]="form.controls.endText"/>
             </div>
-            @if (entity()?.warningEnabled) {
+            @if (dialogState.selectedQuestionnaire()?.warningEnabled) {
               <div>
-                <app-text-form-group formControlName="warn"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="form.controls.warn"/>
               </div>
             }
             <ng-container formGroupName="schedule">
               <ng-container formGroupName="notification">
                 <div>
-                  <app-text-form-group formControlName="title"
-                                       [languages]="form.controls.languages.value"
-                                       [language]="language"
+                  <app-text-form-group [language]="language"
                                        [textarea]="true"
-                                       [textareaAutosize]="true"/>
+                                       [textareaAutosize]="true"
+                                       [textGroup]="form.controls.schedule.controls.notification.controls.title"/>
                 </div>
                 <div>
-                  <app-text-form-group formControlName="text"
-                                       [languages]="form.controls.languages.value"
-                                       [language]="language"
+                  <app-text-form-group [language]="language"
                                        [textarea]="true"
-                                       [textareaAutosize]="true"/>
+                                       [textareaAutosize]="true"
+                                       [textGroup]="form.controls.schedule.controls.notification.controls.text"/>
                 </div>
               </ng-container>
             </ng-container>
@@ -428,37 +412,34 @@
             @for (question of form.controls.questions.controls; track $index) {
               <div class="border-y"></div>
               <div>
-                <app-text-form-group [formControl]="$any(question.controls['field_label'])"
-                                     [languages]="form.controls.languages.value"
-                                     [language]="language"
+                <app-text-form-group [language]="language"
                                      [textarea]="true"
-                                     [textareaAutosize]="true"/>
+                                     [textareaAutosize]="true"
+                                     [textGroup]="asFormGroup(question.controls['field_label'])"/>
               </div>
               @if (question.controls['section_header']) {
                 <div>
-                  <app-text-form-group [formControl]="$any(question.controls['section_header'])"
-                                       [languages]="form.controls.languages.value"
-                                       [language]="language"
+                  <app-text-form-group [language]="language"
                                        [textarea]="true"
-                                       [textareaAutosize]="true"/>
+                                       [textareaAutosize]="true"
+                                       [textGroup]="asFormGroup(question.controls['section_header'])"/>
                 </div>
               }
               @if (question.controls['field_note']) {
                 <div>
-                  <app-text-form-group [formControl]="$any(question.controls['field_note'])"
-                                       [languages]="form.controls.languages.value"
-                                       [language]="language"
+                  <app-text-form-group [language]="language"
                                        [textarea]="true"
-                                       [textareaAutosize]="true"/>
+                                       [textareaAutosize]="true"
+                                       [textGroup]="asFormGroup(question.controls['field_note'])"/>
                 </div>
               }
               @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track choice.code) {
                 <div>
                   <app-text-form-group [formControl]="$any(choice.controls['label'])"
-                                       [languages]="form.controls.languages.value"
                                        [language]="language"
                                        [textarea]="false"
-                                       [textareaAutosize]="false"/>
+                                       [textareaAutosize]="false"
+                                       [textGroup]="asFormGroup(choice.controls['label'])"/>
                 </div>
               }
             }

@@ -89,6 +89,11 @@ export const QUESTION_TYPES = [
       {type: 'timed', icon: '', label: 'Timed', disabled: false},
     ]
   },
+  {
+    types: [
+      {type: 'calc', icon: '', label: 'Calculation', disabled: false},
+    ]
+  }
 ]
 //   {type: 'descriptive', icon: '', label: 'Descriptive', disabled: false},
 //   {type: 'info', icon: '', label: 'Info', disabled: false},

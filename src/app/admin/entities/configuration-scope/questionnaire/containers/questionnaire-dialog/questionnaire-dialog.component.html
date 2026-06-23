@@ -25,10 +25,11 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-general [entity]="entity()"
-                                     [questionnaires]="dialogData.questionnaireFullList | async"
+          <app-questionnaire-general [questionnaires]="dialogData.questionnaireFullList | async"
                                      (changeEvent)="onEntityUpdate($event)"
                                      (valid)="onSectionValidEvent('general', $event)" />
+<!--          [entity]="entity()"-->
+
         </ng-template>
       </mat-tab>
 
@@ -40,9 +41,10 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-questions [entity]="entity()!"
-                                       (changeEvent)="onEntityUpdate($event)"
+          <app-questionnaire-questions (changeEvent)="onEntityUpdate($event)"
                                        (validEvent)="onSectionValidEvent('questions', $event)" />
+<!--          [entity]="entity()!"-->
+
         </ng-template>
       </mat-tab>
 
@@ -56,9 +58,10 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-scheduling [entity]="entity()"
-                                        (changeEvent)="onEntityUpdate($event)"
+          <app-questionnaire-scheduling (changeEvent)="onEntityUpdate($event)"
                                         (valid)="onSectionValidEvent('scheduling', $event)" />
+<!--          [entity]="entity()"-->
+
         </ng-template>
       </mat-tab>
 
@@ -72,14 +75,15 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-custom-messages [entity]="entity()"
-                                             (changeEvent)="onEntityUpdate($event)"
+          <app-questionnaire-custom-messages (changeEvent)="onEntityUpdate($event)"
                                              (valid)="onSectionValidEvent('customMessages', $event)" />
+<!--          [entity]="entity()"-->
+
         </ng-template>
       </mat-tab>
 
 
-      <mat-tab [disabled]="entity()?.schedule?.onDemand || !sectionsValidity.general">
+      <mat-tab [disabled]="dialogState.selectedQuestionnaire()?.schedule?.onDemand || !sectionsValidity.general">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Notifications
@@ -89,9 +93,10 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-notifications [entity]="entity()"
-                                           (changeEvent)="onEntityUpdate($event)"
+          <app-questionnaire-notifications (changeEvent)="onEntityUpdate($event)"
                                            (valid)="onSectionValidEvent('notifications', $event)" />
+<!--          [entity]="entity()"-->
+
         </ng-template>
       </mat-tab>
 
@@ -105,9 +110,10 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-translation [entity]="entity()"
-                                         (changeEvent)="onEntityUpdate($event)"
+          <app-questionnaire-translation (changeEvent)="onEntityUpdate($event)"
                                          (valid)="onSectionValidEvent('translations', $event)" />
+<!--          [entity]="entity()"-->
+
         </ng-template>
       </mat-tab>
       <mat-tab [disabled]="!sectionsValidity.general">
@@ -123,7 +129,8 @@
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Preview</h2>
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-preview [entity]="entity()" />
+          <app-questionnaire-preview />
+<!--          [entity]="entity()"-->
         </ng-template>
       </mat-tab>
       <mat-tab [disabled]="!sectionsValidity.general">
