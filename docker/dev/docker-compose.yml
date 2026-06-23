@@ -71,18 +71,18 @@ services:
 ##      - ./radar-console/frontend-config.json:/usr/share/nginx/html/config-assets/frontend-config.json:ro
 
 
-  # ── Radar Console ──────────────────────────────────────────────────────────
-  radar-console:
-    build:
-      context: ../..
-      dockerfile: docker/dev/Dockerfile
-    ports:
-      - "9000:9000"
-    volumes:
-      - ../../src:/code/src
-    depends_on:
-      app-config-frontend:
-        condition: service_started
+#  # ── Radar Console ──────────────────────────────────────────────────────────
+#  radar-console:
+#    build:
+#      context: ../..
+#      dockerfile: docker/dev/Dockerfile
+#    ports:
+#      - "9000:9000"
+#    volumes:
+#      - ../../src:/code/src
+#    depends_on:
+#      app-config-frontend:
+#        condition: service_started
 
   # ── Nginx gateway (replaces nginx-ingress) ─────────────────────────────────
   nginx:
@@ -94,7 +94,7 @@ services:
       - radar-home
       - app-config
       - app-config-frontend
-      - radar-console
+#      - radar-console
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
 
