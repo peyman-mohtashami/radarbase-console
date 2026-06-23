@@ -1,0 +1,21 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+@switch (type) {
+  @case ('button') {
+    <div class="flex gap-2">
+      <span class="text-neutral-500">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</span>
+      <span>{{entity().multi_line ? 'Yes' : 'No'}}</span>
+    </div>
+  }
+  @case ('form') {
+    <div>
+    <label for="" class="text-sm">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</label>
+    </div>
+    <mat-slide-toggle [formControl]="multi_line" />
+  }
+  @case ('preview') {
+  }
+}
+
+
+

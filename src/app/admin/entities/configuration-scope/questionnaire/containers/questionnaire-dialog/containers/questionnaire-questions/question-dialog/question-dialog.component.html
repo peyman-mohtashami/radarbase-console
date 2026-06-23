@@ -19,7 +19,7 @@
 
 <mat-dialog-content class="h-full overflow-auto">
   <form [formGroup]="form">
-    <label for="field_name" class="text-sm">{{ `${_prefix}.questionFieldNameLabel` | translate }} *</label>
+    <label for="field_name" class="text-sm" [class]="form.controls.field_name?.errors ? 'text-red-500' : ''">{{ `${_prefix}.questionFieldNameLabel` | translate }} *</label>
     <mat-form-field class='small-input w-1/2' appearance="outline">
       <input matInput formControlName='field_name' required/>
       @if (form.controls.field_name?.errors; as errors) {
@@ -38,7 +38,7 @@
       }
     </mat-form-field>
 
-    <label for="field_type" class="text-sm">{{ `${_prefix}.questionFieldTypeLabel` | translate }} *</label>
+    <label for="field_type" class="text-sm" [class]="form.controls.field_type?.errors ? 'text-red-500' : ''">{{ `${_prefix}.questionFieldTypeLabel` | translate }} *</label>
     <mat-form-field class='small-input w-1/2' appearance="outline">
       <mat-select formControlName='field_type'>
         @for (type of QUESTION_TYPES; track type) {
@@ -61,22 +61,24 @@
   <!--  {{ dialogData.language | json}}-->
     <div class="mb-4">
       <!--        <app-text-editor />-->
-      <app-text-form-group formControlName="field_label"
+      <app-text-form-group [textGroup]="form.controls.field_label"
                            [languages]="dialogData.languages"
                            [language]="dialogData.language"
                            label="Field Label"
                            [required]="true"
                            [textarea]="true"
-                           [textareaAutosize]="true"/>
+                           [textareaAutosize]="true"
+                           [value]="dialogData.entity.field_label"/>
     </div>
 
     <div class="mb-4">
-      <app-text-form-group formControlName="section_header"
+      <app-text-form-group [textGroup]="form.controls.section_header"
                            [languages]="dialogData.languages"
                            [language]="dialogData.language"
                            label="Section Header"
                            [textarea]="true"
-                           [textareaAutosize]="true"/>
+                           [textareaAutosize]="true"
+                           [value]="dialogData.entity.section_header"/>
     </div>
 
 <!--    <input formControlName="id" placeholder="Id">-->

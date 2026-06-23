@@ -8,7 +8,7 @@ import {AppQuestion, AppQuestionnaire} from '../../../models/questionnaire';
 export class QuestionnaireDialogStateService {
   selectedQuestionIndex = signal<number | null>(null);
   selectedQuestion = signal<AppQuestion | null>(null);
-  // defaultLanguage = signal<string>('');
+  defaultLanguage = signal<string>('');
   // languages = signal<RadarOption[] | null>(null);
   questions = signal<AppQuestion[] | null>([]);
   selectedQuestionnaire = signal<AppQuestionnaire | null>(null);

@@ -31,19 +31,22 @@
     </div>
 
     <div class="mb-4">
-      <app-text-form-group formControlName="title"
-                           [languages]="languages"
+      {{entity()?.title | json}}
+      <app-text-form-group [languages]="languages"
                            [language]="form.controls.defaultLanguage.value"
-                           [label]="`${_prefix}.titleLabel` | translate"/>
+                           [label]="`${_prefix}.titleLabel` | translate"
+                           [textGroup]="form.controls.title"
+                           [value]="entity()?.title"/>
     </div>
 
     <div class="mb-4">
-      <app-text-form-group formControlName="description"
-                           [languages]="languages"
+      <app-text-form-group [languages]="languages"
                            [language]="form.controls.defaultLanguage.value"
                            [label]="`${_prefix}.descriptionLabel` | translate"
                            [textarea]="true"
-                           [textareaAutosize]="true"/>
+                           [textareaAutosize]="true"
+                           [textGroup]="form.controls.description"
+                           [value]="entity()?.description"/>
     </div>
   </div>
 

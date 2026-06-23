@@ -1,0 +1,35 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+@switch (type) {
+  @case ('button') {
+  }
+  @case ('form') {
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <fieldset class="p-2 rounded-sm border flex gap-2">
+      <div>
+        <div>
+      <label for="text_validation_min"
+             class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+        </div>
+      <mat-form-field class='small-input' appearance="outline">
+        <input id="text_validation_max" matInput [formControl]='text_validation_min' type="number"/>
+      </mat-form-field>
+      </div>
+
+      <div>
+        <div>
+      <label for="text_validation_max"
+             class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+        </div>
+      <mat-form-field class='small-input' appearance="outline">
+        <input id="text_validation_max" matInput [formControl]='text_validation_max' type="number"/>
+      </mat-form-field>
+      </div>
+    </fieldset>
+  }
+  @case ('preview') {
+  }
+}
+
+
+

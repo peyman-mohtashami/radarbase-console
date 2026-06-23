@@ -6,11 +6,13 @@ import {
   MatSelectAutocompleteComponent
 } from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from '../../../../models/questionnaire';
-import {Validator, ValidatorError} from '../../../../../../../../shared/utils/validators';
+import {Validator as CustomValidator, Validator, ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {merge, Subscription} from 'rxjs';
-import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
+// import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
 import {debounceTime} from 'rxjs/operators';
+import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-general',
@@ -23,6 +25,8 @@ import {debounceTime} from 'rxjs/operators';
     ReactiveFormsModule,
     TranslatePipe,
     TextFormGroupComponent,
+    JsonPipe,
+    // TextFormGroupComponent,
   ]
 })
 export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
@@ -42,8 +46,10 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       nonNullable: true
     }),
     defaultLanguage: new FormControl<RadarOption>(DEFAULT_LANGUAGE, {nonNullable: true}),
-    title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    description: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    title: new FormGroup({}),
+    // title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    // description: new FormControl<Record<string, string>>({}, {nonNullable: true}),
+    description: new FormGroup({}),
   });
 
   defaultLang: RadarOption = DEFAULT_LANGUAGE;
@@ -100,6 +106,7 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
   }
 
   onOtherFieldsChanged() {
+    console.log('Class: QuestionnaireGeneralComponent, Function: onOtherFieldsChanged, Line 109 this.form.getRawValue()' , this.form.getRawValue());
     this.changeEvent.emit({...this.form.getRawValue(), languages: this.languages});
     this.valid.emit(this.form.valid);
   }

@@ -5,13 +5,13 @@ import {
   OnDestroy,
   OnInit,
   output,
-  signal, viewChild,
+  signal,
   ViewChild, ViewContainerRef,
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
 import {Validator as CustomValidator, ValidatorError} from "../../../../../../../../../shared/utils/validators";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
-import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
+import {AppQuestion} from '../../../../../models/questionnaire';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 // import {QUESTION_TYPES} from '../models/question-types';
@@ -20,9 +20,6 @@ import {Subscription} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {
-  QUESTION_COMPONENTS,
-} from './question-type.registry';
-import {
   DialogTitleComponent
 } from '../../../../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
@@ -30,11 +27,13 @@ import {
 } from '../../../../../../../../../shared/components/message-box/error-message-box.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {TextFormGroupComponent} from '../../../components/text-form-group/text-form-group.component';
+// import {TextFormGroupComponent} from '../../../components/text-form-group/text-form-group.component';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QUESTION_TYPES} from '../models/question-types';
+import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
+import {TextFormGroupComponent} from '../text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-question-dialog',
@@ -45,14 +44,15 @@ import {QUESTION_TYPES} from '../models/question-types';
     ErrorMessageBoxComponent,
     TranslatePipe,
     MatButton,
-    TextFormGroupComponent,
+    // TextFormGroupComponent,
     MatFormField,
     MatError,
     MatInput,
     MatIconButton,
     MatIcon,
     MatSelect,
-    MatOption
+    MatOption,
+    TextFormGroupComponent
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -82,9 +82,11 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
 
   form = new FormGroup({
     field_name: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
-    field_type: new FormControl('', {validators: [CustomValidator.requiredValidator], nonNullable: true}),
-    field_label: new FormControl<AppQuestion['field_label']>({}, {validators: [CustomValidator.requiredValidator], nonNullable: true}),
-    section_header: new FormControl<AppQuestion['section_header']>({}, {nonNullable: true}),
+    field_type: new FormControl({value: '', disabled: true}, {validators: [CustomValidator.requiredValidator], nonNullable: true}),
+    // field_label: new FormControl<AppQuestion['field_label']>({}, {validators: [CustomValidator.requiredValidator], nonNullable: true}),
+    field_label: new FormGroup({}, {validators: [CustomValidator.requiredValidator]}),
+    // section_header: new FormControl<AppQuestion['section_header']>({}, {nonNullable: true}),
+    section_header: new FormGroup({}),
     // text_validation_type_or_show_slider_number: new FormControl('', {nonNullable: true}),
     // text_validation_min: new FormControl('', {nonNullable: true}),
     // text_validation_max: new FormControl('', {nonNullable: true}),
@@ -120,11 +122,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     this.host.clear();
     const componentType = QUESTION_COMPONENTS[this.dialogData.entity.field_type];
     const componentRef = this.host.createComponent(componentType);
+    componentRef.instance.type = 'form';
     componentRef.instance.form = this.form;
-    componentRef.instance.language = this.dialogData.language;
+    componentRef.instance.language = signal(this.dialogData.language);
     componentRef.instance.languages = this.dialogData.languages;
     componentRef.instance.index = this.dialogData.index;
-    componentRef.instance.entity = this.dialogData.entity;
+    componentRef.instance.entity = signal(this.dialogData.entity);
   }
 
   // save(): void {

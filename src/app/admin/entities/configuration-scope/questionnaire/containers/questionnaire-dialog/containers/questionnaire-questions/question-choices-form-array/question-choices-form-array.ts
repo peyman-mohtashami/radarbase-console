@@ -1,18 +1,16 @@
-import {Component, inject, input, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
+import {Component, inject, input, Input, OnInit, signal} from '@angular/core';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
-import {QuestionChoice} from '../question-choice/question-choice';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
-import {TextFormGroupComponent} from '../../../components/text-form-group/text-form-group.component';
 import {ValidatorError} from '../../../../../../../../../shared/utils/validators';
-// import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {AppQuestionChoice} from '../../../../../models/questionnaire';
 import {
   RadarOption
 } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+import {TextFormGroupComponent} from '../text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-question-choices-form-array',
@@ -22,17 +20,44 @@ import {
     CdkDropList,
     MatIcon,
     MatIconButton,
-    QuestionChoice,
     TranslatePipe,
     CdkDrag,
     MatError,
     MatFormField,
     MatInput,
-    TextFormGroupComponent
+    TextFormGroupComponent,
+    CdkDragHandle,
   ],
+  styles: `
+    .cdk-drag-preview {
+      background: white;
+      border-radius: 8px;
+      box-shadow:
+        0 5px 5px -3px rgb(0 0 0 / 20%),
+        0 8px 10px 1px rgb(0 0 0 / 14%),
+        0 3px 14px 2px rgb(0 0 0 / 12%);
+    }
+
+    .cdk-drag-placeholder {
+      background: #f3f4f6;
+      border: 2px dashed #9ca3af;
+      border-radius: 8px;
+      opacity: 0.6;
+    }
+
+    .cdk-drag-animating {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  `
 })
 export class QuestionChoicesFormArray implements OnInit {
   private fb = inject(FormBuilder);
+
+  protected readonly ValidatorError = ValidatorError;
 
   languages = input.required<RadarOption[]>();
   language = input.required<RadarOption>();
@@ -42,60 +67,48 @@ export class QuestionChoicesFormArray implements OnInit {
   @Input({ required: true })
   choices!: FormArray;
 
+  isValid = signal(false);
+
   ngOnInit() {
     if (this._choices() && this._choices()?.length) {
       this._choices()?.forEach((choice) => {
         this.choices.push(this.fb.group({
           code: choice.code,
-          label: choice.label,
+          label: this.fb.group(choice.label ?? {}),
         }));
       });
     } else {
       this.addChoice();
     }
+
+    this.choices.valueChanges.subscribe(() => {
+      this.isValid.set(this.choices.valid);
+    });
   }
 
   addChoice() {
-    // this.choices.push(this.fb.control(''));
     this.choices.push(this.fb.group({
       code: '',
-      label: {},
-    }));//control(''));
+      label: this.fb.group({}),
+    }));
   }
 
   removeChoice(index: number) {
     this.choices.removeAt(index);
   }
 
-  // get choiceControls(): FormControl[] {
-  //   return this.choices.controls as FormControl[];
-  // }
-
   get choiceGroups(): FormGroup[] {
     return this.choices.controls as FormGroup[];
   }
 
-  // addItem(index: number) {
-  //   // this.choices.splice(index + 1, 0, {
-  //   //   code: '',
-  //   //   label: {},
-  //   // });
-  //   this.choices.splice(index + 1, 0, {
-  //     code: '',
-  //     label: {},
-  //   });
-  // }
-  //
-  // removeItem(index: number) {
-  //   // this.choices.splice(index, 1);
-  //   this.choices.controls.splice(index, 1);
-  //   // this.validEvent.emit(this.checkValidity());
-  //   // this.changeEvent.emit(this.choices);
-  // }
+  protected onDrop(event: CdkDragDrop<any>) {
+    const control = this.choices.at(event.previousIndex);
 
-  protected onDrop($event: CdkDragDrop<any, any, any>) {
-
+    this.choices.removeAt(event.previousIndex);
+    this.choices.insert(event.currentIndex, control);
   }
 
-  protected readonly ValidatorError = ValidatorError;
+  protected asFormGroup(control: AbstractControl): FormGroup {
+    return control as FormGroup;
+  }
 }

@@ -7,7 +7,7 @@ import {TagComponent} from '../../../../../../../../../shared/components/tag/tag
 import {MatTooltip} from '@angular/material/tooltip';
 import {UpperCasePipe} from '@angular/common';
 import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {QUESTION_COMPONENTS} from './question-type.registry';
+import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
 
 @Component({
   selector: 'app-question-button',
@@ -36,7 +36,8 @@ export class QuestionButtonComponent {
     effect(() => this.loadQuestionEditor());
   }
 
-  protected removeQuestion() {
+  protected removeQuestion(event: PointerEvent) {
+    event.stopPropagation();
     this.removeEvent.emit();
   }
 
@@ -50,6 +51,7 @@ export class QuestionButtonComponent {
     host.clear();
     const componentType = QUESTION_COMPONENTS[this.entity().field_type];
     const componentRef = host.createComponent(componentType);
+    componentRef.instance.type = 'button';
     componentRef.instance.language = this.language;
     componentRef.instance.entity = this.entity;
   }

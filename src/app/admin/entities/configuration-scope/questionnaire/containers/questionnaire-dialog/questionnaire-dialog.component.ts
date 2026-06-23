@@ -126,6 +126,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected readonly DialogAction = DialogAction;
 
   protected override handleSaveAction(): void {
+    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 129 this.entity()' , this.entity());
     // toValidAppQuestionnaire
 
     this.dialogActionEvent.emit({

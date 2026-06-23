@@ -1,0 +1,86 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+@switch (type) {
+  @case ('button') {
+    <div class="flex gap-2">
+    <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeLabel` | translate }}</span>
+      <span [class]="entity().range?.min === null ? 'text-red-500' : ''">Min: {{entity().range?.min ?? 'N/A'}}, </span>
+      <span [class]="entity().range?.max === null ? 'text-red-500' : ''">Max: {{entity().range?.max ?? 'N/A'}}, </span>
+      <span [class]="entity().range?.step === null ? 'text-red-500' : ''">Step: {{entity().range?.step ?? 'N/A'}}</span>
+    </div>
+  }
+  @case ('form') {
+<!--    <app-question-choices-form-array [choices]="choices" [languages]="languages" [language]="language()" [index]="index"-->
+<!--                                     [_choices]="entity().select_choices_or_calculations"></app-question-choices-form-array>-->
+<!--    <app-range-form-group formControlName="range"/>-->
+
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }}</label>
+    <fieldset [formGroup]="range" class="p-2 rounded-sm border">
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label for="select_choices_or_calculations" class="text-sm" [class]="range.controls['min'].errors ? 'text-red-500' : ''">
+            {{ `${_prefix}.questionRangeMin` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <input matInput formControlName='min' required type="number">
+            <mat-error>
+              @if (range.controls['min'].errors; as errors) {
+                @if (errors?.['pattern']) {
+                  {{ ValidatorError.normalTextValidator | translate }}
+                }
+                @if (errors?.['required']) {
+                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMin` | translate} }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label for="select_choices_or_calculations" class="text-sm" [class]="range.controls['max'].errors ? 'text-red-500' : ''">
+            {{ `${_prefix}.questionRangeMax` | translate }} *
+          </label>
+          <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+            <input matInput formControlName='max' required type="number">
+            <mat-error>
+              @if (range.controls['max'].errors; as errors) {
+                @if (errors?.['pattern']) {
+                  {{ ValidatorError.normalTextValidator | translate }}
+                }
+                @if (errors?.['required']) {
+                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMax` | translate} }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label for="select_choices_or_calculations" class="text-sm" [class]="range.controls['step'].errors ? 'text-red-500' : ''">
+            {{ `${_prefix}.questionRangeStep` | translate }} *
+          </label>
+          <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
+            <input matInput formControlName='step' required type="number">
+            <mat-error>
+              @if (range.controls['step'].errors; as errors) {
+                @if (errors?.['pattern']) {
+                  {{ ValidatorError.normalTextValidator | translate }}
+                }
+                @if (errors?.['required']) {
+                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeStep` | translate} }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </fieldset>
+
+  }
+  @case ('preview') {
+
+  }
+}
+
+
+

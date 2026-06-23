@@ -1,0 +1,24 @@
+<div [formGroup]="textGroup">
+  <div class="flex gap-2 items-center justify-between">
+    @if (label()) {
+      <label for="startText" class="text-sm" [class]="textGroup.controls[`${language().id}`].errors ? 'text-red-500' : '' ">{{ label() }} {{ required() ? '*' : '' }}</label>
+    }
+  </div>
+
+  <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="dynamic">
+    @if (textarea()) {
+      <textarea matInput [cdkTextareaAutosize]="textareaAutosize()" [rows]="textareaRows()"
+                [formControlName]="`${language().id}`"></textarea>
+    } @else {
+      <input matInput [formControlName]="`${language().id}`">
+    }
+    <mat-error>
+      @if (textGroup.controls[`${language().id}`].errors; as errors) {
+        @if (errors['required']) {
+          {{ ValidatorError.requiredValidator | translate: {value: (label() ?? 'Label') | translate} }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+</div>
+

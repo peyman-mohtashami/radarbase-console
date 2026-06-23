@@ -11,15 +11,9 @@
        [class]="selected() ? 'border-2 border-secondary!': ''">
     <div class="flex items-center gap-2 w-full justify-between mb-2">
       <div class="flex gap-2 items-center grow">
-        <app-tag class="bg-secondary/20 text-primary cursor-pointer">
-          {{ entity().field_name || '-' }}
+        <app-tag class="bg-secondary/20 text-primary cursor-pointer" [class]="!entity().field_name ? 'bg-red-500/20! text-red-500' : ''">
+          {{ entity().field_name || 'N/A' }}
         </app-tag>
-        @if (!entity().valid) {
-          <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
-            warning
-          </mat-icon>
-        }
       </div>
       <div class="flex gap-2 items-center">
         @if (entity().branching_logic) {
@@ -29,31 +23,37 @@
           </mat-icon>
         }
 
+        @if (!entity().valid) {
+          <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+            warning
+          </mat-icon>
+        }
+
         <app-tag class="bg-secondary/20 text-primary">
           {{ entity().field_type | uppercase }}
         </app-tag>
 
         <button class="tiny"
                 mat-icon-button color="warn"
-                (click)='removeQuestion()'>
+                (click)='removeQuestion($event)'>
           <mat-icon class="material-symbols-outlined text-xl!">delete</mat-icon>
         </button>
       </div>
     </div>
 
     @if (selected() || true) {
-      <div class="grid grid-cols-[max-content_1fr] gap-x-2 gap-y-0 text-black">
-        @if (entity().field_label?.[language().id]; as field_label) {
-          <span class="text-neutral-500">{{ `${_prefix}.questionLabelLabel` | translate }}</span>
-          <span class="font-bold">{{ field_label }}</span>
-        }
-<!---->
-
-        @if (entity().section_header?.[language().id]; as section_header) {
-          <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}</span>
-          <span>{{ section_header }}</span>
-        }
-
+      <div class="text-black">
+        <div class="flex gap-2">
+        @let field_label = entity().field_label?.[language().id];
+        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>
+        <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
+      </div>
+      <div class="flex gap-2">
+        @let section_header = entity().section_header?.[language().id];
+        <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
+        <span>{{ section_header || 'N/A' }}</span>
+      </div>
         <ng-container #questionHost></ng-container>
 
         <!---->

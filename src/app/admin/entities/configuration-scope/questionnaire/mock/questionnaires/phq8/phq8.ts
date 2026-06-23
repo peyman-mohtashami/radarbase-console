@@ -160,7 +160,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_2",
@@ -242,7 +242,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_3",
@@ -324,7 +324,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_4",
@@ -406,7 +406,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_5",
@@ -488,7 +488,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_6",
@@ -570,7 +570,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_7",
@@ -652,7 +652,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        //"field_annotation": ""
       },
       {
         "field_name": "phq8_8",
@@ -734,7 +734,7 @@ export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
         "required_field": "",
         "matrix_group_name": "",
         "matrix_ranking": "",
-        "field_annotation": ""
+        // //"field_annotation": ""
       }
     ],
     "schedule": {
