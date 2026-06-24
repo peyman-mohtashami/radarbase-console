@@ -6,7 +6,6 @@ import {AppQuestion} from '../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
 import {UpperCasePipe} from '@angular/common';
-import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 
@@ -25,15 +24,8 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
 export class QuestionButtonComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
 
-  // selectedQuestion = this.dialogState.selectedQuestion;
-  // selectedQuestionIndex = this.dialogState.selectedQuestionIndex;
-  // languages = this.dialogState.selectedQuestionnaire()?.languages;
-  // language = this.dialogState.selectedQuestionnaire()?.defaultLanguage;
-
   entity = input.required<AppQuestion>();
-  // selected = input.required<boolean>();
   index = input.required<number>();
-  // language = input.required<RadarOption>();
 
   host = viewChild('questionHost', { read: ViewContainerRef });
 
@@ -61,7 +53,6 @@ export class QuestionButtonComponent {
     const componentType = QUESTION_COMPONENTS[this.entity().field_type];
     const componentRef = host.createComponent(componentType);
     componentRef.instance.type = 'button';
-    // componentRef.instance.language = this.language;
     componentRef.instance.entity = this.entity;
   }
 }

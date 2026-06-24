@@ -27,28 +27,10 @@
                                [index]="$index"
                                (removeEvent)="removeQuestion(index)"
                                (selectEvent)="onSelectQuestion(index, question)"/>
-<!--                               [language]="entity().defaultLanguage"-->
-<!--                               [selected]="index === selectedQuestionIndex()"-->
           </div>
 
         }
       </div>
     </div>
   </div>
-
-<!--  <div class=" grow w-5/12  h-full overflow-y-auto">-->
-<!--    @for (question of questions; track $index; let index = $index) {-->
-<!--      @if (selectedQuestionIndex() === index) {-->
-<!--        <div class="p-2 border-2 border-secondary rounded">-->
-<!--        <span class="font-bold">Question Settings</span>-->
-<!--        <app-question [languages]="entity()!.languages"-->
-<!--                      [language]="entity()?.defaultLanguage!"-->
-<!--                      [questions]="questions ?? []"-->
-<!--                      [entity]="question"-->
-<!--                      [index]="index"-->
-<!--                      (changeEvent)="onQuestionChange($event)"/>-->
-<!--        </div>-->
-<!--      }-->
-<!--    }-->
-<!--  </div>-->
 </div>

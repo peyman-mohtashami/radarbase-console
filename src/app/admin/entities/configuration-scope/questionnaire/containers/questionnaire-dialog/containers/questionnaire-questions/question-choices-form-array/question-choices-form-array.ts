@@ -7,9 +7,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {ValidatorError} from '../../../../../../../../../shared/utils/validators';
 import {AppQuestionChoice} from '../../../../../models/questionnaire';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {TextFormGroupComponent} from '../text-form-group/text-form-group.component';
 
 @Component({
@@ -59,8 +56,6 @@ export class QuestionChoicesFormArray implements OnInit {
 
   protected readonly ValidatorError = ValidatorError;
 
-  // languages = input.required<RadarOption[]>();
-  // language = input.required<RadarOption>();
   index = input.required<number>();
   _choices = input<AppQuestionChoice[]>();
 

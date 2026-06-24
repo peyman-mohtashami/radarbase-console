@@ -14,38 +14,38 @@ import {TimedQuestionComponent} from './timed-question/timed-question.component'
 import {DatetimeQuestionComponent} from './datetime-question/datetime-question.component';
 
 export enum QuestionType {
-  Radio = 'radio',
-  Checkbox = 'checkbox',
-  Slider = 'slider',
-  Range = 'range',
-  YesNo = 'yesno',
-  Info = 'info',
-  Descriptive = 'descriptive',
-  Text = 'text',
-  Number = 'number',
-  DateTime = 'datetime',
-  Timed = 'timed',
-  Duration = 'duration',
-  Audio = 'audio',
+  RADIO = 'radio',
+  CHECKBOX = 'checkbox',
+  SLIDER = 'slider',
+  RANGE = 'range',
+  YESNO = 'yesno',
+  INFO = 'info',
+  DESCRIPTIVE = 'descriptive',
+  TEXT = 'text',
+  NUMBER = 'number',
+  DATETIME = 'datetime',
+  DURATION = 'duration',
+  TIMED = 'timed',
+  AUDIO = 'audio',
+  // MATRIX_RADIO = 'matrix-radio',
 }
 
 export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
-  [QuestionType.Descriptive]: DescriptiveQuestionComponent,
-  [QuestionType.Info]: InfoQuestionComponent,
-  [QuestionType.Radio]: RadioQuestionComponent,
-  [QuestionType.YesNo]: YesNoQuestionComponent,
-  [QuestionType.Checkbox]: CheckboxQuestionComponent,
-  [QuestionType.Slider]: SliderQuestionComponent,
-  [QuestionType.Range]: RangeQuestionComponent,
-  [QuestionType.Text]: TextQuestionComponent,
-  [QuestionType.Number]: NumberQuestionComponent,
-  [QuestionType.DateTime]: DatetimeQuestionComponent,
-  [QuestionType.Duration]: DurationQuestionComponent,
-  [QuestionType.Audio]: AudioQuestionComponent,
-  [QuestionType.Timed]: TimedQuestionComponent,
+  [QuestionType.DESCRIPTIVE]: DescriptiveQuestionComponent,
+  [QuestionType.INFO]: InfoQuestionComponent,
+  [QuestionType.RADIO]: RadioQuestionComponent,
+  [QuestionType.YESNO]: YesNoQuestionComponent,
+  [QuestionType.CHECKBOX]: CheckboxQuestionComponent,
+  [QuestionType.SLIDER]: SliderQuestionComponent,
+  [QuestionType.RANGE]: RangeQuestionComponent,
+  [QuestionType.TEXT]: TextQuestionComponent,
+  [QuestionType.NUMBER]: NumberQuestionComponent,
+  [QuestionType.DATETIME]: DatetimeQuestionComponent,
+  [QuestionType.DURATION]: DurationQuestionComponent,
+  [QuestionType.AUDIO]: AudioQuestionComponent,
+  [QuestionType.TIMED]: TimedQuestionComponent,
 
 };
-
 
 export const QUESTION_TYPES = [
   {
@@ -107,3 +107,8 @@ export const QUESTION_TYPES = [
 //   {type: 'timed', icon: '', label: 'Timed', disabled: false},
 //   {type: 'audio', icon: '', label: 'Audio', disabled: false},
 // ];
+
+
+
+
+

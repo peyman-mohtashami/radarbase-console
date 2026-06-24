@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output, signal} from '@angular/core';
+import {Component, inject, OnInit, output} from '@angular/core';
 import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -58,17 +58,12 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
 
 
-  // entity = input.required<AppQuestionnaire>();
-  // selectedQuestionnaire = this.dialogState.selectedQuestionnaire;
-
   changeEvent = output<Partial<AppQuestionnaire>>();
   validEvent = output<boolean>();
 
   questions: AppUiQuestion[] = [];
-  // selectedQuestionIndex = signal<number|undefined>(undefined);
 
   ngOnInit() {
-    // this.questions = this.entity()?.questions?.map(q => ({...q, id: q.field_name, valid: true}))?? [];
     this.questions = this.dialogState.selectedQuestionnaire()?.questions?.map(q => ({
       ...q,
       _dragId: crypto.randomUUID(),
@@ -116,7 +111,6 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   openQuestionDialog(index: number, question: AppQuestion) {
     const dialogRef = this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      // data: {id: 'question-dialog', entity: question, questions: this.questions, language: this.entity().defaultLanguage, languages: this.entity().languages, index: index, mode: DialogMode.EDIT},
       data: {id: 'question-dialog', entity: question, questions: this.questions, index: index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
@@ -136,13 +130,6 @@ export class QuestionnaireQuestionsComponent implements OnInit {
           this.changeEvent.emit({questions: this.questions});
         }
       );
-      // dialogRef.componentInstance.dialogActionEvent.subscribe(
-      //   (value) => {
-      //     console.log('Class: QuestionFormGroupComponent, Function: , Line 190 value' , value);
-      //     // this.form.patchValue({branching_logic: value.entity?.value});
-      //     dialogRef.close();
-      //   }
-      // );
 
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();
