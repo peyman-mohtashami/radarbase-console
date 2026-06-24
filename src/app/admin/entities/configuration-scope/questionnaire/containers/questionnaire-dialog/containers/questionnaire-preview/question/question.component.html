@@ -1,169 +1,173 @@
 <!--&#45;&#45;{{question().field_type}}&#45;&#45;-->
-@if (
-  question().field_type === 'descriptive' ||
-  question().field_type === 'info' ||
-  question().field_type === 'audio' ||
-  question().field_type === 'timed'
-) {
-  @switch (question().field_type) {
-    @case ('descriptive') {
-      <app-descriptive-input [question]="question()"
-                             [answer]="answer()"
-                             (valueChange)="emitAnswer($event)" />
-    }
+<app-question-header [question]="question()" [language]="language()" />
 
-    @case ('info') {
-      <app-info-screen [question]="question()"
-                       [answer]="answer()"
-                       (valueChange)="emitAnswer($event)" />
-    }
+<ng-container #questionHost></ng-container>
 
-    @case ('timed') {
-      <app-timed-test [question]="question()"
-                      [answer]="answer()"
-                      (valueChange)="emitAnswer($event)" />
-    }
+<!--@if (-->
+<!--  question().field_type === 'descriptive' ||-->
+<!--  question().field_type === 'info' ||-->
+<!--  question().field_type === 'audio' ||-->
+<!--  question().field_type === 'timed'-->
+<!--) {-->
+<!--  @switch (question().field_type) {-->
+<!--    @case ('descriptive') {-->
+<!--      <app-descriptive-input [question]="question()"-->
+<!--                             [answer]="answer()"-->
+<!--                             (valueChange)="emitAnswer($event)" />-->
+<!--    }-->
 
-    @case ('audio') {
-      <app-audio-input [question]=question()
-                       [answer]="answer()"
-                       (valueChange)="emitAnswer($event)"/>
-    }
-  }
-} @else {
-  <app-scrollable-content>
-<!--    {{question().field_type}}-->
-<!--    [isVisible]="true">-->
-    <app-question-header [question]="question()" />
-    @switch (question().field_type) {
-
-      @case ('radio') {
-        <app-radio-input [question]="question()"
-                         [answer]="answer()"
-                         (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('yesno') {
-        <app-yesno-input [question]="question()"
-                         [answer]="answer()"
-                         (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('checkbox') {
-        <app-checkbox-input [question]="question()"
-                            [answer]="answer()"
-                            (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('range') {
-        <app-range-input [question]="question()"
-                         [answer]="answer()"
-                         (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('range-info') {
-        <app-range-info-input [question]="question()"
-                              [answer]="answer()"
-                              (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('slider') {
-        <app-slider-input [question]="question()"
-                          [answer]="answer()"
-                          (valueChange)="emitAnswer($event)" />
-      }
-
-      @case ('text') {
-        <app-text-input [question]="question()"
-                        [answer]="answer()"
-                        (valueChange)="emitAnswer($event)" />
-<!--                        (keyboardEvent)="onKeyboardEvent($event)" />-->
-      }
-
-<!--      @case ('duration') {-->
-<!--        <app-time-input [question]="question()"-->
-<!--                        [answer]="answer()"-->
-<!--                        [isMeridianEnabled]="false"-->
-<!--                        (valueChange)="emitAnswer($event)"/>-->
-<!--&lt;!&ndash;        <app-duration-input [question$]="question$()"&ndash;&gt;-->
-<!--&lt;!&ndash;                            [isVisible$]="true"&ndash;&gt;-->
-<!--&lt;!&ndash;                            (valueChange)="emitAnswer($event)"/>&ndash;&gt;-->
-<!--      }-->
-
-      @case ('time') {
-        <app-time-input [question]="question()"
-                        [answer]="answer()"
-                        (valueChange)="emitAnswer($event)"/>
-      }
-
-      @case ('datetime') {
-        <app-date-input [question]="question()"
-                        [answer]="answer()"
-                        (valueChange)="emitAnswer($event)"/>
-      }
-
-      @case ('notes') {
-        <app-notes-input [question]="question()"
-                         [answer]="answer()"
-                         (valueChange)="emitAnswer($event)" />
-<!--                         (keyboardEvent)="onKeyboardEvent($event)" />-->
-      }
-
-<!--      @case ('web') {-->
-<!--        <app-web-input [question]="question()"-->
+<!--    @case ('info') {-->
+<!--      <app-info-screen [question]="question()"-->
 <!--                       [answer]="answer()"-->
 <!--                       (valueChange)="emitAnswer($event)" />-->
+<!--    }-->
+
+<!--    @case ('timed') {-->
+<!--      <app-timed-test [question]="question()"-->
+<!--                      [answer]="answer()"-->
+<!--                      (valueChange)="emitAnswer($event)" />-->
+<!--    }-->
+
+<!--    @case ('audio') {-->
+<!--      <app-audio-input [question]=question()-->
+<!--                       [answer]="answer()"-->
+<!--                       (valueChange)="emitAnswer($event)"/>-->
+<!--    }-->
+<!--  }-->
+<!--} @else {-->
+<!--  <app-scrollable-content>-->
+<!--&lt;!&ndash;    {{question().field_type}}&ndash;&gt;-->
+<!--&lt;!&ndash;    [isVisible]="true">&ndash;&gt;-->
+<!--    <app-question-header [question]="question()" />-->
+<!--    @switch (question().field_type) {-->
+
+<!--      @case ('radio') {-->
+<!--        <app-radio-input [question]="question()"-->
+<!--                         [answer]="answer()"-->
+<!--                         (valueChange)="emitAnswer($event)" />-->
 <!--      }-->
 
-<!--      @case ('radio-svg') {-->
-<!--        <app-checkbox-svg-input [question]="question()"-->
-<!--                                [answer]="answer()"-->
-<!--                                [multiSelect]="false"-->
-<!--                                (valueChange)="emitAnswer($event)" />-->
+<!--      @case ('yesno') {-->
+<!--        <app-yesno-input [question]="question()"-->
+<!--                         [answer]="answer()"-->
+<!--                         (valueChange)="emitAnswer($event)" />-->
 <!--      }-->
 
-<!--      @case ('checkbox-svg') {-->
-<!--        <app-checkbox-svg-input [question]="question()"-->
-<!--                                [answer]="answer()"-->
-<!--                                [multiSelect]="true"-->
-<!--                                (valueChange)="emitAnswer($event)" />-->
+<!--      @case ('checkbox') {-->
+<!--        <app-checkbox-input [question]="question()"-->
+<!--                            [answer]="answer()"-->
+<!--                            (valueChange)="emitAnswer($event)" />-->
 <!--      }-->
 
-<!--      @case('signature') {-->
-<!--&lt;!&ndash;        <app-signature-input [question]="question()"&ndash;&gt;-->
-<!--&lt;!&ndash;                             [answer]="answer()"&ndash;&gt;-->
-<!--&lt;!&ndash;                             (valueChange)="emitAnswer($event)"/>&ndash;&gt;-->
+<!--      @case ('range') {-->
+<!--        <app-range-input [question]="question()"-->
+<!--                         [answer]="answer()"-->
+<!--                         (valueChange)="emitAnswer($event)" />-->
 <!--      }-->
 
-<!--&lt;!&ndash;      @case ('timed') {&ndash;&gt;-->
-<!--&lt;!&ndash;        <app-timed-test [question]="question()"&ndash;&gt;-->
-<!--&lt;!&ndash;                        [answer]="answer()"&ndash;&gt;-->
-<!--&lt;!&ndash;                        (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
-<!--&lt;!&ndash;      }&ndash;&gt;-->
-
-<!--&lt;!&ndash;      @case ('audio') {&ndash;&gt;-->
-<!--&lt;!&ndash;        <app-audio-input [question]=question()&ndash;&gt;-->
-<!--&lt;!&ndash;                         [answer]="answer()"&ndash;&gt;-->
-<!--&lt;!&ndash;                         (valueChange)="emitAnswer($event)"/>&ndash;&gt;-->
-<!--&lt;!&ndash;      }&ndash;&gt;-->
-
-<!--      @case ('calc') {-->
-<!--        <app-calc-input [question]="question()"-->
-<!--                        [answers]="answers()"-->
-<!--                        (valueChange)="emitAnswer($event)" />-->
-<!--&lt;!&ndash;                        [currentlyShown]="true"&ndash;&gt;-->
-<!--&lt;!&ndash;                        [answer]="answer()"&ndash;&gt;-->
+<!--      @case ('range-info') {-->
+<!--        <app-range-info-input [question]="question()"-->
+<!--                              [answer]="answer()"-->
+<!--                              (valueChange)="emitAnswer($event)" />-->
 <!--      }-->
 
-<!--      @case('health') {-->
-<!--        <app-health-input [question]="question()"-->
+<!--      @case ('slider') {-->
+<!--        <app-slider-input [question]="question()"-->
 <!--                          [answer]="answer()"-->
 <!--                          (valueChange)="emitAnswer($event)" />-->
-<!--&lt;!&ndash;                          [questionsList]="questionsList"&ndash;&gt;-->
-<!--&lt;!&ndash;                          (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;-->
 <!--      }-->
 
+<!--      @case ('text') {-->
+<!--        <app-text-input [question]="question()"-->
+<!--                        [answer]="answer()"-->
+<!--                        (valueChange)="emitAnswer($event)" />-->
+<!--&lt;!&ndash;                        (keyboardEvent)="onKeyboardEvent($event)" />&ndash;&gt;-->
+<!--      }-->
 
-    }
-  </app-scrollable-content>
-}
+<!--&lt;!&ndash;      @case ('duration') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-time-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                        [answer]="answer()"&ndash;&gt;-->
+<!--&lt;!&ndash;                        [isMeridianEnabled]="false"&ndash;&gt;-->
+<!--&lt;!&ndash;                        (valueChange)="emitAnswer($event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <app-duration-input [question$]="question$()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            [isVisible$]="true"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                            (valueChange)="emitAnswer($event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--      @case ('time') {-->
+<!--        <app-time-input [question]="question()"-->
+<!--                        [answer]="answer()"-->
+<!--                        (valueChange)="emitAnswer($event)"/>-->
+<!--      }-->
+
+<!--      @case ('datetime') {-->
+<!--        <app-date-input [question]="question()"-->
+<!--                        [answer]="answer()"-->
+<!--                        (valueChange)="emitAnswer($event)"/>-->
+<!--      }-->
+
+<!--      @case ('notes') {-->
+<!--        <app-notes-input [question]="question()"-->
+<!--                         [answer]="answer()"-->
+<!--                         (valueChange)="emitAnswer($event)" />-->
+<!--&lt;!&ndash;                         (keyboardEvent)="onKeyboardEvent($event)" />&ndash;&gt;-->
+<!--      }-->
+
+<!--&lt;!&ndash;      @case ('web') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-web-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                       [answer]="answer()"&ndash;&gt;-->
+<!--&lt;!&ndash;                       (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      @case ('radio-svg') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-checkbox-svg-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                [answer]="answer()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                [multiSelect]="false"&ndash;&gt;-->
+<!--&lt;!&ndash;                                (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      @case ('checkbox-svg') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-checkbox-svg-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                [answer]="answer()"&ndash;&gt;-->
+<!--&lt;!&ndash;                                [multiSelect]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                                (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      @case('signature') {&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <app-signature-input [question]="question()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                             [answer]="answer()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                             (valueChange)="emitAnswer($event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      @case ('timed') {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <app-timed-test [question]="question()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        [answer]="answer()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        (valueChange)="emitAnswer($event)" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      }&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;      @case ('audio') {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <app-audio-input [question]=question()&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                         [answer]="answer()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                         (valueChange)="emitAnswer($event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;      }&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;      @case ('calc') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-calc-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                        [answers]="answers()"&ndash;&gt;-->
+<!--&lt;!&ndash;                        (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        [currentlyShown]="true"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        [answer]="answer()"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      @case('health') {&ndash;&gt;-->
+<!--&lt;!&ndash;        <app-health-input [question]="question()"&ndash;&gt;-->
+<!--&lt;!&ndash;                          [answer]="answer()"&ndash;&gt;-->
+<!--&lt;!&ndash;                          (valueChange)="emitAnswer($event)" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                          [questionsList]="questionsList"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                          (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+
+<!--    }-->
+<!--  </app-scrollable-content>-->
+<!--}-->

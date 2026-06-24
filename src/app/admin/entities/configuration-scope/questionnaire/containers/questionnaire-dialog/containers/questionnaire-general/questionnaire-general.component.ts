@@ -34,7 +34,6 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
   protected readonly ValidatorError = ValidatorError;
 
   questionnaires = input.required<AppQuestionnaire[] | null>();
-  // entity = input<AppQuestionnaire | undefined>();
 
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();

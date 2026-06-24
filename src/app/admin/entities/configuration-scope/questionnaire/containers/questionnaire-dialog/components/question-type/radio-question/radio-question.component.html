@@ -74,7 +74,22 @@
 
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" />
 
+    <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
+      @for (option of entity().select_choices_or_calculations; track option.code) {
+        <div>
+          <mat-radio-button [value]="option.code" (click)="onPreviewInputChange(option.code)" [disabled]="isDisabled">
+            <span class="ion-text-wrap" [innerHtml]="option.label[language()!.id] | replacePlaceholders"></span>
+          </mat-radio-button>
+        </div>
+      }
+    </mat-radio-group>
+    @if (!isDisabled) {
+      <button matButton class="m-4" (click)="onPreviewReset()" color="danger" size="small">
+        Clear
+      </button>
+    }
   }
   @case ('cl-view') {
     <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">

@@ -7,4 +7,6 @@ export class QuestionnaireDialogStateService {
   selectedQuestion = signal<AppQuestion | null>(null);
   selectedQuestionIndex = signal<number | null>(null);
   selectedLanguage = signal<string | null>(null);
+  //
+  defaultLanguage = signal<string>('en');
 }

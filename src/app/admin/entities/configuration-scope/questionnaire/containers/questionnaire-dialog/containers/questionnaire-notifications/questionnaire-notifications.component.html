@@ -7,13 +7,15 @@
       <div class="mb-4">
         <app-text-form-group class="mb-4"
                              [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                             [label]="`${_prefix}.notificationTitleLabel` | translate"/>
+                             [label]="`${_prefix}.notificationTitleLabel` | translate"
+                             [value]="dialogState.selectedQuestionnaire()?.schedule?.notification?.title"/>
       </div>
       <div class="mb-4">
         <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"
                              [label]="`${_prefix}.notificationMessageLabel` | translate"
                              [textarea]="true"
-                             [textareaAutosize]="true"/>
+                             [textareaAutosize]="true"
+                             [value]="dialogState.selectedQuestionnaire()?.schedule?.notification?.text"/>
       </div>
     </div>
 

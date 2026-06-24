@@ -1025,7 +1025,7 @@ export const ISO_LANGUAGES_MAP: Record<string, {id: string; _name: string; nativ
   // }
 }
 
-export const DEFAULT_LANGUAGE = {"id":"en","_name":"English","nativeName":"English"};
+export const DEFAULT_LANGUAGE = {"id":"en","_name":"English","nativeName":"English","name":"English"};
 
 
 export const ISO_LANGUAGES = [

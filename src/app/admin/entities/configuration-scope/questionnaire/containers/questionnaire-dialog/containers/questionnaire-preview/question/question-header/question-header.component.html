@@ -1,12 +1,14 @@
-@let selectedLanguage = questionnaireStateService.defaultLanguage();
 
-@if (selectedLanguage) {
+<!--@let selectedLanguage = questionnaireStateService.defaultLanguage();-->
+<!--{{selectedLanguage}}-->
+<!--{{question() | json}}-->
+@if (language()) {
 @if (sectionHeader()) {
-  <p class="text-base" [innerHtml]="question().section_header?.[selectedLanguage] | replacePlaceholders"></p>
+  <p class="text-base" [innerHtml]="question().section_header?.[language()!.id] | replacePlaceholders"></p>
 }
 @if(label() && question().field_label) {
   <p class="text-lg">
-    <span [innerHtml]="question().field_label[selectedLanguage] | replacePlaceholders"></span>
+    <span [innerHtml]="question().field_label[language()!.id] | replacePlaceholders"></span>
     @if (question().required_field !== 'false') {
       <span class="text-red-700"> *</span>
     } @else {

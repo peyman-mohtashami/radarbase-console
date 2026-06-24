@@ -1,4 +1,4 @@
-import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
@@ -11,7 +11,6 @@ import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-// import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-questionnaire-notifications',
@@ -25,7 +24,6 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
     MatSelect,
     MatOption,
     TextFormGroupComponent,
-    // TextFormGroupComponent
   ]
 })
 export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
@@ -33,8 +31,6 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
 
   protected readonly UNITS = UNITS;
   protected readonly ValidatorError = ValidatorError;
-
-  // entity = input<AppQuestionnaire | undefined>();
 
   changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
@@ -44,8 +40,6 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
       notification: new FormGroup({
         title: new FormGroup({}),
         text: new FormGroup({}),
-        // title: new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        // text: new FormControl<Record<string, string>>({}, {nonNullable: true}),
       }),
       reminders: new FormGroup({
         enabled: new FormControl<boolean>(false, {nonNullable: true}),
@@ -59,7 +53,7 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   ngOnInit() {
-    const entity = this.dialogState.selectedQuestionnaire();//entity();
+    const entity = this.dialogState.selectedQuestionnaire();
 
     this.form.valueChanges.pipe(
       debounceTime(300)

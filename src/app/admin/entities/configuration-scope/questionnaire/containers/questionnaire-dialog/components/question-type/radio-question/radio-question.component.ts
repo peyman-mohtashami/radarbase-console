@@ -14,6 +14,11 @@ import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {MatButton} from '@angular/material/button';
+import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {
+  QuestionHeaderComponent
+} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
   selector: 'app-radio-question',
@@ -29,6 +34,9 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
     MatInput,
     MatOption,
     MatSelect,
+    MatButton,
+    ReplacePlaceholdersPipe,
+    QuestionHeaderComponent,
   ],
   templateUrl: './radio-question.component.html'
 })
@@ -45,8 +53,11 @@ export class RadioQuestionComponent implements OnInit {
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;
+  @Input({required: true}) answer!: InputSignal<any>;
 
   valueChange = output<any>();
+  protected isDisabled: unknown;
+
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -71,5 +82,13 @@ export class RadioQuestionComponent implements OnInit {
   onValueChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.valueChange.emit(value);
+  }
+
+  protected onPreviewReset() {
+
+  }
+
+  protected onPreviewInputChange(code: string) {
+
   }
 }

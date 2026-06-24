@@ -10,7 +10,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {debounceTime} from 'rxjs/operators';
 import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-translation',
@@ -20,7 +19,6 @@ import {JsonPipe} from '@angular/common';
     ReactiveFormsModule,
     TranslatePipe,
     TextFormGroupComponent,
-    JsonPipe,
     // TextFormGroupComponent,
   ]
 })
@@ -49,15 +47,11 @@ export class QuestionnaireTranslationComponent implements OnInit {
     questions: new FormArray<FormGroup>([]),
   });
 
-  entity?: AppQuestionnaire;
-
   numberOfRows = 0;
 
   ngOnInit() {
 
     const entity = this.dialogState.selectedQuestionnaire();
-    this.entity = entity;
-    console.log('Class: QuestionnaireTranslationComponent, Function: ngOnInit, Line 57 entity' , entity);
     if (entity) {
       const t = entity.questions?.reduce((acc, curr) => {
         return acc + 2 + (curr.field_note?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.section_header?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.select_choices_or_calculations?.length ?? 0);
@@ -97,62 +91,15 @@ export class QuestionnaireTranslationComponent implements OnInit {
 
       });
 
-      this.form.patchValue({...entity});
+      this.form.patchValue(entity);
     }
 
     this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      this.changeEvent.emit({
-        ...entity,
-        ...change,
-        schedule: {
-          ...entity?.schedule,
-          ...change.schedule,
-          notification: {
-            ...entity?.schedule?.notification,
-            ...change.schedule?.notification,
-          },
-        },
-        questions: entity?.questions?.map((question, questionIndex) => {
-          const questionChange = change.questions?.[questionIndex];
-
-          return {
-            ...question,
-            ...questionChange,
-            select_choices_or_calculations: question.select_choices_or_calculations?.map((choice, choiceIndex) => ({
-              ...choice,
-              ...questionChange?.select_choices_or_calculations?.[choiceIndex],
-              label: {
-                ...choice.label,
-                ...questionChange?.select_choices_or_calculations?.[choiceIndex]?.label,
-              },
-            })),
-            field_label: {
-              ...question.field_label,
-              ...questionChange?.field_label,
-            },
-            field_note: {
-              ...question.field_note,
-              ...questionChange?.field_note,
-            },
-            section_header: {
-              ...question.section_header,
-              ...questionChange?.section_header,
-            },
-          };
-        }),
-      });
-
+      this.changeEvent.emit({...entity, ...change, schedule: {...entity?.schedule, ...change.schedule}});
       this.valid.emit(this.form.valid);
     });
-
-    // this.form.valueChanges.pipe(
-    //   debounceTime(300)
-    // ).subscribe(change => {
-    //   this.changeEvent.emit({...entity, ...change, schedule: {...entity?.schedule, ...change.schedule}});
-    //   this.valid.emit(this.form.valid);
-    // });
   }
 
   protected asFormGroup(control: AbstractControl): FormGroup {

@@ -2,7 +2,7 @@ import {Component, effect, inject, input, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {QuestionnaireTimeUnit} from '../../../../../protocol/models/protocol';
 import {Validator as CustomValidator} from '../../../../../../../../shared/utils/validators';
-import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, DEFAULT_LANGUAGE} from '../../../../models/questionnaire';
 import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {LocaleService} from '../../../../../../../../core/locale/services/locale.service';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -56,10 +56,13 @@ import {QuestionComponent} from './question/question.component';
   ]
 })
 export class QuestionnairePreviewComponent implements OnInit {
-  entity = input<AppQuestionnaire | undefined>();
-
   private questionsService = inject(QuestionsService);
-  questionnaireStateService = inject(QuestionnaireDialogStateService);
+  dialogState = inject(QuestionnaireDialogStateService);
+
+  // entity = input<AppQuestionnaire | undefined>();
+  entity = this.dialogState.selectedQuestionnaire;
+  selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as RadarOption;
+
 
   loading = true;
 

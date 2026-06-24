@@ -38,14 +38,16 @@
                          [label]="`${_prefix}.startTextLabel` | translate"
                          [textarea]="true"
                          [textareaAutosize]="true"
-                         [textGroup]="form.controls.startText"/>
+                         [textGroup]="form.controls.startText"
+                         [value]="dialogState.selectedQuestionnaire()?.startText"/>
   }
 
   <div class="mb-4">
     <app-text-form-group [label]="`${_prefix}.endTextLabel` | translate"
                          [textarea]="true"
                          [textareaAutosize]="true"
-                         [textGroup]="form.controls.endText"/>
+                         [textGroup]="form.controls.endText"
+                         [value]="dialogState.selectedQuestionnaire()?.endText"/>
   </div>
 
   <mat-slide-toggle formControlName='warningEnabled' class="my-4" color="primary">
@@ -55,7 +57,8 @@
   @if (form.controls.warningEnabled.value) {
     <div class="mb-4">
       <app-text-form-group [label]="`${_prefix}.warningTextLabel` | translate"
-                           [textGroup]="form.controls.warn"/>
+                           [textGroup]="form.controls.warn"
+                           [value]="dialogState.selectedQuestionnaire()?.warn"/>
     </div>
   }
 </form>

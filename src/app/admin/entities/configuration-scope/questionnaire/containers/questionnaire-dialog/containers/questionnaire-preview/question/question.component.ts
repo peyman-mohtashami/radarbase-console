@@ -1,8 +1,8 @@
 import {
-  Component,
+  Component, effect,
   input,
   OnInit,
-  output
+  output, viewChild, ViewContainerRef
 } from '@angular/core'
 // // import { AppQuestion, QuestionType } from '../../../../core/app-lifecycle/questionnaire/models/question'
 // import { RadioInputComponent } from './input-field/radio-input/radio-input.component'
@@ -49,6 +49,11 @@ import {InfoScreenComponent} from './input-field/info-screen/info-screen.compone
 import {AppQuestion} from '../../../../../models/questionnaire';
 import {TimedTestComponent} from './input-field/timed-test/timed-test.component';
 import {AudioInputComponent} from './input-field/audio-input/audio-input.component';
+import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
+import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+// import {
+//   RadarOption
+// } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 
 @Component({
   selector: 'app-question',
@@ -96,7 +101,8 @@ import {AudioInputComponent} from './input-field/audio-input/audio-input.compone
 })
 export class QuestionComponent implements OnInit {
 
-  question = input.required<AppQuestion>()
+  question = input.required<AppQuestion>();
+  language = input.required<RadarOption>();
   // protocol = input.required<AppProtocol>()
   answer = input.required<AnswerWithTimeLog | undefined>();
   answers = input.required<Record<string, AnswerWithTimeLog[]>>();
@@ -114,6 +120,24 @@ export class QuestionComponent implements OnInit {
     QuestionType.RANGE,
     QuestionType.TIMED
   ]
+
+  host = viewChild('questionHost', { read: ViewContainerRef });
+  constructor() {
+    effect(() => this.loadQuestionEditor());
+  }
+
+  private loadQuestionEditor(): void {
+    const host = this.host();
+    if (!host) return;
+
+    host.clear();
+    const componentType = QUESTION_COMPONENTS[this.question().field_type];
+    const componentRef = host.createComponent(componentType);
+    componentRef.instance.type = 'preview';
+    componentRef.instance.language = this.language;
+    componentRef.instance.entity = this.question;
+    componentRef.instance.answer = this.answer;
+  }
 
   ngOnInit(): void {
     /** Set question edit-ability based on the assessment settings */
