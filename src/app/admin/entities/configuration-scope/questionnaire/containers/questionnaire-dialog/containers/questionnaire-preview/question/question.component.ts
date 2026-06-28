@@ -103,7 +103,6 @@ export class QuestionComponent implements OnInit {
 
   question = input.required<AppQuestion>();
   language = input.required<RadarOption>();
-  // protocol = input.required<AppProtocol>()
   answer = input.required<AnswerWithTimeLog | undefined>();
   answers = input.required<Record<string, AnswerWithTimeLog[]>>();
 
@@ -137,6 +136,12 @@ export class QuestionComponent implements OnInit {
     componentRef.instance.language = this.language;
     componentRef.instance.entity = this.question;
     componentRef.instance.answer = this.answer;
+
+    componentRef.instance.previewValueChange.subscribe((value: any) => {
+      console.log('Child emitted value:', value);
+      this.emitAnswer(value);
+      // this.selectionChange.emit(value);
+    });
   }
 
   ngOnInit(): void {

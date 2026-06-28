@@ -66,7 +66,22 @@
                            [value]="dialogData.entity.section_header"/>
     </div>
 
+    <div>
+    <div>
+      <label for="" class="text-sm">{{ `${_prefix}.questionRequiredLabel` | translate }}</label>
+    </div>
+    <mat-slide-toggle formControlName="required_field"/>
+    </div>
+
     <ng-container #questionHost></ng-container>
+
+    <div class="mb-4">
+      <app-text-form-group [textGroup]="form.controls.field_note"
+                           label="Field Note"
+                           [textarea]="true"
+                           [textareaAutosize]="true"
+                           [value]="dialogData.entity.field_note"/>
+    </div>
 
       @if ((dialogData.index ?? 0) > 0) {
         <div class="flex items-center justify-between">

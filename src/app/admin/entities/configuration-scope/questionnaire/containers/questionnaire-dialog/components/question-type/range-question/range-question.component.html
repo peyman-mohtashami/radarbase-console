@@ -32,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language()!.id] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -66,15 +66,53 @@
     </div>
   }
   @case ('form') {
-    <app-question-choices-form-array [choices]="choices"  [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations"></app-question-choices-form-array>
-<!--    [languages]="languages" [language]="language()"-->
+    <app-question-choices-form-array [choices]="choices"
+                                     [index]="index"
+                                     [_choices]="entity().select_choices_or_calculations" />
 
+    <div>
+      <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
+    </div>
     <mat-slide-toggle [formControl]="show_selected_label" />
 
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
 
+    <div class="flex flex-nowrap items-center">
+      @for (item of entity().select_choices_or_calculations; track item) {
+        <div
+          class="flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+          [class]="(selectedValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
+          (click)="onPreviewInputChange(item.code)">
+          <span class="ion-text-wrap text-center" [innerHtml]="(item.code) | replacePlaceholders"></span>
+        </div>
+      }
+    </div>
+
+    @if (!labelsDisabled() && entity().select_choices_or_calculations; as choices) {
+      <div class="flex justify-between mt-2">
+        <div class="w-1/2" [innerHtml]="choices[0].label[language().id] | replacePlaceholders"></div>
+        <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label[language().id] | replacePlaceholders"></div>
+      </div>
+    }
+
+    @if (!isPreviewDisabled) {
+      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+        Clear
+      </button>
+    }
+  }
+  @case ('logic') {
+    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
+        @for (option of entity().select_choices_or_calculations; track option.code) {
+          <mat-option [value]="option.code">
+            <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   }
 }
 

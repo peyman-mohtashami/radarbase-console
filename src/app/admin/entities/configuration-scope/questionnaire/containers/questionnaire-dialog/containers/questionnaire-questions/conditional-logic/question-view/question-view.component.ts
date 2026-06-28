@@ -27,12 +27,12 @@ export class QuestionViewComponent {
     host.clear();
     const componentType = QUESTION_COMPONENTS[this.question().field_type];
     const componentRef = host.createComponent(componentType);
-    componentRef.instance.type = 'cl-view';
+    componentRef.instance.type = 'logic';
     componentRef.instance.entity = this.question;
     componentRef.instance.value = this.conditionalLogicItem()?.value;
     componentRef.instance.operator = this.operator();
 
-    componentRef.instance.valueChange.subscribe((value: any) => {
+    componentRef.instance.logicValueChange.subscribe((value: any) => {
       console.log('Child emitted value:', value);
       this.selectionChange.emit(value);
     });

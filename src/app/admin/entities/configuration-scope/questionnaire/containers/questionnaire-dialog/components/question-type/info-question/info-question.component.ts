@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -9,6 +9,13 @@ import {AppQuestion} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
 } from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+import {MatCard, MatCardContent} from '@angular/material/card';
+import {
+  QuestionHeaderComponent
+} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'app-info-question',
@@ -17,18 +24,31 @@ import {
     TranslatePipe,
     MatIcon,
     QuestionChoicesFormArray,
+    MatCard,
+    MatCardContent,
+    QuestionHeaderComponent,
+    ReplacePlaceholdersPipe,
   ],
   templateUrl: './info-question.component.html'
 })
 export class InfoQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private dialogState = inject(QuestionnaireDialogStateService);
 
-  @Input({ required: true }) type!: 'form' | 'button'| 'preview';
-  @Input({ required: true }) language!:  InputSignal<RadarOption>;
+  @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
+  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) languages!: RadarOption[];
   @Input({ required: true }) index!: number;
+  @Input({ required: true }) value!: string;
+  @Input({ required: true }) operator!: string;
+  @Input({required: true}) answer!: InputSignal<{ value: string}>;
+
+  logicValueChange = output<string>();
+
+  protected isPreviewDisabled = false;
+  previewValueChange = output<string | null>();
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -39,9 +59,20 @@ export class InfoQuestionComponent implements OnInit {
         );
       }
     }
+    if (this.type === 'preview') {
+      this.onPreviewInputChange(`${Date.now()}`);
+    }
   }
 
   get choices(): FormArray {
     return this.form.get('select_choices_or_calculations') as FormArray;
+  }
+
+  protected onLogicInputChange(value: MatSelectChange<string>) {
+    this.logicValueChange.emit(value.value);
+  }
+
+  protected onPreviewInputChange(value: string | null) {
+    this.previewValueChange.emit(value);
   }
 }

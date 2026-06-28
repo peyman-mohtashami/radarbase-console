@@ -5,12 +5,12 @@ import {MatIcon} from '@angular/material/icon';
 import {
   RadarOption
 } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion, DEFAULT_LANGUAGE} from '../../../../../models/questionnaire';
+import {AppQuestion} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
 } from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
@@ -30,8 +30,6 @@ import {
     MatRadioButton,
     MatRadioGroup,
     MatFormField,
-    MatLabel,
-    MatInput,
     MatOption,
     MatSelect,
     MatButton,
@@ -44,20 +42,20 @@ export class RadioQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
 
-  @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'cl-view';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);// ?? DEFAULT_LANGUAGE);// InputSignal<RadarOption>;
-  // @Input({ required: true }) language!: InputSignal<RadarOption>;
+  @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
+  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) languages!: RadarOption[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;
-  @Input({required: true}) answer!: InputSignal<any>;
+  @Input({required: true}) answer!: InputSignal<{ value: string}>;
 
-  valueChange = output<any>();
-  protected isDisabled: unknown;
+  logicValueChange = output<string>();
 
+  protected isPreviewDisabled = false;
+  previewValueChange = output<string | null>();
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -74,21 +72,11 @@ export class RadioQuestionComponent implements OnInit {
     return this.form.get('select_choices_or_calculations') as FormArray;
   }
 
-  protected onInputChange(value: MatSelectChange) {
-    console.log('Class: RadioQuestionComponent, Function: onInputChange, Line 64 value' , value);
-    this.valueChange.emit(value.value);
+  protected onLogicInputChange(value: MatSelectChange<string>) {
+    this.logicValueChange.emit(value.value);
   }
 
-  onValueChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.valueChange.emit(value);
-  }
-
-  protected onPreviewReset() {
-
-  }
-
-  protected onPreviewInputChange(code: string) {
-
+  protected onPreviewInputChange(value: string | null) {
+    this.previewValueChange.emit(value);
   }
 }

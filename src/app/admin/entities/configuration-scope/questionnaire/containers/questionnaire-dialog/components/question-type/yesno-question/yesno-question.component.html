@@ -40,12 +40,39 @@
 <!--    }-->
   }
   @case ('form') {
-<!--    <app-question-choices-form-array [choices]="choices" [languages]="languages" [language]="language()" [index]="index"-->
-<!--                                     [_choices]="entity().select_choices_or_calculations"></app-question-choices-form-array>-->
-
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
 
+    <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
+      <div>
+        <mat-radio-button [value]="'1'" (click)="onPreviewInputChange('1')" [disabled]="isPreviewDisabled">
+          <span class="ion-text-wrap">{{ 'Yes' | translate }}</span>
+        </mat-radio-button>
+      </div>
+      <div>
+        <mat-radio-button [value]="'0'" (click)="onPreviewInputChange('0')" [disabled]="isPreviewDisabled">
+          <span class="ion-text-wrap">{{ 'No' | translate }}</span>
+        </mat-radio-button>
+      </div>
+    </mat-radio-group>
+    @if (!isPreviewDisabled) {
+      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+        Clear
+      </button>
+    }
+  }
+  @case ('logic') {
+    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
+        <mat-option [value]="'1'">
+          <p>[1]: {{ `${_prefix}.yes` | translate }}</p>
+        </mat-option>
+        <mat-option [value]="'0'">
+          <p>[0]: {{ `${_prefix}.no` | translate }}</p>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   }
 }
 

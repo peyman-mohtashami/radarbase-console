@@ -34,6 +34,7 @@ import {
   ConditionalLogicDialogComponent
 } from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-question-dialog',
@@ -51,7 +52,8 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
     MatIcon,
     MatSelect,
     MatOption,
-    TextFormGroupComponent
+    TextFormGroupComponent,
+    MatSlideToggle
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -83,6 +85,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     field_type: new FormControl({value: '', disabled: true}, {validators: [CustomValidator.requiredValidator], nonNullable: true}),
     field_label: new FormGroup({}, {validators: [CustomValidator.requiredValidator]}),
     section_header: new FormGroup({}),
+    required_field: new FormControl('true', {nonNullable: true}),
+    field_note: new FormGroup({}),
     branching_logic: new FormControl<string>('', {nonNullable: true}),
   });
 

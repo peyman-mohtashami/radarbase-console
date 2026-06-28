@@ -4,8 +4,73 @@
   @case ('button') {
   }
   @case ('form') {
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionDateTypeLabel` | translate }}</label>
+    <mat-form-field class='small-input w-full! grow-0' appearance='outline' subscriptSizing="dynamic">
+      <mat-select [formControl]="date_type">
+        <mat-option [value]="'date'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.date' | translate }}</mat-option>
+        <mat-option [value]="'time'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.time' | translate }}</mat-option>
+        <mat-option [value]="'datetime'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.datetime' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <fieldset class="p-2 rounded-sm border flex gap-2">
+      <div>
+        <div>
+          <label for="text_validation_min"
+                 class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+        </div>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="text_validation_max" matInput [formControl]='date_min' type="number"/>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <div>
+          <label for="text_validation_max"
+                 class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+        </div>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="text_validation_max" matInput [formControl]='date_max' type="number"/>
+        </mat-form-field>
+      </div>
+    </fieldset>
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
+
+    <mat-form-field class="small-input w-1/2" appearance='outline'>
+<!--      <mat-label>Choose a date</mat-label>-->
+      <input [value]="previewDateValue"
+             matInput
+             [matDatepicker]="picker"
+             (dateChange)="onPreviewInputChange($event)"/>
+<!--      <input matInput [matDatepicker]="picker" -->
+<!--             (dateInput)="onDateChange($event)"-->
+<!--             (dateChange)="onDateChange($event)">-->
+<!--      <mat-hint>MM/DD/YYYY</mat-hint>-->
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+<!--    <button matButton="elevated" (click)="picker.open()">Open</button>-->
+
+    @if (!isPreviewDisabled) {
+      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+        Clear
+      </button>
+    }
+  }
+  @case ('logic') {
+    <div>
+      <mat-form-field class='small-input w-1/2' appearance='outline'>
+        <input [value]="logicDateValue"
+               matInput
+               [matDatepicker]="picker"
+               (dateChange)="onLogicInputChange($event)"/>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
   }
 }
 

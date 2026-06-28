@@ -41,4 +41,8 @@ export class QuestionnaireActionsComponent {
       fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
     }).then()
   }
+
+  onDuplicate() {
+
+  }
 }

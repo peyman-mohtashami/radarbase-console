@@ -1,4 +1,4 @@
-import {Component, input, Input, output} from '@angular/core';
+import {Component, input, Input, OnInit, output} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
@@ -16,15 +16,21 @@ import {AppQuestion} from '../../../../../../models/questionnaire';
     TagComponent,
   ],
 })
-export class ConditionalLogicItemsComponent {
+export class ConditionalLogicItemsComponent implements OnInit {
   @Input() conditionalLogicItems: ConditionalLogicItem[] = [];
   questions = input.required<AppQuestion[]>();
   selectedIndex = input.required<number>();
 
   itemsEvent = output<ConditionalLogicItem[]>();
 
+  _conditionalLogicItems: ConditionalLogicItem[] = [];
+
+  ngOnInit() {
+    this._conditionalLogicItems = [...this.conditionalLogicItems];
+  }
+
   addItem(index: number) {
-    this.conditionalLogicItems.splice(index + 1, 0, {
+    this._conditionalLogicItems.splice(index + 1, 0, {
       operand: '',
       operator: '',
       value: ''
@@ -32,8 +38,8 @@ export class ConditionalLogicItemsComponent {
   }
 
   removeItem(index: number) {
-    this.conditionalLogicItems.splice(index, 1);
-    this.itemsEvent.emit(this.conditionalLogicItems);
+    this._conditionalLogicItems.splice(index, 1);
+    this.itemsEvent.emit(this._conditionalLogicItems);
   }
 
   protected onItemChange(event: ConditionalLogicItem, index: number) {

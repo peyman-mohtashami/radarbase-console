@@ -1,6 +1,11 @@
 @if (isExpanded()) {
   <div class="flex items-center">
     <button class="tiny"
+            mat-icon-button color="primary" [matTooltip]="`ADMIN.${entityName}.duplicate` | translate"
+            (click)='onDuplicate()'>
+      <mat-icon class="material-symbols-outlined text-xl!">content_copy</mat-icon>
+    </button>
+    <button class="tiny"
             mat-icon-button color="primary" [matTooltip]="`ADMIN.${entityName}.edit` | translate"
             (click)='onAction(DialogMode.EDIT)'>
       <mat-icon class="material-symbols-outlined text-xl!">edit</mat-icon>

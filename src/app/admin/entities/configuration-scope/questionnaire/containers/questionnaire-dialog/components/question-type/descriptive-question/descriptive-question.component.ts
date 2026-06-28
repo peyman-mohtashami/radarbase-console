@@ -1,34 +1,52 @@
-import {Component, inject, Input, InputSignal, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatIcon} from '@angular/material/icon';
+import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {
   RadarOption
 } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppQuestion} from '../../../../../models/questionnaire';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {MatSelectChange} from '@angular/material/select';
 import {
-  QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+  QuestionHeaderComponent
+} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
   selector: 'app-descriptive-question',
   imports: [
     ReactiveFormsModule,
-    TranslatePipe,
-    MatIcon,
-    QuestionChoicesFormArray,
+    QuestionHeaderComponent,
   ],
   templateUrl: './descriptive-question.component.html'
 })
 export class DescriptiveQuestionComponent implements OnInit {
-  private fb = inject(FormBuilder);
+  private dialogState = inject(QuestionnaireDialogStateService);
 
-  @Input({ required: true }) type!: 'form' | 'button'| 'preview';
-  @Input({ required: true }) language!:  InputSignal<RadarOption>;
+  @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
+  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) languages!: RadarOption[];
   @Input({ required: true }) index!: number;
+  @Input({ required: true }) value!: string;
+  @Input({ required: true }) operator!: string;
+  @Input({required: true}) answer!: InputSignal<{ value: string}>;
 
-  ngOnInit(): void {}
+  logicValueChange = output<string>();
+
+  protected isPreviewDisabled = false;
+  previewValueChange = output<string | null>();
+
+  ngOnInit(): void {
+    if (this.type === 'preview') {
+      this.onPreviewInputChange(`${Date.now()}`);
+    }
+  }
+
+  protected onLogicInputChange(value: MatSelectChange<string>) {
+    this.logicValueChange.emit(value.value);
+  }
+
+  protected onPreviewInputChange(value: string | null) {
+    this.previewValueChange.emit(value);
+  }
 }

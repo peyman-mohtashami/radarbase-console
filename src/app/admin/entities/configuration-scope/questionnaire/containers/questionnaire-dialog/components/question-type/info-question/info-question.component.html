@@ -69,12 +69,20 @@
     <app-question-choices-form-array [choices]="choices"
                                      [index]="index"
                                      [_choices]="entity().select_choices_or_calculations"/>
-<!--    [languages]="languages"-->
-<!--      [language]="language()"-->
-
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
 
+    <div class="flex flex-col h-full gap-2">
+      @for (item of entity().select_choices_or_calculations; track item.code) {
+        <mat-card>
+          <mat-card-content>
+            <p class="text-sm!">{{ item.code }}</p>
+            <p class="text-base! pb-32 text-black" [innerHtml]="item.label[language().id] | replacePlaceholders"></p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
   }
 }
 

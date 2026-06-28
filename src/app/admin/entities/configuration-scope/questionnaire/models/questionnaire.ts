@@ -104,6 +104,9 @@ export interface AppQuestion {
   branching_logic?: string;
   show_selected_label?: boolean;
   multi_line?: boolean;
+  date_min?: string;
+  date_max?: string;
+  date_type?: string;
   valid?: boolean;
 }
 

@@ -10,10 +10,6 @@
     </div>
   }
   @case ('form') {
-<!--    <app-question-choices-form-array [choices]="choices" [languages]="languages" [language]="language()" [index]="index"-->
-<!--                                     [_choices]="entity().select_choices_or_calculations"></app-question-choices-form-array>-->
-<!--    <app-range-form-group formControlName="range"/>-->
-
     <label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }}</label>
     <fieldset [formGroup]="range" class="p-2 rounded-sm border">
       <div class="grid grid-cols-3 gap-4">
@@ -74,11 +70,52 @@
           </mat-form-field>
         </div>
       </div>
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <app-text-form-group class='small-input grow'
+                             [textGroup]="asFormGroup(range.controls['labelLeft'])"
+                             label="Min Label"/>
+
+        <app-text-form-group class='small-input grow'
+                             [textGroup]="asFormGroup(range.controls['labelRight'])"
+                             label="Max Label"/>
+      </div>
     </fieldset>
 
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
 
+    @if (entity().range; as range) {
+      <mat-slider class="w-full! m-0!"
+                  [disabled]="isPreviewDisabled"
+                  [max]="range.max"
+                  [min]="range.min"
+                  [step]="range.step ?? 1"
+                  [discrete]="true"
+                  [showTickMarks]="true"
+                  color="primary">
+        <input matSliderThumb [value]="+(answer()?.value ?? range.min)" (valueChange)="onPreviewInputChange($event)">
+      </mat-slider>
+
+      <div class="flex justify-between text-sm">
+        <div class="w-1/2" [innerHtml]="range.labelLeft?.[language()!.id] | replacePlaceholders"></div>
+        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[language()!.id] | replacePlaceholders"></div>
+      </div>
+    }
+
+    @if (!isPreviewDisabled) {
+      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+        Clear
+      </button>
+    }
+
+  }
+  @case ('logic') {
+    <div class="">
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput (input)="onLogicInputChange($event)" [value]="value" required type="number">
+      </mat-form-field>
+    </div>
   }
 }
 

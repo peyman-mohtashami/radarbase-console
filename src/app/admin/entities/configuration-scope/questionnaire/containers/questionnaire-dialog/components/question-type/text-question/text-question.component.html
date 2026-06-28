@@ -4,16 +4,40 @@
   @case ('button') {
     <div class="flex gap-2">
       <span class="text-neutral-500">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</span>
-      <span>{{entity().multi_line ? 'Yes' : 'No'}}</span>
+      <span>{{ entity().multi_line ? 'Yes' : 'No' }}</span>
     </div>
   }
   @case ('form') {
     <div>
-    <label for="" class="text-sm">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</label>
+      <label for="" class="text-sm">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</label>
     </div>
-    <mat-slide-toggle [formControl]="multi_line" />
+    <mat-slide-toggle [formControl]="multi_line"/>
   }
   @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
+
+    <mat-form-field subscriptSizing="fixed" appearance="outline">
+    <input matInput maxlength="256" [value]="answer()?.value" [disabled]="isPreviewDisabled"
+           (input)="onPreviewInputChange($event)"
+           [type]="'text'">
+  </mat-form-field>
+
+  @if (error) {
+    <p class="text-red-700">{{ error }}</p>
+  }
+
+  @if (!isPreviewDisabled) {
+    <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+      Clear
+    </button>
+  }
+  }
+  @case ('logic') {
+    <div class="">
+      <mat-form-field class='small-input' appearance='outline'>
+        <input matInput (input)="onLogicInputChange($event)" [value]="value" required>
+      </mat-form-field>
+    </div>
   }
 }
 

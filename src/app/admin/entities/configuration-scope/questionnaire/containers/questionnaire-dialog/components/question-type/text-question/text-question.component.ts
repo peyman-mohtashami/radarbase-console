@@ -1,36 +1,52 @@
-import {Component, inject, Input, InputSignal, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatIcon} from '@angular/material/icon';
 import {
   RadarOption
 } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppQuestion} from '../../../../../models/questionnaire';
-import {
-  QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatFormField, MatInput} from '@angular/material/input';
+import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {MatButton} from '@angular/material/button';
+import {
+  QuestionHeaderComponent
+} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
   selector: 'app-text-question',
   imports: [
     ReactiveFormsModule,
     TranslatePipe,
-    MatIcon,
-    QuestionChoicesFormArray,
     MatSlideToggle,
+    MatFormField,
+    MatInput,
+    MatButton,
+    QuestionHeaderComponent,
   ],
   templateUrl: './text-question.component.html'
 })
 export class TextQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private dialogState = inject(QuestionnaireDialogStateService);
 
-  @Input({ required: true }) type!: 'form' | 'button'| 'preview';
-  @Input({ required: true }) language!:  InputSignal<RadarOption>;
+
+  @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
+  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) languages!: RadarOption[];
   @Input({ required: true }) index!: number;
+  @Input({ required: true }) value!: string;
+  @Input({ required: true }) operator!: string;
+  @Input({required: true}) answer!: InputSignal<{ value: string}>;
+
+  logicValueChange = output<string>();
+
+  protected isPreviewDisabled = false;
+  previewValueChange = output<string | null>();
+
+  protected error: any;
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -45,5 +61,19 @@ export class TextQuestionComponent implements OnInit {
 
   get multi_line(): FormControl {
     return this.form.get('multi_line') as FormControl;
+  }
+
+  protected onLogicInputChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.logicValueChange.emit(value);
+  }
+
+  protected onPreviewInputChange(event: Event | null) {
+    if (event === null) {
+      this.previewValueChange.emit(null);
+      return;
+    }
+    const value = (event.target as HTMLInputElement).value;
+    this.previewValueChange.emit(value);
   }
 }
