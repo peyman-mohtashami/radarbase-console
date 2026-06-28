@@ -1,0 +1,85 @@
+@use '@angular/material' as mat;
+
+@use './palettes';
+@use './app-tokens';
+@use './material/button';
+@use './material/card';
+//@use './material/icon-buttons';
+//@use './material/form-fields';
+@use './material/toolbar';
+//@use './material/table';
+//@use './material/dialog';
+//@use './material/menu';
+//@use './material/select';
+//@use './material/tooltip';
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: palettes.$primary-palette,
+    tertiary: palettes.$primary-palette,//mat.$cyan-palette,
+    use-system-variables: true,
+  ),
+  typography: (
+    plain-family: Inter var, //sans-serif, //Roboto,
+    //brand-family: Open Sans,
+    //bold-weight: 900,
+    //medium-weight: 500,
+    //regular-weight: 300,
+    use-system-variables: true,
+  ),
+  density: (
+    scale: -2,
+  ),
+));
+
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$spring-green-palette,
+    tertiary: mat.$blue-palette,
+    use-system-variables: true,
+  ),
+  typography: (
+    plain-family: Inter var, //sans-serif, //Roboto,
+    //brand-family: Open Sans,
+    //bold-weight: 900,
+    //medium-weight: 500,
+    //regular-weight: 300,
+    use-system-variables: true,
+  ),
+  density: (
+    scale: -2,
+  ),
+));
+
+:root {
+  @include mat.all-component-themes($theme);
+  //@include mat.system-level-colors($theme);
+  //@include mat.system-level-typography($theme);
+  //@include mat.system-level-shape($theme, (
+  //  corner-small: 4px,
+  //));
+  @include mat.system-level-shape($theme);
+  @include mat.system-level-elevation($theme);
+  @include mat.system-level-state($theme);
+
+  @include app-tokens.tokens();
+
+  @include button.overrides();
+  @include card.overrides();
+  //@include icon-buttons.theme();
+  //@include form-fields.theme();
+  @include toolbar.overrides();
+  //@include table.theme();
+  //@include dialog.theme();
+  //@include menu.theme();
+  //@include select.theme();
+  //@include tooltip.theme();
+}
+
+.dark {
+  @include mat.all-component-colors($dark-theme);
+}

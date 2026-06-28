@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.icon-overrides((
+    // Color
+    color: inherit,
+  ));
+}

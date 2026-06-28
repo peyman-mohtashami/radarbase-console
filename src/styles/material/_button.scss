@@ -1,0 +1,294 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.fab-overrides((
+    // Base
+    container-shape: var(--mat-sys-corner-large),
+    extended-container-height: 56px,
+    extended-container-shape: var(--mat-sys-corner-large),
+    small-container-shape: var(--mat-sys-corner-medium),
+    //touch-target-display,
+    touch-target-size: 48px,
+    small-touch-target-size: 48px,
+    // Color
+    container-color: var(--mat-sys-primary-container),
+    container-elevation-shadow: var(--mat-sys-level3),
+    disabled-state-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    disabled-state-foreground-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    extended-container-elevation-shadow: var(--mat-sys-level3),
+    extended-focus-container-elevation-shadow: var(--mat-sys-level3),
+    extended-hover-container-elevation-shadow: var(--mat-sys-level4),
+    extended-pressed-container-elevation-shadow: var(--mat-sys-level3),
+    focus-container-elevation-shadow: var(--mat-sys-level3),
+    focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    foreground-color: var(--mat-sys-on-primary-container),
+    hover-container-elevation-shadow: var(--mat-sys-level4),
+    hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    pressed-container-elevation-shadow: var(--mat-sys-level3),
+    pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    ripple-color: color-mix(in srgb, var(--mat-sys-on-primary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    small-container-color: var(--mat-sys-primary-container),
+    small-container-elevation-shadow : var(--mat-sys-level3),
+    small-disabled-state-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    small-disabled-state-foreground-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    small-focus-container-elevation-shadow: var(--mat-sys-level3),
+    small-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    small-foreground-color: var(--mat-sys-on-primary-container),
+    small-hover-container-elevation-shadow: var(--mat-sys-level4),
+    small-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    small-pressed-container-elevation-shadow: var(--mat-sys-level3),
+    small-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    small-ripple-color: color-mix(in srgb, var(--mat-sys-on-primary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    small-state-layer-color: var(--mat-sys-on-primary-container),
+    state-layer-color: var(--mat-sys-on-primary-container),
+    //disabled-state-layer-color,
+    //small-disabled-state-layer-color,
+    // Typography
+    extended-label-text-font: var(--mat-sys-label-large-font),
+    extended-label-text-size: var(--mat-sys-label-large-size),
+    extended-label-text-tracking: var(--mat-sys-label-large-tracking),
+    extended-label-text-weight: var(--mat-sys-label-large-weight),
+    // Density
+    //small-touch-target-display,
+    touch-target-display: block,
+  ));
+
+  @include mat.icon-button-overrides((
+    // Base
+    icon-size: 24px,
+    container-shape: var(--mat-sys-corner-full),
+    touch-target-size: 48px,
+    // Color
+    disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    icon-color: var(--mat-sys-on-surface-variant),
+    pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    ripple-color: color-mix(in srgb, var(--mat-sys-on-surface-variant) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    state-layer-color: var(--mat-sys-on-surface-variant),
+    // Density
+    touch-target-display: block,
+    state-layer-size: 40px,
+  ));
+
+  .mat-mdc-icon-button.small {
+    @include mat.icon-button-overrides((
+      icon-size: 16px,
+      container-shape: var(--mat-sys-corner-full),
+      touch-target-size: 32px,
+    ));
+  }
+
+  .primary .mat-mdc-icon-button {
+    @include mat.icon-button-overrides((
+      //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+      //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+      //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+      //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+      icon-color: var(--mat-sys-on-primary),
+      //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+      ripple-color: color-mix(in srgb, var(--mat-sys-on-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      state-layer-color: var(--mat-sys-on-primary),
+    ));
+  }
+
+  .tertiary .mat-mdc-icon-button {
+    @include mat.icon-button-overrides((
+      //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+      //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+      //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+      //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+      icon-color: var(--mat-sys-on-tertiary),
+      //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+      ripple-color: color-mix(in srgb, var(--mat-sys-on-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      state-layer-color: var(--mat-sys-on-tertiary),
+    ));
+  }
+
+  @include mat.button-overrides((
+    // Base
+    filled-container-shape: var(--mat-sys-corner-full),
+    filled-horizontal-padding: 24px,
+    filled-icon-offset: -8px,
+    filled-icon-spacing: 8px,
+    //filled-label-text-transform,
+    filled-touch-target-size: 48px,
+    outlined-container-shape: var(--mat-sys-corner-full),
+    outlined-horizontal-padding: 24px,
+    outlined-icon-offset: -8px,
+    outlined-icon-spacing: 8px,
+    outlined-outline-width: 1px,
+    //outlined-label-text-transform,
+    outlined-touch-target-size: 48px,
+    protected-container-shape: var(--mat-sys-corner-full),
+    protected-horizontal-padding: 24px,
+    protected-icon-offset: -8px,
+    protected-icon-spacing: 8px,
+    //protected-label-text-transform,
+    protected-touch-target-size: 48px,
+    text-container-shape: var(--mat-sys-corner-full),
+    text-horizontal-padding: 12px,
+    text-icon-offset: -4px,
+    text-icon-spacing: 8px,
+    text-with-icon-horizontal-padding: 16px,
+    //text-label-text-transform,
+    text-touch-target-size: 48px,
+    tonal-container-shape: var(--mat-sys-corner-full),
+    tonal-horizontal-padding: 24px,
+    tonal-icon-offset: -8px,
+    tonal-icon-spacing: 8px,
+    //tonal-label-text-transform,
+    tonal-touch-target-size: 48px,
+    // Color
+    filled-container-color: var(--mat-sys-primary),
+    filled-disabled-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    filled-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    filled-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    filled-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    filled-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    filled-label-text-color: var(--mat-sys-on-primary),
+    filled-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    filled-ripple-color: color-mix(in srgb, var(--mat-sys-on-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    //filled-progress-active-indicator-color: var(--mat-sys-on-primary),
+    filled-state-layer-color: var(--mat-sys-on-primary),
+    outlined-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    outlined-disabled-outline-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    outlined-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    outlined-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    outlined-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    outlined-label-text-color: var(--mat-sys-primary),
+    outlined-outline-color: var(--mat-sys-outline),
+    outlined-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    outlined-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    outlined-state-layer-color: var(--mat-sys-primary),
+    protected-container-color: var(--mat-sys-surface),
+    protected-container-elevation-shadow: var(--mat-sys-level1),
+    protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    protected-disabled-container-elevation-shadow: var(--mat-sys-level0),
+    protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    protected-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    protected-focus-container-elevation-shadow: var(--mat-sys-level1),
+    protected-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    protected-hover-container-elevation-shadow: var(--mat-sys-level2),
+    protected-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    protected-label-text-color: var(--mat-sys-primary),
+    protected-pressed-container-elevation-shadow: var(--mat-sys-level1),
+    protected-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    protected-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    protected-state-layer-color: var(--mat-sys-primary),
+    text-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    text-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    text-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    text-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    text-label-text-color: var(--mat-sys-primary),
+    text-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    text-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    text-state-layer-color: var(--mat-sys-primary),
+    tonal-container-color: var(--mat-sys-secondary-container),
+    tonal-disabled-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    tonal-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    tonal-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    tonal-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    tonal-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    tonal-label-text-color: var(--mat-sys-on-secondary-container),
+    tonal-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    tonal-ripple-color: color-mix(in srgb, var(--mat-sys-on-secondary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    tonal-state-layer-color: var(--mat-sys-on-secondary-container),
+    // Typography
+    filled-label-text-font: var(--mat-sys-label-large-font),
+    filled-label-text-size: var(--mat-sys-label-large-size),
+    filled-label-text-tracking: var(--mat-sys-label-large-tracking),
+    filled-label-text-weight: var(--mat-sys-label-large-weight),
+    outlined-label-text-font: var(--mat-sys-label-large-font),
+    outlined-label-text-size: var(--mat-sys-label-large-size),
+    outlined-label-text-tracking: var(--mat-sys-label-large-tracking),
+    outlined-label-text-weight: var(--mat-sys-label-large-weight),
+    protected-label-text-font: var(--mat-sys-label-large-font),
+    protected-label-text-size: var(--mat-sys-label-large-size),
+    protected-label-text-tracking: var(--mat-sys-label-large-tracking),
+    protected-label-text-weight: var(--mat-sys-label-large-weight),
+    text-label-text-font: var(--mat-sys-label-large-font),
+    text-label-text-size: var(--mat-sys-label-large-size),
+    text-label-text-tracking: var(--mat-sys-label-large-tracking),
+    text-label-text-weight: var(--mat-sys-label-large-weight),
+    tonal-label-text-font: var(--mat-sys-label-large-font),
+    tonal-label-text-size: var(--mat-sys-label-large-size),
+    tonal-label-text-tracking: var(--mat-sys-label-large-tracking),
+    tonal-label-text-weight: var(--mat-sys-label-large-weight),
+    // Density
+    filled-touch-target-display: block,
+    filled-container-height: 40px,
+    outlined-container-height: 40px,
+    outlined-touch-target-display: block,
+    protected-touch-target-display: block,
+    protected-container-height: 40px,
+    text-touch-target-display: block,
+    text-container-height: 40px,
+    tonal-container-height: 40px,
+    tonal-touch-target-display: block,
+
+    ///// ----
+    //outlined-container-shape: 8px, //var(--mat-sys-corner-full),
+    ////outlined-horizontal-padding: 24px,
+    ////outlined-icon-offset: -8px,
+    ////outlined-icon-spacing: 8px,
+    //outlined-outline-width: 2px, //1px
+    ////outlined-label-text-transform:
+    ////outlined-touch-target-size: 48px,
+    ////outlined-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    ////outlined-disabled-outline-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    ////outlined-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+    ////outlined-focus-state-layer-opacity:	var(--mat-sys-focus-state-layer-opacity),
+    ////outlined-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    ////outlined-label-text-color: var(--mat-sys-primary),
+    //outlined-outline-color: var(--mat-sys-outline),
+    ////outlined-pressed-state-layer-opacity:	var(--mat-sys-pressed-state-layer-opacity),
+    ////outlined-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    ////outlined-state-layer-color: var(--mat-sys-primary),
+    ////outlined-label-text-font: var(--mat-sys-label-large-font),
+    ////outlined-label-text-size: var(--mat-sys-label-large-size),
+    ////outlined-label-text-tracking:	var(--mat-sys-label-large-tracking),
+    ////outlined-label-text-weight: var(--mat-sys-label-large-weight),
+    ////outlined-container-height: 40px,
+    ////outlined-touch-target-display: block,
+  ));
+
+  .mat-mdc-outlined-button {
+    &.primary {
+      @include mat.button-overrides((
+        outlined-outline-color: var(--mat-sys-primary), //var(--mat-sys-outline),
+      ));
+    }
+
+    &.tertiary {
+      @include mat.button-overrides((
+        outlined-label-text-color: var(--mat-sys-tertiary),
+        outlined-outline-color: var(--mat-sys-tertiary), //var(--mat-sys-outline),
+        outlined-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+        outlined-ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+        outlined-state-layer-color: var(--mat-sys-tertiary),
+      ));
+    }
+
+    &.error {
+      @include mat.button-overrides((
+        outlined-label-text-color: var(--mat-sys-error),
+        outlined-outline-color: var(--mat-sys-error), //var(--mat-sys-outline),
+        outlined-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+        outlined-ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+        outlined-state-layer-color: var(--mat-sys-error),
+      ));
+    }
+
+    &.success {
+      @include mat.button-overrides((
+        outlined-label-text-color: var(--mat-sys-success),
+        outlined-outline-color: var(--mat-sys-success), //var(--mat-sys-outline),
+        outlined-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+        outlined-ripple-color: color-mix(in srgb, var(--mat-sys-success) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+        outlined-state-layer-color: var(--mat-sys-success),
+      ));
+    }
+  }
+}

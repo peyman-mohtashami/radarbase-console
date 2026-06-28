@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.paginator-overrides((
+    // Base
+    page-size-select-width: 84px,
+    page-size-select-touch-target-height: 48px,
+    // Color
+    container-text-color: var(--mat-sys-on-surface),
+    container-background-color: var(--mat-sys-surface),
+    disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    enabled-icon-color: var(--mat-sys-on-surface-variant),
+    // Typography
+    container-text-font: var(--mat-sys-body-small-font),
+    container-text-line-height: var(--mat-sys-body-small-line-height),
+    container-text-size: var(--mat-sys-body-small-size),
+    container-text-tracking: var(--mat-sys-body-small-tracking),
+    container-text-weight: var(--mat-sys-body-small-weight),
+    select-trigger-text-size: var(--mat-sys-body-small-size),
+    // Density
+    container-size: 56px,
+    form-field-container-height: 40px,
+    form-field-container-vertical-padding: 8px,
+    touch-target-display: block,
+
+    //container-size: 32px, //56px,
+    //form-field-container-height: 24px, //40px,
+    //form-field-container-vertical-padding: 4px, //8px,
+    //touch-target-display: block,
+  ));
+}
+

@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.toolbar-overrides((
+    // Color
+    container-background-color: var(--mat-sys-surface),
+    container-text-color: var(--mat-sys-on-surface),
+    // Typography
+    title-text-font: var(--mat-sys-title-large-font),
+    title-text-line-height: var(--mat-sys-title-large-line-height),
+    title-text-size: var(--mat-sys-title-large-size),
+    title-text-tracking: var(--mat-sys-title-large-tracking),
+    title-text-weight: var(--mat-sys-title-large-weight),
+    // Density
+    standard-height: 64px,
+    mobile-height: 56px,
+  ));
+
+  mat-toolbar.primary {
+    @include mat.toolbar-overrides((
+      container-background-color: var(--mat-sys-primary),
+      container-text-color: var(--mat-sys-on-primary),
+    ));
+  }
+
+  mat-toolbar.tertiary {
+    @include mat.toolbar-overrides((
+      container-background-color: var(--mat-sys-tertiary),
+      container-text-color: var(--mat-sys-on-tertiary),
+    ));
+  }
+}
+

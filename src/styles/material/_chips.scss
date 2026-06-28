@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.card-overrides((
+    // Base
+    container-shape-radius: 8px,
+    disabled-container-opacity: 1,
+    elevated-container-color: transparent,
+    flat-selected-outline-width: 0,
+    outline-width: 1px,
+    trailing-action-focus-opacity: 1,
+    trailing-action-opacity: 1,
+    with-avatar-avatar-shape-radius: 24px,
+    with-avatar-avatar-size: 24px,
+    with-avatar-disabled-avatar-opacity: 0.38,
+    with-icon-disabled-icon-opacity: 0.38,
+    with-icon-icon-size: 18px,
+    with-trailing-icon-disabled-trailing-icon-opacity: 0.38,
+    // Color
+    disabled-label-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-outline-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    elevated-selected-container-color: var(--mat-sys-secondary-container),
+    flat-disabled-selected-container-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    focus-outline-color: var(--mat-sys-on-surface-variant),
+    focus-state-layer-color: var(--mat-sys-on-surface-variant),
+    focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    hover-state-layer-color: var(--mat-sys-on-surface-variant),
+    hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    label-text-color: var(--mat-sys-on-surface-variant),
+    outline-color: var(--mat-sys-outline),
+    selected-disabled-trailing-icon-color: var(--mat-sys-on-surface),
+    selected-focus-state-layer-color: var(--mat-sys-on-secondary-container),
+    selected-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    selected-hover-state-layer-color: var(--mat-sys-on-secondary-container),
+    selected-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    selected-label-text-color: var(--mat-sys-on-secondary-container),
+    selected-trailing-action-state-layer-color: var(--mat-sys-on-secondary-container),
+    selected-trailing-icon-color: var(--mat-sys-on-secondary-container),
+    trailing-action-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    trailing-action-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    trailing-action-state-layer-color: var(--mat-sys-on-surface-variant),
+    with-icon-disabled-icon-color: var(--mat-sys-on-surface),
+    with-icon-icon-color: var(--mat-sys-on-surface-variant),
+    with-icon-selected-icon-color: var(--mat-sys-on-secondary-container),
+    with-trailing-icon-disabled-trailing-icon-color: var(--mat-sys-on-surface),
+    with-trailing-icon-trailing-icon-color: var(--mat-sys-on-surface-variant),
+    //elevated-disabled-container-color,
+
+    // Typography
+    label-text-font: var(--mat-sys-label-large-font),
+    label-text-line-height: var(--mat-sys-label-large-line-height),
+    label-text-size: var(--mat-sys-label-large-size),
+    label-text-tracking: var(--mat-sys-label-large-tracking),
+    label-text-weight: var(--mat-sys-label-large-weight),
+    // Density
+    container-height: 32px,
+  ));
+}

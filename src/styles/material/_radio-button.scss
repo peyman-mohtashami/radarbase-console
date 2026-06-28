@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.tree-overrides((
+    // Base
+    disabled-unselected-icon-opacity: 0.38,
+    disabled-selected-icon-opacity: 0.38,
+    touch-target-size: 48px,
+    // Color
+    checked-ripple-color: var(--mat-sys-primary),
+    disabled-label-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-selected-icon-color: var(--mat-sys-on-surface),
+    disabled-unselected-icon-color: var(--mat-sys-on-surface),
+    label-text-color: var(--mat-sys-on-surface),
+    ripple-color: var(--mat-sys-on-surface),
+    selected-focus-icon-color: var(--mat-sys-primary),
+    selected-hover-icon-color: var(--mat-sys-primary),
+    selected-icon-color: var(--mat-sys-primary),
+    selected-pressed-icon-color: var(--mat-sys-primary),
+    unselected-focus-icon-color: var(--mat-sys-on-surface),
+    unselected-hover-icon-color: var(--mat-sys-on-surface),
+    unselected-icon-color: var(--mat-sys-on-surface-variant),
+    unselected-pressed-icon-color: var(--mat-sys-on-surface),
+    // Typography
+    label-text-font: var(--mat-sys-body-medium-font),
+    label-text-line-height: var(--mat-sys-body-medium-line-height),
+    label-text-size: var(--mat-sys-body-medium-size),
+    label-text-tracking: var(--mat-sys-body-medium-tracking),
+    label-text-weight: var(--mat-sys-body-medium-weight),
+    // Density
+    touch-target-display: block,
+    state-layer-size: 40px,
+  ))
+}
+
