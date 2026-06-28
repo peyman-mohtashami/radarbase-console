@@ -73,6 +73,7 @@
                                    (nextActionEvent)="nextAction($event)"/>
           } @else {
             <app-question [question]="item.value[0]"
+                          [language]="questionnaireStateService.defaultLanguage()"
                           [answers]="answers"
                           [answer]="answers[item.key]?.[0]"
                           (answerEvent)="onAnswer($event)"
