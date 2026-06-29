@@ -7,7 +7,7 @@
   <div class="w-full border border-primary hover:border-secondary/50 rounded px-4 py-1 mt-2 text-sm!"
        role="button"
        tabindex="0"
-       (click)='selectQuestion()'
+       (click)='selectQuestion($event)'
        [class]="entity().field_name === dialogState.selectedQuestion()?.field_name ? 'border-2 border-secondary!': ''">
     <div class="flex items-center gap-2 w-full justify-between mb-2">
       <div class="flex gap-2 items-center grow">
@@ -42,7 +42,8 @@
       </div>
     </div>
 
-    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {
+<!--    @if (entity().field_type !== 'singleSelectMatrix') {-->
+<!--    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {-->
       <div class="text-black">
         <div class="flex gap-2">
         @let field_label = entity().field_label?.[dialogState.selectedQuestionnaire()!.defaultLanguage!.id];
@@ -56,6 +57,9 @@
       </div>
         <ng-container #questionHost></ng-container>
       </div>
-    }
+<!--    }-->
+<!--    } @else {-->
+<!--      MATRIX-->
+<!--    }-->
   </div>
 </div>

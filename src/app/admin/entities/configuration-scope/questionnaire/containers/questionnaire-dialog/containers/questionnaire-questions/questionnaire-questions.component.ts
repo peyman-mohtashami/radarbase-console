@@ -9,8 +9,9 @@ import {QuestionDialogComponent} from './question-dialog/question-dialog.compone
 import {DialogMode} from '../../../../../../../base-entities/enums/dialog';
 import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {QuestionMatrixButtonComponent} from './question-matrix-button/question-matrix-button.component';
 
-type AppUiQuestion = AppQuestion & {
+export type AppUiQuestion = AppQuestion & {
   _dragId: string;
   valid?: boolean;
 };
@@ -24,6 +25,7 @@ type AppUiQuestion = AppQuestion & {
     QuestionButtonComponent,
     MatButton,
     CdkDrag,
+    QuestionMatrixButtonComponent,
   ],
   styles: `
     .cdk-drag-preview {
@@ -126,6 +128,7 @@ export class QuestionnaireQuestionsComponent implements OnInit {
       dialogRef.componentInstance.changeEvent.subscribe(
         (value) => {
           this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
+          console.log('Class: QuestionnaireQuestionsComponent, Function: , Line 131 this.questions' , this.questions);
           this.validEvent.emit(this.questions.every(q => q.valid));
           this.changeEvent.emit({questions: this.questions});
         }
@@ -134,5 +137,13 @@ export class QuestionnaireQuestionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       dialogActionSubscription.unsubscribe();
     });
+  }
+
+  protected onMatrixQuestionChange(index: number, value: Partial<AppQuestion>) {
+    console.log('^^^Class: QuestionnaireQuestionsComponent, Function: onMatrixQuestionChange, Line 143 value' , value);
+    this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
+    console.log('Class: QuestionnaireQuestionsComponent, Function: onMatrixQuestionChange, Line 146 this.questions' , this.questions);
+    this.validEvent.emit(this.questions.every(q => q.valid));
+    this.changeEvent.emit({questions: this.questions});
   }
 }

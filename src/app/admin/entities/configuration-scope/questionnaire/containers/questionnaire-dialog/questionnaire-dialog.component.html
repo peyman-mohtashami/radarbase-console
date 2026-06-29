@@ -28,8 +28,6 @@
           <app-questionnaire-general [questionnaires]="dialogData.questionnaireFullList | async"
                                      (changeEvent)="onEntityUpdate($event)"
                                      (valid)="onSectionValidEvent('general', $event)" />
-<!--          [entity]="entity()"-->
-
         </ng-template>
       </mat-tab>
 
@@ -43,8 +41,6 @@
         <ng-template matTabContent>
           <app-questionnaire-questions (changeEvent)="onEntityUpdate($event)"
                                        (validEvent)="onSectionValidEvent('questions', $event)" />
-<!--          [entity]="entity()!"-->
-
         </ng-template>
       </mat-tab>
 
@@ -60,8 +56,6 @@
         <ng-template matTabContent>
           <app-questionnaire-scheduling (changeEvent)="onEntityUpdate($event)"
                                         (valid)="onSectionValidEvent('scheduling', $event)" />
-<!--          [entity]="entity()"-->
-
         </ng-template>
       </mat-tab>
 
@@ -77,8 +71,6 @@
         <ng-template matTabContent>
           <app-questionnaire-custom-messages (changeEvent)="onEntityUpdate($event)"
                                              (valid)="onSectionValidEvent('customMessages', $event)" />
-<!--          [entity]="entity()"-->
-
         </ng-template>
       </mat-tab>
 
@@ -95,8 +87,6 @@
         <ng-template matTabContent>
           <app-questionnaire-notifications (changeEvent)="onEntityUpdate($event)"
                                            (valid)="onSectionValidEvent('notifications', $event)" />
-<!--          [entity]="entity()"-->
-
         </ng-template>
       </mat-tab>
 
@@ -112,8 +102,6 @@
         <ng-template matTabContent>
           <app-questionnaire-translation (changeEvent)="onEntityUpdate($event)"
                                          (valid)="onSectionValidEvent('translations', $event)" />
-<!--          [entity]="entity()"-->
-
         </ng-template>
       </mat-tab>
       <mat-tab [disabled]="!sectionsValidity.general">
@@ -130,7 +118,6 @@
         </ng-template>
         <ng-template matTabContent>
           <app-questionnaire-preview />
-<!--          [entity]="entity()"-->
         </ng-template>
       </mat-tab>
       <mat-tab [disabled]="!sectionsValidity.general">
@@ -150,11 +137,6 @@
     {{ error()?.error.errorCode | translate }}
   </app-error-message-box>
 }
-
-<!--<app-dialog-actions [dialogMode]='dialogData.mode'-->
-<!--                    [form]='form'-->
-<!--                    (actionTriggered)='onAction($event)'/>-->
-
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
@@ -192,7 +174,6 @@
               mat-raised-button
               color="primary"
               type="button">
-<!--        [disabled]='!form()?.valid || !form()?.dirty || isLoading'-->
         @if (isLoading) {
           <mat-icon>
             <mat-spinner diameter='20' />
@@ -207,7 +188,6 @@
               color="primary"
               mat-raised-button
               type="button" [disabled]="!sectionsValidity.general">
-<!--        [disabled]='!form()?.valid || isLoading'-->
         @if (isLoading) {
           <mat-icon>
             <mat-spinner diameter='20' />

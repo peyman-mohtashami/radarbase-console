@@ -42,13 +42,13 @@ export class RangeQuestionComponent implements OnInit {
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
   @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
-  @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
-  @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
-  @Input({ required: true }) index!: number;
-  @Input({ required: true }) value!: string;
-  @Input({ required: true }) operator!: string;
-  @Input({required: true}) answer!: InputSignal<{ value: string}>;
+  @Input({ required: true }) entity!: InputSignal<AppQuestion>;
+  @Input() form!: FormGroup;
+  @Input() languages!: RadarOption[];
+  @Input() index!: number;
+  @Input() value!: string;
+  @Input() operator!: string;
+  @Input() answer!: InputSignal<{ value: string}>;
 
   logicValueChange = output<string>();
 

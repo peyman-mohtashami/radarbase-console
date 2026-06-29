@@ -41,7 +41,8 @@ export class QuestionButtonComponent {
     this.removeEvent.emit();
   }
 
-  protected selectQuestion() {
+  protected selectQuestion(event: Event) {
+    event.stopPropagation();
     this.selectEvent.emit();
   }
 

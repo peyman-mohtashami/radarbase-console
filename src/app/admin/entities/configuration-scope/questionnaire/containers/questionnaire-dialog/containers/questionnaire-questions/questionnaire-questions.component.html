@@ -4,11 +4,11 @@
     <span class="font-bold">Question Types</span>
     @for (group of QUESTION_TYPES; track $index) {
       <div class="flex flex-col gap-2">
-      @for (type of group.types; track type.type) {
-        <button mat-stroked-button color="primary" (click)="addQuestion(type.type)" [disabled]="type.disabled">
-          <span class="text-base">{{ type.label }}</span>
-        </button>
-      }
+        @for (type of group.types; track type.type) {
+          <button mat-stroked-button color="primary" (click)="addQuestion(type.type)" [disabled]="type.disabled">
+            <span class="text-base">{{ type.label }}</span>
+          </button>
+        }
         <div class="h-px border-b-2 border-b-gray-300"></div>
       </div>
     }
@@ -23,10 +23,19 @@
             cdkDrag
             [cdkDragBoundary]="choicesContainer"
             cdkDragLockAxis="y">
-          <app-question-button [entity]="question"
-                               [index]="$index"
-                               (removeEvent)="removeQuestion(index)"
-                               (selectEvent)="onSelectQuestion(index, question)"/>
+            @if (question.field_type !== 'singleSelectMatrix') {
+              <app-question-button [entity]="question"
+                                   [index]="$index"
+                                   (removeEvent)="removeQuestion(index)"
+                                   (selectEvent)="onSelectQuestion(index, question)"/>
+            } @else {
+              <app-question-matrix-button [entity]="question"
+                                          [index]="$index"
+                                          (removeEvent)="removeQuestion(index)"
+                                          (selectEvent)="onSelectQuestion(index, question)"
+                                          (changeEvent)="onMatrixQuestionChange(index, $event)"/>
+              <!--              (validEvent)="onMatrixQuestionChange(index, question)"/>-->
+            }
           </div>
 
         }

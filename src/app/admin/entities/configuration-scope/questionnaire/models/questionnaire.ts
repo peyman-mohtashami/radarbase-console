@@ -107,6 +107,7 @@ export interface AppQuestion {
   date_min?: string;
   date_max?: string;
   date_type?: string;
+  subQuestions?: AppQuestion[];
   valid?: boolean;
 }
 

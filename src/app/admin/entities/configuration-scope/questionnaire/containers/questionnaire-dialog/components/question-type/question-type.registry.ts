@@ -12,6 +12,9 @@ import {AudioQuestionComponent} from './audio-question/audio-question.component'
 import {DurationQuestionComponent} from './duration-question/duration-question.component';
 import {TimedQuestionComponent} from './timed-question/timed-question.component';
 import {DatetimeQuestionComponent} from './datetime-question/datetime-question.component';
+import {
+  SingleSelectMatrixQuestionComponent
+} from './single-select-matrix-question/single-select-matrix-question.component';
 
 export enum QuestionType {
   RADIO = 'radio',
@@ -28,6 +31,7 @@ export enum QuestionType {
   TIMED = 'timed',
   AUDIO = 'audio',
   // MATRIX_RADIO = 'matrix-radio',
+  SINGLE_SELECT_MATRIX = 'singleSelectMatrix',
 }
 
 export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
@@ -44,6 +48,7 @@ export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
   [QuestionType.DURATION]: DurationQuestionComponent,
   [QuestionType.AUDIO]: AudioQuestionComponent,
   [QuestionType.TIMED]: TimedQuestionComponent,
+  [QuestionType.SINGLE_SELECT_MATRIX]: SingleSelectMatrixQuestionComponent,
 
 };
 
@@ -66,6 +71,8 @@ export const QUESTION_TYPES = [
       // {type: 'range-info', icon: '', label: 'RangeInfo', disabled: false},
       {type: 'rating', icon: '', label: 'Rating', disabled: true},
       {type: 'svgCheckbox', icon: '', label: 'SVG Checkbox', disabled: true},
+      {type: 'singleSelectMatrix', icon: '', label: 'Single Select Matrix', disabled: false},
+      {type: 'multiSelectMatrix', icon: '', label: 'Multi Select Matrix', disabled: true},
     ]
   },
   {
@@ -75,6 +82,7 @@ export const QUESTION_TYPES = [
       // {type: 'note', icon: '', label: 'Note', disabled: false},
       {type: 'datetime', icon: '', label: 'DateTime', disabled: false},
       {type: 'duration', icon: '', label: 'Duration', disabled: false},
+      {type: 'multiTextInput', icon: '', label: 'Multi Input', disabled: true},
     ]
   },
   {

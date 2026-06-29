@@ -1,0 +1,100 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<div class="flex gap-2 items-center">
+  <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center"
+       [class]="entity().field_name === dialogState.selectedQuestion()?.field_name ? 'bg-secondary': ''">
+    <span>{{ index() + 1 }}</span>
+  </div>
+  <div class="w-full border border-primary hover:border-secondary/50 rounded px-4 py-1 mt-2 text-sm!"
+       role="button"
+       tabindex="0"
+       (click)='selectQuestion()'
+       [class]="entity().field_name === dialogState.selectedQuestion()?.field_name ? 'border-2 border-secondary!': ''">
+    <div class="flex items-center gap-2 w-full justify-between mb-2">
+      <div class="flex gap-2 items-center grow">
+        <app-tag class="bg-secondary/20 text-primary cursor-pointer" [class]="!entity().field_name ? 'bg-red-500/20! text-red-500' : ''">
+          {{ entity().field_name || 'N/A' }}
+        </app-tag>
+      </div>
+      <div class="flex gap-2 items-center">
+        @if (entity().branching_logic) {
+          <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
+                    [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
+            rule
+          </mat-icon>
+        }
+
+        @if (!entity().valid) {
+          <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+            warning
+          </mat-icon>
+        }
+
+        <app-tag class="bg-secondary/20 text-primary">
+          {{ entity().field_type | uppercase }}
+        </app-tag>
+
+        <button class="tiny"
+                mat-icon-button color="warn"
+                (click)='removeQuestion($event)'>
+          <mat-icon class="material-symbols-outlined text-xl!">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <button (click)="addSubQuestion($event, 'range')">+ Add Range</button>
+    <button (click)="addSubQuestion($event, 'text')">+ Add Text</button>
+    <button (click)="addSubQuestion($event, 'number')">+ Add Number</button>
+    <button (click)="addSubQuestion($event, 'datetime')">+ Add Date</button>
+    <button (click)="addSubQuestion($event, 'radio')">+ Add Radio</button>
+
+
+    <div class="overflow-y-auto">
+      <div class="relative">
+<!--        <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>-->
+        <div #choicesContainer cdkDropList (cdkDropListDropped)="onDropSubQuestion($event)" cdkDropListOrientation="vertical">
+          @for (question of subQuestions; track question._dragId; let index = $index) {
+            <div
+              cdkDrag
+              [cdkDragBoundary]="choicesContainer"
+              cdkDragLockAxis="y">
+<!--              @if (question.field_type !== 'singleSelectMatrix') {-->
+                <app-question-button [entity]="question"
+                                     [index]="$index"
+                                     (removeEvent)="removeSubQuestion(index)"
+                                     (selectEvent)="onSelectSubQuestion(index, question)"/>
+<!--              } @else {-->
+<!--                <app-question-matrix-button [entity]="question"-->
+<!--                                            [index]="$index"-->
+<!--                                            (removeEvent)="removeQuestion(index)"-->
+<!--                                            (selectEvent)="onSelectQuestion(index, question)"/>-->
+<!--              }-->
+            </div>
+
+          }
+        </div>
+      </div>
+    </div>
+
+<!--    @if (entity().field_type !== 'singleSelectMatrix') {-->
+<!--    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {-->
+<!--      <div class="text-black">-->
+<!--        <div class="flex gap-2">-->
+<!--        @let field_label = entity().field_label?.[dialogState.selectedQuestionnaire()!.defaultLanguage!.id];-->
+<!--        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>-->
+<!--        <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>-->
+<!--      </div>-->
+<!--      <div class="flex gap-2">-->
+<!--        @let section_header = entity().section_header?.[dialogState.selectedQuestionnaire()!.defaultLanguage!.id];-->
+<!--        <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>-->
+<!--        <span>{{ section_header || 'N/A' }}</span>-->
+<!--      </div>-->
+        <ng-container #questionHost></ng-container>
+<!--      </div>-->
+<!--    }-->
+<!--    } @else {-->
+<!--      MATRIX-->
+<!--    }-->
+  </div>
+</div>

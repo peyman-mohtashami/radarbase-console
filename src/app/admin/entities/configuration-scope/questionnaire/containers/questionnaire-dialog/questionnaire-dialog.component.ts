@@ -113,6 +113,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
     ) as Partial<AppQuestionnaire>;
     const selectedQuestionnaire = this.dialogState.selectedQuestionnaire();
     this.dialogState.selectedQuestionnaire.set({...selectedQuestionnaire, ...defined} as AppQuestionnaire);
+    console.log('Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 116 this.dialogState.selectedQuestionnaire()' , this.dialogState.selectedQuestionnaire());
     // this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
   }
 
@@ -137,6 +138,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected override handleSaveAction(): void {
     // console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 129 this.entity()' , this.entity());
     // toValidAppQuestionnaire
+    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 141 this.dialogState.selectedQuestionnaire()' , this.dialogState.selectedQuestionnaire());
 
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
