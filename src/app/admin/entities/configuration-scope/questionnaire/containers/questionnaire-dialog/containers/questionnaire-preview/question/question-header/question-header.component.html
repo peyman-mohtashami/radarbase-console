@@ -1,23 +1,19 @@
-
-<!--@let selectedLanguage = questionnaireStateService.defaultLanguage();-->
-<!--{{selectedLanguage}}-->
-<!--{{question() | json}}-->
 @if (language()) {
-@if (sectionHeader()) {
-  <p class="text-base" [innerHtml]="question().section_header?.[language()!.id] | replacePlaceholders"></p>
-}
-@if(label() && question().field_label) {
-  <p class="text-lg">
-    <span [innerHtml]="question().field_label[language()!.id] | replacePlaceholders"></span>
-    @if (question().required_field !== 'false') {
-      <span class="text-red-700"> *</span>
-    } @else {
-      <span class="text-gray-500 text-sm"> (Optional)</span>
-    }
-  </p>
-}
+  @if (sectionHeader()) {
+    <p class="text-base" [innerHtml]="question().section_header?.[language()!.id] | replacePlaceholders"></p>
+  }
+  @if (label() && question().field_label) {
+    <p class="text-lg">
+      <span [innerHtml]="question().field_label[language()!.id] | replacePlaceholders"></span>
+      @if (question().required_field !== 'false') {
+        <span class="text-red-700"> *</span>
+      } @else {
+        <span class="text-gray-500 text-sm"> (Optional)</span>
+      }
+    </p>
+  }
 
-@if (note()) {
-<!--  <p class="text-sm mb-2" [innerHtml]="question().field_note | replacePlaceholders"></p>-->
-}
+  @if (note()) {
+    <!--  <p class="text-sm mb-2" [innerHtml]="question().field_note | replacePlaceholders"></p>-->
+  }
 }

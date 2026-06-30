@@ -78,6 +78,12 @@ export class DatetimeQuestionComponent implements OnInit {
           this.fb.control(this.entity().date_max)
         );
       }
+      if (!this.form.contains('matrix_group_name')) {
+        this.form.addControl(
+          'matrix_group_name',
+          this.fb.control(this.entity().matrix_group_name)
+        );
+      }
     }
   }
 
@@ -91,6 +97,10 @@ export class DatetimeQuestionComponent implements OnInit {
 
   get date_max(): FormControl {
     return this.form.get('date_max') as FormControl;
+  }
+
+  get matrix_group_name(): FormControl {
+    return this.form.get('matrix_group_name') as FormControl;
   }
 
   protected get logicDateValue(): Date | null {

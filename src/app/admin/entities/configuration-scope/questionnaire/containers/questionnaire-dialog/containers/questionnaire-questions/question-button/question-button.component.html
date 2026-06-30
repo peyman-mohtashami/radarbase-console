@@ -16,6 +16,12 @@
         </app-tag>
       </div>
       <div class="flex gap-2 items-center">
+        @if (entity().matrix_group_name) {
+          <app-tag class="bg-green-500/20 text-green-700">
+            {{ entity().matrix_group_name | uppercase }}
+          </app-tag>
+        }
+
         @if (entity().branching_logic) {
           <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
                     [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">

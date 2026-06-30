@@ -50,7 +50,12 @@ import {AppQuestion} from '../../../../../models/questionnaire';
 import {TimedTestComponent} from './input-field/timed-test/timed-test.component';
 import {AudioInputComponent} from './input-field/audio-input/audio-input.component';
 import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
-import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {
+  RadarOption
+} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+import {debounceTime} from 'rxjs/operators';
+import {outputToObservable} from '@angular/core/rxjs-interop';
+// import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 // import {
 //   RadarOption
 // } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
@@ -102,7 +107,7 @@ import {RadarOption} from '../../../../../../../../../shared/components/mat-dyna
 export class QuestionComponent implements OnInit {
 
   question = input.required<AppQuestion>();
-  language = input.required<string>();
+  language = input.required<RadarOption>();
   answer = input.required<AnswerWithTimeLog | undefined>();
   answers = input.required<Record<string, AnswerWithTimeLog[]>>();
 
@@ -137,11 +142,21 @@ export class QuestionComponent implements OnInit {
     componentRef.instance.entity = this.question;
     componentRef.instance.answer = this.answer;
 
-    componentRef.instance.previewValueChange.subscribe((value: any) => {
-      console.log('Child emitted value:', value);
-      this.emitAnswer(value);
-      // this.selectionChange.emit(value);
-    });
+    outputToObservable(componentRef.instance.previewValueChange)
+      .pipe(debounceTime(300))
+      .subscribe((value: any) => {
+        console.log('Child emitted value:', value);
+        this.emitAnswer(value);
+      });
+    // componentRef.instance.previewValueChange
+    //   // .pipe(
+    //   // debounceTime(300),
+    // // )
+    //   .subscribe((value: any) => {
+    //   console.log('Child emitted value:', value);
+    //   this.emitAnswer(value);
+    //   // this.selectionChange.emit(value);
+    // });
   }
 
   ngOnInit(): void {

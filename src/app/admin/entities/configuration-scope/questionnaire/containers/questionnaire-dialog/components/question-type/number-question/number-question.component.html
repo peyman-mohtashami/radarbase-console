@@ -26,6 +26,17 @@
       </mat-form-field>
       </div>
     </fieldset>
+
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <div>
+      <div>
+        <label for="text_validation_min"
+               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+      </div>
+      <mat-form-field class='small-input' appearance="outline">
+        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>
+      </mat-form-field>
+    </div>
   }
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()" />

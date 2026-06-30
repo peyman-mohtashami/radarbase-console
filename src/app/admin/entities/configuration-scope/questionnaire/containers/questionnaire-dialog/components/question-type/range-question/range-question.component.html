@@ -66,6 +66,17 @@
     </div>
   }
   @case ('form') {
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <div>
+      <div>
+        <label for="text_validation_min"
+               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+      </div>
+      <mat-form-field class='small-input' appearance="outline">
+        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>
+      </mat-form-field>
+    </div>
+
     <app-question-choices-form-array [choices]="choices"
                                      [index]="index"
                                      [_choices]="entity().select_choices_or_calculations" />

@@ -59,6 +59,12 @@ export class NumberQuestionComponent implements OnInit {
           this.fb.control(this.entity().text_validation_max)
         );
       }
+      if (!this.form.contains('matrix_group_name')) {
+        this.form.addControl(
+          'matrix_group_name',
+          this.fb.control(this.entity().matrix_group_name)
+        );
+      }
     }
   }
 
@@ -68,6 +74,10 @@ export class NumberQuestionComponent implements OnInit {
 
   get text_validation_max(): FormControl {
     return this.form.get('text_validation_max') as FormControl;
+  }
+
+  get matrix_group_name(): FormControl {
+    return this.form.get('matrix_group_name') as FormControl;
   }
 
   protected onLogicInputChange(event: Event) {

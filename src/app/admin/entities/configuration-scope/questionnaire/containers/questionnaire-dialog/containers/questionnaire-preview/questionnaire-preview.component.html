@@ -19,8 +19,11 @@
     </div>
   </div>
 
-  <div class="flex h-full">
-    <div class="w-1/2 flex flex-col h-[90%] border-2 border-gray-300 rounded-lg">
+  <div class="flex h-[90%] justify-between">
+    <div class="h-full aspect-9/16 bg-primary/20 border-2 border-gray-300 rounded-lg">
+
+<!--      <div class="w-1/2 flex flex-col h-[90%] border-2 border-gray-300 rounded-lg">-->
+        <div class="h-full flex flex-col">
       @if (selectedLanguage) {
         <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.id] ?? _entity.name }}</span>
       }
@@ -37,7 +40,7 @@
                                          (nextActionEvent)="nextAction($event)"/>
                 } @else {
                   <app-question [question]="item.value[0]"
-                                [language]="`${selectedLanguage.id}`"
+                                [language]="selectedLanguage"
                                 [answers]="answers"
                                 [answer]="answers[item.key]?.[0]"
                                 (answerEvent)="onAnswer($event)"
@@ -59,7 +62,8 @@
         }
       }
     </div>
-    <div class="w-1/2 text-sm">{{answers | json}}</div>
+    </div>
+    <div class="w-1/2 text-sm"><pre>{{answers | json}}</pre></div>
   </div>
 
 

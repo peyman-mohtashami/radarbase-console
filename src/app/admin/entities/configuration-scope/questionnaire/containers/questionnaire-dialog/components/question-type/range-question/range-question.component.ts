@@ -10,7 +10,7 @@ import {
   QuestionChoicesFormArray
 } from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatFormField} from '@angular/material/input';
+import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
@@ -33,6 +33,7 @@ import {
     MatButton,
     ReplacePlaceholdersPipe,
     QuestionHeaderComponent,
+    MatInput,
   ],
   templateUrl: './range-question.component.html'
 })
@@ -71,6 +72,12 @@ export class RangeQuestionComponent implements OnInit {
           this.fb.control(this.entity().show_selected_label)
         );
       }
+      if (!this.form.contains('matrix_group_name')) {
+        this.form.addControl(
+          'matrix_group_name',
+          this.fb.control(this.entity().matrix_group_name)
+        );
+      }
     }
   }
 
@@ -80,6 +87,10 @@ export class RangeQuestionComponent implements OnInit {
 
   get show_selected_label(): FormControl {
     return this.form.get('show_selected_label') as FormControl;
+  }
+
+  get matrix_group_name(): FormControl {
+    return this.form.get('matrix_group_name') as FormControl;
   }
 
   // protected onInputChange(value: MatSelectChange) {

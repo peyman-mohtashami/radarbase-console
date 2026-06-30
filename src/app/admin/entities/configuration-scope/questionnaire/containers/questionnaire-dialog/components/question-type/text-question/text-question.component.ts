@@ -56,11 +56,21 @@ export class TextQuestionComponent implements OnInit {
           this.fb.control(this.entity().multi_line)
         );
       }
+      if (!this.form.contains('matrix_group_name')) {
+        this.form.addControl(
+          'matrix_group_name',
+          this.fb.control(this.entity().matrix_group_name)
+        );
+      }
     }
   }
 
   get multi_line(): FormControl {
     return this.form.get('multi_line') as FormControl;
+  }
+
+  get matrix_group_name(): FormControl {
+    return this.form.get('matrix_group_name') as FormControl;
   }
 
   protected onLogicInputChange(event: Event) {

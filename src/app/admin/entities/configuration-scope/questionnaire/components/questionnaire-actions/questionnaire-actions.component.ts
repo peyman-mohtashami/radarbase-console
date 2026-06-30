@@ -8,6 +8,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireConfigService} from '../../services/questionnaire-config.service';
 import {MatIcon} from '@angular/material/icon';
+import {QuestionnaireService} from '../../services/questionnaire.service';
 
 @Component({
   selector: 'app-questionnaire-actions',
@@ -26,6 +27,7 @@ export class QuestionnaireActionsComponent {
   protected readonly DialogMode = DialogMode;
 
   private configService = inject(QuestionnaireConfigService);
+  private questionnaireService = inject(QuestionnaireService)
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -43,6 +45,7 @@ export class QuestionnaireActionsComponent {
   }
 
   onDuplicate() {
-
+    const duplicateEntity: AppQuestionnaire = {...this.entity(), name: `${this.entity().name}_copy`};
+    this.questionnaireService.add(duplicateEntity).subscribe();
   }
 }

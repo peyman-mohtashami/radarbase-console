@@ -84,7 +84,7 @@
                                      [_choices]="entity().select_choices_or_calculations" />
   }
   @case ('preview') {
-    <app-question-header [question]="entity()" [language]="language()" />
+    <app-question-header [question]="entity()" [language]="language()"/>
 
     <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
       @for (option of entity().select_choices_or_calculations; track option.code) {
@@ -96,7 +96,7 @@
       }
     </mat-radio-group>
     @if (!isPreviewDisabled) {
-      <button color="warn" matButton class="m-4" (click)="onPreviewInputChange(null)" size="small">
+      <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
         Clear
       </button>
     }

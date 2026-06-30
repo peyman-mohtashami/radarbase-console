@@ -9,7 +9,7 @@ import {QuestionDialogComponent} from './question-dialog/question-dialog.compone
 import {DialogMode} from '../../../../../../../base-entities/enums/dialog';
 import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {QuestionMatrixButtonComponent} from './question-matrix-button/question-matrix-button.component';
+// import {QuestionMatrixButtonComponent} from './question-matrix-button/question-matrix-button.component';
 
 export type AppUiQuestion = AppQuestion & {
   _dragId: string;
@@ -25,7 +25,7 @@ export type AppUiQuestion = AppQuestion & {
     QuestionButtonComponent,
     MatButton,
     CdkDrag,
-    QuestionMatrixButtonComponent,
+    // QuestionMatrixButtonComponent,
   ],
   styles: `
     .cdk-drag-preview {
@@ -111,17 +111,17 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   }
 
   openQuestionDialog(index: number, question: AppQuestion) {
-    const qst = this.questions.reduce((acc: AppQuestion[], cur) => {
-      if (cur.subQuestions?.length) {
-        acc = [...acc, ...cur.subQuestions];
-      }
-      return acc;
-    }, []);
+    // const qst = this.questions.reduce((acc: AppQuestion[], cur) => {
+    //   if (cur.subQuestions?.length) {
+    //     acc = [...acc, ...cur.subQuestions];
+    //   }
+    //   return acc;
+    // }, []);
 
     const dialogRef = this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      // data: {id: 'question-dialog', entity: question, questions: this.questions, index: index, mode: DialogMode.EDIT},
-      data: {id: 'question-dialog', entity: question, questions: qst, index: index, mode: DialogMode.EDIT},
+      data: {id: 'question-dialog', entity: question, questions: this.questions, index: index, mode: DialogMode.EDIT},
+      // data: {id: 'question-dialog', entity: question, questions: qst, index: index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
       height: '100vh',

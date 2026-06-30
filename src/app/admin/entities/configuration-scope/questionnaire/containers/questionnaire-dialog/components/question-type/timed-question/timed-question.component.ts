@@ -16,6 +16,9 @@ import {
 } from '../../../containers/questionnaire-preview/question/scrolable-content/scrollable-content.component';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatSelectChange} from '@angular/material/select';
+import {
+  TaskTimer
+} from '../../../containers/questionnaire-preview/question/input-field/timed-test/timed-test.component';
 
 @Component({
   selector: 'app-timed-question',
@@ -66,6 +69,9 @@ export class TimedQuestionComponent implements OnInit {
         );
       }
     }
+    if (this.type === 'preview') {
+      this.initTimer();
+    }
   }
 
   get field_annotation(): FormGroup {
@@ -85,4 +91,63 @@ export class TimedQuestionComponent implements OnInit {
   }
 
   protected readonly ValidatorError = ValidatorError;
+
+  taskTimer!: TaskTimer;
+  startTime!: number
+  endTime!: number
+
+  initTimer() {
+    const fieldAnnotation = this.entity().field_annotation as {
+      image: string
+      timer: {
+        start: number
+        end: number
+      }
+      unit: string
+    };
+    const timer = fieldAnnotation?.timer;
+    const start = timer?.start ?? 0;
+    const end = timer?.end ?? 0;
+
+    this.taskTimer = {
+      hasStarted: signal(false),
+      hasFinished: signal(false),
+      secondsElapsed: signal(0),
+      secondsRemaining: signal(start),
+      displayTime: signal(start),
+      start: start,
+      end: end,
+    }
+  }
+
+  startTimer() {
+    this.startTime = Date.now();
+    this.taskTimer.hasStarted.set(true);
+    this.endTime = this.startTime + (this.taskTimer.start - this.taskTimer.end) * 1000;
+    this.timerTick();
+  }
+
+  updateCountdown() {
+    this.taskTimer.secondsElapsed.set(Math.floor((Date.now() - this.startTime) / 1000));
+    this.taskTimer.displayTime.set(this.taskTimer.start - this.taskTimer.secondsElapsed());
+  }
+
+  timerTick() {
+    if (!this.taskTimer.hasStarted()) {
+      return;
+    }
+    const timerId = setInterval(async () => {
+      this.updateCountdown();
+
+      if (this.endTime - Date.now() <= 0) {
+        clearInterval(timerId);
+        await this.stopTimer();
+      }
+    }, 1000);
+  }
+
+  async stopTimer() {
+    this.taskTimer.hasFinished.set(true);
+    this.onPreviewInputChange(this.endTime.toString())
+  }
 }
