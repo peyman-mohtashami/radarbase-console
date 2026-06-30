@@ -11,6 +11,7 @@ import {
 } from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-conditional-logic-item',
@@ -23,6 +24,7 @@ import {QuestionnaireDialogStateService} from '../../../../services/questionnair
     MatSelect,
     QuestionViewComponent,
     OperatorSelectorComponent,
+    JsonPipe,
   ],
 })
 export class ConditionalLogicItemComponent implements OnInit {

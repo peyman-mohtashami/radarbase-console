@@ -83,7 +83,7 @@
                            [value]="dialogData.entity.field_note"/>
     </div>
 
-      @if ((dialogData.index ?? 0) > 0) {
+      @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
         <div class="flex items-center justify-between">
           <label for="field_name" class="text-sm">{{ `${_prefix}.questionConditionalLogic` | translate }}</label>
           <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()">

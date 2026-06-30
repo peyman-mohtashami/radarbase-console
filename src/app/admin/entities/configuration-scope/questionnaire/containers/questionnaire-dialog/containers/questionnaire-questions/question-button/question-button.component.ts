@@ -26,6 +26,7 @@ export class QuestionButtonComponent {
 
   entity = input.required<AppQuestion>();
   index = input.required<number>();
+  matrixIndex = input<number>();
 
   host = viewChild('questionHost', { read: ViewContainerRef });
 

@@ -76,6 +76,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     entity: AppQuestion;
     questions: AppQuestion[];
     index: number;
+    matrixIndex?: number;
   };
 
   changeEvent = output<Partial<AppQuestion>>();

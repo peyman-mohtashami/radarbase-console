@@ -43,27 +43,32 @@
       </div>
     </div>
 
-    <button (click)="addSubQuestion($event, 'range')">+ Add Range</button>
-    <button (click)="addSubQuestion($event, 'text')">+ Add Text</button>
-    <button (click)="addSubQuestion($event, 'number')">+ Add Number</button>
-    <button (click)="addSubQuestion($event, 'datetime')">+ Add Date</button>
-    <button (click)="addSubQuestion($event, 'radio')">+ Add Radio</button>
-
+    <div class="flex justify-end gap-2 items-center">
+    @if (entity().field_type === 'singleSelectMatrix') {
+      <button mat-stroked-button color="primary" (click)="addSubQuestion($event, 'range')">+ Add Range</button>
+    }
+    @if (entity().field_type === 'textInputMatrix') {
+      <button mat-stroked-button color="primary" (click)="addSubQuestion($event, 'text')">+ Add Text</button>
+      <button mat-stroked-button color="primary" (click)="addSubQuestion($event, 'number')">+ Add Number</button>
+      <button mat-stroked-button color="primary" (click)="addSubQuestion($event, 'datetime')">+ Add Date</button>
+    }
+    </div>
 
     <div class="overflow-y-auto">
       <div class="relative">
 <!--        <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>-->
         <div #choicesContainer cdkDropList (cdkDropListDropped)="onDropSubQuestion($event)" cdkDropListOrientation="vertical">
-          @for (question of subQuestions; track question._dragId; let index = $index) {
+          @for (question of subQuestions; track question._dragId; let i = $index) {
             <div
               cdkDrag
               [cdkDragBoundary]="choicesContainer"
               cdkDragLockAxis="y">
 <!--              @if (question.field_type !== 'singleSelectMatrix') {-->
                 <app-question-button [entity]="question"
-                                     [index]="$index"
-                                     (removeEvent)="removeSubQuestion(index)"
-                                     (selectEvent)="onSelectSubQuestion(index, question)"/>
+                                     [index]="i"
+                                     [matrixIndex]="index()"
+                                     (removeEvent)="removeSubQuestion(i)"
+                                     (selectEvent)="onSelectSubQuestion(i, question)"/>
 <!--              } @else {-->
 <!--                <app-question-matrix-button [entity]="question"-->
 <!--                                            [index]="$index"-->

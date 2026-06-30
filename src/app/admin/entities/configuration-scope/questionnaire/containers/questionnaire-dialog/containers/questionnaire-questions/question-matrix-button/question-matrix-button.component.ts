@@ -1,5 +1,5 @@
 import {Component, effect, inject, input, OnInit, output, viewChild, ViewContainerRef} from '@angular/core';
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaire} from '../../../../../models/questionnaire';
@@ -28,6 +28,7 @@ import {QuestionButtonComponent} from '../question-button/question-button.compon
     CdkDrag,
     CdkDropList,
     QuestionButtonComponent,
+    MatButton,
   ],
   styles: `
     .cdk-drag-preview {
@@ -61,6 +62,7 @@ export class QuestionMatrixButtonComponent implements OnInit {
 
   entity = input.required<AppQuestion>();
   index = input.required<number>();
+  questions = input.required<AppUiQuestion[]>();
 
   host = viewChild('questionHost', { read: ViewContainerRef });
 
@@ -147,9 +149,17 @@ export class QuestionMatrixButtonComponent implements OnInit {
   }
 
   openSubQuestionDialog(index: number, question: AppQuestion) {
+    const qst = this.questions().reduce((acc: AppQuestion[], cur) => {
+      if (cur.subQuestions?.length) {
+        acc = [...acc, ...cur.subQuestions];
+      }
+      return acc;
+    }, []);
+
     const dialogRef = this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      data: {id: 'question-dialog', entity: question, questions: this.subQuestions, index: index, mode: DialogMode.EDIT},
+      // data: {id: 'question-dialog', entity: question, questions: this.subQuestions, index: index, matrixIndex: this.index(), mode: DialogMode.EDIT},
+      data: {id: 'question-dialog', entity: question, questions: qst, index: index, matrixIndex: this.index(), mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
       height: '100vh',

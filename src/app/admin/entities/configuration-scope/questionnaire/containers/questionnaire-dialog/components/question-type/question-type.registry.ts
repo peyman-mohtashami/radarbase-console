@@ -32,6 +32,7 @@ export enum QuestionType {
   AUDIO = 'audio',
   // MATRIX_RADIO = 'matrix-radio',
   SINGLE_SELECT_MATRIX = 'singleSelectMatrix',
+  TEXT_INPUT_MATRIX = 'textInputMatrix',
 }
 
 export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
@@ -49,7 +50,7 @@ export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
   [QuestionType.AUDIO]: AudioQuestionComponent,
   [QuestionType.TIMED]: TimedQuestionComponent,
   [QuestionType.SINGLE_SELECT_MATRIX]: SingleSelectMatrixQuestionComponent,
-
+  [QuestionType.TEXT_INPUT_MATRIX]: SingleSelectMatrixQuestionComponent,
 };
 
 export const QUESTION_TYPES = [
@@ -82,7 +83,7 @@ export const QUESTION_TYPES = [
       // {type: 'note', icon: '', label: 'Note', disabled: false},
       {type: 'datetime', icon: '', label: 'DateTime', disabled: false},
       {type: 'duration', icon: '', label: 'Duration', disabled: false},
-      {type: 'multiTextInput', icon: '', label: 'Multi Input', disabled: true},
+      {type: 'textInputMatrix', icon: '', label: 'Text Input Matrix', disabled: false},
     ]
   },
   {
