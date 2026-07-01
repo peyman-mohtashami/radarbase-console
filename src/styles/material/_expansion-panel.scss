@@ -16,13 +16,13 @@
     //header-disabled-state-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
     //header-focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
     //header-hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
-    header-indicator-color: var(--mat-sys-on-tertiary), //var(--mat-sys-on-surface-variant),
+    //header-indicator-color: var(--mat-sys-on-surface-variant),
     //header-text-color: var(--mat-sys-on-surface),
 
     // Typography
     //container-text-font: var(--mat-sys-body-large-font),
     container-text-line-height: var(--text-sm--line-height), //var(--mat-sys-body-large-line-height),
-    container-text-size: var(---text-sm), //var(--mat-sys-body-large-size),
+    container-text-size: var(--text-sm), //var(--mat-sys-body-large-line-height),
     container-text-tracking: var(--text-sm--tracking), //var(--mat-sys-body-large-tracking),
     //container-text-weight: var(--mat-sys-body-large-weight),
     //header-text-font: var(--mat-sys-title-medium-font),

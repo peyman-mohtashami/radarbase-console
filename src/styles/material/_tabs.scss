@@ -6,6 +6,7 @@
     active-indicator-height: 2px,
     active-indicator-shape: 0,
     divider-height: 1px,
+
     // Color
     active-focus-indicator-color: var(--mat-sys-primary),
     active-focus-label-text-color: var(--mat-sys-on-surface),
@@ -23,12 +24,14 @@
     disabled-ripple-color: var(--mat-sys-on-surface-variant),
     //background-color,
     //foreground-color,
+
     // Typography
     label-text-font: var(--mat-sys-title-small-font),
     label-text-line-height: var(--mat-sys-title-small-line-height),
     label-text-size: var(--mat-sys-title-small-size),
     label-text-tracking: var(--mat-sys-title-small-tracking),
     label-text-weight: var(--mat-sys-title-small-weight),
+
     // Density
     container-height: 48px,
   ))

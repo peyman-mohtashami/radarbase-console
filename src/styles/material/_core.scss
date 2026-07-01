@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-@use '@angular/material' as mat;
+//@use '@angular/material' as mat;
 
 @mixin overrides() {
   @include mat.ripple-overrides((
@@ -17,21 +17,22 @@
     label-text-size: var(--mat-sys-title-small-size),
     label-text-tracking: var(--mat-sys-title-small-tracking),
     label-text-weight: var(--mat-sys-title-small-weight),
-  ))
+  ));
 
   @include mat.option-overrides((
     // Color
-    focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
-    hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
-    label-text-color: var(--mat-sys-on-surface),
-    selected-state-label-text-color: var(--mat-sys-on-secondary-container),
-    selected-state-layer-color: var(--mat-sys-secondary-container),
+    //focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
+    //hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
+    //label-text-color: var(--mat-sys-on-surface),
+    //selected-state-label-text-color: var(--mat-sys-on-secondary-container),
+    //selected-state-layer-color: var(--mat-sys-secondary-container),
+
     // Typography
-    label-text-size: var(--mat-sys-body-large-size),
-    label-text-weight: var(--mat-sys-body-large-weight),
-    label-text-font: var(--mat-sys-label-large-font),
-    label-text-line-height: var(--mat-sys-label-large-line-height),
-    label-text-tracking: var(--mat-sys-label-large-tracking),
+    label-text-size: var(--mat-sys-body-small-size), //var(--mat-sys-body-large-size),
+    label-text-weight: var(--mat-sys-body-small-weight),//var(--mat-sys-body-large-weight),
+    label-text-font: var(--mat-sys-label-small-font),//var(--mat-sys-label-large-font),
+    label-text-line-height: var(--mat-sys-label-small-line-height),//var(--mat-sys-label-large-line-height),
+    label-text-tracking: var(--mat-sys-label-small-tracking),//var(--mat-sys-label-large-tracking),
   ));
 
   @include mat.pseudo-checkbox-overrides((
@@ -76,17 +77,19 @@
     app-elevation-shadow-level-23: (0px 11px 14px -7px var(--mat-sys-shadow), 0px 23px 36px 3px var(--mat-sys-shadow), 0px 9px 44px 8px var(--mat-sys-shadow)),
     app-elevation-shadow-level-24: (0px 11px 15px -7px var(--mat-sys-shadow), 0px 24px 38px 3px var(--mat-sys-shadow), 0px 9px 46px 8px var(--mat-sys-shadow)),
     ripple-color: color-mix(in srgb, var(--mat-sys-on-surface) 10%, transparent),
-    option-focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
-    option-hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
-    option-label-text-color: var(--mat-sys-on-surface),
-    option-selected-state-label-text-color: var(--mat-sys-on-secondary-container),
-    option-selected-state-layer-color: var(--mat-sys-secondary-container),
-    // Typography
-    option-label-text-size: var(--mat-sys-body-large-size),
-    option-label-text-weight: var(--mat-sys-body-large-weight),
-    option-label-text-font: var(--mat-sys-label-large-font),
-    option-label-text-line-height: var(--mat-sys-label-large-line-height),
-    option-label-text-tracking: var(--mat-sys-label-large-tracking),
+
+    //option-focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
+    //option-hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
+    //option-label-text-color: var(--mat-sys-on-surface),
+    //option-selected-state-label-text-color: var(--mat-sys-on-secondary-container),
+    //option-selected-state-layer-color: var(--mat-sys-secondary-container),
+    //// Typography
+    //option-label-text-size: var(--mat-sys-body-large-size),
+    //option-label-text-weight: var(--mat-sys-body-large-weight),
+    //option-label-text-font: var(--mat-sys-label-large-font),
+    //option-label-text-line-height: var(--mat-sys-label-large-line-height),
+    //option-label-text-tracking: var(--mat-sys-label-large-tracking),
+
     // Color
     optgroup-label-text-color: var(--mat-sys-on-surface-variant),
     // Typography

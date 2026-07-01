@@ -30,12 +30,20 @@
     unselected-hover-state-layer-color: var(--mat-sys-on-surface),
     unselected-icon-color: var(--mat-sys-on-surface-variant),
     unselected-pressed-state-layer-color: var(--mat-sys-primary),
+
     // Typography
-    label-text-font: var(--mat-sys-body-medium-font),
-    label-text-line-height: var(--mat-sys-body-medium-line-height),
-    label-text-size: var(--mat-sys-body-medium-size),
-    label-text-tracking: var(--mat-sys-body-medium-tracking),
-    label-text-weight: var(--mat-sys-body-medium-weight),
+    //label-text-font: var(--mat-sys-body-medium-font),
+    //label-text-line-height: var(--mat-sys-body-medium-line-height),
+    //label-text-size: var(--mat-sys-body-medium-size),
+    //label-text-tracking: var(--mat-sys-body-medium-tracking),
+    //label-text-weight: var(--mat-sys-body-medium-weight),
+
+    label-text-font: var(--mat-sys-body-small-font),
+    label-text-line-height: var(--mat-sys-body-small-line-height),
+    label-text-size: var(--mat-sys-body-small-size),
+    label-text-tracking: var(--mat-sys-body-small-tracking),
+    label-text-weight: var(--mat-sys-body-small-weight),
+
     // Density
     touch-target-display: block,
     state-layer-size: 40px,

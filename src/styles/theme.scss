@@ -4,15 +4,21 @@
 @use './app-tokens';
 @use './material/button';
 @use './material/card';
-@use './material/expansion-panel';
-@use './material/list';
-//@use './material/icon-buttons';
-@use './material/form-fields';
-@use './material/toolbar';
-//@use './material/table';
+@use './material/checkbox';
+@use "./material/core";
 @use './material/dialog';
+@use './material/expansion-panel';
+@use './material/form-fields';
+//@use './material/icon-buttons';
+@use './material/list';
 @use './material/menu';
-//@use './material/select';
+@use './material/progress-bar';
+@use './material/paginator';
+@use './material/select';
+@use './material/slide-toggle';
+@use './material/snackbar';
+//@use './material/table';
+@use './material/toolbar';
 //@use './material/tooltip';
 
 @include mat.core();
@@ -72,15 +78,21 @@ $dark-theme: mat.define-theme((
 
   @include button.overrides();
   @include card.overrides();
-  //@include expansion-panel.overrides();
-  @include list.overrides();
-  //@include icon-buttons.theme();
-  @include form-fields.overrides();
-  @include toolbar.overrides();
-  //@include table.theme();
+  @include core.overrides();
+  @include checkbox.overrides();
   @include dialog.overrides();
+  @include expansion-panel.overrides();
+  @include form-fields.overrides();
+  //@include icon-buttons.theme();
+  @include list.overrides();
   @include menu.overrides();
-  //@include select.theme();
+  @include progress-bar.overrides();
+  @include paginator.overrides();
+  @include select.overrides();
+  @include slide-toggle.overrides();
+  @include snackbar.overrides();
+  //@include table.theme();
+  @include toolbar.overrides();
   //@include tooltip.theme();
 
 

@@ -1,10 +1,10 @@
 .mdc-notched-outline__notch {
   border-right: none;
 }
-
-.mat-expansion-panel-body {
-  padding: 0 !important;
-}
+//
+//.mat-expansion-panel-body {
+//  padding: 0 !important;
+//}
 
 .mat-mdc-dialog-content {
   max-height: none !important;
@@ -135,30 +135,30 @@
   .mat-mdc-form-field {
     @apply w-full;
   }
-
-  .mat-mdc-slide-toggle {
-    @apply text-sm mb-4
-  }
-
-  .mat-mdc-checkbox {
-    @apply text-sm
-  }
-
-  fieldset {
-    @apply mb-4 rounded border px-2
-  }
-
-  fieldset legend {
-    @apply text-sm
-  }
-
-  mat-hint {
-    @apply text-xs leading-3
-  }
-
-  .suffix .mat-mdc-form-field-infix {
-    display: flex;
-  }
+  //
+  //.mat-mdc-slide-toggle {
+  //  @apply text-sm mb-4
+  //}
+  //
+  //.mat-mdc-checkbox {
+  //  @apply text-sm
+  //}
+  //
+  //fieldset {
+  //  @apply mb-4 rounded border px-2
+  //}
+  //
+  //fieldset legend {
+  //  @apply text-sm
+  //}
+  //
+  //mat-hint {
+  //  @apply text-xs leading-3
+  //}
+  //
+  //.suffix .mat-mdc-form-field-infix {
+  //  display: flex;
+  //}
   /*#endregion*/
 }
 

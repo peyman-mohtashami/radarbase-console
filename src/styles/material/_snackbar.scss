@@ -1,17 +1,19 @@
 @use '@angular/material' as mat;
 
 @mixin overrides() {
-  @include mat.sort-overrides((
+  @include mat.snack-bar-overrides((
     //Base
-    container-shape: var(--mat-sys-corner-extra-small),
+    //container-shape: var(--mat-sys-corner-extra-small),
+
     // Color
-    button-color: var(--mat-sys-inverse-primary),
-    container-color: var(--mat-sys-inverse-surface),
-    supporting-text-color: var(--mat-sys-inverse-on-surface),
+    button-color: var(--mat-sys-on-error), //var(--mat-sys-inverse-primary),
+    container-color: var(--mat-sys-error),//var(--mat-sys-inverse-surface),
+    supporting-text-color: var(--mat-sys-on-error),//var(--mat-sys-inverse-on-surface),
+
     // Typography
-    supporting-text-font: var(--mat-sys-body-medium-font),
-    supporting-text-line-height: var(--mat-sys-body-medium-line-height),
-    supporting-text-size: var(--mat-sys-body-medium-size),
-    supporting-text-weight: var(--mat-sys-body-medium-weight),
+    //supporting-text-font: var(--mat-sys-body-medium-font),
+    //supporting-text-line-height: var(--mat-sys-body-medium-line-height),
+    //supporting-text-size: var(--mat-sys-body-medium-size),
+    //supporting-text-weight: var(--mat-sys-body-medium-weight),
   ))
 }
