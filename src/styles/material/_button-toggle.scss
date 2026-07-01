@@ -1,0 +1,47 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.button-toggle-overrides((
+    // Base
+    focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    shape: var(--mat-sys-corner-extra-large),
+    //legacy-shape,
+    //legacy-selected-state-text-color,
+    //legacy-focus-state-layer-opacity,
+    //legacy-height,
+    // Color
+    background-color: transparent,
+    disabled-selected-state-background-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent),
+    disabled-selected-state-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-state-background-color: transparent,
+    disabled-state-text-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    divider-color: var(--mat-sys-outline),
+    selected-state-background-color: var(--mat-sys-secondary-container),
+    selected-state-text-color: var(--mat-sys-on-secondary-container),
+    state-layer-color: var(--mat-sys-on-surface),
+    text-color: var(--mat-sys-on-surface),
+    //legacy-disabled-selected-state-background-color,
+    //legacy-disabled-state-background-color,
+    //legacy-disabled-state-text-color,
+    //legacy-selected-state-background-color,
+    //legacy-selected-state-text-color,
+    //legacy-state-layer-color,
+    //legacy-text-color,
+    // Typography
+    label-text-font: var(--mat-sys-label-large-font),
+    label-text-line-height: var(--mat-sys-label-large-line-height),
+    label-text-size: var(--mat-sys-label-large-size),
+    label-text-tracking: var(--mat-sys-label-large-tracking),
+    label-text-weight: var(--mat-sys-label-large-weight),
+    //legacy-label-text-font,
+    //legacy-label-text-line-height,
+    //legacy-label-text-size,
+    //legacy-label-text-tracking,
+    //legacy-label-text-weight,
+    // Density
+    height: 40px,
+
+  ));
+}
+

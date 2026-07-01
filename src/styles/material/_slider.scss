@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.slider-overrides((
+    //Base
+    value-indicator-opacity: 1,
+    value-indicator-padding: 0,
+    value-indicator-width: 28px,
+    value-indicator-height: 28px,
+    value-indicator-caret-display: none,
+    value-indicator-border-radius: (50%, 50%, 50%, 0),
+    value-indicator-text-transform: rotate(45deg),
+    value-indicator-container-transform: (translateX(-50%), rotate(- 45 deg)),
+    active-track-height: 4px,
+    handle-height: 20px,
+    handle-width: 20px,
+    inactive-track-height: 4px,
+    with-overlap-handle-outline-width: 1px,
+    with-tick-marks-active-container-opacity: 0.38,
+    with-tick-marks-container-size: 2px,
+    with-tick-marks-inactive-container-opacity: 0.38,
+    value-indicator-transform-origin: (0, 28px),
+    // Color
+    active-track-color: var(--mat-sys-primary),
+    active-track-shape: var(--mat-sys-corner-full),
+    disabled-active-track-color: var(--mat-sys-on-surface),
+    disabled-handle-color: var(--mat-sys-on-surface),
+    disabled-inactive-track-color: var(--mat-sys-on-surface),
+    focus-handle-color: var(--mat-sys-primary),
+    focus-state-layer-color: color-mix(in srgb, var(--mat-sys-primary) 20%, transparent),
+    handle-color: var(--mat-sys-primary),
+    handle-elevation: var(--mat-sys-level1),
+    handle-shape: var(--mat-sys-corner-full),
+    hover-handle-color: var(--mat-sys-primary),
+    hover-state-layer-color: color-mix(in srgb, var(--mat-sys-primary) 5%, transparent),
+    inactive-track-color: var(--mat-sys-surface-variant),
+    inactive-track-shape: var(--mat-sys-corner-full),
+    label-container-color: var(--mat-sys-primary),
+    label-label-text-color: var(--mat-sys-on-primary),
+    ripple-color: var(--mat-sys-primary),
+    with-overlap-handle-outline-color: var(--mat-sys-on-primary),
+    with-tick-marks-active-container-color: var(--mat-sys-on-primary),
+    with-tick-marks-container-shape: var(--mat-sys-corner-full),
+    with-tick-marks-disabled-container-color: var(--mat-sys-on-surface),
+    with-tick-marks-inactive-container-color: var(--mat-sys-on-surface-variant),
+    // Typography
+    label-label-text-font: var(--mat-sys-label-medium-font),
+    label-label-text-line-height: var(--mat-sys-label-medium-line-height),
+    label-label-text-size: var(--mat-sys-label-medium-size),
+    label-label-text-tracking: var(--mat-sys-label-medium-tracking),
+    label-label-text-weight: var(--mat-sys-label-medium-weight),
+  ))
+}

@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.badge-overrides((
+    // Base
+    container-offset:	(-12px,0),
+    container-overlap-offset:	-12px,
+    container-padding: (0,4px),
+    container-shape: var(--mat-sys-corner-full),
+    container-size: 16px,
+    large-size-container-offset: (-12px,0),
+    large-size-container-overlap-offset: -12px,
+    large-size-container-padding: (0,4px),
+    large-size-container-size: 16px,
+    legacy-container-size: unset,
+    legacy-large-size-container-size: unset,
+    legacy-small-size-container-size: unset,
+    small-size-container-offset: (-6px,0),
+    small-size-container-overlap-offset: -6px,
+    small-size-container-padding: 0,
+    small-size-container-size: 6px,
+    // Color
+    background-color: var(--mat-sys-error),
+    disabled-state-background-color: color-mix(in srgb, var(--mat-sys-error) 38%, transparent),
+    disabled-state-text-color: var(--mat-sys-on-error),
+    text-color: var(--mat-sys-on-error),
+    // Typography
+    large-size-line-height: 16px,
+    large-size-text-size: var(--mat-sys-label-small-size),
+    line-height: 16px,
+    small-size-line-height: 6px,
+    small-size-text-size:	0,
+    text-font: var(--mat-sys-label-small-font),
+    text-size: var(--mat-sys-label-small-size),
+    text-weight: var(--mat-sys-label-small-weight),
+  ));
+}

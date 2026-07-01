@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.stepper-overrides((
+    // Base
+    header-error-state-icon-background-color: transparent,
+    header-focus-state-layer-shape: var(--mat-sys-corner-medium),
+    header-hover-state-layer-shape: var(--mat-sys-corner-medium),
+    // Color
+    container-color: var(--mat-sys-surface),
+    header-done-state-icon-background-color: var(--mat-sys-primary),
+    header-done-state-icon-foreground-color: var(--mat-sys-on-primary),
+    header-edit-state-icon-background-color: var(--mat-sys-primary),
+    header-edit-state-icon-foreground-color: var(--mat-sys-on-primary),
+    header-error-state-icon-foreground-color: var(--mat-sys-error),
+    header-error-state-label-text-color: var(--mat-sys-error),
+    header-focus-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-focus-state-layer-opacity) * 100%), transparent),
+    header-hover-state-layer-color: color-mix(in srgb, var(--mat-sys-on-surface) calc(var(--mat-sys-hover-state-layer-opacity) * 100%), transparent),
+    header-icon-background-color: var(--mat-sys-on-surface-variant),
+    header-icon-foreground-color: var(--mat-sys-surface),
+    header-label-text-color: var(--mat-sys-on-surface-variant),
+    header-optional-label-text-color: var(--mat-sys-on-surface-variant),
+    header-selected-state-icon-background-color: var(--mat-sys-primary),
+    header-selected-state-icon-foreground-color: var(--mat-sys-on-primary),
+    header-selected-state-label-text-color: var(--mat-sys-on-surface-variant),
+    line-color: var(--mat-sys-outline),
+    // Typography
+    container-text-font: var(--mat-sys-body-medium-font),
+    header-label-text-font: var(--mat-sys-title-small-font),
+    header-label-text-size: var(--mat-sys-title-small-size),
+    header-label-text-weight: var(--mat-sys-title-small-weight),
+    header-error-state-label-text-size: var(--mat-sys-title-small-size),
+    header-selected-state-label-text-size: var(--mat-sys-title-small-size),
+    header-selected-state-label-text-weight: var(--mat-sys-title-small-weight),
+    header-height: 72px,
+  ))
+}

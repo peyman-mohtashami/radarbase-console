@@ -76,6 +76,7 @@
                           [language]="questionnaireStateService.defaultLanguage()"
                           [answers]="answers"
                           [answer]="answers[item.key]?.[0]"
+                          [language]="questionnaireStateService.defaultLanguage()"
                           (answerEvent)="onAnswer($event)"
                           (nextActionEvent)="nextAction($event)"/>
 <!--                          [protocol]="protocol"-->

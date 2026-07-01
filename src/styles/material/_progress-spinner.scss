@@ -1,0 +1,12 @@
+
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.tree-overrides((
+    // Base
+    size: 48px,
+    active-indicator-width: 4px,
+    // Color
+    active-indicator-color: var(--mat-sys-primary),
+  ))
+}

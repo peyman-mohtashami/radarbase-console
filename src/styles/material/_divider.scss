@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.tree-overrides((
+    // Base
+    width: 1px,
+    // Color
+    color: var(--mat-sys-outline-variant),
+  ))
+}

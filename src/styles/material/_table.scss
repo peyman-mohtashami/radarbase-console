@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.table-overrides((
+    // Base
+    row-item-outline-width: 1px,
+    // Color
+    background-color: var(--mat-sys-surface),
+    header-headline-color: var(--mat-sys-on-surface),
+    row-item-label-text-color: var(--mat-sys-on-surface),
+    row-item-outline-color: var(--mat-sys-outline),
+    // Typography
+    header-headline-font: var(--mat-sys-title-small-font),
+    header-headline-line-height: var(--mat-sys-title-small-line-height),
+    header-headline-size: var(--mat-sys-title-small-size),
+    header-headline-tracking: var(--mat-sys-title-small-tracking),
+    header-headline-weight: var(--mat-sys-title-small-weight),
+    row-item-label-text-font: var(--mat-sys-body-medium-font),
+    row-item-label-text-line-height: var(--mat-sys-body-medium-line-height),
+    row-item-label-text-size: var(--mat-sys-body-medium-size),
+    row-item-label-text-tracking: var(--mat-sys-body-medium-tracking),
+    row-item-label-text-weight: var(--mat-sys-body-medium-weight),
+    footer-supporting-text-font: var(--mat-sys-body-medium-font),
+    footer-supporting-text-line-height: var(--mat-sys-body-medium-line-height),
+    footer-supporting-text-size: var(--mat-sys-body-medium-size),
+    footer-supporting-text-tracking: var(--mat-sys-body-medium-tracking),
+    footer-supporting-text-weight: var(--mat-sys-body-medium-weight),
+    // Density
+    header-container-height: 56px,
+    footer-container-height: 52px,
+    row-item-container-height: 52px,
+
+    header-container-height: 40px, //56px,
+    footer-container-height: 38px, //52px,
+    row-item-container-height: 38px, //52px,
+
+
+  ));
+}
+

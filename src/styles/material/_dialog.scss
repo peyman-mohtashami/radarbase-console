@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.dialog-overrides((
+    // Base
+    actions-alignment: start, //flex-end,
+    //actions-padding: (16px 24px),
+    container-elevation-shadow: (0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12)), //none,
+    container-max-width: 80vw, //560px,
+    container-min-width: 0,//280px,
+    container-shape: var(--mat-sys-corner-extra-small), //var(--mat-sys-corner-extra-large),
+    //container-small-max-width: calc(100vw - 32px),
+    //content-padding: (20px 24px),
+    headline-padding: (0 24px 9px), //(6px 24px 13px),
+    //with-actions-content-padding: (20px,24px,0),
+
+    // Color
+    //container-color: var(--mat-sys-surface),
+    //subhead-color: var(--mat-sys-on-surface),
+    //supporting-text-color: var(--mat-sys-on-surface-variant),
+
+    // Typography
+    //subhead-font: var(--mat-sys-headline-small-font),
+    //subhead-line-height: var(--mat-sys-headline-small-line-height),
+    //subhead-size: var(--mat-sys-headline-small-size),
+    //subhead-tracking: var(--mat-sys-headline-small-tracking),
+    //subhead-weight: var(--mat-sys-headline-small-weight),
+    //supporting-text-font: var(--mat-sys-body-medium-font),
+    //supporting-text-line-height: var(--mat-sys-body-medium-line-height),
+    //supporting-text-size: var(--mat-sys-body-medium-size),
+    //supporting-text-tracking: var(--mat-sys-body-medium-tracking),
+    //supporting-text-weight: var(--mat-sys-body-medium-weight),
+  ));
+}
+

@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.slider-overrides((
+    container-shape: var(--mat-sys-corner-large),
+    container-elevation-shadow: none,
+    container-width: 360px,
+    container-divider-color: transparent,
+    // Color
+    container-background-color: var(--mat-sys-surface),
+    container-text-color: var(--mat-sys-on-surface-variant),
+    content-background-color: var(--mat-sys-background),
+    content-text-color: var(--mat-sys-on-background),
+    scrim-color: color-mix(in srgb, var(--mat-sys-neutral-variant20) 40%, transparent),
+  ))
+}

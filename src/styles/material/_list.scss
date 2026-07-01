@@ -1,0 +1,63 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.list-overrides((
+    // Color
+    //active-indicator-color: var(--mat-sys-secondary-container),
+    //active-indicator-shape: var(--mat-sys-corner-full),
+    //list-item-container-color: transparent,
+    //list-item-container-shape: var(--mat-sys-corner-none),
+    //list-item-disabled-label-text-color: var(--mat-sys-on-surface),
+    //list-item-disabled-label-text-opacity: 0.3,
+    //list-item-disabled-leading-icon-color: var(--mat-sys-on-surface),
+    //list-item-disabled-leading-icon-opacity: 0.38,
+    //list-item-disabled-state-layer-color: var(--mat-sys-on-surface),
+    //list-item-disabled-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    //list-item-disabled-trailing-icon-color: var(--mat-sys-on-surface),
+    //list-item-disabled-trailing-icon-opacity: 0.38,
+    //list-item-focus-label-text-color: var(--mat-sys-on-surface),
+    //list-item-focus-state-layer-color: var(--mat-sys-on-surface),
+    //list-item-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    //list-item-hover-label-text-color: var(--mat-sys-on-surface),
+    //list-item-hover-state-layer-color: var(--mat-sys-on-surface),
+    //list-item-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    //list-item-label-text-color: var(--mat-sys-on-surface),
+    //list-item-leading-avatar-color: var(--mat-sys-primary-container),
+    //list-item-leading-avatar-shape: var(--mat-sys-corner-full),
+    //list-item-leading-avatar-size: 40px,
+    //list-item-leading-icon-color: var(--mat-sys-on-surface-variant),
+    //list-item-leading-icon-size: 24px,
+    //list-item-selected-trailing-icon-color: var(--mat-sys-primary),
+    //list-item-supporting-text-color: var(--mat-sys-on-surface-variant),
+    //list-item-trailing-icon-color: var(--mat-sys-on-surface-variant),
+    //list-item-trailing-icon-size: 24px,
+    //list-item-trailing-supporting-text-color: var(--mat-sys-on-surface-variant),
+    //list-item-selected-container-color,
+    //list-item-hover-leading-icon-color,
+    //list-item-hover-trailing-icon-color,
+
+    // Typography
+    //list-item-label-text-font: var(--mat-sys-body-large-font),
+    list-item-label-text-line-height: var(--mat-sys-body-small-line-height), //var(--mat-sys-body-large-line-height),
+    list-item-label-text-size: var(--mat-sys-body-small-size), //var(--mat-sys-body-large-size),
+    list-item-label-text-tracking: var(--mat-sys-body-small-tracking), //var(--mat-sys-body-large-tracking),
+    list-item-label-text-weight: var(--mat-sys-body-small-weight), //var(--mat-sys-body-large-weight),
+    //list-item-supporting-text-font: var(--mat-sys-body-medium-font),
+    //list-item-supporting-text-line-height: var(--mat-sys-body-medium-line-height),
+    //list-item-supporting-text-size: var(--mat-sys-body-medium-size),
+    //list-item-supporting-text-tracking: var(--mat-sys-body-medium-tracking),
+    //list-item-supporting-text-weight: var(--mat-sys-body-medium-weight),
+    //list-item-trailing-supporting-text-font: var(--mat-sys-label-small-font),
+    //list-item-trailing-supporting-text-line-height: var(--mat-sys-label-small-line-height),
+    //list-item-trailing-supporting-text-size: var(--mat-sys-label-small-size),
+    //list-item-trailing-supporting-text-tracking: var(--mat-sys-label-small-tracking),
+    //list-item-trailing-supporting-text-weight: var(--mat-sys-label-small-weight),
+
+    // Density
+    list-item-leading-icon-start-space: 8px, //16px,
+    list-item-leading-icon-end-space: 8px, //16px,
+    //list-item-one-line-container-height: 48px,
+    //list-item-two-line-container-height: 64px,
+    //list-item-three-line-container-height: 88px,
+  ))
+}

@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* Explicitly tell Tailwind where to look for class names in Angular templates and TS files */
+@source "../**/*.{html,ts}";
+/* Also scan SCSS for class names or @apply usage */
+@source "../**/*.scss";
+
+
+/* Include any additional sources (for example, third-party components) as needed */
+@custom-variant dark (&:is(.dark *));
+
+/*:root {*/
+/*  --mat-sys-primary: #6200ee;*/
+/*  --mat-sys-primary-dark: #ff0000;*/
+/*  --mat-sys-on-primary: #ff0000;*/
+/*  --mat-sys-on-primary-dark: #ff0000;*/
+/*  --mat-sys-accent: #0f0;*/
+/*  --mat-sys-accent-dark: #0f0;*/
+/*  --mat-sys-on-accent: #0f0;*/
+/*  --mat-sys-on-accent-dark: #0f0;*/
+/*  --mat-sys-tertiary: #00f;*/
+/*  --mat-sys-tertiary-dark: #00f;*/
+/*  --mat-sys-on-tertiary: #00f;*/
+/*  --mat-sys-on-tertiary-dark: #00f;*/
+/*}*/
+
+
+/**
+ * Map Tailwind theme → CSS variables
+ */
+@theme inline {
+
+  /*!* PRIMARY *!*/
+  /*--color-primary: var(--color-primary);*/
+  /*--color-on-primary: var(--color-on-primary);*/
+
+  /*!* SURFACE *!*/
+  /*--color-surface: var(--color-surface);*/
+  /*--color-on-surface: var(--color-on-surface);*/
+
+  /*!* ERROR *!*/
+  /*--color-error: var(--color-error);*/
+
+  /*!* containers *!*/
+  /*--color-primary-container: var(--color-primary-container);*/
+  /*--color-on-primary-container: var(--color-on-primary-container);*/
+
+
+
+
+
+  --breakpoint-sm: 37.5rem; /* 600px */
+  --breakpoint-md: 60rem; /* 960px */
+  /*lg 1024*/
+  /*xl 1280*/
+  --breakpoint-3xl: 120rem; /* 1920px */
+  --breakpoint-4xl: 160rem;
+
+  --font-sans: Inter var, sans-serif;
+  --font-sans--font-feature-settings: 'tnum', 'salt';
+
+  --text-xs: 0.675rem;
+  --text-sm: 0.75rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 4rem;
+
+  --color-app-background: var(--mat-sys-app-background);
+  --color-app-background-dark: var(--mat-sys-app-background-dark);
+  --color-background: var(--mat-sys-background);
+  --color-background-dark: var(--mat-sys-background-dark);
+  --color-foreground: var(--mat-sys-foreground);
+  --color-foreground-dark: var(--mat-sys-foreground-dark);
+
+
+  --color-primary: var(--mat-sys-primary);
+  --color-primary-dark: var(--mat-sys-primary-dark);
+  --color-on-primary: var(--mat-sys-on-primary);
+  --color-on-primary-dark: var(--mat-sys-on-primary-dark);
+
+  --color-secondary: var(--mat-sys-accent);
+  --color-secondary-dark: var(--mat-sys-accent-dark);
+  --color-on-secondary: var(--mat-sys-on-accent);
+  --color-on-secondary-dark: var(--mat-sys-on-accent-dark);
+
+  --color-tertiary: var(--mat-sys-tertiary);
+  --color-tertiary-dark: var(--mat-sys-tertiary-dark);
+  --color-on-tertiary: var(--mat-sys-on-tertiary);
+  --color-on-tertiary-dark: var(--mat-sys-on-tertiary-dark);
+
+  --color-error: var(--mat-sys-error);
+  --color-on-error: var(--mat-sys-on-error);
+
+  --color-project-color: #047857;
+  --color-user-color: #6d28d9;
+  --color-source-type-color: #4d7c0f;
+  --color-organization-color: #c2410c;
+  --color-client-color: #0f766e;
+  --color-source-data-color: #be185d;
+  --color-source-color: #1d4ed8;
+  --color-subject-color: #4338ca;
+  --color-group-color: #b45309;
+  --color-metrics-color: #334155;
+}

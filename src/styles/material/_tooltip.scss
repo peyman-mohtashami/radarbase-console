@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.tooltip-overrides((
+    // Base
+    container-shape: var(--mat-sys-corner-extra-small),
+    // Color
+    container-color: var(--mat-sys-inverse-surface),
+    supporting-text-color: var(--mat-sys-inverse-on-surface),
+    // Typography
+    supporting-text-font: var(--mat-sys-body-small-font),
+    supporting-text-line-height: var(--mat-sys-body-small-line-height),
+    supporting-text-size: var(--mat-sys-body-small-size),
+    supporting-text-tracking: var(--mat-sys-body-small-tracking),
+    supporting-text-weight: var(--mat-sys-body-small-weight),
+  ));
+}

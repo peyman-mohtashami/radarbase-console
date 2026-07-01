@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.card-overrides((
+    // Base
+    elevated-container-shape: 4px, //var(--mat-sys-corner-medium),
+    filled-container-shape: 4px, //var(--mat-sys-corner-medium),
+    outlined-container-shape: 4px, //var(--mat-sys-corner-medium),
+    //outlined-outline-width: 1px,
+
+    // Color
+    elevated-container-color: var(--mat-sys-background), //var(--mat-sys-surface-container-low),
+    //elevated-container-elevation: var(--mat-sys-level1),
+    filled-container-color: var(--mat-sys-background), //var(--mat-sys-surface-container-highest),
+    //filled-container-elevation: var(--mat-sys-level0),
+    outlined-container-color: var(--mat-sys-background), //var(--mat-sys-surface),
+    //outlined-container-elevation: var(--mat-sys-level0),
+    //outlined-outline-color: var(--mat-sys-outline-variant),
+    //subtitle-text-color: var(--mat-sys-on-surface),
+
+    // Typography
+    //subtitle-text-font: var(--mat-sys-title-medium-font),
+    //subtitle-text-line-height: var(--mat-sys-title-medium-line-height),
+    //subtitle-text-size: var(--mat-sys-title-medium-size),
+    //subtitle-text-tracking: var(--mat-sys-title-medium-tracking),
+    //subtitle-text-weight: var(--mat-sys-title-medium-weight),
+    //title-text-font: var(--mat-sys-title-large-font),
+    //title-text-line-height: var(--mat-sys-title-large-line-height),
+    //title-text-size: var(--mat-sys-title-large-size),
+    //title-text-tracking: var(--mat-sys-title-large-tracking),
+    //title-text-weight: var(--mat-sys-title-large-weight),
+  ));
+}
+

@@ -1,0 +1,51 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.checkbox-overrides((
+    // Base
+    selected-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    selected-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    selected-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    unselected-focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+    unselected-hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+    unselected-pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+    touch-target-size: 48px,
+    // Color
+    disabled-label-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-selected-checkmark-color: var(--mat-sys-surface),
+    disabled-selected-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    disabled-unselected-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+    label-text-color: var(--mat-sys-on-surface),
+    selected-checkmark-color: var(--mat-sys-on-primary),
+    selected-focus-icon-color: var(--mat-sys-primary),
+    selected-focus-state-layer-color: var(--mat-sys-primary),
+    selected-hover-icon-color: var(--mat-sys-primary),
+    selected-hover-state-layer-color: var(--mat-sys-primary),
+    selected-icon-color: var(--mat-sys-primary),
+    selected-pressed-icon-color: var(--mat-sys-primary),
+    selected-pressed-state-layer-color: var(--mat-sys-on-surface),
+    unselected-focus-icon-color: var(--mat-sys-on-surface),
+    unselected-focus-state-layer-color: var(--mat-sys-on-surface),
+    unselected-hover-icon-color: var(--mat-sys-on-surface),
+    unselected-hover-state-layer-color: var(--mat-sys-on-surface),
+    unselected-icon-color: var(--mat-sys-on-surface-variant),
+    unselected-pressed-state-layer-color: var(--mat-sys-primary),
+
+    // Typography
+    //label-text-font: var(--mat-sys-body-medium-font),
+    //label-text-line-height: var(--mat-sys-body-medium-line-height),
+    //label-text-size: var(--mat-sys-body-medium-size),
+    //label-text-tracking: var(--mat-sys-body-medium-tracking),
+    //label-text-weight: var(--mat-sys-body-medium-weight),
+
+    label-text-font: var(--mat-sys-body-small-font),
+    label-text-line-height: var(--mat-sys-body-small-line-height),
+    label-text-size: var(--mat-sys-body-small-size),
+    label-text-tracking: var(--mat-sys-body-small-tracking),
+    label-text-weight: var(--mat-sys-body-small-weight),
+
+    // Density
+    touch-target-display: block,
+    state-layer-size: 40px,
+  ));
+}

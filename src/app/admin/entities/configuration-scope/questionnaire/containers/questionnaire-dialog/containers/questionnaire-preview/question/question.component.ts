@@ -107,7 +107,7 @@ import {outputToObservable} from '@angular/core/rxjs-interop';
 export class QuestionComponent implements OnInit {
 
   question = input.required<AppQuestion>();
-  language = input.required<RadarOption>();
+  language = input.required<string>();
   answer = input.required<AnswerWithTimeLog | undefined>();
   answers = input.required<Record<string, AnswerWithTimeLog[]>>();
 

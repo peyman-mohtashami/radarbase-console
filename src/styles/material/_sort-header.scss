@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.sort-overrides((
+    // Color
+    arrow-color: var(--mat-sys-on-surface)
+  ));
+}

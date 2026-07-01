@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.tree-overrides((
+    // Color
+    container-background-color: var(--mat-sys-surface),
+    node-text-color: var(--mat-sys-on-surface),
+    // Typography
+    node-text-font: var(--mat-sys-body-large-font),
+    node-text-size: var(--mat-sys-body-large-size),
+    node-text-weight: var(--mat-sys-body-large-weight),
+    // Density
+    node-min-height: 48px,
+  ))
+}
