@@ -3,21 +3,23 @@
 @mixin overrides() {
   @include mat.dialog-overrides((
     // Base
-    actions-alignment: flex-end,
-    actions-padding: (16px,24px),
+    actions-alignment: start, //flex-end,
+    actions-padding: (20px,24px), //(16px,24px),
     container-elevation-shadow: none,
-    container-max-width: 560px,
+    container-max-width: 80vw, //560px,
     container-min-width: 280px,
-    container-shape: var(--mat-sys-corner-extra-large),
+    container-shape: var(--mat-sys-corner-extra-small), //var(--mat-sys-corner-extra-large),
     container-small-max-width: calc(100vw - 32px),
     content-padding: (20px,24px),
-    headline-padding: (6px,24px,13px),
+    headline-padding: (0,24px,9px), //(6px,24px,13px),
     with-actions-content-padding: (20px,24px,0),
-      // Color
+
+    // Color
     container-color: var(--mat-sys-surface),
     subhead-color: var(--mat-sys-on-surface),
     supporting-text-color: var(--mat-sys-on-surface-variant),
-      // Typography
+
+    // Typography
     subhead-font: var(--mat-sys-headline-small-font),
     subhead-line-height: var(--mat-sys-headline-small-line-height),
     subhead-size: var(--mat-sys-headline-small-size),

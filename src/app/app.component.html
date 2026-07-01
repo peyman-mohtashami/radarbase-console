@@ -1,17 +1,16 @@
-<div class="bg-app-background dark:bg-app-background-dark text-foreground dark:text-foreground-dark">
+<div class="flex flex-col h-full">
   <app-toolbar (menuStatus)="isMenuOpened = $event"/>
-  <div class="fixed inset-0 top-14 flex bg-inherit">
-    <div
-        class="absolute lg:relative inset-0 -left-64 lg:left-0 z-50 w-64 h-full bg-tertiary flex flex-col justify-between pb-2 transition-property:width duration-300 flex-shrink-0"
-        [class]="isMenuOpened ? 'w-64 left-0' : 'w-[72px]'">
-      <div class="grow overflow-auto overflow-y-auto scrollbar">
-        <app-sidebar-nav class="min-h-0" [isMenuOpen]="isMenuOpened"/>
+  <div class="flex grow min-h-0">
+    <aside class="h-full w-64 bg-tertiary shrink-0 flex flex-col transition-property:width duration-300"
+           [class]="isMenuOpened ? 'w-64' : 'w-21!'">
+      <div class="overflow-y-auto grow min-h-0">
+        <app-sidebar-nav [isMenuOpen]="isMenuOpened"/>
       </div>
-      <app-footer [isMenuOpen]="isMenuOpened"/>
-    </div>
-    <div class="grow overflow-y-auto scrollbar">
+      <app-footer class="shrink-0" [isMenuOpen]="isMenuOpened"/>
+    </aside>
+    <main class="grow overflow-y-auto">
       <router-outlet/>
-    </div>
+    </main>
   </div>
 </div>
 
