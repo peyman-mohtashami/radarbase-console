@@ -8,6 +8,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {AppConfig} from "../../models/config";
 import {MatIcon} from '@angular/material/icon';
+import {ConfigDialogService} from '../../services/config-dialog.service';
 
 @Component({
   selector: 'app-config-actions',
@@ -28,6 +29,7 @@ export class ConfigActionsComponent {
   private configService = inject(ConfigConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(ConfigDialogService);
 
   entity = input.required<AppConfig>();
   isExpanded = input<boolean>(true);
@@ -35,10 +37,11 @@ export class ConfigActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity().id}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity().id}`
+    // }).then()
   }
 }

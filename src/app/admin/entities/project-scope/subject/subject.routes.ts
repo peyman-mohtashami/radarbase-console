@@ -50,12 +50,12 @@ export const subjectRoutes: Routes = [
           import('../../main-scope/client/app-config.routes').then((m) => m.appConfigRoutes),
         data: {scope: 'subject'}
       },
-      {
-        path: 'protocols',
-        loadChildren: () =>
-          import('../../configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
-        data: {scope: 'subject'}
-      },
+      // {
+      //   path: 'protocols',
+      //   loadChildren: () =>
+      //     import('../../configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
+      //   data: {scope: 'subject'}
+      // },
       // {
       //   path: 'clients',
       //   loadChildren: () =>

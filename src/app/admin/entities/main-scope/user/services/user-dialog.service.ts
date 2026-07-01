@@ -30,32 +30,32 @@ export class UserDialogService extends BaseDialogService<AppUser, RadarUser, Use
       case 'activate':
         return this.entityService.sendActivationEmail(entity);
       default:
-        this.clearFragmentUrl();
+        // this.clearFragmentUrl();
         return of();
     }
   }
 
-  override processUrlFragment(fragment: string){
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
-      switch (action) {
-        case 'add':
-          this.openDialog(DialogMode.ADD);
-          break;
-        case 'edit':
-          if (entity) this.openDialog(DialogMode.EDIT, entity);
-          break;
-        case 'delete':
-          if (entity) this.openDialog(DialogMode.DELETE, entity);
-          break;
-        case 'activate':
-          if (entity) this.openDialog('activate', entity);
-          break;
-      }
-    }
-  }
+  // override processUrlFragment(fragment: string){
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
+  //     switch (action) {
+  //       case 'add':
+  //         this.openDialog(DialogMode.ADD);
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.openDialog(DialogMode.EDIT, entity);
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.openDialog(DialogMode.DELETE, entity);
+  //         break;
+  //       case 'activate':
+  //         if (entity) this.openDialog('activate', entity);
+  //         break;
+  //     }
+  //   }
+  // }
 
   override createDialogRef(mode: DialogMode | string, entity?: AppUser): MatDialogRef<UserDialogComponent | UserActivateDialogComponent> {
     const userFullList = this.entityService.getWithQuery();

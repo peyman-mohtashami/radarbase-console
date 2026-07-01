@@ -5,7 +5,7 @@ import {RevisionService} from '../../services/revision.service';
 import {RevisionConfigService} from '../../services/revision-config.service';
 import {AppRevision, RadarRevision} from '../../models/revision';
 import {RevisionTableRowComponent} from '../../components/revision-table-row/revision-table-row.component';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
@@ -17,7 +17,7 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
   selector: 'app-revision-list-page',
   templateUrl: './revision-list-page.component.html',
   imports: [
-    ListPageHeaderComponent,
+    // ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     TranslatePipe,

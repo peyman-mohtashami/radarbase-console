@@ -10,19 +10,28 @@ import {AppProject} from '../../../../main-scope/project/models/project';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-source-list-page',
   templateUrl: './source-list-page.component.html',
   imports: [
     DataTableFilterComponent,
-    ListPageHeaderComponent,
+    // ListPageHeaderComponent,
     LoaderComponent,
     SourceTableRowComponent,
     EntityListPageComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    PermissionDirective,
+    TranslatePipe,
   ]
 })
 export class SourceListPageComponent extends BaseEntityListPageComponent<AppSource, RadarSource> {

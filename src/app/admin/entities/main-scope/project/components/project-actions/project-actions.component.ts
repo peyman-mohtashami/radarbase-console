@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ProjectConfigService} from "../../services/project-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {ProjectDialogService} from '../../services/project-dialog.service';
 
 @Component({
   selector: 'app-project-actions',
@@ -28,6 +29,7 @@ export class ProjectActionsComponent {
   private configService = inject(ProjectConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(ProjectDialogService);
 
   entity = input.required<AppProject>();
   isExpanded = input<boolean>(true);
@@ -35,10 +37,11 @@ export class ProjectActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity()._name}`
+    // }).then()
   }
 }

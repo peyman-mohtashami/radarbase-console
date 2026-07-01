@@ -8,6 +8,7 @@ import {AppUser} from '../../models/user';
 import {MatTooltip} from "@angular/material/tooltip";
 import {UserConfigService} from '../../services/user-config.service';
 import {MatIcon} from '@angular/material/icon';
+import {UserDialogService} from '../../services/user-dialog.service';
 
 @Component({
   selector: 'app-user-actions',
@@ -29,6 +30,7 @@ export class UserActionsComponent {
   private configService = inject(UserConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(UserDialogService);
 
   entity = input.required<AppUser>();
   isExpanded = input<boolean>(true);
@@ -36,10 +38,11 @@ export class UserActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
+    // }).then()
   }
 }

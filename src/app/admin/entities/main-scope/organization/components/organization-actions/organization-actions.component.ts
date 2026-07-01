@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {OrganizationConfigService} from "../../services/organization-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {MatDialog} from '@angular/material/dialog';
+import {OrganizationDialogService} from '../../services/organization-dialog.service';
 
 @Component({
   selector: 'app-organization-actions',
@@ -28,6 +30,7 @@ export class OrganizationActionsComponent {
   private configService = inject(OrganizationConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(OrganizationDialogService);
 
   entity = input.required<AppOrganization>();
   isExpanded = input<boolean>(true);
@@ -35,10 +38,11 @@ export class OrganizationActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity().name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity().name}`
+    // }).then()
   }
 }

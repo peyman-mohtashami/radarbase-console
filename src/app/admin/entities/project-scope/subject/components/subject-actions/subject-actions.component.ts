@@ -8,6 +8,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectConfigService} from "../../services/subject-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {SubjectDialogService} from '../../services/subject-dialog.service';
 
 @Component({
   selector: 'app-subject-actions',
@@ -31,14 +32,16 @@ export class SubjectActionsComponent {
   private configService = inject(SubjectConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(SubjectDialogService);
 
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: SubjectDialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
+    // }).then()
   }
 }

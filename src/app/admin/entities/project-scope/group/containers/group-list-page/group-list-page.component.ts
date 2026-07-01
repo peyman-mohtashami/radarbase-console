@@ -6,22 +6,31 @@ import {GroupConfigService} from '../../services/group-config.service';
 import {GroupDialogService} from '../../services/group-dialog.service';
 import {AppGroup, RadarGroup} from '../../models/group';
 import {AppProject} from '../../../../main-scope/project/models/project';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group-list-page',
   templateUrl: './group-list-page.component.html',
   imports: [
-    ListPageHeaderComponent,
+    // ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     GroupTableRowComponent,
     EntityListPageComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    PermissionDirective,
+    TranslatePipe,
   ]
 })
 export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup, RadarGroup> {

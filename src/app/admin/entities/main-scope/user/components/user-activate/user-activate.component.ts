@@ -3,6 +3,7 @@ import { AppUser } from "../../models/user";
 import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
+import {UserDialogService} from '../../services/user-dialog.service';
 
 @Component({
   selector: 'app-user-activate',
@@ -17,12 +18,9 @@ export class UserActivateComponent {
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  // private dialogService = inject(UserDialogService);
 
   onAction() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/activate/user/${this.entity()._name}`
-    }).then()
+    // this.dialogService.openDialog('activate', this.entity());
   }
 }

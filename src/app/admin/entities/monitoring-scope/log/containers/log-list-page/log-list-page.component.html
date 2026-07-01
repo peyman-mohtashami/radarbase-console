@@ -2,18 +2,40 @@
 @let entityMetadata = configService.getEntityMetadata();
 @let tableFields = configService.getTableFields();
 
-<app-entities-page-header [showTitle]="true"
-                          [entityMetadata]="entityMetadata"
-                          [enableAddButton]="false"
-                          [permission]="[{role: ROLES.SYS_ADMIN}]">
+<!--<app-entities-page-header [showTitle]="true"-->
+<!--                          [entityMetadata]="entityMetadata"-->
+<!--                          [enableAddButton]="false"-->
+<!--                          [permission]="[{role: ROLES.SYS_ADMIN}]">-->
+<!--  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <app-data-table-filter bottom-filter-->
+<!--                           [filters]='tableFilters'-->
+<!--                           [filterOpened]='isFilterOpened'-->
+<!--                           (filterChanged)='handleFilterChange($event)'-->
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+<!--  }-->
+<!--</app-entities-page-header>-->
+
+<div
+  class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">
+      <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata.icon }}</span>
+      <span class="material-symbols-outlined absolute left-2 top-2">{{ entityMetadata.icon }}</span>
+    </span>
+    <span
+      class="text-primary dark:text-primary-dark">{{ 'ADMIN.' + entityMetadata.name + '.title.plural' | translate }}</span>
+  </h2>
+</div>
+
+<div class="px-4">
   @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
-    <app-data-table-filter bottom-filter
-                           [filters]='tableFilters'
+    <app-data-table-filter [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
                            (filterChanged)='handleFilterChange($event)'
                            (filterEnableChanged)="onFilterEnabledChanged($event)"/>
   }
-</app-entities-page-header>
+</div>
+
 
 @if (loading()) {
   <app-loader/>

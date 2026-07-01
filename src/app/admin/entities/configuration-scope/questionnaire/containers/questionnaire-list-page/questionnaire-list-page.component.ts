@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
@@ -18,20 +18,25 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
 import {
   BaseEntityListPageComponent
 } from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-questionnaire-list-page',
   templateUrl: './questionnaire-list-page.component.html',
   imports: [
-    ListPageHeaderComponent,
+    // ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     QuestionnaireTableRowComponent,
     EntityListPageComponent,
     MatButton,
     MatIcon,
+    MatIconButton,
+    PermissionDirective,
+    TranslatePipe,
   ]
 })
 export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<AppQuestionnaire, RadarQuestionnaire> {

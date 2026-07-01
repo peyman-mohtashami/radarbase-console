@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SourceDataConfigService} from "../../services/source-data-config.service";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatIcon} from '@angular/material/icon';
+import {SourceDataDialogService} from '../../services/source-data-dialog.service';
 
 @Component({
   selector: 'app-source-data-actions',
@@ -28,6 +29,7 @@ export class SourceDataActionsComponent {
   private configService = inject(SourceDataConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(SourceDataDialogService);
 
   entity = input.required<AppSourceData>();
   isExpanded = input<boolean>(true);
@@ -35,10 +37,11 @@ export class SourceDataActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.configService.getEntityMetadata().name}/${this.entity()._name}`
+    // }).then()
   }
 }

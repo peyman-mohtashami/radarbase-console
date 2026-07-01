@@ -33,33 +33,33 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   clientService = inject(ClientService);
   sourceService = inject(SourceService);
 
-  override processUrlFragment(fragment: string) {
-    const entityMetadata = this.configService.getEntityMetadata()
-    const [, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
-      switch (action) {
-        case 'add':
-          this.openDialog(SubjectDialogMode.ADD);
-          break;
-        case 'edit':
-          if (entity) this.openDialog(SubjectDialogMode.EDIT, entity);
-          break;
-        case 'delete':
-          if (entity) this.openDialog(SubjectDialogMode.DELETE, entity);
-          break;
-        case 'discontinue':
-          if (entity) this.openDialog(SubjectDialogMode.DISCONTINUE, entity);
-          break;
-        case 'pair_source':
-          if (entity) this.openDialog(SubjectDialogMode.PAIR_SOURCE, entity);
-          break;
-        case 'pair_app':
-          if (entity) this.openDialog(SubjectDialogMode.PAIR_APP, entity);
-          break;
-      }
-    }
-  }
+  // override processUrlFragment(fragment: string) {
+  //   const entityMetadata = this.configService.getEntityMetadata()
+  //   const [, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
+  //     switch (action) {
+  //       case 'add':
+  //         this.openDialog(SubjectDialogMode.ADD);
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.openDialog(SubjectDialogMode.EDIT, entity);
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.openDialog(SubjectDialogMode.DELETE, entity);
+  //         break;
+  //       case 'discontinue':
+  //         if (entity) this.openDialog(SubjectDialogMode.DISCONTINUE, entity);
+  //         break;
+  //       case 'pair_source':
+  //         if (entity) this.openDialog(SubjectDialogMode.PAIR_SOURCE, entity);
+  //         break;
+  //       case 'pair_app':
+  //         if (entity) this.openDialog(SubjectDialogMode.PAIR_APP, entity);
+  //         break;
+  //     }
+  //   }
+  // }
 
   override processDialogAction(actionType: SubjectDialogMode, entity: AppSubject): Observable<AppSubject | void> {
     switch (actionType) {
@@ -76,7 +76,7 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
       case SubjectDialogMode.PAIR_SOURCE:
         return this.entityService.update(entity);
       default:
-        this.clearFragmentUrl();
+        // this.clearFragmentUrl();
         return of();
     }
   }

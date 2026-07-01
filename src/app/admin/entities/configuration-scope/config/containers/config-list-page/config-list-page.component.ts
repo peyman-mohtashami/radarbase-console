@@ -10,7 +10,6 @@ import {ConfigTableRowComponent} from "../../components/config-table-row/config-
 import {
   DataTableFilterComponent,
 } from "../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component";
-import {ListPageHeaderComponent} from "../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
 import {AppProject} from '../../../../main-scope/project/models/project';
@@ -19,6 +18,7 @@ import {MatIcon} from '@angular/material/icon';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {DEFAULT_PAGE_SIZE} from '../../../../../base-entities/consts/default-table-values';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 
 @Component({
   selector: 'app-config-list-page',
@@ -28,11 +28,11 @@ import {DEFAULT_PAGE_SIZE} from '../../../../../base-entities/consts/default-tab
     TranslatePipe,
     ReactiveFormsModule,
     ConfigTableRowComponent,
-    ListPageHeaderComponent,
     DataTableFilterComponent,
     MatButton,
     MatIcon,
     EntityListPageComponent,
+    PermissionDirective,
   ]
 })
 export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> {
@@ -92,7 +92,6 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
           break;
       }
     }
-    this.removeFragmentUrl();
     this.loading.set(false);
     this.selection.clear();
   }

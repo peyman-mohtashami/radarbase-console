@@ -36,7 +36,7 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> implements
 
   ngOnInit() {
     this.updateTabLinks();
-    this.handleDialogUrlFragment();
+    // this.handleDialogUrlFragment();
   }
 
   ngOnDestroy() {
@@ -72,38 +72,38 @@ export class BaseEntityPageComponent<T extends { _name: string; }, U> implements
         return;
 
     }
-    this.removeFragmentUrl();
+    // this.removeFragmentUrl();
   }
 
- removeFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined
-    }).then();
-  }
+ // removeFragmentUrl() {
+ //    this.router.navigate([], {
+ //      relativeTo: this.activatedRoute,
+ //      queryParamsHandling: 'preserve',
+ //      fragment: undefined
+ //    }).then();
+ //  }
 
-  private handleDialogUrlFragment() {
-    this.activatedRoute.fragment
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(fragment => {
-        if (fragment) this.dialogService.processUrlFragment(fragment);
-      });
-  }
+  // private handleDialogUrlFragment() {
+  //   this.activatedRoute.fragment
+  //     .pipe(takeUntil(this._destroy$))
+  //     .subscribe(fragment => {
+  //       if (fragment) this.dialogService.processUrlFragment(fragment);
+  //     });
+  // }
 
   navigateOnUpdateSuccess(entity: T) {
     this.router.navigate(['../', entity._name], {
       relativeTo: this.activatedRoute,
       queryParamsHandling: 'preserve',
-      fragment: undefined
+      // fragment: undefined
     }).then();
   }
-
+  //
   navigateOnDeleteSuccess() {
     this.router.navigate(['../'], {
       relativeTo: this.activatedRoute,
       queryParamsHandling: 'preserve',
-      fragment: undefined
+      // fragment: undefined
     }).then();
   }
 

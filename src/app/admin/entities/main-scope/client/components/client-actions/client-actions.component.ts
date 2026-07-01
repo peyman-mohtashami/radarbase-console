@@ -8,6 +8,7 @@ import {AppClient} from '../../models/client';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ClientConfigService} from "../../services/client-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {ClientDialogService} from '../../services/client-dialog.service';
 
 @Component({
   selector: 'app-client-actions',
@@ -28,6 +29,7 @@ export class ClientActionsComponent {
   private configService = inject(ClientConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(ClientDialogService);
 
   entity = input.required<AppClient>();
   isExpanded = input<boolean>(true);
@@ -35,10 +37,11 @@ export class ClientActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity().clientId}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity().clientId}`
+    // }).then()
   }
 }

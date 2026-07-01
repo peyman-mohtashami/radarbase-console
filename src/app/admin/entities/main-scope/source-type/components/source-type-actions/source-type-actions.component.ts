@@ -8,6 +8,7 @@ import {AppSourceType} from '../../models/source-type';
 import {MatTooltip} from "@angular/material/tooltip";
 import {SourceTypeConfigService} from "../../services/source-type-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
 
 @Component({
   selector: 'app-source-type-actions',
@@ -29,6 +30,7 @@ export class SourceTypeActionsComponent {
   private configService = inject(SourceTypeConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(SourceTypeDialogService);
 
   entity = input.required<AppSourceType>();
   isExpanded = input<boolean>(true);
@@ -36,10 +38,11 @@ export class SourceTypeActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
+    // }).then()
   }
 }

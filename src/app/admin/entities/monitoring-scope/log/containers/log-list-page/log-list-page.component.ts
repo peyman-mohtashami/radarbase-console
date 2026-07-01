@@ -3,23 +3,25 @@ import {LoaderComponent} from '../../../../../../shared/components/loader/loader
 import {LogConfigService} from '../../services/log-config.service';
 import {AppLog, RadarLog} from '../../models/log';
 import {LogTableRowComponent} from '../../components/log-table-row/log-table-row.component';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
+// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {LogService} from '../../services/log.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-log-list-page',
   templateUrl: './log-list-page.component.html',
   imports: [
-    ListPageHeaderComponent,
+    // ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     LogTableRowComponent,
     EntityListPageComponent,
+    TranslatePipe,
   ]
 })
 export class LogListPageComponent extends BaseEntityListPageComponent<AppLog, RadarLog> {

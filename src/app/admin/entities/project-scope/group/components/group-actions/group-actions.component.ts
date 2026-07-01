@@ -8,6 +8,7 @@ import {AppGroup} from '../../models/group';
 import {MatTooltip} from "@angular/material/tooltip";
 import {GroupConfigService} from "../../services/group-config.service";
 import {MatIcon} from '@angular/material/icon';
+import {GroupDialogService} from '../../services/group-dialog.service';
 
 @Component({
   selector: 'app-group-actions',
@@ -28,6 +29,7 @@ export class GroupActionsComponent {
   private configService = inject(GroupConfigService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private dialogService = inject(GroupDialogService);
 
   entity = input.required<AppGroup>();
   isExpanded = input<boolean>(true);
@@ -35,10 +37,11 @@ export class GroupActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   onAction(mode: DialogMode) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParamsHandling: 'preserve',
-      fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
-    }).then()
+    this.dialogService.openDialog(mode, this.entity());
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParamsHandling: 'preserve',
+    //   fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
+    // }).then()
   }
 }

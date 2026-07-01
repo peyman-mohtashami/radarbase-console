@@ -23,6 +23,7 @@ import {SelectedEntitiesService} from '../../../services/selected-entities.servi
   template: '',
 })
 export class BaseEntityListPageComponent<T extends { _name: string; }, U> implements OnInit, OnDestroy {
+  protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
@@ -97,7 +98,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
       }, {})
     );
     this.extensionClass.set(this.getHighestPriorityClass(tableFields));
-    this.handleDialogUrlFragment();
+    // this.handleDialogUrlFragment();
   }
 
   ngOnDestroy() {
@@ -166,7 +167,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleDialogUpdate(updated: { mode: DialogMode | string, entity?: T }) {
     this.refreshEntities();
-    this.removeFragmentUrl();
+    // this.removeFragmentUrl();
     this.loading.set(false);
     this.selection.clear();
   }
@@ -193,21 +194,21 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
   }
 
 
-  removeFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined
-    }).then();
-  }
+  // removeFragmentUrl() {
+  //   this.router.navigate([], {
+  //     relativeTo: this.activatedRoute,
+  //     queryParamsHandling: 'preserve',
+  //     fragment: undefined
+  //   }).then();
+  // }
 
-  private handleDialogUrlFragment() {
-    this.activatedRoute.fragment
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(fragment => {
-        if (fragment) this.dialogService.processUrlFragment(fragment);
-      });
-  }
+  // private handleDialogUrlFragment() {
+  //   this.activatedRoute.fragment
+  //     .pipe(takeUntil(this._destroy$))
+  //     .subscribe(fragment => {
+  //       if (fragment) this.dialogService.processUrlFragment(fragment);
+  //     });
+  // }
 
   handleFilterChange(event: FilterEvent) {
     this.filter.set(event);
@@ -232,5 +233,9 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
   toggleViewMode() {
     this.gridView = !this.gridView;
     this.configService.setViewMode(this.gridView ? 'grid' : 'list');
+  }
+
+  protected openDialog(dialogMode: DialogMode) {
+    this.dialogService.openDialog(dialogMode);
   }
 }

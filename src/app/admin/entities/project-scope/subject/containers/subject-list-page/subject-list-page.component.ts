@@ -9,21 +9,28 @@ import {SubjectTableRowComponent} from '../../components/subject-table-row/subje
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
-import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
+ import {MatButton, MatIconButton} from '@angular/material/button';
+ import {MatIcon} from '@angular/material/icon';
+ import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+ import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subject-list-page',
   templateUrl: './subject-list-page.component.html',
   imports: [
     DataTableFilterComponent,
-    ListPageHeaderComponent,
     LoaderComponent,
     SubjectTableRowComponent,
     EntityListPageComponent,
     SubjectAssignGroupComponent,
+    MatButton,
+    MatIcon,
+    MatIconButton,
+    PermissionDirective,
+    TranslatePipe,
   ]
 })
 export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSubject, RadarSubject> {

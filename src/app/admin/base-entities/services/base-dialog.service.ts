@@ -21,28 +21,28 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
 
   dialogUpdateEvent: WritableSignal<{mode: DialogMode | string; entity?: T;} | undefined> = signal(undefined);
 
-  processUrlFragment(fragment: string) {
-    const entityMetadata = this.configService.getEntityMetadata();
-    const [, action, entityType, entityId] = fragment.split('/');
-    if (entityType === entityMetadata.name) {
-      const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
-      switch (action) {
-        case 'add':
-          this.openDialog(DialogMode.ADD);
-          break;
-        case 'edit':
-          if (entity) this.openDialog(DialogMode.EDIT, entity);
-          break;
-        case 'delete':
-          if (entity) this.openDialog(DialogMode.DELETE, entity);
-          break;
-      }
-    }
-  }
+  // processUrlFragment(fragment: string) {
+  //   const entityMetadata = this.configService.getEntityMetadata();
+  //   const [, action, entityType, entityId] = fragment.split('/');
+  //   if (entityType === entityMetadata.name) {
+  //     const entity = entityId ? this.entityService.getEntity(entityId) : undefined;
+  //     switch (action) {
+  //       case 'add':
+  //         this.openDialog(DialogMode.ADD);
+  //         break;
+  //       case 'edit':
+  //         if (entity) this.openDialog(DialogMode.EDIT, entity);
+  //         break;
+  //       case 'delete':
+  //         if (entity) this.openDialog(DialogMode.DELETE, entity);
+  //         break;
+  //     }
+  //   }
+  // }
 
   openDialog(mode: DialogMode | string, entity?: T) {
     if (mode !== DialogMode.ADD && !entity) {
-      this.clearFragmentUrl();
+      // this.clearFragmentUrl();
       return;
     }
 
@@ -57,7 +57,7 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
           if (!_entity) {
             this.configService.setLatestFormEntry(null);
             dialogRef.close();
-            this.clearFragmentUrl();
+            // this.clearFragmentUrl();
             return;
           }
           this.configService.setLatestFormEntry(_entity);
@@ -93,18 +93,18 @@ export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEnti
       case DialogMode.DELETE:
         return this.entityService.delete(entity);
       default:
-        this.clearFragmentUrl();
+        // this.clearFragmentUrl();
         return of();
     }
   }
 
-  clearFragmentUrl() {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParamsHandling: 'preserve',
-      fragment: undefined // Explicitly remove the fragment
-    }).then();
-  }
+  // clearFragmentUrl() {
+  //   this.router.navigate([], {
+  //     relativeTo: this.activatedRoute,
+  //     queryParamsHandling: 'preserve',
+  //     fragment: undefined // Explicitly remove the fragment
+  //   }).then();
+  // }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createDialogRef(_mode: DialogMode | string, _entity?: T): MatDialogRef<V> {

@@ -2,30 +2,30 @@
 @let entityMetadata = configService.getEntityMetadata();
 @let tableFields = configService.getTableFields();
 
-<app-entities-page-header [showTitle]="true"
-                          [entityMetadata]="configService.getEntityMetadata()"
-                          [enableAddButton]="true"
-                          [isGridView]="undefined"
-                          [permission]="[{role: ROLES.SYS_ADMIN}]">
-  <div extra-buttons>
-    <button type='button'
-            class="small"
-            mat-stroked-button
-            color="primary"
-            (click)="showHistory()">
-      <span class="font-bold flex items-center gap-2">
-        <mat-icon class="material-symbols-outlined">history</mat-icon>
-      </span>
-    </button>
-  </div>
-  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
-    <app-data-table-filter bottom-filter
-                           [filters]='tableFilters'
-                           [filterOpened]='isFilterOpened'
-                           (filterChanged)='handleFilterChange($event)'
-                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
-  }
-</app-entities-page-header>
+<!--<app-entities-page-header [showTitle]="true"-->
+<!--                          [entityMetadata]="configService.getEntityMetadata()"-->
+<!--                          [enableAddButton]="true"-->
+<!--                          [isGridView]="undefined"-->
+<!--                          [permission]="[{role: ROLES.SYS_ADMIN}]">-->
+<!--  <div extra-buttons>-->
+<!--    <button type='button'-->
+<!--            class="small"-->
+<!--            mat-stroked-button-->
+<!--            color="primary"-->
+<!--            (click)="showHistory()">-->
+<!--      <span class="font-bold flex items-center gap-2">-->
+<!--        <mat-icon class="material-symbols-outlined">history</mat-icon>-->
+<!--      </span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <app-data-table-filter bottom-filter-->
+<!--                           [filters]='tableFilters'-->
+<!--                           [filterOpened]='isFilterOpened'-->
+<!--                           (filterChanged)='handleFilterChange($event)'-->
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+<!--  }-->
+<!--</app-entities-page-header>-->
 
 @if (isChanged) {
   <div class="bg-orange-200 flex items-center gap-4 justify-between px-4 py-2 rounded-sm mb-2">
