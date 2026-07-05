@@ -1,21 +1,20 @@
 import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
-import {AppQuestionnaire, RadarQuestionnaire} from "../models/questionnaire";
+import {AppQuestionnaire} from "../models/questionnaire";
 import {QuestionnaireService} from "./questionnaire.service";
 import {
   QuestionnaireDialogComponent
 } from "../containers/questionnaire-dialog/questionnaire-dialog.component";
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {QuestionnaireConfigService} from './questionnaire-config.service';
-import {AppProtocol} from '../../protocol/models/protocol';
 import {HttpErrorResponse} from '@angular/common/http';
 import {
   ConfigPublishDialogComponent
 } from '../../config/containers/config-publish-dialog/config-publish-dialog.component';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, RadarQuestionnaire, QuestionnaireDialogComponent> {
+export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, AppQuestionnaire, QuestionnaireDialogComponent> {
   override entityService = inject(QuestionnaireService);
   override configService = inject(QuestionnaireConfigService);
 

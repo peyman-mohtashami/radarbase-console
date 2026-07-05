@@ -8,7 +8,7 @@ import {
 import {QuestionnaireService} from "../../services/questionnaire.service";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {QuestionnaireDialogService} from "../../services/questionnaire-dialog.service";
-import {AppQuestionnaire, RadarQuestionnaire} from "../../models/questionnaire";
+import {AppQuestionnaire} from "../../models/questionnaire";
 import {
   QuestionnaireTableRowComponent
 } from "../../components/questionnaire-table-row/questionnaire-table-row.component";
@@ -39,7 +39,7 @@ import {TranslatePipe} from '@ngx-translate/core';
     TranslatePipe,
   ]
 })
-export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<AppQuestionnaire, RadarQuestionnaire> {
+export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<AppQuestionnaire, AppQuestionnaire> {
   override entityService = inject(QuestionnaireService);
   override configService = inject(QuestionnaireConfigService);
   override dialogService = inject(QuestionnaireDialogService);

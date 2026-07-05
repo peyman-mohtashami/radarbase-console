@@ -1,6 +1,8 @@
-import {RadarQuestionnaire} from '../../../models/questionnaire';
+// import {RadarQuestionnaire} from '../../../models/questionnaire';
 
-export const PHQ8_QUESTIONNAIRE: RadarQuestionnaire = {
+import {AppQuestionnaire} from '../../../models/questionnaire';
+
+export const PHQ8_QUESTIONNAIRE = {
     "modelVersion": "1.0",
     "version": "1.0",
     "name": "sample_name",
