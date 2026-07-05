@@ -4,110 +4,26 @@ import {
   OnInit,
   output, viewChild, ViewContainerRef
 } from '@angular/core'
-// // import { AppQuestion, QuestionType } from '../../../../core/app-lifecycle/questionnaire/models/question'
-// import { RadioInputComponent } from './input-field/radio-input/radio-input.component'
-// import { CheckboxInputComponent } from './input-field/checkbox-input/checkbox-input.component'
-// import { RangeInputComponent } from './input-field/range-input/range-input.component'
-// import { RangeInfoInputComponent } from './input-field/range-info-input/range-info-input.component'
-// import { SliderInputComponent } from './input-field/slider-input/slider-input.component'
-// import { InfoScreenComponent } from './input-field/info-screen/info-screen.component'
-// import { TimedTestComponent } from './input-field/timed-test/timed-test.component'
-// import { DescriptiveInputComponent } from './input-field/descriptive-input/descriptive-input.component'
-// import { WebInputComponent } from './input-field/web-input/web-input.component'
-// import { NotesInputComponent } from './input-field/notes-input/notes-input.component'
-// import { YesnoInputComponent } from './input-field/yesno-input/yesno-input.component'
-// import { DateInputComponent } from './input-field/date-input/date-input.component'
-// import { TextInputComponent } from './input-field/text-input/text-input.component'
-// import { TimeInputComponent } from './input-field/time-input/time-input.component'
-// import { CalcInputComponent } from './input-field/calc-input/calc-input.component'
-// // import { KeyboardEventType, NextButtonEventType } from '../../../../core/data-ingestion/usage/enums/events'
-// import { ScrollableContentComponent } from './scrolable-content/scrollable-content.component'
-// import { QuestionHeaderComponent } from './question-header/question-header.component'
-// // import { AppProtocol } from '../../../../core/app-lifecycle/protocol/models/protocol'
-// import { CheckboxSvgInputComponent } from './input-field/checkbox-svg-input/checkbox-svg-input.component'
-// import {AudioInputComponent} from "./input-field/audio-input/audio-input.component";
-// // import {AnswerWithTimeLog} from "../../../../core/data-ingestion/kafka/models/kafka";
-// // import {SignatureInputComponent} from "./input-field/signature-input/signature-input.component";
-// import {HealthInputComponent} from "./input-field/health-input/health-input.component";
 import {QuestionType} from '../models/question';
 import {NextButtonEventType} from '../models/events';
 import {AnswerWithTimeLog} from '../models/kafka';
-import {ScrollableContentComponent} from './scrolable-content/scrollable-content.component';
-import {QuestionHeaderComponent} from './question-header/question-header.component';
-import {RadioInputComponent} from './input-field/radio-input/radio-input.component';
-import {YesnoInputComponent} from './input-field/yesno-input/yesno-input.component';
-import {CheckboxInputComponent} from './input-field/checkbox-input/checkbox-input.component';
-import {TextInputComponent} from './input-field/text-input/text-input.component';
-import {DescriptiveInputComponent} from './input-field/descriptive-input/descriptive-input.component';
-import {RangeInputComponent} from './input-field/range-input/range-input.component';
-import {RangeInfoInputComponent} from './input-field/range-info-input/range-info-input.component';
-import {SliderInputComponent} from './input-field/slider-input/slider-input.component';
-import {TimeInputComponent} from './input-field/time-input/time-input.component';
-import {DateInputComponent} from './input-field/date-input/date-input.component';
-import {NotesInputComponent} from './input-field/notes-input/notes-input.component';
-import {InfoScreenComponent} from './input-field/info-screen/info-screen.component';
 import {AppQuestion} from '../../../../../models/questionnaire';
-import {TimedTestComponent} from './input-field/timed-test/timed-test.component';
-import {AudioInputComponent} from './input-field/audio-input/audio-input.component';
 import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
 import {
   RadarOption
 } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {debounceTime} from 'rxjs/operators';
 import {outputToObservable} from '@angular/core/rxjs-interop';
-// import {RadarOption} from '../../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-// import {
-//   RadarOption
-// } from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 
 @Component({
   selector: 'app-question',
   templateUrl: 'question.component.html',
-  imports: [
-    ScrollableContentComponent,
-    QuestionHeaderComponent,
-    RadioInputComponent,
-    YesnoInputComponent,
-    CheckboxInputComponent,
-    TextInputComponent,
-    DescriptiveInputComponent,
-    RangeInputComponent,
-    RangeInfoInputComponent,
-    SliderInputComponent,
-    TimeInputComponent,
-    DateInputComponent,
-    NotesInputComponent,
-    InfoScreenComponent,
-    TimedTestComponent,
-    AudioInputComponent,
-    // RadioInputComponent,
-    // CheckboxInputComponent,
-    // RangeInputComponent,
-    // RangeInfoInputComponent,
-    // SliderInputComponent,
-    // InfoScreenComponent,
-    // TimedTestComponent,
-    // TextInputComponent,
-    // DescriptiveInputComponent,
-    // WebInputComponent,
-    // NotesInputComponent,
-    // YesnoInputComponent,
-    // DateInputComponent,
-    // TextInputComponent,
-    // TimeInputComponent,
-    // CalcInputComponent,
-    // ScrollableContentComponent,
-    // QuestionHeaderComponent,
-    // CheckboxSvgInputComponent,
-    // AudioInputComponent,
-    // // SignatureInputComponent,
-    // HealthInputComponent,
-  ],
+  imports: [],
 })
 export class QuestionComponent implements OnInit {
 
   question = input.required<AppQuestion>();
-  language = input.required<string>();
+  language = input.required<RadarOption>();
   answer = input.required<AnswerWithTimeLog | undefined>();
   answers = input.required<Record<string, AnswerWithTimeLog[]>>();
 

@@ -2,7 +2,7 @@
 @let _entity = entity();
 
 @if (_entity) {
-  <div class="flex justify-between items-center sticky top-0 z-10 bg-white py-2">
+  <div class="flex justify-between items-center sticky top-0 z-10 py-2">
     <span class="font-bold"></span>
     <div class="flex gap-2 items-center">
       <div class='small-input text-sm flex justify-end gap-1'>
@@ -29,31 +29,43 @@
       }
       @if(!loading) {
         @if (groupedQuestions) {
+<!--          {{groupedQuestions | json}}-->
           <div class="grow overflow-auto p-4">
             @for (item of groupedQuestions | keyvalue: originalOrder; track item.key; let i = $index) {
               @if (i === currentQuestion.index) {
-                @if (item.value.length > 1) {
-                  <app-grouped-questions [questions]="item.value"
-                                         [groupName]="item.key"
-                                         [answers]="answers"
-                                         (answerEvent)="onGroupAnswer($event)"
-                                         (nextActionEvent)="nextAction($event)"/>
-                } @else {
-                  <app-question [question]="item.value[0]"
-                                [language]="`${selectedLanguage.id}`"
+<!--                <pre>{{item.value | json}}</pre>-->
+                @for (q of item.value; track q;) {
+                  <app-question [question]="q"
+                                [language]="selectedLanguage"
                                 [answers]="answers"
-                                [answer]="answers[item.key]?.[0]"
+                                [answer]="answers[item.key]?.[$index]"
                                 (answerEvent)="onAnswer($event)"
                                 (nextActionEvent)="nextAction($event)"/>
                 }
+<!--                @if (item.value.length > 1) {-->
+<!--                  <app-grouped-questions [questions]="item.value"-->
+<!--                                         [groupName]="item.key"-->
+<!--                                         [language]="selectedLanguage"-->
+<!--                                         [answers]="answers"-->
+<!--                                         [answer]="answers[item.key]"-->
+<!--                                         (answerEvent)="onGroupAnswer($event)"-->
+<!--                                         (nextActionEvent)="nextAction($event)"/>-->
+<!--                } @else {-->
+<!--                  <app-question [question]="item.value[0]"-->
+<!--                                [language]="selectedLanguage"-->
+<!--                                [answers]="answers"-->
+<!--                                [answer]="answers[item.key]?.[0]"-->
+<!--                                (answerEvent)="onAnswer($event)"-->
+<!--                                (nextActionEvent)="nextAction($event)"/>-->
+<!--                }-->
               }
             }
           </div>
           <div>
             <app-toolbar (toolbarEvent)="handleToolbarEvent($event)"
                          [currentQuestionId]="currentQuestion.index"
-                         [isLeftButtonDisabled]="isLeftButtonDisabled"
-                         [isRightButtonDisabled]="isRightButtonDisabled"
+                         [isLeftButtonDisabled]="isLeftButtonDisabled()"
+                         [isRightButtonDisabled]="isRightButtonDisabled()"
                          [totalQuestions]="groupedQuestionsSize"
                          [isProgressCountShown]="showProgressCount"/>
           </div>
@@ -63,7 +75,7 @@
       }
     </div>
     </div>
-    <div class="w-1/2 text-sm"><pre>{{answers | json}}</pre></div>
+    <div class="h-full overflow-auto w-1/2 text-sm"><pre>{{answers | json}}</pre></div>
   </div>
 
 

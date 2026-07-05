@@ -29,7 +29,8 @@ services:
 
   # ── Management Portal ─────────────────────────────────────────────────────
   management-portal:
-    image: docker.io/peymanm/management-portal:2.1.38
+    image: ghcr.io/radar-base/managementportal/management-portal:2.1.13
+    #    image: docker.io/peymanm/management-portal:2.1.38
     depends_on:
       postgresql:
         condition: service_healthy

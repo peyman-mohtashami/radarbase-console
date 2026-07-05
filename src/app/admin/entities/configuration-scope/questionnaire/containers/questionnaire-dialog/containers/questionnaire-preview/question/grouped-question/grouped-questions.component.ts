@@ -19,6 +19,10 @@ import {AnswerWithTimeLog} from '../../models/kafka';
 import {NextButtonEventType} from '../../models/events';
 import {evaluateConditionalLogic} from '../../services/parsers';
 import {AppQuestion} from '../../../../../../models/questionnaire';
+import {QuestionComponent} from '../question.component';
+import {
+  RadarOption
+} from '../../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 // import {evaluateConditionalLogic} from '../../../services/parsers'
 // import {AnswerWithTimeLog} from "../../../../../core/data-ingestion/kafka/models/kafka";
 
@@ -26,6 +30,7 @@ import {AppQuestion} from '../../../../../../models/questionnaire';
   selector: 'app-grouped-questions',
   templateUrl: 'grouped-questions.component.html',
   imports: [
+    QuestionComponent,
     // ScrollableContentComponent,
     // QuestionHeaderComponent,
     // RadioInputComponent,
@@ -45,6 +50,8 @@ export class GroupedQuestionsComponent implements OnInit {
   groupName = input.required<string>()
   questions = input.required<AppQuestion[]>()
   answers = input<Record<string, AnswerWithTimeLog[]>>();
+  language = input.required<RadarOption>();
+  answer = input.required<AnswerWithTimeLog[] | undefined>();
 
   answerEvent = output<Record<string, AnswerWithTimeLog>>()
   nextActionEvent = output<NextButtonEventType>()

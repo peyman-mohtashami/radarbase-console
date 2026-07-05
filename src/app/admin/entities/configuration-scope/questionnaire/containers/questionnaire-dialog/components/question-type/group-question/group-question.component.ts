@@ -20,7 +20,7 @@ import {
 } from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
-  selector: 'app-range-question',
+  selector: 'app-group-question',
   imports: [
     ReactiveFormsModule,
     TranslatePipe,
@@ -35,9 +35,9 @@ import {
     QuestionHeaderComponent,
     MatInput,
   ],
-  templateUrl: './range-question.component.html'
+  templateUrl: './group-question.component.html'
 })
-export class RangeQuestionComponent implements OnInit {
+export class GroupQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
 
@@ -56,7 +56,7 @@ export class RangeQuestionComponent implements OnInit {
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
 
-  protected previewValue: string | null = null;
+  protected selectedValue: string | null = null;
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -78,9 +78,6 @@ export class RangeQuestionComponent implements OnInit {
           this.fb.control(this.entity().matrix_group_name)
         );
       }
-    }
-    if (this.type === 'preview') {
-      this.previewValue = this.answer()?.value !== undefined ? this.answer().value : null;
     }
   }
 
@@ -123,7 +120,7 @@ export class RangeQuestionComponent implements OnInit {
   }
 
   protected onPreviewInputChange(value: string | null) {
-    this.previewValue = value;
+    this.selectedValue = value;
     this.previewValueChange.emit(value);
   }
 

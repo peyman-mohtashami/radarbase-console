@@ -40,7 +40,9 @@ export interface RadarQuestionnaire {
       amount?: string;
       repeat?: string;
     };
-  }
+  },
+  isActive?: boolean;
+  isValid?: boolean;
 }
 
 export interface AppQuestionnaire extends RadarQuestionnaire {
@@ -82,6 +84,8 @@ export interface RadarQuestion {
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
+  //
+  isValid?: boolean;
 }
 
 
@@ -108,7 +112,8 @@ export interface AppQuestion {
   date_max?: string;
   date_type?: string;
   // subQuestions?: AppQuestion[];
-  valid?: boolean;
+  // valid?: boolean;
+  isValid?: boolean;
 }
 
 export interface AppQuestionChoice {

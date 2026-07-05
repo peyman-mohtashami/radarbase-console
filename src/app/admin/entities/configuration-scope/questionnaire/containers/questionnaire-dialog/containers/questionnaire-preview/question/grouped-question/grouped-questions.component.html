@@ -1,78 +1,85 @@
-<p>LLL</p>
-<!--<app-scrollable-content>-->
+<!--&lt;!&ndash;<app-scrollable-content>&ndash;&gt;-->
 <!--&lt;!&ndash;  @if (isHealthKitQuestionsList) {&ndash;&gt;-->
 <!--&lt;!&ndash;    <app-health-input [questionsList]="questionsList"&ndash;&gt;-->
 <!--&lt;!&ndash;                      (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;-->
 <!--&lt;!&ndash;  } @else {&ndash;&gt;-->
 <!--    @for (question of questionsList; track question; let i = $index) {-->
 <!--      @if (question.showQuestion) {-->
-<!--        <app-question-header [question]="question" [sectionHeader]="i === 0"/>-->
-<!--        @switch (question.field_type) {-->
-<!--          @case ("matrix-radio") {-->
-<!--            @if ((question.select_choices_or_calculations?.length ?? 0) > 2) {-->
-<!--              <app-radio-input [question]="question"-->
-<!--                               (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--            } @else {-->
-<!--              <app-matrix-radio-input [question]="question"-->
-<!--                                      [answer]="answers()?.[question.field_name]?.[0]"-->
-<!--                                      (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--            }-->
-<!--          }-->
-<!--          @case ('yesno') {-->
-<!--            <app-yesno-input [question]="question"-->
-<!--                             (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('checkbox') {-->
-<!--            <app-checkbox-input [question]="question"-->
-<!--                                (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('range') {-->
-<!--            <app-range-input [question]="question"-->
-<!--                             (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('range-info') {-->
-<!--            <app-range-info-input [question]="question"-->
-<!--                                  (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('slider') {-->
-<!--            <app-slider-input [question]="question"-->
-<!--                              (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('text') {-->
-<!--            <app-text-input [question]="question"-->
-<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('duration') {-->
-<!--            <app-time-input [question]="question" [isMeridianEnabled]="false"-->
-<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--            &lt;!&ndash;          <app-duration-input [question$]="question"&ndash;&gt;-->
-<!--              &lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)" />&ndash;&gt;-->
-<!--          }-->
-<!--          @case ('time') {-->
-<!--            <app-time-input [question]="question"-->
-<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--          @case ('date') {-->
-<!--            <app-date-input [question]="question"-->
-<!--                            (valueChange)="onInputChange(i, question, $event)"/>-->
-<!--          }-->
-<!--&lt;!&ndash;          @case('health') {&ndash;&gt;-->
-<!--&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;-->
-<!--&lt;!&ndash;                              [questionsList]="questionsList"&ndash;&gt;-->
-<!--&lt;!&ndash;                              (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;-->
-<!--&lt;!&ndash;          }&ndash;&gt;-->
-<!--&lt;!&ndash;          @case ('healthkit') {&ndash;&gt;-->
-<!--&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;-->
-<!--&lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
-<!--            &lt;!&ndash;                            [refTimestamp]="0" />&ndash;&gt;-->
-<!--              &lt;!&ndash;                            [currentlyShown]="true"&ndash;&gt;-->
+<!--        <app-question [question]="question"-->
+<!--                      [language]="language()"-->
+<!--                      [answers]="answers"-->
+<!--                      [answer]="answers[item.key]?.[0]"-->
+<!--                      (answerEvent)="onAnswer($event)"-->
+<!--                      (nextActionEvent)="nextAction($event)"/>-->
 
+
+<!--&lt;!&ndash;        <app-question-header [question]="question" [sectionHeader]="i === 0"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        @switch (question.field_type) {&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ("matrix-radio") {&ndash;&gt;-->
+<!--&lt;!&ndash;            @if ((question.select_choices_or_calculations?.length ?? 0) > 2) {&ndash;&gt;-->
+<!--&lt;!&ndash;              <app-radio-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                               (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            } @else {&ndash;&gt;-->
+<!--&lt;!&ndash;              <app-matrix-radio-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                                      [answer]="answers()?.[question.field_name]?.[0]"&ndash;&gt;-->
+<!--&lt;!&ndash;                                      (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
 <!--&lt;!&ndash;          }&ndash;&gt;-->
-<!--        }-->
+<!--&lt;!&ndash;          @case ('yesno') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-yesno-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                             (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('checkbox') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-checkbox-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                                (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('range') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-range-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                             (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('range-info') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-range-info-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                                  (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('slider') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-slider-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('text') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-text-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                            (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('duration') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-time-input [question]="question" [isMeridianEnabled]="false"&ndash;&gt;-->
+<!--&lt;!&ndash;                            (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;          <app-duration-input [question$]="question"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;              &lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('time') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-time-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                            (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          @case ('date') {&ndash;&gt;-->
+<!--&lt;!&ndash;            <app-date-input [question]="question"&ndash;&gt;-->
+<!--&lt;!&ndash;                            (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          @case('health') {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                              [questionsList]="questionsList"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                              (valueChange)="onHealthInputChange($event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          @case ('healthkit') {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <app-health-input [question]="question"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                              (valueChange)="onInputChange(i, question, $event)"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;                            [refTimestamp]="0" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;              &lt;!&ndash;                            [currentlyShown]="true"&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;          }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
 <!--      }-->
 <!--    }-->
 <!--&lt;!&ndash;  }&ndash;&gt;-->
-<!--</app-scrollable-content>-->
+<!--&lt;!&ndash;</app-scrollable-content>&ndash;&gt;-->
 
 
 <!--&lt;!&ndash;<div [class.fade]="!currentlyShown" [class.content-matrix]="true" style="padding: 16px;">&ndash;&gt;-->

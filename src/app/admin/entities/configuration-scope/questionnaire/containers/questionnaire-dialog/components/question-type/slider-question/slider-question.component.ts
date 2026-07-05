@@ -1,5 +1,5 @@
 import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
   RadarOption
@@ -32,6 +32,7 @@ import {
     ReplacePlaceholdersPipe,
     QuestionHeaderComponent,
     TextFormGroupComponent,
+    FormsModule,
   ],
   templateUrl: './slider-question.component.html'
 })
@@ -55,6 +56,7 @@ export class SliderQuestionComponent implements OnInit {
   // private logicInputSubscription?: Subscription;
   logicValueChange = output<string>();
 
+  // previewValue?: number;
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
 
@@ -74,6 +76,9 @@ export class SliderQuestionComponent implements OnInit {
         );
       }
     }
+    // if (this.type === 'preview') {
+    //   this.previewValue = this.answer()?.value !== undefined ? +(this.answer().value) : undefined;
+    // }
   }
 
   get range(): FormGroup {
@@ -86,6 +91,7 @@ export class SliderQuestionComponent implements OnInit {
   }
 
   protected onPreviewInputChange(value: number | null) {
+    // this.previewValue = value !== null ? value : undefined;
     this.previewValueChange.emit(value === null ? null : `${value}`);
   }
 

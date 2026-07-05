@@ -90,11 +90,11 @@
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()" />
 
-    <div class="flex flex-nowrap items-center">
+    <div class="flex flex-nowrap items-center mt-4">
       @for (item of entity().select_choices_or_calculations; track item) {
         <div
-          class="flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
-          [class]="(selectedValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
+          class="cursor-pointer flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+          [class]="(previewValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
           (click)="onPreviewInputChange(item.code)">
           <span class="ion-text-wrap text-center" [innerHtml]="(item.code) | replacePlaceholders"></span>
         </div>

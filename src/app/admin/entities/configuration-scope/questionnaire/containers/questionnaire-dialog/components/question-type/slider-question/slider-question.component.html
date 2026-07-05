@@ -86,7 +86,8 @@
     <app-question-header [question]="entity()" [language]="language()" />
 
     @if (entity().range; as range) {
-      <mat-slider class="w-full! m-0!"
+      <p>{{ slider.value }}</p>
+      <mat-slider class="mt-8! w-[calc(100%-16px)]!"
                   [disabled]="isPreviewDisabled"
                   [max]="range.max"
                   [min]="range.min"
@@ -94,7 +95,7 @@
                   [discrete]="true"
                   [showTickMarks]="true"
                   color="primary">
-        <input matSliderThumb [value]="+(answer()?.value ?? range.min)" (valueChange)="onPreviewInputChange($event)">
+        <input matSliderThumb class="" [value]="+(answer()?.value ?? range.min)" #slider (valueChange)="onPreviewInputChange($event)">
       </mat-slider>
 
       <div class="flex justify-between text-sm">

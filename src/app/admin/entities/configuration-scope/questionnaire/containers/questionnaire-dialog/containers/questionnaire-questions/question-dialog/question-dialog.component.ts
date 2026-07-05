@@ -131,7 +131,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
       debounceTime(300)
     ).subscribe(change => {
       logErrors(this.form);
-      this.question = {...this.question, ...change, valid: this.form.valid};
+      this.question = {...this.question, ...change, isValid: this.form.valid};
       this.changeEvent.emit(this.question);
     });
 

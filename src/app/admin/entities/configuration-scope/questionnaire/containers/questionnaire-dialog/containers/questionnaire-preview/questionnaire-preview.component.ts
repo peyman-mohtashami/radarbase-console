@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, DEFAULT_LANGUAGE} from '../../../../models/questionnaire';
 import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
@@ -42,8 +42,8 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   protected startTime = 0;
 
-  protected isLeftButtonDisabled = false
-  protected isRightButtonDisabled = true
+  protected isLeftButtonDisabled = signal(false);
+  protected isRightButtonDisabled = signal(true);
 
   showProgressCount = false;
 
@@ -71,11 +71,12 @@ export class QuestionnairePreviewComponent implements OnInit {
     const groupedQuestionsKeys = Object.keys(this.groupedQuestions);
     const nextQuestionName = groupedQuestionsKeys[0];
     this.currentQuestion = {index: 0, name: nextQuestionName};
-    this.answers[this.currentQuestion.name] = [];
+    // this.answers[this.currentQuestion.name] = [];
   }
 
   onAnswer(answer: AnswerWithTimeLog): void {
-    this.answers[this.currentQuestion.name] = [answer];
+    // this.answers[this.currentQuestion.name] = [answer];
+    this.answers[answer.id] = [answer];
   }
 
   onGroupAnswer(event: Record<string, AnswerWithTimeLog>) {
@@ -87,7 +88,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   nextActionMap = {
     [NextButtonEventType.AUTO]: () => this.nextQuestion(),
     [NextButtonEventType.ENABLE]: () => this.updateToolbarButtons('ENABLE'),
-    [NextButtonEventType.DISABLE]: () => (this.isRightButtonDisabled = true)
+    [NextButtonEventType.DISABLE]: () => (this.isRightButtonDisabled.set(true))
   }
 
   nextAction(event: NextButtonEventType): void {
@@ -107,7 +108,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     const nextKeyName = groupedQuestionsKeys[nextKeyIndex];
     this.currentQuestion = {index: nextKeyIndex, name: nextKeyName};
     if (this.questionsService.shouldShowQuestion(this.groupedQuestions[nextKeyName], this.answers)) {
-      this.answers[this.currentQuestion.name] = this.answers[this.currentQuestion.name] ?? [];
+      // this.answers[this.currentQuestion.name] = this.answers[this.currentQuestion.name] ?? [];
       this.updateToolbarButtons();
     } else {
       await this.nextQuestion();
@@ -129,8 +130,8 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   private updateToolbarButtons(action = 'DISABLE'): void {
-    this.isRightButtonDisabled = action !== 'ENABLE'
-    this.isLeftButtonDisabled = false;
+    this.isRightButtonDisabled.set(action !== 'ENABLE');
+    this.isLeftButtonDisabled.set(false);
   }
 
   async navigateToFinishPage(): Promise<void> {

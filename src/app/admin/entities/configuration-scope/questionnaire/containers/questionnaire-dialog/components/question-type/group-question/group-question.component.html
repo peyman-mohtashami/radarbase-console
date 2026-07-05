@@ -32,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language()!.id] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -66,25 +66,64 @@
     </div>
   }
   @case ('form') {
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <div>
+      <div>
+        <label for="text_validation_min"
+               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+      </div>
+      <mat-form-field class='small-input' appearance="outline">
+        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>
+      </mat-form-field>
+    </div>
+
     <app-question-choices-form-array [choices]="choices"
                                      [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations"/>
+                                     [_choices]="entity().select_choices_or_calculations" />
+
+    <div>
+      <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
+    </div>
+    <mat-slide-toggle [formControl]="show_selected_label" />
+
   }
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()" />
 
-    <div class="flex flex-col h-full gap-2">
-      @for (item of entity().select_choices_or_calculations; track item.code) {
-<!--        <mat-card>-->
-<!--          <mat-card-content>-->
-        <div class="border rounded p-4 m-4">
-            <p class="text-sm!">{{ item.code }}</p>
-            <p class="text-base! pb-32 text-black" [innerHtml]="item.label[language().id] | replacePlaceholders"></p>
-      </div>
-<!--          </mat-card-content>-->
-<!--        </mat-card>-->
+    <div class="flex flex-nowrap items-center mt-4">
+      @for (item of entity().select_choices_or_calculations; track item) {
+        <div
+          class="cursor-pointer flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+          [class]="(selectedValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
+          (click)="onPreviewInputChange(item.code)">
+          <span class="ion-text-wrap text-center" [innerHtml]="(item.code) | replacePlaceholders"></span>
+        </div>
       }
     </div>
+
+    @if (!labelsDisabled() && entity().select_choices_or_calculations; as choices) {
+      <div class="flex justify-between mt-2">
+        <div class="w-1/2" [innerHtml]="choices[0].label[language().id] | replacePlaceholders"></div>
+        <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label[language().id] | replacePlaceholders"></div>
+      </div>
+    }
+
+    @if (!isPreviewDisabled) {
+      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+        Clear
+      </button>
+    }
+  }
+  @case ('logic') {
+    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
+        @for (option of entity().select_choices_or_calculations; track option.code) {
+          <mat-option [value]="option.code">
+            <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   }
 }
 

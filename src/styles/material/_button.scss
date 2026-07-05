@@ -250,67 +250,173 @@
 
     // Density
     //filled-touch-target-display: block,
-    //filled-container-height: 40px,
-    //outlined-container-height: 40px,
+    filled-container-height: 40px,
+    outlined-container-height: 40px,
     //outlined-touch-target-display: block,
     //protected-touch-target-display: block,
-    //protected-container-height: 40px,
+    protected-container-height: 40px,
     //text-touch-target-display: block,
-    //text-container-height: 40px,
-    //tonal-container-height: 40px,
+    text-container-height: 40px,
+    tonal-container-height: 40px,
     //tonal-touch-target-display: block,
   ));
 
-  .mat-mdc-raised-button.mat-primary {
+  .mat-mdc-button-base.mat-primary {
     @include mat.button-overrides((
+      filled-container-color: var(--mat-sys-primary),
+      filled-label-text-color: var(--mat-sys-on-primary),
+      filled-ripple-color: color-mix(in srgb, var(--mat-sys-on-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      //filled-progress-active-indicator-color: var(--mat-sys-on-primary),
+      filled-state-layer-color: var(--mat-sys-on-primary),
+
+      outlined-label-text-color: var(--mat-sys-primary),
+      outlined-outline-color: var(--mat-sys-primary),
+      outlined-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      outlined-state-layer-color: var(--mat-sys-primary),
+
       protected-container-color: var(--mat-sys-primary),
       protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent),
       protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-primary) 38%, transparent),
-      protected-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
       protected-label-text-color: var(--mat-sys-on-primary),
       protected-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
       protected-state-layer-color: var(--mat-sys-primary),
+
+      text-label-text-color: var(--mat-sys-primary),
+      text-ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      text-state-layer-color: var(--mat-sys-primary),
+
+      tonal-container-color: var(--mat-sys-secondary-container),
+      tonal-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+      tonal-label-text-color: var(--mat-sys-on-secondary-container),
+      tonal-ripple-color: color-mix(in srgb, var(--mat-sys-on-secondary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      tonal-state-layer-color: var(--mat-sys-on-secondary-container),
     ));
   }
 
-  .mat-mdc-outlined-button.mat-primary {
+  .mat-mdc-button-base.mat-tertiary {
     @include mat.button-overrides((
-      outlined-label-text-color: var(--mat-sys-primary),
-      outlined-outline-color: var(--mat-sys-primary),
-      outlined-state-layer-color: var(--mat-sys-primary),
-    ));
-  }
+      filled-container-color: var(--mat-sys-tertiary),
+      filled-label-text-color: var(--mat-sys-on-tertiary),
+      filled-ripple-color: color-mix(in srgb, var(--mat-sys-on-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      //filled-progress-active-indicator-color: var(--mat-sys-on-tertiary),
+      filled-state-layer-color: var(--mat-sys-on-primary),
 
-  .mat-mdc-outlined-button.mat-tertiary {
-    @include mat.button-overrides((
       outlined-label-text-color: var(--mat-sys-tertiary),
       outlined-outline-color: var(--mat-sys-tertiary),
+      outlined-ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
       outlined-state-layer-color: var(--mat-sys-tertiary),
+
+      protected-container-color: var(--mat-sys-tertiary),
+      protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-tertiary) 12%, transparent),
+      protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-tertiary) 38%, transparent),
+      protected-label-text-color: var(--mat-sys-on-ptertiary),
+      protected-ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      protected-state-layer-color: var(--mat-sys-tertiary),
+
+      text-label-text-color: var(--mat-sys-tertiary),
+      text-ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      text-state-layer-color: var(--mat-sys-tertiary),
+
+      tonal-container-color: var(--mat-sys-secondary-container),
+      tonal-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+      tonal-label-text-color: var(--mat-sys-on-secondary-container),
+      tonal-ripple-color: color-mix(in srgb, var(--mat-sys-on-secondary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      tonal-state-layer-color: var(--mat-sys-on-secondary-container),
     ));
   }
 
-  .mat-mdc-outlined-button.mat-warn {
+  .mat-mdc-button-base.mat-warn {
     @include mat.button-overrides((
+      filled-container-color: var(--mat-sys-error),
+      filled-label-text-color: var(--mat-sys-on-error),
+      filled-ripple-color: color-mix(in srgb, var(--mat-sys-on-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      //filled-progress-active-indicator-color: var(--mat-sys-on-error),
+      filled-state-layer-color: var(--mat-sys-on-primary),
+
       outlined-label-text-color: var(--mat-sys-error),
       outlined-outline-color: var(--mat-sys-error),
+      outlined-ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
       outlined-state-layer-color: var(--mat-sys-error),
+
+      protected-container-color: var(--mat-sys-error),
+      protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-error) 12%, transparent),
+      protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-error) 38%, transparent),
+      protected-label-text-color: var(--mat-sys-on-ptertiary),
+      protected-ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      protected-state-layer-color: var(--mat-sys-error),
+
+      text-label-text-color: var(--mat-sys-error),
+      text-ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      text-state-layer-color: var(--mat-sys-error),
+
+      tonal-container-color: var(--mat-sys-secondary-container),
+      tonal-disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+      tonal-label-text-color: var(--mat-sys-on-secondary-container),
+      tonal-ripple-color: color-mix(in srgb, var(--mat-sys-on-secondary-container) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+      tonal-state-layer-color: var(--mat-sys-on-secondary-container),
     ));
   }
 
-  .mat-mdc-outlined-button.app-button-small {
+  .mat-mdc-button-base.app-button-small {
     @include mat.button-overrides((
-      outlined-container-height: 32px,
-      outlined-horizontal-padding: 12px,
+      filled-horizontal-padding: 16px,
+      filled-icon-offset: -6px,
+      filled-icon-spacing: 6px,
+      filled-touch-target-size: 34px,
+      outlined-horizontal-padding: 16px,
+      outlined-icon-offset: -6px,
+      outlined-icon-spacing: 6px,
+      outlined-touch-target-size: 34px,
+      protected-horizontal-padding: 16px,
+      protected-icon-offset: -6px,
+      protected-icon-spacing: 6px,
+      protected-touch-target-size: 34px,
+      text-horizontal-padding: 12px,
+      text-icon-offset: -4px,
+      text-icon-spacing: 8px,
+      text-with-icon-horizontal-padding: 16px,
+      text-touch-target-size: 34px,
+      tonal-horizontal-padding: 16px,
+      tonal-icon-offset: -6px,
+      tonal-icon-spacing: 6px,
+      tonal-touch-target-size: 34px,
+
+      filled-label-text-font: var(--mat-sys-label-small-font),
+      filled-label-text-size: var(--mat-sys-label-small-size),
+      filled-label-text-tracking: var(--mat-sys-label-small-tracking),
+      filled-label-text-weight: var(--mat-sys-label-small-weight),
+      outlined-label-text-font: var(--mat-sys-label-small-font),
       outlined-label-text-size: var(--mat-sys-label-small-size),
+      outlined-label-text-tracking: var(--mat-sys-label-small-tracking),
+      outlined-label-text-weight: var(--mat-sys-label-small-weight),
+      protected-label-text-font: var(--mat-sys-label-small-font),
+      protected-label-text-size: var(--mat-sys-label-small-size),
+      protected-label-text-tracking: var(--mat-sys-label-small-tracking),
+      protected-label-text-weight: var(--mat-sys-label-small-weight),
+      text-label-text-font: var(--mat-sys-label-small-font),
+      text-label-text-size: var(--mat-sys-label-small-size),
+      text-label-text-tracking: var(--mat-sys-label-small-tracking),
+      text-label-text-weight: var(--mat-sys-label-small-weight),
+      tonal-label-text-font: var(--mat-sys-label-small-font),
+      tonal-label-text-size: var(--mat-sys-label-small-size),
+      tonal-label-text-tracking: var(--mat-sys-label-small-tracking),
+      tonal-label-text-weight: var(--mat-sys-label-small-weight),
+
+      filled-container-height: 28px,
+      outlined-container-height: 28px,
+      protected-container-height: 28px,
+      text-container-height: 28px,
+      tonal-container-height: 28px,
     ));
   }
 
-  //.mat-primary .mat-mdc-button {
-  //  @include mat.button-overrides((
-  //    text-label-text-color: var(--mat-sys-on-primary),
-  //    //icon-color: var(--mat-sys-primary),
-  //    //state-layer-color: var(--mat-sys-primary),
-  //    //ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-  //  ));
-  //}
+  .mat-mdc-button-base.app-button-full-corner {
+    @include mat.button-overrides((
+      filled-container-shape: var(--mat-sys-corner-full),
+      outlined-container-shape: var(--mat-sys-corner-full),
+      protected-container-shape: var(--mat-sys-corner-full),
+      text-container-shape: var(--mat-sys-corner-full),
+      tonal-container-shape: var(--mat-sys-corner-full)
+    ));
+  }
 }
