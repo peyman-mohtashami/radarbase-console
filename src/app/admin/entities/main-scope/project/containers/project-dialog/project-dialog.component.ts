@@ -1,6 +1,6 @@
 import {Component, inject} from "@angular/core";
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from "@angular/material/dialog";
 
 import {Validator} from "../../../../../../shared/utils/validators";
 import {AppProject, ProjectStatus} from "../../models/project";
@@ -15,10 +15,6 @@ import {
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
@@ -33,9 +29,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   selector: 'app-project-dialog',
   templateUrl: './project-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ReactiveFormsModule,
     TranslatePipe,
     DialogActionsComponent,
@@ -55,6 +49,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatSuffix,
     AsyncPipe,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
   ]
 })
 export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject> {

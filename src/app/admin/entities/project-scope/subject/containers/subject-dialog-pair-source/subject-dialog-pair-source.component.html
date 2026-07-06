@@ -1,16 +1,31 @@
-<app-dialog-title [dialogMode]='SubjectDialogMode.DISCONTINUE'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity._name"
-                  [customLabel]="'ADMIN.subject.pairSource.title' | translate"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `ADMIN.subject.pairSource.title` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
+
+<!--<app-dialog-title [dialogMode]='SubjectDialogMode.DISCONTINUE'-->
+<!--                  [entityMetadata]="configService.getEntityMetadata()"-->
+<!--                  [entityName]="dialogData.entity._name"-->
+<!--                  [customLabel]="'ADMIN.subject.pairSource.title' | translate"-->
+<!--                  (closeEvent)='close()'/>-->
 
 <mat-dialog-content>
-  <app-dialog-body-description>
-    <app-subject-details class="py-4" [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>
-  </app-dialog-body-description>
+  <div class='mb-4 text-base'>
+<!--    <div class="mt-4">-->
+      <app-subject-details class="py-4" [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>
+
+<!--      <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>-->
+<!--      <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>-->
+<!--    </div>-->
+  </div>
+<!--  <app-dialog-body-description>-->
+<!--    <app-subject-details class="py-4" [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>-->
+<!--  </app-dialog-body-description>-->
 
   {{ 'ADMIN.source.title.plural' | translate }}
-  <app-dialog-body-description>
+  <div class='mb-4 text-base'>
+<!--  <app-dialog-body-description>-->
     @if (!availableSources().length) {
       {{ 'ADMIN.source.noSourceAvailable' | translate }}
     } @else {
@@ -31,7 +46,8 @@
         </div>
       }
     }
-  </app-dialog-body-description>
+  </div>
+<!--  </app-dialog-body-description>-->
 
 </mat-dialog-content>
 

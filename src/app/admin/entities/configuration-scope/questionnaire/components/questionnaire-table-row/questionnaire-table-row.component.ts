@@ -7,6 +7,8 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionnaire-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
+import {JsonPipe} from '@angular/common';
+import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -17,6 +19,8 @@ import {TranslatePipe} from '@ngx-translate/core';
     PermissionDirective,
     QuestionnaireActionsComponent,
     TranslatePipe,
+    JsonPipe,
+    TagComponent,
   ]
 })
 export class QuestionnaireTableRowComponent extends BaseEntityTableRowComponent<AppQuestionnaire> {

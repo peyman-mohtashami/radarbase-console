@@ -83,10 +83,10 @@
   --color-on-primary: var(--mat-sys-on-primary);
   --color-on-primary-dark: var(--mat-sys-on-primary-dark);
 
-  --color-secondary: var(--mat-sys-accent);
-  --color-secondary-dark: var(--mat-sys-accent-dark);
-  --color-on-secondary: var(--mat-sys-on-accent);
-  --color-on-secondary-dark: var(--mat-sys-on-accent-dark);
+  --color-secondary: var(--mat-sys-tertiary);
+  --color-secondary-dark: var(--mat-sys-tertiary-dark);
+  --color-on-secondary: var(--mat-sys-on-tertiary);
+  --color-on-secondary-dark: var(--mat-sys-on-tertiary-dark);
 
   --color-tertiary: var(--mat-sys-tertiary);
   --color-tertiary-dark: var(--mat-sys-tertiary-dark);

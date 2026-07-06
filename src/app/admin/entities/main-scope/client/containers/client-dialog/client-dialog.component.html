@@ -1,14 +1,19 @@
 @let _prefix = "ADMIN.client";
 
-<app-dialog-title [dialogMode]='dialogData.mode'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
+
 <mat-dialog-content>
-  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                 [label]="`${_prefix}.title.singular` | translate"
-                                 [entityName]="dialogData.entity?.clientId"/>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?._name }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -33,10 +38,10 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-slide-toggle formControlName='enableEmptySecret' color="primary">
+      <mat-slide-toggle class="my-2" formControlName='enableEmptySecret' color="primary">
         {{ `${_prefix}.enableEmptySecret.label` | translate }}
       </mat-slide-toggle>
-      <p class="mb-4 text-sm">{{ `${_prefix}.enableEmptySecret.hint` | translate }}</p>
+      <p class="mb-4 text-xs">{{ `${_prefix}.enableEmptySecret.hint` | translate }}</p>
 
       @if (!form.controls["enableEmptySecret"].value) {
         <label for="clientSecret" class="text-sm">
@@ -61,7 +66,10 @@
       <label for="scope" class="text-sm">
         {{ `${_prefix}.scope.label` | translate }} *
       </label>
-      <mat-form-field subscriptSizing="fixed" class="mb-16" appearance='outline'>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.scope.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
         <textarea id="scope" rows="3" matInput formControlName='scope' required></textarea>
         <mat-error>
           @if (form.controls.scope.errors; as errors) {
@@ -73,13 +81,15 @@
             }
           }
         </mat-error>
-        <mat-hint class="text-xs leading-3">{{ `${_prefix}.scope.hint` | translate }}</mat-hint>
       </mat-form-field>
 
       <label for="resourceIds" class="text-sm">
         {{ `${_prefix}.resourceIds.label` | translate }} *
       </label>
-      <mat-form-field class="mb-4" subscriptSizing="fixed" appearance='outline'>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.resourceIds.hint` | translate }}
+      </p>
+      <mat-form-field class="" subscriptSizing="fixed" appearance='outline'>
         <input id="resourceIds" matInput formControlName='resourceIds' required>
         <mat-error>
           @if (form.controls.resourceIds.errors; as errors) {
@@ -91,8 +101,8 @@
             }
           }
         </mat-error>
-        <mat-hint>{{ `${_prefix}.resourceIds.hint` | translate }}</mat-hint>
       </mat-form-field>
+
 
       <p class="text-sm">
         {{ `${_prefix}.authorizedGrantTypes.label` | translate }}
@@ -125,8 +135,8 @@
         </div>
       </fieldset>
 
-      <div class="mb-4" formGroupName="additionalInformation">
-        <mat-slide-toggle formControlName='dynamic_registration' color="primary">
+      <div class="" formGroupName="additionalInformation">
+        <mat-slide-toggle class="my-4" formControlName='dynamic_registration' color="primary">
           {{ `${_prefix}.dynamic_registration.label` | translate }}
         </mat-slide-toggle>
       </div>
@@ -134,23 +144,30 @@
       <label for="registeredRedirectUri" class="text-sm">
         {{ `${_prefix}.registeredRedirectUri.label` | translate }}
       </label>
-      <mat-form-field subscriptSizing="fixed" class="mb-4" appearance='outline'>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.registeredRedirectUri.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
         <input id="registeredRedirectUri" matInput formControlName='registeredRedirectUri'>
-        <mat-hint>{{ `${_prefix}.registeredRedirectUri.hint` | translate }}</mat-hint>
       </mat-form-field>
 
       <label for="autoApproveScopes" class="text-sm">
         {{ `${_prefix}.autoApproveScopes.label` | translate }}
       </label>
-      <mat-form-field subscriptSizing="fixed" class="mb-4" appearance='outline'>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.autoApproveScopes.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
         <textarea id="autoApproveScopes" rows="3" matInput formControlName='autoApproveScopes'></textarea>
-        <mat-hint>{{ `${_prefix}.autoApproveScopes.hint` | translate }}</mat-hint>
       </mat-form-field>
 
       <label for="accessTokenValiditySeconds" class="text-sm">
         {{ `${_prefix}.accessTokenValiditySeconds.label` | translate }} *
       </label>
-      <mat-form-field id="accessTokenValiditySeconds" subscriptSizing="fixed" class="mb-4" appearance='outline'>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.accessTokenValiditySeconds.hint` | translate }}
+      </p>
+      <mat-form-field id="accessTokenValiditySeconds" subscriptSizing="fixed" class="" appearance='outline'>
         <input matInput formControlName='accessTokenValiditySeconds' type='number' required>
         <mat-error>
           @if (form.controls.accessTokenValiditySeconds.errors; as errors) {
@@ -162,12 +179,15 @@
         <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
           {{ form.controls.accessTokenValiditySeconds.value | duration:'s' }}
         </span>
-        <mat-hint>{{ `${_prefix}.accessTokenValiditySeconds.hint` | translate }}</mat-hint>
       </mat-form-field>
+
 
       <label for="refreshTokenValiditySeconds" class="text-sm">
         {{ `${_prefix}.refreshTokenValiditySeconds.label` | translate }} *
       </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.refreshTokenValiditySeconds.hint` | translate }}
+      </p>
       <mat-form-field subscriptSizing="fixed" appearance='outline'>
         <input id="refreshTokenValiditySeconds" matInput formControlName='refreshTokenValiditySeconds' type='number'
                required>
@@ -181,7 +201,6 @@
         <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
           {{ form.controls.refreshTokenValiditySeconds.value | duration:'s' }}
         </span>
-        <mat-hint>{{ `${_prefix}.refreshTokenValiditySeconds.hint` | translate }}</mat-hint>
       </mat-form-field>
     </form>
   }

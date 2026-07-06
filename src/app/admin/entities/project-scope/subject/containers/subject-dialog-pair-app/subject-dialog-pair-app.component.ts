@@ -7,7 +7,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
-  MatDialogRef,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 import {AppSubject} from "../../models/subject";
 import {AppClient, RadarPairInfo} from "../../../../main-scope/client/models/client";
@@ -26,15 +26,9 @@ import {SubjectDetailsComponent} from '../../components/subject-details/subject-
 import {ClientService} from '../../../../main-scope/client/services/client.service';
 import {DetailType} from '../../../../../base-entities/enums/detail-type';
 import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
-import {
   DetailElementComponent
 } from '../../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
-import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
 import {
   BaseEntityDialogComponent
@@ -45,7 +39,6 @@ import {
   templateUrl: './subject-dialog-pair-app.component.html',
   imports: [
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     DetailElementComponent,
     TranslatePipe,
     DatePipe,
@@ -61,8 +54,8 @@ import {
     AsyncPipe,
     QrCodeComponent,
     DurationPipe,
-    DialogTitleComponent,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    MatDialogTitle
   ]
 })
 export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<AppSubject> {

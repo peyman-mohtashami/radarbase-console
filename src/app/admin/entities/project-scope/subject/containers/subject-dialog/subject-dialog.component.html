@@ -1,18 +1,22 @@
 @let _prefix = "ADMIN.subject";
 
-<app-dialog-title [dialogMode]='dialogData.mode'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
 
 <mat-dialog-content>
-  @if (dialogData.mode === SubjectDialogMode.VIEW || dialogData.mode === SubjectDialogMode.DELETE) {
-    <app-subject-details class="py-4"
-                         [entity]='dialogData.entity'
-                         [detailType]="DetailType.SUMMARY"/>
-    @if (dialogData.mode === SubjectDialogMode.DELETE) {
-      <p class="mt-4">{{ `${_prefix}}.deleteWarning` | translate }}</p>
-    }
+  @if (dialogData.mode === SubjectDialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <app-subject-details class="py-4"
+                           [entity]='dialogData.entity'
+                           [detailType]="DetailType.SUMMARY"/>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?._name }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
   }
 
   @if (dialogData.mode === SubjectDialogMode.ADD || dialogData.mode === SubjectDialogMode.EDIT) {

@@ -1,37 +1,36 @@
 @let _prefix = "ADMIN.permission";
 
-<div>
-  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span class='inline-flex items-center justify-between w-full'>
-    <span class="text-lg">
-      @if (dialogData.mode === DialogMode.ADD) {
-        <span>{{ `${_prefix}.create` | translate }}</span>
-      }
-      @if (dialogData.mode === DialogMode.DELETE) {
-        <span>{{ `${_prefix}.remove` | translate }}</span>
-      }
-    </span>
-    <button mat-icon-button
-            (click)='close()'>
-      <mat-icon class="material-symbols-outlined">close</mat-icon>
-    </button>
-  </span>
-  </h2>
-</div>
-
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+    @if (dialogData.mode === DialogMode.ADD) {
+      <span>{{ `${_prefix}.create` | translate }}</span>
+    }
+    @if (dialogData.mode === DialogMode.DELETE) {
+      <span>{{ `${_prefix}.remove` | translate }}</span>
+    }
+</h2>
 
 <mat-dialog-content>
-  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
+  @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>
-      @if (dialogData.mode === DialogMode.DELETE) {
-        <div class="mt-4">
-          <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:
-            <strong>{{ dialogData.entity.login }}</strong>.</p>
-          <p>{{ `SHARED.dialog.deleteWarning` | translate }}</p>
-        </div>
-      }
+      <div class="mt-4">
+        <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:
+          <strong>{{ dialogData.entity.login }}</strong>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
     </div>
   }
+
+<!--  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {-->
+<!--    <div class='mb-4 text-base'>-->
+<!--      @if (dialogData.mode === DialogMode.DELETE) {-->
+<!--        <div class="mt-4">-->
+<!--          <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:-->
+<!--            <strong>{{ dialogData.entity.login }}</strong>.</p>-->
+<!--          <p>{{ `SHARED.dialog.deleteWarning` | translate }}</p>-->
+<!--        </div>-->
+<!--      }-->
+<!--    </div>-->
+<!--  }-->
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>

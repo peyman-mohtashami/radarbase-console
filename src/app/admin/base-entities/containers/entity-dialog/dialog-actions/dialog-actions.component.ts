@@ -5,6 +5,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
+import {MatDialogActions} from '@angular/material/dialog';
 
 export enum DialogAction {
   CLOSE = 'close',
@@ -20,7 +21,8 @@ export enum DialogAction {
     TranslatePipe,
     MatButton,
     MatProgressSpinner,
-    MatIcon
+    MatIcon,
+    MatDialogActions,
   ]
 })
 export class DialogActionsComponent {

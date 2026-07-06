@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogContent, MatDialogRef,
+  MatDialogContent, MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
@@ -13,14 +13,8 @@ import {ConditionalLogicItemsComponent} from '../conditional-logic-items/conditi
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {
-  DialogTitleComponent
-} from '../../../../../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
   ErrorMessageBoxComponent
 } from '../../../../../../../../../../shared/components/message-box/error-message-box.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {TagComponent} from '../../../../../../../../../../shared/components/tag/tag.component';
 import {BaseConfigService} from '../../../../../../../../../base-entities/services/base-config.service';
 import {DialogMode} from '../../../../../../../../../base-entities/enums/dialog';
@@ -38,14 +32,13 @@ export interface ConditionalLogicItem {
   imports: [
     TranslatePipe,
     MatDialogContent,
-    DialogTitleComponent,
     ErrorMessageBoxComponent,
-    DialogBodyDescriptionComponent,
     ConditionalLogicItemsComponent,
     MatButton,
     MatIcon,
     TagComponent,
     MatIconButton,
+    MatDialogTitle,
   ]
 })
 export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { //extends BaseEntityDialogComponent<{value: string}> {

@@ -1,7 +1,7 @@
 <div class="flex flex-col h-full">
   <app-toolbar (menuStatus)="isMenuOpened = $event"/>
   <div class="flex grow min-h-0">
-    <aside class="h-full w-64 bg-tertiary shrink-0 flex flex-col transition-property:width duration-300"
+    <aside class="h-full w-64 bg-primary shrink-0 flex flex-col transition-property:width duration-300"
            [class]="isMenuOpened ? 'w-64' : 'w-21!'">
       <div class="overflow-y-auto grow min-h-0">
         <app-sidebar-nav [isMenuOpen]="isMenuOpened"/>

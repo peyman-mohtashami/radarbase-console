@@ -1,19 +1,15 @@
 import {Component, inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import {AppClient} from "../../models/client";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from "@angular/material/input";
+import {MatError, MatFormField, MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatButton} from "@angular/material/button";
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {ClientConfigService} from '../../services/client-config.service';
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
@@ -25,9 +21,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
   selector: 'app-client-dialog',
   templateUrl: './client-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     TranslatePipe,
     ReactiveFormsModule,
     DialogActionsComponent,
@@ -35,12 +29,12 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
     MatFormField,
     MatError,
     MatInput,
-    MatHint,
     MatSlideToggle,
     MatButton,
     MatSuffix,
     ErrorMessageBoxComponent,
-    DurationPipe
+    DurationPipe,
+    MatDialogTitle
   ]
 })
 export class ClientDialogComponent extends BaseEntityDialogComponent<AppClient> {

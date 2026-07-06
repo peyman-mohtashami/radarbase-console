@@ -1,18 +1,20 @@
 @let _prefix = "ADMIN.user";
 
-<app-dialog-title [dialogMode]='dialogData.mode'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
 
 <mat-dialog-content>
-  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                 [label]="`${_prefix}.title.singular` | translate"
-                                 [entityName]="dialogData.entity?._name">
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
       <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY" />
-<!--        <app-user-details [mode]='mode' [entity]='entity' [config]="configFields" />-->
-    </app-dialog-body-description>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.login }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -38,6 +40,24 @@
             }
             @if (errors?.['required']) {
               {{ ValidatorError.requiredValidator | translate: {value: (`${_prefix}.login.label` | translate)} }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input matInput formControlName='email' required >
+        <mat-error>
+          @if (form.controls.email.errors; as errors) {
+            @if (errors?.['duplicate']) {
+              {{ "ADMIN.user.email.duplicate" }}
+            }
+            @if (errors?.['email']) {
+              {{ ValidatorError.emailValidator | translate }}
+            }
+            @if (errors?.['required']) {
+              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.email.label` | translate} }}
             }
           }
         </mat-error>
@@ -71,68 +91,42 @@
       </mat-form-field>
       }
 
-      <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
-      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
-        <input matInput formControlName='email' required >
-        <mat-error>
-          @if (form.controls.email.errors; as errors) {
-            @if (errors?.['duplicate']) {
-              {{ "ADMIN.user.email.duplicate" }}
-            }
-            @if (errors?.['email']) {
-              {{ ValidatorError.emailValidator | translate }}
-            }
-            @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.email.label` | translate} }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-
       <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>
       <fieldset formGroupName='_roles'>
         <div>
-          <mat-slide-toggle color="primary" formControlName='_sysAdmin'>
+          <mat-slide-toggle class="my-2" color="primary" formControlName='_sysAdmin'>
             {{ `${_prefix}.role.sysAdmin` | translate }}
           </mat-slide-toggle>
         </div>
         @if (!form.controls._roles.controls._sysAdmin.value) {
-          <div class='flex items-center'>
-            <div class='w-1/3'>
-              <mat-slide-toggle color="primary" formControlName='_organizationAdmin'>
-                {{ `${_prefix}.role.organizationAdmin` | translate }}
-              </mat-slide-toggle>
-            </div>
-            <div class="w-2/3">
-              @if (form.controls._roles.controls._organizationAdmin.value) {
-                @if (dialogData.organizationFullList | async; as organizations) {
-                  <app-mat-select-autocomplete formControlName='_organizations'
-                                               [label]='"ADMIN.organization.title.plural" | translate'
-                                               [options]='organizations'
-                                               [multiple]="true"/>
-                }
-              }
-            </div>
+          <div>
+            <mat-slide-toggle class="my-2" color="primary" formControlName='_organizationAdmin'>
+              {{ `${_prefix}.role.organizationAdmin` | translate }}
+            </mat-slide-toggle>
           </div>
+          @if (form.controls._roles.controls._organizationAdmin.value) {
+            @if (dialogData.organizationFullList | async; as organizations) {
+              <app-mat-select-autocomplete formControlName='_organizations'
+                                           [label]='"ADMIN.organization.title.plural" | translate'
+                                           [options]='organizations'
+                                           [multiple]="true"/>
+            }
+          }
         }
         @if (!form.controls._roles.controls._sysAdmin.value) {
-          <div class='flex items-center'>
-            <div class='w-1/3'>
-              <mat-slide-toggle color="primary" formControlName='_projectAdmin'>
-                {{ `${_prefix}.role.projectAdmin` | translate }}
-              </mat-slide-toggle>
-            </div>
-            <div class="w-2/3">
-              @if (form.controls._roles.controls._projectAdmin.value) {
-                @if (dialogData.projectFullList | async; as projects) {
-                  <app-mat-select-autocomplete formControlName='_projects'
-                                               [label]='"ADMIN.project.title.plural" | translate'
-                                               [options]='projects'
-                                               [multiple]="true"/>
-                }
-              }
-            </div>
+          <div>
+            <mat-slide-toggle class="my-2" color="primary" formControlName='_projectAdmin'>
+              {{ `${_prefix}.role.projectAdmin` | translate }}
+            </mat-slide-toggle>
           </div>
+          @if (form.controls._roles.controls._projectAdmin.value) {
+            @if (dialogData.projectFullList | async; as projects) {
+              <app-mat-select-autocomplete formControlName='_projects'
+                                           [label]='"ADMIN.project.title.plural" | translate'
+                                           [options]='projects'
+                                           [multiple]="true"/>
+            }
+          }
         }
       </fieldset>
     </form>

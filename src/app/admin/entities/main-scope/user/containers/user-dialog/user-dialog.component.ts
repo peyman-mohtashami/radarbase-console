@@ -3,7 +3,7 @@ import {
   inject,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import {AppUser} from "../../models/user";
@@ -19,10 +19,6 @@ import {
 } from '../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
@@ -35,9 +31,7 @@ import {DetailType} from '../../../../../base-entities/enums/detail-type';
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     TranslatePipe,
     ReactiveFormsModule,
     MatFormField,
@@ -49,9 +43,12 @@ import {DetailType} from '../../../../../base-entities/enums/detail-type';
     AsyncPipe,
     ErrorMessageBoxComponent,
     UserDetailsComponent,
+    MatDialogTitle,
   ]
 })
 export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
+  protected readonly DetailType = DetailType;
+
   override configService = inject(UserConfigService);
   override dialogRef = inject(MatDialogRef<UserDialogService>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -82,5 +79,5 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
       _projects: new FormControl<RadarOption[]>([]),
     }),
   });
-  protected readonly DetailType = DetailType;
+
 }

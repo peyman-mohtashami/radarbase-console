@@ -32,6 +32,7 @@ $theme: mat.define-theme((
   ),
   typography: (
     plain-family: Inter var, //sans-serif, //Roboto,
+    brand-family: Inter var,
     //brand-family: Open Sans,
     //bold-weight: 900,
     //medium-weight: 500,
@@ -52,6 +53,7 @@ $dark-theme: mat.define-theme((
   ),
   typography: (
     plain-family: Inter var, //sans-serif, //Roboto,
+    brand-family: Inter var,
     //brand-family: Open Sans,
     //bold-weight: 900,
     //medium-weight: 500,

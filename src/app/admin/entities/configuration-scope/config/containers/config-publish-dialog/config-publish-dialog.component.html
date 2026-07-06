@@ -1,15 +1,6 @@
-<div>
-  <h2 mat-dialog-title class="border-b-2">
-  <span class='inline-flex items-center justify-between w-full'>
-    <span class="text-lg">
-      <span>{{ (dialogData.mode === "publish" ? "ADMIN.config.publishDialog.title" : "ADMIN.config.discardDialog.title") | translate }}</span>
-    </span>
-    <button mat-icon-button (click)='close()'>
-      <mat-icon class="material-symbols-outlined">close</mat-icon>
-    </button>
-  </span>
-  </h2>
-</div>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ (dialogData.mode === "publish" ? "ADMIN.config.publishDialog.title" : "ADMIN.config.discardDialog.title") | translate }}</span>
+</h2>
 
 <mat-dialog-content>
   @if (dialogData.mode === "publish") {
@@ -18,11 +9,12 @@
   } @else {
     <p>{{ "ADMIN.config.discardDialog.confirmationMessage" | translate }}</p>
   }
+
   <div class="text-base mt-4">
-    <h3 class="border-b-1 py-2">{{ "ADMIN.config.publishDialog.changes" | translate }}</h3>
+    <h3 class="border-b py-2">{{ "ADMIN.config.publishDialog.changes" | translate }}</h3>
     @for (diff of differences; track diff.name) {
       <div class="grid gap-4 grid-cols-2 mt-2">
-        <span>{{diff.name}}</span>
+        <span>{{ diff.name }}</span>
         <span>
           @if (!diff.originalValue) {
             {{ "ADMIN.config.publishDialog.created" | translate }}
@@ -46,51 +38,45 @@
 }
 
 
-<div>
-  <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
-    <div class='flex flex-wrap gap-2'>
-      <button mat-stroked-button
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='primary'
+            type='button'
+            class='close-button'
+            (click)='close()'>
+      {{ 'ADMIN.config.publishDialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class=''>
+    @if (dialogData.mode === "publish") {
+      <button mat-raised-button class="text-white!"
               color='primary'
-              type='button'
-              class='close-button'
-              (click)='close()'>
-        {{ 'ADMIN.config.publishDialog.cancel' | translate }}
+              [disabled]='loading()'
+              (click)='publish()'>
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+          {{ "ADMIN.config.publishDialog.publishing" | translate }}
+        } @else {
+          {{ "ADMIN.config.publishDialog.publish" | translate }}
+        }
       </button>
-    </div>
-    <div class=''>
-      @if (dialogData.mode === "publish") {
-        <button mat-raised-button class="text-white!"
-                color='accent'
-                [disabled]='loading()'
-                (click)='publish()'>
-          @if (loading()) {
-            <ng-container>
-              <mat-icon>
-                <mat-spinner diameter='20'/>
-              </mat-icon>
-              {{ "ADMIN.config.publishDialog.publishing" | translate }}
-            </ng-container>
-          } @else {
-            {{ "ADMIN.config.publishDialog.publish" | translate }}
-          }
-        </button>
-      } @else {
-        <button mat-raised-button class="text-white!"
-                color='warn'
-                [disabled]='loading()'
-                (click)='discard()'>
-          @if (loading()) {
-            <ng-container>
-              <mat-icon>
-                <mat-spinner diameter='20'/>
-              </mat-icon>
-              {{ "ADMIN.config.discardDialog.discarding" | translate }}
-            </ng-container>
-          } @else {
-            {{ "ADMIN.config.discardDialog.discard" | translate }}
-          }
-        </button>
-      }
-    </div>
+    } @else {
+      <button mat-raised-button class="text-white!"
+              color='warn'
+              [disabled]='loading()'
+              (click)='discard()'>
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+          {{ "ADMIN.config.discardDialog.discarding" | translate }}
+        } @else {
+          {{ "ADMIN.config.discardDialog.discard" | translate }}
+        }
+      </button>
+    }
   </div>
 </div>

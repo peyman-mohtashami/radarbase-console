@@ -5,7 +5,7 @@ import {
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
-  MatDialogRef,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 
 import {AppSubject} from "../../models/subject";
@@ -21,13 +21,7 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {DetailType} from '../../../../../base-entities/enums/detail-type';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {AppProject} from '../../../../main-scope/project/models/project';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
-import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
 import {
   BaseEntityDialogComponent
@@ -55,7 +49,6 @@ export interface AvailableSource {
   imports: [
     TranslatePipe,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     MatCheckbox,
     FormsModule,
     MatButton,
@@ -64,8 +57,8 @@ export interface AvailableSource {
     SubjectDetailsComponent,
     ReactiveFormsModule,
     TagComponent,
-    DialogTitleComponent,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
   ]
 })
 export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<AppSubject> {

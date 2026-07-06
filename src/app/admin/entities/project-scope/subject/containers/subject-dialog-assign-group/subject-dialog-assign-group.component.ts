@@ -7,7 +7,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogClose,
   MatDialogContent,
-  MatDialogRef,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 
 import { AppGroup } from "../../../group/models/group";
@@ -26,9 +26,6 @@ import {AsyncPipe, JsonPipe} from '@angular/common';
 import {
   BaseEntityDialogComponent
 } from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
-import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
 import {AppSubject} from '../../models/subject';
 
@@ -45,9 +42,9 @@ import {AppSubject} from '../../models/subject';
     MatIcon,
     MatProgressSpinner,
     AsyncPipe,
-    DialogTitleComponent,
     ErrorMessageBoxComponent,
-    JsonPipe
+    JsonPipe,
+    MatDialogTitle
   ]
 })
 export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent<AppGroup> {

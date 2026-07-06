@@ -10,16 +10,12 @@ import {
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
 import {Validator as CustomValidator, ValidatorError} from "../../../../../../../../../shared/utils/validators";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppQuestion} from '../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
-
-import {
-  DialogTitleComponent
-} from '../../../../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   ErrorMessageBoxComponent
 } from '../../../../../../../../../shared/components/message-box/error-message-box.component';
@@ -40,7 +36,6 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
   selector: 'app-question-dialog',
   imports: [
     ReactiveFormsModule,
-    DialogTitleComponent,
     MatDialogContent,
     ErrorMessageBoxComponent,
     TranslatePipe,
@@ -53,7 +48,8 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
     MatSelect,
     MatOption,
     TextFormGroupComponent,
-    MatSlideToggle
+    MatSlideToggle,
+    MatDialogTitle
   ],
   templateUrl: './question-dialog.component.html'
 })

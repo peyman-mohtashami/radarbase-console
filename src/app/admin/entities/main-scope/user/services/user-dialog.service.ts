@@ -65,6 +65,7 @@ export class UserDialogService extends BaseDialogService<AppUser, RadarUser, Use
 
     switch (mode) {
       case 'activate':
+        console.log('Class: UserDialogService, Function: createDialogRef, Line 68 ' , );
         return this.dialog.open(UserActivateDialogComponent, {
           data: _data,
           width: '50%',

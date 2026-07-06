@@ -1,7 +1,15 @@
-<app-dialog-title [dialogMode]='SubjectDialogMode.ASSIGN_GROUP'
+@let _prefix = "ADMIN.subject";
 
-                  [customLabel]="'ADMIN.subject.assignGroupDialog.title' | translate"
-                  (closeEvent)='close()'/>
+<!--<app-dialog-title [dialogMode]='SubjectDialogMode.ASSIGN_GROUP'-->
+
+<!--                  [customLabel]="'ADMIN.subject.assignGroupDialog.title' | translate"-->
+<!--                  (closeEvent)='close()'/>-->
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
 <!--[entityName]="dialogData.entity._name"-->
 <!--[entityMetadata]="configService.getEntityMetadata()"-->
 

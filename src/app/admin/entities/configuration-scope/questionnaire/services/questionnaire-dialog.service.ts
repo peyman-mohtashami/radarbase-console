@@ -52,46 +52,46 @@ export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnai
     }
   }
 
-  openPublishDialog(mode: "publish" | "discard", entities: AppQuestionnaire[], projectId?: string, subjectId?: string) {
-    const dialogRef = this.createPublishDialogRef(mode);
+  // openPublishDialog(mode: "publish" | "discard", entities: AppQuestionnaire[], projectId?: string, subjectId?: string) {
+  //   const dialogRef = this.createPublishDialogRef(mode);
+  //
+  //   const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
+  //     (value) => {
+  //       if (value.action === 'publish') {
+  //         if (entities) {
+  //           this.entityService.publish(entities, projectId, subjectId).subscribe({
+  //             next: () => {
+  //               this.dialogUpdateEvent.set({mode: 'published', entity: undefined});
+  //               dialogRef.close();
+  //             },
+  //             error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
+  //           })
+  //         }
+  //       } else if (value.action === 'discard') {
+  //         this.dialogUpdateEvent.set({mode: 'discarded', entity: undefined});
+  //         dialogRef.close();
+  //       }
+  //     }
+  //   );
+  //
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     dialogActionSubscription.unsubscribe();
+  //   });
+  // }
 
-    const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
-      (value) => {
-        if (value.action === 'publish') {
-          if (entities) {
-            this.entityService.publish(entities, projectId, subjectId).subscribe({
-              next: () => {
-                this.dialogUpdateEvent.set({mode: 'published', entity: undefined});
-                dialogRef.close();
-              },
-              error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-            })
-          }
-        } else if (value.action === 'discard') {
-          this.dialogUpdateEvent.set({mode: 'discarded', entity: undefined});
-          dialogRef.close();
-        }
-      }
-    );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
-    const originalList = this.entityService.cache;
-    const updatedList = this.entityService.updatedList;
-    return this.dialog.open(ConfigPublishDialogComponent, {
-      data: {mode, originalList, updatedList},
-      panelClass: 'tailwind-slide-panel',
-      width: '50%',
-      height: '100vh',
-      position: {right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
-  }
+  // createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
+  //   const originalList = this.entityService.cache;
+  //   const updatedList = this.entityService.updatedList;
+  //   return this.dialog.open(ConfigPublishDialogComponent, {
+  //     data: {mode, originalList, updatedList},
+  //     panelClass: 'tailwind-slide-panel',
+  //     width: '50%',
+  //     height: '100vh',
+  //     position: {right: '0'},
+  //     hasBackdrop: true,
+  //     disableClose: true,
+  //     autoFocus: false,
+  //     restoreFocus: false
+  //   });
+  // }
 }

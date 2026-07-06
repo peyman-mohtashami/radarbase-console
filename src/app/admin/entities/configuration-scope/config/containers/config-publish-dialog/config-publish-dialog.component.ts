@@ -10,7 +10,7 @@ import {
 } from '@angular/material/dialog';
 import {AppConfig} from "../../models/config";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ConfigConfigService} from '../../services/config-config.service';
@@ -22,7 +22,6 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   templateUrl: './config-publish-dialog.component.html',
   imports: [
     MatDialogTitle,
-    MatIconButton,
     MatDialogContent,
     MatButton,
     TranslatePipe,

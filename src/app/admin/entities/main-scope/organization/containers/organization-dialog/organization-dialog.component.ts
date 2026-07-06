@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import { AppOrganization } from "../../models/organization";
@@ -8,10 +8,6 @@ import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
@@ -23,9 +19,7 @@ import {Observable} from 'rxjs';
   selector: 'app-organization-dialog',
   templateUrl: './organization-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     MatFormField,
     MatInput,
     ReactiveFormsModule,
@@ -36,6 +30,7 @@ import {Observable} from 'rxjs';
     DialogActionsComponent,
     DialogActionsComponent,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
   ]
 })
 export class OrganizationDialogComponent extends BaseEntityDialogComponent<AppOrganization> {

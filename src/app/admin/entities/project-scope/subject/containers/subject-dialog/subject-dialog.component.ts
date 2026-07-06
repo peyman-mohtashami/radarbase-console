@@ -3,7 +3,7 @@ import {
   inject,
 } from '@angular/core';
 import {FormControl, FormGroup, FormRecord, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
@@ -27,9 +27,6 @@ import {
 import {Observable} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
-import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 
 @Component({
   selector: 'app-subject-dialog',
@@ -51,8 +48,8 @@ import {
     MatDynamicInputComponent,
     AsyncPipe,
     ErrorMessageBoxComponent,
-    DialogTitleComponent,
     DialogActionsComponent,
+    MatDialogTitle,
   ]
 })
 export class SubjectDialogComponent extends BaseEntityDialogComponent<AppSubject> {

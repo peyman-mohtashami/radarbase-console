@@ -29,9 +29,14 @@
     }
     @case ('repeatProtocol') {
       @if (entity().schedule?.onDemand) {
-        On Demand
+        <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
+          On Demand
+        </app-tag>
       } @else {
         @if (!entity().schedule?.repeatedProtocol) {
+          <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
+            Scheduled
+          </app-tag>
           <div
             [innerHTML]="`${_prefix}.oneTimeProtocol.tableContent` | translate">
           </div>

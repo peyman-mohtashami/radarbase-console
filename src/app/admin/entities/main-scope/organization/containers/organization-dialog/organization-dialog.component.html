@@ -1,17 +1,20 @@
 @let _prefix = "ADMIN.organization";
 
 @if (dialogData.mode) {
-  <app-dialog-title [dialogMode]='dialogData.mode'
-                    [entityMetadata]="configService.getEntityMetadata()"
-                    [entityName]="dialogData.entity?._name"
-                    (closeEvent)='close()'/>
-<!--                    [entityName]="dialogData.mode !== DialogMode.ADD ? dialogData.entity._name : undefined"-->
+  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+    <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+    <span> {{ `${_prefix}.title.singular` | translate }}</span>
+    <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+  </h2>
 
   <mat-dialog-content>
-    @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-      <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                   [label]="`${_prefix}.name.label` | translate"
-                                   [entityName]="dialogData.entity?.name"/>
+    @if (dialogData.mode === DialogMode.DELETE) {
+      <div class='mb-4 text-base'>
+        <div class="mt-4">
+          <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
+          <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        </div>
+      </div>
     }
 
     @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
@@ -29,7 +32,7 @@
                  formControlName='name'
                  required
                  type="text">
-          <mat-hint align="start">{{ ValidatorHint.normalTextValidator | translate }}</mat-hint>
+
 
           <mat-error>
             @if (form.controls.name.errors; as errors) {
@@ -70,7 +73,6 @@
                     id="description"
                     rows='3'
                     maxlength='255'></textarea>
-            <mat-hint align="start">{{ ValidatorHint.longTextValidator | translate }}</mat-hint>
             <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
 
             <mat-error>

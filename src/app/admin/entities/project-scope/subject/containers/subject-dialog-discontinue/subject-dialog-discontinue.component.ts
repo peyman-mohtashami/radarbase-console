@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
-  MatDialogRef,
+  MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 import {AppSubject} from "../../models/subject";
 import {AppProject} from "../../../../main-scope/project/models/project";
@@ -14,12 +14,6 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {DetailType} from '../../../../../base-entities/enums/detail-type';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
-import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
 import {
   BaseEntityDialogComponent
 } from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
@@ -34,13 +28,12 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   imports: [
     TranslatePipe,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     MatButton,
     MatIcon,
     MatProgressSpinner,
     SubjectDetailsComponent,
-    DialogTitleComponent,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    MatDialogTitle
   ]
 })
 export class SubjectDialogDiscontinueComponent extends BaseEntityDialogComponent<AppSubject> {

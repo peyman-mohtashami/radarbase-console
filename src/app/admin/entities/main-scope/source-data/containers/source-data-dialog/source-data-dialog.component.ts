@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppSourceData, ProcessingState} from "../../models/source-data";
 import {MatOption} from "@angular/material/core";
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
@@ -17,10 +17,6 @@ import {Validator} from '../../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {AppSourceType, RadarSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
@@ -33,9 +29,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   selector: 'app-source-data-dialog',
   templateUrl: './source-data-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ReactiveFormsModule,
     MatFormField,
     TranslatePipe,
@@ -47,6 +41,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatError,
     AsyncPipe,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
   ]
 })
 export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSourceData> {

@@ -1,4 +1,4 @@
-import {AppQuestionChoice} from './questionnaire';
+import {RadarOption} from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 
 export interface RadarProtocolWrapper extends Record<string, string | string[] | null | RadarProtocol[]> {
   version: string | null;
@@ -26,6 +26,14 @@ export interface RadarProtocol {
   warn: Record<string, string>;
   estimatedCompletionTime?: string;
   protocol?: RadarSubProtocol;
+  //---
+  title?: Record<string, string>;
+  description?: Record<string, string>;
+  defaultLanguage: RadarOption;
+  languages: RadarOption[];
+  warningEnabled?: boolean;
+  isValid?: boolean;
+  isActive?: boolean;
 }
 
 export interface RadarSubProtocol {
@@ -39,6 +47,7 @@ export interface RadarSubProtocol {
     unitsFromZero: string[];
   };
   reminders?: {
+    enabled?: boolean;
     unit: string;
     amount: string;
     repeat: string;
@@ -60,6 +69,11 @@ export interface RadarSubProtocol {
     unit: string;
     amount: string;
   };
+  //---
+  onDemand?: boolean;
+  relativeToReferenceTime?: boolean;
+  repeatedProtocol?: boolean;
+
 }
 
 export interface RadarQuestionnaire {

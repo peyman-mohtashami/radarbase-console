@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppSourceType, SourceTypeScope} from "../../models/source-type";
 import {Validator} from '../../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
@@ -10,10 +10,6 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
@@ -25,9 +21,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   selector: 'app-source-type-dialog',
   templateUrl: './source-type-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ReactiveFormsModule,
     DialogActionsComponent,
     TranslatePipe,
@@ -38,7 +32,8 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatOption,
     MatSlideToggle,
     MatHint,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    MatDialogTitle
   ]
 })
 export class SourceTypeDialogComponent extends BaseEntityDialogComponent<AppSourceType> {

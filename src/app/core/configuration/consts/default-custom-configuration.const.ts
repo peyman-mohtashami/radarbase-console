@@ -21,7 +21,7 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
       "on-primary": "#ffffff",
       "accent": "#22A2C9",
       "on-accent": "#ffffff",
-      "tertiary": "#004F6E",
+      "tertiary": "#22A2C9",
       "on-tertiary": "#ffffff"
     },
     "dark": {

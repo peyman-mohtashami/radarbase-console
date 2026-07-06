@@ -1,19 +1,16 @@
 import {
   Component,
-  inject, signal,
+  inject,
 } from '@angular/core';
 import {
   FormArray
 } from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestionnaire} from "../../models/questionnaire";
-import {
-  DialogBodyDescriptionComponent
-} from "../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component";
 import {
   DialogAction,
 } from "../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
@@ -23,16 +20,12 @@ import {
 } from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
 import {
-  DialogTitleComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-// import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-state.service';
-import {
   MatTab,
   MatTabContent,
   MatTabGroup,
   MatTabLabel,
 } from '@angular/material/tabs';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {QuestionnaireGeneralComponent} from './containers/questionnaire-general/questionnaire-general.component';
 import {QuestionnaireQuestionsComponent} from './containers/questionnaire-questions/questionnaire-questions.component';
 import {
@@ -65,9 +58,7 @@ import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-s
   imports: [
     TranslatePipe,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ErrorMessageBoxComponent,
-    DialogTitleComponent,
     MatTabGroup,
     MatTab,
     MatTabLabel,
@@ -85,7 +76,7 @@ import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-s
     MatIcon,
     MatButton,
     MatProgressSpinner,
-    JsonPipe,
+    MatDialogTitle,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {

@@ -7,7 +7,13 @@ import {getConfigsFromConfigBundle,} from '../../config/services/config.service'
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {Params} from '@angular/router';
 import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
-import {RadarProtocol, RadarProtocolWrapper, RadarQuestion, RadarQuestionnaire} from '../models/protocol';
+import {
+  RadarProtocol,
+  RadarProtocolWrapper,
+  RadarQuestion,
+  RadarQuestionnaire,
+  RadarSubProtocol
+} from '../models/protocol';
 import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 
 @Injectable({providedIn: 'root'})
@@ -68,7 +74,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
     }).pipe(
       map(({ protocols, questionnaires }) =>
         protocols.map(protocol => {
-          return this.integrateProtocolAndQuestionnaire(protocol, questionnaires[protocol.name])
+          return this.toAppQuestionnaire(protocol, questionnaires[protocol.name])
         })
       ),
       tap((entities) => {
@@ -82,8 +88,8 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
     );
   }
 
-  integrateProtocolAndQuestionnaire(protocol: RadarProtocol, questionnaire?: Record<string, RadarQuestion[]>): AppQuestionnaire {
-    const schedule: AppQuestionnaire['schedule'] = protocol.type === 'on-demand' ?
+  toAppQuestionnaire(protocol: RadarProtocol, questionnaire?: Record<string, RadarQuestion[]>): AppQuestionnaire {
+    const schedule: AppQuestionnaire['schedule'] = protocol.type === 'on_demand' ?
       {onDemand: true} :
       {
         onDemand: false,
@@ -118,10 +124,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
       modelVersion: "",
       version: "",
       name: protocol.name,
-      defaultLanguage: {id: "en", _name: 'en'}, //protocol.undefined,
-      languages: [],
-      title: undefined,
-      description: undefined,
+      defaultLanguage: protocol.defaultLanguage,
+      languages: protocol.languages,
+      title: protocol.title,
+      description: protocol.description,
       isDemo: protocol.isDemo === 'true',
       order: protocol.order !== undefined ? `${protocol.order}` : undefined,
       showInCalendar: protocol.showInCalendar === 'true',
@@ -129,21 +135,21 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
       showIntroduction: protocol.showIntroduction,
       startText: protocol.startText,
       endText: protocol.endText,
-      warningEnabled: undefined,
+      warningEnabled: protocol.warningEnabled,
       warn: protocol.warn,
       estimatedCompletionTime: protocol.estimatedCompletionTime !== undefined ? `${protocol.estimatedCompletionTime}` : undefined,
 
-      questions: this.getAppQuestions(questionnaire),
+      questions: this.toAppQuestions(questionnaire),
       schedule: schedule,
-      isActive: undefined,
-      isValid: undefined,
+      isActive: protocol.isActive,
+      isValid: protocol.isValid,
 
       _name: protocol.name,
       _search: protocol.name,
     }
   }
 
-  getAppQuestions(
+  toAppQuestions(
     radarQuestionsWrapper: Record<string, RadarQuestion[]> | undefined
   ): AppQuestion[] {
     if (!radarQuestionsWrapper) {
@@ -255,6 +261,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
   }
 
   override add(entity: AppQuestionnaire): Observable<AppQuestionnaire> {
+    console.log('Class: QuestionnaireService, Function: add, Line 258 entity' , entity);
     this.total.set(this.total() + 1);
     this.updatedList.push(entity);
     return this.publish(this.updatedList).pipe(map(() => entity));
@@ -271,6 +278,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
   }
 
   publish(questionnaires: AppQuestionnaire[], projectId?: string, subjectId?: string): Observable<AppQuestionnaire[]> {
+    console.log('Class: QuestionnaireService, Function: publish, Line 274 questionnaires' , questionnaires);
     const {protocols: ps, questionnaires: qs} = this.splitProtocolsAndQuestionnaires(questionnaires);
 
     const radarProtocolWrapper: RadarProtocolWrapper = {
@@ -311,36 +319,43 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
     const result: {protocols: RadarProtocol[]; questionnaires: RadarQuestionnaire[]} = {protocols: [], questionnaires: []};
     questionnaires.forEach(q => {
       result.protocols.push({
-        endText: q.endText ?? {},
-        estimatedCompletionTime: q.estimatedCompletionTime,
-        isDemo: q.isDemo?.toString(),
         name: q.name,
+        title: q.title,
+        description: q.description,
+        defaultLanguage: q.defaultLanguage,
+        languages: q.languages,
+        isDemo: q.isDemo ? 'true' : 'false',
         order: q.order,
-        protocol: this.getRadarProtocol(q.schedule),
-        showInCalendar: q.showInCalendar?.toString(),
+        showInCalendar: q.showInCalendar ? 'true' : 'false',
         showIntroduction: q.showIntroduction,
         startText: q.startText ?? {},
-        type: q.schedule?.onDemand ? 'on-demand' : undefined,
-        warn: q.warn ?? {}
+        endText: q.endText ?? {},
+        warningEnabled: !!q.warningEnabled,
+        warn: q.warn ?? {},
+        estimatedCompletionTime: q.estimatedCompletionTime,
+        protocol: this.toRadarSubProtocol(q.schedule),
+        type: q.schedule?.onDemand ? 'on_demand' : undefined,
+        isValid: !!q.isValid,
+        isActive: !!q.isActive
       });
       result.questionnaires.push({
         name: q.name,
         languages: q.languages.map(l => l.id.toString()),
-        questions: this.getRadarQuestions(q.questions, q.languages),
+        questions: this.toRadarQuestionsWrapper(q.questions ?? [], q.languages),
       });
     })
     return result;
   }
 
-  getRadarQuestions(appQuestions: AppQuestion[], languages: RadarOption[]): Record<string, RadarQuestion[]> {
+  toRadarQuestionsWrapper(appQuestions: AppQuestion[], languages: RadarOption[]): Record<string, RadarQuestion[]> {
     const result: Record<string, RadarQuestion[]> = {};
     for (const language of languages) {
-      result[language.id] = this.getRadarQuestionsForLanguage(appQuestions, language);
+      result[language.id] = this.toRadarQuestions(appQuestions, language);
     }
     return result;
   }
 
-  getRadarQuestionsForLanguage(appQuestions: AppQuestion[], language: RadarOption): RadarQuestion[] {
+  toRadarQuestions(appQuestions: AppQuestion[], language: RadarOption): RadarQuestion[] {
     return appQuestions.map(q => {
       const t: RadarQuestion = {
         field_name: q.field_name,
@@ -366,22 +381,22 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
           unit: q.field_annotation.unit
         } : undefined,
         field_note: q.field_note?.[language.id],
-        range: {
+        range: q.range ? {
           min: q.range?.min?.toString() ?? "",
           max: q.range?.max?.toString() ?? "",
           step: q.range?.step?.toString() ?? "",
           labelLeft: q.range?.labelLeft?.[language.id],
           labelRight: q.range?.labelRight?.[language.id]
-        },
+        } : undefined,
         matrix_group_name: q.matrix_group_name,
         //matrix_ranking?:
-        branching_logic: q.branching_logic
+        branching_logic: q.branching_logic ? q.branching_logic : undefined
       }
       return t;
     });
   }
 
-  getRadarProtocol(schedule: AppQuestionnaire['schedule']): RadarProtocol['protocol'] | undefined {
+  toRadarSubProtocol(schedule: AppQuestionnaire['schedule']):  RadarSubProtocol | undefined {
     if (schedule && schedule.onDemand) {
       return undefined;
     }
@@ -401,6 +416,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
         unitsFromZero: repeatQuestionnaire?.unitsFromZero ?? []
       },
       reminders: reminders && reminders.enabled ? {
+        enabled: reminders.enabled,
         unit: reminders.unit!,
         amount: reminders.amount!,
         repeat: reminders.repeat!,
@@ -421,7 +437,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
       completionWindow: {
         unit: completionWindow!.unit!,
         amount: completionWindow!.amount!
-      }
+      },
+      relativeToReferenceTime: relativeToReferenceTime ?? false,
+      repeatedProtocol: repeatedProtocol ?? false,
+
     };
   }
 

@@ -309,7 +309,7 @@
       protected-container-color: var(--mat-sys-tertiary),
       protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-tertiary) 12%, transparent),
       protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-tertiary) 38%, transparent),
-      protected-label-text-color: var(--mat-sys-on-ptertiary),
+      protected-label-text-color: var(--mat-sys-on-tertiary),
       protected-ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
       protected-state-layer-color: var(--mat-sys-tertiary),
 
@@ -341,7 +341,7 @@
       protected-container-color: var(--mat-sys-error),
       protected-disabled-container-color: color-mix(in srgb, var(--mat-sys-error) 12%, transparent),
       protected-disabled-label-text-color: color-mix(in srgb, var(--mat-sys-error) 38%, transparent),
-      protected-label-text-color: var(--mat-sys-on-ptertiary),
+      protected-label-text-color: var(--mat-sys-on-error),
       protected-ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
       protected-state-layer-color: var(--mat-sys-error),
 

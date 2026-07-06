@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import { AppGroup } from "../../models/group";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -12,10 +12,6 @@ import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {GroupConfigService} from '../../services/group-config.service';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {
   DialogActionsComponent
 } from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
@@ -27,16 +23,15 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
   selector: 'app-organization-dialog',
   templateUrl: './group-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     TranslatePipe,
     ReactiveFormsModule,
     MatFormField,
     MatInput,
     DialogActionsComponent,
     MatError,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    MatDialogTitle
   ]
 })
 export class GroupDialogComponent extends BaseEntityDialogComponent<AppGroup> {

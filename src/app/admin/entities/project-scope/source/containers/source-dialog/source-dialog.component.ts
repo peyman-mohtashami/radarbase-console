@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import {
@@ -17,10 +17,6 @@ import {SourceDialogService} from '../../services/source-dialog.service';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {AppSource} from '../../models/source';
 import {AppSourceType, RadarSourceType} from '../../../../main-scope/source-type/models/source-type';
-import {DialogTitleComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-title/dialog-title.component';
-import {
-  DialogBodyDescriptionComponent
-} from '../../../../../base-entities/containers/entity-dialog/dialog-body-description/dialog-body-description.component';
 import {DialogActionsComponent} from '../../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {Observable} from 'rxjs';
@@ -32,9 +28,7 @@ import {AppProject} from '../../../../main-scope/project/models/project';
   selector: 'app-source-dialog',
   templateUrl: './source-dialog.component.html',
   imports: [
-    DialogTitleComponent,
     MatDialogContent,
-    DialogBodyDescriptionComponent,
     ReactiveFormsModule,
     MatFormField,
     TranslatePipe,
@@ -44,6 +38,7 @@ import {AppProject} from '../../../../main-scope/project/models/project';
     DialogActionsComponent,
     AsyncPipe,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
   ]
 })
 export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> {

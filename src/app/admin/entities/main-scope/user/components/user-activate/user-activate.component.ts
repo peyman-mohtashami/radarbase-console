@@ -18,9 +18,9 @@ export class UserActivateComponent {
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  // private dialogService = inject(UserDialogService);
+  private dialogService = inject(UserDialogService);
 
   onAction() {
-    // this.dialogService.openDialog('activate', this.entity());
+    this.dialogService.openDialog('activate', this.entity());
   }
 }

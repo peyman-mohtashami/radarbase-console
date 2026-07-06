@@ -1,16 +1,21 @@
 @let _prefix = "ADMIN.project";
 
-<app-dialog-title [dialogMode]='dialogData.mode'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity?._name"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
 
 <mat-dialog-content>
-  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {
-    <app-dialog-body-description [dialogMode]="dialogData.mode"
-                                 [label]="`${_prefix}.name.label` | translate"
-                                 [entityName]="dialogData.entity?._name"/>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.projectName }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
   }
+
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form [formGroup]='form' novalidate>
       @if (!dialogData.organization && (!dialogData.entity || !dialogData.entity.organization)) {
@@ -25,7 +30,7 @@
 
       @if (dialogData.mode !== DialogMode.ADD) {
         <label for="project-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
-        <mat-form-field class='small-input w-full my-4' subscriptSizing="fixed" appearance='fill'>
+        <mat-form-field class='small-input w-full my-4' subscriptSizing="dynamic" appearance='fill'>
           <input id="project-id" matInput formControlName='id'>
         </mat-form-field>
       }
@@ -33,7 +38,6 @@
       <label for="project-name" class="text-sm">{{ `${_prefix}.projectName.label` | translate }} *</label>
       <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                       [appearance]='dialogData.entity ? "fill": "outline"'>
-        <mat-hint align="start">{{ ValidatorHint.normalTextValidator }}</mat-hint>
         <input id="project-name" matInput formControlName='projectName' required>
         <mat-error>
           @if (form.controls.projectName.errors; as errors) {
@@ -70,12 +74,18 @@
         </span>
       }
 
+      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {
+        <app-mat-select-autocomplete formControlName='sourceTypes'
+                                     [options]='sourceTypes'
+                                     [label]="`${_prefix}.sourceTypes.label` | translate"
+                                     [multiple]="true"/>
+      }
+
       @if (!formFields || formFields['description'] === undefined || formFields['description']) {
         <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
         <mat-form-field class='small-input w-ful' subscriptSizing="fixed" appearance='outline'>
           <textarea id="description" matInput #description formControlName='description' rows='3'
                     maxlength='255'></textarea>
-          <mat-hint align="start">{{ ValidatorHint.longTextValidator | translate }}</mat-hint>
           <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
           <mat-error>
             @if (form.controls.description.errors; as errors) {
@@ -106,17 +116,6 @@
           </mat-error>
         </mat-form-field>
       }
-
-      <!-- TODO organizationName is deprecated -->
-      @if (false) {
-        <label for="organizationName" class="text-sm">
-          {{ `${_prefix}.organizationName.label` | translate }}
-        </label>
-        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
-          <input id="organizationName" matInput formControlName='organizationName'>
-        </mat-form-field>
-      }
-
 
       @if (!formFields || formFields['projectStatus'] === undefined || formFields['projectStatus']) {
         <label for="projectStatus" class="text-sm">{{ `${_prefix}.projectStatus.label` | translate }}</label>
@@ -191,13 +190,6 @@
             }
           </mat-error>
         </mat-form-field>
-      }
-
-      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {
-        <app-mat-select-autocomplete formControlName='sourceTypes'
-                                     [options]='sourceTypes'
-                                     [label]="`${_prefix}.sourceTypes.label` | translate"
-                                     [multiple]="true"/>
       }
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {

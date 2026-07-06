@@ -1,19 +1,32 @@
-<app-dialog-title [dialogMode]='SubjectDialogMode.DISCONTINUE'
-                  [entityMetadata]="configService.getEntityMetadata()"
-                  [entityName]="dialogData.entity._name"
-                  [customLabel]="'ADMIN.subject.discontinue.title' | translate"
-                  (closeEvent)='close()'/>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `ADMIN.subject.discontinue.title` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+</h2>
+
+<!--<app-dialog-title [dialogMode]='SubjectDialogMode.DISCONTINUE'-->
+<!--                  [entityMetadata]="configService.getEntityMetadata()"-->
+<!--                  [entityName]="dialogData.entity._name"-->
+<!--                  [customLabel]="'ADMIN.subject.discontinue.title' | translate"-->
+<!--                  (closeEvent)='close()'/>-->
 
 <mat-dialog-content>
   <p class="mb-4">
     {{ "ADMIN.subject.discontinue.message" | translate }} {{ 'Subject' }}:
     <strong>{{ dialogData.entity.login }}</strong>.
   </p>
-  <app-dialog-body-description>
+
+  <div class='mb-4 text-base'>
     <app-subject-details class="py-4"
                          [entity]='dialogData.entity'
                          [detailType]="DetailType.SUMMARY"/>
-  </app-dialog-body-description>
+<!--    <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>-->
+  </div>
+<!--  <app-dialog-body-description>-->
+<!--    <app-subject-details class="py-4"-->
+<!--                         [entity]='dialogData.entity'-->
+<!--                         [detailType]="DetailType.SUMMARY"/>-->
+<!--  </app-dialog-body-description>-->
   <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
 </mat-dialog-content>
 
