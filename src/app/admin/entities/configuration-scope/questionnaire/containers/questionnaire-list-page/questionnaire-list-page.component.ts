@@ -46,8 +46,10 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
 
   override entities = signal<AppQuestionnaire[]>(this.activatedRoute.snapshot.data['questionnaireList']);
 
-  project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
-  subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
+  // project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
+  // subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
+  projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+  subjectId = this.activatedRoute.snapshot.paramMap.get('subjectId');
 
   override ngOnInit() {
     super.ngOnInit();
@@ -58,7 +60,8 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
   }
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project?._name, this.subject?._name);
+    // return this.entityService.getWithQuery(this.params(), this.project?._name, this.subject?._name);
+    return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined, this.subjectId ?? undefined);
   }
 
   protected showHistory() {

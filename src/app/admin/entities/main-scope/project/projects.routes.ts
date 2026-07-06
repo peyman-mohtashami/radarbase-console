@@ -14,7 +14,7 @@ export const projectRoutes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':projectId',
     component: ProjectPageComponent,
     resolve: {
       project: ProjectResolver,

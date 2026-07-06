@@ -14,7 +14,7 @@ export const subjectRoutes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':subjectId',
     component: SubjectPageComponent,
     resolve: {
       subject: SubjectResolver,

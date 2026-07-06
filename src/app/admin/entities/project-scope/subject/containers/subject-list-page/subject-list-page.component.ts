@@ -16,6 +16,7 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
  import {MatIcon} from '@angular/material/icon';
  import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
  import {TranslatePipe} from '@ngx-translate/core';
+ import {findRouteData} from '../../../../main-scope/organization/services/organization.service';
 
 @Component({
   selector: 'app-subject-list-page',
@@ -40,10 +41,14 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
 
   override entities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['subjectList']);
 
-  project: AppProject = this.selectedEntitiesService.getSelected().project()!;
+  // project: AppProject = this.selectedEntitiesService.getSelected().project()!;
+  projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+  project = findRouteData(this.activatedRoute, 'project');
+
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    // return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined);
   }
 }
 

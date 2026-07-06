@@ -16,6 +16,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 import {TranslatePipe} from '@ngx-translate/core';
+import {findRouteData} from '../../../../main-scope/organization/services/organization.service';
 
 @Component({
   selector: 'app-group-list-page',
@@ -39,9 +40,13 @@ export class GroupListPageComponent extends BaseEntityListPageComponent<AppGroup
   override dialogService = inject(GroupDialogService);
 
   override entities = signal<AppGroup[]>(this.activatedRoute.snapshot.data['groupList']);
-  project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  // project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+  project?: AppProject = findRouteData(this.activatedRoute, 'project');
+
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    // return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined);
   }
 }

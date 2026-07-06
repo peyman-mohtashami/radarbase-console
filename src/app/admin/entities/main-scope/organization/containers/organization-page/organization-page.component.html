@@ -1,4 +1,4 @@
-@if (!hasProject()) {
+@if (!projectId) {
   <div
     class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-app-background dark:bg-app-background-dark'>
     <div class='flex flex-wrap gap-2 items-center'>
@@ -21,8 +21,8 @@
   </div>
 }
 
-<div [class]="!hasProject()? 'm-4' : ''">
-  @if (!hasProject()) {
+<div [class]="!projectId ? 'm-4' : ''">
+  @if (!projectId) {
     <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
          mat-tab-nav-bar
          mat-stretch-tabs="false"

@@ -16,6 +16,7 @@ import {BaseEntityPageComponent} from '../../../../../base-entities/containers/e
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
 import {MatIcon} from '@angular/material/icon';
 import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
+import {findRouteData} from '../../../../main-scope/organization/services/organization.service';
 
 @Component({
   selector: 'app-subject-page',
@@ -42,8 +43,11 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, Ra
   links: TabLink[] = [];
 
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
-  project?: AppProject = this.selectedEntitiesService.getSelected().project();
-  organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
+  project = findRouteData(this.activatedRoute, 'project');
+  organization = findRouteData(this.activatedRoute, 'organization');
+
+  // project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  // organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
 
   override ngOnInit(): void {
     const protocolAndQuestionnaireTabLinks =

@@ -19,7 +19,7 @@ export const userRoutes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':userId',
     component: UserPageComponent,
     resolve: {
       user: UserResolver,

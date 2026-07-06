@@ -23,6 +23,7 @@ import {GroupService} from '../../group/services/group.service';
 import {ClientService} from '../../../main-scope/client/services/client.service';
 import {map} from 'rxjs/operators';
 import {SourceService} from '../../source/services/source.service';
+import {findRouteData} from '../../../main-scope/organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
 export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSubject, SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
@@ -83,7 +84,9 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
 
   override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject):
     MatDialogRef<SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
-    const project = this.selectedEntitiesService.getSelected().project();
+    const project = findRouteData(this.activatedRoute, 'project');
+
+    // const project = this.selectedEntitiesService.getSelected().project();
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
 
     const _data = {id: 'subject-dialog', mode, entity, project, groupFullList};
@@ -196,8 +199,11 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
-    const project = this.selectedEntitiesService.getSelected().project();
-    const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
+    const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+
+    // const project = this.selectedEntitiesService.getSelected().project();
+    // const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
+    const groupFullList = this.groupService.getWithQuery(undefined, projectId ?? undefined);
     const _data = {id: 'subject-assign-group-dialog', groupFullList, selectedSubjects};
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {

@@ -13,7 +13,8 @@ import {UserConfigService} from '../../user/services/user-config.service';
 export class PermissionService extends UserService {
   override configService = inject(UserConfigService);
 
-  override getWithQuery(queryParams: Params, currentOrganization?: AppOrganization, currentProject?: AppProject): Observable<AppUser[]> {
+  // override getWithQuery(queryParams: Params, currentOrganization?: AppOrganization, currentProject?: AppProject): Observable<AppUser[]> {
+  override getWithQuery(queryParams: Params, currentOrganization?: string, currentProject?: string): Observable<AppUser[]> {
     const {params} = this.convertParamsToHttpParams(queryParams as Params);
     return this.http.get<RadarUser[]>(this.getResourceUrl(), {
       params,
@@ -35,10 +36,15 @@ export class PermissionService extends UserService {
     );
   }
 
+  // private getUsersWithPermission(
+  //   entities: AppUser[],
+  //   currentOrganization?: AppOrganization,
+  //   currentProject?: AppProject
+  // ): AppUser[] {
   private getUsersWithPermission(
     entities: AppUser[],
-    currentOrganization?: AppOrganization,
-    currentProject?: AppProject
+    currentOrganization?: string,
+    currentProject?: string
   ): AppUser[] {
     return entities.filter(e => {
       if (e._roles?._sysAdmin) {
@@ -47,7 +53,8 @@ export class PermissionService extends UserService {
       if (currentOrganization) {
         if (e._roles?._organizationAdmin) {
           const organization = e._roles._organizations?.find(o =>
-            o._name === currentOrganization?.name);
+            o._name === currentOrganization);
+          // o._name === currentOrganization?.name);
           if (organization) {
             return true;
           }
@@ -56,7 +63,8 @@ export class PermissionService extends UserService {
       if (currentProject) {
         if (e._roles?._projectAdmin) {
           const project = e._roles._projects?.find(p =>
-            p._name === currentProject?.projectName);
+            p._name === currentProject);
+          // p._name === currentProject?.projectName);
           if (project) {
             return true;
           }

@@ -17,6 +17,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 import {TranslatePipe} from '@ngx-translate/core';
+import {findRouteData} from '../../../../main-scope/organization/services/organization.service';
 
 @Component({
   selector: 'app-source-list-page',
@@ -40,13 +41,16 @@ export class SourceListPageComponent extends BaseEntityListPageComponent<AppSour
   override dialogService = inject(SourceDialogService);
 
   override entities = signal<AppSource[]>(this.activatedRoute.snapshot.data['sourceList']);
-  project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  // project?: AppProject = this.selectedEntitiesService.getSelected().project();
+  projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+  project?: AppProject = findRouteData(this.activatedRoute, 'project');
 
   sourceTypes: AppSourceType[] = [];
 
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    // return this.entityService.getWithQuery(this.params(), this.project?.projectName);
+    return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined);
   }
 
   override ngOnInit() {

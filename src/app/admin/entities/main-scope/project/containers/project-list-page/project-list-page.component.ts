@@ -41,12 +41,14 @@ export class ProjectListPageComponent extends BaseEntityListPageComponent<AppPro
 
   override entities = signal<AppProject[]>(this.activatedRoute.snapshot.data['projectList']);
 
-  organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
+  // organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
+  organizationId = this.activatedRoute.snapshot.paramMap.get('organizationId');
 
   override GRID_VIEW_ENABLED = true;
   override gridView = true;
 
   protected override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.organization?.name);
+    // return this.entityService.getWithQuery(this.params(), this.organization?.name);
+    return this.entityService.getWithQuery(this.params(), this.organizationId ?? undefined);
   }
 }

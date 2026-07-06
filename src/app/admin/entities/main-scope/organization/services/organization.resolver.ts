@@ -4,19 +4,16 @@ import {Observable} from 'rxjs';
 
 import {AppOrganization} from "../models/organization";
 import {OrganizationService} from './organization.service';
-import {catchError, tap} from 'rxjs/operators';
-import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationResolver implements Resolve<AppOrganization> {
   private entityService = inject(OrganizationService);
   private router = inject(Router);
-  private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppOrganization> {
     const organizationId = route.paramMap.get('organizationId')!;
     return this.entityService.getByKey(organizationId).pipe(
-      tap(organization => this.selectedEntitiesService.setSelected(SelectedEntities.ORGANIZATION, organization)),
       catchError(() => {
         this.router.navigate(['/']).then(() => {
           throw new Error(`ADMIN.organization.error.notFound`);

@@ -1,10 +1,12 @@
-import {Component, effect, inject} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {SubjectDetailsComponent} from "../../components/subject-details/subject-details.component";
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {SelectedEntitiesService} from '../../../../../services/selected-entities.service';
+import {findRouteData} from '../../../../main-scope/organization/services/organization.service';
+import {ActivatedRoute} from '@angular/router';
+import {AppSubject} from '../../models/subject';
 
 @Component({
   selector: 'app-subject-details-page',
@@ -18,9 +20,10 @@ import {SelectedEntitiesService} from '../../../../../services/selected-entities
 export class SubjectDetailsPageComponent {
   private configService = inject(SubjectConfigService);
   private dialogService = inject(SubjectDialogService);
-  private selectedEntitiesService = inject(SelectedEntitiesService);
+  private activatedRoute = inject(ActivatedRoute);
 
-  entity = this.selectedEntitiesService.getSelected().subject;
+  entity = signal<AppSubject>(findRouteData(this.activatedRoute, 'subject'));
+
   tableFields = this.configService.getTableFields();
 
   constructor() {

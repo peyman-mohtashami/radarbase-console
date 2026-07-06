@@ -6,6 +6,7 @@ import {AppUser, RadarUser} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {PermissionConfigService} from './permission-config.service';
+import {findRouteData} from '../../organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
 export class PermissionDialogService extends BaseDialogService<AppUser, RadarUser, PermissionDialogComponent> {
@@ -14,8 +15,10 @@ export class PermissionDialogService extends BaseDialogService<AppUser, RadarUse
 
   override createDialogRef(mode: DialogMode, entity?: AppUser): MatDialogRef<PermissionDialogComponent> {
     const userFullList = this.entityService.getWithQuery();
-    const project = this.selectedEntitiesService.getSelected().project();
-    const organization = this.selectedEntitiesService.getSelected().organization();
+    // const project = this.selectedEntitiesService.getSelected().project();
+    // const organization = this.selectedEntitiesService.getSelected().organization();
+    const project = findRouteData(this.activatedRoute, 'project');
+    const organization = findRouteData(this.activatedRoute, 'organization');
 
     const _data = {id: 'permission-dialog', mode, entity, project, organization, userFullList};
 

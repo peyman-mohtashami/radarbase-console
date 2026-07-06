@@ -13,8 +13,10 @@ export class GroupDialogService extends BaseDialogService<AppGroup, RadarGroup, 
   override configService = inject(GroupConfigService);
 
   override createDialogRef(mode: DialogMode, entity?: AppGroup): MatDialogRef<GroupDialogComponent> {
-    const project = this.selectedEntitiesService.getSelected().project();
-    const groupFullList = this.entityService.getWithQuery(undefined, project?._name);
+    // const project = this.selectedEntitiesService.getSelected().project();
+    const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+    // const groupFullList = this.entityService.getWithQuery(undefined, projectId ?? project?._name);
+    const groupFullList = this.entityService.getWithQuery(undefined, projectId ?? undefined);
     const _data = {id: 'group-dialog', mode, entity, groupFullList};
     switch (mode) {
       case DialogMode.DELETE:

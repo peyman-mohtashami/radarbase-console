@@ -20,7 +20,7 @@ export const sourceDataRoutes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':sourceDataId',
     component: SourceDataPageComponent,
     resolve: {
       sourceData: SourceDataResolver,

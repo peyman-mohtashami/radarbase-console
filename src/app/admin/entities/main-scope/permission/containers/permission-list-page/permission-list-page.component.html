@@ -66,11 +66,18 @@
                    [gridView]="gridView"
                    [totalEntities]="entityService.total()"/>
 <ng-template #itemTemplate let-entity>
+<!--  <app-permission-table-row [entity]="entity"-->
+<!--                            [gridView]="gridView"-->
+<!--                            [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
+<!--                            [extensionClass]="extensionClass()"-->
+<!--                            [organizationName]="currentOrganization?.name"-->
+<!--                            [projectName]="currentProject?.projectName"-->
+<!--                            [user]="authService.user()" />-->
   <app-permission-table-row [entity]="entity"
                             [gridView]="gridView"
                             [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
                             [extensionClass]="extensionClass()"
-                            [organizationName]="currentOrganization?.name"
-                            [projectName]="currentProject?.projectName"
+                            [organizationName]="organizationId"
+                            [projectName]="projectId"
                             [user]="authService.user()" />
 </ng-template>

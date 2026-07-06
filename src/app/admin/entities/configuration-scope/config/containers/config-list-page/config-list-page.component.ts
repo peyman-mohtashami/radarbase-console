@@ -42,9 +42,13 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
 
   override entities = signal<AppConfig[]>(this.activatedRoute.snapshot.data['configList']);
 
-  client = this.selectedEntitiesService.getSelected().client;
-  project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
-  subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
+  clientId = this.activatedRoute.snapshot.paramMap.get('clientId');
+  projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+  subjectId = this.activatedRoute.snapshot.paramMap.get('subjectId');
+
+  // client = this.selectedEntitiesService.getSelected().client;
+  // project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
+  // subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
 
   isChanged = signal( false);
 
@@ -58,7 +62,8 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   }
 
   override getEntities() {
-    return this.entityService.getWithQuery(this.params(), this.client()!._name, this.project?._name, this.subject?._name);
+    // return this.entityService.getWithQuery(this.params(), this.client()!._name, this.project?._name, this.subject?._name);
+    return this.entityService.getWithQuery(this.params(), this.clientId ?? undefined, this.projectId ?? undefined, this.subjectId ?? undefined);
   }
 
   override handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppConfig }) {
@@ -97,7 +102,8 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
   }
 
   onPublishDialogAction(mode: "discard" | "publish") {
-    return this.dialogService.openPublishDialog(mode, this.entities(), this.client()!._name, this.project?._name, this.subject?._name);
+    // return this.dialogService.openPublishDialog(mode, this.entities(), this.client()!._name, this.project?._name, this.subject?._name);
+    return this.dialogService.openPublishDialog(mode, this.entities(), this.clientId!, this.projectId ?? undefined, this.subjectId ?? undefined);
   }
 
 

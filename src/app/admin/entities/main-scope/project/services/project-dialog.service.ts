@@ -6,7 +6,7 @@ import {ProjectService} from './project.service';
 import {ProjectDialogComponent} from '../containers/project-dialog/project-dialog.component';
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {ProjectConfigService} from './project-config.service';
-import {OrganizationService} from '../../organization/services/organization.service';
+import {findRouteData, OrganizationService} from '../../organization/services/organization.service';
 import {SourceTypeService} from '../../source-type/services/source-type.service';
 
 @Injectable({providedIn: 'root'})
@@ -23,7 +23,9 @@ export class ProjectDialogService extends BaseDialogService<AppProject, RadarPro
     const projectFullList = this.entityService.getWithQuery();
     const organizationFullList = this.organizationService.getWithQuery();
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
-    const organization = this.selectedEntitiesService.getSelected().organization();
+    // const organization = this.selectedEntitiesService.getSelected().organization();
+    const organization = findRouteData(this.activatedRoute, 'organization');
+    console.log('&222&Class: ProjectDialogService, Function: createDialogRef, Line 28 organization' , organization);
 
     const _data = {id: 'project-dialog', mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList};
 

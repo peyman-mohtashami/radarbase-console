@@ -4,7 +4,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter, withRouterConfig} from '@angular/router';
 
 import { routes } from './app.routes';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
@@ -29,6 +29,9 @@ export const appConfig: ApplicationConfig = {
     ),
     // provideMonacoEditor({ baseUrl: '/assets/monaco/min/vs' }), //TODO only for protocol questionnaire builder
     provideCore(),
-    provideRouter(routes)
+    // provideRouter(routes)
+    provideRouter(routes, withRouterConfig({
+      paramsInheritanceStrategy: 'always'
+    }))
   ]
 };

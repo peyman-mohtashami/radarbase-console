@@ -12,7 +12,7 @@ export const appConfigRoutes: Routes = [
     },
     children: [
       {
-        path: ':id',
+        path: ':clientId',
         resolve: {
           client: ClientResolver,
         },

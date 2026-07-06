@@ -13,6 +13,6 @@ export class SourceDataResolver implements Resolve<AppSourceData> {
   private entityService = inject(SourceDataService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppSourceData> {
-    return this.entityService.getByKey(route.params['id']);
+    return this.entityService.getByKey(route.params['sourceDataId']);
   }
 }

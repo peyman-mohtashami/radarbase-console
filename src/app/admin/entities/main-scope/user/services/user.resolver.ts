@@ -12,6 +12,6 @@ export class UserResolver implements Resolve<AppUser> {
   private entityService = inject(UserService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppUser> {
-    return this.entityService.getByKey(route.params['id']);
+    return this.entityService.getByKey(route.params['userId']);
   }
 }

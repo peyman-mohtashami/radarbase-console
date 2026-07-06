@@ -1,4 +1,5 @@
-@if (!hasSubject()) {
+<!--@if (!hasSubject()) {-->
+@if (!subjectId) {
   <nav aria-label="breadcrumb" class="px-4 py-2 flex flex-wrap items-center gap-1">
     <button class="app-button-small" mat-flat-button [routerLink]="['/admin', 'organizations']">
       <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.organization.icon }}</mat-icon>
@@ -37,8 +38,10 @@
   </div>
 }
 
-<div [class]="!hasSubject() ? 'm-4' : ''">
-  @if (!hasSubject()) {
+<!--<div [class]="!hasSubject() ? 'm-4' : ''">-->
+  <div [class]="!subjectId ? 'm-4' : ''">
+<!--  @if (!hasSubject()) {-->
+  @if (!subjectId) {
     <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
          mat-tab-nav-bar
          mat-stretch-tabs="false"

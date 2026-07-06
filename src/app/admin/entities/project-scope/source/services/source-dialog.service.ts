@@ -7,6 +7,7 @@ import {SourceDialogComponent} from '../containers/source-dialog/source-dialog.c
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {SourceConfigService} from './source-config.service';
 import {SourceTypeService} from '../../../main-scope/source-type/services/source-type.service';
+import {findRouteData} from '../../../main-scope/organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
 export class SourceDialogService extends BaseDialogService<AppSource, RadarSource, SourceDialogComponent> {
@@ -16,7 +17,8 @@ export class SourceDialogService extends BaseDialogService<AppSource, RadarSourc
   sourceTypeService = inject(SourceTypeService);
 
   override createDialogRef(mode: DialogMode, entity?: AppSource): MatDialogRef<SourceDialogComponent> {
-    const project = this.selectedEntitiesService.getSelected().project()
+    // const project = this.selectedEntitiesService.getSelected().project()
+    const project = findRouteData(this.activatedRoute, 'project');
     const sourceTypeFullList = this.sourceTypeService.getWithQuery();
 
     const _data = {id: 'source-dialog', mode, entity, sourceTypeFullList, project};

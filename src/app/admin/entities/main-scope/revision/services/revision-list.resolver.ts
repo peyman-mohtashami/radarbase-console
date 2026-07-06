@@ -7,19 +7,12 @@ import { Observable } from 'rxjs';
 
 import { RevisionService } from './revision.service';
 import { AppRevision } from "../models/revision";
-import {SelectedEntities, SelectedEntitiesService} from '../../../../services/selected-entities.service';
-import {tap} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class RevisionListResolver implements Resolve<AppRevision[]> {
   private entityService = inject(RevisionService);
-  private selectedEntitiesService = inject(SelectedEntitiesService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<AppRevision[]> {
-    return this.entityService.getWithQuery(route.queryParams).pipe(
-      tap(() => {
-        this.selectedEntitiesService.clearSelected([SelectedEntities.ORGANIZATION, SelectedEntities.PROJECT, SelectedEntities.SUBJECT, SelectedEntities.CLIENT]);
-      })
-    );
+    return this.entityService.getWithQuery(route.queryParams);
   }
 }

@@ -14,7 +14,7 @@ export const clientRoutes: Routes = [
     },
   },
   {
-    path: ':id',
+    path: ':clientId',
     component: ClientPageComponent,
     resolve: {
       client: ClientResolver,

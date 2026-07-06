@@ -16,7 +16,6 @@ import {BaseEntityService} from '../../services/base-entity.service';
 import {BaseConfigService} from '../../services/base-config.service';
 import {BaseDialogService} from '../../services/base-dialog.service';
 import {BaseEntityDialogComponent} from '../entity-dialog/base-entity-dialog.component';
-import {SelectedEntitiesService} from '../../../services/selected-entities.service';
 
 @Component({
   selector: 'app-base-entity-list-page',
@@ -29,7 +28,6 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
 
   private router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
-  protected selectedEntitiesService = inject(SelectedEntitiesService);
 
   protected entityService!: BaseEntityService<T, U>;
   protected configService!: BaseConfigService;

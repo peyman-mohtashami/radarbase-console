@@ -1,10 +1,12 @@
-import {inject, Injectable} from '@angular/core';
+import {computed, inject, Injectable} from '@angular/core';
 import {AppOrganization, RadarOrganization} from "../models/organization";
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../../environments/environment';
-import {Observable, of} from 'rxjs';
+import {filter, Observable, of, startWith} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {OrganizationConfigService} from './organization-config.service';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseEntityService<AppOrganization, RadarOrganization> {
@@ -41,3 +43,62 @@ export class OrganizationService extends BaseEntityService<AppOrganization, Rada
     return organization;
   }
 }
+
+
+export function findRouteData(
+  route: ActivatedRoute,
+  key: string
+): any {
+  let current: ActivatedRoute | null = route;
+
+  while (current) {
+    if (key in current.snapshot.data) {
+      return current.snapshot.data[key];
+    }
+    current = current.parent;
+  }
+
+  return null;
+}
+
+// export function injectRouteParam(name: string) {
+//   const router = inject(Router);
+//   const route = inject(ActivatedRoute);
+//
+//   const currentRoute = toSignal(
+//     router.events.pipe(
+//       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+//       startWith(null),
+//       map(() => route)
+//     ),
+//     { requireSync: true }
+//   );
+//
+//   return computed(() => {
+//     let current: ActivatedRoute | null = currentRoute();
+//     console.log('Class: injectRouteParam, Function: , Line 79 current' , current);
+//
+//     while (current) {
+//       const value = current.snapshot.paramMap.get(name);
+//       if (value) {
+//         return value;
+//       }
+//       current = current.firstChild;
+//     }
+//
+//     return null;
+//   });
+// }
+// export function findParam(route: ActivatedRoute, name: string): string | null {
+//   let current: ActivatedRoute | null = route;
+//
+//   while (current) {
+//     const value = current.snapshot?.paramMap.get(name);
+//     if (value) {
+//       return value;
+//     }
+//     current = current.firstChild ?? null;
+//   }
+//
+//   return null;
+// }

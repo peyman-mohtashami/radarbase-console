@@ -1,5 +1,5 @@
-import {Component, inject, signal} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppProject, RadarProject} from "../../models/project";
 import {PermissionDirective} from "../../../../../../core/auth/directives/show-if-has-role.directive";
@@ -14,6 +14,10 @@ import {TabLink} from "../../../../../base-entities/models/tab-link";
 import {BaseEntityPageComponent} from '../../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
 import {MatIcon} from '@angular/material/icon';
+import {filter, startWith} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {ROLES} from '../../../../../../shared/enums/roles';
 
 @Component({
   selector: 'app-project-page',
@@ -36,12 +40,36 @@ import {MatIcon} from '@angular/material/icon';
 export class ProjectPageComponent extends BaseEntityPageComponent<AppProject, RadarProject> {
   override configService = inject(ProjectConfigService);
   override dialogService = inject(ProjectDialogService);
+  private destroyRef = inject(DestroyRef);
 
   override entity = signal<AppProject>(this.activatedRoute.snapshot.data['project']);
 
   links: TabLink[] = [];
 
-  hasSubject = this.selectedEntitiesService.getSelected().subject;
+  // hasSubject = this.selectedEntitiesService.getSelected().subject;
+  // subjectId = this.activatedRoute.snapshot.paramMap.get('subjectId');
+  subjectId: string | null = null;
+
+  override ngOnInit() {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+        let route: ActivatedRoute = this.activatedRoute;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      switchMap((route) => route.paramMap),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((paramMap) => {
+      console.log('Child route params:', paramMap);
+      this.subjectId = paramMap.get('subjectId');
+    });
+
+    super.ngOnInit();
+  }
 
   override updateTabLinks(_entity?: AppProject) {
     const protocolAndQuestionnaireTabLinks =

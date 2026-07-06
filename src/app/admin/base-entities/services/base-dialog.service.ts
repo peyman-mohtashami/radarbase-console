@@ -7,14 +7,12 @@ import {DialogMode} from '../enums/dialog';
 import {BaseEntityDialogComponent} from '../containers/entity-dialog/base-entity-dialog.component';
 import {BaseEntityService} from './base-entity.service';
 import {BaseConfigService} from './base-config.service';
-import {SelectedEntitiesService} from '../../services/selected-entities.service';
 
 @Injectable({providedIn: 'root'})
 export class BaseDialogService<T extends {_name: string;}, U, V extends BaseEntityDialogComponent<T>> {
   protected router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
   protected dialog = inject(MatDialog);
-  protected selectedEntitiesService = inject(SelectedEntitiesService);
 
   protected entityService!: BaseEntityService<T, U>;
   protected configService!: BaseConfigService;
