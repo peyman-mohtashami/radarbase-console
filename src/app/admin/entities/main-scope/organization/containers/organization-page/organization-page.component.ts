@@ -16,6 +16,8 @@ import {BaseEntityPageComponent} from '../../../../../base-entities/containers/e
 import {filter, startWith} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-organization-page',
@@ -31,6 +33,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     MatPrefix,
     TranslatePipe,
     RouterLinkActive,
+    MatButton,
+    MatIcon,
   ]
 })
 export class OrganizationPageComponent extends BaseEntityPageComponent<AppOrganization, RadarOrganization> {

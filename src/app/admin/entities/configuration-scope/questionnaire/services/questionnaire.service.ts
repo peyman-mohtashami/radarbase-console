@@ -182,8 +182,6 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
             text_validation_type_or_show_slider_number: radarQuestion.text_validation_type_or_show_slider_number,
             text_validation_min: radarQuestion.text_validation_min,
             text_validation_max: radarQuestion.text_validation_max,
-            date_min: radarQuestion.date_min,
-            date_max: radarQuestion.date_max,
             date_type: radarQuestion.date_type,
             field_annotation: radarQuestion.field_annotation ? {
               image: radarQuestion.field_annotation?.image,
@@ -316,6 +314,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
   }
 
   splitProtocolsAndQuestionnaires(questionnaires: AppQuestionnaire[]): {protocols: RadarProtocol[], questionnaires: RadarQuestionnaire[]} {
+    console.log('Class: QuestionnaireService, Function: splitProtocolsAndQuestionnaires, Line 319 questionnaires' , questionnaires);
     const result: {protocols: RadarProtocol[]; questionnaires: RadarQuestionnaire[]} = {protocols: [], questionnaires: []};
     questionnaires.forEach(q => {
       result.protocols.push({
@@ -381,6 +380,9 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
           unit: q.field_annotation.unit
         } : undefined,
         field_note: q.field_note?.[language.id],
+        multi_line: q.multi_line,
+        show_selected_label: q.show_selected_label,
+        date_type: q.date_type,
         range: q.range ? {
           min: q.range?.min?.toString() ?? "",
           max: q.range?.max?.toString() ?? "",
@@ -390,7 +392,8 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
         } : undefined,
         matrix_group_name: q.matrix_group_name,
         //matrix_ranking?:
-        branching_logic: q.branching_logic ? q.branching_logic : undefined
+        branching_logic: q.branching_logic ? q.branching_logic : undefined,
+        isValid: q.isValid
       }
       return t;
     });

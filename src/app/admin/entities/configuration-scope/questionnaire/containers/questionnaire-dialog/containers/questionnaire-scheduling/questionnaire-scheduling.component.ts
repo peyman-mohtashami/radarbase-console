@@ -1,4 +1,4 @@
-import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Validator as CustomValidator} from '../../../../../../../../shared/utils/validators';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -10,14 +10,14 @@ import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
-import {
-  TimeFromZeroFormArrayComponent
-} from '../../../../../protocol/containers/protocol-dialog/components/custom-form-controls/time-from-zero-form-array/time-from-zero-form-array.component';
-import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/unit';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {LocaleService} from '../../../../../../../../core/locale/services/locale.service';
 import {Subscription} from 'rxjs';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {
+  TimeFromZeroFormArrayComponent
+} from '../../components/time-from-zero-form-array/time-from-zero-form-array.component';
+import {UNITS} from '../../models/unit';
 
 @Component({
   selector: 'app-questionnaire-scheduling',
@@ -44,8 +44,6 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
 
   protected readonly UNITS = UNITS;
 
-  // entity = input<AppQuestionnaire | undefined>();
-  changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   localeService = inject(LocaleService);
@@ -91,14 +89,23 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
   protected loading = true;
 
   ngOnInit() {
-    const entity = this.dialogState.selectedQuestionnaire();//entity();
 
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
       this.loading = false;
 
-      this.changeEvent.emit(change);
+      const formValue = this.form.getRawValue();
+      const entity = this.dialogState.selectedQuestionnaire();
+      const updated = {
+        ...entity,
+        schedule: {
+          ...entity?.schedule,
+          ...formValue.schedule
+        }
+      } as AppQuestionnaire;
+
+      this.dialogState.selectedQuestionnaire.set(updated);
 
       const {referenceTimestamp, repeatProtocol, repeatQuestionnaire, completionWindow} = this.form.controls.schedule.controls;
 
@@ -128,6 +135,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
       this.valid.emit(this.form.valid);
     });
 
+    const entity = this.dialogState.selectedQuestionnaire();
     if (entity) {
       this.form.patchValue(entity);
     }

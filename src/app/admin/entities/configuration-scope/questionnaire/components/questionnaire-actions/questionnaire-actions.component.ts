@@ -10,6 +10,7 @@ import {QuestionnaireConfigService} from '../../services/questionnaire-config.se
 import {MatIcon} from '@angular/material/icon';
 import {QuestionnaireService} from '../../services/questionnaire.service';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-questionnaire-actions',
@@ -21,7 +22,8 @@ import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.se
     TranslatePipe,
     MatIconButton,
     MatTooltip,
-    MatIcon
+    MatIcon,
+    MatSlideToggle
   ]
 })
 export class QuestionnaireActionsComponent {

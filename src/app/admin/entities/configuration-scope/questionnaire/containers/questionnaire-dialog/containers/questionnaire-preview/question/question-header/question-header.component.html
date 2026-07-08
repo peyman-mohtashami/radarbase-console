@@ -14,6 +14,6 @@
   }
 
   @if (note()) {
-    <!--  <p class="text-sm mb-2" [innerHtml]="question().field_note | replacePlaceholders"></p>-->
+      <p class="text-sm mb-2" [innerHtml]="question().field_note?.[language()!.id] | replacePlaceholders"></p>
   }
 }

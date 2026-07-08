@@ -77,63 +77,7 @@
     //state-layer-size: 40px,
   ));
 
-  .mat-mdc-icon-button.mat-primary {
-    @include mat.icon-button-overrides((
-      icon-color: var(--mat-sys-primary),
-      state-layer-color: var(--mat-sys-primary),
-      ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-    ));
-  }
 
-  .mat-mdc-icon-button.mat-tertiary {
-    @include mat.icon-button-overrides((
-      icon-color: var(--mat-sys-tertiary),
-      state-layer-color: var(--mat-sys-tertiary),
-      ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-    ));
-  }
-
-  .mat-mdc-icon-button.mat-warn {
-    @include mat.icon-button-overrides((
-      icon-color: var(--mat-sys-error),
-      state-layer-color: var(--mat-sys-error),
-      ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-    ));
-  }
-
-  .mat-mdc-icon-button.app-icon-button-small {
-    @include mat.icon-button-overrides((
-      icon-size: 16px,
-      container-shape: var(--mat-sys-corner-full),
-      touch-target-size: 32px,
-    ));
-  }
-
-  .mat-primary .mat-mdc-icon-button {
-    @include mat.icon-button-overrides((
-      //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
-      //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
-      //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
-      //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
-      icon-color: var(--mat-sys-on-primary),
-      //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
-      ripple-color: color-mix(in srgb, var(--mat-sys-on-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-      state-layer-color: var(--mat-sys-on-primary),
-    ));
-  }
-
-  .mat-tertiary .mat-mdc-icon-button {
-    @include mat.icon-button-overrides((
-      //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
-      //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
-      //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
-      //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
-      icon-color: var(--mat-sys-on-tertiary),
-      //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
-      ripple-color: color-mix(in srgb, var(--mat-sys-on-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
-      state-layer-color: var(--mat-sys-on-tertiary),
-    ));
-  }
 
   @include mat.button-overrides((
     // Base
@@ -418,5 +362,49 @@
       text-container-shape: var(--mat-sys-corner-full),
       tonal-container-shape: var(--mat-sys-corner-full)
     ));
+  }
+
+  .mat-mdc-icon-button.mat-primary {
+    @include mat.icon-button-overrides((
+      icon-color: var(--mat-sys-primary),
+      state-layer-color: var(--mat-sys-primary),
+      ripple-color: color-mix(in srgb, var(--mat-sys-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    ));
+  }
+
+  .mat-mdc-icon-button.mat-tertiary {
+    @include mat.icon-button-overrides((
+      icon-color: var(--mat-sys-tertiary),
+      state-layer-color: var(--mat-sys-tertiary),
+      ripple-color: color-mix(in srgb, var(--mat-sys-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    ));
+  }
+
+  .mat-mdc-icon-button.mat-warn {
+    @include mat.icon-button-overrides((
+      icon-color: var(--mat-sys-error),
+      state-layer-color: var(--mat-sys-error),
+      ripple-color: color-mix(in srgb, var(--mat-sys-error) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+    ));
+  }
+
+  .mat-mdc-icon-button.app-icon-button-small {
+    @include mat.icon-button-overrides((
+      icon-size: 20px,
+      state-layer-size: 20px,
+      touch-target-size: 20px,
+      container-shape: var(--mat-sys-corner-full),
+    ));
+
+    width: 20px;
+    height: 20px;
+    padding: 0;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+    }
   }
 }

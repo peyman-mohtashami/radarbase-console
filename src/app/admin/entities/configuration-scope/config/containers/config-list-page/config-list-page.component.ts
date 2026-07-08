@@ -98,7 +98,10 @@ export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConf
       }
     }
     this.loading.set(false);
-    this.selection.clear();
+    setTimeout(() => {
+      this.selection.clear();
+    }, 0);
+    // this.selection.clear();
   }
 
   onPublishDialogAction(mode: "discard" | "publish") {

@@ -23,6 +23,19 @@
       container-background-color: var(--mat-sys-primary),
       container-text-color: var(--mat-sys-on-primary),
     ));
+
+    .mat-mdc-icon-button {
+      @include mat.icon-button-overrides((
+        //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+        //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+        //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+        //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+        icon-color: var(--mat-sys-on-primary),
+        //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+        ripple-color: color-mix(in srgb, var(--mat-sys-on-primary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+        state-layer-color: var(--mat-sys-on-primary),
+      ));
+    }
   }
 
   mat-toolbar.mat-tertiary {
@@ -30,6 +43,19 @@
       container-background-color: var(--mat-sys-tertiary),
       container-text-color: var(--mat-sys-on-tertiary),
     ));
+
+    .mat-mdc-icon-button {
+      @include mat.icon-button-overrides((
+        //disabled-icon-color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent),
+        //disabled-state-layer-color: var(--mat-sys-on-surface-variant),
+        //focus-state-layer-opacity: var(--mat-sys-focus-state-layer-opacity),
+        //hover-state-layer-opacity: var(--mat-sys-hover-state-layer-opacity),
+        icon-color: var(--mat-sys-on-tertiary),
+        //pressed-state-layer-opacity: var(--mat-sys-pressed-state-layer-opacity),
+        ripple-color: color-mix(in srgb, var(--mat-sys-on-tertiary) calc(var(--mat-sys-pressed-state-layer-opacity) * 100%), transparent),
+        state-layer-color: var(--mat-sys-on-tertiary),
+      ));
+    }
   }
 }
 

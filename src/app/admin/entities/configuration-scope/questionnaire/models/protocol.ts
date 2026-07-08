@@ -152,11 +152,37 @@ export interface RadarQuestion {
   };
   matrix_group_name?: string;
   matrix_ranking?: string;
+  conditionalLogic?: {operand: string; operator: string; value: string}[][];
   branching_logic?: string;
   show_selected_label?: boolean;
   multi_line?: boolean;
-  date_min?: string;
-  date_max?: string;
+  // date_min?: string;
+  // date_max?: string;
   date_type?: string;
   isValid?: boolean;
+}
+
+export enum QuestionnaireTimeUnit {
+  min = 'min',
+  hour = 'hour',
+  day = 'day',
+  week = 'week',
+  month = 'month',
+  year = 'year',
+}
+
+export interface QuestionnaireLanguage extends RadarOption {
+  id: string | number;
+  _name: string;
+  nativeName?: string;
+}
+
+export interface AppProtocol extends RadarProtocol {
+  _name: string;
+  _languages: QuestionnaireLanguage[];
+  _onDemand: boolean;
+  _github: boolean;
+  _repeatedProtocol: boolean;
+  _relativeToReferenceTime: boolean;
+  _reminderEnabled: boolean;
 }

@@ -10,7 +10,6 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RouterLinkExactActiveDirective} from "../../directives/router-link-exact-active.directive";
 import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 import {MatIcon} from '@angular/material/icon';
-import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -24,7 +23,6 @@ import {MatButton} from '@angular/material/button';
     MatExpansionPanelHeader,
     PermissionDirective,
     MatIcon,
-    MatButton,
   ],
   styles: `
     :host {

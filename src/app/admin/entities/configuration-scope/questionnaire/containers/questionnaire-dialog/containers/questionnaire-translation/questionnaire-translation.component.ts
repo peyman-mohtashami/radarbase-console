@@ -6,7 +6,6 @@ import {
   MatSelectAutocompleteComponent
 } from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {TranslatePipe} from '@ngx-translate/core';
-// import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
 import {debounceTime} from 'rxjs/operators';
 import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
@@ -21,7 +20,6 @@ import {JsonPipe} from '@angular/common';
     TranslatePipe,
     TextFormGroupComponent,
     JsonPipe,
-    // TextFormGroupComponent,
   ]
 })
 export class QuestionnaireTranslationComponent implements OnInit {
@@ -29,9 +27,6 @@ export class QuestionnaireTranslationComponent implements OnInit {
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
 
-  // entity = input<AppQuestionnaire>();
-
-  changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   form = new FormGroup({
@@ -57,7 +52,6 @@ export class QuestionnaireTranslationComponent implements OnInit {
 
     const entity = this.dialogState.selectedQuestionnaire();
     this.entity = entity;
-    console.log('Class: QuestionnaireTranslationComponent, Function: ngOnInit, Line 57 entity' , entity);
     if (entity) {
       const t = entity.questions?.reduce((acc, curr) => {
         return acc + 2 + (curr.field_note?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.section_header?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.select_choices_or_calculations?.length ?? 0);
@@ -103,7 +97,53 @@ export class QuestionnaireTranslationComponent implements OnInit {
     this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      this.changeEvent.emit({
+      // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 106 change' , change);
+      // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 107 {...entity, ...change}' , {...entity, ...change});
+      const entity = this.dialogState.selectedQuestionnaire();
+      // this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), schedule: {...this.dialogState.selectedQuestionnaire()?.schedule, ...change.schedule}} as AppQuestionnaire);
+
+      // this.changeEvent.emit({
+      //   ...entity,
+      //   ...change,
+      //   schedule: {
+      //     ...entity?.schedule,
+      //     ...change.schedule,
+      //     notification: {
+      //       ...entity?.schedule?.notification,
+      //       ...change.schedule?.notification,
+      //     },
+      //   },
+      //   questions: entity?.questions?.map((question, questionIndex) => {
+      //     const questionChange = change.questions?.[questionIndex];
+      //
+      //     return {
+      //       ...question,
+      //       ...questionChange,
+      //       select_choices_or_calculations: question.select_choices_or_calculations?.map((choice, choiceIndex) => ({
+      //         ...choice,
+      //         ...questionChange?.select_choices_or_calculations?.[choiceIndex],
+      //         label: {
+      //           ...choice.label,
+      //           ...questionChange?.select_choices_or_calculations?.[choiceIndex]?.label,
+      //         },
+      //       })),
+      //       field_label: {
+      //         ...question.field_label,
+      //         ...questionChange?.field_label,
+      //       },
+      //       field_note: {
+      //         ...question.field_note,
+      //         ...questionChange?.field_note,
+      //       },
+      //       section_header: {
+      //         ...question.section_header,
+      //         ...questionChange?.section_header,
+      //       },
+      //     };
+      //   }),
+      // });
+
+      this.dialogState.selectedQuestionnaire.set({
         ...entity,
         ...change,
         schedule: {
@@ -142,7 +182,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
             },
           };
         }),
-      });
+      } as AppQuestionnaire);
 
       this.valid.emit(this.form.valid);
     });

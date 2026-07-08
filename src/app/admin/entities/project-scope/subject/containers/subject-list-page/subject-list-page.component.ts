@@ -1,6 +1,5 @@
  import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
-import {AppProject} from '../../../../main-scope/project/models/project';
 import {SubjectService} from '../../services/subject.service';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
@@ -12,7 +11,7 @@ import {
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
- import {MatButton, MatIconButton} from '@angular/material/button';
+ import {MatButton} from '@angular/material/button';
  import {MatIcon} from '@angular/material/icon';
  import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
  import {TranslatePipe} from '@ngx-translate/core';
@@ -29,7 +28,6 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
     SubjectAssignGroupComponent,
     MatButton,
     MatIcon,
-    MatIconButton,
     PermissionDirective,
     TranslatePipe,
   ]
@@ -41,13 +39,11 @@ export class SubjectListPageComponent extends BaseEntityListPageComponent<AppSub
 
   override entities = signal<AppSubject[]>(this.activatedRoute.snapshot.data['subjectList']);
 
-  // project: AppProject = this.selectedEntitiesService.getSelected().project()!;
   projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
   project = findRouteData(this.activatedRoute, 'project');
 
 
   override getEntities() {
-    // return this.entityService.getWithQuery(this.params(), this.project?.projectName);
     return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined);
   }
 }

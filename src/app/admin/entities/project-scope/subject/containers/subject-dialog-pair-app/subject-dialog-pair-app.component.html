@@ -9,15 +9,6 @@
   }
 </h2>
 
-<!--<app-dialog-title class="print-hide"-->
-<!--                  [dialogMode]='SubjectDialogMode.PAIR_APP'-->
-<!--                  [entityMetadata]="configService.getEntityMetadata()"-->
-<!--                  [entityName]="dialogData.entity._name"-->
-<!--                  [customLabel]="'ADMIN.subject.pairApp.title' | translate"-->
-<!--                  (closeEvent)='close()'>-->
-
-<!--</app-dialog-title>-->
-
 <mat-dialog-content>
   @if (pairInfo(); as pairInfo) {
     <div class="flex justify-center">
@@ -27,10 +18,6 @@
     </div>
 
     <div class='mb-4 text-base'>
-<!--      <div class="mt-4">-->
-<!--        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>-->
-<!--        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>-->
-<!--      </div>-->
       <div class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-gray-100 p-2">
         <app-detail-element>
           <ng-container label>{{ 'ADMIN.subject.pairApp.baseUrl' | translate }}</ng-container>
@@ -50,27 +37,6 @@
         </app-detail-element>
       </div>
     </div>
-
-<!--    <app-dialog-body-description>-->
-<!--      <div class="text-sm [&_app-detail-element:nth-child(even)>div]:bg-gray-100 p-2">-->
-<!--        <app-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.subject.pairApp.baseUrl' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ pairInfo.baseUrl || '-' }}</ng-container>-->
-<!--        </app-detail-element>-->
-<!--        <app-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.subject.pairApp.tokenName' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ pairInfo.tokenName || '-' }}</ng-container>-->
-<!--        </app-detail-element>-->
-<!--        <app-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.subject.pairApp.validUntil' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ (pairInfo.timesOutAt | date:'medium') || '-' }}</ng-container>-->
-<!--        </app-detail-element>-->
-<!--        <app-detail-element>-->
-<!--          <ng-container label>{{ 'ADMIN.subject.pairApp.validity' | translate }}</ng-container>-->
-<!--          <ng-container value>{{ (pairInfo.timeout / 1000 | duration) || '-' }}</ng-container>-->
-<!--        </app-detail-element>-->
-<!--      </div>-->
-<!--    </app-dialog-body-description>-->
   }
 
   <form [formGroup]="form" novalidate>
@@ -92,11 +58,9 @@
   </form>
 
   <div class='mb-4 text-base'>
-<!--  <app-dialog-body-description>-->
     <app-subject-details class="py-4"
                         [entity]='dialogData.entity'
                         [detailType]="DetailType.SUMMARY" />
-<!--  </app-dialog-body-description>-->
   </div>
 </mat-dialog-content>
 

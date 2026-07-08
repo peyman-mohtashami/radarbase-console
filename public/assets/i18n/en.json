@@ -1518,6 +1518,14 @@
         "tableLabel": "Description",
         "label": "Description"
       },
+      "status": {
+        "tableLabel": "Status",
+        "label": "Status"
+      },
+      "active": {
+        "tableLabel": "Active",
+        "label": "Active"
+      },
       "createdBy": {
         "tableLabel": "Created By",
         "label": "Created By"
@@ -1535,8 +1543,13 @@
         "label": "Modified Date"
       },
       "questionCount": {
-        "tableLabel": "Question Count",
-        "label": "Question Count"
+        "tableLabel": "#Questions",
+        "label": "#Question"
+      },
+      "type": {
+        "tableLabel": "Type",
+        "label": "Type",
+        "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
       },
       "repeatProtocol": {
         "tableLabel": "Schedule's Description",

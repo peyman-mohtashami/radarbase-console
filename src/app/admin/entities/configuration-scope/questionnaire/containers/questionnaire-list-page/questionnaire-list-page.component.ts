@@ -1,6 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
-// import {ListPageHeaderComponent} from '../../../../../base-entities/containers/entity-list-page/list-page-header/list-page-header.component';
 import {
   DataTableFilterComponent,
 } from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
@@ -12,13 +11,11 @@ import {AppQuestionnaire} from "../../models/questionnaire";
 import {
   QuestionnaireTableRowComponent
 } from "../../components/questionnaire-table-row/questionnaire-table-row.component";
-import {AppProject} from "../../../../main-scope/project/models/project";
-import {AppSubject} from "../../../../project-scope/subject/models/subject";
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
 import {
   BaseEntityListPageComponent
 } from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -27,14 +24,12 @@ import {TranslatePipe} from '@ngx-translate/core';
   selector: 'app-questionnaire-list-page',
   templateUrl: './questionnaire-list-page.component.html',
   imports: [
-    // ListPageHeaderComponent,
     DataTableFilterComponent,
     LoaderComponent,
     QuestionnaireTableRowComponent,
     EntityListPageComponent,
     MatButton,
     MatIcon,
-    MatIconButton,
     PermissionDirective,
     TranslatePipe,
   ]
@@ -46,8 +41,6 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
 
   override entities = signal<AppQuestionnaire[]>(this.activatedRoute.snapshot.data['questionnaireList']);
 
-  // project: AppProject | undefined = this.selectedEntitiesService.getSelected().project();
-  // subject: AppSubject | undefined = this.selectedEntitiesService.getSelected().subject();
   projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
   subjectId = this.activatedRoute.snapshot.paramMap.get('subjectId');
 
@@ -60,7 +53,6 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
   }
 
   override getEntities() {
-    // return this.entityService.getWithQuery(this.params(), this.project?._name, this.subject?._name);
     return this.entityService.getWithQuery(this.params(), this.projectId ?? undefined, this.subjectId ?? undefined);
   }
 

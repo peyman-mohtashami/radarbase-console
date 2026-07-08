@@ -71,18 +71,14 @@
                                      [_choices]="entity().select_choices_or_calculations"/>
   }
   @case ('preview') {
-    <app-question-header [question]="entity()" [language]="language()" />
+    <app-question-header [question]="entity()" [language]="language()"/>
 
     <div class="flex flex-col h-full gap-2">
-      @for (item of entity().select_choices_or_calculations; track item.code) {
-<!--        <mat-card>-->
-<!--          <mat-card-content>-->
-        <div class="border rounded p-4 m-4">
-            <p class="text-sm!">{{ item.code }}</p>
-            <p class="text-base! pb-32 text-black" [innerHtml]="item.label[language().id] | replacePlaceholders"></p>
-      </div>
-<!--          </mat-card-content>-->
-<!--        </mat-card>-->
+      @for (item of entity().select_choices_or_calculations; track item.code;) {
+        <div class="border rounded p-4 m-0">
+          <p class="text-sm!">{{ item.code }}</p>
+          <p class="text-base! pb-32 text-black" [innerHtml]="item.label[language().id] | replacePlaceholders"></p>
+        </div>
       }
     </div>
   }

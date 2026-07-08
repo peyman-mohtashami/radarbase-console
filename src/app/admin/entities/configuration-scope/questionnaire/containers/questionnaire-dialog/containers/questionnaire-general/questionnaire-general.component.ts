@@ -35,7 +35,6 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
 
   questionnaires = input.required<AppQuestionnaire[] | null>();
 
-  changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   form = new FormGroup({
@@ -57,7 +56,29 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
     this.form.controls.name.addValidators(this.duplicateValidator);
     this.form.controls.name.updateValueAndValidity();
 
-    const entity = this.dialogState.selectedQuestionnaire();// this.entity();
+    this.subscription = this.form.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(() => {
+      const formValue = this.form.getRawValue();
+      const entity = this.dialogState.selectedQuestionnaire();
+      let languages = entity?.languages ?? [];
+      if (!entity?.languages.find(l => l.id === formValue.defaultLanguage.id)) {
+        languages = [...entity?.languages ?? [], formValue.defaultLanguage];
+      }
+      const updated = {
+        ...entity,
+        name: formValue.name,
+        defaultLanguage: formValue.defaultLanguage,
+        title: {...entity?.title, ...formValue.title},
+        description: {...entity?.description, ...formValue.description},
+        languages
+      } as AppQuestionnaire;
+
+      this.dialogState.selectedQuestionnaire.set(updated);
+      this.valid.emit(this.form.valid);
+    });
+
+    const entity = this.dialogState.selectedQuestionnaire();
     if (entity) {
       this.languages = entity.languages;
       this.defaultLang = entity.defaultLanguage;
@@ -65,21 +86,30 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       this.valid.emit(this.form.valid);
     }
 
-    this.form.controls.defaultLanguage.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(language => {
-        this.onDefaultLanguageChanged(language, entity);
-    });
 
-    merge(
-      this.form.controls.name.valueChanges,
-      this.form.controls.title.valueChanges,
-      this.form.controls.description.valueChanges
-    ).pipe(
-      debounceTime(300)
-    ).subscribe(() => {
-      this.onOtherFieldsChanged();
-    });
+    // const entity = this.dialogState.selectedQuestionnaire();
+    // if (entity) {
+    //   this.languages = entity.languages;
+    //   this.defaultLang = entity.defaultLanguage;
+    //   this.form.patchValue(entity);
+    //   this.valid.emit(this.form.valid);
+    // }
+
+    // this.form.controls.defaultLanguage.valueChanges.pipe(
+    //   debounceTime(300)
+    // ).subscribe(language => {
+    //     this.onDefaultLanguageChanged(language, entity);
+    // });
+    //
+    // merge(
+    //   this.form.controls.name.valueChanges,
+    //   this.form.controls.title.valueChanges,
+    //   this.form.controls.description.valueChanges
+    // ).pipe(
+    //   debounceTime(300)
+    // ).subscribe(() => {
+    //   this.onOtherFieldsChanged();
+    // });
   }
 
   onDefaultLanguageChanged(language: RadarOption, entity?: AppQuestionnaire) {
@@ -90,19 +120,22 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
         new Set(languages.map(item => JSON.stringify(item)))
       ).map(item => JSON.parse(item));
 
-      this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      // this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
       this.valid.emit(this.form.valid);
 
       this.form.patchValue({...entity, defaultLanguage: language}, { emitEvent: false });
     } else {
       this.languages = [this.defaultLang];
-      this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      // this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
+      this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
       this.valid.emit(this.form.valid);
     }
   }
 
   onOtherFieldsChanged() {
-    this.changeEvent.emit({...this.form.getRawValue(), languages: this.languages});
+    // this.changeEvent.emit({...this.form.getRawValue(), languages: this.languages});
+    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), ...this.form.getRawValue(), languages: this.languages} as AppQuestionnaire);
     this.valid.emit(this.form.valid);
   }
 

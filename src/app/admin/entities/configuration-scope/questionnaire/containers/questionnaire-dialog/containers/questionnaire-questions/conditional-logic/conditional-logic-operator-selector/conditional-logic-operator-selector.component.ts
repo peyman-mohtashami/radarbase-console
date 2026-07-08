@@ -45,7 +45,7 @@ export const OPERATORS: Record<string, {name:string; value:string;}[]> = {
   ],
   [QuestionType.NUMBER]: ALL_OPERATORS,
   [QuestionType.DATETIME]: ALL_OPERATORS,
-  [QuestionType.DURATION]: ALL_OPERATORS,
+  // [QuestionType.DURATION]: ALL_OPERATORS,
   // [QuestionType.TIMED]: ALL_OPERATORS,
   // [QuestionType.AUDIO]: ALL_OPERATORS,
 }

@@ -1,22 +1,19 @@
-<div class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full'>
+<div
+  class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 w-full bg-primary/10 dark:bg-primary/10'>
   <div class='flex flex-wrap gap-2 items-center'>
-    <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2"
-       [routerLink]="['/admin', 'clients']">
-      <span class="material-symbols-outlined text-lg!" matPrefix>
-        {{ configService.getEntityMetadata().icon }}
-      </span>
-      <span>{{ 'ADMIN.client.title.singular' | translate }}</span>
-    </a>
-    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+    <button class="app-button-small app-button-full-corner" mat-flat-button
+            [routerLink]="['/admin', 'clients']">
+      <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.client.icon }}</mat-icon>
+      <span>{{ `ADMIN.${ENTITY_REGISTRY.client.name}.title.singular` | translate }}</span>
+    </button>
+
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-primary'>
       {{ entity().clientId }}
     </h2>
   </div>
 
-  <div class='flex gap-1 ml-auto'>
-    <app-client-actions *appShowIfHasRole='[{role: "ROLE_SYS_ADMIN"}]' [entity]="entity()"/>
-  </div>
+  <app-client-actions *appShowIfHasRole='[{role: "ROLE_SYS_ADMIN"}]' [entity]="entity()"/>
 </div>
-
 
 <div class="m-4">
   <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"

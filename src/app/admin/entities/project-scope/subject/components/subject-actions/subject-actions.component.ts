@@ -38,10 +38,5 @@ export class SubjectActionsComponent {
 
   onAction(mode: SubjectDialogMode) {
     this.dialogService.openDialog(mode, this.entity());
-    // this.router.navigate([], {
-    //   relativeTo: this.route,
-    //   queryParamsHandling: 'preserve',
-    //   fragment: `/${mode}/${this.entityName}/${this.entity()._name}`
-    // }).then()
   }
 }

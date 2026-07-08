@@ -10,6 +10,10 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
 import {TabLink} from '../../../../../base-entities/models/tab-link';
 import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {ProjectActionsComponent} from '../../../project/components/project-actions/project-actions.component';
 
 @Component({
   selector: 'app-source-type-page',
@@ -24,6 +28,10 @@ import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
     MatTabNavPanel,
     RouterLinkActive,
     RouterOutlet,
+    MatButton,
+    MatIcon,
+    PermissionDirective,
+    ProjectActionsComponent,
   ]
 })
 export class SourceTypePageComponent extends BaseEntityPageComponent<AppSourceType, RadarSourceType> {

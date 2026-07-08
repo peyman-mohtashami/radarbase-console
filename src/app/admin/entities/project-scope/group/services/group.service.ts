@@ -5,6 +5,7 @@ import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../../environments/environment';
 import {GroupConfigService} from './group-config.service';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: "root"
@@ -31,5 +32,13 @@ export class GroupService extends BaseEntityService<AppGroup, RadarGroup> {
   override getWithQuery(queryParams?: Params, projectName?: string): Observable<AppGroup[]> {
     this.projectName = projectName;
     return super.getWithQuery(queryParams);
+  }
+
+  override delete(entity: AppGroup): Observable<void> {
+    return this.http.delete<void>(`${this.getResourceUrl()}/${entity._name}?unlinkSubjects=true`).pipe(
+      tap(() => {
+        this.cacheLoaded = false;
+      })
+    );
   }
 }

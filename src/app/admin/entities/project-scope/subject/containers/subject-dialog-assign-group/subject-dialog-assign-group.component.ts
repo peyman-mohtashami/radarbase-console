@@ -76,6 +76,5 @@ export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent
       action: SubjectDialogMode.EDIT,
       entity: this.form?.value.group
     });
-    // this.handleAssignAction();
   }
 }

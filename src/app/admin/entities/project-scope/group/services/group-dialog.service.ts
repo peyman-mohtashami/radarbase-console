@@ -6,6 +6,8 @@ import {GroupService} from './group.service';
 import {GroupDialogComponent} from '../containers/group-dialog/group-dialog.component';
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {GroupConfigService} from './group-config.service';
+import {findRouteDataFromRoot} from '../../../main-scope/organization/services/organization.service';
+import {AppProject} from '../../../main-scope/project/models/project';
 
 @Injectable({providedIn: 'root'})
 export class GroupDialogService extends BaseDialogService<AppGroup, RadarGroup, GroupDialogComponent>{
@@ -14,9 +16,11 @@ export class GroupDialogService extends BaseDialogService<AppGroup, RadarGroup, 
 
   override createDialogRef(mode: DialogMode, entity?: AppGroup): MatDialogRef<GroupDialogComponent> {
     // const project = this.selectedEntitiesService.getSelected().project();
-    const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+    // const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+    // console.log('Class: GroupDialogService, Function: createDialogRef, Line 18 projectId' , projectId);
+    const  project: AppProject = findRouteDataFromRoot(this.router, 'project');
     // const groupFullList = this.entityService.getWithQuery(undefined, projectId ?? project?._name);
-    const groupFullList = this.entityService.getWithQuery(undefined, projectId ?? undefined);
+    const groupFullList = this.entityService.getWithQuery(undefined, project.projectName);
     const _data = {id: 'group-dialog', mode, entity, groupFullList};
     switch (mode) {
       case DialogMode.DELETE:

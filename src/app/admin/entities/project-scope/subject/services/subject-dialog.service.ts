@@ -23,7 +23,7 @@ import {GroupService} from '../../group/services/group.service';
 import {ClientService} from '../../../main-scope/client/services/client.service';
 import {map} from 'rxjs/operators';
 import {SourceService} from '../../source/services/source.service';
-import {findRouteData} from '../../../main-scope/organization/services/organization.service';
+import {findRouteDataFromRoot} from '../../../main-scope/organization/services/organization.service';
 
 @Injectable({providedIn: 'root'})
 export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSubject, SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
@@ -84,32 +84,40 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
 
   override createDialogRef(mode: SubjectDialogMode, entity?: AppSubject):
     MatDialogRef<SubjectDialogComponent | SubjectDialogDiscontinueComponent | SubjectDialogPairSourceComponent | SubjectDialogPairAppComponent> {
-    const project = findRouteData(this.activatedRoute, 'project');
-
-    // const project = this.selectedEntitiesService.getSelected().project();
+    const project = findRouteDataFromRoot(this.router, 'project');
     const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
-
     const _data = {id: 'subject-dialog', mode, entity, project, groupFullList};
 
-    if (mode === SubjectDialogMode.DISCONTINUE) {
-      return this.createDiscontinueDialogRef(_data);
-    } else if (mode === SubjectDialogMode.PAIR_APP) {
-      return this.createPairAppDialogRef(_data);
-    } else if (mode === SubjectDialogMode.PAIR_SOURCE) {
-      return this.createPairSourceDialogRef(_data);
-    } else {
-      return this.dialog.open(SubjectDialogComponent, {
-        id: 'subject-dialog',
-        data: _data,
-        panelClass: 'tailwind-slide-panel',
-        width: '50%',
-        height: '100vh',
-        position: {right: '0'},
-        hasBackdrop: true,
-        disableClose: true,
-        autoFocus: false,
-        restoreFocus: false
-      });
+    switch (mode) {
+      case SubjectDialogMode.DISCONTINUE:
+        return this.createDiscontinueDialogRef(_data);
+      case SubjectDialogMode.PAIR_APP:
+        return this.createPairAppDialogRef(_data);
+      case SubjectDialogMode.PAIR_SOURCE:
+        return this.createPairSourceDialogRef(_data);
+      case SubjectDialogMode.DELETE:
+        return this.dialog.open(SubjectDialogComponent, {
+          id: 'subject-dialog',
+          data: _data,
+          width: '50%',
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
+      default:
+        return this.dialog.open(SubjectDialogComponent, {
+          id: 'subject-dialog',
+          data: _data,
+          panelClass: 'tailwind-slide-panel',
+          width: '50%',
+          height: '100vh',
+          position: {right: '0'},
+          hasBackdrop: true,
+          disableClose: true,
+          autoFocus: false,
+          restoreFocus: false
+        });
     }
   }
 
@@ -118,15 +126,13 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
     entity?: AppSubject,
     project?: AppProject
   }): MatDialogRef<SubjectDialogDiscontinueComponent> {
+    console.log('Class: SubjectDialogService, Function: createDiscontinueDialogRef, Line 121 data' , data);
     const _data = {id: 'subject-discontinue-dialog', mode: data.mode, entity: data.entity, project: data.project};
 
     return this.dialog.open(SubjectDialogDiscontinueComponent, {
       id: 'subject-discontinue-dialog',
       data: _data,
-      panelClass: 'tailwind-slide-panel',
       width: '50%',
-      height: '100vh',
-      position: {right: '0'},
       hasBackdrop: true,
       disableClose: true,
       autoFocus: false,
@@ -199,11 +205,12 @@ export class SubjectDialogService extends BaseDialogService<AppSubject, RadarSub
   }
 
   createAssignGroupToSubjectsDialogRef(selectedSubjects: { login: string; }[] = []) {
-    const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+    // const projectId = this.activatedRoute.snapshot.paramMap.get('projectId');
+    const project: AppProject = findRouteDataFromRoot(this.router, 'project');
 
     // const project = this.selectedEntitiesService.getSelected().project();
     // const groupFullList = this.groupService.getWithQuery(undefined, project?.projectName);
-    const groupFullList = this.groupService.getWithQuery(undefined, projectId ?? undefined);
+    const groupFullList = this.groupService.getWithQuery(undefined, project.projectName);
     const _data = {id: 'subject-assign-group-dialog', groupFullList, selectedSubjects};
 
     return this.dialog.open(SubjectDialogAssignGroupComponent, {

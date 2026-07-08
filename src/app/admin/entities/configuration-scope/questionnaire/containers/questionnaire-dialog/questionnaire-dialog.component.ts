@@ -48,7 +48,7 @@ import {
   QuestionnaireTranslationComponent
 } from './containers/questionnaire-translation/questionnaire-translation.component';
 import {MatIcon} from '@angular/material/icon';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-state.service';
 
@@ -77,11 +77,11 @@ import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-s
     MatButton,
     MatProgressSpinner,
     MatDialogTitle,
+    MatIconButton,
   ]
 })
 export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQuestionnaire> {
   protected dialogState = inject(QuestionnaireDialogStateService);
-  // protected questionnaireStateService = inject(QuestionnaireDialogStateService);
   override configService = inject(QuestionnaireConfigService);
   override dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   override dialogData = inject(MAT_DIALOG_DATA) as {
@@ -91,22 +91,20 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
     questionnaireFullList: Observable<AppQuestionnaire[]>;
   };
 
-  // entity = signal(this.dialogData.entity);
-
   override ngOnInit() {
     super.ngOnInit();
     this.dialogState.selectedQuestionnaire.set(this.dialogData.entity);
   }
 
-  protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
-    const defined = Object.fromEntries(
-      Object.entries(event).filter(([, v]) => v !== undefined)
-    ) as Partial<AppQuestionnaire>;
-    const selectedQuestionnaire = this.dialogState.selectedQuestionnaire();
-    this.dialogState.selectedQuestionnaire.set({...selectedQuestionnaire, ...defined} as AppQuestionnaire);
-    console.log('Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 116 this.dialogState.selectedQuestionnaire()' , this.dialogState.selectedQuestionnaire());
-    // this.entity.set({...this.entity(), ...defined} as AppQuestionnaire);
-  }
+  // protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
+  //   const defined = Object.fromEntries(
+  //     Object.entries(event).filter(([, v]) => v !== undefined)
+  //   ) as Partial<AppQuestionnaire>;
+  //   console.log('Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 103 defined' , defined);
+  //   const selectedQuestionnaire = this.dialogState.selectedQuestionnaire();
+  //   this.dialogState.selectedQuestionnaire.set({...selectedQuestionnaire, ...defined} as AppQuestionnaire);
+  //   console.log('^111Class: QuestionnaireDialogComponent, Function: onEntityUpdate, Line 106 this.dialogState.selectedQuestionnaire()' , this.dialogState.selectedQuestionnaire());
+  // }
 
   sectionsValidity: any = {
     general: false,
@@ -120,44 +118,22 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected isLoading = false;
 
   onSectionValidEvent(name: string, valid: boolean) {
-    console.log('Class: QuestionnaireDialogComponent, Function: onSectionValidEvent, Line 122 name, valid' , name, valid);
     this.sectionsValidity[name] = valid;
   }
 
   protected readonly DialogAction = DialogAction;
 
   protected override handleSaveAction(): void {
-    // console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 129 this.entity()' , this.entity());
-    // toValidAppQuestionnaire
-    console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 141 this.dialogState.selectedQuestionnaire()' , this.dialogState.selectedQuestionnaire());
-
+    const entity = this.dialogState.selectedQuestionnaire();
+    if (entity) {
+      console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 127 this.sectionsValidity' , this.sectionsValidity);
+      entity.isValid = this.sectionsValidity.general && this.sectionsValidity.questions && this.sectionsValidity.scheduling && this.sectionsValidity.customMessages && this.sectionsValidity.notifications && this.sectionsValidity.translations;
+    }
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: this.dialogState.selectedQuestionnaire(),//this.entity(),
+      entity: this.dialogState.selectedQuestionnaire(),
     });
-    // this.dialogActionEvent.emit({
-    //   action: this.dialogData.mode,
-    //   entity: {
-    //     ...(this.dialogData.entity ?? ({} as T)),
-    //     ...(this.form.getRawValue() as Partial<T>),
-    //   } as T,
-    // });
   }
-
-  // override handleSaveAction(): void {
-  //   const value = this.form.getRawValue();
-  //   const updatedEntity: FormProtocol = {
-  //     //...this.dialogData.entity,
-  //     _name: value.general.name,
-  //     ...value
-  //   };
-  //   const appProtocol = this.entityService.formToAppModel(updatedEntity);
-  //   const radarProtocol = this.entityService.appToRadarModel(appProtocol);
-  //   this.dialogActionEvent.emit({
-  //     action: this.dialogData.mode,
-  //     entity: appProtocol,
-  //   });
-  // }
 
   protected override handleDeleteAction(): void {
     this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});

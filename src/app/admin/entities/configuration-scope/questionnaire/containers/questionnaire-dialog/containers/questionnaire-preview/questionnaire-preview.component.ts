@@ -11,6 +11,7 @@ import {GroupedQuestionsComponent} from './question/grouped-question/grouped-que
 import {JsonPipe, KeyValuePipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {QuestionComponent} from './question/question.component';
+import {PreviewStateService} from './services/preview-state.service';
 
 @Component({
   selector: 'app-questionnaire-preview',
@@ -28,6 +29,7 @@ import {QuestionComponent} from './question/question.component';
 export class QuestionnairePreviewComponent implements OnInit {
   private questionsService = inject(QuestionsService);
   dialogState = inject(QuestionnaireDialogStateService);
+  previewState = inject(PreviewStateService);
 
   entity = this.dialogState.selectedQuestionnaire;
   selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as RadarOption;
@@ -35,7 +37,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   loading = true;
 
   protected groupedQuestions: Record<string, AppQuestion[]> = {};
-  protected answers: Record<string, AnswerWithTimeLog[]> = {};
+  // protected answers: Record<string, AnswerWithTimeLog[]> = {};
   protected groupedQuestionsSize = 0;
 
   protected currentQuestion = {index: -1, name: ''};
@@ -76,12 +78,18 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   onAnswer(answer: AnswerWithTimeLog): void {
     // this.answers[this.currentQuestion.name] = [answer];
-    this.answers[answer.id] = [answer];
+    // this.answers[answer.id] = [answer];
+    const answers = this.previewState.answers();
+    answers[answer.id] = [answer];
+    this.previewState.answers.set({...answers});
   }
 
   onGroupAnswer(event: Record<string, AnswerWithTimeLog>) {
     Object.entries(event).forEach(([key, value]) => {
-      this.answers[key] = [value];
+      // this.answers[key] = [value];
+      const answers = this.previewState.answers();
+      answers[key] = [value];
+      this.previewState.answers.set({...answers});
     })
   }
 
@@ -107,7 +115,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     // check if the next question should be shown or hide based on branching_logic
     const nextKeyName = groupedQuestionsKeys[nextKeyIndex];
     this.currentQuestion = {index: nextKeyIndex, name: nextKeyName};
-    if (this.questionsService.shouldShowQuestion(this.groupedQuestions[nextKeyName], this.answers)) {
+    if (this.questionsService.shouldShowQuestion(this.groupedQuestions[nextKeyName], this.previewState.answers())) {
       // this.answers[this.currentQuestion.name] = this.answers[this.currentQuestion.name] ?? [];
       this.updateToolbarButtons();
     } else {
@@ -122,7 +130,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     const previousKeyIndex = this.currentQuestion.index - 1;
     const previousKeyName = Object.keys(this.groupedQuestions)[previousKeyIndex];
     this.currentQuestion = {index: previousKeyIndex, name: previousKeyName};
-    if (this.questionsService.shouldShowQuestion(this.groupedQuestions[previousKeyName], this.answers)) {
+    if (this.questionsService.shouldShowQuestion(this.groupedQuestions[previousKeyName], this.previewState.answers())) {
       this.updateToolbarButtons('ENABLE');
     } else {
       this.previousQuestion();

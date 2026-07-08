@@ -10,6 +10,10 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {TabLink} from '../../../../../base-entities/models/tab-link';
 import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
+import {ProjectActionsComponent} from '../../../project/components/project-actions/project-actions.component';
 
 @Component({
   selector: 'app-user-page',
@@ -25,6 +29,10 @@ import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
     MatTabNavPanel,
     RouterLinkActive,
     RouterOutlet,
+    MatButton,
+    MatIcon,
+    PermissionDirective,
+    ProjectActionsComponent,
   ]
 })
 export class UserPageComponent extends BaseEntityPageComponent<AppUser, RadarUser> {

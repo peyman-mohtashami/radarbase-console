@@ -1,35 +1,17 @@
 @let _prefix = "ADMIN.subject";
 
-<!--<app-dialog-title [dialogMode]='SubjectDialogMode.ASSIGN_GROUP'-->
-
-<!--                  [customLabel]="'ADMIN.subject.assignGroupDialog.title' | translate"-->
-<!--                  (closeEvent)='close()'/>-->
-
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+  <span>Assign selected Subjects to a group</span>
 </h2>
-<!--[entityName]="dialogData.entity._name"-->
-<!--[entityMetadata]="configService.getEntityMetadata()"-->
-
-<!--<div>-->
-<!--  <h2 mat-dialog-title class="border-b-2">-->
-<!--  <span class='inline-flex items-center justify-between w-full'>-->
-<!--    <span class="text-lg">-->
-<!--      <span>{{'ADMIN.subject.assignGroup.title' | translate }}</span>-->
-<!--    </span>-->
-<!--    <button mat-icon-button-->
-<!--            (click)='close()'>-->
-<!--      <span class="material-symbols-outlined">close</span>-->
-<!--    </button>-->
-<!--  </span>-->
-<!--  </h2>-->
-<!--</div>-->
 
 <mat-dialog-content>
   <form [formGroup]="form" novalidate>
-    <app-mat-select-autocomplete [options]="(dialogData.groupFullList | async) ?? []" formControlName='group' [label]="'ADMIN.subject.group.label' | translate"/>
+    <p>Select a group</p>
+    @if (dialogData.groupFullList | async; as groups) {
+      <app-mat-select-autocomplete [options]="groups"
+                                   formControlName='group'
+                                   [label]="'ADMIN.subject.group.label' | translate"/>
+    }
   </form>
 </mat-dialog-content>
 

@@ -9,6 +9,7 @@ import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionna
 import {TranslatePipe} from '@ngx-translate/core';
 import {JsonPipe} from '@angular/common';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -21,6 +22,7 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
     TranslatePipe,
     JsonPipe,
     TagComponent,
+    MatSlideToggle,
   ]
 })
 export class QuestionnaireTableRowComponent extends BaseEntityTableRowComponent<AppQuestionnaire> {

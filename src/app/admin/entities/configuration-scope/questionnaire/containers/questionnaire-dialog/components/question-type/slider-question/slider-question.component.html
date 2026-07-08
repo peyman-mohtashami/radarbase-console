@@ -86,7 +86,7 @@
     <app-question-header [question]="entity()" [language]="language()" />
 
     @if (entity().range; as range) {
-      <p>{{ slider.value }}</p>
+      <p class="text-center bg-primary/20 p-4">{{ slider.value }}</p>
       <mat-slider class="mt-8! w-[calc(100%-16px)]!"
                   [disabled]="isPreviewDisabled"
                   [max]="range.max"
@@ -105,7 +105,7 @@
     }
 
     @if (!isPreviewDisabled) {
-      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+      <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
         Clear
       </button>
     }

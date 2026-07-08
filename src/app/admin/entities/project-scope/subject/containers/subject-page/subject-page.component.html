@@ -1,59 +1,32 @@
-<nav aria-label="breadcrumb" class="px-4 py-2 flex flex-wrap items-center gap-1">
-<!--  <div class='flex flex-wrap gap-2 items-center'>-->
-  <button class="app-button-small" mat-flat-button [routerLink]="['/admin', 'organizations']">
+<nav aria-label="breadcrumb" class="bg-tertiary/10 px-4 py-2 flex flex-wrap items-center gap-1">
+  <button class="app-button-small" color="tertiary" mat-flat-button [routerLink]="['/admin', 'organizations']">
     <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.organization.icon }}</mat-icon>
     <span>{{ `ADMIN.${ENTITY_REGISTRY.organization.name}.title.plural` | translate }}</span>
   </button>
-<!--    <button class="h-6! text-xs! font-bold! rounded-sm! bg-neutral-100! dark:bg-neutral-600! dark:text-white!"-->
-<!--            mat-flat-button-->
-<!--            [routerLink]="['/admin', 'organizations']">-->
-<!--          <span class="flex items-center gap-1">-->
-<!--            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITY_REGISTRY.organization.icon }}</span>-->
-<!--            <span>{{ `ADMIN.organization.title.plural` | translate }}</span>-->
-<!--          </span>-->
-<!--    </button>-->
-    <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
-  <button class="app-button-small" mat-button [routerLink]="['/admin', 'organizations', organization?.name ]">
+  <mat-icon class="material-symbols-outlined text-tertiary!">chevron_right</mat-icon>
+  <button class="app-button-small" mat-flat-button color="tertiary" [routerLink]="['/admin', 'organizations', organization?.name ]">
     <span>{{ organization?.name }}</span>
   </button>
-<!--    <a class="text-xs font-bold"-->
-<!--       [routerLink]="['/admin', 'organizations', organization?.name ]">{{ organization?.name }}</a>-->
-<!--    <button class="h-6! text-xs! font-bold! rounded-sm! bg-neutral-100! dark:bg-neutral-600! dark:text-white!"-->
-<!--            mat-flat-button-->
-<!--            [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">-->
-<!--          <span class="flex items-center gap-1">-->
-<!--            <span class="material-symbols-outlined text-lg" matPrefix>{{ ENTITY_REGISTRY.project.icon }}</span>-->
-<!--            <span>{{ `ADMIN.project.title.plural` | translate }}</span>-->
-<!--          </span>-->
-<!--    </button>-->
-  <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
-
-  <button class="app-button-small" mat-flat-button [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">
+  <mat-icon class="material-symbols-outlined text-tertiary!">chevron_right</mat-icon>
+  <button class="app-button-small" mat-flat-button color="tertiary" [routerLink]="['/admin', 'organizations', organization?.name, 'projects' ]">
     <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.project.icon }}</mat-icon>
     <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.plural` | translate }}</span>
   </button>
-    <mat-icon class="material-symbols-outlined text-lg">chevron_right</mat-icon>
-  <button class="app-button-small" mat-button [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">
+  <mat-icon class="material-symbols-outlined text-tertiary!">chevron_right</mat-icon>
+  <button class="app-button-small" mat-flat-button color="tertiary" [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">
     <span>{{ project?.projectName }}</span>
   </button>
-<!--    <a class="text-xs font-bold"-->
-<!--       [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName ]">{{ project?.projectName }}</a>-->
-<!--  </div>-->
 </nav>
 
 <div
-  class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 pb-0 w-full bg-app-background dark:bg-app-background-dark'>
+  class='sticky top-0 z-50 flex flex-wrap justify-between gap-2 p-4 w-full bg-primary/10 dark:bg-primary/10'>
   <div class='flex flex-wrap gap-2 items-center'>
-    <button class="app-button-small app-button-full-corner" mat-flat-button [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">
+    <button class="app-button-small app-button-full-corner" mat-flat-button
+            [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">
       <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.subject.icon }}</mat-icon>
       <span>{{ `ADMIN.${ENTITY_REGISTRY.subject.name}.title.singular` | translate }}</span>
     </button>
-<!--    <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2"-->
-<!--       [routerLink]="['/admin', 'organizations', organization?.name, 'projects', project?.projectName, 'subjects']">-->
-<!--      <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.subject.icon }}</span>-->
-<!--      <span>{{ 'ADMIN.subject.title.singular' | translate }}</span>-->
-<!--    </a>-->
-    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>
+    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-primary'>
       @if (entity().externalId) {
         <span>{{ entity().externalId }}</span>
       }
@@ -64,12 +37,10 @@
     </h2>
   </div>
 
-<!--  <div class='flex gap-1 ml-auto'>-->
-    <ng-container
-      *appShowIfHasRole='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity().login}]'>
-      <app-subject-actions [entity]="entity()"/>
-    </ng-container>
-<!--  </div>-->
+  <ng-container
+    *appShowIfHasRole='[{role: "ROLE_SYS_ADMIN"}, {role: "ROLE_ORGANIZATION_ADMIN", entityName: entity().login}]'>
+    <app-subject-actions [entity]="entity()"/>
+  </ng-container>
 </div>
 
 <div class="m-4">

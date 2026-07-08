@@ -13,6 +13,11 @@ import {TabLink} from "../../../../../base-entities/models/tab-link";
 import {ENTITY_REGISTRY} from "../../../../../../shared/consts/entity-registry";
 import {BaseEntityPageComponent} from '../../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {ClientActionsComponent} from '../../components/client-actions/client-actions.component';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {
+  SourceTypeActionsComponent
+} from '../../../source-type/components/source-type-actions/source-type-actions.component';
 
 @Component({
   selector: 'app-client-page',
@@ -29,6 +34,9 @@ import {ClientActionsComponent} from '../../components/client-actions/client-act
     PermissionDirective,
     ClientActionsComponent,
     RouterLinkActive,
+    MatButton,
+    MatIcon,
+    SourceTypeActionsComponent,
   ]
 })
 export class ClientPageComponent extends BaseEntityPageComponent<AppClient, RadarClient> {

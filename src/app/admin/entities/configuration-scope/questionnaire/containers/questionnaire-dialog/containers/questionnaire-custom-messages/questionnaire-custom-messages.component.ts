@@ -30,7 +30,6 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
 
   protected readonly ValidatorError = ValidatorError;
 
-  changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   form = new FormGroup({
@@ -45,10 +44,23 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   ngOnInit() {
-    this.form.valueChanges.pipe(
+    this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
-    ).subscribe(change => {
-      this.changeEvent.emit(change);
+    ).subscribe(() => {
+      const formValue = this.form.getRawValue();
+      const entity = this.dialogState.selectedQuestionnaire();
+
+      const updated = {
+        ...entity,
+        showIntroduction: formValue.showIntroduction,
+        startText: {...entity?.startText, ...formValue.startText},
+        endText: {...entity?.endText, ...formValue.endText},
+        warningEnabled: formValue.warningEnabled,
+        warn: {...entity?.warn, ...formValue.warn},
+        estimatedCompletionTime: formValue.estimatedCompletionTime,
+      } as AppQuestionnaire;
+
+      this.dialogState.selectedQuestionnaire.set(updated);
       this.valid.emit(this.form.valid);
     });
 

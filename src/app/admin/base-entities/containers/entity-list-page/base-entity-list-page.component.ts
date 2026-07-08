@@ -167,7 +167,9 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
     this.refreshEntities();
     // this.removeFragmentUrl();
     this.loading.set(false);
-    this.selection.clear();
+    setTimeout(() => {
+      this.selection.clear();
+    }, 0);
   }
 
   protected addEntityToView(entity?: T) {
@@ -180,7 +182,9 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
   protected refreshEntities() {
     this.getEntities().subscribe({
       next: (value: T[]) => {
-        this.selection.clear();
+        setTimeout(() => {
+          this.selection.clear();
+        }, 0);
         this.loading.set(false);
         this.entities.set(value);
       }

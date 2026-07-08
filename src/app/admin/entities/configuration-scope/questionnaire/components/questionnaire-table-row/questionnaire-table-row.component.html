@@ -27,7 +27,7 @@
     @case ('questionCount') {
       {{ entity().questions.length || '-' }}
     }
-    @case ('repeatProtocol') {
+    @case ('type') {
       @if (entity().schedule?.onDemand) {
         <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
           On Demand
@@ -74,8 +74,14 @@
         -
       }
     }
+    @case ('active') {
+      <mat-slide-toggle  />
+    }
     @case ('status') {
-      Valid: {{ entity().isValid }} / Active: {{ entity().isActive }}
+      <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
+      {{ entity().isValid ? 'Valid' : 'Invalid' }}
+<!--        / Active: {{ entity().isActive }}-->
+      </app-tag>
     }
     @default {
       {{ $any(entity())[property.name] || '-' }}

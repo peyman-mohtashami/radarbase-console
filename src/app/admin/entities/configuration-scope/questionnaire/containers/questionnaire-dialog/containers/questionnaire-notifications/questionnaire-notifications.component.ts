@@ -6,11 +6,11 @@ import {ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {UNITS} from '../../../../../protocol/containers/protocol-dialog/models/unit';
 import {debounceTime} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {UNITS} from '../../models/unit';
 
 @Component({
   selector: 'app-questionnaire-notifications',
@@ -32,7 +32,6 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
   protected readonly UNITS = UNITS;
   protected readonly ValidatorError = ValidatorError;
 
-  changeEvent = output<Partial<AppQuestionnaire>>();
   valid = output<boolean>();
 
   form = new FormGroup({
@@ -53,15 +52,26 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
 
   ngOnInit() {
-    const entity = this.dialogState.selectedQuestionnaire();
 
-    this.form.valueChanges.pipe(
+    this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
-    ).subscribe(change => {
-      this.changeEvent.emit({schedule: {...entity?.schedule, ...change.schedule}});
+    ).subscribe(() => {
+      const entity = this.dialogState.selectedQuestionnaire();
+      const formValue = this.form.getRawValue();
+      const updated = {
+        ...entity,
+        schedule: {
+          ...entity?.schedule,
+          notification: {...entity?.schedule?.notification, ...formValue.schedule.notification},
+          reminders: {...entity?.schedule?.reminders, ...formValue.schedule.reminders
+          }
+        }
+      } as AppQuestionnaire;
+      this.dialogState.selectedQuestionnaire.set(updated);
       this.valid.emit(this.form.valid);
     });
 
+    const entity = this.dialogState.selectedQuestionnaire();
     if (entity) {
       this.form.patchValue(entity);
       this.valid.emit(this.form.valid);

@@ -6,16 +6,22 @@ import {BaseConfigService} from '../../../../base-entities/services/base-config.
 
 export const TableElements: TableElement[] = [
   {name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true},
-  { name: 'repeatProtocol', width:"w-64", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
+  { name: 'type', width:"w-64", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   // { name: 'completionWindow', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
-  { name: 'status', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
+  { name: 'status', width: "w-16", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   {
     name: 'questionCount',
-    width: "w-32",
+    width: "w-16",
     tableClass: "hidden lg:block",
     extensionClass: "block lg:hidden",
   },
-  {name: "actions", width: "w-20", tableClass: "flex", extensionClass: "hidden"},
+  {
+    name: 'active',
+    width: "w-16",
+    tableClass: "hidden lg:block",
+    extensionClass: "block lg:hidden",
+  },
+  {name: "actions", width: "w-24", tableClass: "flex", extensionClass: "hidden"},
 ];
 
 export const filters: FilterItem[] = [

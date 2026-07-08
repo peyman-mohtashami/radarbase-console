@@ -9,7 +9,7 @@ import {DescriptiveQuestionComponent} from './descriptive-question/descriptive-q
 import {TextQuestionComponent} from './text-question/text-question.component';
 import {NumberQuestionComponent} from './number-question/number-question.component';
 import {AudioQuestionComponent} from './audio-question/audio-question.component';
-import {DurationQuestionComponent} from './duration-question/duration-question.component';
+// import {DurationQuestionComponent} from './duration-question/duration-question.component';
 import {TimedQuestionComponent} from './timed-question/timed-question.component';
 import {DatetimeQuestionComponent} from './datetime-question/datetime-question.component';
 // import {
@@ -27,7 +27,7 @@ export enum QuestionType {
   TEXT = 'text',
   NUMBER = 'number',
   DATETIME = 'datetime',
-  DURATION = 'duration',
+  // DURATION = 'duration',
   TIMED = 'timed',
   AUDIO = 'audio',
   // MATRIX_RADIO = 'matrix-radio',
@@ -46,7 +46,7 @@ export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
   [QuestionType.TEXT]: TextQuestionComponent,
   [QuestionType.NUMBER]: NumberQuestionComponent,
   [QuestionType.DATETIME]: DatetimeQuestionComponent,
-  [QuestionType.DURATION]: DurationQuestionComponent,
+  // [QuestionType.DURATION]: DurationQuestionComponent,
   [QuestionType.AUDIO]: AudioQuestionComponent,
   [QuestionType.TIMED]: TimedQuestionComponent,
   // [QuestionType.SINGLE_SELECT_MATRIX]: SingleSelectMatrixQuestionComponent,
@@ -82,13 +82,13 @@ export const QUESTION_TYPES = [
       {type: 'number', icon: '', label: 'Number', disabled: false},
       // {type: 'note', icon: '', label: 'Note', disabled: false},
       {type: 'datetime', icon: '', label: 'DateTime', disabled: false},
-      {type: 'duration', icon: '', label: 'Duration', disabled: false},
+      {type: 'duration', icon: '', label: 'Duration', disabled: true},
       // {type: 'textInputMatrix', icon: '', label: 'Text Input Matrix', disabled: false},
     ]
   },
   {
     types: [
-      {type: 'web', icon: '', label: 'Web', disabled: false},
+      {type: 'web', icon: '', label: 'Web', disabled: true},
       {type: 'audio', icon: '', label: 'Audio', disabled: false},
       {type: 'fileUpload', icon: '', label: 'File Upload', disabled: true},
       {type: 'imagePicker', icon: '', label: 'Image Picker', disabled: true},
@@ -100,7 +100,7 @@ export const QUESTION_TYPES = [
   },
   {
     types: [
-      {type: 'calc', icon: '', label: 'Calculation', disabled: false},
+      {type: 'calc', icon: '', label: 'Calculation', disabled: true},
     ]
   }
 ]

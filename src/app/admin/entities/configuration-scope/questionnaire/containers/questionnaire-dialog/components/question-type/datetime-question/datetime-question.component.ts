@@ -12,7 +12,7 @@ import {
 } from '@angular/material/datepicker';
 import {MatFormField, MatHint, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
@@ -21,6 +21,8 @@ import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatIcon} from '@angular/material/icon';
+import {AnswerWithTimeLog} from '../../../containers/questionnaire-preview/models/kafka';
 
 @Component({
   selector: 'app-datetime-question',
@@ -40,6 +42,8 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
     MatSelect,
     TranslatePipe,
     MatSlideToggle,
+    MatIconButton,
+    MatIcon,
   ],
   templateUrl: './datetime-question.component.html'
 })
@@ -57,6 +61,7 @@ export class DatetimeQuestionComponent implements OnInit {
   @Input({ required: true }) operator!: string;
   @Input({required: true}) answer!: InputSignal<{ value: string}>;
 
+
   logicValueChange = output<string>();
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
@@ -66,16 +71,16 @@ export class DatetimeQuestionComponent implements OnInit {
       if (!this.form.contains('date_type')) {
         this.form.addControl('date_type', this.fb.control(this.entity().date_type ??'date'));
       }
-      if (!this.form.contains('date_min')) {
+      if (!this.form.contains('text_validation_min')) {
         this.form.addControl(
-          'date_min',
-          this.fb.control(this.entity().date_min)
+          'text_validation_min',
+          this.fb.control(this.entity().text_validation_min)
         );
       }
-      if (!this.form.contains('date_max')) {
+      if (!this.form.contains('text_validation_max')) {
         this.form.addControl(
-          'date_max',
-          this.fb.control(this.entity().date_max)
+          'text_validation_max',
+          this.fb.control(this.entity().text_validation_max)
         );
       }
       if (!this.form.contains('matrix_group_name')) {
@@ -91,12 +96,12 @@ export class DatetimeQuestionComponent implements OnInit {
     return this.form.get('date_type') as FormControl;
   }
 
-  get date_min(): FormControl {
-    return this.form.get('date_min') as FormControl;
+  get text_validation_min(): FormControl {
+    return this.form.get('text_validation_min') as FormControl;
   }
 
-  get date_max(): FormControl {
-    return this.form.get('date_max') as FormControl;
+  get text_validation_max(): FormControl {
+    return this.form.get('text_validation_max') as FormControl;
   }
 
   get matrix_group_name(): FormControl {

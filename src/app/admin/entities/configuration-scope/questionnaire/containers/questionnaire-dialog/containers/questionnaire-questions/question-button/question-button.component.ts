@@ -8,6 +8,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {UpperCasePipe} from '@angular/common';
 import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 
 @Component({
   selector: 'app-question-button',
@@ -57,4 +58,6 @@ export class QuestionButtonComponent {
     componentRef.instance.type = 'button';
     componentRef.instance.entity = this.entity;
   }
+
+  protected readonly DialogMode = DialogMode;
 }

@@ -11,6 +11,11 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {TabLink} from '../../../../../base-entities/models/tab-link';
 import {ENTITY_REGISTRY} from '../../../../../../shared/consts/entity-registry';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {
+  SourceTypeActionsComponent
+} from '../../../source-type/components/source-type-actions/source-type-actions.component';
 
 @Component({
   selector: 'app-source-data-page',
@@ -24,7 +29,10 @@ import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
     MatTabNav,
     MatTabNavPanel,
     RouterLinkActive,
-    RouterOutlet
+    RouterOutlet,
+    MatButton,
+    MatIcon,
+    SourceTypeActionsComponent
   ]
 })
 export class SourceDataPageComponent extends BaseEntityPageComponent<AppSourceData, RadarSourceData> {

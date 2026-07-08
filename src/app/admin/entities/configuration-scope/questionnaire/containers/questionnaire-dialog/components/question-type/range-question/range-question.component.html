@@ -66,29 +66,31 @@
     </div>
   }
   @case ('form') {
-    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+    <app-question-choices-form-array [choices]="choices"
+                                     [index]="index"
+                                     [_choices]="entity().select_choices_or_calculations"/>
+
     <div>
       <div>
-        <label for="text_validation_min"
-               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+        <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
+      </div>
+      <mat-slide-toggle [formControl]="show_selected_label"/>
+    </div>
+
+<!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
+    <div class="mt-4">
+      <div>
+        <label for="matrix_group_name"
+               class="text-sm">{{ `${_prefix}.questionMatrixGroupName` | translate }}</label>
       </div>
       <mat-form-field class='small-input' appearance="outline">
-        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>
+        <input id="matrix_group_name" matInput [formControl]='matrix_group_name'/>
       </mat-form-field>
     </div>
 
-    <app-question-choices-form-array [choices]="choices"
-                                     [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations" />
-
-    <div>
-      <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
-    </div>
-    <mat-slide-toggle [formControl]="show_selected_label" />
-
   }
   @case ('preview') {
-    <app-question-header [question]="entity()" [language]="language()" />
+    <app-question-header [question]="entity()" [language]="language()"/>
 
     <div class="flex flex-nowrap items-center mt-4">
       @for (item of entity().select_choices_or_calculations; track item) {
@@ -104,12 +106,19 @@
     @if (!labelsDisabled() && entity().select_choices_or_calculations; as choices) {
       <div class="flex justify-between mt-2">
         <div class="w-1/2" [innerHtml]="choices[0].label[language().id] | replacePlaceholders"></div>
-        <div class="w-1/2 text-right" [innerHtml]="choices[choices.length - 1].label[language().id] | replacePlaceholders"></div>
+        <div class="w-1/2 text-right"
+             [innerHtml]="choices[choices.length - 1].label[language().id] | replacePlaceholders"></div>
+      </div>
+    }
+
+    @if (entity().show_selected_label && previewSelectedLabel) {
+      <div class="p-2 bg-primary/10 mt-2">
+        {{previewSelectedLabel}}
       </div>
     }
 
     @if (!isPreviewDisabled) {
-      <button matButton class="m-4" (click)="onPreviewInputChange(null)" color="warn" size="small">
+      <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
         Clear
       </button>
     }

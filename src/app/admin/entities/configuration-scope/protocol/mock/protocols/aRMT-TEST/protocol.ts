@@ -58,7 +58,8 @@ export const aRMT_TEST = {
           "repeat": 1
         }
       }
-    }, {
+    },
+    {
       "name": "RSES",
       "showIntroduction": false,
       "questionnaire": {
@@ -110,7 +111,8 @@ export const aRMT_TEST = {
           "repeat": 1
         }
       }
-    }, {
+    },
+    {
       "name": "ESM",
       "showIntroduction": false,
       "questionnaire": {

@@ -156,6 +156,7 @@ export interface AppQuestion {
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;
+  conditionalLogic?: {operand: string; operator: string; value: string}[][];
   show_selected_label?: boolean;
   multi_line?: boolean;
   date_min?: string;

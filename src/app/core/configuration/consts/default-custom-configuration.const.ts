@@ -17,11 +17,11 @@ export const DEFAULT_CUSTOM_CONFIGURATION: CustomConfiguration = {
     //   "foreground color (`on-*`) to keep text and icons readable.",
     // ],
     "light": {
-      "primary": "#004F6E",
+      "primary": "#004F6E", //"#9a0000",//
       "on-primary": "#ffffff",
       "accent": "#22A2C9",
       "on-accent": "#ffffff",
-      "tertiary": "#22A2C9",
+      "tertiary": "#22A2C9", //"#163f4a",//
       "on-tertiary": "#ffffff"
     },
     "dark": {

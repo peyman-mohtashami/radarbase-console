@@ -8,9 +8,6 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatPrefix} from '@angular/material/input';
-import {AppProject} from '../../../../main-scope/project/models/project';
-import {AppOrganization} from '../../../../main-scope/organization/models/organization';
 import {TabLink} from "../../../../../base-entities/models/tab-link";
 import {BaseEntityPageComponent} from '../../../../../base-entities/containers/entity-page/base-entity-page.component';
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
@@ -29,7 +26,6 @@ import {findRouteData} from '../../../../main-scope/organization/services/organi
     RouterOutlet,
     PermissionDirective,
     MatButton,
-    MatPrefix,
     TranslatePipe,
     SubjectActionsComponent,
     RouterLinkActive,
@@ -45,9 +41,6 @@ export class SubjectPageComponent extends BaseEntityPageComponent<AppSubject, Ra
   override entity = signal<AppSubject>(this.activatedRoute.snapshot.data['subject']);
   project = findRouteData(this.activatedRoute, 'project');
   organization = findRouteData(this.activatedRoute, 'organization');
-
-  // project?: AppProject = this.selectedEntitiesService.getSelected().project();
-  // organization?: AppOrganization = this.selectedEntitiesService.getSelected().organization();
 
   override ngOnInit(): void {
     const protocolAndQuestionnaireTabLinks =

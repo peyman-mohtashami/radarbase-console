@@ -57,6 +57,7 @@ export class RangeQuestionComponent implements OnInit {
   previewValueChange = output<string | null>();
 
   protected previewValue: string | null = null;
+  protected previewSelectedLabel: string | null = null;
 
   ngOnInit(): void {
     if (this.type === 'form') {
@@ -81,6 +82,7 @@ export class RangeQuestionComponent implements OnInit {
     }
     if (this.type === 'preview') {
       this.previewValue = this.answer()?.value !== undefined ? this.answer().value : null;
+      this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().id] ?? null;
     }
   }
 
@@ -124,6 +126,7 @@ export class RangeQuestionComponent implements OnInit {
 
   protected onPreviewInputChange(value: string | null) {
     this.previewValue = value;
+    this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().id] ?? null;
     this.previewValueChange.emit(value);
   }
 

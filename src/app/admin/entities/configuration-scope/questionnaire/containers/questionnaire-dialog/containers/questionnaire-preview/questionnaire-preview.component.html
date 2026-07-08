@@ -37,8 +37,8 @@
                 @for (q of item.value; track q;) {
                   <app-question [question]="q"
                                 [language]="selectedLanguage"
-                                [answers]="answers"
-                                [answer]="answers[item.key]?.[$index]"
+                                [answers]="previewState.answers()"
+                                [answer]="previewState.answers()[item.key]?.[$index]"
                                 (answerEvent)="onAnswer($event)"
                                 (nextActionEvent)="nextAction($event)"/>
                 }
@@ -75,7 +75,7 @@
       }
     </div>
     </div>
-    <div class="h-full overflow-auto w-1/2 text-sm"><pre>{{answers | json}}</pre></div>
+    <div class="h-full overflow-auto w-1/2 text-sm"><pre>{{previewState.answers() | json}}</pre></div>
   </div>
 
 

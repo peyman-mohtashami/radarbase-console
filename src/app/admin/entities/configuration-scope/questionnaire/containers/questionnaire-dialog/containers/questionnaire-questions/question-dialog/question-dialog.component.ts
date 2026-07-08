@@ -85,6 +85,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     required_field: new FormControl('true', {nonNullable: true}),
     field_note: new FormGroup({}),
     branching_logic: new FormControl<string>('', {nonNullable: true}),
+    // conditionalLogic: new FormControl<({operand: string; operator: string; value: string}[][])>([], {nonNullable: true}),
   });
 
   private subscription?: Subscription;
@@ -127,6 +128,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
       debounceTime(300)
     ).subscribe(change => {
       logErrors(this.form);
+      console.log('Class: QuestionDialogComponent, Function: , Line 130 ' , this.form.valid);
       this.question = {...this.question, ...change, isValid: this.form.valid};
       this.changeEvent.emit(this.question);
     });
@@ -154,6 +156,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
 
     setTimeout(() => {
       this.dialogRef?.close();
+      this.dialogState.selectedQuestion.set(null);
+      this.dialogState.selectedQuestionIndex.set(null);
     }, 300);
   }
 
