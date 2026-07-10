@@ -13,6 +13,7 @@ import {
   QuestionHeaderComponent
 } from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
 import jexl from 'jexl';
+import {PreviewStateService} from '../../../containers/questionnaire-preview/services/preview-state.service';
 
 @Component({
   selector: 'app-calculation-question',
@@ -30,6 +31,7 @@ import jexl from 'jexl';
 export class CalculationQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
+  private previewState = inject(PreviewStateService);
 
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
@@ -72,16 +74,23 @@ export class CalculationQuestionComponent implements OnInit {
       }
     }
     if (this.type === 'preview') {
+      jexl.addTransform('num', (val) => Number(val) || 0);
+
       const expression = this.entity().calculation_fn;
       const args = this.entity().calculation_args?.split(',');
       if (expression && args) {
         const context = args.reduce((acc: Record<string, any>, arg) => {
-          acc[arg.trim()] = 10;
+          const _arg = arg.trim();
+          const _value = this.previewState.answers()[_arg][0].value;
+          acc[_arg] = _value;
           return acc;
         }, {});
         this.previewResult.set(await jexl.eval(expression, context));
         console.log('Class: CalculationQuestionComponent, Function: ngOnInit, Line 82 result' , this.previewResult());
       }
+
+      // this.previewValueChange.emit(null);
+      this.previewValueChange.emit(this.previewResult());
       // const context = {
       //   height: 200,
       //   weight: 100,
