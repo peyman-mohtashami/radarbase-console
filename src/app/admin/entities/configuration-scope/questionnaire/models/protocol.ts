@@ -156,6 +156,8 @@ export interface RadarQuestion {
   branching_logic?: string;
   show_selected_label?: boolean;
   multi_line?: boolean;
+  calculation_fn?: string;
+  calculation_args?: string;
   // date_min?: string;
   // date_max?: string;
   date_type?: string;

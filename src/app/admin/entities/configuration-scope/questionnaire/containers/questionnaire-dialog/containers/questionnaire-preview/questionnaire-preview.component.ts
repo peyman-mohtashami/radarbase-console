@@ -73,15 +73,33 @@ export class QuestionnairePreviewComponent implements OnInit {
     const groupedQuestionsKeys = Object.keys(this.groupedQuestions);
     const nextQuestionName = groupedQuestionsKeys[0];
     this.currentQuestion = {index: 0, name: nextQuestionName};
+    const nextQuestionGroup = this.groupedQuestions[nextQuestionName];
+    nextQuestionGroup.forEach((q, index) => {
+      q.visible = this.questionsService.shouldShowQuestion2(q, this.previewState.answers());
+    });
+    const g = nextQuestionGroup.some(q => {
+      return q.visible === true;
+    });
+    if (g) {
+      this.updateToolbarButtons();
+    } else {
+      await this.nextQuestion();
+    }
     // this.answers[this.currentQuestion.name] = [];
   }
 
   onAnswer(answer: AnswerWithTimeLog): void {
+    console.log('C---lass: QuestionnairePreviewComponent, Function: onAnswer, Line 92 ' , );
     // this.answers[this.currentQuestion.name] = [answer];
     // this.answers[answer.id] = [answer];
     const answers = this.previewState.answers();
     answers[answer.id] = [answer];
     this.previewState.answers.set({...answers});
+
+    this.groupedQuestions[this.currentQuestion.name].forEach(q => {
+      q.visible = this.questionsService.shouldShowQuestion2(q, this.previewState.answers())
+    });
+    console.log('C---lass: QuestionnairePreviewComponent, Function: onAnswer, Line 102 this.groupedQuestions[this.currentQuestion.name]' , this.groupedQuestions[this.currentQuestion.name]);
   }
 
   onGroupAnswer(event: Record<string, AnswerWithTimeLog>) {
@@ -100,7 +118,20 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   nextAction(event: NextButtonEventType): void {
-    this.nextActionMap[event]();
+    const currentGroupQuestion = this.groupedQuestions[this.currentQuestion.name];
+    const allRequiredHaveAnswer = currentGroupQuestion.every((question) => {
+      if (question.required_field) {
+        const answer = this.previewState.answers()[question.field_name]?.[0];
+        return !!answer?.value;
+      } else {
+        return true;
+      }
+    });
+    if (allRequiredHaveAnswer) {
+      this.nextActionMap[event]();
+    } else {
+      this.nextActionMap[NextButtonEventType.DISABLE]();
+    }
   }
 
   private async nextQuestion(): Promise<void> {
@@ -115,12 +146,29 @@ export class QuestionnairePreviewComponent implements OnInit {
     // check if the next question should be shown or hide based on branching_logic
     const nextKeyName = groupedQuestionsKeys[nextKeyIndex];
     this.currentQuestion = {index: nextKeyIndex, name: nextKeyName};
-    if (this.questionsService.shouldShowQuestion(this.groupedQuestions[nextKeyName], this.previewState.answers())) {
-      // this.answers[this.currentQuestion.name] = this.answers[this.currentQuestion.name] ?? [];
+    const nextQuestionGroup = this.groupedQuestions[nextKeyName];
+    nextQuestionGroup.forEach(q => {
+      q.visible = this.questionsService.shouldShowQuestion2(q, this.previewState.answers())
+    });
+    const g = nextQuestionGroup.some(q => {
+      return q.visible === true;
+    })
+    if (g) {
       this.updateToolbarButtons();
     } else {
       await this.nextQuestion();
     }
+
+    // if (this.questionsService.shouldShowQuestion(this.groupedQuestions[nextKeyName], this.previewState.answers())) {
+    //   // this.answers[this.currentQuestion.name] = this.answers[this.currentQuestion.name] ?? [];
+    //   // update inner questions visibility
+    //   if (this.groupedQuestions[nextKeyName].length > 1) {
+    //   } else {
+    //     this.updateToolbarButtons();
+    //   }
+    // } else {
+    //   await this.nextQuestion();
+    // }
   }
 
   private previousQuestion(): void {

@@ -31,6 +31,10 @@ import {
 } from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {JsonPipe} from '@angular/common';
+import {
+  OPERATOR_SYMBOLS
+} from '../conditional-logic/conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 
 @Component({
   selector: 'app-question-dialog',
@@ -49,7 +53,8 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
     MatOption,
     TextFormGroupComponent,
     MatSlideToggle,
-    MatDialogTitle
+    MatDialogTitle,
+    JsonPipe
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -84,9 +89,11 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     section_header: new FormGroup({}),
     required_field: new FormControl('true', {nonNullable: true}),
     field_note: new FormGroup({}),
-    branching_logic: new FormControl<string>('', {nonNullable: true}),
-    // conditionalLogic: new FormControl<({operand: string; operator: string; value: string}[][])>([], {nonNullable: true}),
+    // branching_logic: new FormControl<string>('', {nonNullable: true}),
+    conditionalLogic: new FormControl<({operand: string; operator: string; value: string}[][])>([], {nonNullable: true}),
   });
+
+  branchingLogicString = signal('');
 
   private subscription?: Subscription;
 
@@ -129,12 +136,15 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     ).subscribe(change => {
       logErrors(this.form);
       console.log('Class: QuestionDialogComponent, Function: , Line 130 ' , this.form.valid);
-      this.question = {...this.question, ...change, isValid: this.form.valid};
+      this.question = {...this.question, ...change, branching_logic: this.branchingLogicString(), isValid: this.form.valid};
       this.changeEvent.emit(this.question);
     });
 
     if (this.dialogData.entity) {
-      this.form.patchValue(this.dialogData.entity)
+      this.form.patchValue(this.dialogData.entity);
+      this.branchingLogicString.set(this.dialogData.entity?.conditionalLogic?.map((conditionalLogicItems) =>
+        conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+      ).join(' or ') ?? '');
     }
   }
 
@@ -176,7 +186,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
   openConditionalLogicDialog() {
     const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
       id: 'conditional-logic-dialog',
-      data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
+      // data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
+      data: {id: 'conditional-logic-dialog', entity: this.form.controls.conditionalLogic?.value, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '60%',
       height: '100vh',
@@ -190,7 +201,17 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
         (value) => {
-          this.form.patchValue({branching_logic: value.entity?.value});
+          // const branchingLogicString = value.entity?.map((conditionalLogicItems) =>
+          //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
+          // ).join(' or ') ?? '';
+          // this.form.patchValue({branching_logic: value.entity?.value});
+          if (value.entity && value.action !== DialogMode.CLOSE) {
+
+            this.branchingLogicString.set(value.entity?.map((conditionalLogicItems) =>
+              conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+            ).join(' or ') ?? '');
+            this.form.patchValue({conditionalLogic: value.entity});
+          }
           dialogRef.close();
         }
       );

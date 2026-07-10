@@ -7,9 +7,9 @@
     <label for="unit" class="text-sm">{{ `${_prefix}.questionDateTypeLabel` | translate }}</label>
     <mat-form-field class='small-input w-full! grow-0' appearance='outline' subscriptSizing="dynamic">
       <mat-select [formControl]="date_type">
-        <mat-option [value]="'date'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.date' | translate }}
+        <mat-option [value]="'date'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeDate' | translate }}
         </mat-option>
-        <mat-option [value]="'time'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.time' | translate }}
+        <mat-option [value]="'time'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeTime' | translate }}
         </mat-option>
 <!--        <mat-option [value]="'datetime'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeLabel.datetime' | translate }}-->
 <!--        </mat-option>-->
@@ -17,7 +17,7 @@
     </mat-form-field>
 
     <div class="mt-4">
-      <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+<!--      <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
       <fieldset class="p-2 rounded-sm border flex gap-2">
         <div class="w-1/2">
           <div>

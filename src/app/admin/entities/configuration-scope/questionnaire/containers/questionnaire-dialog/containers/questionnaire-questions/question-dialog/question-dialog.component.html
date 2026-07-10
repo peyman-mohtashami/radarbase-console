@@ -2,8 +2,8 @@
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <!--  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>-->
+  <span> {{ `${_prefix}.questionTitle` | translate }}</span>
+    <code class="italic text-secondary"> {{ dialogData.entity?.field_name ? `${dialogData.entity?.field_name}` : `` }}</code>
 </h2>
 
 <!--<app-dialog-title [dialogMode]='dialogData.mode'-->
@@ -100,16 +100,19 @@
           <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
         </button>
       </div>
-      <mat-form-field class='small-input w-1/2' appearance="outline">
-        <input matInput formControlName='branching_logic'/>
-        <mat-error>
-          @if (form.controls.branching_logic?.errors; as errors) {
-            @if (errors?.['required']) {
-              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+<!--      {{form.controls.conditionalLogic.value | json}}-->
+  <pre>{{branchingLogicString()}}</pre>
+<!--      <mat-form-field class='small-input w-1/2' appearance="outline">-->
+<!--&lt;!&ndash;        <input matInput formControlName='branching_logic'/>&ndash;&gt;-->
+<!--        <input matInput formControlName='branching_logic'/>-->
+<!--        <mat-error>-->
+<!--          @if (form.controls.branching_logic?.errors; as errors) {-->
+<!--            @if (errors?.['required']) {-->
+<!--              {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionConditionalLogic` | translate} }}-->
+<!--            }-->
+<!--          }-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
     }
 
   </form>

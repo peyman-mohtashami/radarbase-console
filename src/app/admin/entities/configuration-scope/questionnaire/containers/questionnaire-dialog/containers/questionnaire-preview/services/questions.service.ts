@@ -162,12 +162,24 @@ export class QuestionsService {
     return shouldBeShown;
   }
 
+  shouldShowQuestion2(question: AppQuestion, answers: Record<string, AnswerWithTimeLog[]>) {
+    console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 166 ' , question, answers, question.branching_logic);
+    if (!question.branching_logic) {
+      console.log('Class: QuestionsService, Function: shouldShowQuestion2, Line 168 ' , );
+      return true;
+    } else {
+      console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 171 ' , );
+      return this.branchingLogicPass(question.branching_logic, answers);
+    }
+  }
+
   branchingLogicPass(branchingLogic: string, answers: Record<string, AnswerWithTimeLog[]>): boolean {
     const answersArray:  AnswerWithTimeLog[] = Object.values(answers).flat();
     const _answers = answersArray.reduce((acc: Record<string, AnswerWithTimeLog>, answer) => {
       acc[answer.id] = answer;
       return acc;
     }, {});
+    console.log('C---lass: QuestionsService, Function: branchingLogicPass, Line 182 ' , _answers);
     return evaluateConditionalLogic(_answers, branchingLogic);
   }
 
@@ -199,4 +211,5 @@ export class QuestionsService {
   //     return new Set();
   //   }
   // }
+
 }

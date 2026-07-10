@@ -177,6 +177,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
             matrix_group_name: radarQuestion.matrix_group_name,
             matrix_ranking: radarQuestion.matrix_ranking,
             branching_logic: radarQuestion.branching_logic,
+            conditionalLogic: radarQuestion.conditionalLogic,
             show_selected_label: radarQuestion.show_selected_label,
             multi_line: radarQuestion.multi_line,
             text_validation_type_or_show_slider_number: radarQuestion.text_validation_type_or_show_slider_number,
@@ -198,6 +199,8 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
               labelLeft: {},
               labelRight: {},
             }: undefined,
+            calculation_fn: radarQuestion.calculation_fn,
+            calculation_args: radarQuestion.calculation_args,
             isValid: radarQuestion.isValid,
           };
 
@@ -356,7 +359,10 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
 
   toRadarQuestions(appQuestions: AppQuestion[], language: RadarOption): RadarQuestion[] {
     return appQuestions.map(q => {
-      const t: RadarQuestion = {
+      // const branchingLogic = q.conditionalLogic?.map((conditionalLogicItems) =>
+      //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
+      // ).join(' or ');
+      return {
         field_name: q.field_name,
         field_type: q.field_type,
         required_field: q.required_field,
@@ -392,10 +398,12 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
         } : undefined,
         matrix_group_name: q.matrix_group_name,
         //matrix_ranking?:
-        branching_logic: q.branching_logic ? q.branching_logic : undefined,
+        branching_logic: q.branching_logic,//branchingLogic,
+        conditionalLogic: q.conditionalLogic,
+        calculation_fn: q.calculation_fn,
+        calculation_args: q.calculation_args,
         isValid: q.isValid
       }
-      return t;
     });
   }
 

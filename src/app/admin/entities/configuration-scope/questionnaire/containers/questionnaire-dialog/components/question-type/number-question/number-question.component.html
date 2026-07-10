@@ -4,9 +4,9 @@
   @case ('button') {
   }
   @case ('form') {
-    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
+<!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
     <fieldset class="p-2 rounded-sm border flex gap-2">
-      <div>
+      <div class="w-1/2">
         <div>
           <label for="text_validation_min"
                  class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
@@ -16,7 +16,7 @@
         </mat-form-field>
       </div>
 
-      <div>
+      <div class="w-1/2">
         <div>
           <label for="text_validation_max"
                  class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>

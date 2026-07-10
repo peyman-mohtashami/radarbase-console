@@ -11,7 +11,6 @@ import {
 } from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-conditional-logic-item',
@@ -24,7 +23,6 @@ import {JsonPipe} from '@angular/common';
     MatSelect,
     QuestionViewComponent,
     OperatorSelectorComponent,
-    JsonPipe,
   ],
 })
 export class ConditionalLogicItemComponent implements OnInit {
@@ -58,22 +56,28 @@ export class ConditionalLogicItemComponent implements OnInit {
   protected onOperandChange(event: MatSelectChange<string>) {
     this.operand = event.value;
     this.selectedQuestion = this.questions().find((question) => question.field_name === this.operand);
-    if (this.operand && this.operator && this.value) {
+    // if (this.operand && this.operator && this.value) {
       this.itemEvent.emit({operand: this.operand, operator: this.operator, value: this.value})
-    }
+    // }
   }
 
   protected onOperatorChange(event: string) {
     this.operator = event;
-    if (this.operand && this.operator && this.value) {
-      this.itemEvent.emit({operand: this.operand, operator: this.operator, value: this.value})
+    if (this.operator === 'isEmpty' || this.operator === 'isNotEmpty') {
+      // if (this.operand && this.operator) {
+        this.itemEvent.emit({operand: this.operand, operator: this.operator, value: ''})
+      // }
+    } else {
+      // if (this.operand && this.operator && this.value) {
+        this.itemEvent.emit({operand: this.operand, operator: this.operator, value: this.value})
+      // }
     }
   }
 
   protected onValueChange(event: any) {
     this.value = event;
-    if (this.operand && this.operator && this.value) {
+    // if (this.operand && this.operator && this.value) {
       this.itemEvent.emit({operand: this.operand, operator: this.operator, value: this.value})
-    }
+    // }
   }
 }

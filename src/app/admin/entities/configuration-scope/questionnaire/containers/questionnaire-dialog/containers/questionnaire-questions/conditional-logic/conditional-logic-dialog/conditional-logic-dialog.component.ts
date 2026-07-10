@@ -19,6 +19,7 @@ import {TagComponent} from '../../../../../../../../../../shared/components/tag/
 import {BaseConfigService} from '../../../../../../../../../base-entities/services/base-config.service';
 import {DialogMode} from '../../../../../../../../../base-entities/enums/dialog';
 import {AppQuestion} from '../../../../../../models/questionnaire';
+import {OPERATOR_SYMBOLS} from '../conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 
 export interface ConditionalLogicItem {
   operand: string;
@@ -41,7 +42,7 @@ export interface ConditionalLogicItem {
     MatDialogTitle,
   ]
 })
-export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { //extends BaseEntityDialogComponent<{value: string}> {
+export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit {
   protected configService!: BaseConfigService;
 
   protected readonly DialogMode = DialogMode;
@@ -49,69 +50,26 @@ export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { 
   loading = signal(false);
   error = signal<HttpErrorResponse | null>(null);
 
-  dialogActionEvent = output<{ action: DialogMode | string, entity?: {value: string} }>();
+  dialogActionEvent = output<{ action: DialogMode | string, entity?: ConditionalLogicItem[][] }>();
 
   dialogRef = inject(MatDialogRef<ConditionalLogicDialogComponent>);
+
   dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: DialogMode;
-    entity?: {value: string};
+    entity?: ConditionalLogicItem[][];
     questions: AppQuestion[];
     selectedIndex: number;
   };
 
   conditionalLogicItemsArray: ConditionalLogicItem[][] = [];
-
-  resultString = '';
+  conditionalLogicString = '';
 
   ngOnInit() {
-    this.resultString = this.dialogData.entity?.value ?? '';
-    this.conditionalLogicItemsArray = this.parseConditionalLogic(this.dialogData.entity?.value ?? '');
-  }
-
-  private parseConditionalLogic(input: string): ConditionalLogicItem[][] {
-    if (!input || input.trim() === '') {
-      return [];
-    }
-
-    // Split by 'or' (case-insensitive) to get OR groups
-    const orGroups = input.split(/\s+or\s+/i);
-
-    return orGroups.map(orGroup => {
-      // Split by 'and' (case-insensitive) to get AND conditions
-      const andConditions = orGroup.split(/\s+and\s+/i);
-
-      return andConditions.map(condition => {
-        // Parse each condition: [field_name] <operator> 'value'
-        // Supports: ===, ==, !==, !=, <>, <=, >=, <, >
-        const match = condition.match(/\[([^\]]+)]\s*(===|==|=|!==|!=|<>|<=|>=|<|>)\s*(?:'([^']*)'|"([^"]*)"|(\S+))/);
-        // const match = condition.match(/\[([^\]]+)\]\s*(===|==|!==|!=|<>|<=|>=|<|>)\s*'([^']*)'/);
-
-        // return {
-        //   operand: 'match[1]',
-        //   operator: '==',
-        //   value: 'match[2]'
-        // }
-        if (!match) {
-          throw new Error(`Invalid condition format: ${condition}`);
-        }
-
-        return {
-          operand: match[1].trim(),
-          operator: match[2],
-          value: match[3] || match[4] || match[5] // Single quote, double quote, or unquoted
-        };
-        // if (!match) {
-        //   throw new Error(`Invalid condition format: ${condition}`);
-        // }
-
-        // return {
-        //   operand: match[1],
-        //   operator: '==',
-        //   value: match[2]
-        // };
-      });
-    });
+    this.conditionalLogicItemsArray = this.dialogData.entity ?? [];
+    this.conditionalLogicString = this.conditionalLogicItemsArray.map((conditionalLogicItems) =>
+      conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+    ).join(' or ');
   }
 
   ngAfterViewInit() {
@@ -124,7 +82,7 @@ export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { 
   }
 
   protected handleSaveAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: {value: this.resultString}});
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.conditionalLogicItemsArray});
   }
 
   close() {
@@ -157,19 +115,8 @@ export class ConditionalLogicDialogComponent implements OnInit, AfterViewInit { 
       this.conditionalLogicItemsArray.splice(index, 1);
     }
 
-    this.resultString = this.conditionalLogicItemsArray.reduce((res, items) => {
-      const curString = items.reduce((acc, item) => {
-        if (item.operand && item.operator && item.value) {
-          return `${acc}${acc ? ' and ' : ''}[${item.operand}]${item.operator}'${item.value}'`;
-        } else {
-          return `${acc}`;
-        }
-      }, '');
-      if (curString) {
-        return `${res}${res ? ' or ' : ''}${curString}`;
-      } else {
-        return `${res}`;
-      }
-    }, '');
+    this.conditionalLogicString = this.conditionalLogicItemsArray.map((conditionalLogicItems) =>
+      conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+    ).join(' or ');
   }
 }

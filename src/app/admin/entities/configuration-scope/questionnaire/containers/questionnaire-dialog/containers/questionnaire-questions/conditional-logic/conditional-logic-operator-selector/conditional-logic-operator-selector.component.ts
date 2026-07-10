@@ -8,46 +8,92 @@ import {AppQuestion} from '../../../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {QuestionType} from '../../../../components/question-type/question-type.registry';
 
+export const OPERATOR_SYMBOLS: Record<string, string> = {
+  equal: '=',
+  notEqual: '!=',
+  greaterThan: '>',
+  greaterThanOrEqual: '>=',
+  lessThan: '<',
+  lessThanOrEqual: '<=',
+  isEmpty: '=',
+  isNotEmpty: '!=',
+  contains: '∋',
+  doesNotContain: '∌',
+  matchRegexp: '=~',
+};
 
-export const ALL_OPERATORS = [
-  {name: 'Equal', value: '='},
-  {name: 'Not Equal', value: '!='},
-  {name: 'Greater Than', value: '>'},
-  {name: 'Greater Than or Equal', value: '>='},
-  {name: 'Less Than', value: '<'},
-  {name: 'Less Than or Equal', value: '<='},
-  {name: 'Is Empty', value: 'isEmpty'},
-  {name: 'Is not Empty', value: 'isNotEmpty'}
-];
-
-export const OPERATORS: Record<string, {name:string; value:string;}[]> = {
-  [QuestionType.RADIO]: ALL_OPERATORS,
-  [QuestionType.CHECKBOX]: [
-    ...ALL_OPERATORS,
-    {name: 'Contains', value: 'contains'},
-    {name: 'Does Not Contain', value: 'doesNotContain'}
+export const OPERATORS: Record<string, {name: string; value: string}[]> = {
+  [QuestionType.RADIO]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
   ],
-  [QuestionType.SLIDER]: ALL_OPERATORS,
-  [QuestionType.RANGE]: ALL_OPERATORS,
+  [QuestionType.SLIDER]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
+  [QuestionType.RANGE]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
+  [QuestionType.NUMBER]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
+  [QuestionType.DATETIME]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
   [QuestionType.YESNO]: [
-    {name: 'Equal', value: '='},
-    {name: 'Not Equal', value: '!='}
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
   ],
-  // [QuestionType.DESCRIPTIVE]: ALL_OPERATORS,
   [QuestionType.TEXT]: [
-    {name: 'Equal', value: '='},
-    {name: 'Not Equal', value: '!='},
-    // {name: 'Contains', value: 'contains'},
-    // {name: 'Does Not Contain', value: 'doesNotContain'},
-    // {name: 'Starts With', value: 'startsWith'},
-    // {name: 'Ends With', value: 'endsWith'},
-    // {name: 'Is Empty', value: 'isEmpty'}
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Contains', value: 'contains'},
+    {name: 'Does Not Contain', value: 'doesNotContain'},
+    {name: 'Match regex', value: 'matchRegexp'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
   ],
-  [QuestionType.NUMBER]: ALL_OPERATORS,
-  [QuestionType.DATETIME]: ALL_OPERATORS,
-  // [QuestionType.DURATION]: ALL_OPERATORS,
-  // [QuestionType.TIMED]: ALL_OPERATORS,
-  // [QuestionType.AUDIO]: ALL_OPERATORS,
+  [QuestionType.CHECKBOX]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
 }
 
 @Component({
@@ -64,8 +110,6 @@ export const OPERATORS: Record<string, {name:string; value:string;}[]> = {
 export class OperatorSelectorComponent {
   questionnaireStateService = inject(QuestionnaireDialogStateService);
 
-  protected readonly OPERATORS = OPERATORS;
-
   question = input.required<AppQuestion>();
   conditionalLogicItem = input<ConditionalLogicItem>();
 
@@ -75,20 +119,5 @@ export class OperatorSelectorComponent {
     this.selectionChange.emit(event.value);
   }
 
-  // protected OPERATORS = [
-  //   {name: 'Equal', value: '='},
-  //   {name: 'Not Equal', value: '!='},
-  //   {name: 'Greater Than', value: '>'},
-  //   {name: 'Greater Than or Equal', value: '>='},
-  //   {name: 'Less Than', value: '<'},
-  //   {name: 'Less Than or Equal', value: '<='},
-  //   // {name: 'Contains', value: 'contains'},
-  //   // {name: 'Does Not Contain', value: 'doesNotContain'},
-  //   // {name: 'Starts With', value: 'startsWith'},
-  //   // {name: 'Ends With', value: 'endsWith'},
-  //   // {name: 'Is Empty', value: 'isEmpty'}
-  // ]
-
-  // protected availableOperators = this.OPERATORS.filter((operator) =>
-  //   operator.value !== this.conditionalLogicItem()?.operator);
+  protected readonly OPERATORS = OPERATORS;
 }

@@ -159,10 +159,13 @@ export interface AppQuestion {
   conditionalLogic?: {operand: string; operator: string; value: string}[][];
   show_selected_label?: boolean;
   multi_line?: boolean;
-  date_min?: string;
-  date_max?: string;
+  calculation_fn?: string;
+  calculation_args?: string;
+  // date_min?: string;
+  // date_max?: string;
   date_type?: string;
   isValid?: boolean;
+  visible?: boolean;
 }
 
 export interface AppQuestionChoice {

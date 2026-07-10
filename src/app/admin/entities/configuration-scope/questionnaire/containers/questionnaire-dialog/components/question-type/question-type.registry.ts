@@ -12,6 +12,7 @@ import {AudioQuestionComponent} from './audio-question/audio-question.component'
 // import {DurationQuestionComponent} from './duration-question/duration-question.component';
 import {TimedQuestionComponent} from './timed-question/timed-question.component';
 import {DatetimeQuestionComponent} from './datetime-question/datetime-question.component';
+import {CalculationQuestionComponent} from './calculation-question/calculation-question.component';
 // import {
 //   SingleSelectMatrixQuestionComponent
 // } from './single-select-matrix-question/single-select-matrix-question.component';
@@ -33,6 +34,7 @@ export enum QuestionType {
   // MATRIX_RADIO = 'matrix-radio',
   // SINGLE_SELECT_MATRIX = 'singleSelectMatrix',
   // TEXT_INPUT_MATRIX = 'textInputMatrix',
+  CALC = 'calc',
 }
 
 export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
@@ -51,6 +53,7 @@ export const QUESTION_COMPONENTS: Record<string, Type<any>> = {
   [QuestionType.TIMED]: TimedQuestionComponent,
   // [QuestionType.SINGLE_SELECT_MATRIX]: SingleSelectMatrixQuestionComponent,
   // [QuestionType.TEXT_INPUT_MATRIX]: SingleSelectMatrixQuestionComponent,
+  [QuestionType.CALC]: CalculationQuestionComponent,
 };
 
 export const QUESTION_TYPES = [
@@ -100,7 +103,7 @@ export const QUESTION_TYPES = [
   },
   {
     types: [
-      {type: 'calc', icon: '', label: 'Calculation', disabled: true},
+      {type: 'calc', icon: '', label: 'Calculation', disabled: false},
     ]
   }
 ]

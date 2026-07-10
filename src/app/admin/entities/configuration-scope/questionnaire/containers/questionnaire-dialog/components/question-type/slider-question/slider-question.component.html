@@ -70,6 +70,14 @@
           </mat-form-field>
         </div>
       </div>
+      @if (range.errors?.['minLessThanMax']) {
+        <mat-error class="text-sm">Min should be less than max.</mat-error>
+      }
+
+      @if (range.errors?.['stepGreaterThanZero']) {
+        <mat-error class="text-sm">Step should be greater than 0.</mat-error>
+      }
+
       <div class="grid grid-cols-2 gap-4 mt-4">
         <app-text-form-group class='small-input grow'
                              [textGroup]="asFormGroup(range.controls['labelLeft'])"

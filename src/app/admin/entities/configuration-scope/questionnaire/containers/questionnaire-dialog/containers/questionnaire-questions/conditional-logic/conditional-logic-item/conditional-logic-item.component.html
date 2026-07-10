@@ -28,7 +28,7 @@
             </div>
           }
 
-          @if (selectedQuestion && operator) {
+          @if (selectedQuestion && operator && operator !== 'isNotEmpty' && operator !== 'isEmpty') {
             <div class="w-1/3!">
               <app-question-view [question]="selectedQuestion"
                                  [operator]="operator"

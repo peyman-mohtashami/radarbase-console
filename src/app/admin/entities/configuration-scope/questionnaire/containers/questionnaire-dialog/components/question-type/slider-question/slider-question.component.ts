@@ -1,5 +1,12 @@
 import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors
+} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
   RadarOption
@@ -61,6 +68,26 @@ export class SliderQuestionComponent implements OnInit {
   previewValueChange = output<string | null>();
 
 
+  // ngOnInit(): void {
+  //   if (this.type === 'form') {
+  //     if (!this.form.contains('range')) {
+  //       this.form.addControl(
+  //         'range',
+  //         this.fb.group({
+  //           min: this.fb.control(this.entity().range?.min, {validators: [CustomValidator.requiredValidator]}),
+  //           max: this.fb.control(this.entity().range?.max, {validators: [CustomValidator.requiredValidator]}),
+  //           step: this.fb.control(this.entity().range?.step, {validators: [CustomValidator.requiredValidator]}),
+  //           labelLeft: this.fb.group(this.entity().range?.labelLeft ?? {}),
+  //           labelRight: this.fb.group(this.entity().range?.labelRight ?? {}),
+  //         })
+  //       );
+  //     }
+  //   }
+  //   // if (this.type === 'preview') {
+  //   //   this.previewValue = this.answer()?.value !== undefined ? +(this.answer().value) : undefined;
+  //   // }
+  // }
+
   ngOnInit(): void {
     if (this.type === 'form') {
       if (!this.form.contains('range')) {
@@ -72,6 +99,8 @@ export class SliderQuestionComponent implements OnInit {
             step: this.fb.control(this.entity().range?.step, {validators: [CustomValidator.requiredValidator]}),
             labelLeft: this.fb.group(this.entity().range?.labelLeft ?? {}),
             labelRight: this.fb.group(this.entity().range?.labelRight ?? {}),
+          }, {
+            validators: [this.rangeValidator]
           })
         );
       }
@@ -80,6 +109,25 @@ export class SliderQuestionComponent implements OnInit {
     //   this.previewValue = this.answer()?.value !== undefined ? +(this.answer().value) : undefined;
     // }
   }
+
+  private rangeValidator = (control: AbstractControl): ValidationErrors | null => {
+    const min = Number(control.get('min')?.value);
+    const max = Number(control.get('max')?.value);
+    const step = Number(control.get('step')?.value);
+
+    const errors: ValidationErrors = {};
+
+    if (!Number.isNaN(min) && !Number.isNaN(max) && min >= max) {
+      errors['minLessThanMax'] = true;
+    }
+
+    if (!Number.isNaN(step) && step <= 0) {
+      errors['stepGreaterThanZero'] = true;
+    }
+
+    return Object.keys(errors).length ? errors : null;
+  };
+
 
   get range(): FormGroup {
     return this.form.get('range') as FormGroup;
