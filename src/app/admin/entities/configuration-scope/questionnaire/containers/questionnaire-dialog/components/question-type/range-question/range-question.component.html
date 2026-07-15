@@ -32,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language()!.id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language()!.code] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -105,9 +105,9 @@
 
     @if (!labelsDisabled() && entity().select_choices_or_calculations; as choices) {
       <div class="flex justify-between mt-2">
-        <div class="w-1/2" [innerHtml]="choices[0].label[language().id] | replacePlaceholders"></div>
+        <div class="w-1/2" [innerHtml]="choices[0].label[language().code] | replacePlaceholders"></div>
         <div class="w-1/2 text-right"
-             [innerHtml]="choices[choices.length - 1].label[language().id] | replacePlaceholders"></div>
+             [innerHtml]="choices[choices.length - 1].label[language().code] | replacePlaceholders"></div>
       </div>
     }
 
@@ -128,7 +128,7 @@
       <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
         @for (option of entity().select_choices_or_calculations; track option.code) {
           <mat-option [value]="option.code">
-            <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>
           </mat-option>
         }
       </mat-select>

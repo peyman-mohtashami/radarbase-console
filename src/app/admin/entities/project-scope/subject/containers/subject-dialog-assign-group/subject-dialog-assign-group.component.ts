@@ -13,6 +13,7 @@ import {
 import { AppGroup } from "../../../group/models/group";
 import {TranslatePipe} from "@ngx-translate/core";
 import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from "../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {MatButton} from "@angular/material/button";
@@ -28,6 +29,7 @@ import {
 } from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
 import {AppSubject} from '../../models/subject';
+import {AppSourceType} from '../../../../main-scope/source-type/models/source-type';
 
 @Component({
   selector: 'app-subject-dialog-assign-group-dialog',
@@ -68,6 +70,12 @@ export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent
   override form = new FormGroup({
     group: new FormControl<AppGroup | undefined>(undefined, {nonNullable: true})
   });
+
+
+  protected groupAdapter: MatSelectAutocompleteAdapter<AppGroup> = {
+    value: g => g.id.toString(),
+    label: g => g.name
+  }
 
   override onAction() { //TODO DIALOG_ACTION
     this.error.set(null);

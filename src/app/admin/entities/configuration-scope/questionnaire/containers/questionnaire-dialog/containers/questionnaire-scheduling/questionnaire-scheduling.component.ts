@@ -96,7 +96,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
       this.loading = false;
 
       const formValue = this.form.getRawValue();
-      const entity = this.dialogState.selectedQuestionnaire();
+      const entity = this.dialogState.questionnaire();
       const updated = {
         ...entity,
         schedule: {
@@ -105,7 +105,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
         }
       } as AppQuestionnaire;
 
-      this.dialogState.selectedQuestionnaire.set(updated);
+      this.dialogState.questionnaire.set(updated);
 
       const {referenceTimestamp, repeatProtocol, repeatQuestionnaire, completionWindow} = this.form.controls.schedule.controls;
 
@@ -135,7 +135,7 @@ export class QuestionnaireSchedulingComponent implements OnInit, OnDestroy {
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       this.form.patchValue(entity);
     }

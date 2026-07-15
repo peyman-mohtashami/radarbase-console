@@ -1,4 +1,6 @@
-import {RadarOption} from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+// import {RadarOption} from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+
+import {AppQuestionnaireLanguage} from './questionnaire';
 
 export interface RadarProtocolWrapper extends Record<string, string | string[] | null | RadarProtocol[]> {
   version: string | null;
@@ -29,8 +31,8 @@ export interface RadarProtocol {
   //---
   title?: Record<string, string>;
   description?: Record<string, string>;
-  defaultLanguage: RadarOption;
-  languages: RadarOption[];
+  defaultLanguage: AppQuestionnaireLanguage;
+  languages: AppQuestionnaireLanguage[];
   warningEnabled?: boolean;
   isValid?: boolean;
   isActive?: boolean;
@@ -173,18 +175,18 @@ export enum QuestionnaireTimeUnit {
   year = 'year',
 }
 
-export interface QuestionnaireLanguage extends RadarOption {
-  id: string | number;
-  _name: string;
-  nativeName?: string;
-}
+// export interface QuestionnaireLanguage extends RadarOption {
+//   id: string | number;
+//   _name: string;
+//   nativeName?: string;
+// }
 
-export interface AppProtocol extends RadarProtocol {
-  _name: string;
-  _languages: QuestionnaireLanguage[];
-  _onDemand: boolean;
-  _github: boolean;
-  _repeatedProtocol: boolean;
-  _relativeToReferenceTime: boolean;
-  _reminderEnabled: boolean;
-}
+// export interface AppProtocol extends RadarProtocol {
+//   _name: string;
+//   _languages: QuestionnaireLanguage[];
+//   _onDemand: boolean;
+//   _github: boolean;
+//   _repeatedProtocol: boolean;
+//   _relativeToReferenceTime: boolean;
+//   _reminderEnabled: boolean;
+// }

@@ -1,10 +1,13 @@
 @if (language()) {
   @if (sectionHeader()) {
-    <p class="text-base" [innerHtml]="question().section_header?.[language()!.id] | replacePlaceholders"></p>
+    <app-preview-replace-placeholder class="text-base" [content]="question().section_header?.[language()!.code]" />
+<!--    <p class="text-base" [innerHtml]="question().section_header?.[language()!.code] | replacePlaceholders"></p>-->
   }
   @if (label() && question().field_label) {
     <p class="text-lg">
-      <span [innerHtml]="question().field_label[language()!.id] | replacePlaceholders"></span>
+      <app-preview-replace-placeholder [content]="question().field_label[language()!.code]"/>
+
+<!--      <span [innerHtml]="question().field_label[language()!.code] | replacePlaceholders"></span>-->
       @if (question().required_field !== 'false') {
         <span class="text-red-700"> *</span>
       } @else {
@@ -14,6 +17,7 @@
   }
 
   @if (note()) {
-      <p class="text-sm mb-2" [innerHtml]="question().field_note?.[language()!.id] | replacePlaceholders"></p>
+    <app-preview-replace-placeholder class="text-sm mb-2" [content]="question().field_note?.[language()!.code]"/>
+<!--    <p class="text-sm mb-2" [innerHtml]="question().field_note?.[language()!.code] | replacePlaceholders"></p>-->
   }
 }

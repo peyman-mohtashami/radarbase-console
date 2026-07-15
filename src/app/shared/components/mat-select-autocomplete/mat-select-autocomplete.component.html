@@ -11,17 +11,17 @@
         <div class="flex flex-wrap gap-1">
           @if (notRemovable(); as notRemovable) {
             <app-tag class="font-bold text-primary bg-primary/10">
-              {{ notRemovable?._name }}
+              {{ adapter().label(notRemovable) }}
               <button mat-icon-button class="tiny" [disabled]="true"
                       (click)="removeChip(notRemovable)">
                 <mat-icon class="text-xl! material-symbols-outlined">cancel</mat-icon>
               </button>
             </app-tag>
           }
-          @for (selected of (Array.isArray(form.value) ? form.value : []); track selected._name) {
-            @if (selected.id !== notRemovable()?.id) {
+          @for (selected of (Array.isArray(form.value) ? form.value : []); track $index) {
+            @if (!notRemovable() || adapter().value(selected) !== adapter().value(notRemovable()!)) {
             <app-tag class="font-bold text-primary bg-primary/10">
-              {{ selected["_name"] }}
+              {{ adapter().label(selected) }}
               <button mat-icon-button class="tiny"
                       (click)="removeChip(selected)">
                 <mat-icon class="text-xl! material-symbols-outlined">cancel</mat-icon>
@@ -37,9 +37,9 @@
                              [placeholderLabel]="'Search ' + label() + ' ...'"
                              [noEntriesFoundLabel]="'No matching ' + label() + ' found'"/>
     </mat-option>
-    @for (option of filteredMulti$ | async; track option._name) {
-      <mat-option [value]="option" [disabled]="option.id === notRemovable()?.id">
-        {{ option._name }}
+    @for (option of filteredMulti$ | async; track $index) {
+      <mat-option [value]="option" [disabled]="notRemovable() ? adapter().value(option) === adapter().value(notRemovable()!) : false">
+        {{ adapter().label(option) }}
       </mat-option>
     }
   </mat-select>

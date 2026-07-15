@@ -1,9 +1,6 @@
 import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -52,10 +49,10 @@ export class DatetimeQuestionComponent implements OnInit {
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
+  @Input({ required: true }) languages!: AppQuestionnaireLanguage[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;
@@ -129,7 +126,7 @@ export class DatetimeQuestionComponent implements OnInit {
     return Number.isNaN(timestamp) ? null : new Date(timestamp);
   }
 
-  protected onPreviewInputChange(event: MatDatepickerInputEvent<Date> | null) {
+  protected onPreviewDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
     if (event === null) {
       return this.previewValueChange.emit(null);
     }
@@ -137,6 +134,15 @@ export class DatetimeQuestionComponent implements OnInit {
     if (!value) return;
     const timestamp = `${value.getTime()}`;
     this.previewValueChange.emit(timestamp);
+  }
+
+  protected onPreviewTimeInputChange(event: Event | null) {
+    if (event === null) {
+      this.previewValueChange.emit(null);
+      return;
+    }
+    const value = (event.target as HTMLInputElement).value;
+    this.previewValueChange.emit(value);
   }
 
   // protected onDateChange($event: MatDatepickerInputEvent<any, any>) {

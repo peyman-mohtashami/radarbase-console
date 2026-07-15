@@ -1,10 +1,7 @@
 import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
@@ -32,10 +29,10 @@ export class TextQuestionComponent implements OnInit {
 
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
+  @Input({ required: true }) languages!: AppQuestionnaireLanguage[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;

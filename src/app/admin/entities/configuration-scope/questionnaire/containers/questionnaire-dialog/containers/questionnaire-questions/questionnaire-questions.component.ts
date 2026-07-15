@@ -62,7 +62,7 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   questions: AppUiQuestion[] = [];
 
   ngOnInit() {
-    this.questions = this.dialogState.selectedQuestionnaire()?.questions?.map(q => ({
+    this.questions = this.dialogState.questionnaire()?.questions?.map(q => ({
       ...q,
       _dragId: crypto.randomUUID(),
       valid: true,
@@ -78,14 +78,14 @@ export class QuestionnaireQuestionsComponent implements OnInit {
       _dragId: crypto.randomUUID(),
     });
 
-    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
   }
 
   protected removeQuestion(index: number) {
     this.questions.splice(index, 1);
 
     this.validEvent.emit(this.questions.every(q => q.isValid));
-    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
 
   }
 
@@ -102,7 +102,7 @@ export class QuestionnaireQuestionsComponent implements OnInit {
 
     this.questions = [...this.questions];
 
-    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
   }
 
   openQuestionDialog(index: number, question: AppQuestion) {
@@ -124,7 +124,7 @@ export class QuestionnaireQuestionsComponent implements OnInit {
         (value) => {
           this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
           this.validEvent.emit(this.questions.every(q => q.isValid));
-          this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+          this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
         }
       );
 
@@ -136,6 +136,6 @@ export class QuestionnaireQuestionsComponent implements OnInit {
   protected onMatrixQuestionChange(index: number, value: Partial<AppQuestion>) {
     this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
     this.validEvent.emit(this.questions.every(q => q.isValid));
-    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
   }
 }

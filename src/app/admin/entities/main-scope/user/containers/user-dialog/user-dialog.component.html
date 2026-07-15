@@ -109,7 +109,8 @@
               <app-mat-select-autocomplete formControlName='_organizations'
                                            [label]='"ADMIN.organization.title.plural" | translate'
                                            [options]='organizations'
-                                           [multiple]="true"/>
+                                           [multiple]="true"
+                                           [adapter]="organizationAdapter" />
             }
           }
         }
@@ -124,7 +125,8 @@
               <app-mat-select-autocomplete formControlName='_projects'
                                            [label]='"ADMIN.project.title.plural" | translate'
                                            [options]='projects'
-                                           [multiple]="true"/>
+                                           [multiple]="true"
+                                           [adapter]="projectAdapter"/>
             }
           }
         }

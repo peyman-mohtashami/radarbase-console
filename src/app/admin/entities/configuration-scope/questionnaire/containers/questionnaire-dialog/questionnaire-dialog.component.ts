@@ -93,7 +93,7 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
 
   override ngOnInit() {
     super.ngOnInit();
-    this.dialogState.selectedQuestionnaire.set(this.dialogData.entity);
+    this.dialogState.questionnaire.set(this.dialogData.entity);
   }
 
   // protected onEntityUpdate(event: Partial<AppQuestionnaire>) {
@@ -124,14 +124,14 @@ export class QuestionnaireDialogComponent extends BaseEntityDialogComponent<AppQ
   protected readonly DialogAction = DialogAction;
 
   protected override handleSaveAction(): void {
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       console.log('Class: QuestionnaireDialogComponent, Function: handleSaveAction, Line 127 this.sectionsValidity' , this.sectionsValidity);
       entity.isValid = this.sectionsValidity.general && this.sectionsValidity.questions && this.sectionsValidity.scheduling && this.sectionsValidity.customMessages && this.sectionsValidity.notifications && this.sectionsValidity.translations;
     }
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: this.dialogState.selectedQuestionnaire(),
+      entity: this.dialogState.questionnaire(),
     });
   }
 

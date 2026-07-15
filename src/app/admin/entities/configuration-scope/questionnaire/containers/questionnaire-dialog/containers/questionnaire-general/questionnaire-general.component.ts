@@ -3,12 +3,17 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from '../../../../models/questionnaire';
+import {
+  AppQuestionnaire,
+  AppQuestionnaireLanguage,
+  DEFAULT_LANGUAGE,
+  ISO_LANGUAGES
+} from '../../../../models/questionnaire';
 import {Validator, ValidatorError} from '../../../../../../../../shared/utils/validators';
-import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {merge, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
@@ -42,13 +47,13 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       validators: [Validator.requiredValidator, Validator.stringIdValidator],
       nonNullable: true
     }),
-    defaultLanguage: new FormControl<RadarOption>(DEFAULT_LANGUAGE, {nonNullable: true}),
+    defaultLanguage: new FormControl<AppQuestionnaireLanguage>(DEFAULT_LANGUAGE, {nonNullable: true}),
     title: new FormGroup({}),
     description: new FormGroup({}),
   });
 
-  defaultLang: RadarOption = DEFAULT_LANGUAGE;
-  languages: RadarOption[] = [DEFAULT_LANGUAGE];
+  defaultLang: AppQuestionnaireLanguage = DEFAULT_LANGUAGE;
+  languages: AppQuestionnaireLanguage[] = [DEFAULT_LANGUAGE];
 
   private subscription?: Subscription;
 
@@ -60,9 +65,9 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       debounceTime(300)
     ).subscribe(() => {
       const formValue = this.form.getRawValue();
-      const entity = this.dialogState.selectedQuestionnaire();
+      const entity = this.dialogState.questionnaire();
       let languages = entity?.languages ?? [];
-      if (!entity?.languages.find(l => l.id === formValue.defaultLanguage.id)) {
+      if (!entity?.languages.find(l => l.code === formValue.defaultLanguage.code)) {
         languages = [...entity?.languages ?? [], formValue.defaultLanguage];
       }
       const updated = {
@@ -74,11 +79,11 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
         languages
       } as AppQuestionnaire;
 
-      this.dialogState.selectedQuestionnaire.set(updated);
+      this.dialogState.questionnaire.set(updated);
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       this.languages = entity.languages;
       this.defaultLang = entity.defaultLanguage;
@@ -112,7 +117,7 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
     // });
   }
 
-  onDefaultLanguageChanged(language: RadarOption, entity?: AppQuestionnaire) {
+  onDefaultLanguageChanged(language: AppQuestionnaireLanguage, entity?: AppQuestionnaire) {
     this.defaultLang = language;
     if (entity) {
       const languages = [...entity.languages, this.defaultLang];
@@ -121,31 +126,37 @@ export class QuestionnaireGeneralComponent implements OnInit, OnDestroy {
       ).map(item => JSON.parse(item));
 
       // this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
-      this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
+      this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
       this.valid.emit(this.form.valid);
 
       this.form.patchValue({...entity, defaultLanguage: language}, { emitEvent: false });
     } else {
       this.languages = [this.defaultLang];
       // this.changeEvent.emit({defaultLanguage: language, languages: this.languages});
-      this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
+      this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), defaultLanguage: language, languages: this.languages} as AppQuestionnaire);
       this.valid.emit(this.form.valid);
     }
   }
 
   onOtherFieldsChanged() {
     // this.changeEvent.emit({...this.form.getRawValue(), languages: this.languages});
-    this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), ...this.form.getRawValue(), languages: this.languages} as AppQuestionnaire);
+    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), ...this.form.getRawValue(), languages: this.languages} as AppQuestionnaire);
     this.valid.emit(this.form.valid);
   }
 
   private duplicateValidator = (control: AbstractControl) => {
     return (this.questionnaires() ?? []).find(entity =>
-      control.value === entity._name && this.dialogState.selectedQuestionnaire()?._name !== entity._name
+      control.value === entity._name && this.dialogState.questionnaire()?._name !== entity._name
     )
       ? {duplicate: true}
       : null;
   }
+
+  languageAdapter: MatSelectAutocompleteAdapter<AppQuestionnaireLanguage> = {
+    value: l => l.code,
+    label: l => l.label
+  };
+
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();

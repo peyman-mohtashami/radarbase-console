@@ -2,10 +2,7 @@ import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@an
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
 } from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
@@ -44,10 +41,10 @@ export class CheckboxQuestionComponent implements OnInit {
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
+  @Input({ required: true }) languages!: AppQuestionnaireLanguage[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;

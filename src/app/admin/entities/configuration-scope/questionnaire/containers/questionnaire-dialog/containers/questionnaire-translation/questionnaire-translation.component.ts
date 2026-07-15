@@ -1,8 +1,13 @@
 import {Component, inject, OnInit, output} from '@angular/core';
-import {AppQuestionnaire, DEFAULT_LANGUAGE, ISO_LANGUAGES} from '../../../../models/questionnaire';
-import {AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {RadarOption} from '../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 import {
+  AppQuestionnaire,
+  AppQuestionnaireLanguage,
+  DEFAULT_LANGUAGE,
+  ISO_LANGUAGES
+} from '../../../../models/questionnaire';
+import {AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -30,7 +35,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
   valid = output<boolean>();
 
   form = new FormGroup({
-    languages: new FormControl<RadarOption[]>([this.dialogState.selectedQuestionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE], {nonNullable: true}),
+    languages: new FormControl<AppQuestionnaireLanguage[]>([this.dialogState.questionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE], {nonNullable: true}),
     title: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
     description: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
     endText: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
@@ -48,15 +53,20 @@ export class QuestionnaireTranslationComponent implements OnInit {
 
   numberOfRows = 0;
 
+  languageAdapter: MatSelectAutocompleteAdapter<AppQuestionnaireLanguage> = {
+    value: l => l.code,
+    label: l => l.label
+  };
+
   ngOnInit() {
 
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     this.entity = entity;
     if (entity) {
       const t = entity.questions?.reduce((acc, curr) => {
-        return acc + 2 + (curr.field_note?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.section_header?.[entity.defaultLanguage.id] ? 1 : 0) + (curr.select_choices_or_calculations?.length ?? 0);
+        return acc + 2 + (curr.field_note?.[entity.defaultLanguage.code] ? 1 : 0) + (curr.section_header?.[entity.defaultLanguage.code] ? 1 : 0) + (curr.select_choices_or_calculations?.length ?? 0);
       }, 0);
-      this.numberOfRows = 6 + (this.dialogState.selectedQuestionnaire()?.warningEnabled ? 1 : 0) + (t ?? 0);
+      this.numberOfRows = 6 + (this.dialogState.questionnaire()?.warningEnabled ? 1 : 0) + (t ?? 0);
 
       const questionsFormGroup = entity.questions?.map(q => {
         const choices = q.select_choices_or_calculations?.map(c => new FormGroup({
@@ -66,17 +76,17 @@ export class QuestionnaireTranslationComponent implements OnInit {
           field_label: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
           select_choices_or_calculations: new FormArray<FormGroup>(choices),
         };
-        if (q.field_note?.[entity.defaultLanguage.id]) {
+        if (q.field_note?.[entity.defaultLanguage.code]) {
           formGroup['field_note'] = new FormGroup({})//new FormControl<Record<string, string>>({}, {nonNullable: true})
         }
-        if (q.section_header?.[entity.defaultLanguage.id]) {
+        if (q.section_header?.[entity.defaultLanguage.code]) {
           formGroup['section_header'] = new FormGroup({})//new FormControl<Record<string, string>>({}, {nonNullable: true})
         }
         return new FormGroup(formGroup);
       });
 
       this.form = new FormGroup({
-        languages: new FormControl<RadarOption[]>([entity.defaultLanguage], {nonNullable: true}),
+        languages: new FormControl<AppQuestionnaireLanguage[]>([entity.defaultLanguage], {nonNullable: true}),
         title: new FormGroup({}), //new FormControl<Record<string, string>>({}, {nonNullable: true}),
         description: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
         endText: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
@@ -99,7 +109,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
     ).subscribe(change => {
       // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 106 change' , change);
       // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 107 {...entity, ...change}' , {...entity, ...change});
-      const entity = this.dialogState.selectedQuestionnaire();
+      const entity = this.dialogState.questionnaire();
       // this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), schedule: {...this.dialogState.selectedQuestionnaire()?.schedule, ...change.schedule}} as AppQuestionnaire);
 
       // this.changeEvent.emit({
@@ -143,7 +153,7 @@ export class QuestionnaireTranslationComponent implements OnInit {
       //   }),
       // });
 
-      this.dialogState.selectedQuestionnaire.set({
+      this.dialogState.questionnaire.set({
         ...entity,
         ...change,
         schedule: {

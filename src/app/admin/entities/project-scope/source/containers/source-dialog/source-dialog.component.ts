@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@
 
 import {Validator} from '../../../../../../shared/utils/validators';
 import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent,
 } from '../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {TranslatePipe} from "@ngx-translate/core";
@@ -88,4 +89,9 @@ export class SourceDialogComponent extends BaseEntityDialogComponent<AppSource> 
   //     ? { duplicate: true }
   //     : null;
   // };
+
+  protected sourceTypeAdapter: MatSelectAutocompleteAdapter<AppSourceType> = {
+    value: s => s.id.toString(),
+    label: s => `${s.producer}_${s.model}_${s.catalogVersion}`
+  }
 }

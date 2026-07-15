@@ -90,13 +90,13 @@ export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser
     if (this.dialogData.project) {
       updatedEntity._roles._projectAdmin = true;
       updatedEntity._roles._projects = updatedEntity._roles._projects ?? [];
-      const selectedProject = {id: this.dialogData.project.id, _name: this.dialogData.project.projectName};
+      const selectedProject = this.dialogData.project; //{id: this.dialogData.project.id, _name: this.dialogData.project.projectName};
       updatedEntity._roles._projects.push(selectedProject);
     }
     if (this.dialogData.organization) {
       updatedEntity._roles._organizationAdmin = true;
       updatedEntity._roles._organizations = updatedEntity._roles._organizations ?? [];
-      const selectedOrganization = {id: this.dialogData.organization.id, _name: this.dialogData.organization.name};
+      const selectedOrganization = this.dialogData.organization; //{id: this.dialogData.organization.id, _name: this.dialogData.organization.name};
       updatedEntity._roles._organizations.push(selectedOrganization);
     }
 
@@ -112,7 +112,7 @@ export class PermissionDialogComponent extends BaseEntityDialogComponent<AppUser
       updatedEntity._roles._projectAdmin = updatedEntity._roles._projects.length > 0;
     }
     if (this.dialogData.organization) {
-      updatedEntity._roles._organizations = updatedEntity._roles._organizations?.filter(o => o._name !== this.dialogData.organization?.name) ?? [];
+      updatedEntity._roles._organizations = updatedEntity._roles._organizations?.filter(o => o.name !== this.dialogData.organization?.name) ?? [];
       updatedEntity._roles._organizationAdmin = updatedEntity._roles._organizations?.length > 0;
     }
     this.dialogActionEvent.emit({action: DialogMode.EDIT, entity: updatedEntity});

@@ -1,8 +1,6 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
-// import DOMPurify from "dompurify";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {SafeHtml} from "@angular/platform-browser";
 import {PreviewStateService} from '../services/preview-state.service';
-import {AnswerWithTimeLog} from '../models/kafka';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {QuestionType} from '../models/question';
 
@@ -11,7 +9,6 @@ import {QuestionType} from '../models/question';
   standalone: true
 })
 export class ReplacePlaceholdersPipe implements PipeTransform {
-  private sanitizer = inject(DomSanitizer);
   private previewState = inject(PreviewStateService);
   private questionnaireDialogState = inject(QuestionnaireDialogStateService);
 
@@ -23,15 +20,10 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   buildTextWithTemplateVariables(value: string) {
-    return this.replacePlaceholders(value);//, this.previewState.answers());
-    // return value;
-    // return this.sanitizer.bypassSecurityTrustHtml(DOMPurify.sanitize(value));
+    return this.replacePlaceholders(value);
   }
 
-  replacePlaceholders(
-    str = "",
-    // answers?: Record<string, AnswerWithTimeLog[]>
-  ): string {
+  replacePlaceholders(str = ""): string {
     return str.replace(/\[([^[\]]+)]/g, (_, content: string) => {
       const placeholder = parsePlaceholder(content);
 
@@ -58,13 +50,15 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
 
       if (questionnaireId) {
         // TODO: handle questionnaire-specific lookup
-        return `[${content}]`;
+        const answer = this.getAnswerFromPlaceholder(placeholder);
+        return answer != null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
+        // return `[${content}]`;
       }
 
       const answer = this.getAnswer(questionId, questionnaireId, operator, startTimestamp, endTimestamp); //answers?.[questionId]?.[0]?.value;
 
         // Replace it with the answer if it exists; otherwise leave the placeholder unchanged
-        return answer != null ? String(answer) : `[${content}]`;
+        return answer != null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
     });
   }
 
@@ -72,19 +66,28 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
     if (!questionnaireId) {
       const answers = this.previewState.answers();//?.[questionId]?.[0]?.value ?? null;
       const answer = answers?.[questionId]?.[0];
+      if (!answer) { return null}
       if (answer.type === QuestionType.CHECKBOX || answer.type === QuestionType.RADIO || answer.type === QuestionType.RANGE) {
-        const questions = this.questionnaireDialogState.selectedQuestionnaire()?.questions;
+        const questions = this.questionnaireDialogState.questionnaire()?.questions;
         const question = questions?.find(q => q.field_name === questionId);
-        return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language()] ?? answer?.value ?? null;
+        return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
       } else {
         return answer?.value ?? null;
       }
     }
     return null;
   }
+
+  private getAnswerFromPlaceholder(placeholder: Placeholder) {
+    const inputs = this.previewState.placeholderAnswers();
+    const answer = inputs.placeholders?.find(i => {
+      return i.questionnaireId === placeholder.questionnaireId && i.questionId === placeholder.questionId
+    });
+    return answer?.value ?? null;
+  }
 }
 
-interface Placeholder {
+export interface Placeholder {
   questionnaireId?: string;
   questionId: string;
   operator?: string;
@@ -92,7 +95,7 @@ interface Placeholder {
   endTimestamp?: string;
 }
 
-function parsePlaceholder(placeholder: string): Placeholder | null {
+export function parsePlaceholder(placeholder: string): Placeholder | null {
   const parts = placeholder.split(":");
 
   switch (parts.length) {
@@ -126,58 +129,4 @@ function parsePlaceholder(placeholder: string): Placeholder | null {
     default:
       return null;
   }
-}
-
-
-export function replacePlaceholders2(
-  str?: string,
-  answers?: Record<string, AnswerWithTimeLog[]>,
-  // userAttr?: { [p: string]: any },
-  // userName?: string,
-  // userDateOfBirth?: string
-) {
-  if (!str) {
-    return ""
-  }
-  const regex = /\[([^\]]+)]/g; // Regular expression to match strings between brackets
-  const matches = str.match(regex); // Use match to get all matches
-  const keys = matches?.map(match => match.substring(1, match.length - 1));
-  let result = str
-  keys?.forEach(k => {
-    switch (k) {
-      // case 'firstName': {
-      //   const regex = new RegExp("\\[" + k + "\\]", "g");
-      //   if (userName) {
-      //     result = result.replace(regex, userName)
-      //   } else {
-      //     result = result.replace(regex, 'user')
-      //   }
-      //   break;
-      // }
-      // case 'dateOfBirth':
-      //   if (userDateOfBirth) {
-      //     const regex = new RegExp("\\[" + k + "\\]", "g");
-      //     result = result.replace(regex, userDateOfBirth)
-      //   }
-      //   break;
-      // case 'arm2RepeatQuestionnaire': {
-      //   const weeks = userAttr?.['weeks'] ?? '12';
-      //   if (weeks) {
-      //     const regex = new RegExp("\\[" + k + "\\]", "g");
-      //     result = result.replace(regex, weeks.toString())
-      //   }
-      //   break;
-      // }
-      default:
-        if (answers?.[k] && answers[k][0]) {
-          const regex = new RegExp("\\[" + k + "\\]", "g");
-          const g = answers[k][0].value;
-          if (g) {
-            result = result.replace(regex, g)
-          }
-        }
-        break;
-    }
-  })
-  return result
 }

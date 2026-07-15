@@ -124,8 +124,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit() {
-    this.dialogState.selectedQuestion.set(this.dialogData.entity);
-    this.dialogState.selectedQuestionIndex.set(this.dialogData.index);
+    this.dialogState.question.set(this.dialogData.entity);
+    this.dialogState.questionIndex.set(this.dialogData.index);
     this.question = this.dialogData.entity;
 
     this.form.controls.field_name.addValidators(this.duplicateValidator);
@@ -134,9 +134,13 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(change => {
-      logErrors(this.form);
-      console.log('Class: QuestionDialogComponent, Function: , Line 130 ' , this.form.valid);
-      this.question = {...this.question, ...change, branching_logic: this.branchingLogicString(), isValid: this.form.valid};
+      // logErrors(this.form);
+      // console.log('Class: QuestionDialogComponent, Function: , Line 130 ' , this.form.valid);
+      // console.log('Class: QuestionDialogComponent, Function: , Line 140 change' , change);
+      // console.log('Class: QuestionDialogComponent, Function: , Line 140 this.question old' , this.question);
+      this.question = this.mergeFormValueAndQuestion();
+      // this.question = {...this.question, ...change, branching_logic: this.branchingLogicString(), isValid: this.form.valid};
+      // console.log('Class: QuestionDialogComponent, Function: , Line 140 this.question new ' , this.question);
       this.changeEvent.emit(this.question);
     });
 
@@ -145,6 +149,23 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
       this.branchingLogicString.set(this.dialogData.entity?.conditionalLogic?.map((conditionalLogicItems) =>
         conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
       ).join(' or ') ?? '');
+    }
+  }
+
+  mergeFormValueAndQuestion() {
+    const formValue = this.form.getRawValue();
+
+    return {
+      ...this.question,
+      field_name: formValue.field_name,
+      field_type: this.question?.field_type,
+      field_label: {...this.question?.field_label, ...formValue.field_label},
+      section_header: {...this.question?.section_header, ...formValue.section_header},
+      required_field: formValue.required_field,
+      field_note: {...this.question?.field_note, ...formValue.field_note},
+      conditionalLogic: formValue.conditionalLogic,
+      branching_logic: this.branchingLogicString(),
+      isValid: this.form.valid
     }
   }
 
@@ -166,8 +187,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
 
     setTimeout(() => {
       this.dialogRef?.close();
-      this.dialogState.selectedQuestion.set(null);
-      this.dialogState.selectedQuestionIndex.set(null);
+      this.dialogState.question.set(null);
+      this.dialogState.questionIndex.set(null);
     }, 300);
   }
 
@@ -224,14 +245,14 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
 }
 
-function logErrors(form: FormGroup) {
-  Object.keys(form.controls).forEach(key => {
-    const control = form.get(key);
-
-    if (control instanceof FormGroup) {
-      logErrors(control);
-    } else if (control?.invalid) {
-      console.log(key, control.errors);
-    }
-  });
-}
+// function logErrors(form: FormGroup) {
+//   Object.keys(form.controls).forEach(key => {
+//     const control = form.get(key);
+//
+//     if (control instanceof FormGroup) {
+//       logErrors(control);
+//     } else if (control?.invalid) {
+//       console.log(key, control.errors);
+//     }
+//   });
+// }

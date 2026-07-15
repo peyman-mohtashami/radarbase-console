@@ -38,6 +38,7 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
   override entityService = inject(QuestionnaireService);
   override configService = inject(QuestionnaireConfigService);
   override dialogService = inject(QuestionnaireDialogService);
+  private questionnaireService = inject(QuestionnaireService)
 
   override entities = signal<AppQuestionnaire[]>(this.activatedRoute.snapshot.data['questionnaireList']);
 
@@ -58,5 +59,15 @@ export class QuestionnaireListPageComponent extends BaseEntityListPageComponent<
 
   protected showHistory() {
     // TODO
+  }
+
+  protected onDuplicate(entity: AppQuestionnaire) {
+    const duplicateEntity: AppQuestionnaire = {...entity, name: `${entity.name}_copy`};
+    this.questionnaireService.add(duplicateEntity).subscribe(() => this.handleDialogUpdate());
+  }
+
+  protected onActiveChange(event: boolean, entity: AppQuestionnaire) {
+    const updatedEntity: AppQuestionnaire = {...entity, isActive: event};
+    this.questionnaireService.update(updatedEntity).subscribe(() => this.handleDialogUpdate());
   }
 }

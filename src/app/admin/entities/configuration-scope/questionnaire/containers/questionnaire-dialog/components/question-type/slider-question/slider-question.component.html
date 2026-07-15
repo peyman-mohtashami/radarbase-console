@@ -107,8 +107,8 @@
       </mat-slider>
 
       <div class="flex justify-between text-sm">
-        <div class="w-1/2" [innerHtml]="range.labelLeft?.[language()!.id] | replacePlaceholders"></div>
-        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[language()!.id] | replacePlaceholders"></div>
+        <div class="w-1/2" [innerHtml]="range.labelLeft?.[language()!.code] | replacePlaceholders"></div>
+        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[language()!.code] | replacePlaceholders"></div>
       </div>
     }
 

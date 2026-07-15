@@ -1,24 +1,28 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {Validator as CustomValidator, ValidatorError} from '../../../../../../../../../shared/utils/validators';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
-import {
-  ScrollableContentComponent
-} from '../../../containers/questionnaire-preview/question/scrolable-content/scrollable-content.component';
+// import {
+//   ScrollableContentComponent
+// } from '../../../containers/questionnaire-preview/question/scrolable-content/scrollable-content.component';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatSelectChange} from '@angular/material/select';
-import {
-  TaskTimer
-} from '../../../containers/questionnaire-preview/question/input-field/timed-test/timed-test.component';
+
+export interface TaskTimer {
+  secondsElapsed: WritableSignal<number>;
+  secondsRemaining: WritableSignal<number>;
+  hasStarted: WritableSignal<boolean>;
+  hasFinished: WritableSignal<boolean>;
+  displayTime: WritableSignal<number>;
+  start: number;
+  end: number;
+}
 
 @Component({
   selector: 'app-timed-question',
@@ -30,7 +34,7 @@ import {
     MatInput,
     MatButton,
     QuestionHeaderComponent,
-    ScrollableContentComponent,
+    // ScrollableContentComponent,
   ],
   templateUrl: './timed-question.component.html'
 })
@@ -39,10 +43,10 @@ export class TimedQuestionComponent implements OnInit {
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
+  @Input({ required: true }) languages!: AppQuestionnaireLanguage[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;

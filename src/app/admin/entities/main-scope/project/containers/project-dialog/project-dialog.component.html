@@ -24,7 +24,8 @@
                                        [options]='organizations'
                                        [label]="`${_prefix}.organization.label` | translate"
                                        [multiple]="false"
-                                       [required]="true"/>
+                                       [required]="true"
+                                       [adapter]="organizationAdapter" />
         }
       }
 
@@ -78,7 +79,9 @@
         <app-mat-select-autocomplete formControlName='sourceTypes'
                                      [options]='sourceTypes'
                                      [label]="`${_prefix}.sourceTypes.label` | translate"
-                                     [multiple]="true"/>
+                                     [multiple]="true"
+                                     [adapter]="sourceTypeAdapter"
+        />
       }
 
       @if (!formFields || formFields['description'] === undefined || formFields['description']) {

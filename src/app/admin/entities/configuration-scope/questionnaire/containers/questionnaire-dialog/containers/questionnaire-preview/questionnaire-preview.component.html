@@ -7,11 +7,12 @@
     <div class="flex gap-2 items-center">
       <div class='small-input text-sm flex justify-end gap-1'>
         @for (language of _entity.languages; track language) {
-          <button mat-icon-button class="tiny uppercase"
-                  (click)='$event.stopPropagation(); selectedLanguage = language'
-                  [class]="selectedLanguage?.id === language.id ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+          <button mat-icon-button
+                  class="tiny uppercase"
+                  (click)='switchPreviewLanguage($event, language)'
+                  [class]="selectedLanguage?.code === language.code ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
               <span class="h-full flex items-center justify-center">
-                <span class="text-sm font-bold">{{ language.id }}</span>
+                <span class="text-sm font-bold">{{ language.code }}</span>
               </span>
           </button>
         }
@@ -21,56 +22,28 @@
 
   <div class="flex h-[90%] justify-between">
     <div class="h-full aspect-9/16 bg-primary/20 border-2 border-gray-300 rounded-lg">
-
-      <!--      <div class="w-1/2 flex flex-col h-[90%] border-2 border-gray-300 rounded-lg">-->
       <div class="h-full flex flex-col">
         @if (selectedLanguage) {
-          <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.id] ?? _entity.name }}</span>
+          <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.code] ?? _entity.name }}</span>
         }
         @if (!loading) {
           @if (groupedQuestions) {
-            <!--          {{groupedQuestions | json}}-->
             <div class="grow overflow-auto p-4">
-              @for (item of groupedQuestions | keyvalue: originalOrder; track item.key; let i = $index) {
-                @if (i === currentQuestion.index) {
-                  <!--                <pre>{{item.value | json}}</pre>-->
-                  @for (q of item.value; track q; ) {
-                  @if (q.visible) {
-                    <app-question [question]="q"
-                                    [language]="selectedLanguage"
-                                    [answers]="previewState.answers()"
-                                    [answer]="previewState.answers()[item.key]?.[$index]"
-                                    (answerEvent)="onAnswer($event)"
-                                    (nextActionEvent)="nextAction($event)"/>
-                  }
-<!--                    }-->
-<!--                    @if (item.value.length > 1) {-->
-<!--                      <app-grouped-questions [questions]="item.value"-->
-<!--                                             [groupName]="item.key"-->
-<!--                                             [language]="selectedLanguage"-->
-<!--                                             [answers]="answers"-->
-<!--                                             [answer]="answers[item.key]"-->
-<!--                                             (answerEvent)="onGroupAnswer($event)"-->
-<!--                                             (nextActionEvent)="nextAction($event)"/>-->
-<!--                    } @else {-->
-<!--                      <app-question [question]="q"-->
-<!--                                    [language]="selectedLanguage"-->
-<!--                                    [answers]="previewState.answers()"-->
-<!--                                    [answer]="previewState.answers()[item.key]?.[$index]"-->
-<!--                                    (answerEvent)="onAnswer($event)"-->
-<!--                                    (nextActionEvent)="nextAction($event)"/>-->
-<!--                    }-->
-                  }
+              @for (q of currentQuestionsGroup.questions; track q.field_name) {
+                @if (q.visible) {
+                  <app-question [question]="q"
+                                [language]="selectedLanguage"
+                                [answers]="previewState.answers()"
+                                [answer]="previewState.answers()[q.field_name]?.[0]"
+                                (answerEvent)="onAnswer($event)"/>
                 }
               }
             </div>
             <div>
               <app-toolbar (toolbarEvent)="handleToolbarEvent($event)"
-                           [currentQuestionId]="currentQuestion.index"
-                           [isLeftButtonDisabled]="isLeftButtonDisabled()"
-                           [isRightButtonDisabled]="isRightButtonDisabled()"
-                           [totalQuestions]="groupedQuestionsSize"
-                           [isProgressCountShown]="showProgressCount"/>
+                           [progress]="progress()"
+                           [leftButton]="{enabled: leftButtonEnabled(), label: leftButtonLabel()}"
+                           [rightButton]="{enabled: rightButtonEnabled(), label: rightButtonLabel()}"/>
             </div>
           } @else {
             Loading...
@@ -78,10 +51,41 @@
         }
       </div>
     </div>
-    <div class="h-full overflow-auto w-1/2 text-sm">
+    <div class="h-full overflow-auto w-1/3 text-sm">
       <pre>{{ previewState.answers() | json }}</pre>
     </div>
+
+    <app-preview-placeholder-form class="w-1/3" />
+<!--    <div class="h-full overflow-auto w-1/3 text-sm">-->
+<!--      List of templates values-->
+<!--      @for (p of placeholders; track $index) {-->
+<!--        <p>{{p.questionnaireId}} / {{p.questionId}} / {{p.operator ?? 'latest'}}</p>-->
+<!--      }-->
+
+<!--&lt;!&ndash;      <div class="h-full overflow-auto w-1/3 text-sm">&ndash;&gt;-->
+<!--        <form class="mt-16" [formGroup]="placeholderForm">-->
+<!--&lt;!&ndash;          <p class="font-bold mb-2">List of template values</p>&ndash;&gt;-->
+
+<!--          <div formArrayName="placeholders" class="flex flex-col gap-3">-->
+<!--            @for (placeholderGroup of placeholderControls; track $index) {-->
+<!--              <div [formGroupName]="$index" class="">-->
+<!--                <p class="mb-2">-->
+<!--                  {{ placeholderGroup.controls['questionnaireId'].value }}-->
+<!--                  /-->
+<!--                  {{ placeholderGroup.controls['questionId'].value }}-->
+<!--                  /-->
+<!--                  {{ placeholderGroup.controls['operator'].value }}-->
+<!--                </p>-->
+
+<!--                <mat-form-field class="small-input w-full" appearance="outline">-->
+<!--                  <input matInput [formControl]="placeholderGroup.controls.value" placeholder="Value">-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+<!--            }-->
+<!--          </div>-->
+<!--        </form>-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--    </div>-->
+
   </div>
-
-
 }

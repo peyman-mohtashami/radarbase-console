@@ -66,7 +66,7 @@
                                      [options]='sourceTypes'
                                      [label]='`${_prefix}.sourceType.label` | translate'
                                      [multiple]="false"
-                                     [required]="true"/>
+                                     [required]="true" [adapter]="sourceTypeAdapter"/>
       }
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {

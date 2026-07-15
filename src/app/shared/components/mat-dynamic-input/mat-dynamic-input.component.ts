@@ -15,10 +15,10 @@ import {ExtraFieldConfiguration} from '../../../core/configuration/models/custom
 import {LocaleService} from '../../../core/locale/services/locale.service';
 import {AsyncPipe, DatePipe} from '@angular/common';
 
-export interface RadarOption {
-  id: number | string;
-  _name: string;
-}
+// export interface RadarOption {
+//   id: number | string;
+//   _name: string;
+// }
 
 @Component({
   selector: 'app-mat-dynamic-input',

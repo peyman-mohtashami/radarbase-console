@@ -1,16 +1,9 @@
 import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion} from '../../../../../models/questionnaire';
-import {ValidatorError} from '../../../../../../../../../shared/utils/validators';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionHeaderComponent
 } from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
-import {
-  ScrollableContentComponent
-} from '../../../containers/questionnaire-preview/question/scrolable-content/scrollable-content.component';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatSelectChange} from '@angular/material/select';
 
@@ -19,20 +12,18 @@ import {MatSelectChange} from '@angular/material/select';
   imports: [
     ReactiveFormsModule,
     QuestionHeaderComponent,
-    ScrollableContentComponent,
   ],
   templateUrl: './audio-question.component.html'
 })
 export class AudioQuestionComponent implements OnInit {
 
-  private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!:  InputSignal<AppQuestion>;
   @Input({ required: true }) form!: FormGroup;
-  @Input({ required: true }) languages!: RadarOption[];
+  @Input({ required: true }) languages!: AppQuestionnaireLanguage[];
   @Input({ required: true }) index!: number;
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;

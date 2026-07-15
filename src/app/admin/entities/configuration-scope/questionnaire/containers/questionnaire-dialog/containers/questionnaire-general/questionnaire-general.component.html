@@ -27,13 +27,14 @@
                                    [options]="ISO_LANGUAGES"
                                    [label]="`${_prefix}.defaultLanguageLabel` | translate"
                                    [required]="true"
-                                   [multiple]="false"/>
+                                   [multiple]="false"
+                                   [adapter]="languageAdapter" />
     </div>
 
     <div class="mb-4">
       <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"
                            [textGroup]="form.controls.title"
-                           [value]="dialogState.selectedQuestionnaire()?.title"/>
+                           [value]="dialogState.questionnaire()?.title"/>
     </div>
 
     <div class="mb-4">
@@ -41,7 +42,7 @@
                            [textarea]="true"
                            [textareaAutosize]="true"
                            [textGroup]="form.controls.description"
-                           [value]="dialogState.selectedQuestionnaire()?.description"/>
+                           [value]="dialogState.questionnaire()?.description"/>
     </div>
   </div>
 

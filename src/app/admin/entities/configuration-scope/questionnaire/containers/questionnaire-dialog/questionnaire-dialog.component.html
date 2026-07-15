@@ -81,7 +81,7 @@
       </mat-tab>
 
 
-      <mat-tab [disabled]="dialogState.selectedQuestionnaire()?.schedule?.onDemand || !sectionsValidity.general">
+      <mat-tab [disabled]="dialogState.questionnaire()?.schedule?.onDemand || !sectionsValidity.general">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Notifications

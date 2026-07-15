@@ -10,7 +10,8 @@
     @if (dialogData.groupFullList | async; as groups) {
       <app-mat-select-autocomplete [options]="groups"
                                    formControlName='group'
-                                   [label]="'ADMIN.subject.group.label' | translate"/>
+                                   [label]="'ADMIN.subject.group.label' | translate"
+                                   [adapter]="groupAdapter" />
     }
   </form>
 </mat-dialog-content>

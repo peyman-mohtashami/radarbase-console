@@ -56,7 +56,7 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
     this.subscription = this.form.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(() => {
-      const entity = this.dialogState.selectedQuestionnaire();
+      const entity = this.dialogState.questionnaire();
       const formValue = this.form.getRawValue();
       const updated = {
         ...entity,
@@ -67,11 +67,11 @@ export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
           }
         }
       } as AppQuestionnaire;
-      this.dialogState.selectedQuestionnaire.set(updated);
+      this.dialogState.questionnaire.set(updated);
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       this.form.patchValue(entity);
       this.valid.emit(this.form.valid);

@@ -2,10 +2,7 @@ import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@an
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionChoice, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
 } from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
@@ -42,10 +39,10 @@ export class RangeQuestionComponent implements OnInit {
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.selectedQuestionnaire()!.defaultLanguage);
+  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
   @Input({ required: true }) entity!: InputSignal<AppQuestion>;
   @Input() form!: FormGroup;
-  @Input() languages!: RadarOption[];
+  @Input() languages!: AppQuestionnaireLanguage[];
   @Input() index!: number;
   @Input() value!: string;
   @Input() operator!: string;
@@ -82,7 +79,7 @@ export class RangeQuestionComponent implements OnInit {
     }
     if (this.type === 'preview') {
       this.previewValue = this.answer()?.value !== undefined ? this.answer().value : null;
-      this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().id] ?? null;
+      this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().code] ?? null;
     }
   }
 
@@ -126,7 +123,7 @@ export class RangeQuestionComponent implements OnInit {
 
   protected onPreviewInputChange(value: string | null) {
     this.previewValue = value;
-    this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().id] ?? null;
+    this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().code] ?? null;
     this.previewValueChange.emit(value);
   }
 

@@ -1,6 +1,6 @@
-import {RadarOption} from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
-import {RadarProject} from '../../project/models/project';
-import {RadarOrganization} from '../../organization/models/organization';
+// import {RadarOption} from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
+import {AppProject, RadarProject} from '../../project/models/project';
+import {AppOrganization, RadarOrganization} from '../../organization/models/organization';
 
 export interface RadarUser {
   id: number | string;
@@ -43,6 +43,6 @@ export interface AppRole {
   _sysAdmin: boolean | null;
   _organizationAdmin: boolean | null;
   _projectAdmin: boolean | null;
-  _organizations: RadarOption[] | null;
-  _projects: RadarOption[] | null;
+  _organizations: Partial<AppOrganization>[] | null; // RadarOption[] | null;
+  _projects: Partial<AppProject>[] | null; //RadarOption[] | null;
 }

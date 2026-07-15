@@ -6,13 +6,11 @@ import {
 import {MatError, MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {TranslateModule} from "@ngx-translate/core";
-import {DEFAULT_LANGUAGE} from '../../../../../models/questionnaire';
-import {
-  RadarOption
-} from '../../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
+// import {TranslateModule} from "@ngx-translate/core";
+import {AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../../models/questionnaire';
 import {Validator, ValidatorError} from '../../../../../../../../../shared/utils/validators';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-text-form-group',
@@ -23,7 +21,8 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
     MatInput,
     CdkTextareaAutosize,
     MatError,
-    TranslateModule,
+    TranslatePipe,
+    // TranslateModule,
   ],
 })
 export class TextFormGroupComponent implements OnInit {
@@ -32,7 +31,7 @@ export class TextFormGroupComponent implements OnInit {
 
   protected readonly ValidatorError = ValidatorError;
 
-  language = input<RadarOption | undefined>(this.dialogState.selectedQuestionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE);
+  language = input<AppQuestionnaireLanguage | undefined>(this.dialogState.questionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE);
   label = input<string>();
   placeholder = input<string>('');
   required = input<boolean>(false);
@@ -46,7 +45,7 @@ export class TextFormGroupComponent implements OnInit {
   @Input({ required: true })
   textGroup!: FormGroup;
 
-  languages = this.dialogState.selectedQuestionnaire()?.languages ?? [DEFAULT_LANGUAGE];
+  languages = this.dialogState.questionnaire()?.languages ?? [DEFAULT_LANGUAGE];
 
   ngOnInit() {
     this.initializeLanguageControls();
@@ -79,7 +78,7 @@ export class TextFormGroupComponent implements OnInit {
   }
 
   private initializeLanguageControls() {
-    const languageString = this.language()?.id.toString();
+    const languageString = this.language()?.code.toString();
     if (languageString) {
       this.textGroup.addControl(languageString, this.fb.control(''));
     }

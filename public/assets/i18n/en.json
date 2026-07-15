@@ -1876,5 +1876,6 @@
     }
   },
   "hello": "Hello-en",
-  "title": "Management Portal"
+  "title": "Management Portal",
+  "HOME": {"TITLE": "English TITLE"}
 }

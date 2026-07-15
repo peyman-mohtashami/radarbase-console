@@ -29,9 +29,10 @@ export class QuestionsService {
   // private kafkaService = inject(KafkaService);
   // private scheduleService = inject(ScheduleService);
 
-  async groupQuestionsByMatrixGroup(questions: AppQuestion[]): Promise<Record<string, AppQuestion[]>> {
+  groupQuestionsByMatrixGroup(questions: AppQuestion[]): Map<string, AppQuestion[]> {
     // const autoNextQuestionnaireTypes = await this.getAutoNextQuestionnaireTypes();
-    const groupedQuestions: Record<string, AppQuestion[]> = {};
+
+    const groupedQuestions = new Map<string, AppQuestion[]>();
     const fieldNames = new Set<string>();
 
     for (const [i, question] of questions.entries()) {
@@ -54,15 +55,18 @@ export class QuestionsService {
 
       const key = matrix_group_name ? matrix_group_name : field_name;
 
-      if (!groupedQuestions[key]) {
-        groupedQuestions[key] = [];
-      }
+      // if (!groupedQuestions.get(key)) {
+      //   groupedQuestions.set(key, []);
+      // }
 
-      groupedQuestions[key].push({
+      const questions = groupedQuestions.get(key) ?? [];
+      questions.push({
         ...question,
-        section_header: i > 0 && !section_header && matrix_group_name == questions[i - 1].matrix_group_name ? questions[i - 1].section_header : section_header,
+        section_header: i > 0 && !section_header && matrix_group_name === questions[i - 1].matrix_group_name ? questions[i - 1].section_header : section_header,
+        visible: true
         // isAutoNext: autoNextQuestionnaireTypes.has(field_type),
       });
+      groupedQuestions.set(key, questions);
     }
 
 
@@ -143,45 +147,45 @@ export class QuestionsService {
   //   return this.questionnaireService.getProtocolOfTask(task);
   // }
 
-  shouldShowQuestion(questions: AppQuestion[], answers: Record<string, AnswerWithTimeLog[]>): boolean {
-    let shouldBeShown = true;
-    for (const question of questions) {
-      if (!question.branching_logic) {
-        shouldBeShown = true;
-        return shouldBeShown;
-      } else {
-        const branchingLogic = question.branching_logic;
-        if(this.branchingLogicPass(branchingLogic, answers)) {
-          shouldBeShown = true;
-          return shouldBeShown;
-        } else {
-          shouldBeShown = false;
-        }
-      }
-    }
-    return shouldBeShown;
-  }
+  // shouldShowQuestion(questions: AppQuestion[], answers: Record<string, AnswerWithTimeLog[]>): boolean {
+  //   let shouldBeShown = true;
+  //   for (const question of questions) {
+  //     if (!question.branching_logic) {
+  //       shouldBeShown = true;
+  //       return shouldBeShown;
+  //     } else {
+  //       const branchingLogic = question.branching_logic;
+  //       if(this.branchingLogicPass(branchingLogic, answers)) {
+  //         shouldBeShown = true;
+  //         return shouldBeShown;
+  //       } else {
+  //         shouldBeShown = false;
+  //       }
+  //     }
+  //   }
+  //   return shouldBeShown;
+  // }
+  //
+  // shouldShowQuestion2(question: AppQuestion, answers: Record<string, AnswerWithTimeLog[]>) {
+  //   console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 166 ' , question, answers, question.branching_logic);
+  //   if (!question.branching_logic) {
+  //     console.log('Class: QuestionsService, Function: shouldShowQuestion2, Line 168 ' , );
+  //     return true;
+  //   } else {
+  //     console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 171 ' , );
+  //     return this.branchingLogicPass(question.branching_logic, answers);
+  //   }
+  // }
 
-  shouldShowQuestion2(question: AppQuestion, answers: Record<string, AnswerWithTimeLog[]>) {
-    console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 166 ' , question, answers, question.branching_logic);
-    if (!question.branching_logic) {
-      console.log('Class: QuestionsService, Function: shouldShowQuestion2, Line 168 ' , );
-      return true;
-    } else {
-      console.log('C---lass: QuestionsService, Function: shouldShowQuestion2, Line 171 ' , );
-      return this.branchingLogicPass(question.branching_logic, answers);
-    }
-  }
-
-  branchingLogicPass(branchingLogic: string, answers: Record<string, AnswerWithTimeLog[]>): boolean {
-    const answersArray:  AnswerWithTimeLog[] = Object.values(answers).flat();
-    const _answers = answersArray.reduce((acc: Record<string, AnswerWithTimeLog>, answer) => {
-      acc[answer.id] = answer;
-      return acc;
-    }, {});
-    console.log('C---lass: QuestionsService, Function: branchingLogicPass, Line 182 ' , _answers);
-    return evaluateConditionalLogic(_answers, branchingLogic);
-  }
+  // branchingLogicPass(branchingLogic: string, answers: Record<string, AnswerWithTimeLog[]>): boolean {
+  //   const answersArray:  AnswerWithTimeLog[] = Object.values(answers).flat();
+  //   const _answers = answersArray.reduce((acc: Record<string, AnswerWithTimeLog>, answer) => {
+  //     acc[answer.id] = answer;
+  //     return acc;
+  //   }, {});
+  //   console.log('C---lass: QuestionsService, Function: branchingLogicPass, Line 182 ' , _answers);
+  //   return evaluateConditionalLogic(_answers, branchingLogic);
+  // }
 
 
   // REMOTE CONFIG METHODS
@@ -191,16 +195,16 @@ export class QuestionsService {
     return false;
   }
 
-  private async getAutoNextQuestionnaireTypes(): Promise<Set<string>> {
-    // const autoNextString = await this.remoteConfigService.get(ConfigKeys.AUTO_NEXT_QUESTIONNAIRE_TYPES);
-    // const autoNext = autoNextString.split(',');
-    // if (autoNext.length) {
-    //   return new Set(autoNext);
-    // } else {
-    //   return new Set();
-    // }
-    return new Set();
-  }
+  // private async getAutoNextQuestionnaireTypes(): Promise<Set<string>> {
+  //   // const autoNextString = await this.remoteConfigService.get(ConfigKeys.AUTO_NEXT_QUESTIONNAIRE_TYPES);
+  //   // const autoNext = autoNextString.split(',');
+  //   // if (autoNext.length) {
+  //   //   return new Set(autoNext);
+  //   // } else {
+  //   //   return new Set();
+  //   // }
+  //   return new Set();
+  // }
 
   // async getSkippableQuestionnaireTypes(): Promise<Set<string>> {
   //   const skippableString = await this.remoteConfigService.get(ConfigKeys.SKIPPABLE_QUESTIONNAIRE_TYPES);

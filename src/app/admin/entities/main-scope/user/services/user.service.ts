@@ -43,8 +43,8 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
       appRoles._organizations?.forEach((organization) => {
         roles.push({
           authorityName: ROLES.ORGANIZATION_ADMIN,
-          organizationName: organization._name,
-          organizationId: +organization.id
+          organizationName: organization.name,
+          organizationId: +organization.id!
         });
       })
     }
@@ -53,7 +53,7 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
         roles.push({
           authorityName: ROLES.PROJECT_ADMIN,
           projectName: project._name,
-          projectId: +project.id});
+          projectId: +project.id!});
       })
     }
     return roles;
@@ -75,13 +75,13 @@ export class UserService extends BaseEntityService<AppUser, RadarUser> {
         const organizationName = role.organizationName ?? role.organization?.name ?? '';
         acc._organizationAdmin = true;
         acc._organizations = acc._organizations || [];
-        acc._organizations.push({ id: organizationId, _name: organizationName });
+        acc._organizations.push({ id: organizationId, name: organizationName });
       } else if (authorityName === ROLES.PROJECT_ADMIN) {
         const projectId = role.projectId ?? role.project?.id ?? '';
         const projectName = role.projectName ?? role.project?.projectName ?? '';
         acc._projectAdmin = true;
         acc._projects = acc._projects || [];
-        acc._projects.push({id: projectId, _name: projectName});
+        acc._projects.push({id: projectId, projectName: projectName});
       }
       return acc;
     }, defaultAppRole);

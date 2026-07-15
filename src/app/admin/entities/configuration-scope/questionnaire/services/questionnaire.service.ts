@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {AppQuestion, AppQuestionnaire} from "../models/questionnaire";
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from "../models/questionnaire";
 import {forkJoin, Observable, of} from "rxjs";
 import {map, tap} from "rxjs/operators";
 import {AppConfig} from "../../config/models/config";
@@ -14,7 +14,7 @@ import {
   RadarQuestionnaire,
   RadarSubProtocol
 } from '../models/protocol';
-import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+// import {RadarOption} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, AppQuestionnaire> {
@@ -342,22 +342,22 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
       });
       result.questionnaires.push({
         name: q.name,
-        languages: q.languages.map(l => l.id.toString()),
+        languages: q.languages.map(l => l.code.toString()),
         questions: this.toRadarQuestionsWrapper(q.questions ?? [], q.languages),
       });
     })
     return result;
   }
 
-  toRadarQuestionsWrapper(appQuestions: AppQuestion[], languages: RadarOption[]): Record<string, RadarQuestion[]> {
+  toRadarQuestionsWrapper(appQuestions: AppQuestion[], languages: AppQuestionnaireLanguage[]): Record<string, RadarQuestion[]> {
     const result: Record<string, RadarQuestion[]> = {};
     for (const language of languages) {
-      result[language.id] = this.toRadarQuestions(appQuestions, language);
+      result[language.code] = this.toRadarQuestions(appQuestions, language);
     }
     return result;
   }
 
-  toRadarQuestions(appQuestions: AppQuestion[], language: RadarOption): RadarQuestion[] {
+  toRadarQuestions(appQuestions: AppQuestion[], language: AppQuestionnaireLanguage): RadarQuestion[] {
     return appQuestions.map(q => {
       // const branchingLogic = q.conditionalLogic?.map((conditionalLogicItems) =>
       //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
@@ -366,12 +366,12 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
         field_name: q.field_name,
         field_type: q.field_type,
         required_field: q.required_field,
-        field_label: q.field_label[language.id],
-        section_header: q.section_header?.[language.id],
+        field_label: q.field_label[language.code],
+        section_header: q.section_header?.[language.code],
         select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
           return {
             code: c.code,
-            label: c.label[language.id]
+            label: c.label[language.code]
           }
         }),
         text_validation_type_or_show_slider_number: q.text_validation_type_or_show_slider_number,
@@ -385,7 +385,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
           },
           unit: q.field_annotation.unit
         } : undefined,
-        field_note: q.field_note?.[language.id],
+        field_note: q.field_note?.[language.code],
         multi_line: q.multi_line,
         show_selected_label: q.show_selected_label,
         date_type: q.date_type,
@@ -393,8 +393,8 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
           min: q.range?.min?.toString() ?? "",
           max: q.range?.max?.toString() ?? "",
           step: q.range?.step?.toString() ?? "",
-          labelLeft: q.range?.labelLeft?.[language.id],
-          labelRight: q.range?.labelRight?.[language.id]
+          labelLeft: q.range?.labelLeft?.[language.code],
+          labelRight: q.range?.labelRight?.[language.code]
         } : undefined,
         matrix_group_name: q.matrix_group_name,
         //matrix_ranking?:

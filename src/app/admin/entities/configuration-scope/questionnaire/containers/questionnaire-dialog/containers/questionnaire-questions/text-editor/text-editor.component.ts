@@ -5,7 +5,7 @@ import {
 // import {MatError, MatFormField} from "@angular/material/form-field";
 // import {MatInput} from "@angular/material/input";
 // import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {TranslateModule} from "@ngx-translate/core";
+// import {TranslateModule} from "@ngx-translate/core";
 // import {RadarOption} from "../../../../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
 // import {QuestionnaireStateService} from "../../services/questionnaire-state.service";
 import {JsonPipe} from '@angular/common';
@@ -37,7 +37,7 @@ type EditorNode =
     // MatInput,
     // CdkTextareaAutosize,
     // MatError,
-    TranslateModule,
+    // TranslateModule,
     JsonPipe,
   ],
   styles: `

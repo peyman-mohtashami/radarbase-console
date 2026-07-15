@@ -48,7 +48,7 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
       debounceTime(300)
     ).subscribe(() => {
       const formValue = this.form.getRawValue();
-      const entity = this.dialogState.selectedQuestionnaire();
+      const entity = this.dialogState.questionnaire();
 
       const updated = {
         ...entity,
@@ -60,11 +60,11 @@ export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
         estimatedCompletionTime: formValue.estimatedCompletionTime,
       } as AppQuestionnaire;
 
-      this.dialogState.selectedQuestionnaire.set(updated);
+      this.dialogState.questionnaire.set(updated);
       this.valid.emit(this.form.valid);
     });
 
-    const entity = this.dialogState.selectedQuestionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       this.form.patchValue(entity);
       this.valid.emit(this.form.valid);

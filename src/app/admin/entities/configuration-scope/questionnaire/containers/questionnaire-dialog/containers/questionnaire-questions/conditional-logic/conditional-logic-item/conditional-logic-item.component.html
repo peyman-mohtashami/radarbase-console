@@ -11,8 +11,8 @@
                     <mat-option [value]="question.field_name"
                                 [disabled]="question.field_type === 'descriptive' || question.field_type === 'audion' || question.field_type === 'info'">
                       <p>[{{ question.field_name }}] ({{ question.field_type }})</p>
-                      <p>{{ question.section_header?.[dialogState.selectedQuestionnaire()!.defaultLanguage.id] }}</p>
-                      <p>{{ question.field_label?.[dialogState.selectedQuestionnaire()!.defaultLanguage.id] }}</p>
+                      <p>{{ question.section_header?.[dialogState.questionnaire()!.defaultLanguage.code] }}</p>
+                      <p>{{ question.field_label?.[dialogState.questionnaire()!.defaultLanguage.code] }}</p>
                     </mat-option>
                   }
                 }

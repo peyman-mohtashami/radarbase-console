@@ -1,41 +1,46 @@
+@let _prefix = 'ADMIN.questionnaire.preview';
+
 <div class="h-1 toolbar-progress-bar bg-primary"
-     [style.width]="Math.ceil((this.currentQuestionId()) * 100) / this.totalQuestions() + '%'">
+     [style.width]="Math.ceil((progress().current + 1) * 100) / progress().total + '%'">
+<!--  [style.width]="Math.ceil((this.currentQuestionId() + 1) * 100) / this.totalQuestions() + '%'">-->
 </div>
 
-<div class="flex gap-2 items-center p-4">
+<div class="flex gap-2 items-center py-4 w-full">
   <button matButton
-          class="text-sm flex items-center"
+          class="text-sm flex items-center flex-1"
           aria-label="Example icon-button with menu icon"
-          [disabled]="isLeftButtonDisabled()"
+          [disabled]="!leftButton().enabled"
           (click)="leftButtonHandler()">
 
     <span class="flex items-center">
-      @if (!currentQuestionId()) {
+      @if (leftButton().label === 'close') {
         <mat-icon class="material-symbols-outlined">close</mat-icon>
-        <span class="font-bold">{{ 'Close' | translate }}</span>
+        <span class="font-bold">{{ `close` | translateLang }}</span>
+
       } @else {
         <mat-icon class="material-symbols-outlined">chevron_left</mat-icon>
-        <div class="mx-2 font-bold">{{ 'Previous' | translate }}</div>
+        <div class="mx-2 font-bold">{{ 'previous' | translateLang }}</div>
       }
     </span>
   </button>
 
-  <span class="flex-auto">
-    @if (isProgressCountShown()) {
-      {{ currentQuestionId() + 1 + '/' + totalQuestions() }}
+  <span class="justify-self-center">
+    @if (progress().enabled) {
+      {{ Math.ceil((progress().current + 1) * 100) / progress().total + '%' }}
+<!--      {{ progress().current + 1 + '/' + progress().total }}-->
     }
   </span>
 
   <button matButton
-          class="text-sm flex items-center"
+          class="flex-1 justify-end text-sm flex items-center"
           aria-label="Example icon-button with heart icon"
-          [class]="isRightButtonDisabled() ? 'opacity-50' : ''" (click)="rightButtonHandler()">
+          [class]="!rightButton().enabled ? 'opacity-50' : ''" (click)="rightButtonHandler()">
     <span class="flex items-center">
       <span class="mx-2 font-bold">
-        @if (currentQuestionId() === totalQuestions() - 1) {
-          {{ 'Finish' | translate }}
+        @if (rightButton().label === 'finish') {
+          {{ 'finish' | translateLang }}
         } @else {
-          {{ 'Next' | translate }}
+          {{ 'next' | translateLang }}
         }
       </span>
       <mat-icon class="material-symbols-outlined">chevron_right</mat-icon>

@@ -32,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().code] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -80,7 +80,7 @@
                         (click)="onPreviewInputChange(item.code)"
                         [disabled]="isPreviewDisabled"
                         [checked]="item.checked">
-            <span class="ion-text-wrap" [innerHtml]="item.label[language().id] | replacePlaceholders"></span>
+            <span class="ion-text-wrap" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
           </mat-checkbox>
         </p>
       }
@@ -96,7 +96,7 @@
       <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
         @for (option of entity().select_choices_or_calculations; track option.code) {
           <mat-option [value]="option.code">
-            <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>
           </mat-option>
         }
       </mat-select>

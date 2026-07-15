@@ -10,6 +10,7 @@ import {ProjectConfigService} from '../../services/project-config.service';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
 import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from '../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
@@ -132,5 +133,15 @@ export class ProjectDialogComponent extends BaseEntityDialogComponent<AppProject
     )
       ? { duplicate: true }
       : null;
-  };
+  }
+
+  protected sourceTypeAdapter: MatSelectAutocompleteAdapter<AppSourceType> = {
+    value: s => s.id.toString(),
+    label: s => `${s.producer}_${s.model}_${s.catalogVersion}`
+  }
+
+  protected organizationAdapter: MatSelectAutocompleteAdapter<AppOrganization> = {
+    value: o => o.id.toString(),
+    label: o => o.name
+  }
 }

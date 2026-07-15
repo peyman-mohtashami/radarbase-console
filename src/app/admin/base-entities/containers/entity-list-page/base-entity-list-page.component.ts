@@ -163,7 +163,7 @@ export class BaseEntityListPageComponent<T extends { _name: string; }, U> implem
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleDialogUpdate(updated: { mode: DialogMode | string, entity?: T }) {
+  handleDialogUpdate(updated?: { mode: DialogMode | string, entity?: T }) {
     this.refreshEntities();
     // this.removeFragmentUrl();
     this.loading.set(false);

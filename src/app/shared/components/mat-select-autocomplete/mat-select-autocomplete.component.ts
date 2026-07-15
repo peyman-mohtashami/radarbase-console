@@ -22,9 +22,16 @@ import {MatError} from "@angular/material/form-field";
 import {TagComponent} from "../tag/tag.component";
 import {MatIconButton} from "@angular/material/button";
 
-export interface RadarOption {
-  id: number | string;
-  _name: string;
+// export interface RadarOption {
+//   id: number | string;
+//   _name: string;
+// }
+
+export interface MatSelectAutocompleteAdapter<TOption> {
+  value(option: TOption): string; //id
+  label(option: TOption): string; //_name
+  filter?(option: TOption): string;
+  // compare?(a: TValue, b: TValue): boolean;
 }
 
 @Component({
@@ -57,24 +64,25 @@ export interface RadarOption {
     MatIcon,
   ],
 })
-export class MatSelectAutocompleteComponent
+export class MatSelectAutocompleteComponent<TOption>
   implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy //, Validator
 {
   protected readonly ValidatorError = ValidatorError;
 
   label = input<string>("");
-  options = input<RadarOption[]>([]);
+  options = input<TOption[]>([]);
   multiple = input<boolean>(false);
   required = input<boolean>(false);
   // floatLabel = input<boolean>(false);
-  notRemovable = input<{ id: string | number; _name: string }>();
+  notRemovable = input<TOption>();
+  adapter = input.required<MatSelectAutocompleteAdapter<TOption>>();
 
-  form = new FormControl<RadarOption | RadarOption[] | null>(null); // = new FormControl<RadarOption[]>([]);
+  form = new FormControl<TOption | TOption[] | null>(null); // = new FormControl<RadarOption[]>([]);
 
   multiFilterCtrl: FormControl = new FormControl();
 
-  filteredMulti$: ReplaySubject<RadarOption[]> = new ReplaySubject<
-    RadarOption[]
+  filteredMulti$: ReplaySubject<TOption[]> = new ReplaySubject<
+    TOption[]
   >(1);
 
   @ViewChild('multiSelect', { static: true }) multiSelect!: MatSelect;
@@ -85,9 +93,9 @@ export class MatSelectAutocompleteComponent
 
   ngOnInit(): void {
     if(this.multiple()){
-      this.form = new FormControl<RadarOption[]>([]);
+      this.form = new FormControl<TOption[]>([]);
     }else {
-      this.form = new FormControl<RadarOption | null>(null);
+      this.form = new FormControl<TOption | null>(null);
     }
     this.filteredMulti$.next(this.options().slice());
 
@@ -129,13 +137,13 @@ export class MatSelectAutocompleteComponent
     }
     this.filteredMulti$.next(
       this.options().filter(
-        (option) => option._name.toLowerCase().indexOf(search) > -1
+        (option) => this.adapter().label(option).toLowerCase().indexOf(search) > -1
       )
     );
   }
 
-  removeChip(option: RadarOption) {
-    if(this.form.value && this.notRemovable()?.id !== option.id) {
+  removeChip(option: TOption) {
+    if(this.form.value && (!this.notRemovable() || this.adapter().value(this.notRemovable()!) !== this.adapter().value(option))) {
       if (Array.isArray(this.form.value)) {
         const formValue = [...this.form.value];
         const index = formValue?.indexOf(option);
@@ -170,21 +178,21 @@ export class MatSelectAutocompleteComponent
     }
   }
 
-  writeValue(value: RadarOption | RadarOption[]) {
+  writeValue(value: TOption | TOption[]) {
     // console.log(value);
     if (value) {
       if (Array.isArray(value)) {
-        const options = value.map((v: RadarOption) => {
-          return this.options().find((o) => o.id === v.id);
+        const options = value.map((v: TOption) => {
+          return this.options().find((o) => this.adapter().value(o) === this.adapter().value(v));
         })
         const _options = options.filter((option) => {
           // console.log(option);
           return !!option
-        }) as RadarOption[];
+        }) as TOption[];
         this.form.setValue(_options, { emitEvent: false });
       } else {
         // console.log('not array', this.options)
-        const _value = this.options().find((o) => o.id === value.id);
+        const _value = this.options().find((o) => this.adapter().value(o) === this.adapter().value(value));
         // console.log(_value)
         if (_value) {
           this.form.setValue(_value, { emitEvent: false });

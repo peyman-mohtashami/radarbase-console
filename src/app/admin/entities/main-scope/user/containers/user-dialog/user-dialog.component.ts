@@ -15,7 +15,8 @@ import {UserDialogService} from '../../services/user-dialog.service';
 import {UserConfigService} from '../../services/user-config.service';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
-  MatSelectAutocompleteComponent, RadarOption
+  MatSelectAutocompleteAdapter,
+  MatSelectAutocompleteComponent
 } from '../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
@@ -74,10 +75,20 @@ export class UserDialogComponent extends BaseEntityDialogComponent<AppUser> {
     _roles: new FormGroup({
       _sysAdmin: new FormControl<boolean>(false),
       _organizationAdmin: new FormControl<boolean>(false),
-      _organizations: new FormControl<RadarOption[]>([]),
+      _organizations: new FormControl<AppOrganization[]>([]),
       _projectAdmin: new FormControl<boolean>(false),
-      _projects: new FormControl<RadarOption[]>([]),
+      _projects: new FormControl<AppProject[]>([]),
     }),
   });
+
+  protected organizationAdapter: MatSelectAutocompleteAdapter<AppOrganization> = {
+    value: o => o.id.toString(),
+    label: o => o.name
+  }
+
+  protected projectAdapter: MatSelectAutocompleteAdapter<AppProject> = {
+    value: o => o.id.toString(),
+    label: o => o.projectName
+  }
 
 }

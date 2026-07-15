@@ -11,6 +11,7 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSelect} from '@angular/material/select';
 import {
+  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from '../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {Validator} from '../../../../../../shared/utils/validators';
@@ -72,4 +73,9 @@ export class SourceDataDialogComponent extends BaseEntityDialogComponent<AppSour
     frequency: new FormControl<string>(''),
     unit: new FormControl<string>(''),
   });
+
+  protected sourceTypeAdapter: MatSelectAutocompleteAdapter<AppSourceType> = {
+    value: s => s.id.toString(),
+    label: s => `${s.producer}_${s.model}_${s.catalogVersion}`
+  }
 }

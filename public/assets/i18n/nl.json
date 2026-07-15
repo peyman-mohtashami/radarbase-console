@@ -1600,6 +1600,8 @@
 
 
 
-  "hello": "Hello-en",
-  "title": "Management Portal"
+  "hello": "Hello-NL",
+  "title": "Management Portal",
+  "HOME": {"TITLE": "NL TITLE"}
+
 }

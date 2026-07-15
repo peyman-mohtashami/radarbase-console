@@ -43,7 +43,8 @@
         <app-mat-select-autocomplete formControlName='sourceType'
                                      [label]="`${_prefix}.sourceType.label` | translate"
                                      [options]='sourceTypes'
-                                     [required]="true" />
+                                     [required]="true"
+                                     [adapter]="sourceTypeAdapter"/>
       }
 
       <label for="source-data-name" class="text-sm">{{ `${_prefix}.sourceDataName.label` | translate  }} *</label>

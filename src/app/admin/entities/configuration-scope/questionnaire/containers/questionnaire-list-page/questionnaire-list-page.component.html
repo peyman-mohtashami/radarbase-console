@@ -89,5 +89,7 @@
   <app-questionnaire-table-row [entity]="entity"
                                [gridView]="gridView"
                                [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
-                               [extensionClass]="extensionClass()"/>
+                               [extensionClass]="extensionClass()"
+                               (duplicateEvent)="onDuplicate(entity)"
+                               (activeEvent)="onActiveChange($event, entity)" />
 </ng-template>

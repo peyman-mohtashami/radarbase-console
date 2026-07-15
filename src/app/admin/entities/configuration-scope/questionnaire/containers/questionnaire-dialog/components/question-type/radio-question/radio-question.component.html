@@ -2,18 +2,6 @@
 
 @switch (type) {
   @case ('button') {
-<!--    <div class="text-black">-->
-<!--      <div class="flex gap-2">-->
-<!--        @let field_label = entity().field_label?.[language().id];-->
-<!--        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>-->
-<!--        <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>-->
-<!--      </div>-->
-<!--      <div class="flex gap-2">-->
-<!--        @let section_header = entity().section_header?.[language().id];-->
-<!--        <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>-->
-<!--        <span>{{ section_header || 'N/A' }}</span>-->
-<!--      </div>-->
-
     @let choices = entity().select_choices_or_calculations;
 
     <div class="flex gap-2">
@@ -44,7 +32,7 @@
                     }
                   }
                 </mat-icon>
-                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().id] }}</span>
+                <span class="pt-0.5">{{ choice.code }}: {{ choice.label[language().code] }}</span>
               </span>
             } @else {
               <span class="inline-flex gap-1 text-red-500">
@@ -76,7 +64,6 @@
         </div>
       </span>
     </div>
-<!--    </div>-->
   }
   @case ('form') {
     <app-question-choices-form-array [choices]="choices"
@@ -90,7 +77,7 @@
       @for (option of entity().select_choices_or_calculations; track option.code) {
         <div>
           <mat-radio-button [value]="option.code" (click)="onPreviewInputChange(option.code)" [disabled]="isPreviewDisabled">
-            <span class="ion-text-wrap" [innerHtml]="option.label[language()!.id] | replacePlaceholders"></span>
+            <span class="ion-text-wrap" [innerHtml]="option.label[language()!.code] | replacePlaceholders"></span>
           </mat-radio-button>
         </div>
       }
@@ -106,7 +93,7 @@
       <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
         @for (option of entity().select_choices_or_calculations; track option.code) {
           <mat-option [value]="option.code">
-            <p>[{{ option.code }}]: {{ option.label[language().id] }}</p>
+            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>
           </mat-option>
         }
       </mat-select>

@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, output} from "@angular/core";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireDetailsComponent} from "../questionnaire-details/questionnaire-details.component";
 import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
@@ -7,9 +7,8 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
 import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionnaire-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {JsonPipe} from '@angular/common';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -20,11 +19,20 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
     PermissionDirective,
     QuestionnaireActionsComponent,
     TranslatePipe,
-    JsonPipe,
     TagComponent,
     MatSlideToggle,
   ]
 })
 export class QuestionnaireTableRowComponent extends BaseEntityTableRowComponent<AppQuestionnaire> {
   override configService = inject(QuestionnaireConfigService);
+  duplicateEvent = output<void>();
+  activeEvent = output<boolean>();
+
+  onDuplicate() {
+    this.duplicateEvent.emit();
+  }
+
+  protected onActiveChange($event: MatSlideToggleChange) {
+    this.activeEvent.emit($event.checked);
+  }
 }
