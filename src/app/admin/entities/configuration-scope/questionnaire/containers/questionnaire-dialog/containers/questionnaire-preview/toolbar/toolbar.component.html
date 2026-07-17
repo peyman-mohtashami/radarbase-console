@@ -26,7 +26,7 @@
 
   <span class="justify-self-center">
     @if (progress().enabled) {
-      {{ Math.ceil((progress().current + 1) * 100) / progress().total + '%' }}
+      {{ Math.ceil(((progress().current + 1) * 100) / progress().total) + '%' }}
 <!--      {{ progress().current + 1 + '/' + progress().total }}-->
     }
   </span>

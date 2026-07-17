@@ -64,6 +64,12 @@ export class RangeQuestionComponent implements OnInit {
           this.fb.array([])
         );
       }
+      if (!this.form.contains('show_code')) {
+        this.form.addControl(
+          'show_code',
+          this.fb.control(this.entity().show_code)
+        );
+      }
       if (!this.form.contains('show_selected_label')) {
         this.form.addControl(
           'show_selected_label',
@@ -89,6 +95,10 @@ export class RangeQuestionComponent implements OnInit {
 
   get show_selected_label(): FormControl {
     return this.form.get('show_selected_label') as FormControl;
+  }
+
+  get show_code(): FormControl {
+    return this.form.get('show_code') as FormControl;
   }
 
   get matrix_group_name(): FormControl {
@@ -127,7 +137,7 @@ export class RangeQuestionComponent implements OnInit {
     this.previewValueChange.emit(value);
   }
 
-  protected labelsDisabled() {
-    return false;
-  }
+  // protected labelsDisabled() {
+  //   return false;
+  // }
 }

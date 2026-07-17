@@ -4,17 +4,19 @@ import {PreviewStateService} from '../services/preview-state.service';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {QuestionType} from '../models/question';
 
+const RESERVED_VALUES = ['current_date', 'current_time'];
+
 @Pipe({
   name: 'replacePlaceholders',
-  standalone: true
+  pure: false
 })
 export class ReplacePlaceholdersPipe implements PipeTransform {
   private previewState = inject(PreviewStateService);
   private questionnaireDialogState = inject(QuestionnaireDialogStateService);
 
-  transform(value: string | undefined, ...args: unknown[]): SafeHtml | undefined {
-    if (value) {
-      return this.buildTextWithTemplateVariables(value);
+  transform(value: string | undefined, ...args: unknown[]): string | undefined {
+    if (value?.toString()) {
+      return this.buildTextWithTemplateVariables(value.toString());
     }
     return undefined;
   }
@@ -24,7 +26,7 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   replacePlaceholders(str = ""): string {
-    return str.replace(/\[([^[\]]+)]/g, (_, content: string) => {
+    return str.toString().replace(/\[([^[\]]+)]/g, (_, content: string) => {
       const placeholder = parsePlaceholder(content);
 
       if (!placeholder) {
@@ -49,33 +51,31 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
       });
 
       if (questionnaireId) {
-        // TODO: handle questionnaire-specific lookup
         const answer = this.getAnswerFromPlaceholder(placeholder);
-        return answer != null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
-        // return `[${content}]`;
+        return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
       }
 
-      const answer = this.getAnswer(questionId, questionnaireId, operator, startTimestamp, endTimestamp); //answers?.[questionId]?.[0]?.value;
+      if (RESERVED_VALUES.includes(questionId)) {
+        const answer = this.getReservedAnswer(questionId);
+        return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>` ;
+      }
 
-        // Replace it with the answer if it exists; otherwise leave the placeholder unchanged
-        return answer != null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
+      const answer = this.getAnswer(questionId);
+      return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
     });
   }
 
-  getAnswer(questionId: string, questionnaireId?: string, operator?: string, startTimestamp?: string, endTimestamp?: string): string | null {
-    if (!questionnaireId) {
-      const answers = this.previewState.answers();//?.[questionId]?.[0]?.value ?? null;
-      const answer = answers?.[questionId]?.[0];
-      if (!answer) { return null}
-      if (answer.type === QuestionType.CHECKBOX || answer.type === QuestionType.RADIO || answer.type === QuestionType.RANGE) {
-        const questions = this.questionnaireDialogState.questionnaire()?.questions;
-        const question = questions?.find(q => q.field_name === questionId);
-        return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
-      } else {
-        return answer?.value ?? null;
-      }
+  getAnswer(questionId: string): string | null {
+    const answers = this.previewState.answers();//?.[questionId]?.[0]?.value ?? null;
+    const answer = answers?.[questionId]?.[0];
+    if (!answer) { return null}
+    if (answer.type === QuestionType.CHECKBOX || answer.type === QuestionType.RADIO || answer.type === QuestionType.RANGE) {
+      const questions = this.questionnaireDialogState.questionnaire()?.questions;
+      const question = questions?.find(q => q.field_name === questionId);
+      return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
+    } else {
+      return answer?.value ?? null;
     }
-    return null;
   }
 
   private getAnswerFromPlaceholder(placeholder: Placeholder) {
@@ -84,6 +84,16 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
       return i.questionnaireId === placeholder.questionnaireId && i.questionId === placeholder.questionId
     });
     return answer?.value ?? null;
+  }
+
+  private getReservedAnswer(value: string) {
+    switch (value) {
+      case 'current_date':
+        return new Date().getTime();//.toLocaleDateString();
+      case 'current_time':
+        return new Date().toLocaleTimeString();
+    }
+    return null;
   }
 }
 

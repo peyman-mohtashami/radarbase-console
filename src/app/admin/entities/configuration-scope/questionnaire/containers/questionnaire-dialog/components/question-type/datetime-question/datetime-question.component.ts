@@ -20,6 +20,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatIcon} from '@angular/material/icon';
 import {AnswerWithTimeLog} from '../../../containers/questionnaire-preview/models/kafka';
+import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-datetime-question',
@@ -41,12 +43,16 @@ import {AnswerWithTimeLog} from '../../../containers/questionnaire-preview/model
     MatSlideToggle,
     MatIconButton,
     MatIcon,
+    ReplacePlaceholdersPipe,
+    DatePipe,
   ],
   templateUrl: './datetime-question.component.html'
 })
 export class DatetimeQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
+
+  protected readonly Number = Number;
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
   @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
@@ -105,6 +111,30 @@ export class DatetimeQuestionComponent implements OnInit {
     return this.form.get('matrix_group_name') as FormControl;
   }
 
+  protected onValidationDatePicked(
+    event: MatDatepickerInputEvent<Date>,
+    control: FormControl
+  ) {
+    const value = event.value;
+
+    if (!value) {
+      return;
+    }
+
+    control.setValue(this.formatDateForValidation(value));
+    control.markAsDirty();
+    control.markAsTouched();
+  }
+
+  private formatDateForValidation(value: Date): string {
+    return value.toISOString();
+    // const day = `${value.getDate()}`.padStart(2, '0');
+    // const month = `${value.getMonth() + 1}`.padStart(2, '0');
+    // const year = value.getFullYear();
+    //
+    // return `${day}/${month}/${year}`;
+  }
+
   protected get logicDateValue(): Date | null {
     if (!this.value) return null;
 
@@ -145,7 +175,10 @@ export class DatetimeQuestionComponent implements OnInit {
     this.previewValueChange.emit(value);
   }
 
-  // protected onDateChange($event: MatDatepickerInputEvent<any, any>) {
-  //
-  // }
+  protected getDateISOString(timestamp: string | undefined) {
+    if (!timestamp) return null;
+    const t = Number(timestamp);
+    if (isNaN(t)) return timestamp;
+    return new Date(t).toISOString();
+  }
 }

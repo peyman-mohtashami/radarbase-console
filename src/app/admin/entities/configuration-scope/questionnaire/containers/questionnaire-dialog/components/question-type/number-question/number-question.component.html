@@ -2,9 +2,13 @@
 
 @switch (type) {
   @case ('button') {
+    @if (!!entity().text_validation_min || !!entity().text_validation_max) {
+      <p>
+        <mat-hint>A number between {{ entity().text_validation_min }} and {{ entity().text_validation_max }}</mat-hint>
+      </p>
+    }
   }
   @case ('form') {
-<!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
     <fieldset class="p-2 rounded-sm border flex gap-2">
       <div class="w-1/2">
         <div>
@@ -12,7 +16,7 @@
                  class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
         </div>
         <mat-form-field class='small-input' appearance="outline">
-          <input id="text_validation_max" matInput [formControl]='text_validation_min' type="number"/>
+          <input id="text_validation_max" matInput [formControl]='text_validation_min'/>
         </mat-form-field>
       </div>
 
@@ -22,7 +26,7 @@
                  class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
         </div>
         <mat-form-field class='small-input' appearance="outline">
-          <input id="text_validation_max" matInput [formControl]='text_validation_max' type="number"/>
+          <input id="text_validation_max" matInput [formControl]='text_validation_max'/>
         </mat-form-field>
       </div>
     </fieldset>
@@ -42,11 +46,15 @@
 
     <mat-form-field subscriptSizing="fixed" appearance="outline">
       <input matInput maxlength="256" [value]="answer()?.value" [disabled]="isPreviewDisabled"
-             (input)="onPreviewInputChange($event)" [min]="entity().text_validation_min" [max]="entity().text_validation_max"
+             (input)="onPreviewInputChange($event)" [min]="Number(entity().text_validation_min | replacePlaceholders)"
+             [max]="Number(entity().text_validation_max | replacePlaceholders)"
              [type]="'number'">
+      <mat-hint>Enter a number between {{ entity().text_validation_min | replacePlaceholders }}
+        and {{ entity().text_validation_max | replacePlaceholders }}
+      </mat-hint>
     </mat-form-field>
     @if (error) {
-      <p class="text-red-700">{{ error }}</p>
+      <p class="text-red-700 text-sm mt-4">{{ error }}</p>
     }
 
     @if (!isPreviewDisabled) {

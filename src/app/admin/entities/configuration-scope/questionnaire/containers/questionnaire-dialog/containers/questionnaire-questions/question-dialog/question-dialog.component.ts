@@ -89,6 +89,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
     section_header: new FormGroup({}),
     required_field: new FormControl('true', {nonNullable: true}),
     field_note: new FormGroup({}),
+    matrix_group_name: new FormControl<string>('', {nonNullable: true}),
     // branching_logic: new FormControl<string>('', {nonNullable: true}),
     conditionalLogic: new FormControl<({operand: string; operator: string; value: string}[][])>([], {nonNullable: true}),
   });
@@ -157,6 +158,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy
 
     return {
       ...this.question,
+      ...formValue,
       field_name: formValue.field_name,
       field_type: this.question?.field_type,
       field_label: {...this.question?.field_label, ...formValue.field_label},

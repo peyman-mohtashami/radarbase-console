@@ -9,6 +9,14 @@
   }
   @case ('form') {
     <div>
+      <label for="text_validation_max"
+             class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+    </div>
+    <mat-form-field class='small-input' appearance="outline">
+      <input id="text_validation_max" matInput [formControl]='text_validation_max'/>
+    </mat-form-field>
+
+    <div>
       <div>
         <label for="" class="text-sm">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</label>
       </div>

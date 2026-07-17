@@ -158,6 +158,7 @@ export interface AppQuestion {
   branching_logic?: string;
   conditionalLogic?: {operand: string; operator: string; value: string}[][];
   show_selected_label?: boolean;
+  show_code?: boolean;
   multi_line?: boolean;
   calculation_fn?: string;
   calculation_args?: string;

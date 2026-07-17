@@ -44,6 +44,7 @@
     "ngx-logger": "^5.0.12",
     "ngx-mat-select-search": "^8.0.2",
     "rxjs": "~7.8.0",
+    "safe-regex2": "^5.1.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

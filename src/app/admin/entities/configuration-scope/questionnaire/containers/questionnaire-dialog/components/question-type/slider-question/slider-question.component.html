@@ -10,9 +10,28 @@
     </div>
   }
   @case ('form') {
-    <label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }}</label>
+    <label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }} *</label>
     <fieldset [formGroup]="range" class="p-2 rounded-sm border">
       <div class="grid grid-cols-3 gap-4">
+<!--        <div class="">-->
+<!--          <div>-->
+<!--            <label for="min" class="text-sm" [class]="range.controls['min'].errors ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeMin` | translate }} *</label>-->
+<!--          </div>-->
+<!--          <mat-form-field class='small-input' appearance="outline" subscriptSizing="dynamic">-->
+<!--            <input id="min" matInput formControlName='min' required/>-->
+<!--            <mat-error>-->
+<!--              @if (range.controls['min'].errors; as errors) {-->
+<!--                @if (errors?.['pattern']) {-->
+<!--                  {{ ValidatorError.normalTextValidator | translate }}-->
+<!--                }-->
+<!--                @if (errors?.['required']) {-->
+<!--                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMin` | translate} }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
         <div>
           <label for="select_choices_or_calculations" class="text-sm" [class]="range.controls['min'].errors ? 'text-red-500' : ''">
             {{ `${_prefix}.questionRangeMin` | translate }} *
@@ -51,6 +70,25 @@
           </mat-form-field>
         </div>
 
+<!--        <div class="">-->
+<!--          <div>-->
+<!--            <label for="max" class="text-sm" [class]="range.controls['max'].errors ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeMax` | translate }} *</label>-->
+<!--          </div>-->
+<!--          <mat-form-field class='small-input' appearance="outline" subscriptSizing="dynamic">-->
+<!--            <input id="max" matInput formControlName='max' required/>-->
+<!--            <mat-error>-->
+<!--              @if (range.controls['max'].errors; as errors) {-->
+<!--                @if (errors?.['pattern']) {-->
+<!--                  {{ ValidatorError.normalTextValidator | translate }}-->
+<!--                }-->
+<!--                @if (errors?.['required']) {-->
+<!--                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeMax` | translate} }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
+
         <div>
           <label for="select_choices_or_calculations" class="text-sm" [class]="range.controls['step'].errors ? 'text-red-500' : ''">
             {{ `${_prefix}.questionRangeStep` | translate }} *
@@ -69,6 +107,25 @@
             </mat-error>
           </mat-form-field>
         </div>
+
+<!--        <div class="">-->
+<!--          <div>-->
+<!--            <label for="step" class="text-sm" [class]="range.controls['step'].errors ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeStep` | translate }} *</label>-->
+<!--          </div>-->
+<!--          <mat-form-field class='small-input' appearance="outline" subscriptSizing="dynamic">-->
+<!--            <input id="step" matInput formControlName='step' required/>-->
+<!--            <mat-error>-->
+<!--              @if (range.controls['step'].errors; as errors) {-->
+<!--                @if (errors?.['pattern']) {-->
+<!--                  {{ ValidatorError.normalTextValidator | translate }}-->
+<!--                }-->
+<!--                @if (errors?.['required']) {-->
+<!--                  {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.questionRangeStep` | translate} }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+<!--        </div>-->
       </div>
       @if (range.errors?.['minLessThanMax']) {
         <mat-error class="text-sm">Min should be less than max.</mat-error>

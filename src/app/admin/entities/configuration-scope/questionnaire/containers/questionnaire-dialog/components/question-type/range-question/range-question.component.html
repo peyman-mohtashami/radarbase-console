@@ -72,10 +72,19 @@
 
     <div>
       <div>
-        <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
+        <label for="show_code" class="text-sm">{{ `${_prefix}.showCode` | translate }}</label>
+      </div>
+      <mat-slide-toggle [formControl]="show_code"/>
+    </div>
+
+    <div>
+      <div>
+        <label for="show_selected_label" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
       </div>
       <mat-slide-toggle [formControl]="show_selected_label"/>
     </div>
+
+
 
 <!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
     <div class="mt-4">
@@ -92,18 +101,19 @@
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()"/>
 
-    <div class="flex flex-nowrap items-center mt-4">
+    <div class="w-full flex flex-wrap items-center mt-4 gap-px">
       @for (item of entity().select_choices_or_calculations; track item) {
         <div
-          class="cursor-pointer flex grow items-center justify-center py-3 border-2 border-primary text-lg border-r-0 first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+          class="cursor-pointer flex grow items-center justify-center py-3 border-2 border-primary text-lg first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
           [class]="(previewValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
           (click)="onPreviewInputChange(item.code)">
-          <span class="ion-text-wrap text-center" [innerHtml]="(item.code) | replacePlaceholders"></span>
+          <span class="ion-text-wrap text-center"
+                [innerHtml]="(entity().show_code ? item.code : item.label[language().code]) | replacePlaceholders"></span>
         </div>
       }
     </div>
 
-    @if (!labelsDisabled() && entity().select_choices_or_calculations; as choices) {
+    @if (entity().show_code && entity().select_choices_or_calculations; as choices) {
       <div class="flex justify-between mt-2">
         <div class="w-1/2" [innerHtml]="choices[0].label[language().code] | replacePlaceholders"></div>
         <div class="w-1/2 text-right"

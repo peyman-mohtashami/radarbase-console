@@ -24,9 +24,29 @@
             <label for="text_validation_min"
                    class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
           </div>
+<!--          <mat-form-field class="small-input w-1/2" appearance='outline'>-->
+<!--&lt;!&ndash;            <input [formControl]='text_validation_min' matInput [matDatepicker]="dp1" readonly tabindex="-1"&ndash;&gt;-->
+<!--&lt;!&ndash;                   (click)="dp1.open()">&ndash;&gt;-->
+<!--            <input [formControl]='text_validation_min' matInput [matDatepicker]="dp1">-->
+<!--            @if (text_validation_min.value) {-->
+<!--              <button matIconButton-->
+<!--                      matSuffix-->
+<!--                      type="button"-->
+<!--                      aria-label="Clear min date"-->
+<!--                      (click)="$event.stopPropagation(); text_validation_min.reset()">-->
+<!--                <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+<!--              </button>-->
+<!--            }-->
+<!--            <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>-->
+<!--            <mat-datepicker #dp1></mat-datepicker>-->
+<!--          </mat-form-field>-->
           <mat-form-field class="small-input w-1/2" appearance='outline'>
-            <input [formControl]='text_validation_min' matInput [matDatepicker]="dp1" readonly tabindex="-1"
-                   (click)="dp1.open()">
+            <input
+              id="text_validation_min"
+              [formControl]='text_validation_min'
+              matInput
+              placeholder="dd/MM/yyyy or [q1]">
+
             @if (text_validation_min.value) {
               <button matIconButton
                       matSuffix
@@ -36,9 +56,16 @@
                 <mat-icon class="material-symbols-outlined">close</mat-icon>
               </button>
             }
+
             <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>
             <mat-datepicker #dp1></mat-datepicker>
           </mat-form-field>
+
+          <input
+            class="hidden"
+            [matDatepicker]="dp1"
+            (dateChange)="onValidationDatePicked($event, text_validation_min)">
+
         </div>
 
         <div class="w-1/2">
@@ -46,20 +73,46 @@
             <label for="text_validation_max"
                    class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
           </div>
+<!--          <mat-form-field class="small-input w-1/2" appearance='outline'>-->
+<!--            <input [formControl]='text_validation_max' matInput [matDatepicker]="dp2" readonly (click)="dp2.open()">-->
+<!--            @if (text_validation_max.value) {-->
+<!--              <button matIconButton-->
+<!--                      matSuffix-->
+<!--                      type="button"-->
+<!--                      aria-label="Clear min date"-->
+<!--                      (click)="$event.stopPropagation(); text_validation_max.reset()">-->
+<!--                <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+<!--              </button>-->
+<!--            }-->
+<!--            <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>-->
+<!--            <mat-datepicker #dp2></mat-datepicker>-->
+<!--          </mat-form-field>-->
           <mat-form-field class="small-input w-1/2" appearance='outline'>
-            <input [formControl]='text_validation_max' matInput [matDatepicker]="dp2" readonly (click)="dp2.open()">
+            <input
+              id="text_validation_max"
+              [formControl]='text_validation_max'
+              matInput
+              placeholder="dd/MM/yyyy or [q1]">
+
             @if (text_validation_max.value) {
               <button matIconButton
                       matSuffix
                       type="button"
-                      aria-label="Clear min date"
+                      aria-label="Clear max date"
                       (click)="$event.stopPropagation(); text_validation_max.reset()">
                 <mat-icon class="material-symbols-outlined">close</mat-icon>
               </button>
             }
+
             <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
             <mat-datepicker #dp2></mat-datepicker>
           </mat-form-field>
+
+          <input
+            class="hidden"
+            [matDatepicker]="dp2"
+            (dateChange)="onValidationDatePicked($event, text_validation_max)">
+
         </div>
       </fieldset>
     </div>
@@ -93,10 +146,23 @@
 <!--        </mat-form-field>-->
 <!--      }-->
       @default {
+<!--        <pre>Min: {{entity().text_validation_min}}</pre>-->
+<!--        <pre>Max: {{entity().text_validation_max}}</pre>-->
+<!--        <pre>MinP: {{entity().text_validation_min | replacePlaceholders}}</pre>-->
+<!--        <pre>MaxP: {{entity().text_validation_max | replacePlaceholders}}</pre>-->
+<!--        <pre>MinF: {{entity().text_validation_min | replacePlaceholders | date}}</pre>-->
+<!--        <pre>MaxF: {{entity().text_validation_max | replacePlaceholders | date}}</pre>-->
         <mat-form-field class="small-input" appearance='outline'>
-          <input [min]="entity().text_validation_min" [max]="entity().text_validation_max"
-                 [value]="previewDateValue" matInput [matDatepicker]="dp3" readonly (click)="dp3.open()"
-                 (dateChange)="onPreviewDateInputChange($event)">
+<!--          <input-->
+<!--          [min]="entity().text_validation_min" [max]="entity().text_validation_max"-->
+
+<!--                 [value]="previewDateValue" matInput [matDatepicker]="dp3" readonly (click)="dp3.open()"-->
+<!--                 (dateChange)="onPreviewDateInputChange($event)">-->
+        <input
+          [min]="getDateISOString(entity().text_validation_min | replacePlaceholders)"
+          [max]="getDateISOString(entity().text_validation_max | replacePlaceholders)"
+          [value]="previewDateValue" matInput [matDatepicker]="dp3" readonly (click)="dp3.open()"
+          (dateChange)="onPreviewDateInputChange($event)">
           <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
           <mat-datepicker #dp3></mat-datepicker>
         </mat-form-field>
