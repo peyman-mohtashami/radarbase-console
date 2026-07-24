@@ -3,8 +3,8 @@ import {RadarProject} from '../../project/models/project';
 export interface RadarOrganization {
   id: number | string;
   name: string;
-  description: string | null;
-  location: string | null;
+  description?: string;
+  location?: string;
   projects?: RadarProject[];
 }
 

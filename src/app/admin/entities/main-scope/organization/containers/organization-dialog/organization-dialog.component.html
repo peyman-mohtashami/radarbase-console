@@ -1,7 +1,7 @@
 @let _prefix = "ADMIN.organization";
 
 @if (dialogData.mode) {
-  <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <h2 mat-dialog-title class="border-b border-neutral-400">
     <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
     <span> {{ `${_prefix}.title.singular` | translate }}</span>
     <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
@@ -90,30 +90,33 @@
         @if (dialogData.mode !== DialogMode.ADD) {
           <label for="organization-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
           <mat-form-field appearance='fill'>
-            <input matInput id="organization-id" [formField]="form2.id">
+            <input matInput id="organization-id" [formField]="form.id">
           </mat-form-field>
         }
 
         <label for="organization-name" class="text-sm">{{ `${_prefix}.name.label` | translate }} *</label>
         <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
           <input matInput id="organization-id" autocomplete="off" data-lpignore="true"
-                 [formField]='form2.name'
-                 required
+                 [formField]='form.name'
                  type="text">
 
-
           <mat-error>
-            @if (form.controls.name.errors; as errors) {
-              @if (errors?.['duplicate']) {
-                {{ ValidatorError.duplicateValidator | translate:{value: form.controls.name.value} }}
-              }
-              @if (errors?.['pattern']) {
-                {{ ValidatorError.normalTextValidator | translate }}
-              }
-              @if (errors?.['required']) {
-                {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.name.label` | translate} }}
+            @if (form.name().touched() && form.name().invalid()) {
+              @for (error of form.name().errors(); track error.kind) {
+                {{ error.message }}
               }
             }
+<!--            @if (form2.name().errors; as errors) {-->
+<!--              @if (errors().?.['duplicate']) {-->
+<!--                {{ ValidatorError.duplicateValidator | translate:{value: form.controls.name.value} }}-->
+<!--              }-->
+<!--              @if (errors()?.['pattern']) {-->
+<!--                {{ ValidatorError.normalTextValidator | translate }}-->
+<!--              }-->
+<!--              @if (errors?.['required']) {-->
+<!--                {{ ValidatorError.requiredValidator | translate:{value: `${_prefix}.name.label` | translate} }}-->
+<!--              }-->
+<!--            }-->
           </mat-error>
         </mat-form-field>
 
@@ -121,14 +124,19 @@
           <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
           <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
             <input matInput id="location" autocomplete="off" data-lpignore="true"
-                   [formField]="form2.location"
+                   [formField]="form.location"
                    type="text">
             <mat-error>
-              @if (form.controls.location.errors; as errors) {
-                @if (errors?.['pattern']) {
-                  {{ ValidatorError.normalTextValidator | translate }}
+              @if (form.location().touched() && form.location().invalid()) {
+                @for (error of form.location().errors(); track error.kind) {
+                  {{ error.message }}
                 }
               }
+<!--              @if (form.controls.location.errors; as errors) {-->
+<!--                @if (errors?.['pattern']) {-->
+<!--                  {{ ValidatorError.normalTextValidator | translate }}-->
+<!--                }-->
+<!--              }-->
             </mat-error>
           </mat-form-field>
         }
@@ -137,18 +145,22 @@
           <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
           <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
           <textarea matInput #description
-                    [formField]="form2.description"
+                    [formField]="form.description"
                     id="description"
-                    rows='3'
-                    maxlength='255'></textarea>
+                    rows='3'></textarea>
             <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
 
             <mat-error>
-              @if (form.controls.description.errors; as errors) {
-                @if (errors?.['pattern']) {
-                  {{ ValidatorError.longTextValidator | translate }}
+              @if (form.description().touched() && form.description().invalid()) {
+                @for (error of form.description().errors(); track error.kind) {
+                  {{ error.message }}
                 }
               }
+<!--              @if (form.controls.description.errors; as errors) {-->
+<!--                @if (errors?.['pattern']) {-->
+<!--                  {{ ValidatorError.longTextValidator | translate }}-->
+<!--                }-->
+<!--              }-->
             </mat-error>
           </mat-form-field>
         }
@@ -162,7 +174,42 @@
     </app-error-message-box>
   }
 
-  <app-dialog-actions [dialogMode]='dialogData.mode'
-                      [form]='form'
-                      (actionTriggered)='onAction($event)'/>
+<!--  <app-dialog-actions [dialogMode]='dialogData.mode'-->
+<!--                      [form]='form2'-->
+<!--                      (actionTriggered)='onAction($event)'/>-->
+
+  <mat-dialog-actions align="end" class="justify-between!">
+    <button (click)='close()' mat-stroked-button color="accent">
+      {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    </button>
+    @switch (dialogData.mode) {
+      @case (DialogMode.DELETE) {
+        <button [disabled]='isLoading' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+          @if (isLoading) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+            {{ 'SHARED.dialog.deletingButton' | translate }}
+          } @else {
+            {{ 'SHARED.dialog.yes' | translate }}
+          }
+        </button>
+      }
+      @case (DialogMode.EDIT) {
+        <button [disabled]='form().invalid() || isLoading' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+          @if (isLoading) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          }
+          {{ "SHARED.dialog.update" | translate }}
+        </button>
+      }
+      @case (DialogMode.ADD) {
+        <button [disabled]='form().invalid() || isLoading' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+          @if (isLoading) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          }
+          {{ "SHARED.dialog.create" | translate }}
+        </button>
+      }
+    }
+  </mat-dialog-actions>
+
 }

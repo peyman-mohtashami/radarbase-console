@@ -11,7 +11,13 @@ import {
 import {
   // AbstractControl, FormControl, FormGroup,
   ReactiveFormsModule} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle
+} from '@angular/material/dialog';
 
 // import {Validator} from '../../../../../../shared/utils/validators';
 import { AppOrganization } from "../../models/organization";
@@ -29,7 +35,20 @@ import {Observable, Subject} from 'rxjs';
 import {form, FormField, pattern, required, validate} from '@angular/forms/signals';
 // import {BaseConfigService} from '../../../../../base-entities/services/base-config.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {ValidatorError} from '../../../../../../shared/utils/validators';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {RadarProject} from '../../../project/models/project';
+import {JsonPipe} from '@angular/common';
 // import {debounceTime, takeUntil} from 'rxjs/operators';
+
+export interface FormOrganization {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+}
 
 @Component({
   selector: 'app-organization-dialog',
@@ -49,10 +68,17 @@ import {HttpErrorResponse} from '@angular/common/http';
     ErrorMessageBoxComponent,
     MatDialogTitle,
     FormField,
+    MatButton,
+    MatDialogActions,
+    MatIcon,
+    MatProgressSpinner,
+    JsonPipe,
   ]
 })
 export class OrganizationDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly DialogMode = DialogMode;
+  protected readonly ValidatorError = ValidatorError;
+  protected readonly DialogAction = DialogAction;
 
   configService = inject(OrganizationConfigService);
   dialogRef = inject(MatDialogRef<OrganizationDialogComponent>);
@@ -65,26 +91,24 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit, OnDes
 
   formFields = this.configService.getFormFields();
 
-  model = signal<AppOrganization>({
+  model = signal<FormOrganization>({
     name: '',
     description: '',
     location: '',
     id: '',
-    _name: '',
-    _search: ''
   });
 
-  form2 = form(this.model, (schema) => {
-    required(schema.name);
+  form = form(this.model, (schema) => {
+    required(schema.name, {message: 'SHARED.validatorError.required'});
     pattern(schema.name, /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/, {
       message: 'SHARED.validatorError.normalTextValidator',
     });
-    validate(schema.name, ({value}) => {
-      return this.organizationFullList.find(
-        entity =>
-          value() === entity.name && this.dialogData.entity?.name !== entity.name
-      ) ? {kind: 'duplicate', message: 'SHARED.validatorError.duplicate' } : null;
-    });
+    // validate(schema.name, ({value}) => {
+    //   return this.organizationFullList.find(
+    //     entity =>
+    //       value() === entity.name && this.dialogData.entity?.name !== entity.name
+    //   ) ? {kind: 'duplicate', message: 'SHARED.validatorError.duplicate' } : null;
+    // });
     pattern(schema.description, /^.{1,255}$/m, {
       message: 'SHARED.validatorError.longTextValidator',
     });
@@ -111,12 +135,19 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit, OnDes
 
   dialogActionEvent = output<{ action: DialogMode | string, entity?: AppOrganization }>();
 
+  isLoading = false;
+
   _destroy$: Subject<void> = new Subject<void>();
 
   ngOnInit() {
     // this.formFields = this.configService.getFormFields();
     if (this.dialogData.entity) {
-      this.model.set(this.dialogData.entity);
+      this.model.set({
+        ...this.dialogData.entity,
+        id: `${this.dialogData.entity.id}`,
+        location: this.dialogData.entity.location ?? '',
+        description: this.dialogData.entity.description ?? '',
+      });
     }
     // if (this.dialogData.entity) this.form.patchValue(this.dialogData.entity);
     // this.form.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$)).subscribe((value) => {
@@ -167,7 +198,11 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit, OnDes
   protected handleSaveAction(): void {
     this.dialogActionEvent.emit({
       action: this.dialogData.mode,
-      entity: this.model()
+      entity: {
+        ...this.model(),
+        _name: this.model().name,
+        _search: `${this.model().name}_${this.model().location}_${this.model().description}`,
+      }
     });
   }
 
@@ -203,4 +238,5 @@ export class OrganizationDialogComponent implements OnInit, AfterViewInit, OnDes
   //     ? { duplicate: true }
   //     : null;
   // };
+
 }
