@@ -1,9 +1,10 @@
-import {Component, HostBinding, input, Input} from '@angular/core';
+import {Component, HostBinding, input, Input, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-tag',
   templateUrl: './tag.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
   ]

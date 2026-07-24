@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
@@ -20,6 +20,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
 @Component({
   selector: 'app-client-dialog',
   templateUrl: './client-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     TranslatePipe,

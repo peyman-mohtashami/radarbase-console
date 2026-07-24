@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {AppSourceData, RadarSourceData} from "../../models/source-data";
 
 import {SourceDataDialogService} from '../../services/source-data-dialog.service';
@@ -20,6 +20,7 @@ import {
 @Component({
   selector: 'app-source-data-page',
   templateUrl: './source-data-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatPrefix,

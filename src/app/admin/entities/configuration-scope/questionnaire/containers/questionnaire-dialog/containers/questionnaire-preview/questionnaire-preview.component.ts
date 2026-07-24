@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../models/questionnaire';
 import {QuestionsService} from './services/questions.service';
@@ -30,6 +30,7 @@ type PlaceholderFormGroup = FormGroup<{
 @Component({
   selector: 'app-questionnaire-preview',
   templateUrl: 'questionnaire-preview.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatIconButton,

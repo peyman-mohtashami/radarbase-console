@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import { combineLatest } from 'rxjs';
 
 import { MetricsService } from '../../services/metrics.service';
@@ -30,6 +30,7 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-metrics-page',
   templateUrl: './metrics-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     LoaderComponent,

@@ -2,6 +2,7 @@ import {
   Component,
   input,
   output,
+  ChangeDetectionStrategy
 } from '@angular/core'
 
 import {TranslatePipe} from '@ngx-translate/core'
@@ -21,6 +22,7 @@ export enum ToolbarAction {
 @Component({
   selector: 'app-toolbar',
   templateUrl: 'toolbar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatIcon,

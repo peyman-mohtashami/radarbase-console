@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 import {Validator, ValidatorError} from '../../../../shared/utils/validators';
@@ -20,6 +20,7 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
 @Component({
   selector: 'app-forgot-password-page',
   templateUrl: './forgot-password-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,

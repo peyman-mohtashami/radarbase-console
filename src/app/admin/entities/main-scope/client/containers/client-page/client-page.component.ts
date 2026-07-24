@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppClient, RadarClient} from "../../models/client";
@@ -22,6 +22,7 @@ import {
 @Component({
   selector: 'app-client-page',
   templateUrl: './client-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     ReactiveFormsModule,

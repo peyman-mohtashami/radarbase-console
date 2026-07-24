@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from '@angular/core';
+import {Component, inject, input, output, ChangeDetectionStrategy} from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AppSubject } from "../../models/subject";
 import {MatButton} from "@angular/material/button";
@@ -10,6 +10,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-subject-assign-group',
   templateUrl: './subject-assign-group.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatButton,
     MatIcon,

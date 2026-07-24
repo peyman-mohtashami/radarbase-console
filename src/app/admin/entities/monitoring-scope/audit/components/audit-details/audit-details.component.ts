@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 
 import {EntityDetailsComponent} from "../../../../../base-entities/components/entity-details/entity-details.component";
 import {AppAudit} from '../../models/audit';
@@ -8,6 +8,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-audit-details',
   templateUrl: './audit-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     EntityDetailsComponent,
   ]

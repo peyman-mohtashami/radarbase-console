@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {RouterLink} from "@angular/router";
 import {MatCard, MatCardContent} from "@angular/material/card";
 
@@ -16,6 +16,7 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-organization-table-row',
   templateUrl: './organization-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     RouterLink,

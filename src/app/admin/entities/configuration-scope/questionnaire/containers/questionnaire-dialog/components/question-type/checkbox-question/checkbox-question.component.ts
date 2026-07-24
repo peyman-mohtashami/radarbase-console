@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -34,6 +34,7 @@ import {JsonPipe} from '@angular/common';
     QuestionHeaderComponent,
     JsonPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './checkbox-question.component.html'
 })
 export class CheckboxQuestionComponent implements OnInit {

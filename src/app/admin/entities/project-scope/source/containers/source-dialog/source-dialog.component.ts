@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -28,6 +29,7 @@ import {AppProject} from '../../../../main-scope/project/models/project';
 @Component({
   selector: 'app-source-dialog',
   templateUrl: './source-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     ReactiveFormsModule,

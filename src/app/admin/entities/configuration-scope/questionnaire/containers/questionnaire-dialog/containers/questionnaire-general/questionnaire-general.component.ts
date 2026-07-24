@@ -1,4 +1,4 @@
-import {Component, inject, input, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -21,6 +21,7 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
 @Component({
   selector: 'app-questionnaire-general',
   templateUrl: 'questionnaire-general.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatError,
     MatFormField,

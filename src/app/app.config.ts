@@ -7,7 +7,7 @@ import {
 import {provideRouter, withRouterConfig} from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
 import {provideCore} from './core/provideCore';
 // import {provideMonacoEditor} from "ngx-monaco-editor-v2";
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideHttpClient(
+    provideHttpClient(withXhr(), 
       // DI-based interceptors must be explicitly enabled.
       withInterceptorsFromDi(),
     ),

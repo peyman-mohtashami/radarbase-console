@@ -1,7 +1,7 @@
 @for (type of REVISION_TYPES | keyvalue; track type) {
   @for (entity of REVISION_ENTITIES | keyvalue; track entity) {
-    @for (item of $any(revision()?.changes)?.[type.key][entity.key]; track item) {
-      <a [routerLink]="[entity.value, item.name, 'revisions', revision()?.id]" >
+    @for (item of $any($safeNavigationMigration(revision()?.changes))?.[type.key][entity.key]; track item) {
+      <a [routerLink]="[entity.value, item.name, 'revisions', $safeNavigationMigration(revision()?.id)]" >
         <app-tag [class]="type.value">{{'ADMIN.revision.entity.' + entity.key | translate }} {{item.name}}</app-tag>
       </a>
     }

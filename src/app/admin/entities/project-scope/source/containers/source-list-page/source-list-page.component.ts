@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {SourceService} from '../../services/source.service';
 import {SourceConfigService} from '../../services/source-config.service';
@@ -22,6 +22,7 @@ import {findRouteData} from '../../../../main-scope/organization/services/organi
 @Component({
   selector: 'app-source-list-page',
   templateUrl: './source-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableFilterComponent,
     // ListPageHeaderComponent,

@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppConfig} from '../../models/config';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ConfigConfigService} from "../../services/config-config.service";
@@ -10,6 +10,7 @@ import {ConfigActionsComponent} from '../config-actions/config-actions.component
 @Component({
   selector: 'app-config-table-row',
   templateUrl: './config-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatTooltip,
     EntityTableRowComponent,

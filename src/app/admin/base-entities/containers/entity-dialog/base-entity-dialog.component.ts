@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, output, signal} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {MatDialogRef} from '@angular/material/dialog';
 import {AbstractControl, FormGroup} from '@angular/forms';
@@ -11,6 +11,7 @@ import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-base-dialog',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEntityDialogComponent<T> implements OnInit, AfterViewInit, OnDestroy {

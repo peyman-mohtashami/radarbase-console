@@ -1,4 +1,4 @@
- import {Component, inject, signal} from '@angular/core';
+ import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {SubjectService} from '../../services/subject.service';
 import {SubjectConfigService} from '../../services/subject-config.service';
@@ -20,6 +20,7 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
 @Component({
   selector: 'app-subject-list-page',
   templateUrl: './subject-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableFilterComponent,
     LoaderComponent,

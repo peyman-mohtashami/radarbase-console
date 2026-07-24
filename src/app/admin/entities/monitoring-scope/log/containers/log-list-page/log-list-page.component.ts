@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {LogConfigService} from '../../services/log-config.service';
 import {AppLog, RadarLog} from '../../models/log';
@@ -15,6 +15,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-log-list-page',
   templateUrl: './log-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

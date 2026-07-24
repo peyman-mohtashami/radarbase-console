@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {ClientService} from '../../services/client.service';
 import {ClientConfigService} from '../../services/client-config.service';
@@ -20,6 +20,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-client-list-page',
   templateUrl: './client-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

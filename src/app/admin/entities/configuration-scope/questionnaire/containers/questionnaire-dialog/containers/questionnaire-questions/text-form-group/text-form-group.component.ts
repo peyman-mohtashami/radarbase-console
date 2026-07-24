@@ -1,4 +1,4 @@
-import {Component, effect, inject, Input, input, OnInit} from '@angular/core';
+import {Component, effect, inject, Input, input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {
   FormGroup,
   ReactiveFormsModule, FormBuilder
@@ -15,6 +15,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-text-form-group',
   templateUrl: './text-form-group.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatFormField,

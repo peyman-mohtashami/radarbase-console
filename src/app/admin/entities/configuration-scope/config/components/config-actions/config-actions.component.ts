@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -13,6 +13,7 @@ import {ConfigDialogService} from '../../services/config-dialog.service';
 @Component({
   selector: 'app-config-actions',
   templateUrl: './config-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,

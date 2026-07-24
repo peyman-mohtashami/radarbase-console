@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
@@ -46,6 +46,7 @@ import {DatePipe} from '@angular/common';
     ReplacePlaceholdersPipe,
     DatePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './datetime-question.component.html'
 })
 export class DatetimeQuestionComponent implements OnInit {

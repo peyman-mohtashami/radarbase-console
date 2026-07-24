@@ -2,7 +2,8 @@ import {
   Component, effect,
   input,
   OnInit,
-  output, viewChild, ViewContainerRef
+  output, viewChild, ViewContainerRef,
+  ChangeDetectionStrategy
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../models/kafka';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
@@ -13,6 +14,7 @@ import {outputToObservable} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-question',
   templateUrl: 'question.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class QuestionComponent implements OnInit {

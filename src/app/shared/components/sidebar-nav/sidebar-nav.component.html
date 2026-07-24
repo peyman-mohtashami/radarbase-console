@@ -7,12 +7,12 @@
       <mat-expansion-panel-header class="" [class]="isMenuOpen() ? 'px-4!': 'px-2!'">
         <div class="flex gap-2 items-center w-full!" [class]="!isMenuOpen() ? 'md:justify-start' : ''">
               <span class="material-symbols-outlined"
-                    [matTooltip]="!isMenuOpen() ? (('SHARED.nav.' + navGroupItem.header?.name) | translate) : ''"
+                    [matTooltip]="!isMenuOpen() ? (('SHARED.nav.' + $safeNavigationMigration(navGroupItem.header?.name)) | translate) : ''"
                     [matTooltipPosition]="'after'">
                 {{ navGroupItem.header?.icon }}
               </span>
           <div class="item-label uppercase whitespace-nowrap">
-            <span class=''>{{ ("SHARED.nav." + navGroupItem.header?.name) | translate }}</span>
+            <span class=''>{{ ("SHARED.nav." + $safeNavigationMigration(navGroupItem.header?.name)) | translate }}</span>
           </div>
         </div>
       </mat-expansion-panel-header>

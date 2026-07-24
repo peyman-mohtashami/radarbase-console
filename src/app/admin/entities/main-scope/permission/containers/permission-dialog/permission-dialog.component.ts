@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
@@ -24,6 +24,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 @Component({
   selector: 'app-permission-dialog',
   templateUrl: './permission-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     TranslatePipe,

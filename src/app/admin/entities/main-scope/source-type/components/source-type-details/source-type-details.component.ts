@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppSourceType } from "../../models/source-type";
 import {SourceTypeScopeComponent} from "../source-type-scope/source-type-scope.component";
 import {
@@ -12,6 +12,7 @@ import {SourceTypeConfigService} from '../../services/source-type-config.service
 @Component({
   selector: 'app-source-type-details',
   templateUrl: './source-type-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     SourceTypeScopeComponent,
     SourceTypeSourceRegistrationComponent,

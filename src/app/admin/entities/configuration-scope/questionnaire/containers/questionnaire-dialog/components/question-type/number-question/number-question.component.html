@@ -45,7 +45,7 @@
     <app-question-header [question]="entity()" [language]="language()"/>
 
     <mat-form-field subscriptSizing="fixed" appearance="outline">
-      <input matInput maxlength="256" [value]="answer()?.value" [disabled]="isPreviewDisabled"
+      <input matInput maxlength="256" [value]="$safeNavigationMigration(answer()?.value)" [disabled]="isPreviewDisabled"
              (input)="onPreviewInputChange($event)" [min]="Number(entity().text_validation_min | replacePlaceholders)"
              [max]="Number(entity().text_validation_max | replacePlaceholders)"
              [type]="'number'">

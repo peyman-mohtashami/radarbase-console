@@ -1,4 +1,4 @@
-import {Component, inject, input, Input, OnInit, signal} from '@angular/core';
+import {Component, inject, input, Input, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatIcon} from '@angular/material/icon';
@@ -25,6 +25,7 @@ import {TextFormGroupComponent} from '../text-form-group/text-form-group.compone
     TextFormGroupComponent,
     CdkDragHandle,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .cdk-drag-preview {
       background: white;

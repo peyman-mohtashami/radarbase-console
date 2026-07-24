@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
@@ -13,6 +13,7 @@ import {MatSelectChange} from '@angular/material/select';
     ReactiveFormsModule,
     QuestionHeaderComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './audio-question.component.html'
 })
 export class AudioQuestionComponent implements OnInit {

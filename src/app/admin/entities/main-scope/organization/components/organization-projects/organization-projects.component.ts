@@ -1,4 +1,4 @@
-import {Component, input} from "@angular/core";
+import {Component, input, ChangeDetectionStrategy} from "@angular/core";
 import {AppProject, RadarProject} from '../../../project/models/project';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
@@ -6,6 +6,7 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
 @Component({
   selector: 'app-organization-projects',
   templateUrl: './organization-projects.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TagComponent,
     TranslatePipe,

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppSubject } from "../../models/subject";
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
 import {KeyValuePipe} from "@angular/common";
@@ -13,6 +13,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-subject-details',
   templateUrl: './subject-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LocalDateComponent,
     TagComponent,

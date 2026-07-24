@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import {DecimalPipe, KeyValuePipe} from "@angular/common";
 import {HttpMethod, MaxMeanCount} from '../../models/radar-metrics.model';
 
 @Component({
   selector: 'app-metrics-endpoints-requests',
   templateUrl: './metrics-endpoints-requests.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DecimalPipe,
     KeyValuePipe

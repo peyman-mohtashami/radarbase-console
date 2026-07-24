@@ -181,7 +181,7 @@
 
 @if (error()) {
   <app-error-message-box>
-    {{ error()?.error.errorCode | translate }} <br>
+    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }} <br>
     @if (error()?.error.errorCode === 'error.sourceTypeInUse') {
       {{ `${_prefix}.error.sourceTypeInUse` | translate }}: <br>
       {{ error()?.error.params['project-names'] }}

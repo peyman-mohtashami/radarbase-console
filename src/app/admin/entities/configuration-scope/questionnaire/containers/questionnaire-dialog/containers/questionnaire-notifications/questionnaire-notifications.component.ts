@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
@@ -15,6 +15,7 @@ import {UNITS} from '../../models/unit';
 @Component({
   selector: 'app-questionnaire-notifications',
   templateUrl: 'questionnaire-notifications.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     TranslatePipe,

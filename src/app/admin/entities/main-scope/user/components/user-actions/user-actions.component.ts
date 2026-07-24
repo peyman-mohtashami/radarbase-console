@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
@@ -21,6 +21,7 @@ import {UserDialogService} from '../../services/user-dialog.service';
     MatTooltip,
     MatIcon,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './user-actions.component.html',
 })
 export class UserActionsComponent {

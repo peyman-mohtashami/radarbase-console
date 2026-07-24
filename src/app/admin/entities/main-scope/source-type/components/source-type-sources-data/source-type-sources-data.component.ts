@@ -1,10 +1,11 @@
-import {Component, input} from "@angular/core";
+import {Component, input, ChangeDetectionStrategy} from "@angular/core";
 import {RadarSourceData} from '../../../source-data/models/source-data';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 
 @Component({
   selector: 'app-source-type-sources-data',
   templateUrl: './source-type-sources-data.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TagComponent,
   ]

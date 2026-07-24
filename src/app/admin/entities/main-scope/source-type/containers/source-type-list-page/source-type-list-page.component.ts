@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {AppSourceType, RadarSourceType} from '../../models/source-type';
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
@@ -19,6 +19,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-source-type-list-page',
   templateUrl: './source-type-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

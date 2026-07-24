@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {ClientDetailsComponent} from '../../components/client-details/client-details.component';
@@ -11,6 +11,7 @@ import {AppClient} from '../../models/client';
 @Component({
   selector: 'app-client-details-page',
   templateUrl: './client-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,

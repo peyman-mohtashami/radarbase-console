@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -29,6 +30,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 @Component({
   selector: 'app-source-data-dialog',
   templateUrl: './source-data-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     ReactiveFormsModule,

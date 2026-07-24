@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import { MetricsService } from '../../services/metrics.service';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
@@ -10,6 +10,7 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
 @Component({
   selector: 'app-metrics-threads-details',
   templateUrl: './metrics-threads-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatButton,

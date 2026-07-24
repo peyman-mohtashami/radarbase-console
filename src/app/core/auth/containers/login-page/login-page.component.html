@@ -43,7 +43,7 @@
       @if (error() || stateError()) {
         <app-error-message-box>
           @if (error()) {
-            {{ `ERROR.${error()?.error.error}` | translate }}
+            {{ `ERROR.${$safeNavigationMigration(error()?.error.error)}` | translate }}
           } @else {
             {{ 'CORE.ERROR.sessionExpired' | translate }}
           }

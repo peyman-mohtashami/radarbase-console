@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output} from '@angular/core';
+import {Component, inject, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {
   AppQuestionnaire,
   AppQuestionnaireLanguage,
@@ -19,6 +19,7 @@ import {JsonPipe} from '@angular/common';
 @Component({
   selector: 'app-questionnaire-translation',
   templateUrl: 'questionnaire-translation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatSelectAutocompleteComponent,
     ReactiveFormsModule,

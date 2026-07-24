@@ -6,9 +6,9 @@
 <!--      <span class="text-neutral-500">{{ `${_prefix}.questionAnnotationLabel` | translate }}</span>-->
 <!--    <span class="">Min: {{entity().range?.min ?? 'N/A'}}, Max: {{entity().range?.max ?? 'N/A'}}, Step: {{entity().range?.step ?? 'N/A'}}</span>-->
       <span class="text-neutral-500" [class]="!entity().field_annotation ? 'text-red-500' : ''">{{ `${_prefix}.questionAnnotationLabel` | translate }}</span>
-      <span [class]="entity().field_annotation?.image === null ? 'text-red-500' : ''">Image: {{entity().field_annotation?.image ?? 'N/A'}}, </span>
-      <span [class]="entity().field_annotation?.unit === null ? 'text-red-500' : ''">Unit: {{entity().field_annotation?.unit ?? 'N/A'}}, </span>
-      <span [class]="entity().field_annotation?.timer === null ? 'text-red-500' : ''">Timer: {{entity().field_annotation?.timer ?? 'N/A'}}</span>
+      <span [class]="$safeNavigationMigration(entity().field_annotation?.image) === null ? 'text-red-500' : ''">Image: {{entity().field_annotation?.image ?? 'N/A'}}, </span>
+      <span [class]="$safeNavigationMigration(entity().field_annotation?.unit) === null ? 'text-red-500' : ''">Unit: {{entity().field_annotation?.unit ?? 'N/A'}}, </span>
+      <span [class]="$safeNavigationMigration(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">Timer: {{entity().field_annotation?.timer ?? 'N/A'}}</span>
     </div>
   }
   @case ('form') {

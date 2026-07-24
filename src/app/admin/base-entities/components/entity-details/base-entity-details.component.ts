@@ -1,10 +1,11 @@
-import {Component, input} from '@angular/core';
+import {Component, input, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
   selector: 'app-base-entity-details',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEntityDetailsComponent<T> {

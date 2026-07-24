@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {debounceTime} from 'rxjs/operators';
@@ -19,6 +19,7 @@ type PlaceholderFormGroup = FormGroup<{
 @Component({
   selector: 'app-preview-placeholder-form',
   templateUrl: 'preview-placeholder-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatFormField,

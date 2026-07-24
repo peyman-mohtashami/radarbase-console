@@ -134,7 +134,7 @@
 
 @if (error()) {
   <app-error-message-box>
-    {{ error()?.error.errorCode | translate }} <br>
+    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }} <br>
   </app-error-message-box>
 }
 

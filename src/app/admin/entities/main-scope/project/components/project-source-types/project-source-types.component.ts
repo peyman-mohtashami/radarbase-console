@@ -1,4 +1,4 @@
-import {Component, input} from "@angular/core";
+import {Component, input, ChangeDetectionStrategy} from "@angular/core";
 import {RadarSourceType} from '../../../source-type/models/source-type';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
@@ -6,6 +6,7 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
 @Component({
   selector: 'app-project-source-types',
   templateUrl: './project-source-types.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TagComponent,
     TranslatePipe

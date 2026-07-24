@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, ChangeDetectionStrategy} from '@angular/core';
 import {
   ControlValueAccessor,
   FormArray,
@@ -35,6 +35,7 @@ import {QuestionnaireTimeUnit} from '../../../../models/protocol';
     MatIcon,
     TranslatePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

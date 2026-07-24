@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppUser } from "../../models/user";
 import {UserActivatedComponent} from "../user-activated/user-activated.component";
 import {UserRolesComponent} from "../user-roles/user-roles.component";
@@ -12,6 +12,7 @@ import {UserActivateComponent} from '../user-activate/user-activate.component';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     UserActivatedComponent,
     UserRolesComponent,

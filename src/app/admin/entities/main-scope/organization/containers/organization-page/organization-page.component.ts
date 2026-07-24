@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {Component, DestroyRef, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppOrganization, RadarOrganization} from "../../models/organization";
@@ -22,6 +22,7 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-organization-page',
   templateUrl: './organization-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PermissionDirective,
     MatTabNav,

@@ -1,4 +1,4 @@
-import {Component, inject, input} from "@angular/core";
+import {Component, inject, input, ChangeDetectionStrategy} from "@angular/core";
 import {AppSubject} from "../../models/subject";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
@@ -18,6 +18,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-subject-table-row',
   templateUrl: './subject-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCheckbox,
     RouterLink,

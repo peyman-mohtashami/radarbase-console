@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {Component, DestroyRef, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {AppProject, RadarProject} from "../../models/project";
@@ -22,6 +22,7 @@ import {ROLES} from '../../../../../../shared/enums/roles';
 @Component({
   selector: 'app-project-page',
   templateUrl: './project-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     PermissionDirective,
     MatTabNav,

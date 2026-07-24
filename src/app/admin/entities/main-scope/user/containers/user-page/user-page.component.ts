@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {AppUser, RadarUser} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
 import {UserConfigService} from '../../services/user-config.service';
@@ -18,6 +18,7 @@ import {ProjectActionsComponent} from '../../../project/components/project-actio
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatPrefix,

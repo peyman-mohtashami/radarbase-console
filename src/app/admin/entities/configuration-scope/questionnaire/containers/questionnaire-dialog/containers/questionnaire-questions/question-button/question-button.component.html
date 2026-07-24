@@ -56,12 +56,12 @@
 <!--    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {-->
       <div class="text-black">
         <div class="flex gap-2">
-        @let field_label = entity().field_label?.[dialogState.questionnaire()!.defaultLanguage!.code];
+        @let field_label = $safeNavigationMigration(entity().field_label?.[dialogState.questionnaire()!.defaultLanguage!.code]);
         <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>
         <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
       </div>
       <div class="flex gap-2">
-        @let section_header = entity().section_header?.[dialogState.questionnaire()!.defaultLanguage!.code];
+        @let section_header = $safeNavigationMigration(entity().section_header?.[dialogState.questionnaire()!.defaultLanguage!.code]);
         <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
         <span>{{ section_header || 'N/A' }}</span>
       </div>

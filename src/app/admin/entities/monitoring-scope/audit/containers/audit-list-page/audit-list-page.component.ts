@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {AuditService} from '../../services/audit.service';
 import {AuditConfigService} from '../../services/audit-config.service';
@@ -15,6 +15,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-audit-list-page',
   templateUrl: './audit-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

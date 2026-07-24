@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
@@ -22,6 +23,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 @Component({
   selector: 'app-organization-dialog',
   templateUrl: './group-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     TranslatePipe,

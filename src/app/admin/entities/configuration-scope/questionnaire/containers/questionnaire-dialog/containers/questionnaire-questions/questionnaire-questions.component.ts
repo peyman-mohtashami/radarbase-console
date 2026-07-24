@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output} from '@angular/core';
+import {Component, inject, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -24,6 +24,7 @@ export type AppUiQuestion = AppQuestion & {
     MatButton,
     CdkDrag,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .cdk-drag-preview {
       background: white;

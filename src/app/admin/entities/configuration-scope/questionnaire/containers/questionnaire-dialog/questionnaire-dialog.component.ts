@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormArray
@@ -55,6 +56,7 @@ import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-s
 @Component({
   selector: 'app-questionnaire-dialog',
   templateUrl: './questionnaire-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

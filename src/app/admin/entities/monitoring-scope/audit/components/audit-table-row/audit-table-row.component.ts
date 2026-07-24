@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppAudit} from "../../models/audit";
 import {JsonPipe} from "@angular/common";
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
@@ -10,6 +10,7 @@ import {AuditDetailsComponent} from '../audit-details/audit-details.component';
 @Component({
   selector: 'app-audit-table-row',
   templateUrl: './audit-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LocalDateComponent,
     JsonPipe,

@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {RevisionService} from '../../services/revision.service';
@@ -16,6 +16,7 @@ import {EntityListPageComponent} from '../../../../../base-entities/containers/e
 @Component({
   selector: 'app-revision-list-page',
   templateUrl: './revision-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

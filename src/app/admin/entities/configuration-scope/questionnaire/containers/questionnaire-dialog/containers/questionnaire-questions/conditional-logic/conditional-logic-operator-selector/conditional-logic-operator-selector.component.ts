@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from '@angular/core'
+import {Component, inject, input, output, ChangeDetectionStrategy} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
@@ -99,6 +99,7 @@ export const OPERATORS: Record<string, {name: string; value: string}[]> = {
 @Component({
   selector: 'app-conditional-logic-operator-selector',
   templateUrl: './conditional-logic-operator-selector.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     MatFormField,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import {DecimalPipe, PercentPipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
@@ -9,6 +9,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
 @Component({
   selector: 'app-metrics-system',
   templateUrl: './metrics-system.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DetailElementComponent,
     TranslatePipe,

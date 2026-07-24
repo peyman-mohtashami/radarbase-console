@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
@@ -14,6 +14,7 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
 @Component({
   selector: 'app-questionnaire-custom-messages',
   templateUrl: 'questionnaire-custom-messages.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     TranslatePipe,

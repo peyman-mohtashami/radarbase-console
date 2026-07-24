@@ -1,6 +1,7 @@
 import {
   Component,
   inject, signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -46,6 +47,7 @@ export interface AvailableSource {
 @Component({
   selector: 'app-subject-dialog-pair-source',
   templateUrl: './subject-dialog-pair-source.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

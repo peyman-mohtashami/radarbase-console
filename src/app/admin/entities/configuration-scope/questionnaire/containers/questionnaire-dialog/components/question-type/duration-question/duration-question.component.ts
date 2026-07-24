@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -17,6 +17,7 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
     QuestionChoicesFormArray,
     MatSlideToggle,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './duration-question.component.html'
 })
 export class DurationQuestionComponent implements OnInit {

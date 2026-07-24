@@ -1,4 +1,4 @@
-import {Component, input} from "@angular/core";
+import {Component, input, ChangeDetectionStrategy} from "@angular/core";
 import {AppRole} from '../../models/user';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -6,6 +6,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-user-roles',
   templateUrl: './user-roles.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TagComponent,
     TranslatePipe,

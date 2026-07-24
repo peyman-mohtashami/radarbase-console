@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, ChangeDetectionStrategy} from '@angular/core';
 import { AppRevision } from "../../models/revision";
 import {RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -8,6 +8,7 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
 @Component({
   selector: 'app-modification',
   templateUrl: './modification.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TagComponent,
     RouterLink,

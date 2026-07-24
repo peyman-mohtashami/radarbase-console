@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppUser} from "../../models/user";
 import {RouterLink} from "@angular/router";
 import {UserDetailsComponent} from "../user-details/user-details.component";
@@ -13,6 +13,7 @@ import {UserActivateComponent} from '../user-activate/user-activate.component';
 @Component({
   selector: 'app-user-table-row',
   templateUrl: './user-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     UserDetailsComponent,

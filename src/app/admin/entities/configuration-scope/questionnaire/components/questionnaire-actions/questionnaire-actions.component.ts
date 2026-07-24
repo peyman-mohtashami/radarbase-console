@@ -1,4 +1,4 @@
-import {Component, inject, input, output} from '@angular/core';
+import {Component, inject, input, output, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -13,6 +13,7 @@ import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.se
 @Component({
   selector: 'app-questionnaire-actions',
   templateUrl: './questionnaire-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,

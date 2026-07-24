@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {ProjectService} from '../../services/project.service';
 import {ProjectConfigService} from '../../services/project-config.service';
@@ -21,6 +21,7 @@ import {DialogMode} from '../../../../../base-entities/enums/dialog';
 @Component({
   selector: 'app-project-list-page',
   templateUrl: './project-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

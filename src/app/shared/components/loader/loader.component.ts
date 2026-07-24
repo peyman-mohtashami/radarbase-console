@@ -1,10 +1,11 @@
-import {Component, input} from '@angular/core';
+import {Component, input, ChangeDetectionStrategy} from '@angular/core';
 // import {TranslatePipe} from "@ngx-translate/core";
 // import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // MatProgressSpinner,
     // TranslatePipe,

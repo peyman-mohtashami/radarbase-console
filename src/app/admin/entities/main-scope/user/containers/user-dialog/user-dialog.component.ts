@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
@@ -31,6 +32,7 @@ import {DetailType} from '../../../../../base-entities/enums/detail-type';
 @Component({
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     TranslatePipe,

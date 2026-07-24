@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {AppSourceType, RadarSourceType} from "../../models/source-type";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SourceTypeDialogService} from '../../services/source-type-dialog.service';
@@ -18,6 +18,7 @@ import {ProjectActionsComponent} from '../../../project/components/project-actio
 @Component({
   selector: 'app-source-type-page',
   templateUrl: './source-type-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatPrefix,

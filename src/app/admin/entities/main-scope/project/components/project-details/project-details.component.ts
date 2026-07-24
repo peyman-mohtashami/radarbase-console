@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppProject } from "../../models/project";
 import {ProjectStatusComponent} from "../project-status/project-status.component";
 import {ProjectSourceTypesComponent} from "../project-source-types/project-source-types.component";
@@ -11,6 +11,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ProjectStatusComponent,
     ProjectSourceTypesComponent,

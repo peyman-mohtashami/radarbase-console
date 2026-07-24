@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
 import {EntityDetailsComponent} from "../../../../../base-entities/components/entity-details/entity-details.component";
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
@@ -12,6 +12,7 @@ import {UserActivateComponent} from '../../../user/components/user-activate/user
 @Component({
   selector: 'app-permission-details',
   templateUrl: './permission-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     UserActivatedComponent,
     UserCreatedByComponent,

@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import {
@@ -23,6 +24,7 @@ import {BaseEntityDialogComponent} from '../../../../../base-entities/containers
 @Component({
   selector: 'app-user-activate-dialog',
   templateUrl: './user-activate-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     MatIconButton,

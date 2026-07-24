@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 
 import { AppSource } from "../../models/source";
 import {SourceAssignedComponent} from "../source-assigned/source-assigned.component";
@@ -11,6 +11,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-source-details',
   templateUrl: './source-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     SourceAssignedComponent,
     KeyValuePipe,

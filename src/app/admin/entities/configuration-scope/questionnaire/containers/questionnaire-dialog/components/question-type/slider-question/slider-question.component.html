@@ -4,9 +4,9 @@
   @case ('button') {
     <div class="flex gap-2">
     <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeLabel` | translate }}</span>
-      <span [class]="entity().range?.min === null ? 'text-red-500' : ''">Min: {{entity().range?.min ?? 'N/A'}}, </span>
-      <span [class]="entity().range?.max === null ? 'text-red-500' : ''">Max: {{entity().range?.max ?? 'N/A'}}, </span>
-      <span [class]="entity().range?.step === null ? 'text-red-500' : ''">Step: {{entity().range?.step ?? 'N/A'}}</span>
+      <span [class]="$safeNavigationMigration(entity().range?.min) === null ? 'text-red-500' : ''">Min: {{entity().range?.min ?? 'N/A'}}, </span>
+      <span [class]="$safeNavigationMigration(entity().range?.max) === null ? 'text-red-500' : ''">Max: {{entity().range?.max ?? 'N/A'}}, </span>
+      <span [class]="$safeNavigationMigration(entity().range?.step) === null ? 'text-red-500' : ''">Step: {{entity().range?.step ?? 'N/A'}}</span>
     </div>
   }
   @case ('form') {
@@ -164,8 +164,8 @@
       </mat-slider>
 
       <div class="flex justify-between text-sm">
-        <div class="w-1/2" [innerHtml]="range.labelLeft?.[language()!.code] | replacePlaceholders"></div>
-        <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[language()!.code] | replacePlaceholders"></div>
+        <div class="w-1/2" [innerHtml]="$safeNavigationMigration(range.labelLeft?.[language()!.code]) | replacePlaceholders"></div>
+        <div class="w-1/2 text-right" [innerHtml]="$safeNavigationMigration(range.labelRight?.[language()!.code]) | replacePlaceholders"></div>
       </div>
     }
 

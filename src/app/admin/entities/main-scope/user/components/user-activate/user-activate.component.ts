@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import { AppUser } from "../../models/user";
 import {MatIconButton} from "@angular/material/button";
 import {ActivatedRoute, Router} from '@angular/router';
@@ -8,6 +8,7 @@ import {UserDialogService} from '../../services/user-dialog.service';
 @Component({
   selector: 'app-user-activate',
   templateUrl: './user-activate.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIconButton,
     MatIcon,

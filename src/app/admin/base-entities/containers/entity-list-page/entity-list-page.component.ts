@@ -1,4 +1,4 @@
-import {Component, input, output, signal, TemplateRef} from "@angular/core";
+import {Component, input, output, signal, TemplateRef, ChangeDetectionStrategy} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DetailType} from "../../enums/detail-type";
 import {RbPageSortEvent, RbSort, TableElement} from "../../models/table.model";
@@ -14,6 +14,7 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-entity-list-page',
   templateUrl: './entity-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     TableQueryReflectorDirective,

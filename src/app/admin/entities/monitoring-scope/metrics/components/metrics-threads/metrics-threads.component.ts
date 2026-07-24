@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {PercentPipe} from "@angular/common";
@@ -10,6 +10,7 @@ import {DetailElementComponent} from '../../../../../base-entities/components/en
 @Component({
   selector: 'app-metrics-threads',
   templateUrl: './metrics-threads.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DetailElementComponent,
     TranslatePipe,

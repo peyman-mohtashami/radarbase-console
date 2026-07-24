@@ -1,10 +1,11 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {formatDate} from '@angular/common';
 
 import {LocaleService} from "../../services/locale.service";
 
 @Component({
   selector: 'app-local-date',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '{{ dateResult() }}',
 })
 export class LocalDateComponent {

@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -33,6 +33,7 @@ import {
     ReplacePlaceholdersPipe,
     QuestionHeaderComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './radio-question.component.html'
 })
 export class RadioQuestionComponent implements OnInit {

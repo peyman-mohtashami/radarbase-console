@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 
 import { AppClient } from "../../models/client";
 import {ClientTagsComponent} from "../client-resource-ids/client-tags.component";
@@ -11,6 +11,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
 @Component({
   selector: 'app-client-details',
   templateUrl: './client-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIcon,
     ClientTagsComponent,

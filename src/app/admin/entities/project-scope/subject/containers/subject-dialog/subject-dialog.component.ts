@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, FormRecord, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
@@ -31,6 +32,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 @Component({
   selector: 'app-subject-dialog',
   templateUrl: './subject-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

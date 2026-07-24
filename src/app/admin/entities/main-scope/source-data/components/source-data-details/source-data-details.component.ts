@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppSourceData } from "../../models/source-data";
 import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-data-source-type.component";
 import {
@@ -11,6 +11,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-source-data-details',
   templateUrl: './source-data-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     SourceDataSourceTypeComponent,
     SourceDataProcessingStateComponent,

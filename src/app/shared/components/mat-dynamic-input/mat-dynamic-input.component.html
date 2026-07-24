@@ -106,10 +106,10 @@
           }
           @if (_field.type === 'number') {
             @if (form.errors?.['min']) {
-              {{ ValidatorError.minValidator | translate:{value: form.errors?.['min']['min']} }}
+              {{ ValidatorError.minValidator | translate:{value: $safeNavigationMigration(form.errors?.['min']['min'])} }}
             }
             @if (form.errors?.['max']) {
-              {{ ValidatorError.maxValidator | translate:{value: form.errors?.['max']['max']} }}
+              {{ ValidatorError.maxValidator | translate:{value: $safeNavigationMigration(form.errors?.['max']['max'])} }}
             }
           }
           @if (form.errors?.['required']) {
@@ -118,10 +118,10 @@
           }
           @if (_field.type === 'date') {
             @if (form.errors?.['matDatepickerMin']) {
-              {{ ValidatorError.dateOutOfMinRange | translate:{value: form.errors?.['matDatepickerMin']['min'] | date: localeService.currentLocale()?.dateFormat} }}
+              {{ ValidatorError.dateOutOfMinRange | translate:{value: $safeNavigationMigration(form.errors?.['matDatepickerMin']['min']) | date: $safeNavigationMigration(localeService.currentLocale()?.dateFormat)} }}
             }
             @if (form.errors?.['matDatepickerMax']) {
-              {{ ValidatorError.dateOutOfMaxRange | translate:{value: form.errors?.['matDatepickerMax']['max'] | date: localeService.currentLocale()?.dateFormat} }}
+              {{ ValidatorError.dateOutOfMaxRange | translate:{value: $safeNavigationMigration(form.errors?.['matDatepickerMax']['max']) | date: $safeNavigationMigration(localeService.currentLocale()?.dateFormat)} }}
             }
             @if (form.errors?.['matDatepickerParse']) {
               {{ 'ADMIN.project.startDate.startDateInvalid' | translate }}

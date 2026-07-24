@@ -11,7 +11,7 @@
 @if (error()) {
   <div
     class="p-4 w-full text-center text-base rounded-sm wrap-break-word bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ (error()?.error.errorCode | translate) ?? (error()?.error?.message | translate) }}
+    {{ ($safeNavigationMigration(error()?.error.errorCode) | translate) ?? ($safeNavigationMigration(error()?.error?.message) | translate) }}
   </div>
 }
 

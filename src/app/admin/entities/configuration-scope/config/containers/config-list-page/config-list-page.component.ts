@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import { DialogMode } from '../../../../../base-entities/enums/dialog';
 import { ConfigService } from '../../services/config.service';
 import {AppConfig, RadarConfig} from "../../models/config";
@@ -23,6 +23,7 @@ import {PermissionDirective} from '../../../../../../core/auth/directives/show-i
 @Component({
   selector: 'app-config-list-page',
   templateUrl: './config-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoaderComponent,
     TranslatePipe,

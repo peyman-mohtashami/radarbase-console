@@ -7,6 +7,7 @@ import {
   output,
   signal,
   ViewChild, ViewContainerRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
 import {Validator as CustomValidator, ValidatorError} from "../../../../../../../../../shared/utils/validators";
@@ -56,6 +57,7 @@ import {
     MatDialogTitle,
     JsonPipe
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './question-dialog.component.html'
 })
 export class QuestionDialogComponent implements OnInit, AfterViewInit, OnDestroy {

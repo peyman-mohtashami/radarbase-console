@@ -34,7 +34,7 @@
     <div class="mb-4">
       <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"
                            [textGroup]="form.controls.title"
-                           [value]="dialogState.questionnaire()?.title"/>
+                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>
     </div>
 
     <div class="mb-4">
@@ -42,7 +42,7 @@
                            [textarea]="true"
                            [textareaAutosize]="true"
                            [textGroup]="form.controls.description"
-                           [value]="dialogState.questionnaire()?.description"/>
+                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>
     </div>
   </div>
 

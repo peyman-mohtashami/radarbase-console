@@ -1,7 +1,8 @@
 import {
   Component,
   inject,
-  signal
+  signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
@@ -37,6 +38,7 @@ import {
 @Component({
   selector: 'app-subject-dialog-pair-app',
   templateUrl: './subject-dialog-pair-app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     DetailElementComponent,

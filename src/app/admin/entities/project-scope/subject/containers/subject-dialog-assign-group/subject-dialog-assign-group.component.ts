@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
@@ -34,6 +35,7 @@ import {AppSourceType} from '../../../../main-scope/source-type/models/source-ty
 @Component({
   selector: 'app-subject-dialog-assign-group-dialog',
   templateUrl: './subject-dialog-assign-group.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

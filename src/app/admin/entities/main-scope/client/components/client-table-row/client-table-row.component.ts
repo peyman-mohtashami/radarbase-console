@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {RouterLink} from "@angular/router";
 import {ClientDetailsComponent} from "../client-details/client-details.component";
 import {AppClient} from '../../models/client';
@@ -13,6 +13,7 @@ import {DurationPipe} from '../../../../../../shared/pipes/duration.pipe';
 @Component({
   selector: 'app-client-table-row',
   templateUrl: './client-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     TagComponent,

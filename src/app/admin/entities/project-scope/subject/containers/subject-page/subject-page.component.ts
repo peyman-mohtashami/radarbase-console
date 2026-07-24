@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
@@ -18,6 +18,7 @@ import {findRouteData} from '../../../../main-scope/organization/services/organi
 @Component({
   selector: 'app-subject-page',
   templateUrl: './subject-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatTabNav,
     MatTabLink,

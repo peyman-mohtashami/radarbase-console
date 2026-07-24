@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -38,6 +38,7 @@ import {
     TextFormGroupComponent,
     FormsModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './slider-question.component.html'
 })
 export class SliderQuestionComponent implements OnInit {

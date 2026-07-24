@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
@@ -13,6 +13,7 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
 @Component({
   selector: 'app-subject-actions',
   templateUrl: './subject-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,

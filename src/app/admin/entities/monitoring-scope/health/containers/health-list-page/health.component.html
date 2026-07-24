@@ -23,7 +23,7 @@
 
   @if (health()?.components) {
     <mat-accordion class="text-sm">
-      @for (componentHealth of health()?.components | keyvalue; track componentHealth.key) {
+      @for (componentHealth of $safeNavigationMigration(health()?.components) | keyvalue; track componentHealth.key) {
         <mat-expansion-panel class="dark:border border-neutral-400 mb-1!"
                              [hideToggle]='!componentHealth.value.details'>
           <mat-expansion-panel-header class="p-4! dark:bg-neutral-700">

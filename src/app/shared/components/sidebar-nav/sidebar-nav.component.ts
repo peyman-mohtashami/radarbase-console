@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {PermissionDirective} from "../../../core/auth/directives/show-if-has-role.directive";
 import {
   MatExpansionPanel,
@@ -24,6 +24,7 @@ import {MatIcon} from '@angular/material/icon';
     PermissionDirective,
     MatIcon,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     :host {
       --mat-expansion-container-shape: 4px;

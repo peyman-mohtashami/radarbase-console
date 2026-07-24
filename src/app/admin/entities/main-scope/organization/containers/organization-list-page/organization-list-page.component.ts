@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {OrganizationService} from '../../services/organization.service';
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -18,6 +18,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-organization-list-page',
   templateUrl: './organization-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableFilterComponent,
     LoaderComponent,

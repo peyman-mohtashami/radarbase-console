@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {AppProject} from "../../models/project";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
@@ -13,6 +13,7 @@ import {ProjectDialogService} from '../../services/project-dialog.service';
 @Component({
   selector: 'app-project-actions',
   templateUrl: './project-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenu,
     MatMenuTrigger,

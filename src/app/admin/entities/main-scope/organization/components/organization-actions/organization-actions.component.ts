@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {AppOrganization} from "../../models/organization";
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
@@ -14,6 +14,7 @@ import {OrganizationDialogService} from '../../services/organization-dialog.serv
 @Component({
   selector: 'app-organization-actions',
   templateUrl: './organization-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,

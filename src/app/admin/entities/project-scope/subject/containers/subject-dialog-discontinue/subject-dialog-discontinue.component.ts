@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -25,6 +25,7 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
 @Component({
   selector: 'app-subject-dialog-discontinue-dialog',
   templateUrl: './subject-dialog-discontinue.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

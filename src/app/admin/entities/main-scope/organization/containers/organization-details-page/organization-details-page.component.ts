@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {OrganizationDetailsComponent} from "../../components/organization-details/organization-details.component";
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -11,6 +11,7 @@ import {AppOrganization} from '../../models/organization';
 @Component({
   selector: 'app-organization-details-page',
   templateUrl: './organization-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,

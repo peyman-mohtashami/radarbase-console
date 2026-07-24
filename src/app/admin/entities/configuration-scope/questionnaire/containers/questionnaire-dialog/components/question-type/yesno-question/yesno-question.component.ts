@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
@@ -27,6 +27,7 @@ import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview
     QuestionHeaderComponent,
     ReplacePlaceholdersPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './yesno-question.component.html'
 })
 export class YesNoQuestionComponent {

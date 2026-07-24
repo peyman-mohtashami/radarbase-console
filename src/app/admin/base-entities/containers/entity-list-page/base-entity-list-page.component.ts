@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, OnDestroy, OnInit, signal, untracked} from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, OnInit, signal, untracked, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {PageEvent} from '@angular/material/paginator';
@@ -19,6 +19,7 @@ import {BaseEntityDialogComponent} from '../entity-dialog/base-entity-dialog.com
 
 @Component({
   selector: 'app-base-entity-list-page',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEntityListPageComponent<T extends { _name: string; }, U> implements OnInit, OnDestroy {

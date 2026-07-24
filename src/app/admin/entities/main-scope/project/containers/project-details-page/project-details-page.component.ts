@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal,} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {ProjectDetailsComponent} from "../../components/project-details/project-details.component";
 import {ProjectConfigService} from '../../services/project-config.service';
@@ -11,6 +11,7 @@ import {AppProject} from '../../models/project';
 @Component({
   selector: 'app-project-details-page',
   templateUrl: './project-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,

@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
@@ -13,6 +13,7 @@ import {
     ReactiveFormsModule,
     QuestionHeaderComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './descriptive-question.component.html'
 })
 export class DescriptiveQuestionComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import {DecimalPipe} from "@angular/common";
 import {TranslatePipe} from "@ngx-translate/core";
 import {Databases} from '../../models/radar-metrics.model';
@@ -6,6 +6,7 @@ import {Databases} from '../../models/radar-metrics.model';
 @Component({
   selector: 'app-metrics-datasource',
   templateUrl: './metrics-datasource.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     DecimalPipe

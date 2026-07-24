@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, output} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Validator as CustomValidator} from '../../../../../../../../shared/utils/validators';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -22,6 +22,7 @@ import {UNITS} from '../../models/unit';
 @Component({
   selector: 'app-questionnaire-scheduling',
   templateUrl: 'questionnaire-scheduling.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDatepicker,
     MatDatepickerInput,

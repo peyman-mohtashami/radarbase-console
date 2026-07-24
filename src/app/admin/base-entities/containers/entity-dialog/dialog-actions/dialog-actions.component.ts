@@ -1,4 +1,4 @@
-import {Component, input, output} from '@angular/core';
+import {Component, input, output, ChangeDetectionStrategy} from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import {DialogMode} from "../../../enums/dialog";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -16,6 +16,7 @@ export enum DialogAction {
 @Component({
   selector: 'app-dialog-actions',
   templateUrl: './dialog-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatButton,
     TranslatePipe,

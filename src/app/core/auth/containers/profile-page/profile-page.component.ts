@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {debounceTime} from 'rxjs/operators';
 import {
@@ -22,6 +22,7 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardHeader,

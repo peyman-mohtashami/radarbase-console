@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppLog} from "../../models/log";
 import {TranslatePipe} from "@ngx-translate/core";
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
@@ -9,6 +9,7 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
 @Component({
   selector: 'app-log-table-row',
   templateUrl: './log-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     TagComponent,

@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from "@angular/core";
+import {Component, computed, inject, input, ChangeDetectionStrategy} from "@angular/core";
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
 import {PermissionDetailsComponent} from '../permission-details/permission-details.component';
@@ -17,6 +17,7 @@ import {ManagementPortalUser} from '../../../../../../core/auth/models/auth.mode
 @Component({
   selector: 'app-permission-table-row',
   templateUrl: './permission-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     UserActivatedComponent,
     PermissionRolesComponent,

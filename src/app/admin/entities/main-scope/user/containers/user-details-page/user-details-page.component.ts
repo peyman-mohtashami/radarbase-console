@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {UserConfigService} from '../../services/user-config.service';
 import {UserDetailsComponent} from '../../components/user-details/user-details.component';
@@ -10,6 +10,7 @@ import {UserDialogService} from '../../services/user-dialog.service';
 @Component({
   selector: 'app-user-details-page',
   templateUrl: './user-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,

@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
@@ -23,6 +23,7 @@ import {DialogMode} from '../../../../../base-entities/enums/dialog';
 @Component({
   selector: 'app-permission-list-page',
   templateUrl: './permission-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

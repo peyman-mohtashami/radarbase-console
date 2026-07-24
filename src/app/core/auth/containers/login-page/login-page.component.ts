@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {Validator, ValidatorError} from "../../../../shared/utils/validators";
 import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
@@ -20,6 +20,7 @@ import {LastUrlService} from '../../../navigation-tracker/services/last-url.serv
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,

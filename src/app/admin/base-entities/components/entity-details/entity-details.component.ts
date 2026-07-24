@@ -1,4 +1,4 @@
-import {Component, input, TemplateRef} from "@angular/core";
+import {Component, input, TemplateRef, ChangeDetectionStrategy} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from "../../enums/dialog";
 import {DetailType} from "../../enums/detail-type";
@@ -9,6 +9,7 @@ import {EntityRegistry} from "../../../../shared/consts/entity-registry";
 @Component({
   selector: 'app-entity-details',
   templateUrl: './entity-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     NgTemplateOutlet,

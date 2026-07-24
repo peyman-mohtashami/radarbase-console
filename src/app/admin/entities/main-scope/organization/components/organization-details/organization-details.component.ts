@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { AppOrganization } from "../../models/organization";
 import {OrganizationProjectsComponent} from "../organization-projects/organization-projects.component";
 import {EntityDetailsComponent} from "../../../../../base-entities/components/entity-details/entity-details.component";
@@ -8,6 +8,7 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
 @Component({
   selector: 'app-organization-details',
   templateUrl: './organization-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     OrganizationProjectsComponent,
     EntityDetailsComponent,

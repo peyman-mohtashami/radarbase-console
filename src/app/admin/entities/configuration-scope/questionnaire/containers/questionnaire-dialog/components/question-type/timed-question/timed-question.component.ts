@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal, WritableSignal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, WritableSignal, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
@@ -36,6 +36,7 @@ export interface TaskTimer {
     QuestionHeaderComponent,
     // ScrollableContentComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './timed-question.component.html'
 })
 export class TimedQuestionComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {RouterLink} from "@angular/router";
 import {SourceTypeScopeComponent} from "../source-type-scope/source-type-scope.component";
 import {
@@ -14,6 +14,7 @@ import {SourceTypeActionsComponent} from '../source-type-actions/source-type-act
 @Component({
   selector: 'app-source-type-table-row',
   templateUrl: './source-type-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     SourceTypeScopeComponent,

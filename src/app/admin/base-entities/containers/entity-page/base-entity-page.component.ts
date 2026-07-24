@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subject} from 'rxjs';
@@ -10,6 +10,7 @@ import {BaseEntityDialogComponent} from '../entity-dialog/base-entity-dialog.com
 
 @Component({
   selector: 'app-base-entity-page',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEntityPageComponent<T extends { _name: string; }, U> implements OnInit, OnDestroy {

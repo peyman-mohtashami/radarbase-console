@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, output, viewChild, ViewContainerRef} from '@angular/core';
+import {Component, effect, inject, input, output, viewChild, ViewContainerRef, ChangeDetectionStrategy} from '@angular/core';
 import {MatIconButton} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIcon} from '@angular/material/icon';
@@ -13,6 +13,7 @@ import {DialogMode} from '../../../../../../../../base-entities/enums/dialog';
 @Component({
   selector: 'app-question-button',
   templateUrl: './question-button.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIconButton,
     TranslatePipe,

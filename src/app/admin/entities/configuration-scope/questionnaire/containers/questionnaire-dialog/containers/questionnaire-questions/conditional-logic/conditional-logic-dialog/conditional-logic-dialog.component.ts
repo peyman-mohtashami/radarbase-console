@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component, inject, OnInit, output, signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -30,6 +31,7 @@ export interface ConditionalLogicItem {
 @Component({
   selector: 'app-conditional-logic-dialog',
   templateUrl: './conditional-logic-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,

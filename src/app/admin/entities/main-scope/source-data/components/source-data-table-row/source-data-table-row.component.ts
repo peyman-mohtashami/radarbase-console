@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppSourceData} from "../../models/source-data";
 import {RouterLink} from "@angular/router";
 import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-data-source-type.component";
@@ -13,6 +13,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-source-data-table-row',
   templateUrl: './source-data-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     SourceDataSourceTypeComponent,

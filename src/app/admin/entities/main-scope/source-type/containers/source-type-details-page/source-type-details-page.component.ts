@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal,} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
 import {SourceTypeDetailsComponent} from '../../components/source-type-details/source-type-details.component';
@@ -10,6 +10,7 @@ import {SourceTypeDialogService} from '../../services/source-type-dialog.service
 @Component({
   selector: 'app-source-type-details-page',
   templateUrl: './source-type-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardContent,

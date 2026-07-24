@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, inject, input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, inject, input, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {
   ReactiveFormsModule
 } from '@angular/forms';
@@ -40,6 +40,7 @@ type EditorNode =
     // TranslateModule,
     JsonPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     //.editor {
     //  border: 1px solid #cf3ca5;

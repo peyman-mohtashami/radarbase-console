@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import { HttpErrorResponse } from "@angular/common/http";
 
 import { HealthService } from '../../services/health.service';
@@ -21,6 +21,7 @@ import {RadarHealth} from '../../models/health.model';
 @Component({
   selector: 'app-health-check',
   templateUrl: './health.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatButton,

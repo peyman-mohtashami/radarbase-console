@@ -1,10 +1,11 @@
-import {Component, effect, input, output, viewChild, ViewContainerRef} from '@angular/core';
+import {Component, effect, input, output, viewChild, ViewContainerRef, ChangeDetectionStrategy} from '@angular/core';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {QUESTION_COMPONENTS} from '../../../../components/question-type/question-type.registry';
 
 @Component({
   selector: 'app-question-view',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'question-view.component.html',
 })
 export class QuestionViewComponent {

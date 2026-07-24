@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
@@ -38,6 +39,7 @@ export type FilterEvent = Record<string, string | null | undefined>
 @Component({
   selector: 'app-data-table-filter',
   templateUrl: './data-table-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatFormField,

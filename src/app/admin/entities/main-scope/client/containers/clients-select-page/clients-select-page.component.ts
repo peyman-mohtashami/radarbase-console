@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import { AppClient } from "../../models/client";
@@ -11,6 +11,7 @@ import {ENTITY_REGISTRY} from "../../../../../../shared/consts/entity-registry";
 @Component({
   selector: 'app-clients-select',
   templateUrl: './clients-select-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatFormField,

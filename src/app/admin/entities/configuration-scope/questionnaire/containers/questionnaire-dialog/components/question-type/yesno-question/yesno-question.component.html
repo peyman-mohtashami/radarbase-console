@@ -44,7 +44,7 @@
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()" />
 
-    <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
+    <mat-radio-group aria-label="Select an option" [value]="$safeNavigationMigration(answer()?.value)">
       @for (option of yesNoOptions; track option.code) {
         <div>
           <mat-radio-button [value]="option.code" (click)="onPreviewInputChange(option.code)" [disabled]="isPreviewDisabled">

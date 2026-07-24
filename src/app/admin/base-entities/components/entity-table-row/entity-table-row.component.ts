@@ -1,4 +1,4 @@
-import {Component, HostBinding, input, signal, TemplateRef} from "@angular/core";
+import {Component, HostBinding, input, signal, TemplateRef, ChangeDetectionStrategy} from "@angular/core";
 import {DialogMode} from "../../enums/dialog";
 import {DetailType} from "../../enums/detail-type";
 import {TableElement} from "../../models/table.model";
@@ -9,6 +9,7 @@ import {MatIconButton} from '@angular/material/button';
 @Component({
   selector: 'app-entity-table-row',
   templateUrl: './entity-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgTemplateOutlet,
     MatCard,

@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
@@ -26,6 +26,7 @@ import {MatSelectChange} from '@angular/material/select';
     QuestionHeaderComponent,
     ReplacePlaceholdersPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './info-question.component.html'
 })
 export class InfoQuestionComponent implements OnInit {

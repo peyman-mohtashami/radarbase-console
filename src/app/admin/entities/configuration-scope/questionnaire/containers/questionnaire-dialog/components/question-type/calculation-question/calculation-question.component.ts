@@ -1,4 +1,4 @@
-import {Component, inject, Input, InputSignal, OnInit, output, signal} from '@angular/core';
+import {Component, inject, Input, InputSignal, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
@@ -23,6 +23,7 @@ import {PreviewStateService} from '../../../containers/questionnaire-preview/ser
     MatButton,
     QuestionHeaderComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './calculation-question.component.html'
 })
 export class CalculationQuestionComponent implements OnInit {

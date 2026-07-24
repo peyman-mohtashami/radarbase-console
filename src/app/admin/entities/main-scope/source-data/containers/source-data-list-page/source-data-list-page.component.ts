@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import { SourceDataTableRowComponent } from '../../components/source-data-table-row/source-data-table-row.component';
 import {SourceDataService} from '../../services/source-data.service';
@@ -19,6 +19,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-source-data-list-page',
   templateUrl: './source-data-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

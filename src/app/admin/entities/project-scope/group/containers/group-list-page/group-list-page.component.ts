@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {GroupTableRowComponent} from '../../components/group-table-row/group-table-row.component';
 import {GroupService} from '../../services/group.service';
@@ -21,6 +21,7 @@ import {findRouteData} from '../../../../main-scope/organization/services/organi
 @Component({
   selector: 'app-group-list-page',
   templateUrl: './group-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     // ListPageHeaderComponent,
     DataTableFilterComponent,

@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {SourceAssignedComponent} from "../source-assigned/source-assigned.component";
 import {SourceProjectComponent} from "../source-project/source-project.component";
 import {SourceSourceTypeComponent} from "../source-source-type/source-source-type.component";
@@ -13,6 +13,7 @@ import {SourceActionsComponent} from '../source-actions/source-actions.component
 @Component({
   selector: 'app-source-table-row',
   templateUrl: './source-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     SourceAssignedComponent,
     SourceProjectComponent,

@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {LoaderComponent} from '../../../../../../shared/components/loader/loader.component';
 import {
   DataTableFilterComponent,
@@ -23,6 +23,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-questionnaire-list-page',
   templateUrl: './questionnaire-list-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableFilterComponent,
     LoaderComponent,

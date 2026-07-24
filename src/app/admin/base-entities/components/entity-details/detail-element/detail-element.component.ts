@@ -1,9 +1,10 @@
-import {Component, input} from "@angular/core";
+import {Component, input, ChangeDetectionStrategy} from "@angular/core";
 import {DetailType} from '../../../enums/detail-type';
 import {TableElement} from '../../../models/table.model';
 
 @Component({
   selector: 'app-detail-element',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './detail-element.component.html',
 })
 export class DetailElementComponent {

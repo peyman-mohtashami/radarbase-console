@@ -1,4 +1,4 @@
-import {Component, effect, input, signal} from '@angular/core';
+import {Component, effect, input, signal, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 import {ROLES} from '../../../../shared/enums/roles';
@@ -7,6 +7,7 @@ import {BaseConfigService} from '../../services/base-config.service';
 
 @Component({
   selector: 'app-base-entity-table-row',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEntityTableRowComponent<T extends ({_name: string;})> {

@@ -34,7 +34,7 @@
                   <app-question [question]="q"
                                 [language]="selectedLanguage"
                                 [answers]="previewState.answers()"
-                                [answer]="previewState.answers()[q.field_name]?.[0]"
+                                [answer]="$safeNavigationMigration(previewState.answers()[q.field_name]?.[0])"
                                 (answerEvent)="onAnswer($event)"/>
                 }
               }

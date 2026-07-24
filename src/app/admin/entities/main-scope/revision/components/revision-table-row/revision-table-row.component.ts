@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
 import {AppRevision} from "../../models/revision";
 import {ModificationComponent} from "../modifications/modification.component";
 import {LocalDateComponent} from "../../../../../../core/locale/components/local-date/local-date.component";
@@ -9,6 +9,7 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
 @Component({
   selector: 'app-revision-table-row',
   templateUrl: './revision-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ModificationComponent,
     LocalDateComponent,

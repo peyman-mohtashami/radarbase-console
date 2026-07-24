@@ -1,5 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let defaultLanguage = entity?.defaultLanguage;
+@let defaultLanguage = $safeNavigationMigration(entity?.defaultLanguage);
 
 @if (defaultLanguage) {
   <form [formGroup]='form' novalidate>
@@ -47,7 +47,7 @@
           }
         }
 
-        @let language = entity?.defaultLanguage;
+        @let language = $safeNavigationMigration(entity?.defaultLanguage);
         @if (language) {
           <div>{{ language.label }}</div>
           <div>
@@ -55,21 +55,21 @@
                                  [textarea]="false"
                                  [textareaAutosize]="false"
                                  [textGroup]="form.controls.title"
-                                 [value]="entity?.title"/>
+                                 [value]="$safeNavigationMigration(entity?.title)"/>
           </div>
           <div>
             <app-text-form-group [language]="language"
                                  [textarea]="true"
                                  [textareaAutosize]="true"
                                  [textGroup]="form.controls.description"
-                                 [value]="entity?.description"/>
+                                 [value]="$safeNavigationMigration(entity?.description)"/>
           </div>
           <div>
             <app-text-form-group [language]="language"
                                  [textarea]="true"
                                  [textareaAutosize]="true"
                                  [textGroup]="form.controls.endText"
-                                 [value]="entity?.endText"/>
+                                 [value]="$safeNavigationMigration(entity?.endText)"/>
           </div>
           @if (entity?.warningEnabled) {
             <div>
@@ -77,7 +77,7 @@
                                    [textarea]="true"
                                    [textareaAutosize]="true"
                                    [textGroup]="form.controls.warn"
-                                   [value]="entity?.warn"/>
+                                   [value]="$safeNavigationMigration(entity?.warn)"/>
             </div>
           }
           <ng-container formGroupName="schedule">
@@ -87,14 +87,14 @@
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                                     [value]="entity?.schedule?.notification?.title"/>
+                                     [value]="$safeNavigationMigration(entity?.schedule?.notification?.title)"/>
               </div>
               <div>
                 <app-text-form-group [language]="language"
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="form.controls.schedule.controls.notification.controls.text"
-                                     [value]="entity?.schedule?.notification?.text"/>
+                                     [value]="$safeNavigationMigration(entity?.schedule?.notification?.text)"/>
               </div>
             </ng-container>
           </ng-container>
@@ -106,7 +106,7 @@
                                    [textarea]="true"
                                    [textareaAutosize]="true"
                                    [textGroup]="asFormGroup(question.controls['field_label'])"
-                                   [value]="entity?.questions?.[i]?.field_label"/>
+                                   [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_label)"/>
             </div>
             @if (question.controls['section_header']) {
               <div>
@@ -114,7 +114,7 @@
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="asFormGroup(question.controls['section_header'])"
-                                     [value]="entity?.questions?.[i]?.section_header"/>
+                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.section_header)"/>
               </div>
             }
             @if (question.controls['field_note']) {
@@ -123,7 +123,7 @@
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="asFormGroup(question.controls['field_note'])"
-                                     [value]="entity?.questions?.[i]?.field_note"/>
+                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_note)"/>
               </div>
             }
             @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track $index; let j = $index) {
@@ -132,7 +132,7 @@
                                      [textarea]="false"
                                      [textareaAutosize]="false"
                                      [textGroup]="asFormGroup(choice.controls['label'])"
-                                     [value]="entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label"/>
+                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label)"/>
               </div>
             }
           }
@@ -146,21 +146,21 @@
                                    [textarea]="false"
                                    [textareaAutosize]="false"
                                    [textGroup]="form.controls.title"
-                                   [value]="entity?.title"/>
+                                   [value]="$safeNavigationMigration(entity?.title)"/>
             </div>
             <div>
               <app-text-form-group [language]="language"
                                    [textarea]="true"
                                    [textareaAutosize]="true"
                                    [textGroup]="form.controls.description"
-                                   [value]="entity?.description"/>
+                                   [value]="$safeNavigationMigration(entity?.description)"/>
             </div>
             <div>
               <app-text-form-group [language]="language"
                                    [textarea]="true"
                                    [textareaAutosize]="true"
                                    [textGroup]="form.controls.endText"
-                                   [value]="entity?.endText"/>
+                                   [value]="$safeNavigationMigration(entity?.endText)"/>
             </div>
             @if (entity?.warningEnabled) {
               <div>
@@ -168,7 +168,7 @@
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="form.controls.warn"
-                                     [value]="entity?.warn"/>
+                                     [value]="$safeNavigationMigration(entity?.warn)"/>
               </div>
             }
             <ng-container formGroupName="schedule">
@@ -178,14 +178,14 @@
                                        [textarea]="true"
                                        [textareaAutosize]="true"
                                        [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                                       [value]="entity?.schedule?.notification?.title"/>
+                                       [value]="$safeNavigationMigration(entity?.schedule?.notification?.title)"/>
                 </div>
                 <div>
                   <app-text-form-group [language]="language"
                                        [textarea]="true"
                                        [textareaAutosize]="true"
                                        [textGroup]="form.controls.schedule.controls.notification.controls.text"
-                                       [value]="entity?.schedule?.notification?.text"/>
+                                       [value]="$safeNavigationMigration(entity?.schedule?.notification?.text)"/>
                 </div>
               </ng-container>
             </ng-container>
@@ -197,7 +197,7 @@
                                      [textarea]="true"
                                      [textareaAutosize]="true"
                                      [textGroup]="asFormGroup(question.controls['field_label'])"
-                                     [value]="entity?.questions?.[i]?.field_label"/>
+                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_label)"/>
               </div>
               @if (question.controls['section_header']) {
                 <div>
@@ -205,7 +205,7 @@
                                        [textarea]="true"
                                        [textareaAutosize]="true"
                                        [textGroup]="asFormGroup(question.controls['section_header'])"
-                                       [value]="entity?.questions?.[i]?.section_header"/>
+                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.section_header)"/>
                 </div>
               }
               @if (question.controls['field_note']) {
@@ -214,7 +214,7 @@
                                        [textarea]="true"
                                        [textareaAutosize]="true"
                                        [textGroup]="asFormGroup(question.controls['field_note'])"
-                                       [value]="entity?.questions?.[i]?.field_note"/>
+                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_note)"/>
                 </div>
               }
               @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track $index; let j = $index) {
@@ -223,7 +223,7 @@
                                        [textarea]="false"
                                        [textareaAutosize]="false"
                                        [textGroup]="asFormGroup(choice.controls['label'])"
-                                       [value]="entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label"/>
+                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label)"/>
                 </div>
               }
             }

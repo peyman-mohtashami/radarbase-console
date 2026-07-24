@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { Subject } from 'rxjs';
@@ -24,6 +24,7 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
 @Component({
   selector: 'app-reset-password-page',
   templateUrl: './reset-password-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,

@@ -1,4 +1,4 @@
-import {Component, inject, output} from "@angular/core";
+import {Component, inject, output, ChangeDetectionStrategy} from "@angular/core";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireDetailsComponent} from "../questionnaire-details/questionnaire-details.component";
 import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
@@ -13,6 +13,7 @@ import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-togg
 @Component({
   selector: 'app-questionnaire-table-row',
   templateUrl: './questionnaire-table-row.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     QuestionnaireDetailsComponent,
     EntityTableRowComponent,

@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -13,6 +13,7 @@ import {GroupDialogService} from '../../services/group-dialog.service';
 @Component({
   selector: 'app-group-actions',
   templateUrl: './group-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,

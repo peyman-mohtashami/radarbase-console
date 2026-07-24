@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core'
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core'
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
@@ -8,6 +8,7 @@ import {JsonPipe} from '@angular/common';
 @Component({
   selector: 'app-question-header',
   imports: [ReplacePlaceholdersPipe, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './question-header.component.html',
 })
 export class QuestionHeaderComponent {

@@ -8,14 +8,14 @@
         <app-text-form-group class="mb-4"
                              [textGroup]="form.controls.schedule.controls.notification.controls.title"
                              [label]="`${_prefix}.notificationTitleLabel` | translate"
-                             [value]="dialogState.questionnaire()?.schedule?.notification?.title"/>
+                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.title)"/>
       </div>
       <div class="mb-4">
         <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"
                              [label]="`${_prefix}.notificationMessageLabel` | translate"
                              [textarea]="true"
                              [textareaAutosize]="true"
-                             [value]="dialogState.questionnaire()?.schedule?.notification?.text"/>
+                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.text)"/>
       </div>
     </div>
 

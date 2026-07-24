@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {DialogMode} from '../../../../../base-entities/enums/dialog';
 import {AppSourceData} from '../../models/source-data';
@@ -13,6 +13,7 @@ import {SourceDataDialogService} from '../../services/source-data-dialog.service
 @Component({
   selector: 'app-source-data-actions',
   templateUrl: './source-data-actions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIconButton,
     MatMenu,

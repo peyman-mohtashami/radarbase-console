@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import {
   AbstractControl, FormControl, FormGroup, ReactiveFormsModule,
   ValidatorFn
@@ -21,6 +21,7 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
 @Component({
   selector: 'app-password-page',
   templateUrl: './password-page.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardHeader,

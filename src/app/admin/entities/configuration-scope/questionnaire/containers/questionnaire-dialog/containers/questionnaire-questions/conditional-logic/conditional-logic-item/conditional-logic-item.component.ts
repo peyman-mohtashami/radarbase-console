@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output} from '@angular/core';
+import {Component, inject, input, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ConditionalLogicItem} from '../conditional-logic-dialog/conditional-logic-dialog.component';
@@ -15,6 +15,7 @@ import {QuestionnaireDialogStateService} from '../../../../services/questionnair
 @Component({
   selector: 'app-conditional-logic-item',
   templateUrl: './conditional-logic-item.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatIcon,
     MatFormField,

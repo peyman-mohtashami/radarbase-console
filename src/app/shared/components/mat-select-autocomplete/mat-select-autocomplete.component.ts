@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -49,6 +50,7 @@ export interface MatSelectAutocompleteAdapter<TOption> {
     //   useExisting: MatSelectAutocompleteComponent,
     // },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatFormField,
     MatSelectTrigger,

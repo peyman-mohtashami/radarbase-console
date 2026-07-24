@@ -38,11 +38,11 @@
 
     <mat-form-field subscriptSizing="fixed" appearance="outline">
       @if (entity().multi_line) {
-        <textarea matInput rows="5" maxlength="256" [value]="answer()?.value" [disabled]="isPreviewDisabled"
+        <textarea matInput rows="5" maxlength="256" [value]="$safeNavigationMigration(answer()?.value)" [disabled]="isPreviewDisabled"
                (input)="onPreviewInputChange($event)"
                   [type]="'text'"></textarea>
       } @else {
-        <input matInput maxlength="256" [value]="answer()?.value" [disabled]="isPreviewDisabled"
+        <input matInput maxlength="256" [value]="$safeNavigationMigration(answer()?.value)" [disabled]="isPreviewDisabled"
                (input)="onPreviewInputChange($event)"
                [type]="'text'">
       }
