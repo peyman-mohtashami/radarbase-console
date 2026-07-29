@@ -1,22 +1,17 @@
 import {inject, Injectable} from '@angular/core';
-import {AppLog, RadarLog} from '../models/log';
+import {AppLog, LogDto} from '../models/log';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {environment} from '../../../../../../environments/environment';
 import {LogConfigService} from './log-config.service';
+import {HttpClient} from '@angular/common/http';
+import {OrganizationDto} from '../../../organization/models/organization';
 
 @Injectable({ providedIn: 'root' })
-export class LogService extends BaseEntityService<AppLog, RadarLog> {
-  override configService = inject(LogConfigService);
+export class LogService {
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}management/logs`;
 
-  override getResourceUrl(): string {
-    return `${environment.apiUrl}management/logs`;
-  }
-
-  override toAppModel(entity: RadarLog): AppLog {
-    return {
-      ...entity,
-      _name: entity.name,
-      _search: `${entity.name} ${entity.level}`,
-    };
+  getWithQuery() {
+    return this.http.get<LogDto[]>(this.apiUrl);
   }
 }

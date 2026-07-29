@@ -3,8 +3,8 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpContext, HttpHeaders} from "@angular/common/http";
 import {
   AppConfig,
-  RadarConfig,
-  RadarConfigBundle
+  ConfigDto,
+  ConfigBundleDto
 } from '../../../admin/entities/configuration-scope/config/models/config';
 import {environment} from '../../../../environments/environment';
 
@@ -14,16 +14,16 @@ import {environment} from '../../../../environments/environment';
 export class RadarbaseAppConfigService {
   private http = inject(HttpClient);
 
-  getRadarConfigBundle(clientId: string, projectId?: string, subjectId?: string, context?: HttpContext): Observable<RadarConfigBundle> {
+  getRadarConfigBundle(clientId: string, projectId?: string, subjectId?: string, context?: HttpContext): Observable<ConfigBundleDto> {
     const appConfigBaseUrl = getAppConfigBaseUrl();
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.get<RadarConfigBundle>(url, {headers, context});
+    return this.http.get<ConfigBundleDto>(url, {headers, context});
   }
 
-  getConfig(radarConfigBundle: RadarConfigBundle, configName: string): RadarConfig | undefined {
+  getConfig(radarConfigBundle: ConfigBundleDto, configName: string): ConfigDto | undefined {
     const configs = [...radarConfigBundle.config];
     radarConfigBundle.defaults?.forEach(defaultConfig => {
       if (!radarConfigBundle.config.find(config => config.name === defaultConfig.name)) {
@@ -38,7 +38,7 @@ export class RadarbaseAppConfigService {
     const appConfigBaseUrl = getAppConfigBaseUrl();
     const urlSegment = getUrlSegment(projectId, subjectId);
     const url = `${appConfigBaseUrl}/${urlSegment}/config/${clientId}`;
-    return this.http.post<RadarConfigBundle>(url, {config: configs});
+    return this.http.post<ConfigBundleDto>(url, {config: configs});
   }
 }
 

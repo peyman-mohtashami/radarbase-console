@@ -1,0 +1,122 @@
+@let _prefix = "ADMIN.organization";
+
+@if (dialogData.mode) {
+  <h2 mat-dialog-title class="border-b border-neutral-400">
+    <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+    <span> {{ `${_prefix}.title.singular` | translate }}</span>
+    <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  </h2>
+
+  <mat-dialog-content>
+    @if (dialogData.mode === DialogMode.DELETE) {
+      <div class='mb-4 text-base'>
+        <div class="mt-4">
+          <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
+          <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        </div>
+      </div>
+    }
+
+    @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+
+      <form novalidate>
+        @if (dialogData.mode !== DialogMode.ADD) {
+          <label for="organization-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+          <mat-form-field appearance='fill'>
+            <input matInput id="organization-id" [formField]="form.id">
+          </mat-form-field>
+        }
+
+        <label for="organization-name" class="text-sm">{{ `${_prefix}.name.label` | translate }} *</label>
+        <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+          <input matInput id="organization-id" autocomplete="off" data-lpignore="true"
+                 [formField]='form.name'
+                 type="text">
+
+          <mat-error>
+            @if (form.name().touched() && form.name().invalid()) {
+              @for (error of form.name().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+
+        @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+          <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
+          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+            <input matInput id="location" autocomplete="off" data-lpignore="true"
+                   [formField]="form.location"
+                   type="text">
+            <mat-error>
+              @if (form.location().touched() && form.location().invalid()) {
+                @for (error of form.location().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        }
+
+        @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+          <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
+          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
+          <textarea matInput #description
+                    [formField]="form.description"
+                    id="description"
+                    rows='3'></textarea>
+            <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+
+            <mat-error>
+              @if (form.description().touched() && form.description().invalid()) {
+                @for (error of form.description().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        }
+      </form>
+    }
+  </mat-dialog-content>
+
+  @if (store.error()) {
+    <app-error-message-box>
+      {{store.error() | json}}
+    </app-error-message-box>
+  }
+
+  <mat-dialog-actions align="end" class="justify-between!">
+    <button (click)='close()' mat-stroked-button color="accent">
+      {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    </button>
+    @switch (dialogData.mode) {
+      @case (DialogMode.DELETE) {
+        <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+          @if (store.loading()) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+            {{ 'SHARED.dialog.deletingButton' | translate }}
+          } @else {
+            {{ 'SHARED.dialog.yes' | translate }}
+          }
+        </button>
+      }
+      @case (DialogMode.EDIT) {
+        <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+          @if (store.loading()) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          }
+          {{ "SHARED.dialog.update" | translate }}
+        </button>
+      }
+      @case (DialogMode.ADD) {
+        <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+          @if (store.loading()) {
+            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          }
+          {{ "SHARED.dialog.create" | translate }}
+        </button>
+      }
+    }
+  </mat-dialog-actions>
+}

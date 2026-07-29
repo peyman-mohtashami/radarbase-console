@@ -1,0 +1,53 @@
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span> {{ `ADMIN.subject.discontinue.title` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  <p class="mb-4">
+    {{ "ADMIN.subject.discontinue.message" | translate }} {{ 'Subject' }}:
+    <strong>{{ dialogData.entity.login }}</strong>.
+  </p>
+
+  <div class='mb-4 text-base'>
+    <app-subject-details class="py-4"
+                         [entity]='dialogData.entity'
+                         [detailType]="DetailType.SUMMARY"/>
+  </div>
+  <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
+</mat-dialog-content>
+
+@if (error()) {
+  <app-error-message-box>
+<!--    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}-->
+  </app-error-message-box>
+}
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button mat-stroked-button
+            color='accent'
+            type='button'
+            class='close-button'
+            (click)='close()'>
+      {{ 'ADMIN.subject.discontinue.no' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end'>
+    <button mat-raised-button
+            color='warn'
+            [disabled]='loading()'
+            (click)='onAction(DialogAction.DELETE)'>
+      @if (loading()) {
+        <ng-container>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+          {{ 'ADMIN.subject.discontinue.deleting' | translate }}
+        </ng-container>
+      } @else {
+        {{ 'ADMIN.subject.discontinue.discontinue' | translate }}
+      }
+    </button>
+  </div>
+</div>

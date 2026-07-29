@@ -2,7 +2,7 @@
 // import { RadarProject } from './radar-project.model';
 // import { RadarOrganization } from './radar-organization.model';
 
-import {RadarRole} from '../../../admin/entities/main-scope/user/models/user';
+import {RoleDto} from '../../../admin/entities/user/models/user';
 
 // export interface AuthOptionsModel {
 //   backendBaseUrl?: string;
@@ -39,7 +39,7 @@ export interface ManagementPortalUser {
   lastModifiedDate?: string; //"2021-11-09T09:01:48.286+01:00"
   lastName?: string; //"Administrator"
   login: string; //"admin"
-  roles: RadarRole[]; //[{id: 1, projectId: null, projectName: null, authorityName: "ROLE_SYS_ADMIN"}]
+  roles: RoleDto[]; //[{id: 1, projectId: null, projectName: null, authorityName: "ROLE_SYS_ADMIN"}]
 }
 
 // export interface RadarRolePayload {

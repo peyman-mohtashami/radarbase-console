@@ -1,0 +1,234 @@
+@let _prefix = "ADMIN.client";
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form novalidate>
+      <label for="clientId" class="text-sm">
+        {{ `${_prefix}.clientId.label` | translate }} *
+      </label>
+      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input id="clientId" matInput [formField]="form.clientId">
+        <mat-error>
+          @if (form.clientId().touched() && form.clientId().invalid()) {
+            @for (error of form.clientId().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      <mat-slide-toggle class="my-2" [formField]="form.enableEmptySecret" color="primary">
+        {{ `${_prefix}.enableEmptySecret.label` | translate }}
+      </mat-slide-toggle>
+      <p class="mb-4 text-xs">{{ `${_prefix}.enableEmptySecret.hint` | translate }}</p>
+
+      @if (!model().enableEmptySecret) {
+        <label for="clientSecret" class="text-sm">
+          {{ `${_prefix}.clientSecret.label` | translate }} *
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance='outline'>
+          <input id="clientSecret" matInput [formField]="form.clientSecret">
+          <button type='button' matSuffix mat-button class="text-sm mx-2" (click)='generateRandomSecret(36)'>
+            {{ `${_prefix}.clientSecret.generateKey` | translate }}
+          </button>
+          <mat-error>
+            @if (form.clientSecret().touched() && form.clientSecret().invalid()) {
+              @for (error of form.clientSecret().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      <label for="scope" class="text-sm">
+        {{ `${_prefix}.scope.label` | translate }} *
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.scope.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
+        <textarea id="scope" rows="3" matInput [formField]="form.scope"></textarea>
+        <mat-error>
+          @if (form.scope().touched() && form.scope().invalid()) {
+            @for (error of form.scope().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      <label for="resourceIds" class="text-sm">
+        {{ `${_prefix}.resourceIds.label` | translate }} *
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.resourceIds.hint` | translate }}
+      </p>
+      <mat-form-field class="" subscriptSizing="fixed" appearance='outline'>
+        <input id="resourceIds" matInput [formField]="form.resourceIds">
+        <mat-error>
+          @if (form.resourceIds().touched() && form.resourceIds().invalid()) {
+            @for (error of form.resourceIds().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+
+      <p class="text-sm">
+        {{ `${_prefix}.authorizedGrantTypes.label` | translate }}
+      </p>
+      <fieldset>
+        <div>
+          <mat-checkbox [formField]="form._authorizedGrantTypes['refresh_token']" color="primary">
+            {{ `${_prefix}.authorizedGrantTypes.refreshToken` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox [formField]="form._authorizedGrantTypes['password']" color="primary">
+            {{ `${_prefix}.authorizedGrantTypes.password` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox [formField]="form._authorizedGrantTypes['authorization_code']" color="primary">
+            {{ `${_prefix}.authorizedGrantTypes.authorization_code` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox [formField]="form._authorizedGrantTypes['client_credentials']" color="primary">
+            {{ `${_prefix}.authorizedGrantTypes.client_credentials` | translate }}
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox [formField]="form._authorizedGrantTypes['implicit']" color="primary">
+            {{ `${_prefix}.authorizedGrantTypes.implicit` | translate }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+
+      <div class="">
+        <mat-slide-toggle class="my-4" [formField]="form._dynamic_registration" color="primary">
+          {{ `${_prefix}.dynamic_registration.label` | translate }}
+        </mat-slide-toggle>
+      </div>
+
+      <label for="registeredRedirectUri" class="text-sm">
+        {{ `${_prefix}.registeredRedirectUri.label` | translate }}
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.registeredRedirectUri.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
+        <input id="registeredRedirectUri" matInput [formField]="form.registeredRedirectUri">
+      </mat-form-field>
+
+      <label for="autoApproveScopes" class="text-sm">
+        {{ `${_prefix}.autoApproveScopes.label` | translate }}
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.autoApproveScopes.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" class="" appearance='outline'>
+        <textarea id="autoApproveScopes" rows="3" matInput [formField]="form.autoApproveScopes"></textarea>
+      </mat-form-field>
+
+      <label for="accessTokenValiditySeconds" class="text-sm">
+        {{ `${_prefix}.accessTokenValiditySeconds.label` | translate }} *
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.accessTokenValiditySeconds.hint` | translate }}
+      </p>
+      <mat-form-field id="accessTokenValiditySeconds" subscriptSizing="fixed" class="" appearance='outline'>
+        <input matInput [formField]="form.accessTokenValiditySeconds" type='number'>
+        <mat-error>
+          @if (form.accessTokenValiditySeconds().touched() && form.accessTokenValiditySeconds().invalid()) {
+            @for (error of form.accessTokenValiditySeconds().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+          {{ Number(model().accessTokenValiditySeconds) | duration:'s' }}
+        </span>
+      </mat-form-field>
+
+
+      <label for="refreshTokenValiditySeconds" class="text-sm">
+        {{ `${_prefix}.refreshTokenValiditySeconds.label` | translate }} *
+      </label>
+      <p class="text-xs mb-1">
+        {{ `${_prefix}.refreshTokenValiditySeconds.hint` | translate }}
+      </p>
+      <mat-form-field subscriptSizing="fixed" appearance='outline'>
+        <input id="refreshTokenValiditySeconds" matInput [formField]="form.refreshTokenValiditySeconds" type='number'>
+        <mat-error>
+          @if (form.refreshTokenValiditySeconds().touched() && form.refreshTokenValiditySeconds().invalid()) {
+            @for (error of form.refreshTokenValiditySeconds().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+          {{ Number(model().refreshTokenValiditySeconds) | duration:'s' }}
+        </span>
+      </mat-form-field>
+    </form>
+  }
+</mat-dialog-content>
+
+
+@if (store.error()) {
+  <app-error-message-box>
+    {{store.error() | json}}
+  </app-error-message-box>
+}
+
+<mat-dialog-actions align="end" class="justify-between!">
+  <button (click)='close()' mat-stroked-button color="accent">
+    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+  </button>
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  }
+</mat-dialog-actions>

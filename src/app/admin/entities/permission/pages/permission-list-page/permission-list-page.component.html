@@ -1,0 +1,83 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<!--<app-entities-page-header [showTitle]="true"-->
+<!--                          [entityMetadata]="configService.getEntityMetadata()"-->
+<!--                          [enableAddButton]="true"-->
+<!--                          [isGridView]="undefined"-->
+<!--                          [permission]="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: currentOrganization?.name}, {role: ROLES.PROJECT_ADMIN, entityName: currentProject?.projectName}]">-->
+<!--  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <app-data-table-filter bottom-filter-->
+<!--                           [filters]='tableFilters'-->
+<!--                           [filterOpened]='isFilterOpened'-->
+<!--                           (filterChanged)='handleFilterChange($event)'-->
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+<!--  }-->
+<!--</app-entities-page-header>-->
+
+<div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">
+      <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata.icon }}</span>
+      <span class="material-symbols-outlined absolute left-2 top-2">{{ entityMetadata.icon }}</span>
+    </span>
+    <span class="text-primary dark:text-primary-dark">
+      {{ 'ADMIN.' + entityMetadata.name + '.title.plural' | translate }}
+    </span>
+  </h2>
+
+  <div class="flex items-center gap-2">
+<!--    <button type='button' class="small" mat-icon-button color="primary" (click)="toggleViewMode()">-->
+<!--      <span class="material-symbols-outlined">{{ isGridView ? "list" : "grid_view" }}</span>-->
+<!--    </button>-->
+    <ng-container *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}]">
+      <button (click)="openDialog(DialogMode.ADD)" mat-stroked-button color="primary" type="button">
+        <span class="font-bold flex items-center gap-2">
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          {{ 'ADMIN.' + entityMetadata.name + '.create' | translate }}
+        </span>
+      </button>
+    </ng-container>
+  </div>
+</div>
+
+<div class="px-4">
+  @if (tableFilters.length && store.total() > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)'/>
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+  }
+</div>
+
+@if (store.loading()) {
+  <app-loader/>
+}
+
+<app-entity-list-page [entities]="entities()"
+                   [tableFields]="tableFields"
+                   [entityMetadata]="entityMetadata"
+                   [page]="page()!"
+                   [sort]="sort()!"
+                   (switchPageEvent)="switchPage($event)"
+                   (switchSortEvent)="switchSort($event)"
+                   [customTemplate]="itemTemplate"
+                   [gridView]="gridView"
+                   [totalEntities]="store.total()"/>
+<ng-template #itemTemplate let-entity>
+<!--  <app-permission-table-row [entity]="entity"-->
+<!--                            [gridView]="gridView"-->
+<!--                            [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
+<!--                            [extensionClass]="extensionClass()"-->
+<!--                            [organizationName]="currentOrganization?.name"-->
+<!--                            [projectName]="currentProject?.projectName"-->
+<!--                            [user]="authService.user()" />-->
+  <app-permission-table-row [entity]="entity"
+                            [gridView]="gridView"
+                            [extensionClass]="extensionClass()"
+                            [organizationName]="organizationId"
+                            [projectName]="projectId"
+                            [user]="authService.user()" />
+<!--                            [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
+</ng-template>

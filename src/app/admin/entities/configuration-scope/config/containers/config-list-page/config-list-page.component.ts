@@ -1,7 +1,7 @@
 import {Component, inject, signal, ChangeDetectionStrategy} from '@angular/core';
 import { DialogMode } from '../../../../../base-entities/enums/dialog';
 import { ConfigService } from '../../services/config.service';
-import {AppConfig, RadarConfig} from "../../models/config";
+import {AppConfig, ConfigDto} from "../../models/config";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../../shared/components/loader/loader.component";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -12,8 +12,7 @@ import {
 } from "../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
-import {AppProject} from '../../../../main-scope/project/models/project';
-import {AppSubject} from "../../../../project-scope/subject/models/subject";
+import {AppProject} from '../../../../project/models/project';
 import {MatIcon} from '@angular/material/icon';
 import {BaseEntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/base-entity-list-page.component';
 import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
@@ -36,7 +35,7 @@ import {PermissionDirective} from '../../../../../../core/auth/directives/show-i
     PermissionDirective,
   ]
 })
-export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, RadarConfig> {
+export class ConfigListPageComponent extends BaseEntityListPageComponent<AppConfig, ConfigDto> {
   override entityService = inject(ConfigService);
   override configService = inject(ConfigConfigService);
   override dialogService = inject(ConfigDialogService);

@@ -1,15 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {Observable} from 'rxjs';
-
-import {LogService} from './log.service';
-import {AppLog} from "../models/log";
+import {LogStore} from './log.store';
 
 @Injectable({providedIn: 'root'})
-export class LogListResolver implements Resolve<AppLog[]> {
-  private entityService = inject(LogService);
+export class LogListResolver implements Resolve<void> {
+  private store = inject(LogStore);
 
-  resolve(route: ActivatedRouteSnapshot): Observable<AppLog[]> {
-    return this.entityService.getWithQuery(route.queryParams);
+  async resolve(route: ActivatedRouteSnapshot) {
+    const res = await this.store.getWithQuery(route.queryParams);
+    if (res) this.store.selected.set(null);
   }
 }

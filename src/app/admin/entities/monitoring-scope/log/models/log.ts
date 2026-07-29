@@ -1,9 +1,8 @@
-export interface RadarLog {
+import {AuditDto} from '../../audit/models/audit';
+
+export interface LogDto {
   name: string;
   level: string;
 }
 
-export interface AppLog extends RadarLog {
-  _name: string;
-  _search: string;
-}
+export type AppLog = LogDto & {name: string; search: string};

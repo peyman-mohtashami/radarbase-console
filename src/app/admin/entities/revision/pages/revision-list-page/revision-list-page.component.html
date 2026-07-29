@@ -1,0 +1,69 @@
+@let tableFilters = configService.getTableFilters();
+@let entityMetadata = configService.getEntityMetadata();
+@let tableFields = configService.getTableFields();
+
+<div
+  class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
+  <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
+    <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">
+      <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata.icon }}</span>
+      <span class="material-symbols-outlined absolute left-2 top-2">{{ entityMetadata.icon }}</span>
+    </span>
+    <span
+      class="text-primary dark:text-primary-dark">{{ 'ADMIN.' + entityMetadata.name + '.title.plural' | translate }}</span>
+  </h2>
+  <div class="flex items-center gap-2">
+    <app-tag class="bg-green-100 text-green-700">{{ 'ADMIN.revision.added' | translate }}</app-tag>
+    <app-tag class="bg-cyan-100 text-cyan-700">{{ 'ADMIN.revision.modified' | translate }}</app-tag>
+    <app-tag class="bg-red-100 text-red-700">{{ 'ADMIN.revision.deleted' | translate }}</app-tag>
+  </div>
+</div>
+
+<div class="px-4">
+  @if (tableFilters.length && store.total() > MIN_ENTITIES_FOR_FILTERS) {
+    <app-data-table-filter [filters]='tableFilters'
+                           [filterOpened]='isFilterOpened'
+                           (filterChanged)='handleFilterChange($event)' />
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+  }
+</div>
+
+<!--<app-entities-page-header [showTitle]="true"-->
+<!--                          [entityMetadata]="configService.getEntityMetadata()"-->
+<!--                          [enableAddButton]="false"-->
+<!--                          [isGridView]="undefined"-->
+<!--                          [permission]="[{role: ROLES.SYS_ADMIN}]">-->
+<!--  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {-->
+<!--    <app-data-table-filter bottom-filter-->
+<!--                           [filters]='tableFilters'-->
+<!--                           [filterOpened]='isFilterOpened'-->
+<!--                           (filterChanged)='handleFilterChange($event)'-->
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
+<!--  }-->
+<!--  <div extra-buttons class='flex gap-2 items-center ml-auto'>-->
+<!--    <app-tag class="bg-green-100 text-green-700">{{ 'ADMIN.revision.added' | translate }}</app-tag>-->
+<!--    <app-tag class="bg-cyan-100 text-cyan-700">{{ 'ADMIN.revision.modified' | translate }}</app-tag>-->
+<!--    <app-tag class="bg-red-100 text-red-700">{{ 'ADMIN.revision.deleted' | translate }}</app-tag>-->
+<!--  </div>-->
+<!--</app-entities-page-header>-->
+
+@if (store.loading()) {
+  <app-loader/>
+}
+
+<app-entity-list-page [entities]="entities()"
+                      [tableFields]="tableFields"
+                      [entityMetadata]="entityMetadata"
+                      [page]="page()!"
+                      [sort]="sort()!"
+                      (switchPageEvent)="switchPage($event)"
+                      (switchSortEvent)="switchSort($event)"
+                      [customTemplate]="itemTemplate"
+                      [gridView]="gridView"
+                      [totalEntities]="store.total()"/>
+<ng-template #itemTemplate let-entity>
+  <app-revision-table-row [entity]="entity"
+                          [gridView]="gridView"
+                          [extensionClass]="extensionClass()"/>
+<!--                          [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
+</ng-template>

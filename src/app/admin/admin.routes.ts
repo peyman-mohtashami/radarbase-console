@@ -18,36 +18,36 @@ export const adminRoutes: Routes = [
       {
         path: 'organizations',
         loadChildren: () =>
-          import('./entities/main-scope/organization/organization.routes').then((m) => m.organizationRoutes),
+          import('./entities/organization/organization.routes').then((m) => m.organizationRoutes),
       },
       {
         path: 'projects',
         loadChildren: () =>
-          import('./entities/main-scope/project/projects.routes').then((m) => m.projectRoutes),
+          import('./entities/project/projects.routes').then((m) => m.projectRoutes),
       },
       {
         path: 'source-types',
         loadChildren: () =>
-          import('./entities/main-scope/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
+          import('./entities/source-type/source-type.routes').then((m) => m.sourceTypeRoutes),
       },
       {
         path: 'source-data',
         loadChildren: () =>
-          import('./entities/main-scope/source-data/source-data.routes').then((m) => m.sourceDataRoutes),
+          import('./entities/source-data/source-data.routes').then((m) => m.sourceDataRoutes),
       },
       {
         path: 'users',
         loadChildren: () =>
-          import('./entities/main-scope/user/user.routes').then((m) => m.userRoutes),
+          import('./entities/user/user.routes').then((m) => m.userRoutes),
       },
       {
         path: 'clients',
-        loadChildren: () => import('./entities/main-scope/client/client.routes').then((m) => m.clientRoutes),
+        loadChildren: () => import('./entities/client/client.routes').then((m) => m.clientRoutes),
       },
       {
         path: 'global-config',
         loadChildren: () =>
-          import('./entities/main-scope/client/app-config.routes').then((m) => m.appConfigRoutes),
+          import('./entities/client/app-config.routes').then((m) => m.appConfigRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
@@ -74,7 +74,7 @@ export const adminRoutes: Routes = [
       },
       {
         path: 'revisions',
-        loadChildren: () => import('./entities/main-scope/revision/revision.routes').then((m) => m.revisionRoutes),
+        loadChildren: () => import('./entities/revision/revision.routes').then((m) => m.revisionRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN] },
       },

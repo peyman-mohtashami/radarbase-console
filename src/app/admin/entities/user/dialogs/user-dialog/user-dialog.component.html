@@ -1,0 +1,164 @@
+@let _prefix = "ADMIN.user";
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY" />
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.login }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form novalidate>
+
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance='fill'>
+          <input matInput [formField]="form.id">
+        </mat-form-field>
+      }
+
+      <label for="login" class="text-sm">{{ `${_prefix}.login.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" appearance='outline'>
+        <input matInput [formField]="form.login">
+        <mat-error>
+          @if (form.login().touched() && form.login().invalid()) {
+            @for (error of form.login().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
+      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input matInput [formField]="form.email" >
+        <mat-error>
+          @if (form.email().touched() && form.email().invalid()) {
+            @for (error of form.email().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      @if (!formFields || formFields['firstName'] === undefined || formFields['firstName']) {
+        <label for="firstName" class="text-sm">{{ `${_prefix}.firstName.label` | translate }}</label>
+      <mat-form-field subscriptSizing="fixed" appearance='outline'>
+        <input matInput [formField]="form.firstName">
+        <mat-error>
+          @if (form.firstName().touched() && form.firstName().invalid()) {
+            @for (error of form.firstName().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+      }
+
+      @if (!formFields || formFields['lastName'] === undefined || formFields['lastName']) {
+        <label for="lastName" class="text-sm">{{ `${_prefix}.lastName.label` | translate }}</label>
+      <mat-form-field subscriptSizing="fixed" appearance='outline'>
+        <input matInput [formField]="form.lastName">
+        <mat-error>
+          @if (form.lastName().touched() && form.lastName().invalid()) {
+            @for (error of form.lastName().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+      }
+
+<!--      <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>-->
+<!--      <fieldset>-->
+<!--        <div>-->
+<!--          <mat-slide-toggle class="my-2" color="primary" formControlName='_sysAdmin'>-->
+<!--            {{ `${_prefix}.role.sysAdmin` | translate }}-->
+<!--          </mat-slide-toggle>-->
+<!--        </div>-->
+<!--        @if (!form.controls._roles.controls._sysAdmin.value) {-->
+<!--          <div>-->
+<!--            <mat-slide-toggle class="my-2" color="primary" formControlName='_organizationAdmin'>-->
+<!--              {{ `${_prefix}.role.organizationAdmin` | translate }}-->
+<!--            </mat-slide-toggle>-->
+<!--          </div>-->
+<!--          @if (form.controls._roles.controls._organizationAdmin.value) {-->
+<!--            @if (dialogData.organizationFullList | async; as organizations) {-->
+<!--              <app-mat-select-autocomplete formControlName='_organizations'-->
+<!--                                           [label]='"ADMIN.organization.title.plural" | translate'-->
+<!--                                           [options]='organizations'-->
+<!--                                           [multiple]="true"-->
+<!--                                           [adapter]="organizationAdapter" />-->
+<!--            }-->
+<!--          }-->
+<!--        }-->
+<!--        @if (!form.controls._roles.controls._sysAdmin.value) {-->
+<!--          <div>-->
+<!--            <mat-slide-toggle class="my-2" color="primary" formControlName='_projectAdmin'>-->
+<!--              {{ `${_prefix}.role.projectAdmin` | translate }}-->
+<!--            </mat-slide-toggle>-->
+<!--          </div>-->
+<!--          @if (form.controls._roles.controls._projectAdmin.value) {-->
+<!--            @if (dialogData.projectFullList | async; as projects) {-->
+<!--              <app-mat-select-autocomplete formControlName='_projects'-->
+<!--                                           [label]='"ADMIN.project.title.plural" | translate'-->
+<!--                                           [options]='projects'-->
+<!--                                           [multiple]="true"-->
+<!--                                           [adapter]="projectAdapter"/>-->
+<!--            }-->
+<!--          }-->
+<!--        }-->
+<!--      </fieldset>-->
+    </form>
+  }
+</mat-dialog-content>
+
+@if (store.error()) {
+  <app-error-message-box>
+    {{store.error() | json}}
+  </app-error-message-box>
+}
+
+<mat-dialog-actions align="end" class="justify-between!">
+  <button (click)='close()' mat-stroked-button color="accent">
+    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+  </button>
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  }
+</mat-dialog-actions>

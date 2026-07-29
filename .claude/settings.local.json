@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('@angular/core:', p.dependencies['@angular/core'], '@angular/common:', p.dependencies['@angular/common']\\)\")"
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('@angular/core:', p.dependencies['@angular/core'], '@angular/common:', p.dependencies['@angular/common']\\)\")",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('public/assets/i18n/en.json'\\)\\); print\\(json.dumps\\(d.get\\('SHARED',{}\\).get\\('validatorError',{}\\), indent=2\\)\\)\")"
     ]
   }
 }

@@ -7,12 +7,15 @@ import { Observable } from 'rxjs';
 
 import { AuditService } from './audit.service';
 import { AppAudit } from "../models/audit";
+import {RevisionStore} from '../../../revision/services/revision.store';
+import {AuditStore} from './audit.store';
 
 @Injectable({ providedIn: 'root' })
-export class AuditListResolver implements Resolve<AppAudit[]> {
-  private entityService = inject(AuditService);
+export class AuditListResolver implements Resolve<void> {
+  private store = inject(AuditStore);
 
-  resolve(route: ActivatedRouteSnapshot): Observable<AppAudit[]> {
-    return this.entityService.getWithQuery(route.queryParams);
+  async resolve(route: ActivatedRouteSnapshot): Promise<void> {
+    const res = await this.store.getWithQuery(route.queryParams);
+    if (res) this.store.selected.set(null);
   }
 }

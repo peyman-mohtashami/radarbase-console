@@ -1,10 +1,14 @@
-import {Component, inject, ChangeDetectionStrategy} from "@angular/core";
+import {Component, inject, ChangeDetectionStrategy, input, signal} from "@angular/core";
 import {AppLog} from "../../models/log";
 import {TranslatePipe} from "@ngx-translate/core";
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 import {LogConfigService} from "../../services/log-config.service";
 import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {EntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {OrganizationConfigService} from '../../../../organization/services/organization-config.service';
+import {AppOrganization} from '../../../../organization/models/organization';
+import {ROLES} from '../../../../../../shared/enums/roles';
+import {DetailType} from '../../../../../base-entities/enums/detail-type';
 
 @Component({
   selector: 'app-log-table-row',
@@ -16,10 +20,15 @@ import {EntityTableRowComponent} from '../../../../../base-entities/components/e
     EntityTableRowComponent,
   ]
 })
-export class LogTableRowComponent extends BaseEntityTableRowComponent<AppLog>{
-  override configService = inject(LogConfigService);
+export class LogTableRowComponent {
+  protected readonly ROLES = ROLES;
+  protected readonly DetailType = DetailType;
 
-  // updateAction(log: AppLog, level: string) {
-  //   //TODO
-  // }
+  configService = inject(LogConfigService);
+
+  entity = input.required<AppLog>();
+  extensionClass = input<string>();
+  gridView = input<boolean>(false);
+
+  updated = signal(false);
 }

@@ -1,0 +1,161 @@
+@let _prefix = "ADMIN.subject";
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  @if (dialogData.mode === SubjectDialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <app-subject-details class="py-4"
+                           [entity]='dialogData.entity'
+                           [detailType]="DetailType.SUMMARY"/>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === SubjectDialogMode.ADD || dialogData.mode === SubjectDialogMode.EDIT) {
+    <form novalidate>
+      @if (dialogData.mode !== SubjectDialogMode.ADD) {
+        <label for="subject-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="fill">
+          <input matInput [formField]="form.id" id="subject-id" autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+
+        <label for="subject-login" class="text-sm">{{ `${_prefix}.login.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="fill">
+          <input id="subject-login" matInput [formField]="form.login">
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['personName'] === undefined || formFields['personName']) {
+        <label for="subject-person-name" class="text-sm">{{ `${_prefix}.personName.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.personName" type="search"
+                 id="subject-person-name" autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['dateOfBirth'] === undefined || formFields['dateOfBirth']) {
+        <label for="subject-date-of-birth" class="text-sm">{{ `${_prefix}.dateOfBirth.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input id="subject-date-of-birth" matInput [matDatepicker]="picker" [formField]="form.dateOfBirth"
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+          <mat-datepicker-toggle matSuffix [for]="picker"/>
+          <mat-datepicker #picker/>
+          <mat-error>
+            @if (form.dateOfBirth().touched() && form.dateOfBirth().invalid()) {
+              @for (error of form.dateOfBirth().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['externalId'] === undefined || formFields['externalId']) {
+        <label for="subject-external-id" class="text-sm">{{ `${_prefix}.externalId.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input id="subject-external-id" matInput [formField]="form.externalId">
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['externalLink'] === undefined || formFields['externalLink']) {
+        <label for="subject-external-link" class="text-sm">
+          {{ `${_prefix}.externalLink.label` | translate }}
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input id="subject-external-id" matInput [formField]="form.externalLink">
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['group'] === undefined || formFields['group']) {
+        <label for="subject-group" class="text-sm">{{ `${_prefix}.group.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <mat-select id="subject-group" [formField]="form.group">
+            @for (group of dialogData.groupFullList; track group.name) {
+              <mat-option [value]='group.name'>{{ group.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <div>
+        @for (field of extraFields; track field.name) {
+          <app-mat-dynamic-input [entityName]="configService.getEntityMetadata().name"
+                                 [field]="field"
+                                 [formField]="form.attributes[field.name]"/>
+        }
+
+        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+          <label for="subject-attributes" class="text-sm">
+            {{ `${_prefix}.attributes.label` | translate }}
+          </label>
+          <fieldset class="rounded-sm border px-4">
+            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {
+              <label for="subject-human-readable-identifier" class="text-sm">
+                {{ `${_prefix}.attributes.humanReadableIdentifier` | translate }}
+              </label>
+              <mat-form-field subscriptSizing="fixed" appearance='outline'>
+                <input id="subject-human-readable-identifier" matInput [formField]="form.attributes['humanReadableIdentifier']">
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {
+              <label for="subject-participant-group" class="text-sm">
+                {{ `${_prefix}.attributes.participant_group` | translate }}
+              </label>
+              <mat-form-field subscriptSizing="fixed" appearance='outline'>
+                <input id="subject-participant-group" matInput [formField]="form.attributes['participant_group']">
+              </mat-form-field>
+            }
+          </fieldset>
+        }
+      </div>
+    </form>
+  }
+</mat-dialog-content>
+
+@if (store.error()) {
+  <app-error-message-box>
+    {{store.error() | json}}
+  </app-error-message-box>
+}
+<mat-dialog-actions align="end" class="justify-between!">
+  <button (click)='close()' mat-stroked-button color="accent">
+    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+  </button>
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  }
+</mat-dialog-actions>

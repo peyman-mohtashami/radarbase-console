@@ -1,9 +1,12 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy, input} from '@angular/core';
 
 import {EntityDetailsComponent} from "../../../../../base-entities/components/entity-details/entity-details.component";
 import {AppAudit} from '../../models/audit';
 import {AuditConfigService} from "../../services/audit-config.service";
 import {BaseEntityDetailsComponent} from '../../../../../base-entities/components/entity-details/base-entity-details.component';
+import {ProjectConfigService} from '../../../../project/services/project-config.service';
+import {AppProject} from '../../../../project/models/project';
+import {DetailType} from '../../../../../base-entities/enums/detail-type';
 
 @Component({
   selector: 'app-audit-details',
@@ -13,6 +16,9 @@ import {BaseEntityDetailsComponent} from '../../../../../base-entities/component
     EntityDetailsComponent,
   ]
 })
-export class AuditDetailsComponent extends BaseEntityDetailsComponent<AppAudit> {
-  override configService = inject(AuditConfigService);
+export class AuditDetailsComponent {
+  configService = inject(AuditConfigService);
+
+  entity = input.required<AppAudit | undefined>();
+  detailType = input<DetailType>();
 }

@@ -1,0 +1,173 @@
+@let _prefix = "ADMIN.sourceData";
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form novalidate autocomplete="off">
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="source-data-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="fill">
+          <input id="source-data-id" matInput [formField]="form.id">
+        </mat-form-field>
+      }
+
+      <label for="source-data-type" class="text-sm">{{ `${_prefix}.sourceDataType.label` | translate  }} *</label>
+      <mat-form-field subscriptSizing="fixed" appearance="outline">
+        <input matInput [formField]="form.sourceDataType" id="source-data-type"
+               autocomplete="off" data-lpignore="true">
+        <mat-error>
+          @if (form.sourceDataType().touched() && form.sourceDataType().invalid()) {
+            @for (error of form.sourceDataType().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+<!--      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {-->
+<!--        <app-mat-select-autocomplete [formField]="form.sourceType"-->
+<!--                                     [label]="`${_prefix}.sourceType.label` | translate"-->
+<!--                                     [options]='sourceTypes'-->
+<!--                                     [required]="true"-->
+<!--                                     [adapter]="sourceTypeAdapter"/>-->
+<!--      }-->
+
+      <label for="source-data-name" class="text-sm">{{ `${_prefix}.sourceDataName.label` | translate  }} *</label>
+      <mat-form-field subscriptSizing="fixed" appearance="outline">
+        <input matInput [formField]="form.sourceDataName" id="source-data-name"
+               autocomplete="off" data-lpignore="true">
+        <mat-error>
+          @if (form.sourceDataName().touched() && form.sourceDataName().invalid()) {
+            @for (error of form.sourceDataName().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+      @if (!formFields || formFields['processingState'] === undefined || formFields['processingState']) {
+        <label for="processing-state" class="text-sm">
+          {{ `${_prefix}.processingState.label` | translate  }}
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <mat-select [formField]="form.processingState">
+            <mat-option [value]='ProcessingState.RAW'>
+              {{ `${_prefix}.processingState.RAW` | translate }}
+            </mat-option>
+            <mat-option [value]='ProcessingState.DERIVED'>
+              {{ `${_prefix}.processingState.DERIVED` | translate }}
+            </mat-option>
+            <mat-option [value]='ProcessingState.VENDOR'>
+              {{ `${_prefix}.processingState.VENDOR` | translate }}
+            </mat-option>
+            <mat-option [value]='ProcessingState.RADAR'>
+              {{ `${_prefix}.processingState.RADAR` | translate  }}
+            </mat-option>
+            <mat-option [value]='ProcessingState.UNKNOWN'>
+              {{ `${_prefix}.processingState.UNKNOWN` | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+<!--      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {-->
+        <label for="topic" class="text-sm">{{ `${_prefix}.topic.label` | translate  }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.topic" id="topic"
+                 autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+<!--      }-->
+
+<!--      @if (!formFields || formFields['keySchema'] === undefined || formFields['keySchema']) {-->
+        <label for="key-schema" class="text-sm">
+          {{ `${_prefix}.keySchema.label` | translate }}
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.keySchema" id="key-schema"
+                 autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+<!--      }-->
+
+<!--      @if (!formFields || formFields['valueSchema'] === undefined || formFields['valueSchema']) {-->
+        <label for="value-schema" class="text-sm">
+          {{ `${_prefix}.valueSchema.label` | translate  }}
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.valueSchema" id="value-schema"
+                 autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+<!--      }-->
+
+<!--      @if (!formFields || formFields['frequency'] === undefined || formFields['frequency']) {-->
+        <label for="frequency" class="text-sm">
+          {{ `${_prefix}.frequency.label` | translate }}
+        </label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.frequency" id="frequency"
+                 autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+<!--      }-->
+
+<!--      @if (!formFields || formFields['unit'] === undefined || formFields['unit']) {-->
+        <label for="unit" class="text-sm">{{ `${_prefix}.unit.label` | translate  }}</label>
+        <mat-form-field subscriptSizing="fixed" appearance="outline">
+          <input matInput [formField]="form.unit" id="unit"
+                 autocomplete="off" data-lpignore="true">
+        </mat-form-field>
+<!--      }-->
+    </form>
+  }
+</mat-dialog-content>
+
+@if (store.error()) {
+  <app-error-message-box>
+    {{store.error() | json}}
+  </app-error-message-box>
+}
+<mat-dialog-actions align="end" class="justify-between!">
+  <button (click)='close()' mat-stroked-button color="accent">
+    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+  </button>
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  }
+</mat-dialog-actions>

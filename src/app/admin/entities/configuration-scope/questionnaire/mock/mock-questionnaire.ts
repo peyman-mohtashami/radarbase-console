@@ -1,4 +1,4 @@
-import {AppConfig, RadarConfig} from '../../config/models/config';
+import {AppConfig, ConfigDto} from '../../config/models/config';
 import {MockConfig} from '../../config/mock/mock-configs';
 import {adhd_medication_use} from './questionnaires/adhd_medication_use/main';
 import {adhd_medication_side_effects} from './questionnaires/adhd_medication_side_effects/main';
@@ -66,8 +66,8 @@ export function postAppQuestionnaires(configs: AppConfig[], clientId: string, pr
   return getQuestionnaires(clientId, projectId, subjectId);
 }
 
-const globalQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
-const radarQuestionnairesRadarConfigs: RadarConfig[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
+const globalQuestionnairesRadarConfigs: ConfigDto[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
+const radarQuestionnairesRadarConfigs: ConfigDto[] = [...PHQ8];//, ...adhd_medication_use, ...adhd_medication_side_effects, ...cns_covid19_baseline, ...sample_field_types];
 export const sub29QuestionnairesRadarConfigs = [...PHQ8];//[...audio];
 
 const globalQuestionnaires = globalQuestionnairesRadarConfigs.map((c, i) => ({id: i, name: c.name, value: c.value, client: 'questionnaire-service', project: undefined, subject: undefined}));

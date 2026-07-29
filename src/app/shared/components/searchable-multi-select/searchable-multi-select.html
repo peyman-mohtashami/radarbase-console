@@ -1,0 +1,49 @@
+<mat-form-field class="w-full" appearance="outline">
+  <mat-select [formField]="formField()"
+              [multiple]="multiple()"
+              panelClass="searchable-multi-select-panel">
+    <mat-select-trigger>
+      <mat-chip-set>
+        @for (option of selectedOptions(); track trackByOption($index, option)) {
+          <mat-chip-row removable (removed)="remove(option)">
+            {{ display(option) }}
+            <button matChipRemove type="button" (click)="$event.stopPropagation()">
+              <mat-icon class="material-symbols-outlined">cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        }
+      </mat-chip-set>
+    </mat-select-trigger>
+
+    <mat-option>
+      <ngx-mat-select-search [formControl]="searchControl"
+                             placeholderLabel="Search..."
+                             noEntriesFoundLabel="No matching options"/>
+    </mat-option>
+
+    @if (loading()) {
+      <mat-option disabled>
+        <mat-spinner diameter="24"/>
+      </mat-option>
+    } @else {
+      @if (filteredOptions().length === 0) {
+        <mat-option disabled>
+          No options found
+        </mat-option>
+      } @else {
+        @for (option of filteredOptions(); track trackByOption($index, option)) {
+          <mat-option [value]="option[valueKey()]">{{ display(option) }}</mat-option>
+        }
+      }
+    }
+  </mat-select>
+
+  <mat-error>
+    @if (formField()().touched() && formField()().invalid()) {
+      @for (error of formField()().errors(); track error.kind) {
+        {{ error.message }}
+      }
+    }
+  </mat-error>
+
+</mat-form-field>

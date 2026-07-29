@@ -1,0 +1,27 @@
+<div class="flex flex-wrap gap-1">
+  @if (roles(); as roles) {
+    @if (roles._sysAdmin) {
+      <app-tag class="bg-primary text-white">{{ 'ADMIN.user.role.sysAdmin' | translate }}</app-tag>
+    }
+
+    @if (roles._organizationAdmin) {
+      @for (_organization of roles._organizations; track _organization.id) {
+        @if (_organization.name === organization()) {
+          <app-tag class="bg-secondary text-white">
+            {{ 'ADMIN.user.role.organizationAdmin' | translate }}: {{_organization.name}}
+          </app-tag>
+        }
+      }
+    }
+
+    @if (roles._projectAdmin) {
+      @for (_project of roles._projects; track _project.id) {
+        @if (_project.name === project()) {
+          <app-tag class="bg-tertiary text-white">
+            {{ 'ADMIN.user.role.projectAdmin' | translate}}: {{_project.name}}
+          </app-tag>
+        }
+      }
+    }
+  }
+</div>

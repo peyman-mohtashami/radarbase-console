@@ -2,13 +2,13 @@ import {inject, Injectable} from '@angular/core';
 import { Observable, of } from "rxjs";
 
 import {map, tap} from "rxjs/operators";
-import {AppConfig, RadarConfig, RadarConfigBundle} from "../models/config";
+import {AppConfig, ConfigDto, ConfigBundleDto} from "../models/config";
 import {Params} from '@angular/router';
 import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
 
 @Injectable({ providedIn: 'root' })
-export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
+export class ConfigService extends BaseEntityService<AppConfig, ConfigDto> {
 
   private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
 
@@ -16,7 +16,7 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
 
   updatedList: AppConfig[] = [];
 
-  override toAppModel(entity: RadarConfig): AppConfig {
+  override toAppModel(entity: ConfigDto): AppConfig {
     return {
       ...entity,
       id: entity.name,
@@ -109,9 +109,9 @@ export class ConfigService extends BaseEntityService<AppConfig, RadarConfig> {
   }
 }
 
-export function getConfigsFromConfigBundle(configBundle: RadarConfigBundle): RadarConfig[] {
+export function getConfigsFromConfigBundle(configBundle: ConfigBundleDto): ConfigDto[] {
   const mergedDefaultsWithConfigs = configBundle.defaults?.map((defaultConfig) => {
-    let _config: RadarConfig = {
+    let _config: ConfigDto = {
       name: defaultConfig.name,
       default: defaultConfig.value,
       value: defaultConfig.value,

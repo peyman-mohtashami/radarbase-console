@@ -1,0 +1,306 @@
+@let _prefix = "ADMIN.project";
+
+<h2 mat-dialog-title class="border-b border-neutral-400">
+  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_prefix}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+</h2>
+
+<mat-dialog-content>
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code
+          class="italic text-secondary">{{ dialogData.entity?.projectName }}</code>.</p>
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    <form novalidate>
+      @if (!dialogData.organization && (!dialogData.entity || !dialogData.entity.organization)) {
+        <label for="project-id" class="text-sm">{{ `${_prefix}.organization.label` | translate }}</label>
+        <app-searchable-multi-select [formField]="form.organization"
+                                     [valueKey]="'name'"
+                                     [labelKey]="'name'"
+                                     [options]="dialogData.organizationFullList"
+                                     [multiple]="false"/>
+
+      }
+
+      @if (dialogData.mode !== DialogMode.ADD) {
+        <label for="project-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
+        <mat-form-field class='small-input w-full my-4' subscriptSizing="dynamic" appearance='fill'>
+          <input id="project-id" matInput [formField]="form.id">
+        </mat-form-field>
+      }
+
+      <label for="project-name" class="text-sm">{{ `${_prefix}.projectName.label` | translate }} *</label>
+      <mat-form-field class='small-input w-full' subscriptSizing="fixed"
+                      [appearance]='dialogData.entity ? "fill": "outline"'>
+        <input id="project-name" matInput [formField]="form.projectName">
+        <mat-error>
+          @if (form.projectName().touched() && form.projectName().invalid()) {
+            @for (error of form.projectName().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+
+
+      @if (!formFields || formFields['humanReadableProjectName'] === undefined || formFields['humanReadableProjectName']) {
+        <label for="humanReadableProjectName" class="text-sm">
+          {{ `${_prefix}.humanReadableProjectName.label` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+          <input id="humanReadableProjectName" matInput [formField]="form.humanReadableProjectName"/>
+          <mat-error>
+            @if (form.humanReadableProjectName().touched() && form.humanReadableProjectName().invalid()) {
+              @for (error of form.humanReadableProjectName().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+        <span class="block text-xs leading-3 -mt-3 mb-4">
+          {{ `${_prefix}.humanReadableProjectName.hint` | translate }}
+        </span>
+      }
+
+<!--              @if (dialogData.sourceTypeFullList; as sourceTypes) {-->
+      <label for="project-id" class="text-sm">{{ `${_prefix}.sourceTypes.label` | translate }}</label>
+      <app-searchable-multi-select [formField]="form.sourceTypes"
+                                           [labelKey]="'id'"
+                                           [options]="dialogData.sourceTypeFullList"
+                                           [valueKey]="'id'"/>
+<!--              <app-mat-select-autocomplete [formField]="form.sourceTypes"-->
+<!--                                           [options]='sourceTypes'-->
+<!--                                           [label]="`${_prefix}.sourceTypes.label` | translate"-->
+<!--                                           [multiple]="true"-->
+<!--                                           [adapter]="sourceTypeAdapter"-->
+<!--              />-->
+<!--              }-->
+
+      @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+        <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
+        <mat-form-field class='small-input w-ful' subscriptSizing="fixed" appearance='outline'>
+          <textarea id="description" matInput #description [formField]="form.description" rows='3'></textarea>
+          <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
+          <mat-error>
+            @if (form.description().touched() && form.description().invalid()) {
+              @for (error of form.description().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+        <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
+        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+          <input id="location" matInput [formField]="form.location">
+          <mat-error>
+            @if (form.location().touched() && form.location().invalid()) {
+              @for (error of form.location().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['projectStatus'] === undefined || formFields['projectStatus']) {
+        <label for="projectStatus" class="text-sm">{{ `${_prefix}.projectStatus.label` | translate }}</label>
+        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+          <mat-select [formField]="form.projectStatus">
+            <mat-option [value]="'PLANNING'">{{ `${_prefix}.projectStatus.PLANNING` | translate }}
+            </mat-option>
+            <mat-option [value]="'ONGOING'">{{ `${_prefix}.projectStatus.ONGOING` | translate }}
+            </mat-option>
+            <mat-option [value]="'ENDED'">{{ `${_prefix}.projectStatus.ENDED` | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+
+      @if (!formFields || formFields['startDate'] === undefined || formFields['startDate']) {
+        <label for="startDate" class="text-sm">{{ `${_prefix}.startDate.label` | translate }}</label>
+        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+          <input id="startDate"
+                 matInput
+                 [matDatepicker]='startDatePicker'
+                 [formField]="form.startDate"
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+          <mat-datepicker-toggle matSuffix [for]='startDatePicker'/>
+          <mat-datepicker #startDatePicker/>
+          <mat-error>
+            @if (form.startDate().touched() && form.startDate().invalid()) {
+              @for (error of form.startDate().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['endDate'] === undefined || formFields['endDate']) {
+        <label for="endDate" class="text-sm">{{ `${_prefix}.endDate.label` | translate }}</label>
+        <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+          <input id="endDate"
+                 matInput
+                 [matDatepicker]='endDatePicker'
+                 [formField]="form.endDate"
+                 [min]="minDate" [max]="maxDate"
+                 [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'>
+          <mat-datepicker-toggle matSuffix [for]='endDatePicker'/>
+          <mat-datepicker #endDatePicker/>
+          <mat-error>
+            @if (form.endDate().touched() && form.endDate().invalid()) {
+              @for (error of form.endDate().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      }
+
+      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+        <div>
+          <label for="attributes" class="text-sm">{{ `${_prefix}.attributes.label` | translate }}</label>
+          <fieldset class="mb-4 rounded-sm border p-4">
+            @if (!formFields || formFields['attributes.Work-package'] === undefined || formFields['attributes.Work-package']) {
+              <label for="workPackage" class="text-sm">
+                {{ `${_prefix}.attributes.workPackage` | translate }}
+              </label>
+              <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+                <input id="workPackage" matInput [formField]="form.attributes['Work-package']">
+                <mat-error>
+                  @if (form.attributes?.['Work-package']().touched() && form.attributes?.['Work-package']().invalid()) {
+                    @for (error of form.attributes?.['Work-package']().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.Phase'] === undefined || formFields['attributes.Phase']) {
+              <label for="phase" class="text-sm">{{ `${_prefix}.attributes.phase` | translate }}</label>
+              <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+                <input id="phase" matInput [formField]="form.attributes?.['Phase']">
+                <mat-error>
+                  @if (form.attributes?.['Phase']().touched() && form.attributes?.['Phase']().invalid()) {
+                    @for (error of form.attributes?.['Phase']().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.External-project-url'] === undefined || formFields['attributes.External-project-url']) {
+              <label for="externalProjectUrl" class="text-sm">
+                {{ `${_prefix}.attributes.externalProjectUrl` | translate }}
+              </label>
+              <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+                <input id="externalProjectUrl" matInput [formField]="form.attributes?.['External-project-url']"/>
+                <mat-error>
+                  @if (form.attributes?.['External-project-url']().touched() && form.attributes?.['External-project-url']().invalid()) {
+                    @for (error of form.attributes?.['External-project-url']().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.External-project-id'] === undefined || formFields['attributes.External-project-id']) {
+              <label for="externalProjectId" class="text-sm">
+                {{ `${_prefix}.attributes.externalProjectId` | translate }}
+              </label>
+              <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+                <input id="externalProjectId" matInput [formField]="form.attributes?.['External-project-id']"/>
+                <mat-error>
+                  @if (form.attributes?.['External-project-id']().touched() && form.attributes?.['External-project-id']().invalid()) {
+                    @for (error of form.attributes?.['External-project-id']().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            }
+
+            @if (!formFields || formFields['attributes.Privacy-policy-url'] === undefined || formFields['attributes.Privacy-policy-url']) {
+              <label for="privacyPolicyUrl" class="text-sm">
+                {{ `${_prefix}.attributes.privacyPolicyUrl` | translate }}
+              </label>
+              <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+                <input id="privacyPolicyUrl" matInput [formField]="form.attributes?.['Privacy-policy-url']"/>
+                <mat-error>
+                  @if (form.attributes?.['Privacy-policy-url']?.().touched() && form.attributes?.['Privacy-policy-url']?.().invalid()) {
+                    @for (error of form.attributes?.['Privacy-policy-url']()?.errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            }
+          </fieldset>
+        </div>
+      }
+    </form>
+  }
+</mat-dialog-content>
+
+@if (error()) {
+  <app-error-message-box>
+  </app-error-message-box>
+}
+
+<mat-dialog-actions align="end" class="justify-between!">
+  <button (click)='close()' mat-stroked-button color="accent">
+    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+  </button>
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+          {{ 'SHARED.dialog.deletingButton' | translate }}
+        } @else {
+          {{ 'SHARED.dialog.yes' | translate }}
+        }
+      </button>
+    }
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button
+              color="primary">
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.update" | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || loading()' (click)='onAction(DialogAction.SAVE)' color="primary"
+              mat-raised-button>
+        @if (loading()) {
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
+        }
+        {{ "SHARED.dialog.create" | translate }}
+      </button>
+    }
+  }
+</mat-dialog-actions>
+

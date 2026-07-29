@@ -2,8 +2,8 @@ import {Component, effect, input, signal, ChangeDetectionStrategy} from '@angula
 import {DialogMode} from '../../enums/dialog';
 import {DetailType} from '../../enums/detail-type';
 import {ROLES} from '../../../../shared/enums/roles';
-import {SubjectDialogMode} from '../../../entities/project-scope/subject/enums/dialog';
 import {BaseConfigService} from '../../services/base-config.service';
+import {SubjectDialogMode} from '../../../entities/project-subject/enums/dialog';
 
 @Component({
   selector: 'app-base-entity-table-row',
