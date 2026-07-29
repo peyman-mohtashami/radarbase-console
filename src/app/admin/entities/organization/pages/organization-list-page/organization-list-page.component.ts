@@ -2,6 +2,7 @@ import {
   Component,
   inject,
   signal,
+  OnInit,
 } from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {OrganizationConfigService} from '../../services/organization-config.service';
@@ -40,7 +41,7 @@ import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.
     TranslatePipe,
   ]
 })
-export class OrganizationListPageComponent {
+export class OrganizationListPageComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
@@ -56,6 +57,11 @@ export class OrganizationListPageComponent {
 
   protected isFilterOpened = true;
   protected selection = new SelectionModel<AppOrganization>(true, []);
+
+  ngOnInit() {
+    // Reopen a dialog that was interrupted by a session expiry, with its entered fields.
+    void this.dialogService.restorePendingDialog();
+  }
 
   handleFilterChange(event: FilterEvent) {
     this.store.setFilter(event);

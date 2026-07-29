@@ -1,4 +1,4 @@
-import {Component, inject, signal, AfterViewInit} from '@angular/core';
+import {Component, inject, signal, effect, AfterViewInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -28,6 +28,12 @@ export interface OrganizationForm {
   name: string;
   description: string;
   location: string;
+}
+
+export interface StoredOrganizationDialog {
+  mode: DialogMode;
+  entity?: AppOrganization;
+  model: OrganizationForm;
 }
 
 @Component({
@@ -65,11 +71,12 @@ export class OrganizationDialogComponent implements AfterViewInit {
     mode: DialogMode;
     entity: AppOrganization | undefined;
     organizationFullList: AppOrganization[];
+    restoredModel?: OrganizationForm;
   };
 
   protected formFields = this.configService.getFormFields();
 
-  private model = signal<OrganizationForm>({
+  private model = signal<OrganizationForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,
     id: `${this.dialogData.entity?.id}`,
     name: this.dialogData.entity?.name ?? '',
@@ -93,13 +100,24 @@ export class OrganizationDialogComponent implements AfterViewInit {
     normalTextField(schema.location);
   });
 
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
+
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
   protected async save(): Promise<void> {
-    this.configService.setLatestFormEntry(this.model());
-
     if (this.dialogData.mode === DialogMode.ADD) {
       await this.store.add(this.toCreateDtoModel(this.model()));
     } else if (this.dialogData.mode === DialogMode.EDIT) {
@@ -108,19 +126,20 @@ export class OrganizationDialogComponent implements AfterViewInit {
 
     if (this.store.error()) return;
 
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnUpdateSuccess(this.model().name);
   }
 
   protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
   close() {
+    this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 

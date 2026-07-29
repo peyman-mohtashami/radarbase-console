@@ -64,4 +64,31 @@ export class BaseConfigService {
   setLatestFormEntry(value: unknown | null | undefined = null) {
     return localStorage.setItem(`${this.entityMetadata.name}_formEntry`, (value as string));
   }
+
+  /**
+   * Persists the currently open dialog (mode, target entity and entered fields)
+   * so it can be restored after an unexpected close, e.g. a session expiry.
+   */
+  setDialogState(state: unknown | null | undefined) {
+    const key = `${this.entityMetadata.name}_dialogState`;
+    if (state === null || state === undefined) {
+      localStorage.removeItem(key);
+      return;
+    }
+    localStorage.setItem(key, JSON.stringify(state));
+  }
+
+  getDialogState<T>(): T | null {
+    const raw = localStorage.getItem(`${this.entityMetadata.name}_dialogState`);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  clearDialogState() {
+    localStorage.removeItem(`${this.entityMetadata.name}_dialogState`);
+  }
 }
