@@ -1,18 +1,3 @@
-<!--<div class='flex flex-wrap justify-between gap-2 p-4 bg-white dark:bg-neutral-700'>-->
-<!--  <div class='flex flex-wrap gap-2 items-center'>-->
-<!--          <a class="flex items-center gap-1 bg-secondary text-white rounded-full text-xs font-bold px-2" [routerLink]="['/admin', 'source-data']">-->
-<!--            <span class="material-symbols-outlined text-lg!" matPrefix>{{ ENTITY_REGISTRY.sourceData.icon }}</span>-->
-<!--            <span>{{ `ADMIN.${ENTITY_REGISTRY.sourceData.name}.title.singular` | translate }}</span>-->
-<!--          </a>-->
-<!--    <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-secondary'>-->
-<!--      {{ entity().sourceDataName }}-->
-<!--    </h2>-->
-<!--  </div>-->
-
-<!--  <div class='flex gap-1 ml-auto'>-->
-<!--    <app-source-data-actions [entity]="entity()" [isExpanded]="true"/>-->
-<!--  </div>-->
-<!--</div>-->
 @let entity = store.selected();
 
 @if (entity) {

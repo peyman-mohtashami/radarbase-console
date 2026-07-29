@@ -1,6 +1,6 @@
 @let _prefix = "ADMIN.client";
 
-<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+<h2 mat-dialog-title class="border-b border-neutral-300 dark:border-neutral-700">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
   <span> {{ `${_prefix}.title.singular` | translate }}</span>
   <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
@@ -163,7 +163,7 @@
             }
           }
         </mat-error>
-        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+        <span matSuffix class="mx-4">
           {{ Number(model().accessTokenValiditySeconds) | duration:'s' }}
         </span>
       </mat-form-field>
@@ -184,7 +184,7 @@
             }
           }
         </mat-error>
-        <span matSuffix class="mx-4 text-neutral-500! dark:text-neutral-400">
+        <span matSuffix class="mx-4">
           {{ Number(model().refreshTokenValiditySeconds) | duration:'s' }}
         </span>
       </mat-form-field>
@@ -201,11 +201,11 @@
 
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
-    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    {{ (dialogData.mode !== DialogMode.DELETE ? 'SHARED.dialog.cancel' : 'SHARED.dialog.no') | translate }}
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
-      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
           {{ 'SHARED.dialog.deletingButton' | translate }}
@@ -215,7 +215,7 @@
       </button>
     }
     @case (DialogMode.EDIT) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
@@ -223,7 +223,7 @@
       </button>
     }
     @case (DialogMode.ADD) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }

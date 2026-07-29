@@ -7,7 +7,8 @@ export class OrganizationListResolver implements Resolve<void> {
   private store = inject(OrganizationStore);
 
   async resolve(route: ActivatedRouteSnapshot) {
-    const res = await this.store.getWithQuery(route.queryParams);
+    const res = await this.store.getAll();
+    await this.store.getWithQuery(route.queryParams);
     if (res) this.store.selected.set(null);
   }
 }

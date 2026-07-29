@@ -1,5 +1,3 @@
-import {ProjectDto} from '../../../project/models/project';
-
 export interface ConfigBundleDto {
   clientId: string;
   scope: string;
@@ -14,8 +12,8 @@ export interface ConfigDto {
   scope?: string;
 }
 
-export type CreateProjectDto = Partial<Omit<ProjectDto, 'id' | 'persistentTokenTimeout' | 'groups'>>;
-
-export type UpdateProjectDto = Partial<Omit<ProjectDto, 'persistentTokenTimeout' | 'groups'>>;
-
-export type AppConfig = ConfigDto & {id: string; name: string; search: string};
+export interface AppConfig extends ConfigDto {
+  id: string;
+  _name: string;
+  _search?: string;
+}

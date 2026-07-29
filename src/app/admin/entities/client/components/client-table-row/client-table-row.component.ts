@@ -6,7 +6,6 @@ import {EntityTableRowComponent} from '../../../../base-entities/components/enti
 import {TranslatePipe} from '@ngx-translate/core';
 import {ClientActionsComponent} from '../client-actions/client-actions.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
-import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {AppClient} from '../../models/client';
 import {ClientConfigService} from '../../services/client-config.service';
@@ -25,14 +24,12 @@ import {ClientConfigService} from '../../services/client-config.service';
   ]
 })
 export class ClientTableRowComponent {
-  protected readonly ROLES = ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(ClientConfigService);
 
   entity = input.required<AppClient>();
   extensionClass = input<string>();
-  gridView = input<boolean>(false);
 
   updated = signal(false);
 }

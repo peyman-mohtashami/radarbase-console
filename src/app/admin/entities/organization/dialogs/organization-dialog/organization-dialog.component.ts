@@ -11,9 +11,6 @@ import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from '../../../../base-entities/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
-import {
-  DialogAction,
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {form, FormField, validate} from '@angular/forms/signals';
 import {longTextField, normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
@@ -24,6 +21,7 @@ import {OrganizationStore} from '../../services/organization.store';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JsonPipe} from '@angular/common';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {getLastSegment} from '../../../../shared/utils/route.util';
 
 export interface OrganizationForm {
   id: string;
@@ -55,7 +53,6 @@ export interface OrganizationForm {
 })
 export class OrganizationDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly DialogAction = DialogAction;
 
   protected store = inject(OrganizationStore);
   private configService = inject(OrganizationConfigService);
@@ -100,21 +97,7 @@ export class OrganizationDialogComponent implements AfterViewInit {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
-  }
-
-  protected async handleSaveAction(): Promise<void> {
+  protected async save(): Promise<void> {
     this.configService.setLatestFormEntry(this.model());
 
     if (this.dialogData.mode === DialogMode.ADD) {
@@ -130,14 +113,12 @@ export class OrganizationDialogComponent implements AfterViewInit {
     this.navigateOnUpdateSuccess(this.model().name);
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
     this.configService.setLatestFormEntry(null);
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
-
-
 
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
@@ -147,30 +128,8 @@ export class OrganizationDialogComponent implements AfterViewInit {
     const selectedOrganization = this.store.selected();
     if (!selectedOrganization) return;
 
-
-
     const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
-
-    if (!primaryRoute) {
-      return;
-    }
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
-    const organizationNameIndex = organizationsIndex + 1;
-
-    const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
-      organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+    this.router.navigate(['./admin/organizations', entityName, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 
   navigateOnDeleteSuccess() {

@@ -1,4 +1,4 @@
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree} from '@angular/router';
 
 export function findRouteData(
   route: ActivatedRoute,
@@ -28,4 +28,13 @@ export function findRouteDataFromRoot(router: Router, key: string): any {
     stack.push(...node.children);
   }
   return null;
+}
+
+export function getLastSegment(urlTree: UrlTree) {
+  const primaryRoute = urlTree.root.children['primary'];
+
+  if (!primaryRoute) return;
+
+  const segments = primaryRoute.segments.map(segment => segment.path);
+  return segments[segments.length - 1];
 }

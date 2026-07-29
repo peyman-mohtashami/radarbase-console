@@ -8,7 +8,6 @@ import {OrganizationStore} from '../../organization/services/organization.store'
 import {ProjectStore} from './project.store';
 import {ProjectDialogComponent} from '../dialogs/project-dialog/project-dialog.component';
 import {ActivatedRoute} from '@angular/router';
-import {findRouteData} from '../../../shared/utils/route';
 import {SourceTypeStore} from '../../source-type/services/source-type.store';
 
 @Injectable({providedIn: 'root'})
@@ -27,18 +26,15 @@ export class ProjectDialogService {
   }
 
   private async createDialogRef(mode: DialogMode, entity?: AppProject): Promise<MatDialogRef<ProjectDialogComponent>> {
-    const storedEntityString = null; //this.configService.getLatestFormEntry();
-    const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as AppProject) : undefined;
-
     if (this.projectStore.items()) {
       await this.projectStore.getWithQuery();
     }
     const projectFullList = this.projectStore.items();
 
-    if (this.organizationStore.items()) {
-      await this.organizationStore.getWithQuery();
+    if (!this.organizationStore.allItems().length) {
+      await this.organizationStore.getAll();
     }
-    const organizationFullList = this.organizationStore.items();
+    const organizationFullList = this.organizationStore.allItems();
 
     if (this.sourceTypeStore.items()) {
       await this.sourceTypeStore.getWithQuery();

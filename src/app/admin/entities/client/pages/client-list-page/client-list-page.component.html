@@ -30,7 +30,6 @@
     <app-data-table-filter [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
                            (filterChanged)='handleFilterChange($event)'/>
-<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
   }
 </div>
 
@@ -50,5 +49,4 @@
 <ng-template #itemTemplate let-entity>
   <app-client-table-row [entity]="entity"
                         [extensionClass]="extensionClass()"/>
-<!--                        [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
 </ng-template>

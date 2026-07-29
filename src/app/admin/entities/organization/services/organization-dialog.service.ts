@@ -16,15 +16,12 @@ export class OrganizationDialogService {
   }
 
   private async createDialogRef(mode: DialogMode, entity?: AppOrganization): Promise<MatDialogRef<OrganizationDialogComponent>> {
-    const storedEntityString = null; //this.configService.getLatestFormEntry();
-    const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as AppOrganization) : undefined;
-
-    if (this.store.items()) {
-      await this.store.getWithQuery();
+    if (!this.store.allItems().length) {
+      await this.store.getAll();
     }
-    const organizationFullList = this.store.items();
+    const organizationFullList = this.store.allItems();
 
-    const _data = {id: 'organization-dialog', mode, entity: storedEntity ?? entity, organizationFullList};
+    const _data = {id: 'organization-dialog', mode, entity, organizationFullList};
 
     switch (mode) {
       case DialogMode.DELETE:

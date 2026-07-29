@@ -16,12 +16,10 @@ export class ClientDialogService {
   }
 
   private async createDialogRef(mode: DialogMode, entity?: AppClient): Promise<MatDialogRef<ClientDialogComponent>> {
-    const storedEntityString = null; //this.configService.getLatestFormEntry();
-    const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as AppClient) : undefined;
-
     if (this.store.items()) {
       await this.store.getWithQuery();
     }
+
     const clientFullList = this.store.items();
 
     const _data = {id: 'client-dialog', mode, entity, clientFullList};

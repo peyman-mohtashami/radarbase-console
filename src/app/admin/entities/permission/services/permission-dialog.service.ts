@@ -5,7 +5,6 @@ import {AppUser, UserDto} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {PermissionConfigService} from './permission-config.service';
-import {findRouteData} from '../../../shared/utils/route';
 import {UserStore} from '../../user/services/user.store';
 import {ProjectStore} from '../../project/services/project.store';
 import {ClientStore} from '../../client/services/client.store';

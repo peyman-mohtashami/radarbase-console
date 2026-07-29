@@ -10,7 +10,6 @@ import {TabLink} from '../../../../base-entities/models/tab-link';
 import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {ROLES} from '../../../../../shared/enums/roles';
 import {SourceTypeStore} from '../../services/source-type.store';
 
 @Component({
@@ -30,7 +29,6 @@ import {SourceTypeStore} from '../../services/source-type.store';
   ]
 })
 export class SourceTypePageComponent {
-  protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(SourceTypeStore);

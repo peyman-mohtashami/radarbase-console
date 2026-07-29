@@ -1,10 +1,8 @@
 import {
   Component,
   inject,
-  ChangeDetectionStrategy, AfterViewInit, signal
+  AfterViewInit, signal
 } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -18,19 +16,15 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSelect} from '@angular/material/select';
 import {
-  MatSelectAutocompleteAdapter,
   MatSelectAutocompleteComponent
 } from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-import {Validator} from '../../../../../shared/utils/validators';
 import {DialogMode} from '../../../../base-entities/enums/dialog';
-import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
+import {AppSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {
   DialogAction,
   DialogActionsComponent
 } from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
-import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
-import {Observable} from 'rxjs';
 import {AsyncPipe, JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
@@ -55,22 +49,17 @@ export interface SourceDataForm {
   unit: string,
 }
 
-
 @Component({
   selector: 'app-source-data-dialog',
   templateUrl: './source-data-dialog.component.html',
   imports: [
     MatDialogContent,
-    ReactiveFormsModule,
     MatFormField,
     TranslatePipe,
     MatInput,
-    MatSelectAutocompleteComponent,
     MatSelect,
     MatOption,
-    DialogActionsComponent,
     MatError,
-    AsyncPipe,
     ErrorMessageBoxComponent,
     MatDialogTitle,
     MatDialogActions,
@@ -84,6 +73,7 @@ export interface SourceDataForm {
 export class SourceDataDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
   protected readonly DialogAction = DialogAction;
+  protected readonly ProcessingState = ProcessingState;
 
   protected localeService = inject(LocaleService);
   protected store = inject(SourceDataStore);
@@ -136,21 +126,7 @@ export class SourceDataDialogComponent implements AfterViewInit {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
-  }
-
-  protected async handleSaveAction(): Promise<void> {
+  protected async save(): Promise<void> {
     this.configService.setLatestFormEntry(this.model());
 
     if (this.dialogData.mode === DialogMode.ADD) {
@@ -166,13 +142,12 @@ export class SourceDataDialogComponent implements AfterViewInit {
     this.navigateOnUpdateSuccess(this.model().sourceDataName);
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
     this.configService.setLatestFormEntry(null);
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
-
 
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
@@ -227,6 +202,4 @@ export class SourceDataDialogComponent implements AfterViewInit {
       sourceType: this.dialogData.sourceTypeFullList.find(sourceType => `${sourceType.id}` === model.sourceType),
     };
   }
-
-  protected readonly ProcessingState = ProcessingState;
 }

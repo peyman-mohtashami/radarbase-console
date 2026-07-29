@@ -8,21 +8,17 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 
-import {AppClient, CreateClientDto, UpdateClientDto} from "../../models/client";
+import {AppClient, ClientDto, CreateClientDto, UpdateClientDto} from "../../models/client";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatButton} from "@angular/material/button";
 import {DialogMode} from '../../../../base-entities/enums/dialog';
-import {
-  DialogAction,
-  DialogActionsComponent
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {ClientStore} from '../../services/client.store';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {applyWhen, form, FormField, validate} from '@angular/forms/signals';
@@ -32,30 +28,18 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 export interface ClientForm {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
   clientId: string;
   enableEmptySecret: boolean;
   clientSecret: string;
   scope: string;
   resourceIds: string;
   _authorizedGrantTypes: Record<string, boolean>;
-// {
-//     refresh_token: boolean;
-//     password: boolean;
-//     authorization_code: boolean;
-//     client_credentials: boolean;
-//     implicit: boolean
-//   };
   registeredRedirectUri: string;
   autoApproveScopes: string;
   accessTokenValiditySeconds: string;
   refreshTokenValiditySeconds: string;
   _dynamic_registration: boolean
 }
-
 
 @Component({
   selector: 'app-client-dialog',
@@ -64,7 +48,6 @@ export interface ClientForm {
     MatDialogContent,
     TranslatePipe,
     ReactiveFormsModule,
-    DialogActionsComponent,
     MatCheckbox,
     MatFormField,
     MatError,
@@ -84,13 +67,12 @@ export interface ClientForm {
 })
 export class ClientDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly DialogAction = DialogAction;
+  protected readonly Number = Number;
 
   protected store = inject(ClientStore);
   private configService = inject(ClientConfigService);
   private dialogRef = inject(MatDialogRef<ClientDialogComponent>);
   private router = inject(Router);
-  protected activatedRoute = inject(ActivatedRoute);
 
   protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
@@ -102,27 +84,24 @@ export class ClientDialogComponent implements AfterViewInit {
   protected formFields = this.configService.getFormFields();
 
   protected model = signal<ClientForm>({
-    _authorizedGrantTypes: {
-      authorization_code: false,
-      client_credentials: false,
-      implicit: false,
-      password: false,
-      refresh_token: false
-    },
-    _dynamic_registration: false,
-    accessTokenValiditySeconds: '',
-    autoApproveScopes: '',
-    clientId: '',
-    clientSecret: '',
-    description: '',
+    ...this.dialogData.entity,
+    clientId: this.dialogData.entity?.clientId ?? '',
     enableEmptySecret: false,
-    id: '',
-    location: '',
-    name: '',
-    refreshTokenValiditySeconds: '',
-    registeredRedirectUri: '',
-    resourceIds: '',
-    scope: ''
+    clientSecret: '',
+    resourceIds: this.dialogData.entity?.resourceIds.join(', ') ?? '',
+    scope: this.dialogData.entity?.scope?.join(', ') ?? '',
+    registeredRedirectUri: this.dialogData.entity?.registeredRedirectUri?.join(', ') ?? '',
+    accessTokenValiditySeconds: this.dialogData.entity?.accessTokenValiditySeconds?.toString() ?? '',
+    refreshTokenValiditySeconds: this.dialogData.entity?.refreshTokenValiditySeconds?.toString() ?? '',
+    autoApproveScopes: this.dialogData.entity?.autoApproveScopes?.join(', ') ?? '',
+    _dynamic_registration: this.dialogData.entity?._dynamic_registration ?? false,
+    _authorizedGrantTypes: {
+      authorization_code: this.dialogData.entity?._authorizedGrantTypes?.['authorization_code'] ?? false,
+      client_credentials: this.dialogData.entity?._authorizedGrantTypes?.['client_credentials'] ?? false,
+      implicit: this.dialogData.entity?._authorizedGrantTypes?.['implicit'] ?? false,
+      password: this.dialogData.entity?._authorizedGrantTypes?.['password'] ?? false,
+      refresh_token: this.dialogData.entity?._authorizedGrantTypes?.['refresh_token'] ?? false
+    },
   });
 
   protected form = form(this.model, (schema) => {
@@ -153,105 +132,76 @@ export class ClientDialogComponent implements AfterViewInit {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
+  close() {
+    animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  protected async handleSaveAction(): Promise<void> {
+  protected async save(): Promise<void> {
     this.configService.setLatestFormEntry(this.model());
 
-    if (this.dialogData.mode === DialogMode.ADD) {
-      await this.store.add(this.toCreateDtoModel(this.model()));
-    } else if (this.dialogData.mode === DialogMode.EDIT) {
-      await this.store.update(this.toUpdateDtoModel(this.model()));
+    switch(this.dialogData.mode) {
+      case DialogMode.ADD:
+        await this.store.add(this.toCreateDtoModel(this.model()));
+        break;
+      case DialogMode.EDIT:
+        await this.store.update(this.toUpdateDtoModel(this.model()));
+        break;
     }
 
     if (this.store.error()) return;
 
     this.configService.setLatestFormEntry(null);
     this.dialogRef.close();
-    this.navigateOnUpdateSuccess(this.model().name);
+    this.navigateOnUpdateSuccess(this.model().clientId);
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
     this.configService.setLatestFormEntry(null);
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
-
-
-  close() {
-    animateDialogOut(this.dialogData.id, this.dialogRef);
-  }
-
-  navigateOnUpdateSuccess(entityName: string) {
-    const selectedOrganization = this.store.selected();
-    if (!selectedOrganization) return;
-
-
+  private navigateOnUpdateSuccess(entityName: string) {
+    const selected = this.store.selected();
+    if (!selected) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
     const primaryRoute = urlTree.root.children['primary'];
 
-    if (!primaryRoute) {
-      return;
-    }
+    if (!primaryRoute) return;
 
     const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
+    const organizationsIndex = segments.indexOf('clients');
     const organizationNameIndex = organizationsIndex + 1;
 
-    const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
-      organizationNameIndex < segments.length;
+    const hasOrganizationNameInUrl = organizationsIndex !== -1 && organizationNameIndex < segments.length;
 
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
+    if (!hasOrganizationNameInUrl) return;
 
     segments[organizationNameIndex] = entityName;
 
     this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
   }
 
-  navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
+  private navigateOnDeleteSuccess() {
+    this.router.navigate(['/admin/clients'], { queryParamsHandling: 'preserve' }).then();
   }
 
-  toCreateDtoModel(model: ClientForm): CreateClientDto {
+  private toCreateDtoModel(model: ClientForm): CreateClientDto {
+    return this.toDtoModel(model);
+  }
+
+  private toUpdateDtoModel(model: ClientForm): UpdateClientDto {
+    return this.toDtoModel(model);
+  }
+
+  private toDtoModel(model: ClientForm): ClientDto {
     return {
       ...model,
       additionalInformation: model._dynamic_registration ? {dynamic_registration: true} : {dynamic_registration: false},
       authorizedGrantTypes: Object.keys(model._authorizedGrantTypes ?? {}).filter(
         (k) => model._authorizedGrantTypes[k] ?? false
-      ),
-      scope: model.scope.split(',').map((s) => s.trim()),
-      resourceIds: model.resourceIds.split(',').map((s) => s.trim()),
-      autoApproveScopes: model.autoApproveScopes.split(',').map((s) => s.trim()),
-      accessTokenValiditySeconds: Number(model.accessTokenValiditySeconds),
-      refreshTokenValiditySeconds: Number(model.refreshTokenValiditySeconds),
-      registeredRedirectUri: model.registeredRedirectUri.split(',').map((s) => s.trim()),
-    };
-  }
-
-  toUpdateDtoModel(model: ClientForm): UpdateClientDto {
-    return {
-      ...model,
-      additionalInformation: model._dynamic_registration ? {dynamic_registration: true} : {dynamic_registration: false},
-      authorizedGrantTypes: Object.keys(model._authorizedGrantTypes ?? {}).filter(
-            (k) => model._authorizedGrantTypes[k] ?? false
       ),
       scope: model.scope.split(',').map((s) => s.trim()),
       resourceIds: model.resourceIds.split(',').map((s) => s.trim()),
@@ -271,6 +221,4 @@ export class ClientDialogComponent implements AfterViewInit {
     }
     this.model.update(value => ({...value, clientSecret: text.join('')}));
   }
-
-  protected readonly Number = Number;
 }

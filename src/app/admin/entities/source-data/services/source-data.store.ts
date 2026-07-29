@@ -8,7 +8,6 @@ import {SourceDataService} from './source-data.service';
 @Injectable({providedIn: 'root'})
 export class SourceDataStore {
   private api = inject(SourceDataService);
-  // private configService = inject(SubjectConfigService);
 
   readonly items = signal<AppSourceData[]>([]);
   readonly selected = signal<AppSourceData | null>(null);

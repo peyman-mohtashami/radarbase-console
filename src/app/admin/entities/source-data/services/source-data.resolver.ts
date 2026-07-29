@@ -16,7 +16,7 @@ export class SourceDataResolver implements Resolve<AppSourceData | null> {
     await this.store.getByKey(sourceDataId);
 
     const sourceData = this.store.selected();
-    if (!sourceData) await this.router.navigate(['/admin/organizations']);
+    if (!sourceData) await this.router.navigate(['/admin/source-data']);
 
     return sourceData;
   }

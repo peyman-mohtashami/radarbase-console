@@ -11,13 +11,15 @@ export class OrganizationStore {
   private api = inject(OrganizationService);
   private configService = inject(OrganizationConfigService);
 
+  readonly allItems = signal<AppOrganization[]>([]);
   readonly items = signal<AppOrganization[]>([]);
   readonly selected = signal<AppOrganization | null>(null);
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
+  readonly params = signal<Params | undefined>(undefined);
 
-  async getWithQuery(queryParams?: Params): Promise<boolean> {
+  async getAll() {
     return await execute({
       loading: this.loading,
       error: this.error,
@@ -25,6 +27,18 @@ export class OrganizationStore {
         const dtos = await firstValueFrom(this.api.getWithQuery());
         const all = dtos.map(dto => this.toAppModel(dto));
 
+        this.allItems.set(all);
+        this.total.set(all.length);
+      },
+    });
+  }
+
+  async getWithQuery(queryParams?: Params): Promise<boolean> {
+    this.params.set(queryParams);
+    return await execute({
+      loading: this.loading,
+      error: this.error,
+      action: async () => {
         const {
           pageIndex = 0,
           pageSize = this.configService.getStoredPageSize(),
@@ -33,12 +47,11 @@ export class OrganizationStore {
           ...filter
         } = queryParams ?? {};
 
-        const filtered = filterItems(all, filter);
+        const filtered = filterItems(this.allItems(), filter);
         const sorted = sortItems(filtered, {sortField, sortOrder});
         const paged = paginateItems(sorted, {pageSize: +pageSize, pageIndex: +pageIndex});
 
         this.items.set(paged);
-        this.total.set(all.length);
       },
     });
   }
@@ -61,7 +74,8 @@ export class OrganizationStore {
       error: this.error,
       action: async () => {
         await firstValueFrom(this.api.add(entity));
-        await this.getWithQuery();
+        await this.getAll();
+        await this.getWithQuery(this.params());
       }
     });
   }
@@ -72,8 +86,11 @@ export class OrganizationStore {
       error: this.error,
       action: async () => {
         const updatedEntity = await firstValueFrom(this.api.update(entity));
-        await this.getWithQuery();
-        this.selected.set(this.toAppModel(updatedEntity));
+        await this.getAll();
+        await this.getWithQuery(this.params());
+        if(this.selected()) {
+          this.selected.set(this.toAppModel(updatedEntity));
+        }
       }
     });
   }
@@ -84,7 +101,8 @@ export class OrganizationStore {
       error: this.error,
       action: async () => {
         await firstValueFrom(this.api.delete(entity));
-        await this.getWithQuery();
+        await this.getAll();
+        await this.getWithQuery(this.params());
         this.selected.set(null);
       }
     });

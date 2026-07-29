@@ -16,15 +16,12 @@ export class SourceTypeDialogService {
   }
 
   private async createDialogRef(mode: DialogMode, entity?: AppSourceType): Promise<MatDialogRef<SourceTypeDialogComponent>> {
-    const storedEntityString = null; //this.configService.getLatestFormEntry();
-    const storedEntity = storedEntityString ? (JSON.parse(storedEntityString) as AppSourceType) : undefined;
-
     if (this.store.items()) {
       await this.store.getWithQuery();
     }
     const sourceTypeFullList = this.store.items();
 
-    const _data = {id: 'source-type-dialog', mode, entity: storedEntity ?? entity, sourceTypeFullList};
+    const _data = {id: 'source-type-dialog', mode, entity: entity, sourceTypeFullList};
 
     switch (mode) {
       case DialogMode.DELETE:

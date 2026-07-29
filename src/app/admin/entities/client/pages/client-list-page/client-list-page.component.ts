@@ -97,11 +97,6 @@ export class ClientListPageComponent {
     await this.reload();
   }
 
-  toggleViewMode() {
-    this.gridView = !this.gridView;
-    this.configService.setViewMode(this.gridView ? 'grid' : 'list');
-  }
-
   protected async openDialog(dialogMode: DialogMode) {
     await this.dialogService.openDialog(dialogMode);
   }

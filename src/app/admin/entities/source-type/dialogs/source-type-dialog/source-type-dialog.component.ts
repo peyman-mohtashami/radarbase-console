@@ -20,7 +20,7 @@ import {
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SourceTypeStore} from '../../services/source-type.store';
-import {form, FormField, pattern, required} from '@angular/forms/signals';
+import {form, FormField} from '@angular/forms/signals';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -33,8 +33,8 @@ export interface SourceTypeForm {
   producer: string;
   model: string;
   catalogVersion: string;
-  sourceTypeScope: string; //new FormControl<SourceTypeScope | null>(null, {nonNullable: true, validators: [Validator.requiredValidator]}),
-  canRegisterDynamically: boolean; //new FormControl<boolean>(false, {nonNullable: true}),
+  sourceTypeScope: string;
+  canRegisterDynamically: boolean;
   name: string;
   description: string;
   assessmentType: string;
@@ -103,7 +103,6 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     requiredField(schema.model);
     normalTextField(schema.model);
     requiredField(schema.catalogVersion);
-
     requiredField(schema.sourceTypeScope);
     normalTextField(schema.name);
     longTextField(schema.description);
@@ -114,21 +113,7 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
-  }
-
-  protected async handleSaveAction(): Promise<void> {
+  async save(): Promise<void> {
     this.configService.setLatestFormEntry(this.model());
 
     if (this.dialogData.mode === DialogMode.ADD) {
@@ -144,38 +129,32 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     this.navigateOnUpdateSuccess(this.model().name);
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
     this.configService.setLatestFormEntry(null);
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
-
-
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
   navigateOnUpdateSuccess(entityName: string) {
-    const selectedOrganization = this.store.selected();
-    if (!selectedOrganization) return;
-
-
+    const selected = this.store.selected();
+    if (!selected) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
     const primaryRoute = urlTree.root.children['primary'];
 
-    if (!primaryRoute) {
-      return;
-    }
+    if (!primaryRoute) return;
 
     const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
-    const organizationNameIndex = organizationsIndex + 1;
+    const sourceTypeIndex = segments.indexOf('source-types');
+    const organizationNameIndex = sourceTypeIndex + 1;
 
     const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
+      sourceTypeIndex !== -1 &&
       organizationNameIndex < segments.length;
 
     if (!hasOrganizationNameInUrl) {
@@ -205,8 +184,6 @@ export class SourceTypeDialogComponent implements AfterViewInit {
       sourceTypeScope: toSourceTypeScope(this.model().sourceTypeScope),
     };
   }
-
-
 
   // override form = new FormGroup({
   //   id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),

@@ -14,9 +14,6 @@
   </h2>
 
   <div class="flex items-center gap-2">
-<!--    <button type='button' class="small" mat-icon-button color="primary" (click)="toggleViewMode()">-->
-<!--      <span class="material-symbols-outlined">list</span>-->
-<!--    </button>-->
     <ng-container *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}]">
       <button (click)="openDialog(DialogMode.ADD)" mat-stroked-button color="primary" type="button">
         <span class="font-bold flex items-center gap-2">
@@ -33,7 +30,6 @@
     <app-data-table-filter [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
                            (filterChanged)='handleFilterChange($event)'/>
-<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
   }
 </div>
 
@@ -55,5 +51,4 @@
   <app-source-type-table-row [entity]="entity"
                              [gridView]="gridView"
                              [extensionClass]="extensionClass()"/>
-<!--                             [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
 </ng-template>

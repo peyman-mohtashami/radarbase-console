@@ -1,4 +1,4 @@
-import {Component, input, ChangeDetectionStrategy} from "@angular/core";
+import {Component, input} from "@angular/core";
 import {SourceTypeDto} from '../../../source-type/models/source-type';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 
