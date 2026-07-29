@@ -32,7 +32,7 @@ export const TableElements: TableElement[] = [
 ];
 
 export const filters: FilterItem[] = [
-  { name: '_search', label: 'ADMIN.organization.filters.search', type: FormFieldType.INPUT },
+  { name: 'search', label: 'ADMIN.organization.filters.search', type: FormFieldType.INPUT },
 ]
 
 

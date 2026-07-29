@@ -20,7 +20,7 @@ function configInitializerFn(_lastUrlService: LastUrlService, customizationServi
 export function provideCore() {
   return makeEnvironmentProviders([
     provideAuth(),
-    // provideError(),
+    provideError(),
     provideLocale(),
     provideTranslateService({
       lang: 'en',

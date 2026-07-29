@@ -5,40 +5,37 @@ import {ErrorSnackbarComponent} from "../components/error-snackbar/error-snackba
 
 @Injectable({providedIn: 'root'})
 export class GlobalErrorHandler implements ErrorHandler {
-  snackBar = inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
 
   handleError(error: Error | HttpErrorResponse): void {
     console.error(error);
+
     if (error instanceof HttpErrorResponse) {
-      // server error
-      if ([500, 503, 504].includes((error as HttpErrorResponse).status)) {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-          data: this.extractServerErrorMessage(error),
-          horizontalPosition: 'end',
-          verticalPosition: 'bottom',
-          panelClass: ['rb-error-snackbar'],
-        });
-      }
+      // 401 is handled by ServerErrorInterceptor (clears the session and redirects
+      // to login), so showing an error snackbar on top of that would be noise.
+      if (error.status === 401) return;
+      this.show(this.extractServerErrorMessage(error));
     } else {
-      // client error
-      this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-        data: [this.extractClientErrorMessage(error)],
-        horizontalPosition: 'end',
-        verticalPosition: 'bottom',
-        panelClass: ['rb-error-snackbar'],
-      });
+      this.show([this.extractClientErrorMessage(error)]);
     }
+  }
+
+  private show(messages: string[]): void {
+    const data = messages.filter(Boolean);
+    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+      data: data.length ? data : ['ERROR.unknownError'],
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+      panelClass: ['rb-error-snackbar'],
+    });
   }
 
   private extractClientErrorMessage(error: Error): string {
     if (!navigator.onLine) {
       return 'ERROR.noInternet';
     }
-    if (error.message) {
-      return error.message.slice(0, 150) + ' ...';
-    } else {
-      return error.toString().slice(0, 150) + ' ...';
-    }
+    const message = error.message || error.toString();
+    return message.slice(0, 150) + ' ...';
   }
 
   private extractServerErrorMessage(error: HttpErrorResponse): string[] {
@@ -51,18 +48,10 @@ export class GlobalErrorHandler implements ErrorHandler {
           'ERROR.serverDown',
           'ERROR.contactSupport',
         ];
-      case 404:
-        return this.generateCustomErrorMessage(error);
-      // case 400:
-      // case 409:
-      // case 500:
-      //   return this.generateCustomErrorMessage(error);
-      case 403:
-        return [error.error.message, error.error.description, '403'];
-      case 401:
-        return this.generateCustomErrorMessage(error);
       case 440:
         return ['ERROR.sessionExpired'];
+      case 403:
+        return [error.error?.message, error.error?.description, '403'];
       default:
         return this.generateCustomErrorMessage(error);
     }
@@ -77,8 +66,17 @@ export class GlobalErrorHandler implements ErrorHandler {
     );
     if (managementPortalError && managementPortalParams) {
       return [`ERROR.${managementPortalParams}.${managementPortalError}`];
-    } else {
-      return ['ERROR.' + (error.error.error || error.error.message || error.error.error_description || error.error.statusText || error.message || (error as unknown as { error_description?: string }).error_description || error.error)];
     }
+
+    const body = error.error;
+    const detail =
+      body?.error ||
+      body?.message ||
+      body?.error_description ||
+      body?.statusText ||
+      error.message ||
+      (typeof body === 'string' ? body : undefined);
+
+    return [detail ? `ERROR.${detail}` : 'ERROR.unknownError'];
   }
 }

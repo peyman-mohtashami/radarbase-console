@@ -1,111 +1,154 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
 import {AppOrganization, CreateOrganizationDto, OrganizationDto, UpdateOrganizationDto} from "../models/organization";
 import {firstValueFrom} from 'rxjs';
 import {OrganizationConfigService} from './organization-config.service';
 import {Params} from '@angular/router';
+import {PageEvent} from '@angular/material/paginator';
+import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {FilterEvent} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 import {OrganizationService} from './organization.service';
-import {execute, filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
+import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationStore {
   private api = inject(OrganizationService);
   private configService = inject(OrganizationConfigService);
+  private errorHandler = inject(ErrorHandler);
 
   readonly allItems = signal<AppOrganization[]>([]);
-  readonly items = signal<AppOrganization[]>([]);
   readonly selected = signal<AppOrganization | null>(null);
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
-  readonly params = signal<Params | undefined>(undefined);
 
-  async getAll() {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const dtos = await firstValueFrom(this.api.getWithQuery());
-        const all = dtos.map(dto => this.toAppModel(dto));
+  readonly page = signal<PageEvent>({
+    pageIndex: 0,
+    pageSize: this.configService.getStoredPageSize(),
+    length: 0,
+  });
+  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly filter = signal<FilterEvent>({});
 
-        this.allItems.set(all);
-        this.total.set(all.length);
-      },
-    });
+  readonly items = computed<AppOrganization[]>(() => {
+    const filtered = filterItems(this.allItems(), this.filter() as Record<string, string | undefined>);
+    const sorted = sortItems(filtered, this.sort());
+    const {pageIndex, pageSize} = this.page();
+    return paginateItems(sorted, {pageIndex, pageSize});
+  });
+
+  setPage(page: PageEvent) {
+    this.configService.setStoredPageSize(page.pageSize);
+    this.page.set(page);
   }
 
-  async getWithQuery(queryParams?: Params): Promise<boolean> {
-    this.params.set(queryParams);
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const {
-          pageIndex = 0,
-          pageSize = this.configService.getStoredPageSize(),
-          sortField = 'id',
-          sortOrder = 'desc',
-          ...filter
-        } = queryParams ?? {};
+  toggleSort({name, sortable}: TableElement) {
+    if (!sortable) return;
+    this.sort.update(({sortOrder}) => ({
+      sortField: name,
+      sortOrder: sortOrder === 'asc' ? 'desc' : 'asc',
+    }));
+  }
 
-        const filtered = filterItems(this.allItems(), filter);
-        const sorted = sortItems(filtered, {sortField, sortOrder});
-        const paged = paginateItems(sorted, {pageSize: +pageSize, pageIndex: +pageIndex});
+  setFilter(filter: FilterEvent) {
+    this.filter.set(filter);
+  }
 
-        this.items.set(paged);
-      },
+  applyQueryParams(queryParams: Params = {}) {
+    this.page.set({
+      pageIndex: +(queryParams['pageIndex'] ?? 0),
+      pageSize: +(queryParams['pageSize'] ?? this.configService.getStoredPageSize()),
+      length: 0,
     });
+    this.sort.set({
+      sortField: queryParams['sortField'] ?? 'id',
+      sortOrder: queryParams['sortOrder'] ?? 'desc',
+    });
+    this.filter.set(this.buildFilter(queryParams));
+  }
+
+  private buildFilter(queryParams: Params): FilterEvent {
+    return this.configService.getTableFilters().reduce<FilterEvent>((filter, {name}) => {
+      filter[name] = queryParams[name];
+      return filter;
+    }, {});
+  }
+
+  async getAll(): Promise<boolean> {
+    this.loading.set(true);
+    try {
+      const dtos = await firstValueFrom(this.api.getWithQuery());
+      this.allItems.set(dtos.map(dto => this.toAppModel(dto)));
+      this.total.set(dtos.length);
+      return true;
+    } catch (e) {
+      this.errorHandler.handleError(e);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async getByKey(key: string): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const dto = await firstValueFrom(this.api.getByKey(key));
-        const entity = this.toAppModel(dto);
-        this.selected.set(entity);
-      },
-    });
+    this.loading.set(true);
+    try {
+      const dto = await firstValueFrom(this.api.getByKey(key));
+      this.selected.set(this.toAppModel(dto));
+      return true;
+    } catch (e) {
+      this.errorHandler.handleError(e);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async add(entity: CreateOrganizationDto): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        await firstValueFrom(this.api.add(entity));
-        await this.getAll();
-        await this.getWithQuery(this.params());
-      }
-    });
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await firstValueFrom(this.api.add(entity));
+      await this.getAll();
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async update(entity: UpdateOrganizationDto): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const updatedEntity = await firstValueFrom(this.api.update(entity));
-        await this.getAll();
-        await this.getWithQuery(this.params());
-        if(this.selected()) {
-          this.selected.set(this.toAppModel(updatedEntity));
-        }
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      const updatedEntity = await firstValueFrom(this.api.update(entity));
+      await this.getAll();
+      if (this.selected()) {
+        this.selected.set(this.toAppModel(updatedEntity));
       }
-    });
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async delete(entity: AppOrganization): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        await firstValueFrom(this.api.delete(entity));
-        await this.getAll();
-        await this.getWithQuery(this.params());
-        this.selected.set(null);
-      }
-    });
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await firstValueFrom(this.api.delete(entity));
+      await this.getAll();
+      this.selected.set(null);
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   toAppModel(entity: OrganizationDto): AppOrganization {
