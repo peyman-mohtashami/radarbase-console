@@ -65,21 +65,26 @@
         </label>
         <mat-form-field subscriptSizing="fixed" appearance="outline">
           <mat-select [formField]="form.processingState">
-            <mat-option [value]='ProcessingState.RAW'>
-              {{ `${_prefix}.processingState.RAW` | translate }}
-            </mat-option>
-            <mat-option [value]='ProcessingState.DERIVED'>
-              {{ `${_prefix}.processingState.DERIVED` | translate }}
-            </mat-option>
-            <mat-option [value]='ProcessingState.VENDOR'>
-              {{ `${_prefix}.processingState.VENDOR` | translate }}
-            </mat-option>
-            <mat-option [value]='ProcessingState.RADAR'>
-              {{ `${_prefix}.processingState.RADAR` | translate  }}
-            </mat-option>
-            <mat-option [value]='ProcessingState.UNKNOWN'>
-              {{ `${_prefix}.processingState.UNKNOWN` | translate }}
-            </mat-option>
+            @for (state of PROCESSING_STATE; track state) {
+              <mat-option [value]='state'>
+                {{ `${_prefix}.processingState.${state}` | translate }}
+              </mat-option>
+            }
+<!--            <mat-option [value]='ProcessingState.RAW'>-->
+<!--              {{ `${_prefix}.processingState.RAW` | translate }}-->
+<!--            </mat-option>-->
+<!--            <mat-option [value]='ProcessingState.DERIVED'>-->
+<!--              {{ `${_prefix}.processingState.DERIVED` | translate }}-->
+<!--            </mat-option>-->
+<!--            <mat-option [value]='ProcessingState.VENDOR'>-->
+<!--              {{ `${_prefix}.processingState.VENDOR` | translate }}-->
+<!--            </mat-option>-->
+<!--            <mat-option [value]='ProcessingState.RADAR'>-->
+<!--              {{ `${_prefix}.processingState.RADAR` | translate  }}-->
+<!--            </mat-option>-->
+<!--            <mat-option [value]='ProcessingState.UNKNOWN'>-->
+<!--              {{ `${_prefix}.processingState.UNKNOWN` | translate }}-->
+<!--            </mat-option>-->
           </mat-select>
         </mat-form-field>
       }

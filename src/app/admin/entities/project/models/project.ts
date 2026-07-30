@@ -28,14 +28,18 @@ export type AppProject = ProjectDto & {name: string; search: string};
 export const PROJECT_STATUSES = ['PLANNING', 'ONGOING', 'ENDED'] as const;
 export type ProjectStatus = typeof PROJECT_STATUSES[number];
 
-export const PROJECT_STATUS_LABELS: Record<ProjectStatus, string> = {
+export const PROJECT_STATUS_LABELS = {
   PLANNING: 'Planning',
   ONGOING: 'Ongoing',
   ENDED: 'Ended',
-};
+} satisfies Record<ProjectStatus, string>;
+
+const PROJECT_STATUS_SET: ReadonlySet<string> = new Set(PROJECT_STATUSES);
+
+export function isProjectStatus(value: string): value is ProjectStatus {
+  return PROJECT_STATUS_SET.has(value);
+}
 
 export function toProjectStatus(value: string): ProjectStatus | undefined {
-  return (PROJECT_STATUSES as readonly string[]).includes(value)
-    ? value as ProjectStatus
-    : undefined;
+  return isProjectStatus(value) ? value : undefined;
 }

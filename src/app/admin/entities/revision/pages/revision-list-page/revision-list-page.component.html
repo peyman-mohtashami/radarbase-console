@@ -54,8 +54,8 @@
 <app-entity-list-page [entities]="entities()"
                       [tableFields]="tableFields"
                       [entityMetadata]="entityMetadata"
-                      [page]="page()!"
-                      [sort]="sort()!"
+                      [page]="store.page()"
+                      [sort]="store.sort()"
                       (switchPageEvent)="switchPage($event)"
                       (switchSortEvent)="switchSort($event)"
                       [customTemplate]="itemTemplate"
@@ -65,5 +65,4 @@
   <app-revision-table-row [entity]="entity"
                           [gridView]="gridView"
                           [extensionClass]="extensionClass()"/>
-<!--                          [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
 </ng-template>

@@ -10,7 +10,6 @@ export class SourceDataService {
   private apiUrl = `${environment.apiUrl}api/source-data`;
 
   getWithQuery(queryParams: Params) {
-    // const { params } = this.convertParamsToHttpParams(queryParams as Params);
     return this.http.get<SourceDataDto[]>(this.apiUrl, {
       params: queryParams,
       observe: 'response',
