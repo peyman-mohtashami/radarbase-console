@@ -11,6 +11,7 @@ import {SourceTypeDialogService} from '../../services/source-type-dialog.service
 
 @Component({
   selector: 'app-source-type-actions',
+  templateUrl: './source-type-actions.component.html',
   imports: [
     MatIconButton,
     MatMenu,
@@ -20,10 +21,8 @@ import {SourceTypeDialogService} from '../../services/source-type-dialog.service
     MatTooltip,
     MatIcon
   ],
-  templateUrl: './source-type-actions.component.html',
 })
 export class SourceTypeActionsComponent {
-
   protected readonly DialogMode = DialogMode;
 
   private configService = inject(SourceTypeConfigService);

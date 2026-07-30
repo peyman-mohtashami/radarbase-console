@@ -3,7 +3,6 @@ import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppProject} from '../models/project';
 import {ProjectConfigService} from './project-config.service';
-import {SourceTypeService} from '../../source-type/services/source-type.service';
 import {OrganizationStore} from '../../organization/services/organization.store';
 import {ProjectStore} from './project.store';
 import {ProjectDialogComponent} from '../dialogs/project-dialog/project-dialog.component';
@@ -36,10 +35,10 @@ export class ProjectDialogService {
     }
     const organizationFullList = this.organizationStore.allItems();
 
-    if (this.sourceTypeStore.items()) {
-      await this.sourceTypeStore.getWithQuery();
+    if (!this.sourceTypeStore.allItems().length) {
+      await this.sourceTypeStore.getAll();
     }
-    const sourceTypeFullList = this.sourceTypeStore.items();
+    const sourceTypeFullList = this.sourceTypeStore.allItems();
 
     const organization = this.organizationStore.selected();
 

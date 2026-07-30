@@ -1,4 +1,4 @@
-import {Component, inject, AfterViewInit, signal} from '@angular/core';
+import {Component, inject, AfterViewInit, signal, effect} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -14,9 +14,6 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/core';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {
-  DialogAction,
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SourceTypeStore} from '../../services/source-type.store';
@@ -27,6 +24,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {longTextField, normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {JsonPipe} from '@angular/common';
+import {getLastSegment} from '../../../../shared/utils/route.util';
 
 export interface SourceTypeForm {
   id: string;
@@ -40,6 +38,13 @@ export interface SourceTypeForm {
   assessmentType: string;
   appProvider: string;
 }
+
+export interface StoredSourceTypeDialog {
+  mode: DialogMode;
+  entity?: AppSourceType;
+  model: SourceTypeForm;
+}
+
 
 @Component({
   selector: 'app-source-type-dialog',
@@ -66,7 +71,6 @@ export interface SourceTypeForm {
 })
 export class SourceTypeDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly DialogAction = DialogAction;
 
   protected store = inject(SourceTypeStore);
   private configService = inject(SourceTypeConfigService);
@@ -79,11 +83,12 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     mode: DialogMode;
     entity?: AppSourceType;
     sourceTypeFullList: AppSourceType[];
+    restoredModel?: SourceTypeForm;
   };
 
   protected formFields = this.configService.getFormFields();
 
-  private model = signal<SourceTypeForm>({
+  private model = signal<SourceTypeForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,
     id: `${this.dialogData.entity?.id ?? ''}`,
     producer: this.dialogData.entity?.producer ?? '',
@@ -109,61 +114,58 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     normalTextField(schema.assessmentType);
   });
 
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
+
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
   async save(): Promise<void> {
-    this.configService.setLatestFormEntry(this.model());
-
-    if (this.dialogData.mode === DialogMode.ADD) {
-      await this.store.add(this.toCreateDtoModel(this.model()));
-    } else if (this.dialogData.mode === DialogMode.EDIT) {
-      await this.store.update(this.toUpdateDtoModel(this.model()));
+    switch(this.dialogData.mode) {
+      case DialogMode.ADD:
+        await this.store.add(this.toCreateDtoModel(this.model()));
+        break;
+      case DialogMode.EDIT:
+        await this.store.update(this.toUpdateDtoModel(this.model()));
+        break;
     }
 
     if (this.store.error()) return;
 
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
-    this.navigateOnUpdateSuccess(this.model().name);
+    this.navigateOnUpdateSuccess(this.model());
   }
 
   protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
   close() {
+    this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  navigateOnUpdateSuccess(entityName: string) {
-    const selected = this.store.selected();
-    if (!selected) return;
+  navigateOnUpdateSuccess(model: SourceTypeForm) {
+    const selectedSourceType = this.store.selected();
+    if (!selectedSourceType) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
-
-    if (!primaryRoute) return;
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const sourceTypeIndex = segments.indexOf('source-types');
-    const organizationNameIndex = sourceTypeIndex + 1;
-
-    const hasOrganizationNameInUrl =
-      sourceTypeIndex !== -1 &&
-      organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+    this.router.navigate(['./admin/source-types', model.producer, model.model, model.canRegisterDynamically, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 
   navigateOnDeleteSuccess() {

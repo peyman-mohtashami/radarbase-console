@@ -1,4 +1,4 @@
-import {Component, inject, AfterViewInit, signal} from '@angular/core';
+import {Component, inject, AfterViewInit, signal, effect} from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
@@ -26,6 +26,7 @@ import {requiredField} from '../../../../../shared/utils/signal-form-validators'
 import {JsonPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {getLastSegment} from '../../../../shared/utils/route.util';
 
 export interface ClientForm {
   clientId: string;
@@ -39,6 +40,12 @@ export interface ClientForm {
   accessTokenValiditySeconds: string;
   refreshTokenValiditySeconds: string;
   _dynamic_registration: boolean
+}
+
+export interface StoredClientDialog {
+  mode: DialogMode;
+  entity?: AppClient;
+  model: ClientForm;
 }
 
 @Component({
@@ -77,13 +84,14 @@ export class ClientDialogComponent implements AfterViewInit {
   protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: DialogMode;
-    entity: AppClient | undefined;
+    entity?: AppClient;
     clientFullList: AppClient[];
+    restoredModel?: ClientForm;
   };
 
   protected formFields = this.configService.getFormFields();
 
-  protected model = signal<ClientForm>({
+  protected model = signal<ClientForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,
     clientId: this.dialogData.entity?.clientId ?? '',
     enableEmptySecret: false,
@@ -128,17 +136,29 @@ export class ClientDialogComponent implements AfterViewInit {
     requiredField(schema.refreshTokenValiditySeconds);
   });
 
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
+
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
   close() {
+    this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
   protected async save(): Promise<void> {
-    this.configService.setLatestFormEntry(this.model());
-
     switch(this.dialogData.mode) {
       case DialogMode.ADD:
         await this.store.add(this.toCreateDtoModel(this.model()));
@@ -150,38 +170,24 @@ export class ClientDialogComponent implements AfterViewInit {
 
     if (this.store.error()) return;
 
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
-    this.navigateOnUpdateSuccess(this.model().clientId);
+    this.navigateOnUpdateSuccess(this.model());
   }
 
   protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
-  private navigateOnUpdateSuccess(entityName: string) {
-    const selected = this.store.selected();
-    if (!selected) return;
+  private navigateOnUpdateSuccess(model: ClientForm) {
+    const selectedClient = this.store.selected();
+    if (!selectedClient) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
-
-    if (!primaryRoute) return;
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('clients');
-    const organizationNameIndex = organizationsIndex + 1;
-
-    const hasOrganizationNameInUrl = organizationsIndex !== -1 && organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) return;
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+    this.router.navigate(['./admin/clients', model.clientId, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 
   private navigateOnDeleteSuccess() {

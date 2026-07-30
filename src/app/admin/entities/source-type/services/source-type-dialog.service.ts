@@ -2,26 +2,41 @@ import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppSourceType} from '../models/source-type';
-import {SourceTypeDialogComponent} from '../dialogs/source-type-dialog/source-type-dialog.component';
+import {
+  SourceTypeDialogComponent,
+  SourceTypeForm,
+  StoredSourceTypeDialog
+} from '../dialogs/source-type-dialog/source-type-dialog.component';
 import {SourceTypeStore} from './source-type.store';
+import {SourceTypeConfigService} from './source-type-config.service';
 
 @Injectable({providedIn: 'root'})
 export class SourceTypeDialogService {
   private store = inject(SourceTypeStore);
   private dialog = inject(MatDialog);
+  private configService = inject(SourceTypeConfigService);
 
-  async openDialog(mode: DialogMode, entity?: AppSourceType) {
+  async openDialog(mode: DialogMode, entity?: AppSourceType, restoredModel?: SourceTypeForm) {
     if (mode !== DialogMode.ADD && !entity) return;
-    await this.createDialogRef(mode, entity);
+    await this.createDialogRef(mode, entity, restoredModel);
   }
 
-  private async createDialogRef(mode: DialogMode, entity?: AppSourceType): Promise<MatDialogRef<SourceTypeDialogComponent>> {
-    if (this.store.items()) {
-      await this.store.getWithQuery();
-    }
-    const sourceTypeFullList = this.store.items();
+  async restorePendingDialog() {
+    if (this.dialog.openDialogs.length) return;
 
-    const _data = {id: 'source-type-dialog', mode, entity: entity, sourceTypeFullList};
+    const state = this.configService.getDialogState<StoredSourceTypeDialog>();
+    if (!state) return;
+
+    await this.openDialog(state.mode, state.entity, state.model);
+  }
+
+  private async createDialogRef(mode: DialogMode, entity?: AppSourceType, restoredModel?: SourceTypeForm): Promise<MatDialogRef<SourceTypeDialogComponent>> {
+    if (!this.store.allItems().length) {
+      await this.store.getAll();
+    }
+    const sourceTypeFullList = this.store.allItems();
+
+    const _data = {id: 'source-type-dialog', mode, entity: entity, sourceTypeFullList, restoredModel};
 
     switch (mode) {
       case DialogMode.DELETE:
