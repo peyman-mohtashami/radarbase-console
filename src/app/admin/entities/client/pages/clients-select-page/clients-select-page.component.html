@@ -23,7 +23,7 @@
         <mat-form-field class='w-full! small-input'
                         appearance='outline'>
           <mat-select formControlName='client'>
-            @for (entity of entities; track entity.clientId) {
+            @for (entity of store.allItems(); track entity.clientId) {
               <mat-option [value]="entity.clientId">{{ entity.clientId }}</mat-option>
             }
           </mat-select>

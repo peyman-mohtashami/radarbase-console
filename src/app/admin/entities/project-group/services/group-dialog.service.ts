@@ -3,16 +3,14 @@ import {DialogMode} from '../../../base-entities/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppGroup} from '../models/group';
 import {GroupDialogComponent, GroupForm, StoredGroupDialog} from '../dialogs/group-dialog/group-dialog.component';
-import {ProjectStore} from '../../project/services/project.store';
 import {GroupStore} from './group.store';
-import {ClientConfigService} from '../../client/services/client-config.service';
+import {GroupConfigService} from './group-config.service';
 
 @Injectable({providedIn: 'root'})
 export class GroupDialogService {
   private store = inject(GroupStore);
-  private projectStore = inject(ProjectStore);
   private dialog = inject(MatDialog);
-  private configService = inject(ClientConfigService);
+  private configService = inject(GroupConfigService);
 
   async openDialog(mode: DialogMode, entity?: AppGroup, restoredModel?: GroupForm) {
     if (mode !== DialogMode.ADD && !entity) return;

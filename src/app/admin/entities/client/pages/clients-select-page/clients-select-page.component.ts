@@ -7,6 +7,8 @@ import {MatSelect} from "@angular/material/select";
 import {MatOption} from "@angular/material/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
+import {ClientStore} from '../../services/client.store';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-clients-select',
@@ -18,15 +20,18 @@ import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
     MatOption,
     RouterOutlet,
     TranslatePipe,
+    JsonPipe,
   ]
 })
 export class ClientsSelectPageComponent implements OnInit {
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
+  protected store = inject(ClientStore);
+
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
-  entities: AppClient[] = this.activatedRoute.snapshot.data['clientFullList'];
+  // entities: AppClient[] = this.activatedRoute.snapshot.data['clientFullList'];
   scope = this.activatedRoute.snapshot.data['scope'];
 
   form = new FormGroup({

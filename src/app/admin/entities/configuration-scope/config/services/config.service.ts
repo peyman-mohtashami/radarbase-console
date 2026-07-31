@@ -1,111 +1,29 @@
 import {inject, Injectable} from '@angular/core';
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 
-import {map, tap} from "rxjs/operators";
+import {map} from "rxjs/operators";
 import {AppConfig, ConfigDto, ConfigBundleDto} from "../models/config";
-import {Params} from '@angular/router';
-import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
 import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
 
 @Injectable({ providedIn: 'root' })
-export class ConfigService extends BaseEntityService<AppConfig, ConfigDto> {
+export class ConfigService {
 
   private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
 
-  override CACHE_ENABLED = true;
-
   updatedList: AppConfig[] = [];
 
-  override toAppModel(entity: ConfigDto): AppConfig {
-    return {
-      ...entity,
-      id: entity.name,
-      _name: entity.name,
-      _search: entity.name
-    };
-  }
-
-  override getWithQuery(queryParams?: Params, clientId?: string, projectId?: string, subjectId?: string): Observable<AppConfig[]> {
-    if (!clientId) throw new Error('Client id is required');
-    const {
-      pageIndex = 0,
-      pageSize = 10,
-      sortField = 'id',
-      sortOrder = 'desc',
-      ...filter
-    } = queryParams ?? {};
-
-    const process = (entities: AppConfig[]) => {
-      const filteredEntities = this.getFilteredEntities(entities, filter);
-      const sortedEntities = this.applySorting(filteredEntities, {sortField, sortOrder});
-      return this.applyPagination(sortedEntities, {pageSize, pageIndex});
-    };
-
-    if (this.CACHE_ENABLED && this.cacheLoaded) {
-      this.total.set(this.cache.length);
-      return of(queryParams ? process(this.updatedList) : this.updatedList);
-    }
-
+  getWithQuery(clientId: string, projectId?: string, subjectId?: string): Observable<ConfigDto[]> {
     return this.radarbaseAppConfigService.getRadarConfigBundle(clientId, projectId, subjectId).pipe(
       map(configBundle =>
-        getConfigsFromConfigBundle(configBundle).map((config) => this.toAppModel(config)),
+        getConfigsFromConfigBundle(configBundle),
       ),
-      tap((entities) => {
-        this.cache = [...entities];
-        this.updatedList = [...entities];
-        this.cacheLoaded = true;
-        this.total.set(entities.length);
-      }),
-      map((entities) => queryParams ? process(entities) : entities)
     );
   }
 
-  override getEntity(key: number | string): AppConfig {
-    const entity = this.updatedList.find(item => item._name === key);
-    if (!entity) throw new Error(`Entity with id ${key} not found`);
-    return entity;
-  }
-
-  override add(entity: AppConfig): Observable<AppConfig> {
-    return of(entity)
-      .pipe(
-        map(entity => this.toAppModel(entity)),
-        tap(_entity => {
-          this.total.set(this.total() + 1);
-          this.updatedList.push(_entity);
-        })
-      );
-  }
-
-  override update(update: AppConfig): Observable<AppConfig> {
-    return of(update)
-      .pipe(
-        map(entity => this.toAppModel(entity)),
-        tap(() => {
-          this.updatedList = this.updatedList.map((e) => (e.id === update.id ? update : e));
-        })
-      );
-  }
-
-  override delete(entity: AppConfig): Observable<void> {
-    return of(undefined).pipe(
-      tap(() => {
-        this.updatedList = this.updatedList.filter((e) => e.id !== entity.id);
-      })
-    );
-  }
-
-  publish(configs: AppConfig[], clientId: string, projectId?: string, subjectId?: string): Observable<AppConfig[]>{
+  publish(configs: AppConfig[], clientId: string, projectId?: string, subjectId?: string): Observable<ConfigDto[]>{
     return this.radarbaseAppConfigService.postConfig(configs, clientId, projectId, subjectId).pipe(
-      map((configBundle) => getConfigsFromConfigBundle(configBundle)),
-      map((configs) => configs.map((config) => this.toAppModel(config))),
+      map(configBundle => getConfigsFromConfigBundle(configBundle)),
     )
-  }
-
-  override clearCache() {
-    this.cacheLoaded = false;
-    this.cache = [];
-    this.updatedList = [];
   }
 }
 

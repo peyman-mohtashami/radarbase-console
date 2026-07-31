@@ -8,10 +8,10 @@ import {
 } from "../containers/questionnaire-dialog/questionnaire-dialog.component";
 import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
 import {QuestionnaireConfigService} from './questionnaire-config.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {
-  ConfigPublishDialogComponent
-} from '../../config/containers/config-publish-dialog/config-publish-dialog.component';
+// import {HttpErrorResponse} from '@angular/common/http';
+// import {
+//   ConfigPublishDialogComponent
+// } from '../../config/containers/config-publish-dialog/config-publish-dialog.component';
 
 @Injectable({providedIn: 'root'})
 export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, AppQuestionnaire, QuestionnaireDialogComponent> {

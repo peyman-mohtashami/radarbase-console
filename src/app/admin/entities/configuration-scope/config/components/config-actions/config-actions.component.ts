@@ -1,9 +1,8 @@
-import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIconButton} from "@angular/material/button";
-import {ActivatedRoute, Router} from '@angular/router';
 import {MatTooltip} from "@angular/material/tooltip";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {AppConfig} from "../../models/config";
@@ -13,7 +12,6 @@ import {ConfigDialogService} from '../../services/config-dialog.service';
 @Component({
   selector: 'app-config-actions',
   templateUrl: './config-actions.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,
@@ -28,8 +26,6 @@ export class ConfigActionsComponent {
   protected readonly DialogMode = DialogMode;
 
   private configService = inject(ConfigConfigService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
   private dialogService = inject(ConfigDialogService);
 
   entity = input.required<AppConfig>();
@@ -37,12 +33,7 @@ export class ConfigActionsComponent {
 
   entityName = this.configService.getEntityMetadata().name;
 
-  onAction(mode: DialogMode) {
-    this.dialogService.openDialog(mode, this.entity());
-    // this.router.navigate([], {
-    //   relativeTo: this.route,
-    //   queryParamsHandling: 'preserve',
-    //   fragment: `/${mode}/${this.entityName}/${this.entity().id}`
-    // }).then()
+  async onAction(mode: DialogMode) {
+    await this.dialogService.openDialog(mode, this.entity());
   }
 }

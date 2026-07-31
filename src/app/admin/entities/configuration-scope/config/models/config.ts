@@ -1,3 +1,5 @@
+import {GroupDto} from '../../../project-group/models/group';
+
 export interface ConfigBundleDto {
   clientId: string;
   scope: string;
@@ -12,8 +14,8 @@ export interface ConfigDto {
   scope?: string;
 }
 
-export interface AppConfig extends ConfigDto {
-  id: string;
-  _name: string;
-  _search?: string;
-}
+export type CreateConfigDto = ConfigDto;
+
+export type UpdateConfigDto = ConfigDto;
+
+export type AppConfig = ConfigDto & {search: string};

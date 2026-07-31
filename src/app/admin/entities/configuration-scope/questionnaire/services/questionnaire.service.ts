@@ -291,8 +291,9 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
     };
     const protocolConfigs: AppConfig[] = [{
       name: 'main', value: JSON.stringify(radarProtocolWrapper),
-      id: "",
-      _name: ""
+      search: ''
+      // id: "",
+      // _name: ""
     }];
 
     const radarProtocolConfigBundleObservable = this.radarbaseAppConfigService.postConfig(protocolConfigs, 'protocol-service', projectId, subjectId);
@@ -301,7 +302,7 @@ export class QuestionnaireService extends BaseEntityService<AppQuestionnaire, Ap
     qs.forEach(q => {
       const name = q.name;
       Object.keys(q.questions).forEach(lang => {
-        questionnaireConfigs.push({_name: '', id: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
+        questionnaireConfigs.push({search: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
       })
     });
 
