@@ -172,11 +172,10 @@ export class SourceDialogComponent implements AfterViewInit {
 
   toCreateDtoModel(model: SourceForm): CreateSourceDto {
     return {
-      sourceType: this.dialogData.sourceTypeFullList.find(s => Number(s.id) === Number(model.sourceType)),
+      ...model,
+      sourceType: this.dialogData.sourceTypeFullList.find(s => `${s.id}` === model.sourceType),
       assigned: false,
       project: this.projectStore.selected()!,
-      sourceName: model.sourceName,
-      attributes: model.attributes
     };
   }
 

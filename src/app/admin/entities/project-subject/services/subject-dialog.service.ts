@@ -68,7 +68,7 @@ export class SubjectDialogService {
     const project = this.projectStore.selected()!;
 
     if (this.groupStore.items().length === 0) {
-      // this.groupStore.getAll(); //TODO
+      await this.groupStore.getAll();
     }
     const groupFullList = this.groupStore.items();
 
@@ -77,10 +77,6 @@ export class SubjectDialogService {
     switch (mode) {
       case SubjectDialogMode.DISCONTINUE:
         return this.createDiscontinueDialogRef(_data);
-      // case SubjectDialogMode.PAIR_APP:
-      //   return this.createPairAppDialogRef(mode, entity, project, restoredModel);
-      // case SubjectDialogMode.PAIR_SOURCE:
-      //   return this.createPairSourceDialogRef(_data);
       case SubjectDialogMode.DELETE:
         return this.dialog.open(SubjectDialogComponent, {
           id: 'subject-dialog',

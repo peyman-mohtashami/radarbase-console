@@ -75,14 +75,12 @@
       }
 
       @if (!formFields || formFields['group'] === undefined || formFields['group']) {
-        <label for="subject-group" class="text-sm">{{ `${_prefix}.group.label` | translate }}</label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <mat-select id="subject-group" [formField]="form.group">
-            @for (group of dialogData.groupFullList; track group.name) {
-              <mat-option [value]='group.name'>{{ group.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+        <label for="project-id" class="text-sm">{{ `${_prefix}.group.label` | translate }}</label>
+        <app-searchable-multi-select [formField]="form.group"
+                                     [valueKey]="'name'"
+                                     [labelKey]="'name'"
+                                     [options]="dialogData.groupFullList"
+                                     [multiple]="false"/>
       }
 
       <div>
@@ -92,30 +90,30 @@
                                  [formField]="form.attributes[field.name]"/>
         }
 
-<!--        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {-->
-<!--          <label for="subject-attributes" class="text-sm">-->
-<!--            {{ `${_prefix}.attributes.label` | translate }}-->
-<!--          </label>-->
-<!--          <fieldset class="rounded-sm border px-4">-->
-<!--            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {-->
-<!--              <label for="subject-human-readable-identifier" class="text-sm">-->
-<!--                {{ `${_prefix}.attributes.humanReadableIdentifier` | translate }}-->
-<!--              </label>-->
-<!--              <mat-form-field subscriptSizing="fixed" appearance='outline'>-->
-<!--                <input id="subject-human-readable-identifier" matInput [formField]="form.attributes['humanReadableIdentifier']">-->
-<!--              </mat-form-field>-->
-<!--            }-->
+        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+          <label for="subject-attributes" class="text-sm">
+            {{ `${_prefix}.attributes.label` | translate }}
+          </label>
+          <fieldset class="rounded-sm border px-4">
+            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {
+              <label for="subject-human-readable-identifier" class="text-sm">
+                {{ `${_prefix}.attributes.humanReadableIdentifier` | translate }}
+              </label>
+              <mat-form-field subscriptSizing="fixed" appearance='outline'>
+                <input id="subject-human-readable-identifier" matInput [formField]="form.attributes?.['humanReadableIdentifier']">
+              </mat-form-field>
+            }
 
-<!--            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {-->
-<!--              <label for="subject-participant-group" class="text-sm">-->
-<!--                {{ `${_prefix}.attributes.participant_group` | translate }}-->
-<!--              </label>-->
-<!--              <mat-form-field subscriptSizing="fixed" appearance='outline'>-->
-<!--                <input id="subject-participant-group" matInput [formField]="form.attributes['participant_group']">-->
-<!--              </mat-form-field>-->
-<!--            }-->
-<!--          </fieldset>-->
-<!--        }-->
+            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {
+              <label for="subject-participant-group" class="text-sm">
+                {{ `${_prefix}.attributes.participant_group` | translate }}
+              </label>
+              <mat-form-field subscriptSizing="fixed" appearance='outline'>
+                <input id="subject-participant-group" matInput [formField]="form.attributes?.['participant_group']">
+              </mat-form-field>
+            }
+          </fieldset>
+        }
       </div>
     </form>
   }

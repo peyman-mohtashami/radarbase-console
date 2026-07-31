@@ -65,26 +65,26 @@
                                    [options]="dialogData.sourceTypeFullList"
                                    [multiple]="false"/>
 
-<!--      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {-->
-<!--        <label for="attributes" class="text-sm">{{ `${_prefix}.attributes.label` | translate }}</label>-->
-<!--        <fieldset class="rounded-sm border p-4">-->
-<!--          @if (!formFields || formFields['attributes.External-identifier'] === undefined || formFields['attributes.External-identifier']) {-->
-<!--            <label for="External-identifier" class="text-sm">-->
-<!--              {{ `${_prefix}.attributes.External-identifier` | translate }}-->
-<!--            </label>-->
-<!--            <mat-form-field class='w-full' subscriptSizing="fixed" appearance='outline'>-->
-<!--              <input id="External-identifier" matInput [formField]="form.attributes?.['External-identifier']" />-->
-<!--              <mat-error>-->
-<!--                @if (form.attributes?.['External-identifier']().touched() && form.attributes?.['External-identifier']().invalid()) {-->
-<!--                  @for (error of form.attributes?.['External-identifier']().errors(); track error.kind) {-->
-<!--                    {{ error.message }}-->
-<!--                  }-->
-<!--                }-->
-<!--              </mat-error>-->
-<!--            </mat-form-field>-->
-<!--          }-->
-<!--        </fieldset>-->
-<!--      }-->
+      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+        <label for="attributes" class="text-sm">{{ `${_prefix}.attributes.label` | translate }}</label>
+        <fieldset class="rounded-sm border p-4">
+          @if (!formFields || formFields['attributes.External-identifier'] === undefined || formFields['attributes.External-identifier']) {
+            <label for="External-identifier" class="text-sm">
+              {{ `${_prefix}.attributes.External-identifier` | translate }}
+            </label>
+            <mat-form-field class='w-full' subscriptSizing="fixed" appearance='outline'>
+              <input id="External-identifier" matInput [formField]="form.attributes?.['External-identifier']" />
+              <mat-error>
+                @if (form.attributes?.['External-identifier']().touched() && form.attributes?.['External-identifier']().invalid()) {
+                  @for (error of form.attributes?.['External-identifier']().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          }
+        </fieldset>
+      }
     </form>
   }
 </mat-dialog-content>

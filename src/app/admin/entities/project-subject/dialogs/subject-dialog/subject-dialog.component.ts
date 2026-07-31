@@ -36,6 +36,9 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {AppGroup} from '../../../project-group/models/group';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {
+  SearchableMultiSelectComponent
+} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 
 export interface SubjectForm {
   id: string;
@@ -44,7 +47,7 @@ export interface SubjectForm {
   dateOfBirth: string;
   externalId: string,
   externalLink: string,
-  group: string, //TODO remove selected group
+  group: string,
   attributes: Record<string, string>,
 }
 
@@ -79,6 +82,7 @@ export interface StoredSubjectDialog {
     MatProgressSpinner,
     JsonPipe,
     FormField,
+    SearchableMultiSelectComponent,
   ]
 })
 export class SubjectDialogComponent implements AfterViewInit {
@@ -117,10 +121,12 @@ export class SubjectDialogComponent implements AfterViewInit {
     group: this.dialogData.entity?.group ?? '',
     attributes: {
       ...this.dialogData.entity?.attributes,
+      'humanReadableIdentifier': this.dialogData.entity?.attributes?.['humanReadableIdentifier'] ?? '',
+      'participant_group': this.dialogData.entity?.attributes?.['participant_group'] ?? '',
       ...this.extraFields?.reduce((acc: Record<string, string>, cur) => {
         acc[cur.name] = this.dialogData.entity?.attributes?.[cur.name] ?? '';
         return acc;
-      }, {})
+      }, {}),
     },
   });
 
@@ -191,7 +197,7 @@ export class SubjectDialogComponent implements AfterViewInit {
       externalLink: model.externalLink || undefined,
       externalId: model.externalId || undefined,
       dateOfBirth: model.dateOfBirth || undefined,
-      group: model.group || null,
+      group: model.group.length ? model.group : null,
       personName: model.personName || undefined,
       project: this.dialogData.project,
       sources: [],
@@ -207,7 +213,7 @@ export class SubjectDialogComponent implements AfterViewInit {
       externalLink: model.externalLink || undefined,
       externalId: model.externalId || undefined,
       dateOfBirth: model.dateOfBirth || undefined,
-      group: model.group || null,
+      group: model.group.length ? model.group : null,
       personName: model.personName || undefined,
       project: this.dialogData.project,
       sources: [],

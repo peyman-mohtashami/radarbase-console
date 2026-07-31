@@ -9,29 +9,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 import { toSignal } from '@angular/core/rxjs-interop';
-
 import {
   Field,
   FormField,
 } from '@angular/forms/signals';
-
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
 
 @Component({
   selector: 'app-searchable-multi-select',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-
     MatFormFieldModule,
     MatSelectModule,
     MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
-
     NgxMatSelectSearchModule,
     FormField,
   ],
@@ -53,7 +47,6 @@ export class SearchableMultiSelectComponent<T extends object> {
   readonly placeholder = input<string>(
     'Select'
   );
-
 
   readonly multiple = input<boolean>(true);
   readonly disabled = input<boolean>(false);
@@ -101,13 +94,11 @@ export class SearchableMultiSelectComponent<T extends object> {
       : [value];
   });
 
-
-
   readonly selectedOptions = computed(() => {
     const values = this.selectedValues();
     const valueKey = this.valueKey();
     const options = this.options();
-    return options.filter(option =>  values.includes(option[valueKey]));
+    return options.filter(option =>  values.includes(`${option[valueKey]}`));
   });
 
   display(option: T): string {

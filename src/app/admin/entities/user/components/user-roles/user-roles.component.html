@@ -18,7 +18,7 @@
     @if (roles["_projectAdmin"]) {
       @for (project of roles['_projects']; track project.id) {
         <app-tag class="bg-tertiary/10 dark:bg-tertiary-dark/10 text-tertiary">
-          {{ 'ADMIN.user.role.projectAdmin' | translate}}: {{project.name}}
+          {{ 'ADMIN.user.role.projectAdmin' | translate}}: {{project.projectName}}
         </app-tag>
       }
     }
