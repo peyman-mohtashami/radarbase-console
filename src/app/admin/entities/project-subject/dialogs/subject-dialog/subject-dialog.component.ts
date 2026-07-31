@@ -1,7 +1,7 @@
 import {
   Component,
   inject,
-  AfterViewInit, signal
+  AfterViewInit, signal, effect
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -23,11 +23,7 @@ import {AppProject} from '../../../project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
-import {
-  DialogAction,
-  DialogActionsComponent
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -39,6 +35,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {AppGroup} from '../../../project-group/models/group';
+import {getLastSegment} from '../../../../shared/utils/route.util';
 
 export interface SubjectForm {
   id: string;
@@ -47,8 +44,14 @@ export interface SubjectForm {
   dateOfBirth: string;
   externalId: string,
   externalLink: string,
-  group: string,
+  group: string, //TODO remove selected group
   attributes: Record<string, string>,
+}
+
+export interface StoredSubjectDialog {
+  mode: SubjectDialogMode;
+  entity?: AppSubject;
+  model: SubjectForm;
 }
 
 @Component({
@@ -68,9 +71,7 @@ export interface SubjectForm {
     MatSuffix,
     SubjectDetailsComponent,
     MatDynamicInputComponent,
-    AsyncPipe,
     ErrorMessageBoxComponent,
-    DialogActionsComponent,
     MatDialogTitle,
     MatButton,
     MatDialogActions,
@@ -81,8 +82,8 @@ export interface SubjectForm {
   ]
 })
 export class SubjectDialogComponent implements AfterViewInit {
-  protected readonly DialogMode = SubjectDialogMode;
-  protected readonly DialogAction = DialogAction;
+  protected readonly SubjectDialogMode = SubjectDialogMode;
+  protected readonly DetailType = DetailType;
 
   protected localeService = inject(LocaleService);
   protected store = inject(SubjectStore);
@@ -100,11 +101,12 @@ export class SubjectDialogComponent implements AfterViewInit {
     entity?: AppSubject;
     project: AppProject;
     groupFullList: AppGroup[];
+    restoredModel?: SubjectForm;
   };
 
   formFields = this.configService.getFormFields();
 
-  private model = signal<SubjectForm>({
+  private model = signal<SubjectForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,
     id: `${this.dialogData.entity?.id ?? ''}`,
     login: this.dialogData.entity?.login ?? '',
@@ -124,119 +126,93 @@ export class SubjectDialogComponent implements AfterViewInit {
 
   protected form = form(this.model);
 
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === SubjectDialogMode.ADD || this.dialogData.mode === SubjectDialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
+
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
+  protected async save(): Promise<void> {
+    switch(this.dialogData.mode) {
+      case SubjectDialogMode.ADD:
+        await this.store.add(this.toCreateDtoModel(this.model()));
         break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
+      case SubjectDialogMode.EDIT:
+        await this.store.update(this.toUpdateDtoModel(this.model()));
         break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
-  }
-
-  protected async handleSaveAction(): Promise<void> {
-    this.configService.setLatestFormEntry(this.model());
-
-    if (this.dialogData.mode === SubjectDialogMode.ADD) {
-      await this.store.add(this.toCreateDtoModel(this.model()));
-    } else if (this.dialogData.mode === SubjectDialogMode.EDIT) {
-      await this.store.update(this.toUpdateDtoModel(this.model()));
     }
 
     if (this.store.error()) return;
 
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
-    this.navigateOnUpdateSuccess(this.model().login);
+    this.navigateOnUpdateSuccess(this.model());
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     await this.store.delete(this.dialogData.entity!);
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
-
-
   close() {
+    this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  navigateOnUpdateSuccess(entityName: string) {
-    const selectedOrganization = this.store.selected();
-    if (!selectedOrganization) return;
+  navigateOnUpdateSuccess(model: SubjectForm) {
+    const selectedSubject = this.store.selected();
+    if (!selectedSubject) return;
 
-
-
+    const project = this.dialogData.project;
     const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
-
-    if (!primaryRoute) {
-      return;
-    }
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
-    const organizationNameIndex = organizationsIndex + 1;
-
-    const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
-      organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+    this.router.navigate(['./admin/organizations', project.organization.name, 'projects', project.projectName, 'subjects', model.login, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 
   navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
+    const project = this.dialogData.project;
+    this.router.navigate(['./admin/organizations', project.organization.name, 'projects', project.projectName, 'subjects'], {queryParamsHandling: 'preserve'}).then();
   }
 
   toCreateDtoModel(model: SubjectForm): CreateSubjectDto {
     return {
-      ...model,
-    };
+      externalLink: model.externalLink || undefined,
+      externalId: model.externalId || undefined,
+      dateOfBirth: model.dateOfBirth || undefined,
+      group: model.group || null,
+      personName: model.personName || undefined,
+      project: this.dialogData.project,
+      sources: [],
+      status: 1,
+      attributes: model.attributes
+    }
   }
 
   toUpdateDtoModel(model: SubjectForm): UpdateSubjectDto {
     return {
-      ...model,
       id: Number(model.id),
+      login: model.login,
+      externalLink: model.externalLink || undefined,
+      externalId: model.externalId || undefined,
+      dateOfBirth: model.dateOfBirth || undefined,
+      group: model.group || null,
+      personName: model.personName || undefined,
+      project: this.dialogData.project,
+      sources: [],
+      status: this.dialogData.entity?.status,
+      attributes: model.attributes
     };
   }
-
-
-
-
-
-
-  // override handleSaveAction(): void {
-  //   this.dialogActionEvent.emit({
-  //     action: this.dialogData.mode,
-  //     entity: {
-  //       ...(this.dialogData.entity ?? ({} as AppSubject)),
-  //       ...(this.form.getRawValue() as Partial<AppSubject>),
-  //       project: this.dialogData.project
-  //     } as AppSubject,
-  //   });
-  // }
-  //
-  // override handleDeleteAction(): void {
-  //   this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
-  // }
-  protected readonly SubjectDialogMode = SubjectDialogMode;
-  protected readonly DetailType = DetailType;
 }

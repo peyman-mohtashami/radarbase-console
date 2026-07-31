@@ -39,19 +39,16 @@
     </div>
   }
 
-  <form [formGroup]="form" novalidate>
-    <label for="client"
-           class="text-sm">{{ 'ADMIN.subject.pairApp.client' | translate }}</label>
+  <form novalidate>
+    <label for="client" class="text-sm">{{ 'ADMIN.subject.pairApp.client' | translate }}</label>
     <mat-form-field class='w-full mb-4'
                     subscriptSizing="dynamic"
                     appearance="outline">
-      <mat-select formControlName='client'>
-        @if (dialogData.clientFullList | async; as clients) {
-          @for (client of clients; track client.clientId) {
-            <mat-option [value]='client'>
-              {{ client.clientId }}
-            </mat-option>
-          }
+      <mat-select [formField]="form.client">
+        @for (client of dialogData.clientFullList; track client.clientId) {
+          <mat-option [value]='client.clientId'>
+            {{ client.clientId }}
+          </mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -64,9 +61,9 @@
   </div>
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-<!--    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}-->
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
@@ -85,9 +82,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading()'
+            [disabled]='form().invalid() || !form().dirty() || store.loading()'
             (click)='generateQRCode(false)'>
-      @if (loading()) {
+      @if (store.loading()) {
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>
@@ -99,9 +96,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading()'
+            [disabled]='form().invalid() || !form().dirty() || store.loading()'
             (click)='generateQRCode(true)'>
-      @if (loading()) {
+      @if (store.loading()) {
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>

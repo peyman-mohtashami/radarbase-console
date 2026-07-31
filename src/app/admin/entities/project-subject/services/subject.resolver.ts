@@ -13,7 +13,7 @@ export class SubjectResolver implements Resolve<AppSubject | null> {
     await this.store.getByKey(subjectId);
 
     const subject = this.store.selected();
-    if (!subject) await this.router.navigate(['/admin/organizations']);
+    if (!subject) await this.router.navigate(['/admin/organizations']); //?
 
     return subject;
   }

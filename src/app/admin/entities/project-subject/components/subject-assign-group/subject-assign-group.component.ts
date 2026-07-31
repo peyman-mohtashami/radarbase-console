@@ -3,9 +3,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { AppSubject } from "../../models/subject";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {AppProject} from '../../../project/models/project';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {TranslatePipe} from '@ngx-translate/core';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-subject-assign-group',
@@ -13,12 +13,12 @@ import {TranslatePipe} from '@ngx-translate/core';
   imports: [
     MatButton,
     MatIcon,
-    TranslatePipe
+    TranslatePipe,
+    AsyncPipe
   ]
 })
 export class SubjectAssignGroupComponent {
   selection = input<SelectionModel<AppSubject>>(new SelectionModel<AppSubject>(true, []));
-  project = input.required<AppProject>();
 
   private dialogService = inject(SubjectDialogService);
 
@@ -26,12 +26,11 @@ export class SubjectAssignGroupComponent {
 
   assignGroupToSubjects(e?: Event) {
     e?.stopPropagation();
+    if (this.selection().selected.length === 0) return;
 
-    if (this.selection().selected.length) {
-      const subjects = this.selection().selected.map((s) => {
-        return { login: s.login };
-      });
-      return this.dialogService.openAssignGroupToSubjectsDialog(subjects, this.project())
-    }
+    const subjects = this.selection().selected.map((s) => {
+      return { login: s.login };
+    });
+    return this.dialogService.openAssignGroupToSubjectsDialog(subjects)
   }
 }

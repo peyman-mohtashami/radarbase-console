@@ -2,7 +2,7 @@ import {Component, input, output, signal, TemplateRef, ChangeDetectionStrategy} 
 import {TranslatePipe} from "@ngx-translate/core";
 import {DetailType} from "../../enums/detail-type";
 import {RbPageSortEvent, RbSort, TableElement} from "../../models/table.model";
-import {NgTemplateOutlet} from "@angular/common";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import {EntityRegistry} from "../../../../shared/consts/entity-registry";
 import {TableQueryReflectorDirective} from '../../directives/table-query-reflector.directive';
 import {MatCheckbox} from '@angular/material/checkbox';
@@ -22,6 +22,7 @@ import {MatIcon} from '@angular/material/icon';
     MatPaginator,
     NgTemplateOutlet,
     MatIcon,
+    AsyncPipe,
   ]
 })
 export class EntityListPageComponent {
@@ -39,6 +40,7 @@ export class EntityListPageComponent {
   totalEntities = input.required<number>();
 
   selection = input<SelectionModel<any>>(new SelectionModel<any>(true, []));
+  // protected selection = new SelectionModel<any>(true, []);
 
   switchPageEvent = output<PageEvent>();
   switchSortEvent = output<TableElement>();
@@ -61,6 +63,7 @@ export class EntityListPageComponent {
     } else {
       console.log('Class: EntityListPageComponent, Function: masterToggle, Line 59 ' , );
       this.selection().select(...this.entities());
+      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 64 this.selection().selected' , this.selection().selected);
     }
   }
 

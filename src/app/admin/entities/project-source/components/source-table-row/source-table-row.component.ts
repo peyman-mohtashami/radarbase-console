@@ -8,7 +8,6 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {SourceConfigService} from "../../services/source-config.service";
 import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {SourceActionsComponent} from '../source-actions/source-actions.component';
-import {SelectionModel} from '@angular/cdk/collections';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
 
@@ -37,6 +36,4 @@ export class SourceTableRowComponent {
   gridView = input<boolean>(false);
 
   updated = signal(false);
-
-  // selection = input.required<SelectionModel<AppSource>>();
 }

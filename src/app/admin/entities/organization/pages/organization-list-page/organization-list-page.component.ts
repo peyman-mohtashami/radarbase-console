@@ -59,6 +59,7 @@ export class OrganizationListPageComponent implements OnInit {
   protected selection = new SelectionModel<AppOrganization>(true, []);
 
   ngOnInit() {
+    this.store.selected.set(null);
     // Reopen a dialog that was interrupted by session expiry, with its entered fields.
     void this.dialogService.restorePendingDialog();
   }

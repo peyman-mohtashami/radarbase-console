@@ -34,6 +34,15 @@ export class SubjectActionsComponent {
   entityName = this.configService.getEntityMetadata().name;
 
   async onAction(mode: SubjectDialogMode) {
-    await this.dialogService.openDialog(mode, this.entity());
+    switch (mode) {
+      case SubjectDialogMode.PAIR_APP:
+        await this.dialogService.openPairAppDialog(mode, this.entity());
+        break;
+      case SubjectDialogMode.PAIR_SOURCE:
+        await this.dialogService.openPairSourceDialog(mode, this.entity());
+        break;
+      default:
+        await this.dialogService.openDialog(mode, this.entity());
+    }
   }
 }

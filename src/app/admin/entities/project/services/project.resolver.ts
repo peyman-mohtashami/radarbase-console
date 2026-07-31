@@ -13,8 +13,8 @@ export class ProjectResolver implements Resolve<AppProject | null> {
     await this.store.getByKey(projectId);
 
     const project = this.store.selected();
-    if (!project) await this.router.navigate(['/admin/organizations']);
-
+    //TODO
+    // if (!project) await this.router.navigate(['/admin/organizations', organization, 'projects']);
     return project;
   }
 }

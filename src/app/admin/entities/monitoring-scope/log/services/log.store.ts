@@ -1,94 +1,95 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
 import {execute, filterItems, paginateItems, sortItems} from '../../../../shared/utils/store-helpers';
 import {LogService} from './log.service';
 import {LogConfigService} from './log-config.service';
 import {AppLog, LogDto} from '../models/log';
+import {PageEvent} from '@angular/material/paginator';
+import {RbSort, TableElement} from '../../../../base-entities/models/table.model';
+import {
+  FilterEvent
+} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {AppSourceType} from '../../../source-type/models/source-type';
 
 @Injectable({providedIn: 'root'})
 export class LogStore {
   private api = inject(LogService);
   private configService = inject(LogConfigService);
+  private errorHandler = inject(ErrorHandler);
 
-  readonly items = signal<AppLog[]>([]);
+  readonly allItems = signal<AppLog[]>([]);
   readonly selected = signal<AppLog | null>(null);
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
 
-  async getWithQuery(queryParams?: Params): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const dtos = await firstValueFrom(this.api.getWithQuery());
-        const all = dtos.map(dto => this.toAppModel(dto));
+  readonly page = signal<PageEvent>({
+    pageIndex: 0,
+    pageSize: this.configService.getStoredPageSize(),
+    length: 0,
+  });
+  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly filter = signal<FilterEvent>({});
 
-        const {
-          pageIndex = 0,
-          pageSize = this.configService.getStoredPageSize(),
-          sortField = 'id',
-          sortOrder = 'desc',
-          ...filter
-        } = queryParams ?? {};
+  readonly items = computed<AppLog[]>(() => {
+    const filtered = filterItems(this.allItems(), this.filter() as Record<string, string | undefined>);
+    const sorted = sortItems(filtered, this.sort());
+    const {pageIndex, pageSize} = this.page();
+    return paginateItems(sorted, {pageIndex, pageSize});
+  });
 
-        const filtered = filterItems(all, filter);
-        const sorted = sortItems(filtered, {sortField, sortOrder});
-        const paged = paginateItems(sorted, {pageSize: +pageSize, pageIndex: +pageIndex});
-
-        this.items.set(paged);
-        this.total.set(all.length);
-      },
-    });
+  setPage(page: PageEvent) {
+    this.configService.setStoredPageSize(page.pageSize);
+    this.page.set(page);
   }
 
-  // async getByKey(key: string): Promise<boolean> {
-  //   return await execute({
-  //     loading: this.loading,
-  //     error: this.error,
-  //     action: async () => {
-  //       const dto = await firstValueFrom(this.api.getByKey(key));
-  //       const entity = this.toAppModel(dto);
-  //       this.selected.set(entity);
-  //     },
-  //   });
-  // }
-  //
-  // async add(entity: CreateOrganizationDto): Promise<boolean> {
-  //   return await execute({
-  //     loading: this.loading,
-  //     error: this.error,
-  //     action: async () => {
-  //       await firstValueFrom(this.api.add(entity));
-  //       await this.getWithQuery();
-  //     }
-  //   });
-  // }
+  toggleSort({name, sortable}: TableElement) {
+    if (!sortable) return;
+    this.sort.update(({sortOrder}) => ({
+      sortField: name,
+      sortOrder: sortOrder === 'asc' ? 'desc' : 'asc',
+    }));
+  }
 
-  // async update(entity: UpdateLogDto): Promise<boolean> {
-  //   return await execute({
-  //     loading: this.loading,
-  //     error: this.error,
-  //     action: async () => {
-  //       const updatedEntity = await firstValueFrom(this.api.update(entity));
-  //       await this.getWithQuery();
-  //       this.selected.set(this.toAppModel(updatedEntity));
-  //     }
-  //   });
-  // }
+  setFilter(filter: FilterEvent) {
+    this.filter.set(filter);
+  }
 
-  // async delete(entity: AppOrganization): Promise<boolean> {
-  //   return await execute({
-  //     loading: this.loading,
-  //     error: this.error,
-  //     action: async () => {
-  //       await firstValueFrom(this.api.delete(entity));
-  //       await this.getWithQuery();
-  //       this.selected.set(null);
-  //     }
-  //   });
-  // }
+  applyQueryParams(queryParams: Params = {}) {
+    this.page.set({
+      pageIndex: +(queryParams['pageIndex'] ?? 0),
+      pageSize: +(queryParams['pageSize'] ?? this.configService.getStoredPageSize()),
+      length: 0,
+    });
+    this.sort.set({
+      sortField: queryParams['sortField'] ?? 'id',
+      sortOrder: queryParams['sortOrder'] ?? 'desc',
+    });
+    this.filter.set(this.buildFilter(queryParams));
+  }
+
+  private buildFilter(queryParams: Params): FilterEvent {
+    return this.configService.getTableFilters().reduce<FilterEvent>((filter, {name}) => {
+      filter[name] = queryParams[name];
+      return filter;
+    }, {});
+  }
+
+  async getAll(): Promise<boolean> {
+    this.loading.set(true);
+    try {
+      const dtos = await firstValueFrom(this.api.getWithQuery());
+      this.allItems.set(dtos.map(dto => this.toAppModel(dto)));
+      this.total.set(dtos.length);
+      return true;
+    } catch (e) {
+      this.errorHandler.handleError(e);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
+  }
 
   toAppModel(entity: LogDto): AppLog {
     return {

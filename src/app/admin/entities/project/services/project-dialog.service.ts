@@ -5,30 +5,40 @@ import {AppProject} from '../models/project';
 import {ProjectConfigService} from './project-config.service';
 import {OrganizationStore} from '../../organization/services/organization.store';
 import {ProjectStore} from './project.store';
-import {ProjectDialogComponent} from '../dialogs/project-dialog/project-dialog.component';
-import {ActivatedRoute} from '@angular/router';
+import {
+  ProjectDialogComponent,
+  ProjectForm,
+  StoredProjectDialog
+} from '../dialogs/project-dialog/project-dialog.component';
 import {SourceTypeStore} from '../../source-type/services/source-type.store';
 
 @Injectable({providedIn: 'root'})
 export class ProjectDialogService {
-  private projectStore = inject(ProjectStore);
+  private store = inject(ProjectStore);
   private organizationStore = inject(OrganizationStore);
   private sourceTypeStore = inject(SourceTypeStore);
-  private configService = inject(ProjectConfigService);
   private dialog = inject(MatDialog);
-  private activatedRoute = inject(ActivatedRoute);
+  private configService = inject(ProjectConfigService);
 
-
-  async openDialog(mode: DialogMode, entity?: AppProject) {
+  async openDialog(mode: DialogMode, entity?: AppProject, restoredModel?: ProjectForm) {
     if (mode !== DialogMode.ADD && !entity) return;
-    await this.createDialogRef(mode, entity);
+    await this.createDialogRef(mode, entity, restoredModel);
   }
 
-  private async createDialogRef(mode: DialogMode, entity?: AppProject): Promise<MatDialogRef<ProjectDialogComponent>> {
-    if (this.projectStore.items()) {
-      await this.projectStore.getWithQuery();
+  async restorePendingDialog() {
+    if (this.dialog.openDialogs.length) return;
+
+    const state = this.configService.getDialogState<StoredProjectDialog>();
+    if (!state) return;
+
+    await this.openDialog(state.mode, state.entity, state.model);
+  }
+
+  private async createDialogRef(mode: DialogMode, entity?: AppProject, restoredModel?: ProjectForm): Promise<MatDialogRef<ProjectDialogComponent>> {
+    if (!this.store.allItems().length) {
+      await this.store.getAll();
     }
-    const projectFullList = this.projectStore.items();
+    const projectFullList = this.store.allItems();
 
     if (!this.organizationStore.allItems().length) {
       await this.organizationStore.getAll();
@@ -42,7 +52,7 @@ export class ProjectDialogService {
 
     const organization = this.organizationStore.selected();
 
-    const _data = {id: 'project-dialog', mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList};
+    const _data = {id: 'project-dialog', mode, entity, organization, projectFullList, sourceTypeFullList, organizationFullList, restoredModel};
 
     return this.dialog.open(ProjectDialogComponent, {
       id: 'project-dialog',

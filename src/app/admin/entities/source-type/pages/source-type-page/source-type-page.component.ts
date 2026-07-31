@@ -1,6 +1,6 @@
 import {
   Component,
-  inject,
+  inject, OnDestroy,
 } from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {SourceTypeActionsComponent} from '../../components/source-type-actions/source-type-actions.component';
@@ -28,7 +28,7 @@ import {SourceTypeStore} from '../../services/source-type.store';
     MatIcon,
   ]
 })
-export class SourceTypePageComponent {
+export class SourceTypePageComponent implements OnDestroy {
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(SourceTypeStore);
@@ -36,4 +36,8 @@ export class SourceTypePageComponent {
   links: TabLink[] = [
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.sourceType.name}.details` },
   ];
+
+  ngOnDestroy() {
+    this.store.selected.set(null);
+  }
 }

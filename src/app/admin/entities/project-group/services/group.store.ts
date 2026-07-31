@@ -1,82 +1,124 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
-import {execute} from '../../../shared/utils/store-helpers';
+import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 import {GroupService} from './group.service';
-import {AppGroup, CreateGroupDto, GroupDto, UpdateGroupDto} from '../models/group';
+import {AppGroup, CreateGroupDto, GroupDto} from '../models/group';
+import {GroupConfigService} from './group-config.service';
+import {PageEvent} from '@angular/material/paginator';
+import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {
+  FilterEvent
+} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
 
 @Injectable({providedIn: 'root'})
 export class GroupStore {
   private api = inject(GroupService);
+  private configService = inject(GroupConfigService);
+  private errorHandler = inject(ErrorHandler);
 
-  readonly items = signal<AppGroup[]>([]);
+  readonly allItems = signal<AppGroup[]>([]);
   readonly selected = signal<AppGroup | null>(null);
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
 
-  queryParams = signal<Params | undefined>(undefined);
+  readonly page = signal<PageEvent>({
+    pageIndex: 0,
+    pageSize: this.configService.getStoredPageSize(),
+    length: 0,
+  });
+  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly filter = signal<FilterEvent>({});
 
-  async getWithQuery(queryParams: Params): Promise<boolean> {
-    this.queryParams.set(queryParams);
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const response = await firstValueFrom(this.api.getWithQuery(queryParams));
-        const subjects = (response.body ?? []).map((dto: GroupDto) => this.toAppModel(dto));
-        const total = response.headers.get('X-Total-Count');
-        this.items.set(subjects);
-        this.total.set(total ? +total : 0);
-      },
-    });
+  readonly items = computed<AppGroup[]>(() => {
+    const filtered = filterItems(this.allItems(), this.filter() as Record<string, string | undefined>);
+    const sorted = sortItems(filtered, this.sort());
+    const {pageIndex, pageSize} = this.page();
+    return paginateItems(sorted, {pageIndex, pageSize});
+  });
+
+  setPage(page: PageEvent) {
+    this.configService.setStoredPageSize(page.pageSize);
+    this.page.set(page);
   }
 
-  async getByKey(key: string): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const dto = await firstValueFrom(this.api.getByKey(key));
-        const entity = this.toAppModel(dto);
-        this.selected.set(entity);
-      },
+  toggleSort({name, sortable}: TableElement) {
+    if (!sortable) return;
+    this.sort.update(({sortOrder}) => ({
+      sortField: name,
+      sortOrder: sortOrder === 'asc' ? 'desc' : 'asc',
+    }));
+  }
+
+  setFilter(filter: FilterEvent) {
+    this.filter.set(filter);
+  }
+
+  applyQueryParams(queryParams: Params = {}) {
+    this.page.set({
+      pageIndex: +(queryParams['pageIndex'] ?? 0),
+      pageSize: +(queryParams['pageSize'] ?? this.configService.getStoredPageSize()),
+      length: 0,
     });
+    this.sort.set({
+      sortField: queryParams['sortField'] ?? 'id',
+      sortOrder: queryParams['sortOrder'] ?? 'desc',
+    });
+    this.filter.set(this.buildFilter(queryParams));
+  }
+
+  private buildFilter(queryParams: Params): FilterEvent {
+    return this.configService.getTableFilters().reduce<FilterEvent>((filter, {name}) => {
+      filter[name] = queryParams[name];
+      return filter;
+    }, {});
+  }
+
+  async getAll(): Promise<boolean> {
+    this.loading.set(true);
+    try {
+      const dtos = await firstValueFrom(this.api.getWithQuery());
+      this.allItems.set(dtos.map(dto => this.toAppModel(dto)));
+      this.total.set(dtos.length);
+      return true;
+    } catch (e) {
+      this.errorHandler.handleError(e);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async add(entity: CreateGroupDto): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        await firstValueFrom(this.api.add(entity));
-        await this.getWithQuery(this.queryParams()!);
-      }
-    });
-  }
-
-  async update(entity: UpdateGroupDto): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const updatedEntity = await firstValueFrom(this.api.update(entity));
-        await this.getWithQuery(this.queryParams()!);
-        this.selected.set(this.toAppModel(updatedEntity));
-      }
-    });
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await firstValueFrom(this.api.add(entity));
+      await this.getAll();
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async delete(entity: AppGroup): Promise<boolean> {
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        await firstValueFrom(this.api.delete(entity));
-        await this.getWithQuery(this.queryParams()!);
-        this.selected.set(null);
-      }
-    });
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await firstValueFrom(this.api.delete(entity));
+      await this.getAll();
+      this.selected.set(null);
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   toAppModel(entity: GroupDto): AppGroup {

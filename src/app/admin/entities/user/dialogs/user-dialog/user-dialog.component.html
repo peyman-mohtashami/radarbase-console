@@ -79,46 +79,41 @@
       </mat-form-field>
       }
 
-<!--      <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>-->
-<!--      <fieldset>-->
-<!--        <div>-->
-<!--          <mat-slide-toggle class="my-2" color="primary" formControlName='_sysAdmin'>-->
-<!--            {{ `${_prefix}.role.sysAdmin` | translate }}-->
-<!--          </mat-slide-toggle>-->
-<!--        </div>-->
-<!--        @if (!form.controls._roles.controls._sysAdmin.value) {-->
-<!--          <div>-->
-<!--            <mat-slide-toggle class="my-2" color="primary" formControlName='_organizationAdmin'>-->
-<!--              {{ `${_prefix}.role.organizationAdmin` | translate }}-->
-<!--            </mat-slide-toggle>-->
-<!--          </div>-->
-<!--          @if (form.controls._roles.controls._organizationAdmin.value) {-->
-<!--            @if (dialogData.organizationFullList | async; as organizations) {-->
-<!--              <app-mat-select-autocomplete formControlName='_organizations'-->
-<!--                                           [label]='"ADMIN.organization.title.plural" | translate'-->
-<!--                                           [options]='organizations'-->
-<!--                                           [multiple]="true"-->
-<!--                                           [adapter]="organizationAdapter" />-->
-<!--            }-->
-<!--          }-->
-<!--        }-->
-<!--        @if (!form.controls._roles.controls._sysAdmin.value) {-->
-<!--          <div>-->
-<!--            <mat-slide-toggle class="my-2" color="primary" formControlName='_projectAdmin'>-->
-<!--              {{ `${_prefix}.role.projectAdmin` | translate }}-->
-<!--            </mat-slide-toggle>-->
-<!--          </div>-->
-<!--          @if (form.controls._roles.controls._projectAdmin.value) {-->
-<!--            @if (dialogData.projectFullList | async; as projects) {-->
-<!--              <app-mat-select-autocomplete formControlName='_projects'-->
-<!--                                           [label]='"ADMIN.project.title.plural" | translate'-->
-<!--                                           [options]='projects'-->
-<!--                                           [multiple]="true"-->
-<!--                                           [adapter]="projectAdapter"/>-->
-<!--            }-->
-<!--          }-->
-<!--        }-->
-<!--      </fieldset>-->
+      <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>
+      <fieldset>
+        <div>
+          <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._sysAdmin">
+            {{ `${_prefix}.role.sysAdmin` | translate }}
+          </mat-slide-toggle>
+        </div>
+        @if (!model()._roles._sysAdmin) {
+          <div>
+            <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._organizationAdmin">
+              {{ `${_prefix}.role.organizationAdmin` | translate }}
+            </mat-slide-toggle>
+          </div>
+          @if (model()._roles._organizationAdmin) {
+            <label for="organizations" class="text-sm">{{ `ADMIN.organization.title.plural` | translate }}</label>
+            <app-searchable-multi-select [formField]="form._roles._organizations"
+                                         [labelKey]="'name'"
+                                         [options]="dialogData.organizationFullList"
+                                         [valueKey]="'name'"/>
+          }
+
+          <div>
+            <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._projectAdmin">
+              {{ `${_prefix}.role.projectAdmin` | translate }}
+            </mat-slide-toggle>
+          </div>
+          @if (model()._roles._projectAdmin) {
+            <label for="projects" class="text-sm">{{ `ADMIN.project.title.plural` | translate }}</label>
+            <app-searchable-multi-select [formField]="form._roles._projects"
+                                         [labelKey]="'projectName'"
+                                         [options]="dialogData.projectFullList"
+                                         [valueKey]="'projectName'"/>
+          }
+        }
+      </fieldset>
     </form>
   }
 </mat-dialog-content>
@@ -135,7 +130,7 @@
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
-      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
           {{ 'SHARED.dialog.deletingButton' | translate }}
@@ -145,7 +140,7 @@
       </button>
     }
     @case (DialogMode.EDIT) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
@@ -153,7 +148,7 @@
       </button>
     }
     @case (DialogMode.ADD) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }

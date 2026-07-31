@@ -30,14 +30,7 @@ export class ClientService {
     return this.http.delete<ClientDto>(`${this.apiUrl}/${entity.name}`);
   }
 
-  getClientPairInfo(client: AppClient, subject: AppSubject, persistent: boolean): Observable<RadarPairInfo> {
-    let params = new HttpParams();
-
-    if (subject.login) {
-      params = params.append('clientId', client.clientId);
-      params = params.append('login', subject.login);
-      params = params.append('persistent', persistent.toString());
-    }
+  getClientPairInfo(params: HttpParams): Observable<RadarPairInfo> {
     return this.http.get<RadarPairInfo>(`${environment.apiUrl}api/oauth-clients/pair`, { params });
   }
 

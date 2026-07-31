@@ -1,5 +1,3 @@
-import {AuditDto} from '../../audit/models/audit';
-
 export interface LogDto {
   name: string;
   level: string;

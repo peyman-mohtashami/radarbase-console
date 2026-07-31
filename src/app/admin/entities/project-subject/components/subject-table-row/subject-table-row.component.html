@@ -1,4 +1,5 @@
 @let configFields = configService.getFormFields();
+@let selectionChange = selection().changed | async;
 
 <app-entity-table-row [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"

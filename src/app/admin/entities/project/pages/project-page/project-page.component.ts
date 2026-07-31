@@ -1,10 +1,9 @@
 import {
   Component,
-  inject,
+  inject, OnDestroy,
 } from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
-import {AppProject} from "../../models/project";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {ProjectConfigService} from '../../services/project-config.service';
@@ -16,6 +15,7 @@ import {ProjectActionsComponent} from '../../components/project-actions/project-
 import {ROLES} from '../../../../../shared/enums/roles';
 import {ProjectStore} from '../../services/project.store';
 import {MatIcon} from '@angular/material/icon';
+import {SubjectStore} from '../../../project-subject/services/subject.store';
 
 @Component({
   selector: 'app-project-page',
@@ -34,41 +34,35 @@ import {MatIcon} from '@angular/material/icon';
     MatIcon,
   ]
 })
-export class ProjectPageComponent {
+export class ProjectPageComponent implements OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
-  protected projectStore = inject(ProjectStore);
-  // protected subjectStore = inject(SubjectStore);
-
+  protected store = inject(ProjectStore);
+  protected subjectStore = inject(SubjectStore);
   configService = inject(ProjectConfigService);
 
 
-  links: TabLink[] = [];
+  links: TabLink[] = [
+    ...[
+      { path: 'subjects', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.title.plural` },
+      { path: 'groups', label: `ADMIN.${ENTITY_REGISTRY.group.name}.title.plural` },
+      { path: 'sources', label: `ADMIN.${ENTITY_REGISTRY.source.name}.title.plural` },
+      { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` }
+    ],
+    ...this.questionnaireTab(),
+    ...[
+      { path: 'users', label: `ADMIN.${ENTITY_REGISTRY.permission.name}.title.plural`},
+      { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` }
+    ],
+  ];
 
-  subjectId: string | null = null;
+  questionnaireTab() {
+    return this.store.selected()!.sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
+      [{ path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }] : [];
+  }
 
-
-  updateTabLinks(_entity?: AppProject) {
-    const protocolAndQuestionnaireTabLinks =
-      (_entity ?? this.projectStore.selected()!).sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
-        [
-          // { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
-          { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
-        ] : [];
-
-    this.links = [
-      ...[
-        { path: 'subjects', label: `ADMIN.${ENTITY_REGISTRY.subject.name}.title.plural` },
-        { path: 'groups', label: `ADMIN.${ENTITY_REGISTRY.group.name}.title.plural` },
-        { path: 'sources', label: `ADMIN.${ENTITY_REGISTRY.source.name}.title.plural` },
-        { path: 'app-config', label: `ADMIN.${ENTITY_REGISTRY.appConfig.name}.title.plural` }
-      ],
-      ...protocolAndQuestionnaireTabLinks,
-      ...[
-        { path: 'users', label: `ADMIN.${ENTITY_REGISTRY.permission.name}.title.plural`},
-        { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.project.name}.details` }
-      ],
-    ];
+  ngOnDestroy() {
+    this.store.selected.set(null);
   }
 }

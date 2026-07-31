@@ -1,4 +1,3 @@
-// import {RadarOption} from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {AppProject, ProjectDto} from '../../project/models/project';
 import {AppOrganization, OrganizationDto} from '../../organization/models/organization';
 
@@ -60,6 +59,16 @@ export interface AppRole {
   _sysAdmin?: boolean;
   _organizationAdmin?: boolean;
   _projectAdmin?: boolean;
-  _organizations?: Partial<AppOrganization>[];
-  _projects?: Partial<AppProject>[];
+  _organizations?: {id: number, name: string}[];
+  _projects?: {id: number, projectName: string}[];
+}
+
+
+export enum UserDialogMode {
+  ADD = "add",
+  VIEW = "view",
+  EDIT = "edit",
+  DELETE = "delete",
+  CLOSE = "close",
+  ACTIVATE = "activate",
 }

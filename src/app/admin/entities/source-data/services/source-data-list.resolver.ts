@@ -12,6 +12,5 @@ export class SourceDataListResolver implements Resolve<void> {
   async resolve(route: ActivatedRouteSnapshot): Promise<void> {
     this.store.applyQueryParams(route.queryParams);
     const res = await this.store.getWithQuery();
-    if (res) this.store.selected.set(null);
   }
 }

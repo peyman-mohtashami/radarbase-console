@@ -108,6 +108,7 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     requiredField(schema.model);
     normalTextField(schema.model);
     requiredField(schema.catalogVersion);
+    // TODO validator on 3 fields
     requiredField(schema.sourceTypeScope);
     normalTextField(schema.name);
     longTextField(schema.description);

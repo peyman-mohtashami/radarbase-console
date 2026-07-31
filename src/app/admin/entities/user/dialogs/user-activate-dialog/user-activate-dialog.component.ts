@@ -1,7 +1,6 @@
 import {
   Component,
   inject,
-  ChangeDetectionStrategy
 } from '@angular/core';
 
 import {
@@ -12,33 +11,39 @@ import {
 } from '@angular/material/dialog';
 import { AppUser } from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {DialogMode} from '../../../../base-entities/enums/dialog';
-import {BaseEntityDialogComponent} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {UserStore} from '../../services/user.store';
+import {animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {getLastSegment} from '../../../../shared/utils/route.util';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-user-activate-dialog',
   templateUrl: './user-activate-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
-    MatIconButton,
     MatIcon,
     TranslatePipe,
     MatDialogContent,
     MatButton,
     MatIcon,
     MatProgressSpinner,
+    ErrorMessageBoxComponent,
+    JsonPipe,
   ]
 })
-export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUser> {
-  override dialogRef = inject(MatDialogRef<UserDialogService>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
+export class UserActivateDialogComponent {
+  protected store = inject(UserStore);
+  private dialogRef = inject(MatDialogRef<UserDialogService>);
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: DialogMode | string;
     entity: AppUser;
@@ -46,24 +51,27 @@ export class UserActivateDialogComponent extends BaseEntityDialogComponent<AppUs
     projects: AppProject[];
     organizations: AppOrganization[];
   };
+  private router = inject(Router);
+  protected activatedRoute = inject(ActivatedRoute);
 
-  override ngOnInit() {
-    // this.formFields = this.configService.getFormFields();
-    // if (this.dialogData.entity) this.form.patchValue(this.dialogData.entity);
-    // this.form.valueChanges.pipe(debounceTime(300), takeUntil(this._destroy$)).subscribe((value) => {
-    //   if (value) {
-    //     this.error.set(null);
-    //   }
-    // })
+  protected async activate(): Promise<void> {
+    await this.store.sendActivationEmail(this.dialogData.entity);
+
+    if (this.store.error()) return;
+
+    this.dialogRef.close();
+    this.navigateOnUpdateSuccess(this.dialogData.entity.login);
   }
 
-  override onAction() {
-    this.error.set(null);
-    this.loading.set(true);
-    this.handleActivateAction();
+  close() {
+    animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  private handleActivateAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.dialogData.entity});
+  navigateOnUpdateSuccess(login: string) {
+    const selectedUser = this.store.selected();
+    if (!selectedUser) return;
+
+    const urlTree = this.router.parseUrl(this.router.url);
+    this.router.navigate(['./admin/users', login, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 }

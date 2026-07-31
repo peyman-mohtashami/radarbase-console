@@ -57,7 +57,7 @@ export class PermissionStore {
       if (currentProject) {
         if (e._roles?._projectAdmin) {
           const project = e._roles._projects?.find(p =>
-            p.name === currentProject);
+            p.projectName === currentProject);
           // p._name === currentProject?.projectName);
           if (project) {
             return true;

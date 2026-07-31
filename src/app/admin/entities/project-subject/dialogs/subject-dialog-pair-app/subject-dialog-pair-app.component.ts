@@ -2,9 +2,8 @@ import {
   Component,
   inject,
   signal,
-  ChangeDetectionStrategy
+  AfterViewInit, effect, OnInit, OnDestroy
 } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -14,37 +13,44 @@ import {AppSubject} from "../../models/subject";
 import {AppClient, RadarPairInfo} from "../../../client/models/client";
 import {QrCodeComponent} from "ng-qrcode";
 import {TranslatePipe} from "@ngx-translate/core";
-import {AsyncPipe, DatePipe} from "@angular/common";
+import {DatePipe, JsonPipe} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {catchError, map, switchMap} from 'rxjs/operators';
 import {MatFormField, MatOption, MatSelect} from '@angular/material/select';
-import {Observable, of} from 'rxjs';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
-import {ClientService} from '../../../client/services/client.service';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
 import {
   DetailElementComponent
 } from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
-import {
-  BaseEntityDialogComponent
-} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {form, FormField} from '@angular/forms/signals';
+import {ClientStore} from '../../../client/services/client.store';
+
+export interface PairAppForm {
+  id: string;
+  login: string,
+  client: string;
+}
+
+export interface StoredPairAppDialog {
+  mode: SubjectDialogMode;
+  entity?: AppSubject;
+  model: PairAppForm;
+}
 
 @Component({
   selector: 'app-subject-dialog-pair-app',
   templateUrl: './subject-dialog-pair-app.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     DetailElementComponent,
     TranslatePipe,
     DatePipe,
-    ReactiveFormsModule,
     MatButton,
     MatIcon,
     MatProgressSpinner,
@@ -53,64 +59,89 @@ import {
     MatSelect,
     MatOption,
     SubjectDetailsComponent,
-    AsyncPipe,
     QrCodeComponent,
     DurationPipe,
     ErrorMessageBoxComponent,
-    MatDialogTitle
+    MatDialogTitle,
+    FormField,
+    JsonPipe
   ]
 })
-export class SubjectDialogPairAppComponent extends BaseEntityDialogComponent<AppSubject> {
-  override configService = inject(SubjectConfigService);
-  override dialogRef = inject(MatDialogRef<SubjectDialogPairAppComponent>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
+export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit, OnDestroy {
+  protected readonly SubjectDialogMode = SubjectDialogMode;
+  protected readonly DetailType = DetailType;
+  private readonly printBodyClass = 'print-dialog-only';
+
+  protected store = inject(ClientStore);
+  protected configService = inject(SubjectConfigService);
+  private dialogRef = inject(MatDialogRef<SubjectDialogPairAppComponent>);
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: SubjectDialogMode;
     entity: AppSubject;
-    clientFullList: Observable<AppClient[]>;
+    clientFullList: AppClient[];
+    restoredModel?: PairAppForm;
   };
-  private clientService = inject(ClientService);
 
-  protected readonly DetailType = DetailType;
-  protected readonly SubjectDialogMode = SubjectDialogMode;
-  private readonly printBodyClass = 'print-dialog-only';
+  formFields = this.configService.getFormFields();
+
+  private model = signal<PairAppForm>(this.dialogData.restoredModel ?? {
+    ...this.dialogData.entity,
+    id: `${this.dialogData.entity?.id ?? ''}`,
+    login: this.dialogData.entity?.login ?? '',
+    client: '',
+  });
+
+  protected form = form(this.model);
 
   pairInfo = signal<RadarPairInfo | undefined>(undefined)
 
-  override form = new FormGroup({
-    id: new FormControl<string | number | undefined>({value: undefined, disabled: true}, {nonNullable: true}),
-    login: new FormControl<string | undefined>({value: undefined, disabled: true}, {nonNullable: true}),
-    client: new FormControl<AppClient | undefined>(undefined, {nonNullable: true}),
-  });
 
-  override ngOnInit() {
-    super.ngOnInit();
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === SubjectDialogMode.ADD || this.dialogData.mode === SubjectDialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    animateDialogIn(this.dialogData.id);
+  }
+
+  close() {
+    this.configService.clearDialogState();
+    animateDialogOut(this.dialogData.id, this.dialogRef);
+  }
+
+  ngOnInit() {
     document.body.classList.add(this.printBodyClass);
   }
 
-  generateQRCode(persistent: boolean) {
-    const client = this.form.controls.client.value;
+  async generateQRCode(persistent: boolean) {
+    const clientId = this.model().client;
+    const client = this.dialogData.clientFullList.find((c) => c.id === clientId);
     if (!client) {
       return;
     }
-    this.clientService.getClientPairInfo(client, this.dialogData.entity, persistent).pipe(
-      switchMap((newPairInfo: RadarPairInfo | undefined) => {
-        const oldPairInfo = this.pairInfo();
 
-        if (oldPairInfo?.tokenName) {
-          return this.clientService.deletePairInfoToken(oldPairInfo.tokenName).pipe(
-            catchError(() => of(null)),
-            map(() => newPairInfo)
-          );
-        }
+    const pairInfo = await this.store.getClientPairInfo(client, this.dialogData.entity, persistent);
+    if (!pairInfo) return;
 
-        return of(newPairInfo);
-      })
-    ).subscribe((pairInfo: RadarPairInfo | undefined) => this.pairInfo.set(pairInfo));
+    const oldPairInfo = this.pairInfo();
+    if (oldPairInfo?.tokenName) {
+      await this.store.deletePairInfoToken(oldPairInfo.tokenName);
+    }
+    this.pairInfo.set(pairInfo);
   }
 
 
-  override ngOnDestroy(): void {
+  ngOnDestroy(): void {
     document.body.classList.remove(this.printBodyClass);
   }
 

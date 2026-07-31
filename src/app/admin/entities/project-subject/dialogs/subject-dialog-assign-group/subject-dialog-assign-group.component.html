@@ -5,20 +5,19 @@
 </h2>
 
 <mat-dialog-content>
-  <form [formGroup]="form" novalidate>
+  <form novalidate>
     <p>Select a group</p>
-    @if (dialogData.groupFullList | async; as groups) {
-      <app-mat-select-autocomplete [options]="groups"
-                                   formControlName='group'
-                                   [label]="'ADMIN.subject.group.label' | translate"
-                                   [adapter]="groupAdapter" />
-    }
+    <app-searchable-multi-select [formField]="form.group"
+                                 [valueKey]="'name'"
+                                 [labelKey]="'name'"
+                                 [options]="dialogData.groupFullList"
+                                 [multiple]="false"/>
   </form>
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
@@ -38,9 +37,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='!form.valid || !form.dirty || loading()'
-            (click)='onAction()'>
-      @if (loading()) {
+            [disabled]='form().invalid() || !form().dirty() || store.loading()'
+            (click)='assign()'>
+      @if (store.loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
       {{'ADMIN.subject.assignGroupDialog.assign' | translate }}

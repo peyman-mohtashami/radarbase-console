@@ -17,9 +17,9 @@
   <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-<!--    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}-->
+    {{store.error() | json}}
   </app-error-message-box>
 }
 
@@ -36,9 +36,9 @@
   <div class='ml-auto justify-end'>
     <button mat-raised-button
             color='warn'
-            [disabled]='loading()'
-            (click)='onAction(DialogAction.DELETE)'>
-      @if (loading()) {
+            [disabled]='store.loading()'
+            (click)='discontinue()'>
+      @if (store.loading()) {
         <ng-container>
           <mat-icon>
             <mat-spinner diameter='20'/>

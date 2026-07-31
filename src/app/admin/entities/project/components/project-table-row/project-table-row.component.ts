@@ -43,4 +43,5 @@ export class ProjectTableRowComponent {
   extensionClass = input<string>();
   gridView = input<boolean>(false);
 
-  updated = signal(false);}
+  updated = signal(false);
+}

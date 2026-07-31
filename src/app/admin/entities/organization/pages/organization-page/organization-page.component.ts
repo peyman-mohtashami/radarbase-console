@@ -1,6 +1,6 @@
 import {
   Component,
-  inject,
+  inject, OnDestroy,
 } from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
@@ -33,11 +33,11 @@ import {ProjectStore} from '../../../project/services/project.store';
     MatIcon,
   ]
 })
-export class OrganizationPageComponent {
+export class OrganizationPageComponent implements OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
-  protected organizationStore = inject(OrganizationStore);
+  protected store = inject(OrganizationStore);
   protected projectStore = inject(ProjectStore);
 
   links: TabLink[] = [
@@ -45,8 +45,12 @@ export class OrganizationPageComponent {
     {
       path: 'users',
       label: `ADMIN.${ENTITY_REGISTRY.user.name}.title.plural`,
-      permissions: [{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: this.organizationStore.selected()!.name}]
+      permissions: [{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: this.store.selected()!.name}]
     },
     {path: 'details', label: `ADMIN.${ENTITY_REGISTRY.organization.name}.details`},
   ];
+
+  ngOnDestroy() {
+    this.store.selected.set(null);
+  }
 }

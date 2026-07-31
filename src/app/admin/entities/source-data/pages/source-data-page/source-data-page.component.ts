@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {SourceDataActionsComponent} from '../../components/source-data-actions/source-data-actions.component';
@@ -29,7 +29,7 @@ import {SourceDataStore} from '../../services/source-data.store';
     MatIcon,
   ]
 })
-export class SourceDataPageComponent {
+export class SourceDataPageComponent implements OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
@@ -41,4 +41,8 @@ export class SourceDataPageComponent {
   links: TabLink[] = [
     { path: 'details', label: `ADMIN.${ENTITY_REGISTRY.sourceData.name}.details` },
   ];
+
+  ngOnDestroy() {
+    this.store.selected.set(null);
+  }
 }

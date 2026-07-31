@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import { HttpErrorResponse } from "@angular/common/http";
 
 import { HealthService } from '../../services/health.service';
@@ -16,12 +16,11 @@ import {TagComponent} from '../../../../../../shared/components/tag/tag.componen
 import {DetailElementComponent} from '../../../../../base-entities/components/entity-details/detail-element/detail-element.component';
 import {FileSizePipe} from '../../../../../../shared/pipes/file-size.pipe';
 import {MatIcon} from '@angular/material/icon';
-import {RadarHealth} from '../../models/health.model';
+import {HealthDto} from '../../models/health.model';
 
 @Component({
   selector: 'app-health-check',
   templateUrl: './health.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatButton,
@@ -42,7 +41,7 @@ export class HealthCheckComponent implements OnInit {
   private healthService = inject(HealthService);
 
   loading = signal(false);
-  health = signal<RadarHealth | undefined>(undefined);
+  health = signal<HealthDto | undefined>(undefined);
 
   ngOnInit(): void {
     this.refresh();

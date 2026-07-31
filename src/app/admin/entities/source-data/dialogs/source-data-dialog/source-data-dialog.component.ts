@@ -13,7 +13,6 @@ import {
 import {
   AppSourceData,
   CreateSourceDataDto, PROCESSING_STATE,
-  ProcessingState,
   toProcessingState,
   UpdateSourceDataDto
 } from "../../models/source-data";
@@ -35,6 +34,10 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
+import {
+  SearchableMultiSelectComponent
+} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 
 export interface SourceDataForm {
   id: string;
@@ -74,11 +77,12 @@ export interface StoredSourceDataDialog {
     MatProgressSpinner,
     MatButton,
     FormField,
+    SearchableMultiSelectComponent,
   ]
 })
 export class SourceDataDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  // protected readonly ProcessingState = ProcessingState;
+  protected readonly PROCESSING_STATE = PROCESSING_STATE;
 
   protected localeService = inject(LocaleService);
   protected store = inject(SourceDataStore);
@@ -114,19 +118,11 @@ export class SourceDataDialogComponent implements AfterViewInit {
     unit: this.dialogData.entity?.unit ?? '',
   });
 
-  protected form = form(this.model);
-//   id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),
-// sourceDataType: new FormControl<string | null>('', {
-//   validators: [Validator.requiredValidator, Validator.normalTextValidator]
-// }),
-//   sourceType: new FormControl<SourceTypeDto | null>(null, {validators: [Validator.requiredValidator]}),
-//   sourceDataName: new FormControl<string>('', {nonNullable: true, validators: [Validator.requiredValidator]}),
-//   processingState: new FormControl<ProcessingState | null>(null),
-//   topic: new FormControl<string>(''),
-//   keySchema: new FormControl<string>(''),
-//   valueSchema: new FormControl<string>(''),
-//   frequency: new FormControl<string>(''),
-//   unit: new FormControl<string>(''),
+  protected form = form(this.model, (schema) => {
+    normalTextField(schema.sourceDataType);
+    requiredField(schema.sourceType);
+    requiredField(schema.sourceDataName);
+  });
 
   constructor() {
     effect(() => {
@@ -178,7 +174,6 @@ export class SourceDataDialogComponent implements AfterViewInit {
     const selectedSourceData = this.store.selected();
     if (!selectedSourceData) return;
 
-
     const urlTree = this.router.parseUrl(this.router.url);
     this.router.navigate(['./admin/source-data', model.sourceDataName, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
@@ -203,6 +198,4 @@ export class SourceDataDialogComponent implements AfterViewInit {
       sourceType: this.dialogData.sourceTypeFullList.find(sourceType => `${sourceType.id}` === model.sourceType),
     };
   }
-
-  protected readonly PROCESSING_STATE = PROCESSING_STATE;
 }

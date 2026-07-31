@@ -8,11 +8,10 @@
   </div>
 </mat-dialog-content>
 
-@if (error()) {
-  <div
-    class="p-4 w-full text-center text-base rounded-sm wrap-break-word bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200">
-    {{ ($safeNavigationMigration(error()?.error.errorCode) | translate) ?? ($safeNavigationMigration(error()?.error?.message) | translate) }}
-  </div>
+@if (store.error()) {
+  <app-error-message-box>
+    {{store.error() | json}}
+  </app-error-message-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
@@ -25,12 +24,12 @@
   </div>
 
   <div class='ml-auto justify-end flex items-center gap-2'>
-    <button (click)='onAction()'
-            [disabled]='loading()'
+    <button (click)='activate()'
+            [disabled]='store.loading()'
             mat-raised-button
             color="primary"
             type="button">
-      @if (loading()) {
+      @if (store.loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
       {{ "ADMIN.user.activate.send" | translate }}

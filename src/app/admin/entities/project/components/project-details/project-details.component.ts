@@ -1,4 +1,4 @@
-import {Component, inject, ChangeDetectionStrategy, input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import { AppProject } from "../../models/project";
 import {ProjectStatusComponent} from "../project-status/project-status.component";
 import {ProjectSourceTypesComponent} from "../project-source-types/project-source-types.component";

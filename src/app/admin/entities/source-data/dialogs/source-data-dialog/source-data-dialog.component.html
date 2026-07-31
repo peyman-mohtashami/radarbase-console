@@ -38,13 +38,12 @@
         </mat-error>
       </mat-form-field>
 
-<!--      @if (dialogData.sourceTypeFullList | async; as sourceTypes) {-->
-<!--        <app-mat-select-autocomplete [formField]="form.sourceType"-->
-<!--                                     [label]="`${_prefix}.sourceType.label` | translate"-->
-<!--                                     [options]='sourceTypes'-->
-<!--                                     [required]="true"-->
-<!--                                     [adapter]="sourceTypeAdapter"/>-->
-<!--      }-->
+      <label for="sourcetype" class="text-sm">{{ `${_prefix}.sourceType.label` | translate }}</label>
+      <app-searchable-multi-select [formField]="form.sourceType"
+                                   [valueKey]="'id'"
+                                   [labelKey]="'name'"
+                                   [options]="dialogData.sourceTypeFullList"
+                                   [multiple]="false"/>
 
       <label for="source-data-name" class="text-sm">{{ `${_prefix}.sourceDataName.label` | translate  }} *</label>
       <mat-form-field subscriptSizing="fixed" appearance="outline">
@@ -70,21 +69,6 @@
                 {{ `${_prefix}.processingState.${state}` | translate }}
               </mat-option>
             }
-<!--            <mat-option [value]='ProcessingState.RAW'>-->
-<!--              {{ `${_prefix}.processingState.RAW` | translate }}-->
-<!--            </mat-option>-->
-<!--            <mat-option [value]='ProcessingState.DERIVED'>-->
-<!--              {{ `${_prefix}.processingState.DERIVED` | translate }}-->
-<!--            </mat-option>-->
-<!--            <mat-option [value]='ProcessingState.VENDOR'>-->
-<!--              {{ `${_prefix}.processingState.VENDOR` | translate }}-->
-<!--            </mat-option>-->
-<!--            <mat-option [value]='ProcessingState.RADAR'>-->
-<!--              {{ `${_prefix}.processingState.RADAR` | translate  }}-->
-<!--            </mat-option>-->
-<!--            <mat-option [value]='ProcessingState.UNKNOWN'>-->
-<!--              {{ `${_prefix}.processingState.UNKNOWN` | translate }}-->
-<!--            </mat-option>-->
           </mat-select>
         </mat-form-field>
       }

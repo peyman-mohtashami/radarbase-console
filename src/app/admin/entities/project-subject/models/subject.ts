@@ -39,9 +39,12 @@ export interface CreateSubjectDto {
   externalLink?: string;
   externalId?: string;
   dateOfBirth?: string;
-  group?: string;
+  group: string | null;
   personName?: string;
-  project?: ProjectDto;
+  project: ProjectDto;
+  sources: unknown[];
+  status?: number;
+  attributes?: Record<string, string>;
 }
 
 export interface UpdateSubjectDto {
@@ -50,9 +53,12 @@ export interface UpdateSubjectDto {
   externalLink?: string;
   externalId?: string;
   dateOfBirth?: string;
-  group?: string;
+  group: string | null;
   personName?: string;
-  project?: ProjectDto;
+  project: ProjectDto;
+  sources: unknown[];
+  status?: string;
+  attributes?: Record<string, string>;
 }
 
 export type AppSubject = SubjectDto & {name: string; search: string};

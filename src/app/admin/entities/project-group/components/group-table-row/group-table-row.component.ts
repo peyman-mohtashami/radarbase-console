@@ -3,7 +3,6 @@ import {AppGroup} from "../../models/group";
 import {GroupConfigService} from '../../services/group-config.service';
 import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {GroupActionsComponent} from '../group-actions/group-actions.component';
-import {SelectionModel} from '@angular/cdk/collections';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
 
@@ -26,6 +25,4 @@ export class GroupTableRowComponent {
   gridView = input<boolean>(false);
 
   updated = signal(false);
-
-  // selection = input.required<SelectionModel<AppSource>>();
 }

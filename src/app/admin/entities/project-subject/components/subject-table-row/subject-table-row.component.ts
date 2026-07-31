@@ -15,6 +15,7 @@ import {SubjectActionsComponent} from '../subject-actions/subject-actions.compon
 import {TranslatePipe} from '@ngx-translate/core';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-subject-table-row',
@@ -31,6 +32,7 @@ import {DetailType} from '../../../../base-entities/enums/detail-type';
     EntityTableRowComponent,
     SubjectActionsComponent,
     TranslatePipe,
+    AsyncPipe,
   ]
 })
 export class SubjectTableRowComponent {

@@ -1,4 +1,4 @@
-import {Component, inject, AfterViewInit, signal} from "@angular/core";
+import {Component, inject, AfterViewInit, signal, effect} from "@angular/core";
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -19,16 +19,12 @@ import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/mat
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {AppSourceType} from '../../../source-type/models/source-type';
-import {
-  DialogAction,
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
-import {HttpErrorResponse} from '@angular/common/http';
 import {OrganizationStore} from '../../../organization/services/organization.store';
 import {ProjectStore} from '../../services/project.store';
-import {form, FormField, validate} from '@angular/forms/signals';
+import {disabled, form, FormField, validate} from '@angular/forms/signals';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -37,6 +33,8 @@ import {
 } from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 import {longTextField, normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {getLastSegment} from '../../../../shared/utils/route.util';
+import {JsonPipe} from '@angular/common';
 
 export interface ProjectForm {
   id: string;
@@ -49,8 +47,14 @@ export interface ProjectForm {
   projectStatus: string,
   startDate: string,
   endDate: string,
-  sourceTypes: string[],
+  sourceTypes: number[],
   attributes: Record<string, string>,
+}
+
+export interface StoredProjectDialog {
+  mode: DialogMode;
+  entity?: AppProject;
+  model: ProjectForm;
 }
 
 @Component({
@@ -80,19 +84,22 @@ export interface ProjectForm {
     MatIcon,
     MatProgressSpinner,
     SearchableMultiSelectComponent,
+    JsonPipe,
   ]
 })
 export class ProjectDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly DialogAction = DialogAction;
 
   protected localeService = inject(LocaleService);
-  private projectStore = inject(ProjectStore);
+  protected store = inject(ProjectStore);
   private organizationStore = inject(OrganizationStore);
   private configService = inject(ProjectConfigService);
   private dialogRef = inject(MatDialogRef<ProjectDialogComponent>);
   private router = inject(Router);
   protected activatedRoute = inject(ActivatedRoute);
+
+  tableFields = this.configService.getTableFields();
+  extraFields = this.configService.getExtraFields();
 
   protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
@@ -102,11 +109,12 @@ export class ProjectDialogComponent implements AfterViewInit {
     projectFullList: AppProject[];
     organizationFullList: AppOrganization[];
     sourceTypeFullList: AppSourceType[];
+    restoredModel?: ProjectForm;
   };
 
   formFields = this.configService.getFormFields();
 
-  private model = signal<ProjectForm>({
+  private model = signal<ProjectForm>(this.dialogData.restoredModel ??{
     ...this.dialogData.entity,
     id: `${this.dialogData.entity?.id ?? ''}`,
     location: this.dialogData.entity?.location ?? '',
@@ -118,7 +126,7 @@ export class ProjectDialogComponent implements AfterViewInit {
     projectStatus: `${this.dialogData.entity?.projectStatus ?? ''}`,
     startDate: this.dialogData.entity?.startDate ?? '',
     endDate: this.dialogData.entity?.endDate ?? '',
-    sourceTypes: this.dialogData.entity?.sourceTypes?.map(s => `${s.id}`) ?? [],
+    sourceTypes: this.dialogData.entity?.sourceTypes?.map(s => s.id) ?? [],
     attributes: {
       ...this.dialogData.entity?.attributes,
       'Phase': this.dialogData.entity?.attributes?.['Phase'] ?? '',
@@ -130,8 +138,10 @@ export class ProjectDialogComponent implements AfterViewInit {
   });
 
   protected form = form(this.model, (schema) => {
+    disabled(schema.id);
     requiredField(schema.projectName);
     normalTextField(schema.projectName);
+    disabled(schema.projectName, {when: () => !!this.dialogData.entity});
     validate(schema.projectName, ({value}) => {
       const matchedProject = this.dialogData.projectFullList?.find((project) => project.name === value());
       if (!matchedProject) return null;
@@ -147,151 +157,72 @@ export class ProjectDialogComponent implements AfterViewInit {
     requiredField(schema.organization);
   });
 
-  // override form = new FormGroup({
-  //   id: new FormControl<string | number>({ value: '', disabled: true }, {nonNullable: true}),
-  //   projectName: new FormControl<string>(
-  //     {value: '', disabled: this.dialogData.mode !== DialogMode.ADD},
-  //     {nonNullable: true, validators: [Validator.requiredValidator, Validator.stringIdValidator]}
-  //   ),
-  //   humanReadableProjectName: new FormControl<string>('', {validators: [Validator.normalTextValidator]}),
-  //   description: new FormControl<string>('', {validators: [Validator.longTextValidator]}),
-  //   location: new FormControl<string>(''), //TODO, validators: [Validator.normalTextValidator]}),
-  //   organizationName: new FormControl<string>({value: '', disabled: true}),
-  //   organization: new FormControl<OrganizationDto>(
-  //     this.dialogData.organization ?? this.dialogData.entity?.organization,
-  //     {nonNullable: true, validators: [Validator.requiredValidator]}
-  //   ),
-  //   projectStatus: new FormControl<ProjectStatus | null>(null, {nonNullable: true}),
-  //   startDate: new FormControl<string>(''),
-  //   endDate: new FormControl<string>(''),
-  //   sourceTypes: new FormControl<RadarSourceType[]>([]),
-  //   attributes: new FormGroup<Record<string, FormControl<string | null | undefined>> | null | undefined>({
-  //     "Work-package": new FormControl<string | null>(null),//TODO, validators: [Validator.normalTextValidator]}),
-  //     "Phase": new FormControl<string | null>(null),//TODO, validators: [Validator.normalTextValidator]}),
-  //     "External-project-url": new FormControl<string | null>(null),//TODO, validators: [Validator.urlValidator]}),
-  //     "External-project-id": new FormControl<string | null>(null),//TODO, validators: [Validator.stringIdValidator]}),
-  //     "Privacy-policy-url": new FormControl<string | null>(null),//TODO, validators: [Validator.urlValidator]}),
-  //   }),
-  // });
-
   minDate: Date = new Date(2000, 0, 1);
   maxDate: Date = new Date(2050, 0, 1);
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
-
-  // initialized = signal(false);
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
+        this.configService.setDialogState({
+          mode: this.dialogData.mode,
+          entity: this.dialogData.entity,
+          model,
+        });
+      }
+    });
+  }
 
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
+  protected async save(): Promise<void> {
+    switch(this.dialogData.mode) {
+      case DialogMode.ADD:
+        await this.store.add(this.toCreateDtoModel(this.model()));
         break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
+      case DialogMode.EDIT:
+        await this.store.update(this.toUpdateDtoModel(this.model()));
         break;
     }
-  }
 
-  // async ngOnInit() {
-  //   await this.organizationStore.getWithQuery();
-  //   this.organizations = this.organizationStore.items();
-  //
-  //   this.initialized.set(true);
-  // }
-  //
-  // ngAfterViewInit() {
-  //   const containerId = this.dialogData.id;
-  //   const innerContainer = document.getElementById(containerId);
-  //   const panel = innerContainer?.closest('.tailwind-slide-panel');
-  //   setTimeout(() => {
-  //     panel?.classList.add('dialog-enter-active');
-  //   });
-  // }
-  //
-  // async onAction($event: DialogAction) {
-  //   this.error.set(null);
-  //   this.loading.set(true);
-  //   switch ($event) {
-  //     case DialogAction.CLOSE:
-  //       this.close();
-  //       break;
-  //     case DialogAction.DELETE:
-  //       await this.handleDeleteAction();
-  //       break;
-  //     case DialogAction.SAVE:
-  //       await this.handleSaveAction();
-  //       break;
-  //   }
-  // }
-  protected async handleSaveAction(): Promise<void> {
-    this.configService.setLatestFormEntry(this.model());
+    if (this.store.error()) return;
 
-    if (this.dialogData.mode === DialogMode.ADD) {
-      await this.projectStore.add(this.toCreateDtoModel(this.model()));
-    } else if (this.dialogData.mode === DialogMode.EDIT) {
-      await this.projectStore.update(this.toUpdateDtoModel(this.model()));
-    }
-
-    if (this.projectStore.error()) return;
-
-    this.configService.setLatestFormEntry(null);
+    this.configService.clearDialogState();
     this.dialogRef.close();
-    this.navigateOnUpdateSuccess(this.model().projectName);
+    this.navigateOnUpdateSuccess(this.model());
   }
 
-  protected async handleDeleteAction(): Promise<void> {
-    await this.projectStore.delete(this.dialogData.entity!);
-    this.configService.setLatestFormEntry(null);
+  protected async delete(): Promise<void> {
+    await this.store.delete(this.dialogData.entity!);
+    this.configService.clearDialogState();
     this.dialogRef.close();
     this.navigateOnDeleteSuccess();
   }
 
-
-
   close() {
+    this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  navigateOnUpdateSuccess(entityName: string) {
-    const selectedOrganization = this.projectStore.selected();
-    if (!selectedOrganization) return;
-
-
+  navigateOnUpdateSuccess(model: ProjectForm) {
+    const selectedProject = this.store.selected();
+    if (!selectedProject) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
-
-    if (!primaryRoute) {
-      return;
-    }
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
-    const organizationNameIndex = organizationsIndex + 1;
-
-    const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
-      organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+    const organization = this.organizationStore.selected();
+    if (!organization) return;
+    this.router.navigate(['./admin/organizations', organization, 'projects', model.projectName, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
   }
 
   navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
+    const organization = this.organizationStore.selected();
+    if (organization) {
+      this.router.navigate(['/admin/organizations', organization], { queryParamsHandling: 'preserve' }).then();
+    } else {
+      this.router.navigate(['/admin/projects'], { queryParamsHandling: 'preserve' }).then();
+    }
   }
 
   toCreateDtoModel(model: ProjectForm): CreateProjectDto {
@@ -299,7 +230,7 @@ export class ProjectDialogComponent implements AfterViewInit {
       ...model,
       organization: this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
-      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => `${i.id}` === s)).filter(s => !!s)
+      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => i.id === s)).filter(s => !!s)
     };
   }
 
@@ -309,52 +240,7 @@ export class ProjectDialogComponent implements AfterViewInit {
       id: Number(model.id),
       organization: this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
-      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => `${i.id}` === s)).filter(s => !!s)
+      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => i.id === s)).filter(s => !!s)
     };
   }
-
-
-  // protected async handleSaveAction(): Promise<void> {
-  //   // const sourceTypes = this.model().sourceTypes.map(s =>
-  //   //   this.dialogData.sourceTypeFullList.find(t => t.id === s)).filter(s => !!s);
-  //
-  //   const entity: AppProject = {
-  //     ...this.model(),
-  //     organization: this.dialogData.entity!.organization,
-  //     projectStatus: toProjectStatus(this.model().projectStatus),
-  //     sourceTypes: [],
-  //     _name: this.model().projectName,
-  //     _search: `${this.model().projectName}_${this.model().location}_${this.model().description}`,
-  //   };
-  //
-  //   this.configService.setLatestFormEntry(entity);
-  //   if (this.dialogData.mode === DialogMode.ADD) {
-  //     await this.projectStore.add(entity);
-  //   } else if (this.dialogData.mode === DialogMode.EDIT) {
-  //     await this.projectStore.update(entity);
-  //   }
-  //   this.configService.setLatestFormEntry(null);
-  //   this.dialogRef.close();
-  //   this.navigateOnUpdateSuccess(entity);
-  // }
-  //
-  // protected async handleDeleteAction(): Promise<void> {
-  //   await this.projectStore.delete(this.dialogData.entity!);
-  //   this.configService.setLatestFormEntry(null);
-  //   this.dialogRef.close();
-  //   this.navigateOnDeleteSuccess();
-  // }
-
-
-  // navigateOnUpdateSuccess(entity: AppProject) {
-  //   this.router.navigate(['./admin/organizations', entity.projectName], {
-  //     queryParamsHandling: 'preserve',
-  //   }).then();
-  // }
-  //
-  // navigateOnDeleteSuccess() {
-  //   this.router.navigate(['./admin/organizations'], {
-  //     queryParamsHandling: 'preserve',
-  //   }).then();
-  // }
 }

@@ -52,7 +52,7 @@
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
-      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
           {{ 'SHARED.dialog.deletingButton' | translate }}
@@ -62,7 +62,7 @@
       </button>
     }
     @case (DialogMode.EDIT) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
@@ -70,7 +70,7 @@
       </button>
     }
     @case (DialogMode.ADD) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }

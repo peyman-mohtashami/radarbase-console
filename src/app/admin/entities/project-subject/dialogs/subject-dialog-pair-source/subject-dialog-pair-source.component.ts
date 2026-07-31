@@ -1,7 +1,6 @@
 import {
   Component,
-  inject, signal,
-  ChangeDetectionStrategy
+  inject, AfterViewInit
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -9,7 +8,7 @@ import {
   MatDialogRef, MatDialogTitle,
 } from '@angular/material/dialog';
 
-import {AppSubject} from "../../models/subject";
+import {AppSubject, UpdateSubjectDto} from "../../models/subject";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -23,31 +22,16 @@ import {SubjectDetailsComponent} from '../../components/subject-details/subject-
 import {AppProject} from '../../../project/models/project';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
-import {
-  BaseEntityDialogComponent
-} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
-import {Observable} from 'rxjs';
-import {
-  DialogAction
-} from '../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component';
 import {AppSource} from '../../../project-source/models/source';
-
-export interface AvailableSource {
-  id: string | number;
-  sourceTypeId?: string | number;
-  sourceTypeProducer?: string;
-  sourceTypeModel?: string;
-  sourceTypeCatalogVersion?: string;
-  expectedSourceName?: string;
-  sourceId: string;
-  sourceName: string;
-  assigned?: boolean;
-}
+import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {getLastSegment} from '../../../../shared/utils/route.util';
+import {SubjectStore} from '../../services/subject.store';
+import {JsonPipe} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-subject-dialog-pair-source',
   templateUrl: './subject-dialog-pair-source.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,
@@ -61,14 +45,19 @@ export interface AvailableSource {
     TagComponent,
     ErrorMessageBoxComponent,
     MatDialogTitle,
+    JsonPipe,
   ]
 })
-export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<AppSubject> {
+export class SubjectDialogPairSourceComponent implements AfterViewInit {
   protected readonly SubjectDialogMode = SubjectDialogMode;
+  protected readonly DetailType = DetailType;
 
-  override configService = inject(SubjectConfigService);
-  override dialogRef = inject(MatDialogRef<SubjectDialogPairSourceComponent>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
+  protected store = inject(SubjectStore);
+  protected configService = inject(SubjectConfigService);
+  private dialogRef = inject(MatDialogRef<SubjectDialogPairSourceComponent>);
+  private router = inject(Router);
+
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: SubjectDialogMode;
     entity: AppSubject;
@@ -76,43 +65,54 @@ export class SubjectDialogPairSourceComponent extends BaseEntityDialogComponent<
     sourcesFullList: AppSource[];
   };
 
-  protected readonly DetailType = DetailType;
-  protected readonly DialogAction = DialogAction;
 
-  override formFields = this.configService.getFormFields();
+  formFields = this.configService.getFormFields();
   tableFields = this.configService.getTableFields();
 
-  unassignedSources = signal<AvailableSource[]>([]);
-  availableSources = signal<AvailableSource[]>([]) ;
+  unAssignedSources = [...this.dialogData.sourcesFullList.filter(s => !s.assigned)];
 
-  override ngOnInit() {
-    super.ngOnInit();
-    // this.dialogData.sourcesFullList.subscribe(sources => {
-    //   this.unassignedSources.set(sources.filter(s => !s.assigned).map(s => {
-    //     return {
-    //       id: s.id,
-    //       sourceTypeId: s.sourceType?.id,
-    //       sourceTypeProducer: s.sourceType?.producer,
-    //       sourceTypeModel: s.sourceType?.model,
-    //       sourceTypeCatalogVersion: s.sourceType?.catalogVersion,
-    //       expectedSourceName: s.expectedSourceName,
-    //       sourceId: s.sourceId,
-    //       sourceName: s.sourceName,
-    //       assigned: s.assigned
-    //     }
-    //   }));
-    //   const alreadyAssignedSources = this.dialogData.entity.sources ?? [];
-    //   this.availableSources.set([...alreadyAssignedSources, ...this.unassignedSources()]);
-    // })
+  ngAfterViewInit() {
+    animateDialogIn(this.dialogData.id);
   }
 
+  protected async save(): Promise<void> {
+    await this.store.update(this.toUpdateDtoModel(this.dialogData.entity));
 
-  override handleSaveAction(): void {
-    const subject = {...this.dialogData.entity, project: this.dialogData.project};
-    // subject.sources = this.availableSources().filter(s => s.assigned) ?? [];
-    this.dialogActionEvent.emit({action: SubjectDialogMode.EDIT, entity: subject});
+    if (this.store.error()) return;
 
-    //TODO source should be updated and assigned=true/false
+    this.configService.clearDialogState();
+    this.dialogRef.close();
+    this.navigateOnUpdateSuccess(this.dialogData.entity);
+  }
+
+  close() {
+    this.configService.clearDialogState();
+    animateDialogOut(this.dialogData.id, this.dialogRef);
+  }
+
+  navigateOnUpdateSuccess(model: AppSubject) {
+    const selectedSubject = this.store.selected();
+    if (!selectedSubject) return;
+
+    const project = this.dialogData.project;
+    const urlTree = this.router.parseUrl(this.router.url);
+    this.router.navigate(['./admin/organizations', project.organization.name, 'projects', project.projectName, 'subjects', model.login, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
+  }
+
+  toUpdateDtoModel(model: AppSubject): UpdateSubjectDto {
+    return {
+      id: Number(model.id),
+      login: model.login,
+      externalLink: model.externalLink || undefined,
+      externalId: model.externalId || undefined,
+      dateOfBirth: model.dateOfBirth || undefined,
+      group: model.group || null,
+      personName: model.personName || undefined,
+      project: this.dialogData.project,
+      sources: this.unAssignedSources.filter(s => s.assigned),
+      status: this.dialogData.entity?.status,
+      attributes: model.attributes
+    };
   }
 }
 

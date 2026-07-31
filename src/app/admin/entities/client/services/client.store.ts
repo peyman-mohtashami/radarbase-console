@@ -10,6 +10,9 @@ import {RbSort, TableElement} from '../../../base-entities/models/table.model';
 import {
   FilterEvent
 } from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {AppSubject} from '../../project-subject/models/subject';
+import {HttpParams} from '@angular/common/http';
+import {first} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ClientStore {
@@ -145,6 +148,41 @@ export class ClientStore {
       await firstValueFrom(this.api.delete(entity));
       await this.getAll();
       this.selected.set(null);
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async getClientPairInfo(client: AppClient, subject: AppSubject, persistent: boolean) {
+    this.loading.set(true);
+    this.error.set(null);
+
+    let params = new HttpParams();
+
+    if (subject.login) {
+      params = params.append('clientId', client.clientId);
+      params = params.append('login', subject.login);
+      params = params.append('persistent', persistent.toString());
+    }
+    try {
+      return await firstValueFrom(this.api.getClientPairInfo(params));
+    } catch (e) {
+      this.error.set(e as Error);
+      return undefined;
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async deletePairInfoToken(tokenName: string) {
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await firstValueFrom(this.api.deletePairInfoToken(tokenName));
       return true;
     } catch (e) {
       this.error.set(e as Error);

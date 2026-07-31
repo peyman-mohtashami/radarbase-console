@@ -1,7 +1,7 @@
-@let entity = projectStore.selected();
+@let entity = store.selected();
 
 @if (entity) {
-  @if (!subjectId) {
+  @if (!subjectStore.selected()) {
     <nav aria-label="breadcrumb" class="bg-tertiary/10 px-4 py-2 flex flex-wrap items-center gap-1">
       <button class="app-button-small" mat-flat-button color="tertiary" [routerLink]="['/admin', 'organizations']">
         <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.organization.icon }}</mat-icon>
@@ -35,8 +35,8 @@
     </div>
   }
 
-  <div [class]="!subjectId ? 'm-4' : ''">
-    @if (!subjectId) {
+  <div [class]="!subjectStore.selected() ? 'm-4' : ''">
+    @if (!subjectStore.selected()) {
       <nav class="border-b-2 border-neutral-200 dark:border-neutral-600"
            mat-tab-nav-bar
            mat-stretch-tabs="false"

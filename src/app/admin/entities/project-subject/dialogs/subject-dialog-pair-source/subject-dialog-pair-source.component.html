@@ -10,17 +10,17 @@
 
   {{ 'ADMIN.source.title.plural' | translate }}
   <div class='mb-4 text-base'>
-    @if (!availableSources().length) {
+    @if (!unAssignedSources.length) {
       {{ 'ADMIN.source.noSourceAvailable' | translate }}
     } @else {
-      @for (source of availableSources(); track source.id) {
+      @for (source of unAssignedSources; track source.id) {
         <div class='detail-item'>
           <span class='label'>
             <mat-checkbox [(ngModel)]='source.assigned'/>
           </span>
           <span class='value text-base'>
             <app-tag class="bg-source-type-color text-white">
-              {{ source.sourceTypeProducer + "_" + source.sourceTypeModel + "_" + source.sourceTypeCatalogVersion }}
+              {{ `${source.sourceType?.producer}_${source.sourceType?.model}_${source.sourceType?.catalogVersion}` }}
             </app-tag>
             {{ source.sourceName }}
             @if (source.expectedSourceName) {
@@ -34,9 +34,9 @@
 
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-<!--    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}-->
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
@@ -55,9 +55,9 @@
             color='primary'
             type='submit'
             name='update'
-            [disabled]='loading()'
-            (click)='onAction(DialogAction.SAVE)'>
-      @if (loading()) {
+            [disabled]='store.loading()'
+            (click)='save()'>
+      @if (store.loading()) {
         <mat-icon>
           <mat-spinner diameter='20'/>
         </mat-icon>

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
@@ -32,11 +32,11 @@ import {OrganizationStore} from '../../../organization/services/organization.sto
     MatIcon,
   ]
 })
-export class SubjectPageComponent {
+export class SubjectPageComponent implements OnDestroy {
   protected readonly ROLES = ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
-  protected subjectStore = inject(SubjectStore);
+  protected store = inject(SubjectStore);
   protected projectStore = inject(ProjectStore);
   protected organizationStore = inject(OrganizationStore);
   configService = inject(SubjectConfigService);
@@ -55,10 +55,13 @@ export class SubjectPageComponent {
   ];
 
   questionnaireTab() {
-    return this.subjectStore.selected()!.project?.sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
+    return this.store.selected()!.project?.sourceTypes?.find(s => s.producer === 'RADAR' && s.model === 'aRMT-App') ?
         [
-          // { path: 'protocols', label: `ADMIN.${ENTITY_REGISTRY.protocol.name}.title.plural` },
           { path: 'questionnaires', label: `ADMIN.${ENTITY_REGISTRY.questionnaire.name}.title.plural` }
         ] : [];
+  }
+
+  ngOnDestroy() {
+    this.store.selected.set(null);
   }
 }

@@ -1,10 +1,7 @@
 import {inject, Injectable} from '@angular/core';
-import {AppLog, LogDto} from '../models/log';
-import {BaseEntityService} from '../../../../base-entities/services/base-entity.service';
+import {LogDto} from '../models/log';
 import {environment} from '../../../../../../environments/environment';
-import {LogConfigService} from './log-config.service';
 import {HttpClient} from '@angular/common/http';
-import {OrganizationDto} from '../../../organization/models/organization';
 
 @Injectable({ providedIn: 'root' })
 export class LogService {

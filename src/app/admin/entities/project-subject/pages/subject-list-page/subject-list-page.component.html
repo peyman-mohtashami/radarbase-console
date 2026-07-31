@@ -14,9 +14,6 @@
   </h2>
 
   <div class="flex items-center gap-2">
-<!--    <button type='button' class="small" mat-icon-button color="primary" (click)="toggleViewMode()">-->
-<!--      <span class="material-symbols-outlined">list</span>-->
-<!--    </button>-->
     <ng-container *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: projectStore.selected()!.organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: projectStore.selected()!.projectName}]">
       <button (click)="openDialog(SubjectDialogMode.ADD)" mat-stroked-button color="primary" type="button">
         <span class="font-bold flex items-center gap-2">
@@ -33,47 +30,31 @@
     <app-data-table-filter [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
                            (filterChanged)='handleFilterChange($event)' />
-<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
   }
 </div>
-
-<!--<app-entities-page-header [showTitle]="true"-->
-<!--                          [entityMetadata]="configService.getEntityMetadata()"-->
-<!--                          [enableAddButton]="true"-->
-<!--                          [isGridView]="undefined"-->
-<!--                          [permission]="[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: project.organization.name}, {role: ROLES.PROJECT_ADMIN, entityName: project.projectName}]">-->
-<!--  @if (tableFilters.length) {-->
-<!--    <app-data-table-filter bottom-filter-->
-<!--                           [filters]='tableFilters'-->
-<!--                           [filterOpened]='isFilterOpened'-->
-<!--                           (filterChanged)='handleFilterChange($event)'-->
-<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
-<!--  }-->
-<!--</app-entities-page-header>-->
 
 @if (store.loading()) {
   <app-loader/>
 }
 
 @if (entities().length) {
-  <app-subject-assign-group [selection]="selection" [project]="projectStore.selected()!"/>
+  <app-subject-assign-group [selection]="store.selection"/>
 }
 
 <app-entity-list-page [entities]="entities()"
                       [tableFields]="tableFields"
                       [entityMetadata]="entityMetadata"
-                      [page]="page()!"
-                      [sort]="sort()!"
+                      [page]="store.page()"
+                      [sort]="store.sort()"
                       (switchPageEvent)="switchPage($event)"
                       (switchSortEvent)="switchSort($event)"
                       [customTemplate]="itemTemplate"
                       [gridView]="gridView"
                       [totalEntities]="store.total()"
-                      [selection]="selection"/>
+                      [selection]="store.selection" />
 <ng-template #itemTemplate let-entity>
   <app-subject-table-row [entity]="entity"
                          [gridView]="gridView"
                          [extensionClass]="extensionClass()"
-                         [selection]="selection"/>
-<!--                         [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
+                         [selection]="store.selection"/>
 </ng-template>

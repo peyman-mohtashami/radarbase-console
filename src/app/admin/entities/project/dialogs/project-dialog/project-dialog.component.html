@@ -69,19 +69,11 @@
         </span>
       }
 
-<!--              @if (dialogData.sourceTypeFullList; as sourceTypes) {-->
       <label for="project-id" class="text-sm">{{ `${_prefix}.sourceTypes.label` | translate }}</label>
       <app-searchable-multi-select [formField]="form.sourceTypes"
-                                           [labelKey]="'id'"
-                                           [options]="dialogData.sourceTypeFullList"
-                                           [valueKey]="'id'"/>
-<!--              <app-mat-select-autocomplete [formField]="form.sourceTypes"-->
-<!--                                           [options]='sourceTypes'-->
-<!--                                           [label]="`${_prefix}.sourceTypes.label` | translate"-->
-<!--                                           [multiple]="true"-->
-<!--                                           [adapter]="sourceTypeAdapter"-->
-<!--              />-->
-<!--              }-->
+                                   [labelKey]="'name'"
+                                   [options]="dialogData.sourceTypeFullList"
+                                   [valueKey]="'id'"/>
 
       @if (!formFields || formFields['description'] === undefined || formFields['description']) {
         <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
@@ -257,8 +249,9 @@
   }
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
@@ -268,8 +261,8 @@
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
-      <button [disabled]='loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
-        @if (loading()) {
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
+        @if (store.loading()) {
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>
@@ -280,9 +273,9 @@
       </button>
     }
     @case (DialogMode.EDIT) {
-      <button [disabled]='form().invalid() || loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button
               color="primary">
-        @if (loading()) {
+        @if (store.loading()) {
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>
@@ -291,9 +284,9 @@
       </button>
     }
     @case (DialogMode.ADD) {
-      <button [disabled]='form().invalid() || loading()' (click)='onAction(DialogAction.SAVE)' color="primary"
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary"
               mat-raised-button>
-        @if (loading()) {
+        @if (store.loading()) {
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>

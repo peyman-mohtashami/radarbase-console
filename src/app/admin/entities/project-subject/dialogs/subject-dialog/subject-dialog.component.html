@@ -92,30 +92,30 @@
                                  [formField]="form.attributes[field.name]"/>
         }
 
-        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
-          <label for="subject-attributes" class="text-sm">
-            {{ `${_prefix}.attributes.label` | translate }}
-          </label>
-          <fieldset class="rounded-sm border px-4">
-            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {
-              <label for="subject-human-readable-identifier" class="text-sm">
-                {{ `${_prefix}.attributes.humanReadableIdentifier` | translate }}
-              </label>
-              <mat-form-field subscriptSizing="fixed" appearance='outline'>
-                <input id="subject-human-readable-identifier" matInput [formField]="form.attributes['humanReadableIdentifier']">
-              </mat-form-field>
-            }
+<!--        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {-->
+<!--          <label for="subject-attributes" class="text-sm">-->
+<!--            {{ `${_prefix}.attributes.label` | translate }}-->
+<!--          </label>-->
+<!--          <fieldset class="rounded-sm border px-4">-->
+<!--            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {-->
+<!--              <label for="subject-human-readable-identifier" class="text-sm">-->
+<!--                {{ `${_prefix}.attributes.humanReadableIdentifier` | translate }}-->
+<!--              </label>-->
+<!--              <mat-form-field subscriptSizing="fixed" appearance='outline'>-->
+<!--                <input id="subject-human-readable-identifier" matInput [formField]="form.attributes['humanReadableIdentifier']">-->
+<!--              </mat-form-field>-->
+<!--            }-->
 
-            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {
-              <label for="subject-participant-group" class="text-sm">
-                {{ `${_prefix}.attributes.participant_group` | translate }}
-              </label>
-              <mat-form-field subscriptSizing="fixed" appearance='outline'>
-                <input id="subject-participant-group" matInput [formField]="form.attributes['participant_group']">
-              </mat-form-field>
-            }
-          </fieldset>
-        }
+<!--            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {-->
+<!--              <label for="subject-participant-group" class="text-sm">-->
+<!--                {{ `${_prefix}.attributes.participant_group` | translate }}-->
+<!--              </label>-->
+<!--              <mat-form-field subscriptSizing="fixed" appearance='outline'>-->
+<!--                <input id="subject-participant-group" matInput [formField]="form.attributes['participant_group']">-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--          </fieldset>-->
+<!--        }-->
       </div>
     </form>
   }
@@ -128,11 +128,11 @@
 }
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
-    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    {{ dialogData.mode !== SubjectDialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
   </button>
   @switch (dialogData.mode) {
-    @case (DialogMode.DELETE) {
-      <button [disabled]='store.loading()' (click)='onAction(DialogAction.DELETE)' color="warn" mat-raised-button>
+    @case (SubjectDialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
           {{ 'SHARED.dialog.deletingButton' | translate }}
@@ -141,16 +141,16 @@
         }
       </button>
     }
-    @case (DialogMode.EDIT) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' mat-raised-button color="primary">
+    @case (SubjectDialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
         {{ "SHARED.dialog.update" | translate }}
       </button>
     }
-    @case (DialogMode.ADD) {
-      <button [disabled]='form().invalid() || store.loading()' (click)='onAction(DialogAction.SAVE)' color="primary" mat-raised-button>
+    @case (SubjectDialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }

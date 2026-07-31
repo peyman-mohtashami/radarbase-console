@@ -1,9 +1,8 @@
 import {
   Component,
   inject,
-  ChangeDetectionStrategy
+  AfterViewInit, signal
 } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
   MAT_DIALOG_DATA,
   MatDialogClose,
@@ -12,79 +11,91 @@ import {
 } from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {
-  MatSelectAutocompleteAdapter,
-  MatSelectAutocompleteComponent
-} from "../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {DetailType} from '../../../../base-entities/enums/detail-type';
-import {Observable} from 'rxjs';
-import {AsyncPipe, JsonPipe} from '@angular/common';
-import {
-  BaseEntityDialogComponent
-} from '../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
+import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {AppSubject} from '../../models/subject';
-import {AppSourceType} from '../../../source-type/models/source-type';
 import {AppGroup} from '../../../project-group/models/group';
+import {SubjectStore} from '../../services/subject.store';
+import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
+import {form} from '@angular/forms/signals';
+import {
+  SearchableMultiSelectComponent
+} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+
+export interface AssignSubjectsToGroupForm {
+  group: string,
+}
+
+export interface StoredAssignSubjectsToGroupsDialog {
+  mode: SubjectDialogMode;
+  entity?: AppSubject;
+  model: AssignSubjectsToGroupForm;
+}
+
 
 @Component({
   selector: 'app-subject-dialog-assign-group-dialog',
   templateUrl: './subject-dialog-assign-group.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatDialogContent,
-    ReactiveFormsModule,
-    MatSelectAutocompleteComponent,
     MatButton,
     MatDialogClose,
     MatIcon,
     MatProgressSpinner,
-    AsyncPipe,
     ErrorMessageBoxComponent,
+    MatDialogTitle,
     JsonPipe,
-    MatDialogTitle
+    SearchableMultiSelectComponent
   ]
 })
-export class SubjectDialogAssignGroupComponent extends BaseEntityDialogComponent<AppGroup> {
+export class SubjectDialogAssignGroupComponent implements AfterViewInit {
   protected readonly SubjectDialogMode = SubjectDialogMode;
-
-  override configService = inject(SubjectConfigService);
-  override dialogRef = inject(MatDialogRef<SubjectDialogAssignGroupComponent>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
-    id: string;
-    mode: string;
-    entity: AppGroup;
-    groupFullList: Observable<AppGroup[]>;
-    selectedSubjects: AppSubject[];
-  };
-
   protected readonly DetailType = DetailType;
 
-  tableFields = this.configService.getTableFields();
-  override formFields = this.configService.getFormFields();
+  protected store = inject(SubjectStore);
+  protected configService = inject(SubjectConfigService);
+  private dialogRef = inject(MatDialogRef<SubjectDialogAssignGroupComponent>);
 
-  override form = new FormGroup({
-    group: new FormControl<AppGroup | undefined>(undefined, {nonNullable: true})
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
+    id: string;
+    mode: string;
+    groupFullList: AppGroup[];
+    selectedSubjects: AppSubject[];
+    restoredModel: AssignSubjectsToGroupForm;
+  };
+
+
+  tableFields = this.configService.getTableFields();
+  formFields = this.configService.getFormFields();
+
+  private model = signal<AssignSubjectsToGroupForm>(this.dialogData.restoredModel ?? {
+    group: '',
   });
 
+  protected form = form(this.model);
 
-  protected groupAdapter: MatSelectAutocompleteAdapter<AppGroup> = {
-    value: g => g.id.toString(),
-    label: g => g.name
+  ngAfterViewInit() {
+    animateDialogIn(this.dialogData.id);
   }
 
-  override onAction() { //TODO DIALOG_ACTION
-    this.error.set(null);
-    this.loading.set(true);
-    this.dialogActionEvent.emit({
-      action: SubjectDialogMode.EDIT,
-      entity: this.form?.value.group
-    });
+  protected async assign(): Promise<void> {
+    await this.store.addSubjectsToGroup(this.model().group, this.dialogData.selectedSubjects);
+
+    if (this.store.error()) return;
+
+    this.configService.clearDialogState();
+    this.dialogRef.close();
+  }
+
+  close() {
+    this.configService.clearDialogState();
+    animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 }

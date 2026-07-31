@@ -7,7 +7,7 @@ export class SourceListResolver implements Resolve<void> {
   private store = inject(SourceStore);
 
   async resolve(route: ActivatedRouteSnapshot): Promise<void> {
-    const res = await this.store.getWithQuery(route.queryParams);
-    if (res) this.store.selected.set(null);
+    this.store.applyQueryParams(route.queryParams);
+    await this.store.getWithQuery();
   }
 }

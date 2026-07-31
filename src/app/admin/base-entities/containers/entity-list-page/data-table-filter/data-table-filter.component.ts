@@ -143,6 +143,7 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
           this.filterEnableChanged.emit(this.filterEnabled);
         }
         this.applyStateChangesToUrlQueryParams(formValue);
+        console.log('Class: DataTableFilterComponent, Function: , Line 146 formValue' , formValue);
         this.filterChanged.emit(formValue);
       });
 
