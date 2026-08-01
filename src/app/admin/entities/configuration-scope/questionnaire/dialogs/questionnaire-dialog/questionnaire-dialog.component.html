@@ -29,7 +29,7 @@
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-general [questionnaires]="dialogData.questionnaireFullList | async"
+          <app-questionnaire-general [questionnaires]="dialogData.questionnaireFullList"
                                      (valid)="onSectionValidEvent('general', $event)" />
 <!--                                     (changeEvent)="onEntityUpdate($event)"-->
         </ng-template>
@@ -81,7 +81,7 @@
       </mat-tab>
 
 
-      <mat-tab [disabled]="dialogState.questionnaire()?.schedule?.onDemand || !sectionsValidity.general">
+      <mat-tab [disabled]="store.selected()?.schedule?.onDemand || !sectionsValidity.general">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Notifications
@@ -139,9 +139,9 @@
   }
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
@@ -159,7 +159,7 @@
   <div class='ml-auto justify-end flex items-center gap-2'>
     @if (dialogData.mode === DialogMode.DELETE) {
       <button [disabled]='isLoading'
-              (click)='onAction(DialogAction.DELETE)'
+              (click)='delete()'
               color="warn"
               mat-raised-button
               type="button">
@@ -177,7 +177,7 @@
     }
     @if (dialogData.mode === DialogMode.EDIT) {
       <button
-              (click)='onAction(DialogAction.SAVE)'
+              (click)='save()'
               mat-raised-button
               color="primary"
               type="button">
@@ -191,7 +191,7 @@
     }
     @if (dialogData.mode === DialogMode.ADD) {
       <button
-              (click)='onAction(DialogAction.SAVE)'
+              (click)='save()'
               color="primary"
               mat-raised-button
               type="button" [disabled]="!sectionsValidity.general">

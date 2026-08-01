@@ -1,6 +1,6 @@
 import {Routes} from "@angular/router";
 import {QuestionnaireListResolver} from "./services/questionnaire-list.resolver";
-import {QuestionnaireListPageComponent} from './containers/questionnaire-list-page/questionnaire-list-page.component';
+import {QuestionnaireListPageComponent} from './pages/questionnaire-list-page/questionnaire-list-page.component';
 
 export const questionnaireRoutes: Routes = [
   {

@@ -1,18 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve} from '@angular/router';
-import {Observable} from "rxjs";
-import {QuestionnaireService} from "./questionnaire.service";
-import {AppQuestionnaire} from "../models/questionnaire";
+import {QuestionnaireStore} from './questionnaire.store';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireListResolver implements Resolve<AppQuestionnaire[]> {
-  private entityService = inject(QuestionnaireService);
+export class QuestionnaireListResolver implements Resolve<void> {
+  private store = inject(QuestionnaireStore);
 
-  resolve(route: ActivatedRouteSnapshot): Observable<AppQuestionnaire[]> {
-    this.entityService.clearCache();
-
-    const projectId = route.paramMap.get('projectId');
-    const subjectId = route.paramMap.get('subjectId');
-    return this.entityService.getWithQuery(route.queryParams, projectId ?? undefined, subjectId ?? undefined);
+  async resolve(route: ActivatedRouteSnapshot): Promise<void> {
+    const res = await this.store.getAll();
+    this.store.applyQueryParams(route.queryParams);
+    if (res) this.store.selected.set(null);
   }
 }

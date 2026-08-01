@@ -1,4 +1,4 @@
-import {Component, inject, input, output, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, input, output} from '@angular/core';
 import {DialogMode} from "../../../../../base-entities/enums/dialog";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -7,13 +7,11 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireConfigService} from '../../services/questionnaire-config.service';
 import {MatIcon} from '@angular/material/icon';
-import {QuestionnaireService} from '../../services/questionnaire.service';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
 
 @Component({
   selector: 'app-questionnaire-actions',
   templateUrl: './questionnaire-actions.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatMenuTrigger,
     MatMenu,
@@ -37,13 +35,11 @@ export class QuestionnaireActionsComponent {
 
   duplicate = output<void>();
 
-  onAction(mode: DialogMode) {
-    this.dialogService.openDialog(mode, this.entity());
+  async onAction(mode: DialogMode) {
+    await this.dialogService.openDialog(mode, this.entity());
   }
 
   onDuplicate() {
     this.duplicate.emit();
-    // const duplicateEntity: AppQuestionnaire = {...this.entity(), name: `${this.entity().name}_copy`};
-    // this.questionnaireService.add(duplicateEntity).subscribe();
   }
 }

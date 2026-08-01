@@ -39,11 +39,11 @@
 </div>
 
 <div class="px-4">
-  @if (tableFilters.length && entityService.total() > MIN_ENTITIES_FOR_FILTERS) {
+  @if (tableFilters.length && store.total() > MIN_ENTITIES_FOR_FILTERS) {
     <app-data-table-filter [filters]='tableFilters'
                            [filterOpened]='isFilterOpened'
-                           (filterChanged)='handleFilterChange($event)'
-                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>
+                           (filterChanged)='handleFilterChange($event)' />
+<!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
   }
 </div>
 
@@ -72,24 +72,24 @@
 <!--  }-->
 <!--</app-entities-page-header>-->
 
-@if (loading()) {
+@if (store.loading()) {
   <app-loader/>
 }
 
-<app-entity-list-page [entities]="entities()"
+<app-entity-list-page [entities]="store.items()"
                       [tableFields]="tableFields"
                       [entityMetadata]="entityMetadata"
-                      [page]="page()!"
-                      [sort]="sort()!"
+                      [page]="store.page()"
+                      [sort]="store.sort()"
                       (switchPageEvent)="switchPage($event)"
                       (switchSortEvent)="switchSort($event)"
                       [customTemplate]="itemTemplate"
-                      [totalEntities]="entityService.total()"/>
+                      [totalEntities]="store.total()"/>
 <ng-template #itemTemplate let-entity>
   <app-questionnaire-table-row [entity]="entity"
                                [gridView]="gridView"
-                               [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"
                                [extensionClass]="extensionClass()"
                                (duplicateEvent)="onDuplicate(entity)"
                                (activeEvent)="onActiveChange($event, entity)" />
+<!--                               [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
 </ng-template>

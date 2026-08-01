@@ -1,30 +1,44 @@
 import {inject, Injectable} from '@angular/core';
 import {DialogMode} from '../../../../base-entities/enums/dialog';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppQuestionnaire} from "../models/questionnaire";
-import {QuestionnaireService} from "./questionnaire.service";
 import {
-  QuestionnaireDialogComponent
-} from "../containers/questionnaire-dialog/questionnaire-dialog.component";
-import {BaseDialogService} from '../../../../base-entities/services/base-dialog.service';
+  QuestionnaireDialogComponent, QuestionnaireForm, StoredQuestionnaireDialog
+} from "../dialogs/questionnaire-dialog/questionnaire-dialog.component";
 import {QuestionnaireConfigService} from './questionnaire-config.service';
-// import {HttpErrorResponse} from '@angular/common/http';
-// import {
-//   ConfigPublishDialogComponent
-// } from '../../config/containers/config-publish-dialog/config-publish-dialog.component';
+import {QuestionnaireStore} from './questionnaire.store';
 
 @Injectable({providedIn: 'root'})
-export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnaire, AppQuestionnaire, QuestionnaireDialogComponent> {
-  override entityService = inject(QuestionnaireService);
-  override configService = inject(QuestionnaireConfigService);
+export class QuestionnaireDialogService {
+  private store = inject(QuestionnaireStore);
+  private dialog = inject(MatDialog);
+  private configService = inject(QuestionnaireConfigService);
 
-  override createDialogRef(
+  async openDialog(mode: DialogMode, entity?: AppQuestionnaire, restoredModel?: QuestionnaireForm) {
+    if (mode !== DialogMode.ADD && !entity) return;
+    await this.createDialogRef(mode, entity, restoredModel);
+  }
+
+  async restorePendingDialog() {
+    if (this.dialog.openDialogs.length) return;
+
+    const state = this.configService.getDialogState<StoredQuestionnaireDialog>();
+    if (!state) return;
+
+    await this.openDialog(state.mode, state.entity, state.model);
+  }
+
+  private async createDialogRef(
     mode: DialogMode,
     entity?: AppQuestionnaire,
-  ): MatDialogRef<QuestionnaireDialogComponent> {
-    const questionnaireFullList = this.entityService.getWithQuery();
+    restoredModel?: QuestionnaireForm
+  ): Promise<MatDialogRef<QuestionnaireDialogComponent>> {
+    if (this.store.allItems().length === 0) {
+      await this.store.getAll();
+    }
+    const questionnaireFullList = this.store.allItems();
 
-    const _data = {id: 'questionnaire-dialog', mode, entity, questionnaireFullList};
+    const _data = {id: 'questionnaire-dialog', mode, entity, questionnaireFullList, restoredModel};
 
     switch (mode) {
       case DialogMode.DELETE:
@@ -51,47 +65,4 @@ export class QuestionnaireDialogService extends BaseDialogService<AppQuestionnai
         });
     }
   }
-
-  // openPublishDialog(mode: "publish" | "discard", entities: AppQuestionnaire[], projectId?: string, subjectId?: string) {
-  //   const dialogRef = this.createPublishDialogRef(mode);
-  //
-  //   const dialogActionSubscription = dialogRef.componentInstance.dialogActionEvent.subscribe(
-  //     (value) => {
-  //       if (value.action === 'publish') {
-  //         if (entities) {
-  //           this.entityService.publish(entities, projectId, subjectId).subscribe({
-  //             next: () => {
-  //               this.dialogUpdateEvent.set({mode: 'published', entity: undefined});
-  //               dialogRef.close();
-  //             },
-  //             error: (error: HttpErrorResponse) => dialogRef.componentInstance.errorHappened(error),
-  //           })
-  //         }
-  //       } else if (value.action === 'discard') {
-  //         this.dialogUpdateEvent.set({mode: 'discarded', entity: undefined});
-  //         dialogRef.close();
-  //       }
-  //     }
-  //   );
-  //
-  //   dialogRef.afterClosed().subscribe(() => {
-  //     dialogActionSubscription.unsubscribe();
-  //   });
-  // }
-
-  // createPublishDialogRef(mode: "publish" | "discard"): MatDialogRef<ConfigPublishDialogComponent> {
-  //   const originalList = this.entityService.cache;
-  //   const updatedList = this.entityService.updatedList;
-  //   return this.dialog.open(ConfigPublishDialogComponent, {
-  //     data: {mode, originalList, updatedList},
-  //     panelClass: 'tailwind-slide-panel',
-  //     width: '50%',
-  //     height: '100vh',
-  //     position: {right: '0'},
-  //     hasBackdrop: true,
-  //     disableClose: true,
-  //     autoFocus: false,
-  //     restoreFocus: false
-  //   });
-  // }
 }

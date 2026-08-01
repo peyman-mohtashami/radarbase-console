@@ -1,13 +1,15 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
-import {BaseEntityDetailsComponent} from '../../../../../base-entities/components/entity-details/base-entity-details.component';
+import {DetailType} from '../../../../../base-entities/enums/detail-type';
 
 @Component({
     selector: 'app-questionnaire-details',
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './questionnaire-details.component.html',
 })
-export class QuestionnaireDetailsComponent extends BaseEntityDetailsComponent<AppQuestionnaire>{
-  override configService = inject(QuestionnaireConfigService);
+export class QuestionnaireDetailsComponent {
+  configService = inject(QuestionnaireConfigService);
+
+  entity = input.required<AppQuestionnaire | undefined>();
+  detailType = input<DetailType>();
 }

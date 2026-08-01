@@ -1,16 +1,14 @@
-// import {RadarOption} from '../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
-
 import {AppQuestionnaireLanguage} from './questionnaire';
 
-export interface RadarProtocolWrapper extends Record<string, string | string[] | null | RadarProtocol[]> {
+export interface ProtocolWrapperDto extends Record<string, string | string[] | null | ProtocolDto[]> {
   version: string | null;
   schemaVersion: string | null;
   name: string | null;
   healthIssues: string[] | null;
-  protocols: RadarProtocol[];
+  protocols: ProtocolDto[];
 }
 
-export interface RadarProtocol {
+export interface ProtocolDto {
   name: string;
   type?: string;
   showIntroduction?: string;
@@ -27,7 +25,7 @@ export interface RadarProtocol {
   endText: Record<string, string>;
   warn: Record<string, string>;
   estimatedCompletionTime?: string;
-  protocol?: RadarSubProtocol;
+  protocol?: SubProtocolDto;
   //---
   title?: Record<string, string>;
   description?: Record<string, string>;
@@ -38,7 +36,7 @@ export interface RadarProtocol {
   isActive?: boolean;
 }
 
-export interface RadarSubProtocol {
+export interface SubProtocolDto {
   referenceTimestamp?: {timestamp: string; format: string};
   repeatProtocol: {
     unit: string;
@@ -78,61 +76,14 @@ export interface RadarSubProtocol {
 
 }
 
-export interface RadarQuestionnaire {
+export interface QuestionnaireDto {
   name: string;
   languages: string[];
-  questions: Record<string, RadarQuestion[]>;
+  questions: Record<string, QuestionDto[]>;
 }
 
-// export interface RadarQuestion {
-//   field_name: string;
-//   field_type: string;
-//   required_field?: string;
-//   field_label: string;
-//   section_header?: string;
-//   select_choices_or_calculations?: {code: string, label: string}[];
-//   text_validation_type_or_show_slider_number?: string;
-//   text_validation_min?: string;
-//   text_validation_max?: string;
-//   // field_annotation?: any;
-//   field_note?: string;
-//   // range?: any;
-//   matrix_group_name?: string;
-//   matrix_ranking?: string;
-//   branching_logic?: string;
-//
-//   id?: string;
-//   // field_name: string;
-//   // field_type: string;
-//   // required_field?: string;
-//   // field_label: Record<string, string>;
-//   // section_header?: Record<string, string>;
-//   // select_choices_or_calculations?: AppQuestionChoice[];
-//   // text_validation_type_or_show_slider_number?: string;
-//   // text_validation_min?: string;
-//   // text_validation_max?: string;
-//   field_annotation?: {image: string; timer: {start: string; end: string;}; unit: string;};
-//   // field_note?: Record<string, string>;
-//   range?: {
-//     min: string;
-//     max: string;
-//     step: string;
-//     labelLeft?: Record<string, string>;
-//     labelRight?: Record<string, string>
-//   };
-//   // matrix_group_name?: string;
-//   // branching_logic?: string;
-//   show_selected_label?: boolean;
-//   multi_line?: boolean;
-//   date_min?: string;
-//   date_max?: string;
-//   date_type?: string;
-//   // subQuestions?: AppQuestion[];
-//   // valid?: boolean;
-//   isValid?: boolean;
-// }
 
-export interface RadarQuestion {
+export interface QuestionDto {
   id?: string;
   field_name: string;
   field_type: string;
@@ -175,18 +126,3 @@ export enum QuestionnaireTimeUnit {
   year = 'year',
 }
 
-// export interface QuestionnaireLanguage extends RadarOption {
-//   id: string | number;
-//   _name: string;
-//   nativeName?: string;
-// }
-
-// export interface AppProtocol extends RadarProtocol {
-//   _name: string;
-//   _languages: QuestionnaireLanguage[];
-//   _onDemand: boolean;
-//   _github: boolean;
-//   _repeatedProtocol: boolean;
-//   _relativeToReferenceTime: boolean;
-//   _reminderEnabled: boolean;
-// }

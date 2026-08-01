@@ -1,7 +1,6 @@
-import {Component, inject, output, ChangeDetectionStrategy} from "@angular/core";
+import {Component, inject, output, input, signal} from "@angular/core";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireDetailsComponent} from "../questionnaire-details/questionnaire-details.component";
-import {BaseEntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {QuestionnaireConfigService} from '../../services/questionnaire-config.service';
 import {EntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/entity-table-row.component';
 import {PermissionDirective} from '../../../../../../core/auth/directives/show-if-has-role.directive';
@@ -9,11 +8,12 @@ import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionna
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {ROLES} from '../../../../../../shared/enums/roles';
+import {DetailType} from '../../../../../base-entities/enums/detail-type';
 
 @Component({
   selector: 'app-questionnaire-table-row',
   templateUrl: './questionnaire-table-row.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     QuestionnaireDetailsComponent,
     EntityTableRowComponent,
@@ -24,8 +24,18 @@ import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-togg
     MatSlideToggle,
   ]
 })
-export class QuestionnaireTableRowComponent extends BaseEntityTableRowComponent<AppQuestionnaire> {
-  override configService = inject(QuestionnaireConfigService);
+export class QuestionnaireTableRowComponent {
+  protected readonly ROLES = ROLES;
+  protected readonly DetailType = DetailType;
+
+  configService = inject(QuestionnaireConfigService);
+
+  entity = input.required<AppQuestionnaire>();
+  extensionClass = input<string>();
+  gridView = input<boolean>(false);
+
+  updated = signal(false);
+
   duplicateEvent = output<void>();
   activeEvent = output<boolean>();
 
