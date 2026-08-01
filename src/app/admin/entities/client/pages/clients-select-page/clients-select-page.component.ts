@@ -40,6 +40,12 @@ export class ClientsSelectPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.controls.client.valueChanges.subscribe(value => {
+      const client = this.store.allItems().find(c => c.clientId === value);
+      if (client) {
+        this.store.selected.set(client);
+      } else {
+        this.store.selected.set(null);
+      }
       if (value) {
         this.router.navigate([value], {relativeTo: this.activatedRoute} ).then();
       }

@@ -10,8 +10,6 @@ export class ConfigService {
 
   private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
 
-  updatedList: AppConfig[] = [];
-
   getWithQuery(clientId: string, projectId?: string, subjectId?: string): Observable<ConfigDto[]> {
     return this.radarbaseAppConfigService.getRadarConfigBundle(clientId, projectId, subjectId).pipe(
       map(configBundle =>

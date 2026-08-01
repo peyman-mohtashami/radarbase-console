@@ -18,7 +18,7 @@ export class ConfigDialogService {
     await this.createDialogRef(mode, entity, restoredModel);
   }
 
-  async openPublishDialog(mode: "publish" | "discard", entities: AppConfig[], clientId: string, projectId?: string, subjectId?: string) {
+  async openPublishDialog(mode: "publish" | "discard") {
     await this.createPublishDialogRef(mode);
   }
 
@@ -49,8 +49,7 @@ export class ConfigDialogService {
   }
 
   private async createPublishDialogRef(mode: "publish" | "discard"): Promise<MatDialogRef<ConfigPublishDialogComponent>> {
-    // const updatedList = this.entityService.updatedList;
-    const _data = {id: 'publish-dialog', mode};//, originalList};
+    const _data = {id: 'publish-dialog', mode, configs: this.store.allItems(), differences: this.store.differences()};
     return this.dialog.open(ConfigPublishDialogComponent, {
       id: 'publish-dialog',
       data: _data,

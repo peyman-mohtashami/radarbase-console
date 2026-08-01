@@ -1,7 +1,7 @@
 import {
   Component,
   inject,
-  ChangeDetectionStrategy
+  AfterViewInit
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -15,13 +15,14 @@ import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ConfigConfigService} from '../../services/config-config.service';
-import {BaseEntityDialogComponent} from '../../../../../base-entities/containers/entity-dialog/base-entity-dialog.component';
 import {ErrorMessageBoxComponent} from '../../../../../../shared/components/message-box/error-message-box.component';
+import {ConfigDifference, ConfigStore} from '../../services/config.store';
+import {JsonPipe, UpperCasePipe} from '@angular/common';
+import {animateDialogIn, animateDialogOut} from '../../../../../shared/utils/dialog.util';
 
 @Component({
   selector: 'app-config-publish-dialog',
   templateUrl: './config-publish-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogTitle,
     MatDialogContent,
@@ -30,54 +31,40 @@ import {ErrorMessageBoxComponent} from '../../../../../../shared/components/mess
     MatIcon,
     MatProgressSpinner,
     ErrorMessageBoxComponent,
+    UpperCasePipe,
+    JsonPipe,
   ]
 })
-export class ConfigPublishDialogComponent extends BaseEntityDialogComponent<AppConfig[]> {
-  override configService = inject(ConfigConfigService);
-  override dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
-  override dialogData = inject(MAT_DIALOG_DATA) as {
+export class ConfigPublishDialogComponent implements AfterViewInit {
+  protected store = inject(ConfigStore);
+  protected configService = inject(ConfigConfigService);
+  private dialogRef = inject(MatDialogRef<ConfigPublishDialogComponent>);
+
+  protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: "publish" | "discard";
-    originalList: AppConfig[];
-    updatedList: AppConfig[];
+    differences: ConfigDifference[];
+    configs: AppConfig[];
   };
 
-  override formFields = this.configService.getFormFields();
+  formFields = this.configService.getFormFields();
 
-  differences: { name: string; originalValue?: string; newValue?: string;}[] = [];
-
-  override ngOnInit() {
-    this.dialogData.updatedList.forEach(config => {
-      const originalConfig = this.dialogData.originalList.find(originalConfig => originalConfig.name === config.name);
-      if (originalConfig?.name !== config.name || originalConfig?.value !== config.value) {
-        this.differences.push({
-          name: config.name,
-          originalValue: originalConfig?.value,
-          newValue: config.value
-        })
-      }
-    })
-    this.dialogData.originalList.forEach(config => {
-      const updatedConfig = this.dialogData.updatedList.find(updatedConfig => updatedConfig.name === config.name);
-      if (!updatedConfig) {
-        this.differences.push({
-          name: config.name,
-          originalValue: config.value,
-          newValue: undefined
-        })
-      }
-    })
+  ngAfterViewInit() {
+    animateDialogIn(this.dialogData.id);
   }
 
-  publish() {
-    this.error.set(null);
-    this.loading.set(true);
-    this.dialogActionEvent.emit({ action: 'publish', entity: this.dialogData.updatedList });
+  async publish() {
+    await this.store.publish();
+    this.dialogRef.close();
   }
 
-  discard() {
-    this.error.set(null);
-    this.loading.set(true);
-    this.dialogActionEvent.emit({ action: 'discard', entity: undefined });
+  discard () {
+    this.store.discard();
+    this.dialogRef.close();
+  }
+
+
+  close() {
+    animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 }

@@ -3,7 +3,6 @@ import {firstValueFrom} from "rxjs";
 
 import {AppConfig, ConfigDto, CreateConfigDto, UpdateConfigDto} from "../models/config";
 import {Params} from '@angular/router';
-import {RadarbaseAppConfigService} from '../../../../../core/configuration/services/radarbase-app-config.service';
 import {ConfigService} from './config.service';
 import {ConfigConfigService} from './config-config.service';
 import {PageEvent} from '@angular/material/paginator';
@@ -15,6 +14,14 @@ import {filterItems, paginateItems, sortItems} from '../../../../shared/utils/st
 import {ClientStore} from '../../../client/services/client.store';
 import {ProjectStore} from '../../../project/services/project.store';
 import {SubjectStore} from '../../../project-subject/services/subject.store';
+
+export type ChangeType = 'added' | 'updated' | 'deleted';
+
+export interface ConfigDifference {
+  change: ChangeType;
+  oldValue?: AppConfig;
+  newValue?: AppConfig;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ConfigStore {
@@ -31,6 +38,7 @@ export class ConfigStore {
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
+  readonly oldItems = signal<AppConfig[]>([]);
 
   readonly page = signal<PageEvent>({
     pageIndex: 0,
@@ -45,6 +53,49 @@ export class ConfigStore {
     const sorted = sortItems(filtered, this.sort());
     const {pageIndex, pageSize} = this.page();
     return paginateItems(sorted, {pageIndex, pageSize});
+  });
+
+  readonly differences = computed<ConfigDifference[]>(() => {
+    const current = this.allItems();
+    const old = this.oldItems();
+
+    const currentMap = new Map(current.map(item => [item.name, item]));
+    const oldMap = new Map(old.map(item => [item.name, item]));
+
+    const result: ConfigDifference[] = [];
+
+    // Added & Updated
+    for (const [name, newItem] of currentMap) {
+      const oldItem = oldMap.get(name);
+
+      if (!oldItem) {
+        result.push({
+          change: 'added',
+          newValue: newItem,
+        });
+        continue;
+      }
+
+      if (!isEqual(oldItem, newItem)) {
+        result.push({
+          change: 'updated',
+          oldValue: oldItem,
+          newValue: newItem,
+        });
+      }
+    }
+
+    // Deleted
+    for (const [name, oldItem] of oldMap) {
+      if (!currentMap.has(name)) {
+        result.push({
+          change: 'deleted',
+          oldValue: oldItem,
+        });
+      }
+    }
+
+    return result;
   });
 
   setPage(page: PageEvent) {
@@ -95,6 +146,7 @@ export class ConfigStore {
     try {
       const dtos = await firstValueFrom(this.api.getWithQuery(client.clientId, project?.projectName, subject?.login));
       this.allItems.set(dtos.map(dto => this.toAppModel(dto)));
+      this.oldItems.set([...this.allItems()]);
       this.total.set(dtos.length);
       return true;
     } catch (e) {
@@ -106,20 +158,25 @@ export class ConfigStore {
   }
 
   async add(entity: CreateConfigDto): Promise<boolean> {
-    // add item to items
-    // refresh the page (sort, filter, pagination)
+    this.allItems.update((value) => ([...value, this.toAppModel(entity)]));
     return true;
   }
 
   async update(entity: UpdateConfigDto): Promise<boolean> {
-    // replace the updated item
-    // refresh the page (sort, filter, pagination)
+    this.allItems.update((items) =>
+      ([...items.map(item =>
+        item.name === entity.name
+          ? this.toAppModel(entity)
+          : item
+      )])
+    );
     return true;
   }
 
   async delete(entity: AppConfig): Promise<boolean> {
-    // remove item form items
-    // refresh the page (sort, filter, pagination)
+    this.allItems.update((items) =>
+      [...items.filter(item => item.name !== entity.name)]
+    );
     return true;
   }
 
@@ -131,7 +188,7 @@ export class ConfigStore {
   }
 
 
-  async publish(configs: AppConfig[]): Promise<boolean>{
+  async publish(): Promise<boolean>{
     const client = this.clientStore.selected();
     if (!client) return false;
 
@@ -141,12 +198,8 @@ export class ConfigStore {
     this.loading.set(true);
     this.error.set(null);
     try {
-      await firstValueFrom(this.api.publish(configs, client.clientId, project?.projectName, subject?.login));
+      await firstValueFrom(this.api.publish(this.allItems(), client.clientId, project?.projectName, subject?.login));
       await this.getAll();
-      // if (this.selected()
-      // ) {
-      //   this.selected.set(this.toAppModel(updatedEntity));
-      // }
       return true;
     } catch
       (e) {
@@ -156,4 +209,18 @@ export class ConfigStore {
       this.loading.set(false);
     }
   }
+
+  discard(): void{
+    this.allItems.set([...this.oldItems()]);
+  }
+}
+
+function isEqual(a: AppConfig, b: AppConfig): boolean {
+  return (
+    a.name === b.name &&
+    a.value === b.value &&
+    a.default === b.default &&
+    a.scope === b.scope &&
+    a.search === b.search
+  );
 }

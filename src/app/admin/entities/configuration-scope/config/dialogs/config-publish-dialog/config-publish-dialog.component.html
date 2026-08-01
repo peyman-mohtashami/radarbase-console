@@ -12,28 +12,27 @@
 
   <div class="text-base mt-4">
     <h3 class="border-b py-2">{{ "ADMIN.config.publishDialog.changes" | translate }}</h3>
-    @for (diff of differences; track diff.name) {
+    @for (diff of dialogData.differences; track $index) {
       <div class="grid gap-4 grid-cols-2 mt-2">
-        <span>{{ diff.name }}</span>
-        <span>
-          @if (!diff.originalValue) {
-            {{ "ADMIN.config.publishDialog.created" | translate }}
-          } @else {
-            @if (!diff.newValue) {
-              {{ "ADMIN.config.publishDialog.deleted" | translate }}
-            } @else {
-              {{ "ADMIN.config.publishDialog.modified" | translate }}
-            }
+        @switch(diff.change) {
+          @case('added')
+          @case('updated'){
+            <span>{{ diff.newValue?.name }}</span>
+            <span>{{ diff.change | uppercase }}</span>
           }
-        </span>
+          @case ('deleted'){
+            <span>{{ diff.oldValue?.name }}</span>
+            <span>{{ diff.change | uppercase }}</span>
+          }
+        }
       </div>
     }
   </div>
 </mat-dialog-content>
 
-@if (error()) {
+@if (store.error()) {
   <app-error-message-box>
-    {{ $safeNavigationMigration(error()?.error.errorCode) | translate }}
+    {{ store.error() | json}}
   </app-error-message-box>
 }
 
@@ -52,9 +51,9 @@
     @if (dialogData.mode === "publish") {
       <button mat-raised-button class="text-white!"
               color='primary'
-              [disabled]='loading()'
+              [disabled]='store.loading()'
               (click)='publish()'>
-        @if (loading()) {
+        @if (store.loading()) {
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>
@@ -66,9 +65,9 @@
     } @else {
       <button mat-raised-button class="text-white!"
               color='warn'
-              [disabled]='loading()'
+              [disabled]='store.loading()'
               (click)='discard()'>
-        @if (loading()) {
+        @if (store.loading()) {
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>

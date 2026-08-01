@@ -78,7 +78,7 @@
   <app-loader/>
 }
 
-<app-entity-list-page [entities]="entities()"
+<app-entity-list-page [entities]="store.items()"
                       [tableFields]="tableFields"
                       [entityMetadata]="entityMetadata"
                       [page]="store.page()"

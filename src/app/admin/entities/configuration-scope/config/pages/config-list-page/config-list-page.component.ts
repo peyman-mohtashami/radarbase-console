@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import { DialogMode } from '../../../../../base-entities/enums/dialog';
 import {AppConfig} from "../../models/config";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -48,13 +48,16 @@ export class ConfigListPageComponent {
   readonly configService = inject(ConfigConfigService);
   readonly dialogService = inject(ConfigDialogService);
 
-  readonly entities = this.store.items;
   protected gridView = this.configService.getViewMode() === 'grid';
 
   readonly extensionClass = signal(getHighestPriorityClass(this.configService.getTableFields()));
 
   protected isFilterOpened = true;
   protected selection = new SelectionModel<AppConfig>(true, []);
+
+  isChanged = computed(() => {
+    return this.store.differences().length;
+  });
 
   ngOnInit() {
     // Reopen a dialog that was interrupted by session expiry, with its entered fields.
@@ -78,49 +81,8 @@ export class ConfigListPageComponent {
   }
 
   openPublishDialog(mode: "discard" | "publish") {
-    // return this.dialogService.openPublishDialog(mode, this.entities(), this.clientId!, this.projectId ?? undefined, this.subjectId ?? undefined);
+    return this.dialogService.openPublishDialog(mode);
   }
-
-  isChanged = signal( false);
-
-
-  // override handleDialogUpdate(updated: { mode: DialogMode | string, entity?: AppConfig }) {
-  //   const {mode, entity} = updated;
-  //   if (entity) {
-  //     switch (mode) {
-  //       case DialogMode.ADD:
-  //         this.isChanged.set(true);
-  //         this.addEntityToView(entity);
-  //         break;
-  //       case DialogMode.EDIT:
-  //         this.isChanged.set(true);
-  //         this.refreshEntities();
-  //         break;
-  //       case DialogMode.DELETE:
-  //         this.isChanged.set(true);
-  //         this.refreshEntities();
-  //         break;
-  //     }
-  //   } else {
-  //     switch(mode) {
-  //       case "discarded":
-  //         this.isChanged.set(false);
-  //         this.entityService.clearCache();
-  //         this.refreshEntities();
-  //         break;
-  //       case "published":
-  //         this.isChanged.set(false);
-  //         this.entityService.clearCache();
-  //         this.refreshEntities();
-  //         break;
-  //     }
-  //   }
-  //   this.loading.set(false);
-  //   setTimeout(() => {
-  //     this.selection.clear();
-  //   }, 0);
-  //   // this.selection.clear();
-  // }
 
   protected showHistory() {
     // TODO
