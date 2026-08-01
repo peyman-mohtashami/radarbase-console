@@ -1,51 +1,3 @@
-// import {RadarOption} from "../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component";
-
-
-// export interface RadarQuestionnaire {
-//   name: string;
-//   version: string;
-//   modelVersion: string;
-//   languages: RadarOption[];
-//   defaultLanguage: RadarOption;
-//   //
-//   title?: Record<string, string>;
-//   description?: Record<string, string>;
-//   estimatedCompletionTime?: string;
-//   showInCalendar?: boolean;
-//   isDemo?: boolean;
-//   order?: string;
-//   //
-//   showIntroduction?: string;
-//   startText?: Record<string, string>;
-//   endText?: Record<string, string>;
-//   warningEnabled?: boolean;
-//   warn?: Record<string, string>;
-//   //
-//   questions: RadarQuestion[];
-//   //
-//   schedule?: {
-//     onDemand?: boolean;
-//     relativeToReferenceTime?: boolean;
-//     referenceTimestamp?: string;
-//     repeatedProtocol?: boolean;
-//     repeatProtocol?: { unit?: string; amount?: string; };
-//     repeatQuestionnaire?: { unit?: string; unitsFromZero?: string[]; };
-//     completionWindow?: { unit?: string; amount?: string };
-//     notification?: {
-//       title?: Record<string, string>;
-//       text?: Record<string, string>;
-//     };
-//     reminders?: {
-//       enabled?: boolean;
-//       unit?: string;
-//       amount?: string;
-//       repeat?: string;
-//     };
-//   },
-//   isActive?: boolean;
-//   isValid?: boolean;
-// }
-
 export interface AppQuestionnaire {
   _name: string;
   _search: string;
@@ -93,51 +45,6 @@ export interface AppQuestionnaire {
   isActive?: boolean;
   isValid?: boolean;
 }
-
-
-// export interface AppQuestionnaire extends RadarQuestionnaire {
-//   _name: string;
-//   _search: string;
-// }
-
-// export interface RadarQuestion {
-//   field_name: string;
-//   field_type: string;
-//   required_field?: string;
-//   field_label: string;
-//   section_header?: string;
-//   select_choices_or_calculations?: {code: string, label: string}[];
-//   text_validation_type_or_show_slider_number?: string;
-//   text_validation_min?: string;
-//   text_validation_max?: string;
-//   field_annotation?: {timer: {start: number; end: number;}; unit: string; image: string;};
-//   field_note?: string;
-//   range?: {min: number; max: number; step: number;};
-//   matrix_group_name?: string;
-//   matrix_ranking?: string;
-//   branching_logic?: string;
-// }
-
-// export interface RadarQuestion {
-//   field_name: string;
-//   field_type: string;
-//   required_field?: string;
-//   field_label: Record<string, string>;
-//   section_header?: Record<string, string>;
-//   select_choices_or_calculations?: {code: string, label: Record<string, string>}[];
-//   text_validation_type_or_show_slider_number?: string;
-//   text_validation_min?: string;
-//   text_validation_max?: string;
-//   field_annotation?: {timer: {start: number; end: number;}; unit: string; image: string;};
-//   field_note?: Record<string, string>;
-//   range?: {min: number; max: number; step: number;};
-//   matrix_group_name?: string;
-//   matrix_ranking?: string;
-//   branching_logic?: string;
-//   //
-//   isValid?: boolean;
-// }
-
 
 export interface AppQuestion {
   id?: string;

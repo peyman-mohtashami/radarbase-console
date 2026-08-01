@@ -47,9 +47,9 @@
   <!--            [innerHTML]="'ADMIN.protocol.oneTimeProtocol.tableContent' | translate">-->
   <!--          </div>-->
   <!--        } @else {-->
-          @let repeatProtocol = $safeNavigationMigration(entity().schedule?.repeatProtocol);
+          @let repeatProtocol = entity().schedule?.repeatProtocol;
             <div
-              [innerHTML]="`${_prefix}.repeatProtocol.tableContent` | translate: {amount: $safeNavigationMigration(repeatProtocol?.amount), unit: $safeNavigationMigration(repeatProtocol?.unit)}">
+              [innerHTML]="`${_prefix}.repeatProtocol.tableContent` | translate: {amount: repeatProtocol?.amount, unit: repeatProtocol?.unit}">
             </div>
           }
         @if (entity().schedule?.completionWindow; as completionWindow) {
