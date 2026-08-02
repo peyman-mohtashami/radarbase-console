@@ -5,12 +5,12 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+} from '../../../tabs/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatSelectChange} from '@angular/material/select';
 

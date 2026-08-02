@@ -8,9 +8,9 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 import jexl from 'jexl';
-import {PreviewStateService} from '../../../containers/questionnaire-preview/services/preview-state.service';
+import {PreviewStateService} from '../../../tabs/questionnaire-preview/services/preview-state.service';
 
 @Component({
   selector: 'app-calculation-question',

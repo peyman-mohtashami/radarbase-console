@@ -7,8 +7,8 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 
 @Component({
   selector: 'app-number-question',

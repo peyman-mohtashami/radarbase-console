@@ -5,7 +5,7 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
 import {MatSelectChange} from '@angular/material/select';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
   selector: 'app-descriptive-question',

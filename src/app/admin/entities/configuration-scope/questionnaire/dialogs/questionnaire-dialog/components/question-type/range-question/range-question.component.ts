@@ -5,16 +5,16 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionChoice, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+} from '../../../tabs/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 
 @Component({
   selector: 'app-range-question',

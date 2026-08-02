@@ -10,8 +10,8 @@ import {MatButton} from '@angular/material/button';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 
 @Component({
   selector: 'app-yesno-question',

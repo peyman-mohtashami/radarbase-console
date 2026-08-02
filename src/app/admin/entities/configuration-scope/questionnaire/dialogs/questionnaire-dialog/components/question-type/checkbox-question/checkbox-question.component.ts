@@ -5,17 +5,17 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+} from '../../../tabs/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 import {JsonPipe} from '@angular/common';
 
 @Component({

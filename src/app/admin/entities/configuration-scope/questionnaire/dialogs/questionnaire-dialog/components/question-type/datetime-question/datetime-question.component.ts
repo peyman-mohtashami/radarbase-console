@@ -12,15 +12,15 @@ import {QuestionnaireDialogStateService} from '../../../services/questionnaire-d
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 import {Validator as CustomValidator} from '../../../../../../../../../shared/utils/validators';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatIcon} from '@angular/material/icon';
-import {AnswerWithTimeLog} from '../../../containers/questionnaire-preview/models/kafka';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {AnswerWithTimeLog} from '../../../tabs/questionnaire-preview/models/kafka';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 import {DatePipe} from '@angular/common';
 
 @Component({

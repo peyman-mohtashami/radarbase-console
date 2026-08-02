@@ -14,13 +14,13 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {MatSlider, MatSliderThumb} from '@angular/material/slider';
-import {ReplacePlaceholdersPipe} from '../../../containers/questionnaire-preview/pipes/replace-placeholders.pipe';
+import {ReplacePlaceholdersPipe} from '../../../tabs/questionnaire-preview/pipes/replace-placeholders.pipe';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 import {
   TextFormGroupComponent
-} from '../../../containers/questionnaire-questions/text-form-group/text-form-group.component';
+} from '../../../tabs/questionnaire-questions/text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-slider-question',

@@ -7,7 +7,7 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
-} from '../../../containers/questionnaire-preview/question/question-header/question-header.component';
+} from '../../../tabs/questionnaire-preview/question/question-header/question-header.component';
 // import {
 //   ScrollableContentComponent
 // } from '../../../containers/questionnaire-preview/question/scrolable-content/scrollable-content.component';

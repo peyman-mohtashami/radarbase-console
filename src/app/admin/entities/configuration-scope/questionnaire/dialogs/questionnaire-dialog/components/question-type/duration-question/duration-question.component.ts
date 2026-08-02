@@ -5,7 +5,7 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
 import {
   QuestionChoicesFormArray
-} from '../../../containers/questionnaire-questions/question-choices-form-array/question-choices-form-array';
+} from '../../../tabs/questionnaire-questions/question-choices-form-array/question-choices-form-array';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({

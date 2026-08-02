@@ -18,9 +18,9 @@ import {map} from "rxjs/operators";
 import {MatIconButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
-import {Validator as CustomValidator} from '../../../../../../../../shared/utils/validators';
-import {moveItemInFormArray} from '../../questionnaire-dialog.component';
-import {QuestionnaireTimeUnit} from '../../../../models/protocol';
+import {Validator as CustomValidator} from '../../../../../../../../../shared/utils/validators';
+import {moveItemInFormArray} from '../../../questionnaire-dialog.component';
+import {QuestionnaireTimeUnit} from '../../../../../models/protocol';
 
 @Component({
   selector: 'app-time-from-zero-form-array',

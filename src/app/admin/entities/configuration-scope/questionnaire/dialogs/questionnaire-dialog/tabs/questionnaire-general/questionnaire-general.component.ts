@@ -20,7 +20,7 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
 
 @Component({
   selector: 'app-questionnaire-general',
-  templateUrl: 'questionnaire-general.component.html',
+  templateUrl: './questionnaire-general.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatError,

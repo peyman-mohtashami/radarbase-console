@@ -27,27 +27,27 @@ import {
   MatTabLabel,
 } from '@angular/material/tabs';
 import {AsyncPipe, JsonPipe} from '@angular/common';
-import {QuestionnaireGeneralComponent} from './containers/questionnaire-general/questionnaire-general.component';
-import {QuestionnaireQuestionsComponent} from './containers/questionnaire-questions/questionnaire-questions.component';
+import {QuestionnaireGeneralComponent} from './tabs/questionnaire-general/questionnaire-general.component';
+import {QuestionnaireQuestionsComponent} from './tabs/questionnaire-questions/questionnaire-questions.component';
 import {
   QuestionnaireSchedulingComponent
-} from './containers/questionnaire-scheduling/questionnaire-scheduling.component';
+} from './tabs/questionnaire-scheduling/questionnaire-scheduling.component';
 import {
   QuestionnaireNotificationsComponent
-} from './containers/questionnaire-notifications/questionnaire-notifications.component';
+} from './tabs/questionnaire-notifications/questionnaire-notifications.component';
 import {
   QuestionnaireInterventionFlowComponent
-} from './containers/questionnaire-intervention-flow/questionnaire-intervention-flow.component';
+} from './tabs/questionnaire-intervention-flow/questionnaire-intervention-flow.component';
 import {
   QuestionnaireJsonEditorComponent
-} from './containers/questionnaire-json-editor/questionnaire-json-editor.component';
+} from './tabs/questionnaire-json-editor/questionnaire-json-editor.component';
 import {
   QuestionnaireCustomMessagesComponent
-} from './containers/questionnaire-custom-messages/questionnaire-custom-messages.component';
-import {QuestionnairePreviewComponent} from './containers/questionnaire-preview/questionnaire-preview.component';
+} from './tabs/questionnaire-custom-messages/questionnaire-custom-messages.component';
+import {QuestionnairePreviewComponent} from './tabs/questionnaire-preview/questionnaire-preview.component';
 import {
   QuestionnaireTranslationComponent
-} from './containers/questionnaire-translation/questionnaire-translation.component';
+} from './tabs/questionnaire-translation/questionnaire-translation.component';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
