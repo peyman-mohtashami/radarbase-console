@@ -1,85 +1,96 @@
-import {Component, inject, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, effect, inject, output, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {AppQuestionnaire} from '../../../../models/questionnaire';
-import {ValidatorError} from '../../../../../../../../shared/utils/validators';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {debounceTime} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
-import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {UNITS} from '../../models/unit';
+import {form, FormField} from '@angular/forms/signals';
+import {AppQuestionnaire} from '../../../../models/questionnaire';
+
+export interface QuestionnaireNotificationsForm {
+  notification: {
+    title: string;
+    text: string;
+  };
+  reminders: {
+    enabled: boolean;
+    unit: string;
+    amount: string;
+    repeat: string;
+  };
+}
 
 @Component({
   selector: 'app-questionnaire-notifications',
   templateUrl: 'questionnaire-notifications.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    ReactiveFormsModule,
     TranslatePipe,
     MatSlideToggle,
     MatFormField,
     MatInput,
     MatSelect,
     MatOption,
-    TextFormGroupComponent,
+    FormField,
   ]
 })
-export class QuestionnaireNotificationsComponent implements OnInit, OnDestroy {
+export class QuestionnaireNotificationsComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
 
   protected readonly UNITS = UNITS;
-  protected readonly ValidatorError = ValidatorError;
 
   valid = output<boolean>();
 
-  form = new FormGroup({
-    schedule: new FormGroup({
-      notification: new FormGroup({
-        title: new FormGroup({}),
-        text: new FormGroup({}),
-      }),
-      reminders: new FormGroup({
-        enabled: new FormControl<boolean>(false, {nonNullable: true}),
-        unit: new FormControl<string>('', {nonNullable: true}),
-        amount: new FormControl<string>('', {nonNullable: true}),
-        repeat: new FormControl<string>('', {nonNullable: true}),
-      }),
-    }),
+  protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
+    ...this.dialogState.questionnaire()?.schedule,
+    notification: {
+      title: this.dialogState.questionnaire()?.schedule?.notification?.title?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+      text: this.dialogState.questionnaire()?.schedule?.notification?.text?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    },
+    reminders: {
+      enabled: this.dialogState.questionnaire()?.schedule?.reminders?.enabled ?? false,
+      unit: this.dialogState.questionnaire()?.schedule?.reminders?.unit ?? '',
+      amount: this.dialogState.questionnaire()?.schedule?.reminders?.amount ?? '',
+      repeat: this.dialogState.questionnaire()?.schedule?.reminders?.repeat ?? '',
+    }
   });
 
-  private subscription?: Subscription;
+  protected form = form(this.model, (schema) => {
 
-  ngOnInit() {
+  });
 
-    this.subscription = this.form.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(() => {
-      const entity = this.dialogState.questionnaire();
-      const formValue = this.form.getRawValue();
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      const entity = untracked(() => this.dialogState.questionnaire());
+      const defaultLanguage = entity?.defaultLanguage;
+      if (!defaultLanguage) return;
+
       const updated = {
         ...entity,
         schedule: {
           ...entity?.schedule,
-          notification: {...entity?.schedule?.notification, ...formValue.schedule.notification},
-          reminders: {...entity?.schedule?.reminders, ...formValue.schedule.reminders
+          notification: {
+            title: {
+              ...entity.schedule?.notification?.title,
+              [defaultLanguage.code]: model.notification.title,
+            },
+            text: {
+              ...entity.schedule?.notification?.text,
+              [defaultLanguage.code]: model.notification.text,
+            }
+          },
+          reminders: {
+            ...entity.schedule?.reminders,
+            enabled: model.reminders.enabled,
+            repeat: model.reminders.repeat,
+            unit: model.reminders.unit,
+            amount: model.reminders.amount,
           }
         }
       } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form.valid);
+      this.valid.emit(this.form().valid());
     });
-
-    const entity = this.dialogState.questionnaire();
-    if (entity) {
-      this.form.patchValue(entity);
-      this.valid.emit(this.form.valid);
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
   }
 }

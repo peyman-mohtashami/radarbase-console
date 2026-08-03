@@ -1,78 +1,70 @@
-import {Component, inject, OnDestroy, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, effect, inject, output, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {AppQuestionnaire} from '../../../../models/questionnaire';
-import {ValidatorError} from '../../../../../../../../shared/utils/validators';
-import {debounceTime} from 'rxjs/operators';
-import {Subscription} from 'rxjs';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {form, FormField} from '@angular/forms/signals';
+import {AppQuestionnaire} from '../../../../models/questionnaire';
+
+export interface QuestionnaireCustomMessagesForm {
+  showIntroduction: string;
+  startText: string;
+  endText: string;
+  warningEnabled: boolean;
+  warn: string;
+  estimatedCompletionTime: string;
+}
 
 @Component({
   selector: 'app-questionnaire-custom-messages',
   templateUrl: 'questionnaire-custom-messages.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    ReactiveFormsModule,
     TranslatePipe,
     MatSlideToggle,
     MatFormField,
     MatInput,
     MatSelect,
     MatOption,
-    TextFormGroupComponent,
+    FormField,
   ]
 })
-export class QuestionnaireCustomMessagesComponent implements OnInit, OnDestroy {
+export class QuestionnaireCustomMessagesComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
-
-  protected readonly ValidatorError = ValidatorError;
 
   valid = output<boolean>();
 
-  form = new FormGroup({
-    showIntroduction: new FormControl<string>('no', {nonNullable: true}),
-    startText: new FormGroup({}),
-    endText: new FormGroup({}),
-    warningEnabled: new FormControl<boolean>(false, {nonNullable: true}),
-    warn: new FormGroup({}),
-    estimatedCompletionTime: new FormControl<string>('', {nonNullable: true}),
+  protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
+    ...this.dialogState.questionnaire()?.schedule,
+    showIntroduction: this.dialogState.questionnaire()?.showIntroduction ?? 'no',
+    startText: this.dialogState.questionnaire()?.startText?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    endText: this.dialogState.questionnaire()?.endText?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    warningEnabled: this.dialogState.questionnaire()?.warningEnabled ?? false,
+    warn: this.dialogState.questionnaire()?.warn?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? ''
   });
 
-  private subscription?: Subscription;
+  protected form = form(this.model, (schema) => {
 
-  ngOnInit() {
-    this.subscription = this.form.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(() => {
-      const formValue = this.form.getRawValue();
-      const entity = this.dialogState.questionnaire();
+  });
+
+  constructor() {
+    effect(() => {
+      const model = this.model();
+      const entity = untracked(() => this.dialogState.questionnaire());
+      const defaultLanguage = entity?.defaultLanguage;
+      if (!defaultLanguage) return;
 
       const updated = {
         ...entity,
-        showIntroduction: formValue.showIntroduction,
-        startText: {...entity?.startText, ...formValue.startText},
-        endText: {...entity?.endText, ...formValue.endText},
-        warningEnabled: formValue.warningEnabled,
-        warn: {...entity?.warn, ...formValue.warn},
-        estimatedCompletionTime: formValue.estimatedCompletionTime,
+        showIntroduction: model.showIntroduction,
+        startText: {...entity?.startText, [defaultLanguage.code]: model.startText},
+        endText: {...entity?.endText, [defaultLanguage.code]: model.endText},
+        warningEnabled: model.warningEnabled,
+        warn: {...entity?.warn, [defaultLanguage.code]: model.warn},
       } as AppQuestionnaire;
-
       this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form.valid);
+      this.valid.emit(this.form().valid());
     });
-
-    const entity = this.dialogState.questionnaire();
-    if (entity) {
-      this.form.patchValue(entity);
-      this.valid.emit(this.form.valid);
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
   }
 }

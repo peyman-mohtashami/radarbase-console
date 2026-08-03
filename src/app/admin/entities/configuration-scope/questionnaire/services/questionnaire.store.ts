@@ -238,8 +238,8 @@ export class QuestionnaireStore {
       isActive: protocol.isActive,
       isValid: protocol.isValid,
 
-      _name: protocol.name,
-      _search: protocol.name,
+      // _name: protocol.name,
+      search: protocol.name,
     }
   }
 

@@ -1,31 +1,43 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-<div [formGroup]="form" class="w-125">
-  <div formGroupName="schedule" class="mt-4">
-    <div formGroupName="notification" class="mt-4">
+<div class="w-125">
+  <div class="mt-4">
+    <div class="mt-4">
       <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>
       <div class="mb-4">
-        <app-text-form-group class="mb-4"
-                             [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                             [label]="`${_prefix}.notificationTitleLabel` | translate"
-                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.title)"/>
+        <label for="notificationTitleLabel" class="text-sm">
+          {{ `${_prefix}.notificationTitleLabel` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline'>
+          <input id="notificationTitleLabel" matInput [formField]="form.notification.title">
+        </mat-form-field>
+<!--        <app-text-form-group class="mb-4"-->
+<!--                             [textGroup]="form.controls.schedule.controls.notification.controls.title"-->
+<!--                             [label]="`${_prefix}.notificationTitleLabel` | translate"-->
+<!--                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.title)"/>-->
       </div>
       <div class="mb-4">
-        <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"
-                             [label]="`${_prefix}.notificationMessageLabel` | translate"
-                             [textarea]="true"
-                             [textareaAutosize]="true"
-                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.text)"/>
+        <label for="notificationMessageLabel" class="text-sm">
+          {{ `${_prefix}.notificationMessageLabel` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline'>
+          <input id="notificationMessageLabel" matInput [formField]="form.notification.text">
+        </mat-form-field>
+<!--        <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"-->
+<!--                             [label]="`${_prefix}.notificationMessageLabel` | translate"-->
+<!--                             [textarea]="true"-->
+<!--                             [textareaAutosize]="true"-->
+<!--                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.text)"/>-->
       </div>
     </div>
 
-    <div formGroupName="reminders">
+    <div>
       <p class="text-sm my-2">{{ `${_prefix}.remindersLabel` | translate }}</p>
-      <mat-slide-toggle formControlName='enabled' class="mb-4" color="primary">
+      <mat-slide-toggle [formField]="form.reminders.enabled" class="mb-4" color="primary">
         {{ `${_prefix}.remindersEnableLabel` | translate }}
       </mat-slide-toggle>
 
-      @if (form.controls.schedule.controls.reminders.controls.enabled.value) {
+      @if (model().reminders.enabled) {
         <div class="grid grid-cols-3 gap-4">
           <div>
             <label for="reminders-repeat" class="text-sm">
@@ -34,7 +46,7 @@
             <mat-form-field class='small-input w-1/3'
                             subscriptSizing="dynamic"
                             appearance='outline'>
-              <input id="reminders-repeat" matInput type="number" formControlName='repeat' required>
+              <input id="reminders-repeat" matInput type="number" [formField]="form.reminders.repeat">
             </mat-form-field>
           </div>
           <div>
@@ -42,7 +54,7 @@
               {{ `${_prefix}.reminderAmount` | translate }} *
             </label>
             <mat-form-field class='small-input' appearance='outline'>
-              <input id="reminders-amount" matInput formControlName='amount' type="number" min="1" max="10000" required>
+              <input id="reminders-amount" matInput [formField]="form.reminders.amount" type="number">
             </mat-form-field>
           </div>
           <div>
@@ -50,7 +62,7 @@
               {{ `${_prefix}.reminderUnit` | translate }} *
             </label>
             <mat-form-field class='small-input' appearance='outline'>
-              <mat-select id="reminders-unit" formControlName='unit'>
+              <mat-select id="reminders-unit" [formField]="form.reminders.unit">
                 @for (unit of UNITS; track unit.name) {
                   <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
                 }

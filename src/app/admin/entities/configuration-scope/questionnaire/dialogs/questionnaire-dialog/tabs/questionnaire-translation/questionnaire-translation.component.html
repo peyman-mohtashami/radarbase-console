@@ -1,26 +1,22 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let defaultLanguage = $safeNavigationMigration(entity?.defaultLanguage);
+@let entity = dialogState.questionnaire();
+@let defaultLanguage = entity?.defaultLanguage;
 
 @if (defaultLanguage) {
-  <form [formGroup]='form' novalidate>
-
+  <form novalidate>
     <div class="">
-      <app-mat-select-autocomplete formControlName="languages"
+      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>
+      <app-searchable-multi-select [formField]="languagesForm.languages"
+                                   [disabledItem]="defaultLanguage"
+                                   [labelKey]="'label'"
                                    [options]="ISO_LANGUAGES"
-                                   [label]="`${_prefix}.languagesLabel` | translate"
-                                   [required]="true"
-                                   [multiple]="true"
-                                   [notRemovable]="defaultLanguage"
-                                   [adapter]="languageAdapter" />
+                                   [valueKey]="'code'"
+                                   [multiple]="true"/>
     </div>
 
-    @let languages = form.controls.languages.value;
-<!--    <pre>{{entity | json}}</pre>-->
+
     <div class="w-full overflow-x-auto border border-gray-300">
-<!--      <div class="grid grid-cols-3 gap-4">-->
-<!--      <div [style.grid-template-rows]="`repeat(7, max-content)`"-->
-<!--           class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">-->
-      <div [style.grid-template-rows]="`repeat(${numberOfRows}, max-content)`"
+      <div [style.grid-template-rows]="`repeat(${numberOfGridRows}, max-content)`"
            class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">
         <div class=""></div>
         <div class="">Title</div>
@@ -29,11 +25,11 @@
         @if (entity?.warningEnabled) {
           <div class="">Warn</div>
         }
-        <div class="">Notification Title</div>
-        <div class="">Notification Text</div>
-
+        @if (!entity?.schedule?.onDemand) {
+          <div class="">Notification Title</div>
+          <div class="">Notification Text</div>
+        }
         @for (question of entity?.questions; track question.field_name) {
-<!--          {{question | json}}-->
           <div class="border-y">Question <code class="text-secondary">{{ question.field_name }}</code></div>
           <div>Field Label</div>
           @if (question.section_header?.[defaultLanguage.code]) {
@@ -47,185 +43,52 @@
           }
         }
 
-        @let language = $safeNavigationMigration(entity?.defaultLanguage);
-        @if (language) {
-          <div>{{ language.label }}</div>
-          <div>
-            <app-text-form-group [language]="language"
-                                 [textarea]="false"
-                                 [textareaAutosize]="false"
-                                 [textGroup]="form.controls.title"
-                                 [value]="$safeNavigationMigration(entity?.title)"/>
-          </div>
-          <div>
-            <app-text-form-group [language]="language"
-                                 [textarea]="true"
-                                 [textareaAutosize]="true"
-                                 [textGroup]="form.controls.description"
-                                 [value]="$safeNavigationMigration(entity?.description)"/>
-          </div>
-          <div>
-            <app-text-form-group [language]="language"
-                                 [textarea]="true"
-                                 [textareaAutosize]="true"
-                                 [textGroup]="form.controls.endText"
-                                 [value]="$safeNavigationMigration(entity?.endText)"/>
-          </div>
+        @for (language of languagesList(); track language) {
+          <div>{{ language }}</div>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <textarea id="" matInput [formField]="form.translation[language].title"></textarea>
+          </mat-form-field>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <textarea id="" matInput [formField]="form.translation[language].description"></textarea>
+          </mat-form-field>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <textarea id="" matInput [formField]="form.translation[language].endText"></textarea>
+          </mat-form-field>
           @if (entity?.warningEnabled) {
-            <div>
-              <app-text-form-group [language]="language"
-                                   [textarea]="true"
-                                   [textareaAutosize]="true"
-                                   [textGroup]="form.controls.warn"
-                                   [value]="$safeNavigationMigration(entity?.warn)"/>
-            </div>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <textarea id="" matInput [formField]="form.translation[language].warn"></textarea>
+            </mat-form-field>
           }
-          <ng-container formGroupName="schedule">
-            <ng-container formGroupName="notification">
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                                     [value]="$safeNavigationMigration(entity?.schedule?.notification?.title)"/>
-              </div>
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="form.controls.schedule.controls.notification.controls.text"
-                                     [value]="$safeNavigationMigration(entity?.schedule?.notification?.text)"/>
-              </div>
-            </ng-container>
-          </ng-container>
+          @if (!entity?.schedule?.onDemand) {
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <textarea id="" matInput
+                        [formField]="form.translation[language].schedule.notification.title"></textarea>
+            </mat-form-field>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <textarea id="" matInput
+                        [formField]="form.translation[language].schedule.notification.text"></textarea>
+            </mat-form-field>
+          }
 
-          @for (question of form.controls.questions.controls; track $index; let i = $index) {
+          @for (question of form.translation[language].questions; track $index; ) {
             <div class="border-y"></div>
-            <div>
-              <app-text-form-group [language]="language"
-                                   [textarea]="true"
-                                   [textareaAutosize]="true"
-                                   [textGroup]="asFormGroup(question.controls['field_label'])"
-                                   [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_label)"/>
-            </div>
-            @if (question.controls['section_header']) {
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="asFormGroup(question.controls['section_header'])"
-                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.section_header)"/>
-              </div>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <textarea id="" matInput [formField]="question.field_label"></textarea>
+            </mat-form-field>
+            @if (entity?.questions?.[$index]['section_header']?.[defaultLanguage.code]) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="question.section_header"></textarea>
+              </mat-form-field>
             }
-            @if (question.controls['field_note']) {
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="asFormGroup(question.controls['field_note'])"
-                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_note)"/>
-              </div>
+            @if (entity?.questions?.[$index]['field_note']?.[defaultLanguage.code]) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="question.field_note"></textarea>
+              </mat-form-field>
             }
-            @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track $index; let j = $index) {
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="false"
-                                     [textareaAutosize]="false"
-                                     [textGroup]="asFormGroup(choice.controls['label'])"
-                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label)"/>
-              </div>
-            }
-          }
-        }
-
-        @for (language of languages; track language.code) {
-          @if(language.code !== entity?.defaultLanguage?.code) {
-            <div>{{ language.label }}</div>
-            <div>
-              <app-text-form-group [language]="language"
-                                   [textarea]="false"
-                                   [textareaAutosize]="false"
-                                   [textGroup]="form.controls.title"
-                                   [value]="$safeNavigationMigration(entity?.title)"/>
-            </div>
-            <div>
-              <app-text-form-group [language]="language"
-                                   [textarea]="true"
-                                   [textareaAutosize]="true"
-                                   [textGroup]="form.controls.description"
-                                   [value]="$safeNavigationMigration(entity?.description)"/>
-            </div>
-            <div>
-              <app-text-form-group [language]="language"
-                                   [textarea]="true"
-                                   [textareaAutosize]="true"
-                                   [textGroup]="form.controls.endText"
-                                   [value]="$safeNavigationMigration(entity?.endText)"/>
-            </div>
-            @if (entity?.warningEnabled) {
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="form.controls.warn"
-                                     [value]="$safeNavigationMigration(entity?.warn)"/>
-              </div>
-            }
-            <ng-container formGroupName="schedule">
-              <ng-container formGroupName="notification">
-                <div>
-                  <app-text-form-group [language]="language"
-                                       [textarea]="true"
-                                       [textareaAutosize]="true"
-                                       [textGroup]="form.controls.schedule.controls.notification.controls.title"
-                                       [value]="$safeNavigationMigration(entity?.schedule?.notification?.title)"/>
-                </div>
-                <div>
-                  <app-text-form-group [language]="language"
-                                       [textarea]="true"
-                                       [textareaAutosize]="true"
-                                       [textGroup]="form.controls.schedule.controls.notification.controls.text"
-                                       [value]="$safeNavigationMigration(entity?.schedule?.notification?.text)"/>
-                </div>
-              </ng-container>
-            </ng-container>
-
-            @for (question of form.controls.questions.controls; track $index; let i = $index) {
-              <div class="border-y"></div>
-              <div>
-                <app-text-form-group [language]="language"
-                                     [textarea]="true"
-                                     [textareaAutosize]="true"
-                                     [textGroup]="asFormGroup(question.controls['field_label'])"
-                                     [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_label)"/>
-              </div>
-              @if (question.controls['section_header']) {
-                <div>
-                  <app-text-form-group [language]="language"
-                                       [textarea]="true"
-                                       [textareaAutosize]="true"
-                                       [textGroup]="asFormGroup(question.controls['section_header'])"
-                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.section_header)"/>
-                </div>
-              }
-              @if (question.controls['field_note']) {
-                <div>
-                  <app-text-form-group [language]="language"
-                                       [textarea]="true"
-                                       [textareaAutosize]="true"
-                                       [textGroup]="asFormGroup(question.controls['field_note'])"
-                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.field_note)"/>
-                </div>
-              }
-              @for (choice of $any($any(question.controls['select_choices_or_calculations']).controls); track $index; let j = $index) {
-                <div>
-                  <app-text-form-group [language]="language"
-                                       [textarea]="false"
-                                       [textareaAutosize]="false"
-                                       [textGroup]="asFormGroup(choice.controls['label'])"
-                                       [value]="$safeNavigationMigration(entity?.questions?.[i]?.select_choices_or_calculations?.[j]?.label)"/>
-                </div>
-              }
+            @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="choice.label"></textarea>
+              </mat-form-field>
             }
           }
         }

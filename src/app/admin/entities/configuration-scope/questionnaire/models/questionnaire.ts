@@ -1,6 +1,6 @@
 export interface AppQuestionnaire {
-  _name: string;
-  _search: string;
+  // _name: string;
+  search: string;
 
   name: string;
   version: string;

@@ -1,21 +1,15 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-<form [formGroup]='form' novalidate class="grid grid-cols-2 gap-4">
+<form novalidate class="grid grid-cols-2 gap-4">
   <div>
     <div class="">
       <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
       <mat-form-field class='small-input' appearance='outline'>
-        <input matInput formControlName='name' required>
+        <input matInput [formField]="form.name">
         <mat-error>
-          @if (form.controls.name.errors; as errors) {
-            @if (errors['required']) {
-              {{ ValidatorError.requiredValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
-            }
-            @if (errors['duplicate']) {
-              {{ ValidatorError.duplicateValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
-            }
-            @if (errors['pattern']) {
-              {{ ValidatorError.stringIdValidator | translate: {value: `${_prefix}.nameLabel` | translate} }}
+          @if (form.name().touched() && form.name().invalid()) {
+            @for (error of form.name().errors(); track error.kind) {
+              {{ error.message }}
             }
           }
         </mat-error>
@@ -23,26 +17,45 @@
     </div>
 
     <div class="">
-      <app-mat-select-autocomplete formControlName="defaultLanguage"
+      <label for="defaultLanguageLabel" class="text-sm">{{ `${_prefix}.defaultLanguageLabel` | translate }}</label>
+      <app-searchable-multi-select [formField]="form.defaultLanguage"
+                                   [labelKey]="'label'"
                                    [options]="ISO_LANGUAGES"
-                                   [label]="`${_prefix}.defaultLanguageLabel` | translate"
-                                   [required]="true"
-                                   [multiple]="false"
-                                   [adapter]="languageAdapter" />
+                                   [valueKey]="'code'"
+                                   [multiple]="false"/>
+
+<!--      <app-mat-select-autocomplete formControlName="defaultLanguage"-->
+<!--                                   [options]="ISO_LANGUAGES"-->
+<!--                                   [label]="`${_prefix}.defaultLanguageLabel` | translate"-->
+<!--                                   [required]="true"-->
+<!--                                   [multiple]="false"-->
+<!--                                   [adapter]="languageAdapter" />-->
     </div>
 
     <div class="mb-4">
-      <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"
-                           [textGroup]="form.controls.title"
-                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>
+      <label for="titleLabel" class="text-sm">
+        {{ `${_prefix}.titleLabel` | translate }}
+      </label>
+      <mat-form-field class='small-input w-full' appearance='outline'>
+        <input id="titleLabel" matInput [formField]="form.title">
+      </mat-form-field>
+<!--      <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"-->
+<!--                           [textGroup]="form.controls.title"-->
+<!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>-->
     </div>
 
     <div class="mb-4">
-      <app-text-form-group [label]="`${_prefix}.descriptionLabel` | translate"
-                           [textarea]="true"
-                           [textareaAutosize]="true"
-                           [textGroup]="form.controls.description"
-                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>
+      <label for="descriptionLabel" class="text-sm">
+        {{ `${_prefix}.descriptionLabel` | translate }}
+      </label>
+      <mat-form-field class='small-input w-full' appearance='outline'>
+        <input id="descriptionLabel" matInput [formField]="form.description">
+      </mat-form-field>
+<!--      <app-text-form-group [label]="`${_prefix}.descriptionLabel` | translate"-->
+<!--                           [textarea]="true"-->
+<!--                           [textareaAutosize]="true"-->
+<!--                           [textGroup]="form.controls.description"-->
+<!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>-->
     </div>
   </div>
 

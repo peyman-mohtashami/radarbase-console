@@ -1,7 +1,7 @@
 import {
   Component,
   inject,
-  ChangeDetectionStrategy, signal, effect
+  ChangeDetectionStrategy, signal, effect, OnInit
 } from '@angular/core';
 import {
   FormArray
@@ -116,11 +116,12 @@ export interface StoredQuestionnaireDialog {
     // MatIconButton,
   ]
 })
-export class QuestionnaireDialogComponent {
+export class QuestionnaireDialogComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
 
   protected localeService = inject(LocaleService);
   protected store = inject(QuestionnaireStore);
+  protected dialogState = inject(QuestionnaireDialogStateService);
   private organizationStore = inject(OrganizationStore);
   private configService = inject(QuestionnaireConfigService);
   private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
@@ -200,10 +201,10 @@ export class QuestionnaireDialogComponent {
   // }
 
   //TODO CHECK
-  // ngOnInit() {
-  //   super.ngOnInit();
-  //   this.dialogState.questionnaire.set(this.dialogData.entity);
-  // }
+  ngOnInit() {
+    // super.ngOnInit();
+    this.dialogState.questionnaire.set(this.dialogData.entity);
+  }
 
 
   ngAfterViewInit() {
@@ -211,19 +212,28 @@ export class QuestionnaireDialogComponent {
   }
 
   protected async save(): Promise<void> {
-    const entity = this.store.selected()!; //this.dialogState.questionnaire();
+    const entity = this.dialogState.questionnaire();
     if (entity) {
       entity.isValid = this.sectionsValidity.general && this.sectionsValidity.questions && this.sectionsValidity.scheduling && this.sectionsValidity.customMessages && this.sectionsValidity.notifications && this.sectionsValidity.translations;
+      switch(this.dialogData.mode) {
+        case DialogMode.ADD:
+          await this.store.add(entity);
+          break;
+        case DialogMode.EDIT:
+          await this.store.update(entity);
+          break;
+      }
+      await this.store.publish();
     }
-    switch(this.dialogData.mode) {
-      case DialogMode.ADD:
-        await this.store.add(entity);
-        break;
-      case DialogMode.EDIT:
-        await this.store.update(entity);
-        break;
-    }
-    await this.store.publish();
+    // switch(this.dialogData.mode) {
+    //   case DialogMode.ADD:
+    //     await this.store.add(entity);
+    //     break;
+    //   case DialogMode.EDIT:
+    //     await this.store.update(entity);
+    //     break;
+    // }
+    // await this.store.publish();
 
     if (this.store.error()) return;
 

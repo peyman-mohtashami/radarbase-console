@@ -1,212 +1,169 @@
-import {Component, inject, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
+import {Component, computed, effect, inject, output, signal} from '@angular/core';
 import {
+  AppQuestion,
   AppQuestionnaire,
-  AppQuestionnaireLanguage,
-  DEFAULT_LANGUAGE,
   ISO_LANGUAGES
 } from '../../../../models/questionnaire';
-import {AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {
-  MatSelectAutocompleteAdapter,
-  MatSelectAutocompleteComponent
-} from '../../../../../../../../shared/components/mat-select-autocomplete/mat-select-autocomplete.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {debounceTime} from 'rxjs/operators';
-import {TextFormGroupComponent} from '../questionnaire-questions/text-form-group/text-form-group.component';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {JsonPipe} from '@angular/common';
+import {form, FormField} from '@angular/forms/signals';
+import {
+  SearchableMultiSelectComponent
+} from '../../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+import {MatFormField, MatInput} from '@angular/material/input';
+
+export interface QuestionnaireTranslationsLanguageForm {
+  languages: string[];
+}
+
+export interface QuestionnaireTranslationsForm {
+  translation: Record<string, QuestionnaireTranslationForm>;
+}
+
+
+export interface QuestionnaireTranslationForm {
+  title: string;
+  description: string;
+  endText: string;
+  warn: string;
+  schedule: {
+    notification: {
+      title: string;
+      text: string;
+    }
+  };
+  questions: QuestionnaireQuestionForm[];
+}
+
+export interface QuestionnaireQuestionForm {
+  field_name: string;
+  field_label: string;
+  field_note: string;
+  section_header: string;
+  select_choices_or_calculations: {code: string; label: string;}[];
+}
 
 @Component({
   selector: 'app-questionnaire-translation',
   templateUrl: 'questionnaire-translation.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    MatSelectAutocompleteComponent,
-    ReactiveFormsModule,
     TranslatePipe,
-    TextFormGroupComponent,
-    JsonPipe,
+    FormField,
+    SearchableMultiSelectComponent,
+    MatFormField,
+    MatInput,
   ]
 })
-export class QuestionnaireTranslationComponent implements OnInit {
+export class QuestionnaireTranslationComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
 
   valid = output<boolean>();
 
-  form = new FormGroup({
-    languages: new FormControl<AppQuestionnaireLanguage[]>([this.dialogState.questionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE], {nonNullable: true}),
-    title: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    description: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    endText: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    warn: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-    schedule: new FormGroup({
-      notification: new FormGroup({
-        title: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        text: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-      }),
-    }),
-    questions: new FormArray<FormGroup>([]),
+  numberOfGridRows = this.getNumberOfGridRows();
+
+  protected languagesModel = signal<QuestionnaireTranslationsLanguageForm>({//this.dialogData.restoredModel ?? {
+    languages: this.dialogState.questionnaire()?.languages.map(l => l.code) ?? [],
   });
 
-  entity?: AppQuestionnaire;
+  readonly languagesList = computed(() => {
+    const { languages } = this.languagesModel();
+    const defaultLanguage = this.dialogState.questionnaire()!.defaultLanguage.code;
 
-  numberOfRows = 0;
+    return [
+      defaultLanguage,
+      ...languages.filter(lang => lang !== defaultLanguage),
+    ];
+  });
 
-  languageAdapter: MatSelectAutocompleteAdapter<AppQuestionnaireLanguage> = {
-    value: l => l.code,
-    label: l => l.label
-  };
+  protected model = signal<QuestionnaireTranslationsForm>({//this.dialogData.restoredModel ?? {
+    translation: this.getTranslations(this.dialogState.questionnaire()!, this.dialogState.questionnaire()?.languages.map(l => l.code) ?? [])
+  });
 
-  ngOnInit() {
-
-    const entity = this.dialogState.questionnaire();
-    this.entity = entity;
-    if (entity) {
-      const t = entity.questions?.reduce((acc, curr) => {
-        return acc + 2 + (curr.field_note?.[entity.defaultLanguage.code] ? 1 : 0) + (curr.section_header?.[entity.defaultLanguage.code] ? 1 : 0) + (curr.select_choices_or_calculations?.length ?? 0);
-      }, 0);
-      this.numberOfRows = 6 + (this.dialogState.questionnaire()?.warningEnabled ? 1 : 0) + (t ?? 0);
-
-      const questionsFormGroup = entity.questions?.map(q => {
-        const choices = q.select_choices_or_calculations?.map(c => new FormGroup({
-          label: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        })) ?? [];
-        const formGroup: any = {
-          field_label: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-          select_choices_or_calculations: new FormArray<FormGroup>(choices),
-        };
-        if (q.field_note?.[entity.defaultLanguage.code]) {
-          formGroup['field_note'] = new FormGroup({})//new FormControl<Record<string, string>>({}, {nonNullable: true})
-        }
-        if (q.section_header?.[entity.defaultLanguage.code]) {
-          formGroup['section_header'] = new FormGroup({})//new FormControl<Record<string, string>>({}, {nonNullable: true})
-        }
-        return new FormGroup(formGroup);
-      });
-
-      this.form = new FormGroup({
-        languages: new FormControl<AppQuestionnaireLanguage[]>([entity.defaultLanguage], {nonNullable: true}),
-        title: new FormGroup({}), //new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        description: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        endText: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        warn: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-        schedule: new FormGroup({
-          notification: new FormGroup({
-            title: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-            text: new FormGroup({}),//new FormControl<Record<string, string>>({}, {nonNullable: true}),
-          }),
-        }),
-        questions: new FormArray<FormGroup>(questionsFormGroup ?? []),
-
-      });
-
-      this.form.patchValue({...entity});
-    }
-
-    this.form.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(change => {
-      // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 106 change' , change);
-      // console.log('Class: QuestionnaireTranslationComponent, Function: , Line 107 {...entity, ...change}' , {...entity, ...change});
-      const entity = this.dialogState.questionnaire();
-      // this.dialogState.selectedQuestionnaire.set({...this.dialogState.selectedQuestionnaire(), schedule: {...this.dialogState.selectedQuestionnaire()?.schedule, ...change.schedule}} as AppQuestionnaire);
-
-      // this.changeEvent.emit({
-      //   ...entity,
-      //   ...change,
-      //   schedule: {
-      //     ...entity?.schedule,
-      //     ...change.schedule,
-      //     notification: {
-      //       ...entity?.schedule?.notification,
-      //       ...change.schedule?.notification,
-      //     },
-      //   },
-      //   questions: entity?.questions?.map((question, questionIndex) => {
-      //     const questionChange = change.questions?.[questionIndex];
-      //
-      //     return {
-      //       ...question,
-      //       ...questionChange,
-      //       select_choices_or_calculations: question.select_choices_or_calculations?.map((choice, choiceIndex) => ({
-      //         ...choice,
-      //         ...questionChange?.select_choices_or_calculations?.[choiceIndex],
-      //         label: {
-      //           ...choice.label,
-      //           ...questionChange?.select_choices_or_calculations?.[choiceIndex]?.label,
-      //         },
-      //       })),
-      //       field_label: {
-      //         ...question.field_label,
-      //         ...questionChange?.field_label,
-      //       },
-      //       field_note: {
-      //         ...question.field_note,
-      //         ...questionChange?.field_note,
-      //       },
-      //       section_header: {
-      //         ...question.section_header,
-      //         ...questionChange?.section_header,
-      //       },
-      //     };
-      //   }),
-      // });
-
-      this.dialogState.questionnaire.set({
-        ...entity,
-        ...change,
-        schedule: {
-          ...entity?.schedule,
-          ...change.schedule,
-          notification: {
-            ...entity?.schedule?.notification,
-            ...change.schedule?.notification,
-          },
-        },
-        questions: entity?.questions?.map((question, questionIndex) => {
-          const questionChange = change.questions?.[questionIndex];
-
-          return {
-            ...question,
-            ...questionChange,
-            select_choices_or_calculations: question.select_choices_or_calculations?.map((choice, choiceIndex) => ({
-              ...choice,
-              ...questionChange?.select_choices_or_calculations?.[choiceIndex],
-              label: {
-                ...choice.label,
-                ...questionChange?.select_choices_or_calculations?.[choiceIndex]?.label,
-              },
-            })),
-            field_label: {
-              ...question.field_label,
-              ...questionChange?.field_label,
-            },
-            field_note: {
-              ...question.field_note,
-              ...questionChange?.field_note,
-            },
-            section_header: {
-              ...question.section_header,
-              ...questionChange?.section_header,
-            },
-          };
-        }),
-      } as AppQuestionnaire);
-
-      this.valid.emit(this.form.valid);
-    });
-
-    // this.form.valueChanges.pipe(
-    //   debounceTime(300)
-    // ).subscribe(change => {
-    //   this.changeEvent.emit({...entity, ...change, schedule: {...entity?.schedule, ...change.schedule}});
-    //   this.valid.emit(this.form.valid);
-    // });
+  getTranslations(questionnaire: AppQuestionnaire, languages: string[]):  Record<string, QuestionnaireTranslationForm> {
+    return languages.reduce((acc: Record<string, QuestionnaireTranslationForm>, language) => {
+      acc[language] = this.getTranslationForm(questionnaire, language);
+      return acc;
+    }, {});
   }
 
-  protected asFormGroup(control: AbstractControl): FormGroup {
-    return control as FormGroup;
+  getTranslationForm(questionnaire: AppQuestionnaire, language: string) {
+    return {
+      title: questionnaire.title?.[language] ?? '',
+      description: questionnaire.description?.[language] ?? '',
+      endText: questionnaire.endText?.[language] ?? '',
+      warn: questionnaire.warn?.[language] ?? '',
+      schedule: {
+        notification: {
+          title: questionnaire.title?.[language] ?? '',
+          text: questionnaire.description?.[language] ?? '',
+        }
+      },
+      questions: this.getQuestionnaireQuestionForm(questionnaire.questions, language)
+    }
+  }
+
+  getQuestionnaireQuestionForm(questions: AppQuestion[], language: string): QuestionnaireQuestionForm[] {
+    return questions.map(q => {
+      return {
+        field_name: q.field_name,
+        field_label: q.field_label[language] ?? '',
+        field_note: q.field_note?.[language] ?? '',
+        section_header: q.section_header?.[language] ?? '',
+        select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
+          return {
+            code: c.code,
+            label: c.label[language] ?? '',
+          }
+        }) ?? [],
+      }
+    })
+  }
+
+  protected languagesForm = form(this.languagesModel, (schema) => {
+  });
+
+  protected form = form(this.model, (schema) => {
+  });
+
+  getNumberOfGridRows() {
+    const questionnaire = this.dialogState.questionnaire()!;
+    const lang = questionnaire.defaultLanguage.code;
+    const numberOfQuestionnaireRows = 4 +
+      (questionnaire.warningEnabled ? 1 : 0) +
+      (questionnaire.schedule?.onDemand ? 0 : 2);
+
+    const numberOfQuestionsRows = questionnaire.questions.reduce((acc, q) => {
+      const numberOfQuestionRows = 2 + (q.field_note?.[lang] ? 1 : 0) + (q.section_header?.[lang] ? 1 : 0);
+      const numberOfChoicesRows = q.select_choices_or_calculations?.length ?? 0;
+      return acc + numberOfQuestionRows + numberOfChoicesRows;
+    }, 0);
+
+    console.log('Class: QuestionnaireTranslationComponent, Function: getNumberOfGridRows, Line 142 numberOfQuestionnaireRows, numberOfQuestionsRows' , numberOfQuestionnaireRows, numberOfQuestionsRows);
+
+    return numberOfQuestionnaireRows + numberOfQuestionsRows;
+  }
+
+
+  constructor() {
+    effect(() => {
+      const languages = this.languagesModel().languages;
+      this.model.update(value => {
+        return {
+          translation: this.getTranslations(this.dialogState.questionnaire()!, languages)
+        }
+      })
+    });
+    // effect(() => {
+    //   const model = this.model();
+    //   const entity = untracked(() => this.dialogState.questionnaire());
+    //   const updated = {
+    //     ...entity,
+    //     ...model.translation
+    //   } as AppQuestionnaire;
+    //   this.dialogState.questionnaire.set(updated);
+    //   this.valid.emit(this.form().valid());
+    // });
   }
 }

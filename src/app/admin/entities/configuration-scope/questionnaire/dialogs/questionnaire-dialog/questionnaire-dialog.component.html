@@ -3,7 +3,7 @@
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
   <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?._name ? `${dialogData.entity?._name}` : `` }}</code>
+  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
 </h2>
 
 <mat-dialog-content [class]="dialogData.mode !== DialogMode.DELETE ? 'p-0!' : ''">

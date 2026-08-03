@@ -1,3 +1,6 @@
+<!--&#45;&#45;{{disabledItem() | json}}&#45;&#45;-->
+--{{selectedOptions() | json}}--
+
 <mat-form-field class="w-full" appearance="outline">
   <mat-select [formField]="formField()"
               [multiple]="multiple()"
@@ -7,9 +10,11 @@
         @for (option of selectedOptions(); track trackByOption($index, option)) {
           <mat-chip-row removable (removed)="remove(option)">
             {{ display(option) }}
-            <button matChipRemove type="button" (click)="$event.stopPropagation()">
-              <mat-icon class="material-symbols-outlined">cancel</mat-icon>
-            </button>
+            @if(option[valueKey()] !== disabledItem()?.[valueKey()]) {
+              <button matChipRemove type="button" (click)="$event.stopPropagation()" [disabled]="option[valueKey()] === disabledItem()?.[valueKey()]">
+                <mat-icon class="material-symbols-outlined">cancel</mat-icon>
+              </button>
+            }
           </mat-chip-row>
         }
       </mat-chip-set>
@@ -32,12 +37,12 @@
         </mat-option>
       } @else {
         @for (option of filteredOptions(); track trackByOption($index, option)) {
-          <mat-option [value]="`${option[valueKey()]}`">{{ display(option) }}</mat-option>
+          <mat-option [value]="`${option[valueKey()]}`" [disabled]="disabledItem()?.[valueKey()] === option[valueKey()]">{{ display(option) }}</mat-option>
         }
       }
     }
   </mat-select>
-
+--{{formField()().valid()}}--
   <mat-error>
     @if (formField()().touched() && formField()().invalid()) {
       @for (error of formField()().errors(); track error.kind) {

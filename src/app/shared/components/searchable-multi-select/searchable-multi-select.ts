@@ -15,10 +15,10 @@ import {
   FormField,
 } from '@angular/forms/signals';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-searchable-multi-select',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -28,6 +28,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
     FormField,
+    JsonPipe,
   ],
   templateUrl: './searchable-multi-select.html',
 })
@@ -51,6 +52,8 @@ export class SearchableMultiSelectComponent<T extends object> {
   readonly multiple = input<boolean>(true);
   readonly disabled = input<boolean>(false);
   readonly loading = input<boolean>(false);
+
+  readonly disabledItem = input<T>();
 
   readonly searchControl = new FormControl(
     '',
@@ -98,7 +101,16 @@ export class SearchableMultiSelectComponent<T extends object> {
     const values = this.selectedValues();
     const valueKey = this.valueKey();
     const options = this.options();
-    return options.filter(option =>  values.includes(`${option[valueKey]}`));
+    const selectedOptions = options.filter(option =>  values.includes(`${option[valueKey]}`));
+
+    const disabledOption = selectedOptions.find(i => i[this.valueKey()] === this.disabledItem()?.[this.valueKey()]);
+    if (disabledOption) {
+      return [
+        disabledOption,
+        ...selectedOptions.filter(i => i[this.valueKey()] !== this.disabledItem()?.[this.valueKey()])
+      ];
+    }
+    return selectedOptions;
   });
 
   display(option: T): string {
