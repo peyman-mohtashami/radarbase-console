@@ -15,14 +15,14 @@ import {AppUser, CreateUserDto, RoleDto, UpdateUserDto, UserDialogMode} from "..
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {UserConfigService} from '../../services/user-config.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {UserDetailsComponent} from '../../components/user-details/user-details.component';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';

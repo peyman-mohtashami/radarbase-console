@@ -5,11 +5,11 @@ import {UserDetailsComponent} from "../user-details/user-details.component";
 import {UserActivatedComponent} from "../user-activated/user-activated.component";
 import {UserRolesComponent} from "../user-roles/user-roles.component";
 import {UserConfigService} from "../../services/user-config.service";
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {UserActionsComponent} from '../user-actions/user-actions.component';
 import {UserActivateComponent} from '../user-activate/user-activate.component';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-user-table-row',

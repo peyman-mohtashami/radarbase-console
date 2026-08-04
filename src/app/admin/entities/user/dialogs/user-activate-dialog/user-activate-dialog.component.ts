@@ -17,7 +17,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {UserStore} from '../../services/user.store';
 import {animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';

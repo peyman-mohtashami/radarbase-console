@@ -67,7 +67,7 @@ export const projectRoutes: Routes = [
       {
         path: 'questionnaires',
         loadChildren: () =>
-          import('../configuration-scope/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
+          import('../questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
         data: {scope: 'project'}
       },
       {

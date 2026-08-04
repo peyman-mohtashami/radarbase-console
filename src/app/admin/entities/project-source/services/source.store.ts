@@ -5,10 +5,10 @@ import {SourceService} from './source.service';
 import {AppSource, CreateSourceDto, SourceDto, UpdateSourceDto} from '../models/source';
 import {SourceConfigService} from './source-config.service';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
-} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../shared/components/data-table-filter/data-table-filter.component';
 
 @Injectable({providedIn: 'root'})
 export class SourceStore {

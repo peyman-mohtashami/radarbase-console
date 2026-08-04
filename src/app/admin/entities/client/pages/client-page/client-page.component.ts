@@ -5,7 +5,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
 import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
-import {TabLink} from "../../../../base-entities/models/tab-link";
+import {TabLink} from "../../../../shared/models/tab-link";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {ClientActionsComponent} from '../../components/client-actions/client-actions.component';
 import {MatButton} from '@angular/material/button';

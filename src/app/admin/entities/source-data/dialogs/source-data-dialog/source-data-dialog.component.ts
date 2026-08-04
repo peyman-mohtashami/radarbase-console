@@ -20,7 +20,7 @@ import {MatOption} from "@angular/material/core";
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSelect} from '@angular/material/select';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {JsonPipe} from '@angular/common';

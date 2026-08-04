@@ -10,7 +10,7 @@ import {OrganizationActionsComponent} from '../../components/organization-action
 import {TranslatePipe} from '@ngx-translate/core';
 import {ROLES} from "../../../../../shared/enums/roles";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
-import {TabLink} from "../../../../base-entities/models/tab-link";
+import {TabLink} from "../../../../shared/models/tab-link";
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {OrganizationStore} from '../../services/organization.store';

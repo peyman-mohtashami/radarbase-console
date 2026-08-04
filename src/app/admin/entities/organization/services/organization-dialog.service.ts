@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../shared/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppOrganization} from '../models/organization';
 import {OrganizationStore} from './organization.store';

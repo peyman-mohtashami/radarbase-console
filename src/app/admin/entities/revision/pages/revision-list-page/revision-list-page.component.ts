@@ -6,18 +6,18 @@ import {AppRevision} from '../../models/revision';
 import {RevisionTableRowComponent} from '../../components/revision-table-row/revision-table-row.component';
 import {
   DataTableFilterComponent, FilterEvent,
-} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../../shared/components/data-table-filter/data-table-filter.component';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
-import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+import {EntityListPageComponent} from '../../../../shared/components/entity-list-page/entity-list-page.component';
 import {ProjectStore} from '../../../project/services/project.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
 import {PageEvent} from '@angular/material/paginator';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../base-entities/consts/default-table-values';
-import {TableElement} from '../../../../base-entities/models/table.model';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {RevisionStore} from '../../services/revision.store';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 
 @Component({
   selector: 'app-revision-list-page',

@@ -4,9 +4,9 @@ import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-d
 import {
   SourceDataProcessingStateComponent
 } from "../source-data-processing-state/source-data-processing-state.component";
-import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
+import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-source-data-details',

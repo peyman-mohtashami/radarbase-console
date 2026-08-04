@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../shared/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppGroup} from '../models/group';
 import {GroupDialogComponent, GroupForm, StoredGroupDialog} from '../dialogs/group-dialog/group-dialog.component';

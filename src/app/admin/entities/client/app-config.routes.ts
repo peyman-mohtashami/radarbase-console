@@ -20,7 +20,7 @@ export const appConfigRoutes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../configuration-scope/config/config.routes').then((m) => m.configRoutes),
+              import('../config/config.routes').then((m) => m.configRoutes),
           },
           {
             path: '**',

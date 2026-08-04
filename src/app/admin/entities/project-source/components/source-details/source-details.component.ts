@@ -4,9 +4,9 @@ import { AppSource } from "../../models/source";
 import {SourceAssignedComponent} from "../source-assigned/source-assigned.component";
 import {KeyValuePipe} from "@angular/common";
 import {SourceSourceTypeComponent} from "../source-source-type/source-source-type.component";
-import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
+import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceConfigService} from "../../services/source-config.service";
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-source-details',

@@ -11,17 +11,17 @@ import {AppOrganization} from '../../models/organization';
 import {OrganizationTableRowComponent} from '../../components/organization-table-row/organization-table-row.component';
 import {
   DataTableFilterComponent, FilterEvent,
-} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
-import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+} from '../../../../shared/components/data-table-filter/data-table-filter.component';
+import {EntityListPageComponent} from '../../../../shared/components/entity-list-page/entity-list-page.component';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
 import {TranslatePipe} from '@ngx-translate/core';
 import {PageEvent} from '@angular/material/paginator';
-import {TableElement} from '../../../../base-entities/models/table.model';
+import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../base-entities/consts/default-table-values';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {OrganizationStore} from '../../services/organization.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';

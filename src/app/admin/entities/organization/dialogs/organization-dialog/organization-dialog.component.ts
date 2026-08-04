@@ -9,7 +9,7 @@ import {
 import {AppOrganization, CreateOrganizationDto, UpdateOrganizationDto} from "../../models/organization";
 import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {form, FormField, validate} from '@angular/forms/signals';
@@ -78,7 +78,7 @@ export class OrganizationDialogComponent implements AfterViewInit {
 
   private model = signal<OrganizationForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,
-    id: `${this.dialogData.entity?.id}`,
+    id: `${this.dialogData.entity?.id ?? ''}`,
     name: this.dialogData.entity?.name ?? '',
     location: this.dialogData.entity?.location ?? '',
     description: this.dialogData.entity?.description ?? '',

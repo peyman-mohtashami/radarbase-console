@@ -6,10 +6,10 @@ import {ClientService} from './client.service';
 import {ClientConfigService} from './client-config.service';
 import {AppClient, ClientDto, CreateClientDto, UpdateClientDto} from '../models/client';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
-} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {AppSubject} from '../../project-subject/models/subject';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';

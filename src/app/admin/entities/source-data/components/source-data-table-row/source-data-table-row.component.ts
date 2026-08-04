@@ -5,11 +5,11 @@ import {SourceDataSourceTypeComponent} from "../source-data-source-type/source-d
 import {SourceDataProcessingStateComponent} from "../source-data-processing-state/source-data-processing-state.component";
 import {SourceDataDetailsComponent} from "../source-data-details/source-data-details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SourceDataActionsComponent} from '../source-data-actions/source-data-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-source-data-table-row',

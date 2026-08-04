@@ -5,8 +5,8 @@ import {SubjectDialogService} from '../../services/subject-dialog.service';
 import {SubjectTableRowComponent} from '../../components/subject-table-row/subject-table-row.component';
 import {
   DataTableFilterComponent, FilterEvent,
-} from '../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
-import {EntityListPageComponent} from '../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+} from '../../../../shared/components/data-table-filter/data-table-filter.component';
+import {EntityListPageComponent} from '../../../../shared/components/entity-list-page/entity-list-page.component';
 import {SubjectAssignGroupComponent} from '../../components/subject-assign-group/subject-assign-group.component';
  import {MatButton} from '@angular/material/button';
  import {MatIcon} from '@angular/material/icon';
@@ -14,9 +14,9 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
  import {TranslatePipe} from '@ngx-translate/core';
  import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
  import {PageEvent} from '@angular/material/paginator';
- import {MIN_ENTITIES_FOR_FILTERS} from '../../../../base-entities/consts/default-table-values';
- import {TableElement} from '../../../../base-entities/models/table.model';
- import {DialogMode} from '../../../../base-entities/enums/dialog';
+ import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+ import {TableElement} from '../../../../shared/models/table.model';
+ import {DialogMode} from '../../../../shared/enums/dialog';
  import {ROLES} from '../../../../../shared/enums/roles';
  import {SubjectStore} from '../../services/subject.store';
  import {SubjectDialogMode} from '../../enums/dialog';

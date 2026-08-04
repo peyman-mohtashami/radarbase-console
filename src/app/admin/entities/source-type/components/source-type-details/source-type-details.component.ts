@@ -5,9 +5,9 @@ import {
   SourceTypeSourceRegistrationComponent
 } from "../source-type-source-registration/source-type-source-registration.component";
 import {SourceTypeSourcesDataComponent} from "../source-type-sources-data/source-type-sources-data.component";
-import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
+import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-source-type-details',

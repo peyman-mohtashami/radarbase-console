@@ -8,11 +8,11 @@ import {OrganizationDetailsComponent} from "../organization-details/organization
 import {OrganizationActionsComponent} from "../organization-actions/organization-actions.component";
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {OrganizationConfigService} from "../../services/organization-config.service";
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-organization-table-row',

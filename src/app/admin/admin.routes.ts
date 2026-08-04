@@ -54,7 +54,7 @@ export const adminRoutes: Routes = [
       {
         path: 'questionnaires',
         loadChildren: () =>
-          import('./entities/configuration-scope/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
+          import('./entities/questionnaire/questionnaires.route').then((m) => m.questionnaireRoutes),
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },

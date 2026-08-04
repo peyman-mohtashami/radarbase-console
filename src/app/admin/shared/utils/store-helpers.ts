@@ -1,5 +1,5 @@
 import {WritableSignal} from '@angular/core';
-import {RbSort} from '../../base-entities/models/table.model';
+import {RbSort} from '../models/table.model';
 
 
 export async function execute(op: {

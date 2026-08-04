@@ -6,7 +6,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {SourceTypeActionsComponent} from '../../components/source-type-actions/source-type-actions.component';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatTabLink, MatTabNav, MatTabNavPanel} from '@angular/material/tabs';
-import {TabLink} from '../../../../base-entities/models/tab-link';
+import {TabLink} from '../../../../shared/models/tab-link';
 import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';

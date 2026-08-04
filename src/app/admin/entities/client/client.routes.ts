@@ -28,7 +28,7 @@ export const clientRoutes: Routes = [
       {
         path: 'configs',
         loadChildren: () =>
-          import('../configuration-scope/config/config.routes').then((m) => m.configRoutes),
+          import('../config/config.routes').then((m) => m.configRoutes),
       },
       {
         path: 'details',

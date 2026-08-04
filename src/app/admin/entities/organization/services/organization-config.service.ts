@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {FilterItem, TableElement} from '../../../base-entities/models/table.model';
-import {FormFieldType} from '../../../base-entities/models/dialog.model';
+import {FilterItem, TableElement} from '../../../shared/models/table.model';
+import {FormFieldType} from '../../../shared/models/dialog.model';
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
-import {BaseConfigService} from '../../../base-entities/services/base-config.service';
+import {BaseConfigService} from '../../../shared/services/base-config.service';
 
 export const TableElements: TableElement[] = [
   {

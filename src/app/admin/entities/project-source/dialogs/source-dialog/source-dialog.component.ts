@@ -15,7 +15,7 @@ import {
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {SourceConfigService} from '../../services/source-config.service';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSource, CreateSourceDto, UpdateSourceDto} from '../../models/source';
 import {AppSourceType} from '../../../source-type/models/source-type';
 import {JsonPipe} from '@angular/common';

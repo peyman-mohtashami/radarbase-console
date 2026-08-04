@@ -29,7 +29,7 @@
             class='close-button'
             [mat-dialog-close]='true'
             (click)='close()'>
-      {{ 'ADMIN.subject.assignGroupDialog.cancel' | translate }}
+      {{ `${_prefix}.assignGroupDialog.cancel` | translate }}
     </button>
   </div>
   <div class='action-buttons-container-right'>
@@ -42,7 +42,7 @@
       @if (store.loading()) {
         <mat-icon><mat-spinner diameter='20' /></mat-icon>
       }
-      {{'ADMIN.subject.assignGroupDialog.assign' | translate }}
+      {{`${_prefix}.assignGroupDialog.assign` | translate }}
     </button>
   </div>
 </div>

@@ -4,8 +4,8 @@ import {firstValueFrom} from 'rxjs';
 import {OrganizationConfigService} from './organization-config.service';
 import {Params} from '@angular/router';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
-import {FilterEvent} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {FilterEvent} from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {OrganizationService} from './organization.service';
 import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 

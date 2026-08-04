@@ -20,7 +20,7 @@ import {JsonPipe} from '@angular/common';
     MatOption,
     RouterOutlet,
     TranslatePipe,
-    JsonPipe,
+    // JsonPipe,
   ]
 })
 export class ClientsSelectPageComponent implements OnInit {

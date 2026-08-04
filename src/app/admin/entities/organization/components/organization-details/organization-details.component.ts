@@ -1,8 +1,8 @@
 import {Component, inject, input} from '@angular/core';
 import {OrganizationProjectsComponent} from "../organization-projects/organization-projects.component";
-import {EntityDetailsComponent} from "../../../../base-entities/components/entity-details/entity-details.component";
+import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {OrganizationConfigService} from "../../services/organization-config.service";
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 import {AppOrganization} from '../../models/organization';
 
 @Component({

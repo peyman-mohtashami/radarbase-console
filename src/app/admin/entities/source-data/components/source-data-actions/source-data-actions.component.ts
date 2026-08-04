@@ -1,6 +1,6 @@
 import {Component, inject, input} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSourceData} from '../../models/source-data';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';

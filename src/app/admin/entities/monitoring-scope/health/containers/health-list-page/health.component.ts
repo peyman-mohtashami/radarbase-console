@@ -13,7 +13,7 @@ import {
 } from "@angular/material/expansion";
 import {MatButton} from "@angular/material/button";
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
-import {DetailElementComponent} from '../../../../../base-entities/components/entity-details/detail-element/detail-element.component';
+import {DetailElementComponent} from '../../../../../shared/components/detail-element/detail-element.component';
 import {FileSizePipe} from '../../../../../../shared/pipes/file-size.pipe';
 import {MatIcon} from '@angular/material/icon';
 import {HealthDto} from '../../models/health.model';

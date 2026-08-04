@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../shared/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppClient} from '../models/client';
 import {ClientDialogComponent, ClientForm, StoredClientDialog} from '../dialogs/client-dialog/client-dialog.component';

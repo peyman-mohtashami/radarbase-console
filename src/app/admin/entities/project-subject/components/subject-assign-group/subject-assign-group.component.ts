@@ -14,7 +14,7 @@ import {AsyncPipe} from '@angular/common';
     MatButton,
     MatIcon,
     TranslatePipe,
-    AsyncPipe
+    // AsyncPipe
   ]
 })
 export class SubjectAssignGroupComponent {

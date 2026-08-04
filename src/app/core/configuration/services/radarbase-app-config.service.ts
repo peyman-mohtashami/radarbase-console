@@ -5,7 +5,7 @@ import {
   AppConfig,
   ConfigDto,
   ConfigBundleDto
-} from '../../../admin/entities/configuration-scope/config/models/config';
+} from '../../../admin/entities/config/models/config';
 import {environment} from '../../../../environments/environment';
 
 @Injectable({

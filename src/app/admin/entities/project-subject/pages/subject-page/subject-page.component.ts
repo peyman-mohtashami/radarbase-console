@@ -6,7 +6,7 @@ import {PermissionDirective} from "../../../../../core/auth/directives/show-if-h
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
-import {TabLink} from "../../../../base-entities/models/tab-link";
+import {TabLink} from "../../../../shared/models/tab-link";
 import {SubjectActionsComponent} from '../../components/subject-actions/subject-actions.component';
 import {MatIcon} from '@angular/material/icon';
 import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';

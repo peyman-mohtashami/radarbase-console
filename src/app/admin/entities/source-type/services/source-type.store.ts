@@ -6,10 +6,10 @@ import {SourceTypeService} from './source-type.service';
 import {Params} from '@angular/router';
 import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
-} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../shared/components/data-table-filter/data-table-filter.component';
 
 @Injectable({providedIn: 'root'})
 export class SourceTypeStore {

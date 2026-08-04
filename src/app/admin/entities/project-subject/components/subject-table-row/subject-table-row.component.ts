@@ -8,13 +8,13 @@ import {SubjectGroupComponent} from "../subject-group/subject-group.component";
 import {SubjectDetailsComponent} from "../subject-details/subject-details.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 import {AsyncPipe} from '@angular/common';
 
 @Component({
@@ -32,7 +32,7 @@ import {AsyncPipe} from '@angular/common';
     EntityTableRowComponent,
     SubjectActionsComponent,
     TranslatePipe,
-    AsyncPipe,
+    // AsyncPipe,
   ]
 })
 export class SubjectTableRowComponent {

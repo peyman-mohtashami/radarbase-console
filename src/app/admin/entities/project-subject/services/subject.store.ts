@@ -5,10 +5,10 @@ import {SubjectService} from './subject.service';
 import {AppSubject, CreateSubjectDto, SubjectDto, UpdateSubjectDto} from '../models/subject';
 import {SubjectConfigService} from './subject-config.service';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
-} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {SelectionModel} from '@angular/cdk/collections';
 
 @Injectable({providedIn: 'root'})

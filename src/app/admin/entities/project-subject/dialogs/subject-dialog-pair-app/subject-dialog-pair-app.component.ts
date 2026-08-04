@@ -21,10 +21,10 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {MatFormField, MatOption, MatSelect} from '@angular/material/select';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 import {
   DetailElementComponent
-} from '../../../../base-entities/components/entity-details/detail-element/detail-element.component';
+} from '../../../../shared/components/detail-element/detail-element.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';

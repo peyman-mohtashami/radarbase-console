@@ -13,7 +13,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {SubjectConfigService} from '../../services/subject-config.service';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SubjectStore} from '../../services/subject.store';

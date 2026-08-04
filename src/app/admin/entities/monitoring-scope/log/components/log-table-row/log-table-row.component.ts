@@ -3,9 +3,9 @@ import {AppLog} from "../../models/log";
 import {TranslatePipe} from "@ngx-translate/core";
 import {TagComponent} from '../../../../../../shared/components/tag/tag.component';
 import {LogConfigService} from "../../services/log-config.service";
-import {EntityTableRowComponent} from '../../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../../shared/components/entity-table-row/entity-table-row.component';
 import {ROLES} from '../../../../../../shared/enums/roles';
-import {DetailType} from '../../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-log-table-row',

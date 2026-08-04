@@ -17,7 +17,7 @@ import {AppGroup, CreateGroupDto} from "../../models/group";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {GroupConfigService} from '../../services/group-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';

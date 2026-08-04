@@ -3,9 +3,9 @@ import {AppRevision} from "../../models/revision";
 import {ModificationComponent} from "../modifications/modification.component";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {RevisionConfigService} from '../../services/revision-config.service';
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-revision-table-row',

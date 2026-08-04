@@ -4,18 +4,18 @@ import {UserActivatedComponent} from '../../../user/components/user-activated/us
 import {PermissionDetailsComponent} from '../permission-details/permission-details.component';
 import {AppUser} from "../../../user/models/user";
 import {PermissionConfigService} from "../../services/permission-config.service";
-import {
-  BaseEntityTableRowComponent
-} from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
+// import {
+//   BaseEntityTableRowComponent
+// } from '../../../../base-entities/components/entity-table-row/base-entity-table-row.component';
 import {
   EntityTableRowComponent
-} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {PermissionActionsComponent} from '../permission-actions/permission-actions.component';
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
 import {ManagementPortalUser} from '../../../../../core/auth/models/auth.model';
 import {UserConfigService} from '../../../user/services/user-config.service';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-permission-table-row',

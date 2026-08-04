@@ -14,7 +14,7 @@ import {
 } from "../../../organization/models/organization";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ProjectConfigService} from '../../services/project-config.service';
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';

@@ -264,12 +264,21 @@
       <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon>
-            <mat-spinner diameter='20'/>
+            <mat-spinner diameter="20" />
           </mat-icon>
-          {{ 'SHARED.dialog.deletingButton' | translate }}
-        } @else {
-          {{ 'SHARED.dialog.yes' | translate }}
         }
+
+        {{ store.loading()
+        ? ('SHARED.dialog.deletingButton' | translate)
+        : ('SHARED.dialog.yes' | translate) }}
+<!--        @if (store.loading()) {-->
+<!--          <mat-icon>-->
+<!--            <mat-spinner diameter='20'/>-->
+<!--          </mat-icon>-->
+<!--          {{ 'SHARED.dialog.deletingButton' | translate }}-->
+<!--        } @else {-->
+<!--          {{ 'SHARED.dialog.yes' | translate }}-->
+<!--        }-->
       </button>
     }
     @case (DialogMode.EDIT) {

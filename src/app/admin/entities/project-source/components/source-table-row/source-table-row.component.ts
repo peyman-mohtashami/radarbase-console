@@ -6,10 +6,10 @@ import {SourceDetailsComponent} from "../source-details/source-details.component
 import {AppSource} from '../../models/source';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SourceConfigService} from "../../services/source-config.service";
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SourceActionsComponent} from '../source-actions/source-actions.component';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-source-table-row',

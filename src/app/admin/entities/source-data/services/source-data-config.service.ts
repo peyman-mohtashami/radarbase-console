@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {FilterItem, TableElement} from '../../../base-entities/models/table.model';
+import {FilterItem, TableElement} from '../../../shared/models/table.model';
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
-import {BaseConfigService} from '../../../base-entities/services/base-config.service';
+import {BaseConfigService} from '../../../shared/services/base-config.service';
 
 export const TableElements: TableElement[] = [
     {name: "id", width: "w-16", tableClass: "hidden sm:block", extensionClass: "block sm:hidden", sortable: true, editable: false },

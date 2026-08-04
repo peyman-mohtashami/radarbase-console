@@ -10,7 +10,7 @@ import {ProjectConfigService} from '../../services/project-config.service';
 import {MatButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
-import {TabLink} from "../../../../base-entities/models/tab-link";
+import {TabLink} from "../../../../shared/models/tab-link";
 import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {ProjectStore} from '../../services/project.store';

@@ -6,10 +6,10 @@ import {UserService} from './user.service';
 import {ROLES} from '../../../../shared/enums/roles';
 import {UserConfigService} from './user-config.service';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../base-entities/models/table.model';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
-} from '../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
+} from '../../../shared/components/data-table-filter/data-table-filter.component';
 
 @Injectable({providedIn: 'root'})
 export class UserStore {

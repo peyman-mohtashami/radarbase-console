@@ -5,15 +5,15 @@ import {AppLog} from '../../models/log';
 import {LogTableRowComponent} from '../../components/log-table-row/log-table-row.component';
 import {
   DataTableFilterComponent, FilterEvent,
-} from '../../../../../base-entities/containers/entity-list-page/data-table-filter/data-table-filter.component';
-import {EntityListPageComponent} from '../../../../../base-entities/containers/entity-list-page/entity-list-page.component';
+} from '../../../../../shared/components/data-table-filter/data-table-filter.component';
+import {EntityListPageComponent} from '../../../../../shared/components/entity-list-page/entity-list-page.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {getHighestPriorityClass} from '../../../../../shared/utils/table-extension.util';
 import {PageEvent} from '@angular/material/paginator';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../../base-entities/consts/default-table-values';
-import {TableElement} from '../../../../../base-entities/models/table.model';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../../shared/consts/default-table-values';
+import {TableElement} from '../../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
-import {DialogMode} from '../../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../../shared/enums/dialog';
 import {ROLES} from '../../../../../../shared/enums/roles';
 import {LogStore} from '../../services/log.store';
 

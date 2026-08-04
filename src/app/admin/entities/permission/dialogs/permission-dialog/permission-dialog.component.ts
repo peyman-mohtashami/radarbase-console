@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatError} from "@angular/material/form-field";
-import {DialogMode} from '../../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../../shared/enums/dialog';
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
@@ -13,9 +13,9 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AppUser, CreateUserDto, UpdateUserDto} from "../../../user/models/user";
-import {
-  DialogAction
-} from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
+// import {
+//   DialogAction
+// } from "../../../../base-entities/containers/entity-dialog/dialog-actions/dialog-actions.component";
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -37,7 +37,6 @@ export interface PermissionForm {
 @Component({
   selector: 'app-permission-dialog',
   templateUrl: './permission-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogContent,
     TranslatePipe,
@@ -56,7 +55,7 @@ export interface PermissionForm {
 })
 export class PermissionDialogComponent implements AfterViewInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly DialogAction = DialogAction;
+  // protected readonly DialogAction = ;
 
   protected localeService = inject(LocaleService);
   protected store = inject(PermissionStore);
@@ -111,21 +110,21 @@ export class PermissionDialogComponent implements AfterViewInit {
     animateDialogIn(this.dialogData.id);
   }
 
-  async onAction($event: DialogAction) {
-    switch ($event) {
-      case DialogAction.CLOSE:
-        this.close();
-        break;
-      case DialogAction.DELETE:
-        await this.handleDeleteAction();
-        break;
-      case DialogAction.SAVE:
-        await this.handleSaveAction();
-        break;
-    }
-  }
+  // async onAction($event: DialogAction) {
+  //   switch ($event) {
+  //     case DialogAction.CLOSE:
+  //       this.close();
+  //       break;
+  //     case DialogAction.DELETE:
+  //       await this.handleDeleteAction();
+  //       break;
+  //     case DialogAction.SAVE:
+  //       await this.handleSaveAction();
+  //       break;
+  //   }
+  // }
 
-  protected async handleSaveAction(): Promise<void> {
+  protected async save(): Promise<void> {
     // this.configService.setLatestFormEntry(this.model());
     //
     // if (this.dialogData.mode === DialogMode.ADD) {
@@ -141,7 +140,7 @@ export class PermissionDialogComponent implements AfterViewInit {
     // this.navigateOnUpdateSuccess(this.model().login);
   }
 
-  protected async handleDeleteAction(): Promise<void> {
+  protected async delete(): Promise<void> {
     // await this.store.delete(this.dialogData.entity!);
     // this.configService.setLatestFormEntry(null);
     // this.dialogRef.close();
@@ -154,65 +153,65 @@ export class PermissionDialogComponent implements AfterViewInit {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  navigateOnUpdateSuccess(entityName: string) {
-    const selectedOrganization = this.store.selected();
-    if (!selectedOrganization) return;
+  // navigateOnUpdateSuccess(entityName: string) {
+  //   const selectedOrganization = this.store.selected();
+  //   if (!selectedOrganization) return;
+  //
+  //
+  //
+  //   const urlTree = this.router.parseUrl(this.router.url);
+  //   const primaryRoute = urlTree.root.children['primary'];
+  //
+  //   if (!primaryRoute) {
+  //     return;
+  //   }
+  //
+  //   const segments = primaryRoute.segments.map(segment => segment.path);
+  //   const organizationsIndex = segments.indexOf('organizations');
+  //   const organizationNameIndex = organizationsIndex + 1;
+  //
+  //   const hasOrganizationNameInUrl =
+  //     organizationsIndex !== -1 &&
+  //     organizationNameIndex < segments.length;
+  //
+  //   if (!hasOrganizationNameInUrl) {
+  //     return;
+  //   }
+  //
+  //   segments[organizationNameIndex] = entityName;
+  //
+  //   this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
+  // }
+  //
+  // navigateOnDeleteSuccess() {
+  //   this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
+  // }
+  //
+  // toCreateDtoModel(model: UserForm): CreateUserDto {
+  //   return {
+  //     ...model,
+  //   };
+  // }
+  //
+  // toUpdateDtoModel(model: UserForm): UpdateUserDto {
+  //   return {
+  //     ...model,
+  //     id: Number(model.id),
+  //   };
+  // }
 
 
 
-    const urlTree = this.router.parseUrl(this.router.url);
-    const primaryRoute = urlTree.root.children['primary'];
 
-    if (!primaryRoute) {
-      return;
-    }
-
-    const segments = primaryRoute.segments.map(segment => segment.path);
-    const organizationsIndex = segments.indexOf('organizations');
-    const organizationNameIndex = organizationsIndex + 1;
-
-    const hasOrganizationNameInUrl =
-      organizationsIndex !== -1 &&
-      organizationNameIndex < segments.length;
-
-    if (!hasOrganizationNameInUrl) {
-      return;
-    }
-
-    segments[organizationNameIndex] = entityName;
-
-    this.router.navigate(segments, {queryParams: urlTree.queryParams}).then();
-  }
-
-  navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
-  }
-
-  toCreateDtoModel(model: UserForm): CreateUserDto {
-    return {
-      ...model,
-    };
-  }
-
-  toUpdateDtoModel(model: UserForm): UpdateUserDto {
-    return {
-      ...model,
-      id: Number(model.id),
-    };
-  }
-
-
-
-
-  protected organizationAdapter: MatSelectAutocompleteAdapter<AppOrganization> = {
-    value: o => o.id.toString(),
-    label: o => o.name
-  }
-
-  protected projectAdapter: MatSelectAutocompleteAdapter<AppProject> = {
-    value: o => o.id.toString(),
-    label: o => o.projectName
-  }
+  // protected organizationAdapter: MatSelectAutocompleteAdapter<AppOrganization> = {
+  //   value: o => o.id.toString(),
+  //   label: o => o.name
+  // }
+  //
+  // protected projectAdapter: MatSelectAutocompleteAdapter<AppProject> = {
+  //   value: o => o.id.toString(),
+  //   label: o => o.projectName
+  // }
   // extends BaseEntityDialogComponent<AppUser> {
   // protected readonly DetailType = DetailType;
   // protected readonly DialogAction = DialogAction;

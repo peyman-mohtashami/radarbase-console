@@ -8,12 +8,12 @@ import {ProjectDetailsComponent} from "../project-details/project-details.compon
 import {PermissionDirective} from "../../../../../core/auth/directives/show-if-has-role.directive";
 import {LocalDateComponent} from "../../../../../core/locale/components/local-date/local-date.component";
 import {ProjectConfigService} from "../../services/project-config.service";
-import {EntityTableRowComponent} from '../../../../base-entities/components/entity-table-row/entity-table-row.component';
+import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {ProjectActionsComponent} from '../project-actions/project-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 import {ROLES} from '../../../../../shared/enums/roles';
-import {DetailType} from '../../../../base-entities/enums/detail-type';
+import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
   selector: 'app-project-table-row',

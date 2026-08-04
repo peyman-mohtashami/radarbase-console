@@ -11,7 +11,7 @@ import {JsonPipe} from '@angular/common';
   imports: [
     TagComponent,
     TranslatePipe,
-    JsonPipe,
+    // JsonPipe,
   ]
 })
 export class PermissionRolesComponent {

@@ -1,9 +1,9 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../base-entities/enums/dialog';
+import {DialogMode} from '../../../shared/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppUser, UserDto} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
-import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
+// import {BaseDialogService} from '../../../base-entities/services/base-dialog.service';
 import {PermissionConfigService} from './permission-config.service';
 import {UserStore} from '../../user/services/user.store';
 import {ProjectStore} from '../../project/services/project.store';

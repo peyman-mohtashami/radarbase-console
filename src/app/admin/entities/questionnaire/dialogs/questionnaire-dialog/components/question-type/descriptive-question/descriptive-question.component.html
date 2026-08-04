@@ -1,0 +1,15 @@
+<!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
+
+@switch (type) {
+  @case ('button') {
+  }
+  @case ('form') {
+
+  }
+  @case ('preview') {
+    <app-question-header [question]="entity()" [language]="language()" />
+  }
+}
+
+
+
