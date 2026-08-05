@@ -38,7 +38,7 @@ export const filters: FilterItem[] = [
     type: FormFieldType.INPUT,
   },
   {
-    name: 'authorities',
+    name: 'authority',
     advanced: true,
     label: 'ADMIN.user.authority.tableLabel',
     type: FormFieldType.SELECT,

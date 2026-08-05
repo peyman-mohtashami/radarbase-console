@@ -12,7 +12,7 @@ export class UserService {
   private apiUrl = `${environment.apiUrl}api/users`;
 
   getAll(): Observable<UserDto[]> {
-    return this.http.get<UserDto[]>(this.apiUrl);
+    return this.http.get<UserDto[]>(this.apiUrl, {params: {includeProvenance: false}});
   }
 
   getWithQuery(queryParams: Params) {

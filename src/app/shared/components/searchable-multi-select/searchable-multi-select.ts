@@ -15,7 +15,6 @@ import {
   FormField,
 } from '@angular/forms/signals';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-searchable-multi-select',
@@ -28,7 +27,6 @@ import {JsonPipe} from '@angular/common';
     MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
     FormField,
-    JsonPipe,
   ],
   templateUrl: './searchable-multi-select.html',
 })

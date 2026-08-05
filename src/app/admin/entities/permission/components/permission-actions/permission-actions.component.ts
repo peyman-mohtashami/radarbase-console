@@ -1,14 +1,12 @@
-import {Component, inject, input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AppUser} from "../../../user/models/user";
 import {MatTooltip} from "@angular/material/tooltip";
 import {PermissionConfigService} from '../../services/permission-config.service';
 import {MatIcon} from '@angular/material/icon';
-import {OrganizationDialogService} from '../../../organization/services/organization-dialog.service';
 import {PermissionDialogService} from '../../services/permission-dialog.service';
 
 @Component({
@@ -22,7 +20,6 @@ import {PermissionDialogService} from '../../services/permission-dialog.service'
     MatTooltip,
     MatIcon
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './permission-actions.component.html',
 })
 export class PermissionActionsComponent {

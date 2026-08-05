@@ -7,8 +7,8 @@
 
 
 /* Include any additional sources (for example, third-party components) as needed */
-@custom-variant dark (&:is(.dark *));
-
+/*@custom-variant dark (&:is(.dark *));*/
+/*@custom-variant dark (&:where(.dark, .dark *));*/
 /*:root {*/
 /*  --mat-sys-primary: #6200ee;*/
 /*  --mat-sys-primary-dark: #ff0000;*/

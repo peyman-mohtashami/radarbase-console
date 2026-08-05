@@ -22,7 +22,7 @@ export const TableElements: TableElement[] = [
 
 export const filters: FilterItem[] = [
   {
-    name: '_search',
+    name: 'search',
     label: 'ADMIN.user.filters.search',
     type: FormFieldType.INPUT,
   },

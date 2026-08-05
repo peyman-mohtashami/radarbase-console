@@ -15,6 +15,11 @@
 <!--                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>-->
 <!--  }-->
 <!--</app-entities-page-header>-->
+<div class="bg-red-500 dark:bg-blue-500"></div>
+<div class="text-red-500 dark:text-blue-500"></div>
+<div class="border-red-500 dark:border-blue-500"></div>
+<div class="bg-red-500 hover:bg-blue-500"></div>
+<div class="bg-red-500 md:bg-blue-500"></div>
 
 <div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
@@ -58,8 +63,8 @@
 <app-entity-list-page [entities]="entities()"
                    [tableFields]="tableFields"
                    [entityMetadata]="entityMetadata"
-                   [page]="page()!"
-                   [sort]="sort()!"
+                   [page]="store.page()"
+                   [sort]="store.sort()"
                    (switchPageEvent)="switchPage($event)"
                    (switchSortEvent)="switchSort($event)"
                    [customTemplate]="itemTemplate"

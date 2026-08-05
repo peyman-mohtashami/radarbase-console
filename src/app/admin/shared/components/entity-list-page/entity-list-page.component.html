@@ -8,7 +8,8 @@
 
   @if (!gridView() && entities().length) {
     <div class="sticky top-18 z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background mat-app-background">
-      @for (tableField of tableFields(); track tableField.name) {
+      @for (tableField of tableFields(); track $index) {
+<!--        //tableField.name) {-->
         @if (tableField.name === 'checkbox') {
           <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
                [class.flex-1]="!tableField.width"
@@ -45,7 +46,9 @@
     </div>
   }
   @if (entities().length) {
-    @for (entity of entities(); track entity.name) {
+    @for (entity of entities(); track $index) {
+<!--      -->
+<!--    entity.name) {-->
       @if (customTemplate()) {
         <ng-container *ngTemplateOutlet="customTemplate()!; context: { $implicit: entity }" />
 <!--        selection: selection()-->

@@ -58,14 +58,6 @@ export const adminRoutes: Routes = [
         canActivate: [roleGuard],
         data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
       },
-      // {
-      //   path: 'protocols',
-      //   loadChildren: () =>
-      //     import('./entities/configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
-      //   canActivate: [roleGuard],
-      //   data: { allowedRoles: [RADAR_ROLES.SYS_ADMIN], scope: 'global' },
-      // },
-
       {
         path: 'logs',
         loadChildren: () => import('./entities/monitoring-scope/log/log.routes').then((m) => m.logRoutes),
@@ -100,10 +92,6 @@ export const adminRoutes: Routes = [
         path: '**',
         redirectTo: 'projects',
       }
-      // {
-      //   path: '**',
-      //   redirectTo: ROUTES.PROTOCOLS,
-      // }
     ],
   }
 ];

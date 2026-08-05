@@ -20,18 +20,6 @@
     </div>
   }
 
-<!--  @if (dialogData.mode === DialogMode.VIEW || dialogData.mode === DialogMode.DELETE) {-->
-<!--    <div class='mb-4 text-base'>-->
-<!--      @if (dialogData.mode === DialogMode.DELETE) {-->
-<!--        <div class="mt-4">-->
-<!--          <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:-->
-<!--            <strong>{{ dialogData.entity.login }}</strong>.</p>-->
-<!--          <p>{{ `SHARED.dialog.deleteWarning` | translate }}</p>-->
-<!--        </div>-->
-<!--      }-->
-<!--    </div>-->
-<!--  }-->
-
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form novalidate>
       <label for="email" class="text-sm">{{ `${_prefix}.search.label` | translate }} *</label>
@@ -87,6 +75,9 @@
               {{ user.lastName }}
             </span>
           </div>
+          @if (selectedUserInvalid()) {
+            <div class="text-red-500 font-bold my-2">Already assigned</div>
+          }
         </div>
       } @else {
         @if (form().dirty()) {
@@ -137,7 +128,7 @@
       </button>
     }
     @if (dialogData.mode === DialogMode.ADD) {
-      <button [disabled]='!form().valid() || store.loading() || !selectedUser()'
+      <button [disabled]='!form().valid() || store.loading() || !selectedUser() || selectedUserInvalid()'
               (click)='save()'
               color="primary"
               mat-raised-button

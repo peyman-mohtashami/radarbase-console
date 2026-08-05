@@ -75,7 +75,7 @@ export class UserStore {
   }
 
   async getWithQuery(): Promise<boolean> {
-    console.log('Class: UserStore, Function: getWithQuery, Line 78 ' , );
+    console.log('Class: UserStore, Function: getWithQuery, Line 78 ' , this.params());
     this.loading.set(true);
     try {
       const response = await firstValueFrom(this.api.getWithQuery(this.params()));
@@ -150,8 +150,7 @@ export class UserStore {
     try {
       const updatedEntity = await firstValueFrom(this.api.update(entity));
       await this.getWithQuery();
-      if (this.selected()
-      ) {
+      if (this.selected()) {
         this.selected.set(this.toAppModel(updatedEntity));
       }
       return true;

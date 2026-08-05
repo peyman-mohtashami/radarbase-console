@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, output, signal, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, OnInit, output, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
@@ -15,7 +15,6 @@ import {Language} from '../../../core/configuration/models/custom-configuration.
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     MatToolbar,

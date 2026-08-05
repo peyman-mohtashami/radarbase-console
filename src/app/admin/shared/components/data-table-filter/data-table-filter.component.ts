@@ -1,15 +1,5 @@
-import {
-  Component,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-  output,
-} from '@angular/core';
+import {Component, computed, effect, inject, input, OnInit, output, signal,} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {Subject} from 'rxjs';
-import {debounceTime, takeUntil} from 'rxjs/operators';
 import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
@@ -19,19 +9,21 @@ import {
   MatDatepickerInput,
   MatDatepickerToggle,
   MatDateRangeInput,
-  MatDateRangePicker, MatEndDate, MatStartDate
+  MatDateRangePicker,
+  MatEndDate,
+  MatStartDate
 } from "@angular/material/datepicker";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
 import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
-import {ValidatorError} from '../../../../shared/utils/validators';
 import {FormFieldType} from '../../models/dialog.model';
 import {FilterItem} from '../../models/table.model';
 import {format, isValid, parse} from 'date-fns';
 import {LocalDateComponent} from '../../../../core/locale/components/local-date/local-date.component';
 import {TagComponent} from '../../../../shared/components/tag/tag.component';
 import {LocaleService} from "../../../../core/locale/services/locale.service";
+import {form, FormField} from '@angular/forms/signals';
 
 export type FilterEvent = Record<string, string | null | undefined>
 
@@ -39,7 +31,6 @@ export type FilterEvent = Record<string, string | null | undefined>
   selector: 'app-data-table-filter',
   templateUrl: './data-table-filter.component.html',
   imports: [
-    ReactiveFormsModule,
     MatFormField,
     MatSelect,
     MatOption,
@@ -61,10 +52,10 @@ export type FilterEvent = Record<string, string | null | undefined>
     MatPrefix,
     LocalDateComponent,
     TagComponent,
+    FormField,
   ]
 })
-export class DataTableFilterComponent implements OnInit, OnDestroy {
-  protected readonly ValidatorError = ValidatorError;
+export class DataTableFilterComponent implements OnInit {
   protected readonly FilterType = FormFieldType;
 
   localeService = inject(LocaleService);
@@ -73,113 +64,194 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
 
   filters = input<FilterItem[]>([]);
+  _filters: FilterItem[] = [];
   filterOpened = input<boolean>(true);
 
   filterChanged = output<FilterEvent>();
   filterEnableChanged = output<boolean>();
-
-  form?: FormGroup;
 
   filterEnabled = false;
   advFilterEnabled = false;
 
   advancedFilterEnabled = false;
 
-  _destroy$: Subject<void> = new Subject<void>();
+  protected model = signal<Record<string, any>>({});
+
+  protected form = form(this.model, (schema) => {});
+
+  readonly requestModel = computed(() => {
+    const model = this.model();
+
+    return this._filters.reduce((acc, filter) => {
+      switch (filter.type) {
+        case FormFieldType.RANGE_PICKER:
+          if (filter.names) {
+            if (model[filter.names[0]]) {
+              acc[filter.names[0]] = format(model[filter.names[0]], 'yyyy-MM-dd');
+              // if (filter.advanced) this.advFilterEnabled = true;
+            } else {
+              acc[filter.names[0]] = null;
+            }
+            if (model[filter.names[1]]) {
+              acc[filter.names[1]] = format(model[filter.names[1]], 'yyyy-MM-dd');
+              // if (filter.advanced) this.advFilterEnabled = true;
+            } else {
+              acc[filter.names[1]] = null;
+            }
+          }
+          break;
+        case FormFieldType.DATEPICKER:
+          if (model[filter.name]) {
+            acc[filter.name] = format(model[filter.name], 'yyyy-MM-dd');
+          } else {
+            acc[filter.name] = null;
+          }
+          break;
+        default:
+          if (model[filter.name]) {
+            acc[filter.name] = model[filter.name];
+          } else {
+            acc[filter.name] = null;
+          }
+          break;
+      }
+      return acc;
+    }, {} as Record<string, any>);
+  });
+
+  constructor() {
+    effect(() => {
+      const model = this.requestModel();
+      // if (this.form?.controls) {
+      //   this.filterEnabled = Object.keys(this.form?.controls).some(
+      //     (formKey) => this.form?.controls[formKey].value
+      //   );
+      //   this.advFilterEnabled = Object.keys(this.form?.controls).some(
+      //     (formKey) => {
+      //       const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
+      //       if (!t) return false;
+      //       return this.form?.controls[formKey].value
+      //     }
+      //   );
+      //   this.filterEnableChanged.emit(this.filterEnabled);
+      // }
+
+      this.applyStateChangesToUrlQueryParams(model);
+      Object.entries(model).forEach(([key, value]) => {
+        if (!value) {
+          delete model[key];
+        }
+      });
+      this.filterChanged.emit(model);
+    });
+  }
 
   ngOnInit(): void {
-    this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
+    this._filters = this.filters();
+    this.model.set(this._filters.reduce((acc, filter) => {
+      if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
+        acc[filter.names[0]] = '';
+        acc[filter.names[1]] = '';
+      } else {
+        acc[filter.name] = '';
+      }
+      return acc;
+    }, {} as Record<string, any>));
+    this.advancedFilterEnabled = !!this._filters?.find(filter => filter.advanced);
 
-    const filterGroup = this.filters()?.reduce(
-      (acc: Record<string, FormControl>, filterItem: FilterItem) => {
-        if (
-          filterItem.type === FormFieldType.RANGE_PICKER &&
-          filterItem.names
-        ) {
-          acc[filterItem.names[0]] = new FormControl("");
-          acc[filterItem.names[1]] = new FormControl("");
-          return acc;
-        }
-        acc[filterItem.name] = new FormControl("");
-        return acc;
-      }, {}
-    );
+    // this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
 
-    this.form = new FormGroup(filterGroup)
+    // const filterGroup = this.filters()?.reduce(
+    //   (acc: Record<string, FormControl>, filterItem: FilterItem) => {
+    //     if (
+    //       filterItem.type === FormFieldType.RANGE_PICKER &&
+    //       filterItem.names
+    //     ) {
+    //       acc[filterItem.names[0]] = new FormControl("");
+    //       acc[filterItem.names[1]] = new FormControl("");
+    //       return acc;
+    //     }
+    //     acc[filterItem.name] = new FormControl("");
+    //     return acc;
+    //   }, {}
+    // );
+    //
+    // this.form = new FormGroup(filterGroup)
 
-    this.form?.valueChanges
-      .pipe(debounceTime(300), takeUntil(this._destroy$))
-      .subscribe(() => {
-        const formValue = {...this.form?.value};
-        this.filters()?.map((filter) => {
-          if (filter.type === FormFieldType.DATEPICKER && filter.name) {
-            if (formValue[filter.name]) {
-              formValue[filter.name] = format(formValue[filter.name], 'yyyy-MM-dd')
-            }
-          }
-
-          if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
-            if (formValue[filter.names[0]]) {
-              formValue[filter.names[0]] = format(formValue[filter.names[0]], 'yyyy-MM-dd');
-            }
-            if (formValue[filter.names[1]]) {
-              formValue[filter.names[1]] = format(formValue[filter.names[1]], 'yyyy-MM-dd');
-            }
-          }
-        });
-        if (this.form?.controls) {
-          this.filterEnabled = Object.keys(this.form?.controls).some(
-            (formKey) => this.form?.controls[formKey].value
-          );
-          this.advFilterEnabled = Object.keys(this.form?.controls).some(
-            (formKey) => {
-              const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
-              if (!t) return false;
-              return this.form?.controls[formKey].value
-            }
-          );
-          this.filterEnableChanged.emit(this.filterEnabled);
-        }
-        this.applyStateChangesToUrlQueryParams(formValue);
-        console.log('Class: DataTableFilterComponent, Function: , Line 146 formValue' , formValue);
-        this.filterChanged.emit(formValue);
-      });
+    // this.form?.valueChanges
+    //   .pipe(debounceTime(300), takeUntil(this._destroy$))
+    //   .subscribe(() => {
+    //     const formValue = {...this.form?.value};
+    //     this.filters()?.map((filter) => {
+    //       if (filter.type === FormFieldType.DATEPICKER && filter.name) {
+    //         if (formValue[filter.name]) {
+    //           formValue[filter.name] = format(formValue[filter.name], 'yyyy-MM-dd')
+    //         }
+    //       }
+    //
+    //       if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
+    //         if (formValue[filter.names[0]]) {
+    //           formValue[filter.names[0]] = format(formValue[filter.names[0]], 'yyyy-MM-dd');
+    //         }
+    //         if (formValue[filter.names[1]]) {
+    //           formValue[filter.names[1]] = format(formValue[filter.names[1]], 'yyyy-MM-dd');
+    //         }
+    //       }
+    //     });
+    //     if (this.form?.controls) {
+    //       this.filterEnabled = Object.keys(this.form?.controls).some(
+    //         (formKey) => this.form?.controls[formKey].value
+    //       );
+    //       this.advFilterEnabled = Object.keys(this.form?.controls).some(
+    //         (formKey) => {
+    //           const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
+    //           if (!t) return false;
+    //           return this.form?.controls[formKey].value
+    //         }
+    //       );
+    //       this.filterEnableChanged.emit(this.filterEnabled);
+    //     }
+    //     this.applyStateChangesToUrlQueryParams(formValue);
+    //     console.log('Class: DataTableFilterComponent, Function: , Line 146 formValue' , formValue);
+    //     this.filterChanged.emit(formValue);
+    //   });
 
     this.checkActiveFilterQuery();
   }
 
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   removeFilter(filter: FilterItem) {
     if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
-      this.form?.get([filter.names[0]])?.reset();
-      this.form?.get([filter.names[1]])?.reset();
+      this.model.update((value) => {
+        return {...value, [filter.names![0]]: null};
+      })
+      this.model.update((value) => {
+        return {...value, [filter.names![1]]: null};
+      })
     } else {
-      this.form?.get([filter.name])?.reset();
+      this.model.update((value) => {
+        return {...value, [filter.name]: null};
+      })
     }
   }
 
   resetFilters(): void {
     this.filterEnabled = false;
     this.filterEnableChanged.emit(this.filterEnabled);
-    this.form?.reset();
+    this.form().reset();
   }
 
   private checkActiveFilterQuery(): void {
-    // todo patch or set
     let noFilter = true;
-    this.filters()?.map((filter) => {
+    this._filters?.map((filter) => {
       if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
-        const filterValueFrom =
-          this.activatedRoute.snapshot.queryParams[filter.names[0]];
+        const filterValueFrom = this.activatedRoute.snapshot.queryParams[filter.names[0]];
         if (filterValueFrom) {
           const parsedDateFrom = parse(filterValueFrom, 'yyyy-MM-dd', new Date());
           if (isValid(parsedDateFrom)) {
             noFilter = false;
-            this.form?.get([filter.names[0]])?.setValue(parsedDateFrom);
+            this.model.update((value) => {
+              return {...value, [filter.names![0]]: filterValueFrom};
+            });
           }
         }
         const filterValueTo =
@@ -189,7 +261,9 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
 
           if (isValid(parsedDateTo)) {
             noFilter = false;
-            this.form?.get([filter.names[1]])?.setValue(parsedDateTo);
+            this.model.update((value) => {
+              return {...value, [filter.names![1]]: filterValueTo};
+            });
           }
         }
       } else if (filter.type === FormFieldType.DATEPICKER) {
@@ -199,20 +273,23 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
           const parsedDate = parse(filterValue, 'yyyy-MM-dd', new Date());
           if (isValid(parsedDate)) {
             noFilter = false;
-            this.form?.get([filter.name])?.setValue(parsedDate);
+            this.model.update((value) => {
+              return {...value, [filter.name]: filterValue};
+            });
           }
         }
       } else {
-        const filterValue =
-          this.activatedRoute.snapshot.queryParams[filter.name];
+        const filterValue = this.activatedRoute.snapshot.queryParams[filter.name];
         if (filterValue) {
           noFilter = false;
-          this.form?.get([filter.name])?.setValue(filterValue);
+          this.model.update((value) => {
+            return {...value, [filter.name]: filterValue};
+          });
         }
       }
     });
     if (noFilter) {
-      this.form?.reset();
+      this.form().reset();
     }
   }
 
@@ -221,7 +298,6 @@ export class DataTableFilterComponent implements OnInit, OnDestroy {
     this.router.navigate([decodeURIComponent(currentUrlSegments)], {
       queryParams: queryParams,
       queryParamsHandling: 'merge',
-      // fragment: this.activatedRoute.snapshot.fragment ?? undefined,
     }).then();
   }
 }

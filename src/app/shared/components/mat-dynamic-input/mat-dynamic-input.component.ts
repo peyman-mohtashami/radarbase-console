@@ -1,4 +1,4 @@
-import {Component, inject, input, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject, input, OnDestroy, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidatorFn,} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -35,7 +35,6 @@ import {AsyncPipe, DatePipe} from '@angular/common';
     //   useExisting: MatSelectAutocompleteComponent,
     // },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatFormField,
     MatError,

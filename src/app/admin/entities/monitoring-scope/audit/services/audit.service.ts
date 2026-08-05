@@ -9,7 +9,7 @@ import {environment} from '../../../../../../environments/environment';
 export class AuditService {
   private http = inject(HttpClient);
 
-  private apiUrl = `${environment.apiUrl}api/audits`;
+  private apiUrl = `${environment.apiUrl}management/audits`;
 
   getWithQuery(queryParams: Params) {
     return this.http.get<AuditDto[]>(this.apiUrl, {

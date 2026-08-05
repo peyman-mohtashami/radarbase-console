@@ -69,7 +69,7 @@ export class SubjectStore {
       const sourceData = (response.body ?? []).map((dto: SubjectDto) => this.toAppModel(dto));
       const total = response.headers.get('X-Total-Count');
       this.items.set([...sourceData]);
-      this.total.set(total ? +total : 0);
+      this.total.set(total === null ? 0 : (+total === 0 ? 1 : +total));
       return true;
     } catch (e) {
       this.errorHandler.handleError(e);

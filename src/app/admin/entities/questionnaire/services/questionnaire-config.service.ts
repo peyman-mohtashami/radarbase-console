@@ -25,7 +25,7 @@ export const TableElements: TableElement[] = [
 ];
 
 export const filters: FilterItem[] = [
-  {name: '_search', label: 'ADMIN.questionnaire.filters.search', type: FormFieldType.INPUT},
+  {name: 'search', label: 'ADMIN.questionnaire.filters.search', type: FormFieldType.INPUT},
 ]
 
 

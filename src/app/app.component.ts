@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
 import {ToolbarComponent} from './shared/components/toolbar/toolbar.component';
@@ -8,7 +8,6 @@ import {SidebarNavComponent} from "./shared/components/sidebar-nav/sidebar-nav.c
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterOutlet,
     ToolbarComponent,

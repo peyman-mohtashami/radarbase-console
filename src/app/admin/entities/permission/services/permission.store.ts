@@ -1,38 +1,118 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
-import {execute} from '../../../shared/utils/store-helpers';
+import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 import {UserService} from '../../user/services/user.service';
-import {AppUser, UserDto} from '../../user/models/user';
+import {AppUser, UpdateUserDto, UserDto} from '../../user/models/user';
 import {UserStore} from '../../user/services/user.store';
+import {PageEvent} from '@angular/material/paginator';
+import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {FilterEvent} from '../../../shared/components/data-table-filter/data-table-filter.component';
+import {PermissionConfigService} from './permission-config.service';
+import {OrganizationStore} from '../../organization/services/organization.store';
+import {ProjectStore} from '../../project/services/project.store';
 
 @Injectable({providedIn: 'root'})
 export class PermissionStore {
   private api = inject(UserService);
-  private userStore = inject(UserStore)
-  // private configService = inject(SubjectConfigService);
+  private userStore = inject(UserStore);
+  private projectStore = inject(ProjectStore);
+  private organizationStore = inject(OrganizationStore);
+  private configService = inject(PermissionConfigService);
+  private errorHandler = inject(ErrorHandler);
 
-  readonly items = signal<AppUser[]>([]);
+  readonly allItems = signal<AppUser[]>([]);
   readonly selected = signal<AppUser | null>(null);
   readonly total = signal<number>(0);
   readonly loading = signal(false);
   readonly error = signal<Error | null>(null);
 
-  queryParams = signal<Params | undefined>(undefined);
+  readonly page = signal<PageEvent>({
+    pageIndex: 0,
+    pageSize: this.configService.getStoredPageSize(),
+    length: 0,
+  });
+  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly filter = signal<FilterEvent>({});
 
-  async getWithQuery(queryParams: Params): Promise<boolean> {
-    this.queryParams.set(queryParams);
-    return await execute({
-      loading: this.loading,
-      error: this.error,
-      action: async () => {
-        const response = await firstValueFrom(this.api.getWithQuery(queryParams));
-        const subjects = (response.body ?? []).map((dto: UserDto) => this.userStore.toAppModel(dto));
-        const total = response.headers.get('X-Total-Count');
-        this.items.set(subjects);
-        this.total.set(total ? +total : 0);
-      },
+  readonly items = computed<AppUser[]>(() => {
+    const project = this.projectStore.selected() ?? undefined;
+    const organization = this.organizationStore.selected() ?? undefined;
+    const usersWithPermission = this.getUsersWithPermission(this.allItems(), organization?.name, project?.projectName);
+    const filtered = filterItems(usersWithPermission, this.filter() as Record<string, string | undefined>);
+    const sorted = sortItems(filtered, this.sort());
+    const {pageIndex, pageSize} = this.page();
+    return paginateItems(sorted, {pageIndex, pageSize});
+  });
+
+  async setPage(page: PageEvent) {
+    this.configService.setStoredPageSize(page.pageSize);
+    this.page.set(page);
+  }
+
+  async toggleSort({name, sortable}: TableElement) {
+    if (!sortable) return;
+    this.sort.update(({sortOrder}) => ({
+      sortField: name,
+      sortOrder: sortOrder === 'asc' ? 'desc' : 'asc',
+    }));
+  }
+
+  async setFilter(filter: FilterEvent) {
+    this.filter.set(filter);
+  }
+
+  applyQueryParams(queryParams: Params = {}) {
+    this.page.set({
+      pageIndex: +(queryParams['pageIndex'] ?? 0),
+      pageSize: +(queryParams['pageSize'] ?? this.configService.getStoredPageSize()),
+      length: 0,
     });
+    this.sort.set({
+      sortField: queryParams['sortField'] ?? 'id',
+      sortOrder: queryParams['sortOrder'] ?? 'desc',
+    });
+    this.filter.set(this.buildFilter(queryParams));
+  }
+
+  private buildFilter(queryParams: Params): FilterEvent {
+    return this.configService.getTableFilters().reduce<FilterEvent>((filter, {name}) => {
+      filter[name] = queryParams[name];
+      return filter;
+    }, {});
+  }
+
+  async getAll(): Promise<boolean> {
+    this.loading.set(true);
+    try {
+      const dtos = await firstValueFrom(this.api.getAll());
+      this.allItems.set(dtos.map(dto => this.userStore.toAppModel(dto)));
+      this.total.set(dtos.length);
+      return true;
+    } catch (e) {
+      this.errorHandler.handleError(e);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async update(entity: UpdateUserDto): Promise<boolean> {
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      const updatedEntity = await firstValueFrom(this.api.update(entity));
+      await this.getAll();
+      if (this.selected()) {
+        this.selected.set(this.userStore.toAppModel(updatedEntity));
+      }
+      return true;
+    } catch (e) {
+      this.error.set(e as Error);
+      return false;
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   private getUsersWithPermission(
