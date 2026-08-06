@@ -1,4 +1,4 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import {LogoComponent} from '../../../../shared/components/logo/logo.component';
 import {ConfigurationService} from '../../../configuration/services/configuration.service';
@@ -6,7 +6,6 @@ import {ConfigurationService} from '../../../configuration/services/configuratio
 @Component({
   selector: 'app-branding',
   templateUrl: './branding.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     LogoComponent

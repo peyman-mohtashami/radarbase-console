@@ -1,24 +1,24 @@
-import {WritableSignal} from '@angular/core';
+// import {WritableSignal} from '@angular/core';
 import {RbSort} from '../models/table.model';
 
 
-export async function execute(op: {
-  loading: WritableSignal<boolean>,
-  error: WritableSignal<Error | null>,
-  action: () => Promise<void>
-}): Promise<boolean> {
-  op.loading.set(true);
-  op.error.set(null);
-  try {
-    await op.action();
-    return true;
-  } catch (e) {
-    op.error.set(e as Error);
-    return false;
-  } finally {
-    op.loading.set(false);
-  }
-}
+// export async function execute(op: {
+//   loading: WritableSignal<boolean>,
+//   error: WritableSignal<Error | null>,
+//   action: () => Promise<void>
+// }): Promise<boolean> {
+//   op.loading.set(true);
+//   op.error.set(null);
+//   try {
+//     await op.action();
+//     return true;
+//   } catch (e) {
+//     op.error.set(e as Error);
+//     return false;
+//   } finally {
+//     op.loading.set(false);
+//   }
+// }
 
 // export interface StoreExecutionState {
 //   loading: WritableSignal<boolean>;

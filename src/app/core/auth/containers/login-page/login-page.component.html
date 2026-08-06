@@ -2,24 +2,22 @@
   <ng-container header>{{ 'CORE.AUTH.LOGIN_PAGE.title' | translate }}</ng-container>
   <ng-container body>
     <p class="mb-4">{{ 'CORE.AUTH.LOGIN_PAGE.subtitle' | translate }}</p>
-    <form [formGroup]="form" novalidate autocomplete="on">
+    <form novalidate autocomplete="on">
       <label for="username" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.username' | translate }} *</label>
       <mat-form-field class="mb-1! w-full small"
                       subscriptSizing="fixed"
                       appearance='outline'
                       floatLabel='auto'>
         <input matInput id="username" autocomplete="off" data-lpignore="true"
-               formControlName='username'
-               required
+               [formField]="form.username"
                type="text"/>
-        @if (form.controls.username.errors?.['required']) {
-          <mat-error>
-            {{
-              ValidatorError.requiredValidator | translate:
-                {value: 'CORE.AUTH.LOGIN_PAGE.username' | translate}
-            }}
-          </mat-error>
-        }
+        <mat-error>
+          @if (form.username().touched() && form.username().invalid()) {
+            @for (error of form.username().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
       </mat-form-field>
 
       <label for="password" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.password' | translate }} *</label>
@@ -27,23 +25,21 @@
                       appearance='outline'
                       floatLabel='auto'>
         <input matInput id="password" autocomplete="new-password" data-lpignore="true"
-               formControlName='password'
-               required
+               [formField]="form.password"
                type="password"/>
-        @if (form.controls.password.errors?.['required']) {
-          <mat-error>
-            {{
-              ValidatorError.requiredValidator | translate:
-                {value: 'CORE.AUTH.LOGIN_PAGE.password' | translate}
-            }}
-          </mat-error>
-        }
+        <mat-error>
+          @if (form.password().touched() && form.password().invalid()) {
+            @for (error of form.password().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
       </mat-form-field>
 
       @if (error() || stateError()) {
         <app-error-message-box>
           @if (error()) {
-            {{ `ERROR.${$safeNavigationMigration(error()?.error.error)}` | translate }}
+            {{ `ERROR.${error()?.error.error}` | translate }}
           } @else {
             {{ 'CORE.ERROR.sessionExpired' | translate }}
           }
@@ -55,7 +51,7 @@
               color='primary'
               type='submit'
               name='update'
-              [disabled]='!form.valid || !form.dirty || loading()'
+              [disabled]='form().invalid() || !form().dirty() || loading()'
               (click)='loginHandler()'>
         @if (loading()) {
           <mat-icon>

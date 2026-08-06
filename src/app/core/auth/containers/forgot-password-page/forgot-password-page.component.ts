@@ -1,9 +1,6 @@
-import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {Component, effect, inject, signal} from '@angular/core';
 
-import {Validator, ValidatorError} from '../../../../shared/utils/validators';
 import {ProfileService} from '../../services/profile.service';
-import {debounceTime} from 'rxjs/operators';
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
@@ -14,58 +11,54 @@ import {RouterLink} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {HttpErrorResponse} from "@angular/common/http";
-import {toSignal} from "@angular/core/rxjs-interop";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
+import {email, form, FormField} from "@angular/forms/signals";
+import {requiredField} from '../../../../shared/utils/signal-form-validators';
 
 @Component({
   selector: 'app-forgot-password-page',
   templateUrl: './forgot-password-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,
     MatButton,
-    ReactiveFormsModule,
     MatFormField,
     MatError,
     MatInput,
     MatProgressSpinner,
     RouterLink,
     MatIcon,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    FormField
   ],
 })
 export class ForgotPasswordPageComponent {
-  protected readonly ValidatorError = ValidatorError;
+  private profileService = inject(ProfileService);
 
-  private profileService = inject(ProfileService)
+  model = signal({
+    email: ""
+  });
 
-  form = new FormGroup({
-    email: new FormControl("", [Validator.requiredValidator, Validator.emailValidator]),
-  })
+  form = form(this.model, (schema) => {
+    requiredField(schema.email);
+    email(schema.email);
+  });
 
   loading = signal(false);
   error = signal<HttpErrorResponse | null>(null);
   success = signal(false);
 
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
-
   constructor() {
     effect(() => {
-      if (this.formValueChanges()) {
+      if (this.model()) {
         this.error.set(null);
       }
     });
   }
 
   send() {
-    const email = this.form.controls.email?.value;
-
-    if (email) {
-      this.profileService.requestResetPassword(email).subscribe({
+    if (this.model().email) {
+      this.profileService.requestResetPassword(this.model().email).subscribe({
         next: () => {
           this.success.set(true);
           this.error.set(null);

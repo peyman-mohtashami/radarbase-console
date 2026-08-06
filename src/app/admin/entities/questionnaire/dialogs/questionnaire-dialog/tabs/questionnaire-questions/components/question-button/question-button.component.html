@@ -1,0 +1,75 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+
+<div class="flex gap-2 items-center">
+  <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center"
+       [class]="entity().field_name === dialogState.question()?.field_name ? 'bg-tertiary': ''">
+    <span>{{ index() + 1 }}</span>
+  </div>
+  <div class="w-full border border-primary hover:border-tertiary/50 rounded px-4 py-1 mt-2 text-sm!"
+       role="button"
+       tabindex="0"
+       (click)='selectQuestion($event)'
+       [class]="entity().field_name === dialogState.question()?.field_name ? 'border-2 border-tertiary!': ''">
+    <div class="flex items-center gap-2 w-full justify-between mb-2">
+      <div class="flex gap-2 items-center grow">
+        <app-tag class="bg-tertiary/20 text-primary cursor-pointer" [class]="!entity().field_name ? 'bg-red-500/20! text-red-500' : ''">
+          {{ entity().field_name || 'N/A' }}
+        </app-tag>
+      </div>
+      <div class="flex gap-2 items-center">
+        @if (entity().matrix_group_name) {
+          <app-tag class="bg-green-500/20 text-green-700">
+            {{ entity().matrix_group_name | uppercase }}
+          </app-tag>
+        }
+
+        @if (entity().branching_logic){
+
+<!--        }?.length) {-->
+          <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
+                    [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
+            rule
+          </mat-icon>
+        }
+
+        @if (!entity().isValid) {
+          <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+            warning
+          </mat-icon>
+        }
+
+        <app-tag class="bg-secondary/20 text-primary">
+          {{ entity().field_type | uppercase }}
+        </app-tag>
+
+        <button class="app-icon-button-small"
+                mat-icon-button color="warn"
+                (click)='removeQuestion($event)'>
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+<!--    @if (entity().field_type !== 'singleSelectMatrix') {-->
+<!--    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {-->
+      <div class="text-black">
+        <div class="flex gap-2">
+        @let field_label = entity().field_label?.[dialogState.questionnaire()!.defaultLanguage!.code];
+        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>
+        <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
+      </div>
+      <div class="flex gap-2">
+        @let section_header = entity().section_header?.[dialogState.questionnaire()!.defaultLanguage!.code];
+        <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
+        <span>{{ section_header || 'N/A' }}</span>
+      </div>
+        <ng-container #questionHost></ng-container>
+      </div>
+<!--    }-->
+<!--    } @else {-->
+<!--      MATRIX-->
+<!--    }-->
+  </div>
+</div>

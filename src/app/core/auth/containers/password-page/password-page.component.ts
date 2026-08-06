@@ -1,9 +1,4 @@
-import {Component, effect, inject, signal, ChangeDetectionStrategy} from '@angular/core';
-import {
-  AbstractControl, FormControl, FormGroup, ReactiveFormsModule,
-  ValidatorFn
-} from "@angular/forms";
-import {debounceTime} from 'rxjs/operators';
+import {Component, effect, inject, signal} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -13,21 +8,20 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatInput} from "@angular/material/input";
-import {Validator, ValidatorError} from '../../../../shared/utils/validators';
 import {HttpErrorResponse} from "@angular/common/http";
-import {toSignal} from "@angular/core/rxjs-interop";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
+import {requiredField} from '../../../../shared/utils/signal-form-validators';
+import {form, FormField, validate} from '@angular/forms/signals';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-password-page',
   templateUrl: './password-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCard,
     MatCardHeader,
     TranslatePipe,
     MatCardContent,
-    ReactiveFormsModule,
     MatFormField,
     MatIcon,
     MatError,
@@ -35,12 +29,12 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
     MatProgressSpinner,
     MatInput,
     MatCardTitle,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    ReactiveFormsModule,
+    FormField
   ]
 })
 export class PasswordPageComponent {
-  protected readonly ValidatorError = ValidatorError;
-
   private profileService = inject(ProfileService);
 
   loading = signal(false);
@@ -50,27 +44,43 @@ export class PasswordPageComponent {
   hidePassword = true;
   hideConfirmPassword = true;
 
-  form = new FormGroup({
-    password: new FormControl(null, {
-      validators: [Validator.requiredValidator, PasswordStrengthValidator],
-      updateOn: 'change'
-    }),
-    confirmPassword: new FormControl<string | null>(null, {
-      validators: [Validator.requiredValidator],
-      updateOn: 'change'
-    })
-  }, {
-    validators: [MatchPasswordValidator('password', 'confirmPassword')]
+  model = signal({
+    password: '',
+    confirmPassword: ''
   });
 
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
+  form = form(this.model, (schema) => {
+    requiredField(schema.password);
+    validate(schema.password, ({value}) => {
+      if (measureStrength(value())) {
+        return null;
+      } else {
+        return {
+          kind: 'passwordStrength',
+          message: 'SHARED.validatorError.passwordStrength',
+        };
+      }
+    });
+    requiredField(schema.confirmPassword);
+    validate(schema.password, ({value, valueOf}) => {
+      const password = value();
+      const confirmPassword = valueOf(schema.confirmPassword);
+      if (password && confirmPassword) {
+        if (password !== confirmPassword) {
+          return {
+            kind: 'passwordMismatch',
+            message: 'SHARED.validatorError.passwordMismatch',
+          }
+        }
+        return null;
+      }
+      return null;
+    });
+  });
 
   constructor() {
     effect(() => {
-      if (this.formValueChanges()) {
+      if (this.model()) {
         this.error.set(null);
       }
     });
@@ -80,7 +90,7 @@ export class PasswordPageComponent {
     this.loading.set(true);
     this.success.set(false);
     this.error.set(null);
-    const password = this.form.controls.password?.value;
+    const password = this.model().password;
     if (password) {
       this.profileService.updatePassword(password).subscribe({
         next: () => {
@@ -99,13 +109,6 @@ export class PasswordPageComponent {
   }
 }
 
-export function PasswordStrengthValidator(control: AbstractControl) {
-  if (measureStrength(control.value)) {
-    return null;
-  }
-  return {passwordStrengthValidator: true};
-}
-
 export function measureStrength(p?: string): boolean {
   if (!p) {
     return false;
@@ -114,22 +117,4 @@ export function measureStrength(p?: string): boolean {
     '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})'
   );
   return strongPassword.test(p);
-}
-
-export function MatchPasswordValidator(
-  controlName: string,
-  matchingControlName: string
-): ValidatorFn {
-  return (control: AbstractControl) => {
-    const password = control.get(controlName);
-    const confirmPassword = control.get(matchingControlName);
-    if (password && confirmPassword) {
-      if (password.value !== confirmPassword.value) {
-        confirmPassword.setErrors({confirmPasswordValidator: true});
-      } else {
-        confirmPassword.setErrors(null);
-      }
-    }
-    return null;
-  };
 }

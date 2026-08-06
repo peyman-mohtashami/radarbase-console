@@ -1,6 +1,6 @@
 @if (authService.user(); as user) {
   <div class="flex justify-center items-center h-[calc(100vh-64px)]">
-    <mat-card appearance="outlined" class="w-2/3 max-w-[800px]">
+    <mat-card appearance="outlined" class="w-2/3 max-w-200">
       <mat-card-header class='block! text-center'>
         <mat-card-title class="text-lg">
           {{ 'CORE.AUTH.PROFILE_PAGE.title' | translate }}
@@ -13,67 +13,63 @@
       <mat-card-content>
         @if (error()) {
           <app-error-message-box>
-            {{ `ERROR.${$safeNavigationMigration(error()?.error.error)}` | translate }}
+            {{ `ERROR.${error()?.error.error}` | translate }}
           </app-error-message-box>
         }
-        <form [formGroup]='form' novalidate>
+        <form novalidate>
           <label for="login" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.login' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
                           appearance='fill'>
-            <input matInput formControlName='login'>
+            <input matInput [formField]='form.login'>
           </mat-form-field>
 
           <label for="firstName" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.firstName' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
                           appearance='outline'>
-            <input matInput formControlName='firstName'>
+            <input matInput [formField]="form.firstName">
 <!--            <mat-hint align="start">-->
 <!--              {{ ValidatorHint.normalTextValidator | translate }}-->
 <!--            </mat-hint>-->
-            @if (form.controls.firstName.errors; as errors) {
-              <mat-error>
-                @if (errors['required']) {
-                } @else if (errors['pattern']) {
-                  {{ ValidatorError.normalTextValidator | translate }}
+            <mat-error>
+              @if (form.firstName().touched() && form.firstName().invalid()) {
+                @for (error of form.firstName().errors(); track error.kind) {
+                  {{ error.message }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
 
           <label for="lastName" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.lastName' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
                           appearance='outline'>
-            <input matInput formControlName='lastName'/>
+            <input matInput [formField]='form.lastName'/>
 <!--            <mat-hint align="start">-->
 <!--              {{ ValidatorHint.normalTextValidator }}-->
 <!--            </mat-hint>-->
-            @if (form.controls.lastName.errors; as errors) {
-              <mat-error>
-                @if (errors['required']) {
-                } @else if (errors['pattern']) {
-                  {{ ValidatorError.normalTextValidator | translate }}
+            <mat-error>
+              @if (form.lastName().touched() && form.lastName().invalid()) {
+                @for (error of form.lastName().errors(); track error.kind) {
+                  {{ error.message }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
 
           <label for="email" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.email' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
                           appearance='fill'>
-            <input matInput formControlName='email' required>
-            @if (form.controls.email.errors; as errors) {
-              <mat-error>
-                @if (errors['required']) {
-                  {{ ValidatorError.requiredValidator | translate: {value: 'CORE.AUTH.PROFILE_PAGE.email' | translate} }}
-                } @else if (errors['email']) {
-                  {{ ValidatorError.emailValidator | translate }}
+            <input matInput [formField]='form.email'>
+            <mat-error>
+              @if (form.email().touched() && form.email().invalid()) {
+                @for (error of form.email().errors(); track error.kind) {
+                  {{ error.message }}
                 }
-              </mat-error>
-            }
+              }
+            </mat-error>
           </mat-form-field>
         </form>
 
@@ -83,7 +79,7 @@
                 color='primary'
                 type='submit'
                 name='update'
-                [disabled]='!form.valid || !form.dirty || loading() || success()'
+                [disabled]='form().invalid() || !form().dirty() || loading() || success()'
                 (click)='save()'>
           @if (loading()) {
             <mat-icon>

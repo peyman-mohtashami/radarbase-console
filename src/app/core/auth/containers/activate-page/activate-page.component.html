@@ -15,7 +15,7 @@
       }
       @if (error()) {
         <app-error-message-box>
-          {{ `ERROR.${$safeNavigationMigration(error()?.error.error)}` | translate }}
+          {{ `ERROR.${error()?.error.error}` | translate }}
         </app-error-message-box>
         <p>
           {{ 'CORE.AUTH.ACTIVATION_PAGE.errorMessage' | translate }}

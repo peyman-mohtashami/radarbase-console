@@ -2,12 +2,12 @@ import {Component, inject, OnInit, output, ChangeDetectionStrategy} from '@angul
 import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {TranslatePipe} from '@ngx-translate/core';
-import {QuestionButtonComponent} from './question-button/question-button.component';
+import {QuestionButtonComponent} from './components/question-button/question-button.component';
 import {MatButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
-import {QuestionDialogComponent} from './question-dialog/question-dialog.component';
+import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../shared/enums/dialog';
-import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
+import {QUESTION_TYPES} from './components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 
 export type AppUiQuestion = AppQuestion & {

@@ -1,7 +1,7 @@
 import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
-import {execute, filterItems, paginateItems, sortItems} from '../../../../shared/utils/store-helpers';
+import {filterItems, paginateItems, sortItems} from '../../../../shared/utils/store-helpers';
 import {LogService} from './log.service';
 import {LogConfigService} from './log-config.service';
 import {AppLog, LogDto} from '../models/log';
@@ -10,7 +10,6 @@ import {RbSort, TableElement} from '../../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../../shared/components/data-table-filter/data-table-filter.component';
-import {AppSourceType} from '../../../source-type/models/source-type';
 
 @Injectable({providedIn: 'root'})
 export class LogStore {

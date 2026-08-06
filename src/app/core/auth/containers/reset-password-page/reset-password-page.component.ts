@@ -1,15 +1,9 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { Subject } from 'rxjs';
-import {debounceTime, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 
-import {
-  MatchPasswordValidator,
-  PasswordStrengthValidator,
-} from '../password-page/password-page.component';
 import { ProfileService } from '../../services/profile.service';
-import { Validator, ValidatorError } from '../../../../shared/utils/validators';
 import {AuthCardComponent} from "../../components/auth-card/auth-card.component";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatInput} from "@angular/material/input";
@@ -18,18 +12,18 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpErrorResponse} from "@angular/common/http";
-import {toSignal} from "@angular/core/rxjs-interop";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
+import {requiredField} from '../../../../shared/utils/signal-form-validators';
+import {validate, form, FormField} from '@angular/forms/signals';
+import {measureStrength} from '../password-page/password-page.component';
 
 @Component({
   selector: 'app-reset-password-page',
   templateUrl: './reset-password-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,
     RouterLink,
-    ReactiveFormsModule,
     MatFormField,
     MatInput,
     MatIcon,
@@ -37,12 +31,11 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
     MatIcon,
     MatButton,
     MatProgressSpinner,
-    ErrorMessageBoxComponent
+    ErrorMessageBoxComponent,
+    FormField,
   ]
 })
 export class ResetPasswordPageComponent implements OnInit, OnDestroy {
-  protected readonly ValidatorError = ValidatorError;
-
   private profileService = inject(ProfileService);
   private activatedRoute = inject(ActivatedRoute);
 
@@ -55,27 +48,43 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
 
   key?: string;
 
-  form = new FormGroup({
-    password: new FormControl<string | null>(null, {
-      validators: [Validator.requiredValidator, PasswordStrengthValidator],
-      updateOn: 'change'
-    }),
-    confirmPassword: new FormControl<string | null>(null, {
-      validators: [Validator.requiredValidator],
-      updateOn: 'change'
-    })
-  }, {
-    validators: [MatchPasswordValidator('password', 'confirmPassword')]
+  model = signal({
+    password: '',
+    confirmPassword: ''
   });
 
-  private readonly formValueChanges = toSignal(
-    this.form.valueChanges.pipe(debounceTime(300)),
-    {initialValue: this.form.getRawValue()}
-  );
+  form = form(this.model, (schema) => {
+    requiredField(schema.password);
+    validate(schema.password, ({value}) => {
+      if (measureStrength(value())) {
+        return null;
+      } else {
+        return {
+          kind: 'passwordStrength',
+          message: 'SHARED.validatorError.passwordStrength',
+        };
+      }
+    });
+    requiredField(schema.confirmPassword);
+    validate(schema.password, ({value, valueOf}) => {
+      const password = value();
+      const confirmPassword = valueOf(schema.confirmPassword);
+      if (password && confirmPassword) {
+        if (password !== confirmPassword) {
+          return {
+            kind: 'passwordMismatch',
+            message: 'SHARED.validatorError.passwordMismatch',
+          }
+        }
+        return null;
+      }
+      return null;
+    });
+  });
 
   constructor() {
     effect(() => {
-      if (this.formValueChanges()) {
+      if (this.model()) {
         this.error.set(null);
       }
     });
@@ -100,7 +109,7 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
     this.loading.set(true);
     this.error.set(null);
     this.success.set(false);
-    const password = this.form.controls.password?.value;
+    const password = this.model().password;
     if (this.key && password) {
       this.profileService
         .updatePasswordFinish({ key: this.key, newPassword: password })

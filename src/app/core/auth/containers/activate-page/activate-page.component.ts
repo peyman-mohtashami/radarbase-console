@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy} from "@angular/core";
+import {Component, inject, OnDestroy, OnInit, signal} from "@angular/core";
 import {ActivatedRoute, RouterLink} from '@angular/router';
 
 import {ProfileService} from '../../services/profile.service';
@@ -12,7 +12,6 @@ import {ErrorMessageBoxComponent} from '../../../../shared/components/message-bo
 @Component({
   selector: 'app-activate-page',
   templateUrl: './activate-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     AuthCardComponent,
     TranslatePipe,

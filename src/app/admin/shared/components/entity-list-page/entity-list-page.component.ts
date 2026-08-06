@@ -38,15 +38,12 @@ export class EntityListPageComponent {
   totalEntities = input.required<number>();
 
   selection = input<SelectionModel<any>>(new SelectionModel<any>(true, []));
-  // protected selection = new SelectionModel<any>(true, []);
 
   switchPageEvent = output<PageEvent>();
   switchSortEvent = output<TableElement>();
   activeQueryChangeEvent = output<RbPageSortEvent>();
 
   extensionClass = signal('hidden');
-
-  // selection = new SelectionModel<unknown>(true, []);
 
   /** Selection Helper Methods */
   isAllSelected() {

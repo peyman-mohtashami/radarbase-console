@@ -7,7 +7,7 @@ import {
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../models/kafka';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
-import {QUESTION_COMPONENTS} from '../../../components/question-type/question-type.registry';
+import {QUESTION_COMPONENTS} from '../../questionnaire-questions/components/question-type/question-type.registry';
 import {debounceTime} from 'rxjs/operators';
 import {outputToObservable} from '@angular/core/rxjs-interop';
 
