@@ -98,8 +98,8 @@
 <!--    <ng-container #questionHost></ng-container>-->
     @let fieldType = form.field_type().value();
 
-<!--    Info / Checkbox / Radio-->
-    @if (fieldType === 'info' || fieldType === 'checkbox'  || fieldType === 'radio') {
+<!--    Info / Checkbox / Radio / Range -->
+    @if (fieldType === 'info' || fieldType === 'checkbox'  || fieldType === 'radio' || fieldType === 'range') {
       <app-question-choices [formField]="form.select_choices_or_calculations"/>
     }
 

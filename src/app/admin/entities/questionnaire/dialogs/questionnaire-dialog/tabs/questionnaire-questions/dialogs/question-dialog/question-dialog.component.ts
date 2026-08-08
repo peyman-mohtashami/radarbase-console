@@ -4,8 +4,6 @@ import {
   inject,
   OnInit,
   signal,
-  ViewContainerRef,
-  viewChild, ComponentRef
 } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppQuestion} from '../../../../../../models/questionnaire';
@@ -15,7 +13,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QUESTION_COMPONENTS, QUESTION_TYPES} from '../../components/question-type/question-type.registry';
+import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
 import {
   ConditionalLogicDialogComponent
 } from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
@@ -33,8 +31,6 @@ import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {QuestionChoicesComponent} from '../../components/question-choices/question-choices.component';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {TextFormGroupComponent} from '../../components/text-form-group/text-form-group.component';
-import {ValidatorError} from '../../../../../../../../../shared/utils/validators';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -96,7 +92,6 @@ export interface QuestionnaireQuestionForm {
     MatDatepickerToggle,
     MatSuffix,
     ReactiveFormsModule,
-    TextFormGroupComponent,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -129,8 +124,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     matrix_group_name: this.dialogData.entity.matrix_group_name ?? '',
     // branching_logic: new FormControl<string>('', {nonNullable: true}),
     conditionalLogic: this.dialogData.entity.conditionalLogic ?? [],
-    // select_choices_or_calculations: (this.dialogData.entity.select_choices_or_calculations ?? [])
-    //   .map((choice) => withChoiceLanguages(choice, this.dialogState.questionnaire()?.languages ?? []))
     select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label[this.dialogState.language().code]})) ?? [{code: '', label: ''}],
     // text_validation_type_or_show_slider_number: this.dialogData.entity.text_validation_type_or_show_slider_number ?? '',
     text_validation_min: this.dialogData.entity.text_validation_min ?? '',
@@ -173,130 +166,46 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     requiredField(schema.field_type);
     disabled(schema.field_type);
     requiredField(schema.field_label);
-    // this.hideTypeSpecificFields(schema);
-    // hidden(schema.select_choices_or_calculations, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-    // hidden(schema.select_choices_or_calculations, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-
-    // applyEach(schema.select_choices_or_calculations, (choice) => {
-    //   when(schema.field_type.required, () => {
-    //     requiredField(choice.code);
-    //     requiredField(choice.label);
-    //   });
-    // });
-    // applyEach(schema.select_choices_or_calculations, (choice) => {
-    //   requiredField(choice.code);
-    //   requiredField(choice.label);
-    // });
     applyEach(schema.select_choices_or_calculations, (choice) => {
       required(choice.code, {
         when: ({ valueOf }) => {
           const v = valueOf(schema.field_type);
-          return v === 'info' || v === 'checkbox' || v === 'radio'
+          return v === 'info' || v === 'checkbox' || v === 'radio' || v === 'range'
         }
       });
 
       required(choice.label, {
         when: ({ valueOf }) => {
           const v = valueOf(schema.field_type);
-          return v === 'info' || v === 'checkbox' || v === 'radio'
+          return v === 'info' || v === 'checkbox' || v === 'radio' || v === 'range'
         }
       });
     });
-    // when(schema.field_type, ({ value }) => value === 'radio', () => {
-    //   applyEach(schema.select_choices_or_calculations, (choice) => {
-    //     requiredField(choice.code);
-    //     requiredField(choice.label);
-    //   });
-    // });
+    required(schema.range.min, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'slider'
+      }
+    });
+    required(schema.range.max, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'slider'
+      }
+    });
+    required(schema.range.step, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'slider'
+      }
+    });
   });
 
-  // hideTypeSpecificFields(schema: any) {
-  //   hidden(schema.show_selected_label, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  //   hidden(schema.show_code, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  //   hidden(schema.multi_line, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  //   hidden(schema.calculation_fn, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  //   hidden(schema.calculation_args, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  //   hidden(schema.date_type, {when: ({valueOf}) => valueOf(schema.field_type) === 'descriptive'});
-  // }
-
-  // isSelectChoicesOrCalculationsHidden() {
-  //   return this.schema.field_type() === 'descriptive';
-  // }
-  //
-  // istext_validation_type_or_show_slider_numberHidden() {
-  //   return this.schema.field_type() === 'descriptive';
-  // }
-  //
-  // istext_validation_minHidden() {
-  //   return this.schema.field_type() === 'descriptive';
-  // }
-  //
-  // istext_validation_maxHidden() {
-  //   return this.schema.field_type() === 'descriptive';
-  // }
-  //
-  // isfield_annotationHidden() {
-  //   return this.schema.field_type() === 'descriptive';
-  // }
-  //
-  // isRangeHidden() {
-  //
-  // }
-  //
-  // isshow_selected_labelHIdden() {
-  //
-  // }
-  // isshow_codeHidden() {}
-  // isMultilineHidden() {}
-  // calculation_fn: this.dialogData.entity.calculation_fn ?? '',
-  // calculation_args: this.dialogData.entity.calculation_args ?? '',
-  // date_type
   branchingLogicString = signal('');
 
-  // host = viewChild('questionHost', { read: ViewContainerRef });
-
-  // constructor() {
-  //   effect(() => {
-  //     const model = this.model();
-  //
-  //     this.dialogState.questionnaire.update(value => {
-  //       const questions = value!.questions.map(q => {
-  //         if (q.dragId === this.dialogData.entity.dragId) {
-  //           return this.toAppQuestion(model);
-  //         }
-  //         return q;
-  //       }) ?? [];
-  //       return {
-  //         ...value!,
-  //         questions: [...questions],
-  //       }
-  //     })
-  //   });
-  // }
-
   ngAfterViewInit() {
-    // this.loadQuestionEditor();
     animateDialogIn(this.dialogData.id);
   }
-
-  // childFormValue: any;
-  //
-  // private loadQuestionEditor(): void {
-  //   const host = this.host();
-  //   if (!host) return;
-  //
-  //   host.clear();
-  //
-  //   const componentType = QUESTION_COMPONENTS[this.dialogData.entity.field_type];
-  //   const componentRef = host.createComponent(componentType);
-  //   componentRef.setInput('type', 'form');
-  //   componentRef.setInput('entity', this.dialogData.entity);
-  //   componentRef.setInput('index', this.dialogData.index);
-  //   componentRef.instance.formEvent.subscribe((value: {isValid: boolean; formValue: any}) => {
-  //     console.log('Class: QuestionDialogComponent, Function: , Line 262 value' , value);
-  //     this.childFormValue = value;
-  //   });
-  // }
 
   ngOnInit() {
     this.dialogState.question.set(this.dialogData.entity);
@@ -310,6 +219,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
+    console.log('Class: QuestionDialogComponent, Function: toAppQuestion, Line 313 this.form().valid()' , this.form().valid());
     const question = this.dialogData.entity;
     return {
       ...question,
@@ -342,6 +252,22 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
           }
         }))
       ],
+      field_annotation: {
+        image: model.field_annotation?.image,
+        timer: {
+          start: Number(model.field_annotation?.timer?.start),
+          end: Number(model.field_annotation?.timer?.end),
+        },
+        unit: model.field_annotation?.unit
+      },
+      range: {
+        min: Number(model.range.min),
+        max: Number(model.range.max),
+        step: Number(model.range.step)
+      },
+      text_validation_min: model.text_validation_min,
+      text_validation_max: model.text_validation_max,
+      multi_line: model.multi_line,
       isValid: this.form().valid()
     }
   }
@@ -415,6 +341,4 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       dialogActionSubscription.unsubscribe();
     });
   }
-
-  protected readonly ValidatorError = ValidatorError;
 }
