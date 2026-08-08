@@ -30,7 +30,7 @@ import {MatSelectChange} from '@angular/material/select';
   templateUrl: './info-question.component.html'
 })
 export class InfoQuestionComponent implements OnInit {
-  private fb = inject(FormBuilder);
+  // private fb = inject(FormBuilder);
   private dialogState = inject(QuestionnaireDialogStateService);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
@@ -42,6 +42,8 @@ export class InfoQuestionComponent implements OnInit {
   @Input({ required: true }) value!: string;
   @Input({ required: true }) operator!: string;
   @Input({required: true}) answer!: InputSignal<{ value: string}>;
+
+  model = signal()
 
   logicValueChange = output<string>();
 

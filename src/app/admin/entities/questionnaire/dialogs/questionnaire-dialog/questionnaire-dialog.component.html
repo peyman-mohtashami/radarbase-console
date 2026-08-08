@@ -1,4 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire';
+@let isGeneralTabValid = dialogState.questionnaire()?.isGeneralTabValid;
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
@@ -24,94 +25,84 @@
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             General
           </h2>
-          @if (!sectionsValidity.general) {
+          @if (!isGeneralTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-general [questionnaires]="dialogData.questionnaireFullList"
-                                     (valid)="onSectionValidEvent('general', $event)" />
-<!--                                     (changeEvent)="onEntityUpdate($event)"-->
+          <app-questionnaire-general />
         </ng-template>
       </mat-tab>
 
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Questions</h2>
-          @if (!sectionsValidity.questions) {
+          @if (!dialogState.questionnaire()?.isQuestionsTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-questions
-                                       (validEvent)="onSectionValidEvent('questions', $event)" />
-<!--          (changeEvent)="onEntityUpdate($event)"-->
+          <app-questionnaire-questions />
         </ng-template>
       </mat-tab>
 
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Scheduling
           </h2>
-          @if (!sectionsValidity.scheduling) {
+          @if (!dialogState.questionnaire()?.isSchedulingTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-scheduling (valid)="onSectionValidEvent('scheduling', $event)" />
-<!--          (changeEvent)="onEntityUpdate($event)"-->
+          <app-questionnaire-scheduling />
         </ng-template>
       </mat-tab>
 
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Custom Messages
           </h2>
-          @if (!sectionsValidity.customMessages) {
+          @if (!dialogState.questionnaire()?.isCustomMessagesTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-custom-messages
-                                             (valid)="onSectionValidEvent('customMessages', $event)" />
-<!--          (changeEvent)="onEntityUpdate($event)"-->
+          <app-questionnaire-custom-messages/>
         </ng-template>
       </mat-tab>
 
 
-      <mat-tab [disabled]="store.selected()?.schedule?.onDemand || !sectionsValidity.general">
+      <mat-tab [disabled]="dialogState.questionnaire()?.schedule?.onDemand || !isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Notifications
           </h2>
-          @if (!sectionsValidity.notifications) {
+          @if (!dialogState.questionnaire()?.isNotificationsTabValid && !dialogState.questionnaire()?.schedule?.onDemand) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-notifications (valid)="onSectionValidEvent('notifications', $event)" />
-<!--          (changeEvent)="onEntityUpdate($event)"-->
-<!---->
+          <app-questionnaire-notifications />
         </ng-template>
       </mat-tab>
 
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Translations
           </h2>
-          @if (!sectionsValidity.translations) {
+          @if (!dialogState.questionnaire()?.isTranslationsTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-translation (valid)="onSectionValidEvent('translations', $event)" />
-<!--          (changeEvent)="onEntityUpdate($event)"-->
+          <app-questionnaire-translation />
         </ng-template>
       </mat-tab>
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Intervention Flow</h2>
         </ng-template>
@@ -119,7 +110,7 @@
           <app-questionnaire-intervention-flow />
         </ng-template>
       </mat-tab>
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Preview</h2>
         </ng-template>
@@ -127,7 +118,7 @@
           <app-questionnaire-preview />
         </ng-template>
       </mat-tab>
-      <mat-tab [disabled]="!sectionsValidity.general">
+      <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Advanced (JSON) Editor</h2>
         </ng-template>
@@ -194,7 +185,7 @@
               (click)='save()'
               color="primary"
               mat-raised-button
-              type="button" [disabled]="!sectionsValidity.general">
+              type="button" [disabled]="!isGeneralTabValid">
         @if (isLoading) {
           <mat-icon>
             <mat-spinner diameter='20' />

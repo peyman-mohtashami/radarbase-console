@@ -17,19 +17,12 @@
     </div>
 
     <div class="">
-      <label for="defaultLanguageLabel" class="text-sm">{{ `${_prefix}.defaultLanguageLabel` | translate }}</label>
+      <label for="defaultLanguageLabel" class="text-sm">{{ `${_prefix}.defaultLanguageLabel` | translate }} *</label>
       <app-searchable-multi-select [formField]="form.defaultLanguage"
                                    [labelKey]="'label'"
                                    [options]="ISO_LANGUAGES"
                                    [valueKey]="'code'"
                                    [multiple]="false"/>
-
-<!--      <app-mat-select-autocomplete formControlName="defaultLanguage"-->
-<!--                                   [options]="ISO_LANGUAGES"-->
-<!--                                   [label]="`${_prefix}.defaultLanguageLabel` | translate"-->
-<!--                                   [required]="true"-->
-<!--                                   [multiple]="false"-->
-<!--                                   [adapter]="languageAdapter" />-->
     </div>
 
     <div class="mb-4">

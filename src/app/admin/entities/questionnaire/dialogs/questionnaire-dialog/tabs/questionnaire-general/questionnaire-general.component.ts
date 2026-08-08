@@ -1,10 +1,8 @@
-import {Component, effect, inject, input, output, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
   AppQuestionnaire,
-  AppQuestionnaireLanguage,
-  DEFAULT_LANGUAGE,
   ISO_LANGUAGES
 } from '../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
@@ -38,10 +36,6 @@ export class QuestionnaireGeneralComponent {
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
 
-  questionnaires = input.required<AppQuestionnaire[] | null>();
-
-  valid = output<boolean>();
-
   protected model = signal<QuestionnaireGeneralForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire(),
     name: this.dialogState.questionnaire()?.name ?? '',
@@ -52,9 +46,17 @@ export class QuestionnaireGeneralComponent {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.name);
-    // TODO DUPLICATE validate()
+    // TODO
+    // validate(schema.name, ({value}) => {
+    //   const matchedQuestionnaireName = this.dialogState.questionnaires()?.find((questionnaire) => questionnaire.name === value());
+    //   if (!matchedQuestionnaireName) return null;
+    //   if (this.dialogState.questionnaire()?.name === value()) return null;
+    //   return {
+    //     kind: 'duplicate',
+    //     message: 'SHARED.validatorError.duplicateName',
+    //   };
+    // });
     // TODO stringId
-    // requiredField(schema.defaultLanguage);
     validate(schema.defaultLanguage, ({value}) => {
       if (value().length) return null;
       return {
@@ -64,14 +66,12 @@ export class QuestionnaireGeneralComponent {
     });
   });
 
-  languages: AppQuestionnaireLanguage[] = [DEFAULT_LANGUAGE];
-
   constructor() {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
       let languages = entity?.languages ?? [];
-      const defaultLanguage = ISO_LANGUAGES.find(l => l.code === model.defaultLanguage[0]);
+      const defaultLanguage = ISO_LANGUAGES.find(l => l.code === model.defaultLanguage);
       if (!defaultLanguage) return;
 
       const questionnaireDefaultLanguage = entity?.languages.find(l => l.code === defaultLanguage.code);
@@ -85,10 +85,10 @@ export class QuestionnaireGeneralComponent {
         defaultLanguage: defaultLanguage,
         title: {...entity?.title, [defaultLanguage.code]: model.title},
         description: {...entity?.description, [defaultLanguage.code]: model.description},
-        languages
+        languages,
+        isGeneralTabValid: this.form().valid(),
       } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form().valid());
     });
   }
 }

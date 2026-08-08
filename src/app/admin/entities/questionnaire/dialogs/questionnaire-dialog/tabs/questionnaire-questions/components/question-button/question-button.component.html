@@ -25,8 +25,6 @@
         }
 
         @if (entity().branching_logic){
-
-<!--        }?.length) {-->
           <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
                     [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
             rule
@@ -52,8 +50,6 @@
       </div>
     </div>
 
-<!--    @if (entity().field_type !== 'singleSelectMatrix') {-->
-<!--    @if (entity().field_name === dialogState.selectedQuestion()?.field_name || true) {-->
       <div class="text-black">
         <div class="flex gap-2">
         @let field_label = entity().field_label?.[dialogState.questionnaire()!.defaultLanguage!.code];
@@ -67,9 +63,5 @@
       </div>
         <ng-container #questionHost></ng-container>
       </div>
-<!--    }-->
-<!--    } @else {-->
-<!--      MATRIX-->
-<!--    }-->
   </div>
 </div>

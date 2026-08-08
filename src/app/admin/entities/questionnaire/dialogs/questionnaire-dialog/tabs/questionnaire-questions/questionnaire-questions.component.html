@@ -19,28 +19,16 @@
     <div class="p-2 relative">
       <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>
       <div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" cdkDropListOrientation="vertical">
-        @for (question of questions; track question._dragId; let index = $index) {
+        @for (question of dialogState.questionnaire()?.questions; track question.dragId; let index = $index) {
           <div
             cdkDrag
             [cdkDragBoundary]="choicesContainer"
             cdkDragLockAxis="y">
-<!--            @if (question.field_type === 'singleSelectMatrix' || question.field_type === 'textInputMatrix') {-->
-<!--              <app-question-matrix-button [entity]="question"-->
-<!--                                          [index]="$index"-->
-<!--                                          [questions]="questions"-->
-<!--                                          (removeEvent)="removeQuestion(index)"-->
-<!--                                          (selectEvent)="onSelectQuestion(index, question)"-->
-<!--                                          (changeEvent)="onMatrixQuestionChange(index, $event)"/>-->
-<!--              &lt;!&ndash;              (validEvent)="onMatrixQuestionChange(index, question)"/>&ndash;&gt;-->
-
-<!--            } @else {-->
               <app-question-button [entity]="question"
                                    [index]="$index"
                                    (removeEvent)="removeQuestion(index)"
                                    (selectEvent)="onSelectQuestion(index, question)"/>
-<!--            }-->
           </div>
-
         }
       </div>
     </div>

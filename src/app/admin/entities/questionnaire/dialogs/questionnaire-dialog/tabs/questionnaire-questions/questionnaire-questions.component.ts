@@ -1,5 +1,5 @@
-import {Component, inject, OnInit, output, ChangeDetectionStrategy} from '@angular/core';
-import {AppQuestion, AppQuestionnaire} from '../../../../models/questionnaire';
+import {Component, inject} from '@angular/core';
+import {AppQuestion} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionButtonComponent} from './components/question-button/question-button.component';
@@ -9,10 +9,6 @@ import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog
 import {DialogMode} from '../../../../../../shared/enums/dialog';
 import {QUESTION_TYPES} from './components/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-
-export type AppUiQuestion = AppQuestion & {
-  _dragId: string;
-};
 
 @Component({
   selector: 'app-questionnaire-questions',
@@ -24,7 +20,6 @@ export type AppUiQuestion = AppQuestion & {
     MatButton,
     CdkDrag,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .cdk-drag-preview {
       background: white;
@@ -51,65 +46,59 @@ export type AppUiQuestion = AppQuestion & {
     }
   `
 })
-export class QuestionnaireQuestionsComponent implements OnInit {
+export class QuestionnaireQuestionsComponent {
+  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+
   protected dialog = inject(MatDialog);
   protected dialogState = inject(QuestionnaireDialogStateService);
 
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
-
-
-  validEvent = output<boolean>();
-
-  questions: AppUiQuestion[] = [];
-
-  ngOnInit() {
-    this.questions = this.dialogState.questionnaire()?.questions?.map(q => ({
-      ...q,
-      _dragId: crypto.randomUUID(),
-      valid: true,
-    })) ?? [];
-  }
-
   protected addQuestion(type: string) {
-    this.questions.push({
-      id: `${Date.now()}`,
-      field_name: '',
-      field_label: {},
-      field_type: type,
-      _dragId: crypto.randomUUID(),
+    this.dialogState.questionnaire.update(value => {
+      return {
+        ...value!,
+        questions: [...(value?.questions ?? []), {
+          id: `${Date.now()}`,
+          field_name: '',
+          field_label: {},
+          field_type: type,
+          dragId: crypto.randomUUID(),
+        }]
+      }
     });
-
-    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
   }
 
   protected removeQuestion(index: number) {
-    this.questions.splice(index, 1);
-
-    this.validEvent.emit(this.questions.every(q => q.isValid));
-    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
-
+    this.dialogState.questionnaire.update(value => {
+      return {
+        ...value!,
+        questions: [...(value?.questions ?? []).splice(index, 1)]
+      }
+    });
   }
 
   protected onSelectQuestion(index: number, question: AppQuestion) {
     this.openQuestionDialog(index, question);
   }
 
-  protected onDrop(event: CdkDragDrop<any>) {
+  protected onDrop(event: CdkDragDrop<AppQuestion>) {
     moveItemInArray(
-      this.questions,
+      this.dialogState.questionnaire()?.questions ?? [],
       event.previousIndex,
       event.currentIndex
     );
 
-    this.questions = [...this.questions];
-
-    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
+    this.dialogState.questionnaire.update(value => {
+      return {
+        ...value!,
+        questions: [...(value?.questions ?? [])]
+      }
+    });
   }
 
   openQuestionDialog(index: number, question: AppQuestion) {
-    const dialogRef = this.dialog.open(QuestionDialogComponent, {
+    this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      data: {id: 'question-dialog', entity: question, questions: this.questions, index: index, mode: DialogMode.EDIT},
+      data: {id: 'question-dialog', entity: question, questions: this.dialogState.questionnaire()?.questions ?? [], index: index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
       height: '100vh',
@@ -119,24 +108,5 @@ export class QuestionnaireQuestionsComponent implements OnInit {
       autoFocus: false,
       restoreFocus: false
     });
-
-    const dialogActionSubscription =
-      dialogRef.componentInstance.changeEvent.subscribe(
-        (value) => {
-          this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
-          this.validEvent.emit(this.questions.every(q => q.isValid));
-          this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
-        }
-      );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  protected onMatrixQuestionChange(index: number, value: Partial<AppQuestion>) {
-    this.questions = this.questions.map((q, i) => i === index ? {...q, ...value} : q);
-    this.validEvent.emit(this.questions.every(q => q.isValid));
-    this.dialogState.questionnaire.set({...this.dialogState.questionnaire(), questions: [...this.questions]} as AppQuestionnaire);
   }
 }

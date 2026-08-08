@@ -66,12 +66,10 @@ export interface QuestionnaireSchedulingForm {
   ]
 })
 export class QuestionnaireSchedulingComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
-  localeService = inject(LocaleService);
-
   protected readonly UNITS = UNITS;
 
-  valid = output<boolean>();
+  protected dialogState = inject(QuestionnaireDialogStateService);
+  localeService = inject(LocaleService);
 
   protected model = signal<QuestionnaireSchedulingForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()?.schedule,
@@ -145,10 +143,11 @@ export class QuestionnaireSchedulingComponent {
             unit: model.completionWindow.unit,
             amount: model.completionWindow.amount,
           },
-        }
+        },
+        isSchedulingTabValid: this.form().valid()
       } as AppQuestionnaire;
-      this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form().valid());
+      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 149 updated' , updated);
+      this.dialogState.questionnaire.set({...updated});
     });
   }
 

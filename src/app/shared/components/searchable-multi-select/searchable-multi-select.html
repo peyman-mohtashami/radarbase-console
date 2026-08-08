@@ -39,7 +39,6 @@
       }
     }
   </mat-select>
---{{formField()().valid()}}--
   <mat-error>
     @if (formField()().touched() && formField()().invalid()) {
       @for (error of formField()().errors(); track error.kind) {

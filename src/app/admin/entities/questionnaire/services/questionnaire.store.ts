@@ -296,6 +296,7 @@ export class QuestionnaireStore {
             calculation_fn: radarQuestion.calculation_fn,
             calculation_args: radarQuestion.calculation_args,
             isValid: radarQuestion.isValid,
+            dragId: crypto.randomUUID()
           };
 
           if (radarQuestion.select_choices_or_calculations) {

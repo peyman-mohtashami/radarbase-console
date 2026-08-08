@@ -14,85 +14,353 @@
                                    [multiple]="true"/>
     </div>
 
-
     <div class="w-full overflow-x-auto border border-gray-300">
-      <div [style.grid-template-rows]="`repeat(${numberOfGridRows}, max-content)`"
-           class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">
-        <div class=""></div>
-        <div class="">Title</div>
-        <div class="">Description</div>
-        <div class="">End Text</div>
-        @if (entity?.warningEnabled) {
-          <div class="">Warn</div>
-        }
-        @if (!entity?.schedule?.onDemand) {
-          <div class="">Notification Title</div>
-          <div class="">Notification Text</div>
-        }
-        @for (question of entity?.questions; track question.field_name) {
-          <div class="border-y">Question <code class="text-secondary">{{ question.field_name }}</code></div>
-          <div>Field Label</div>
-          @if (question.section_header?.[defaultLanguage.code]) {
-            <div>Section Header</div>
-          }
-          @if (question.field_note?.[defaultLanguage.code]) {
-            <div>Field Note</div>
-          }
-          @for (choice of question.select_choices_or_calculations; track choice.code) {
-            <div>Choice {{ choice.code }}</div>
-          }
-        }
+      <div [style.grid-template-columns]="`repeat(${languagesList().length + 1}, 300px)`"
+           class="grid text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">
 
+        <div class=""></div>
         @for (language of languagesList(); track language) {
           <div>{{ language }}</div>
-          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-            <textarea id="" matInput [formField]="form.translation[language].title"></textarea>
-          </mat-form-field>
-          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-            <textarea id="" matInput [formField]="form.translation[language].description"></textarea>
-          </mat-form-field>
-          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-            <textarea id="" matInput [formField]="form.translation[language].endText"></textarea>
-          </mat-form-field>
-          @if (entity?.warningEnabled) {
+        }
+
+        <div class="">Title</div>
+        @for (language of languagesList(); track language) {
+          @if (form.title) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="form.translation[language].warn"></textarea>
+              <textarea id="" matInput [formField]="form.title[language]"></textarea>
             </mat-form-field>
           }
-          @if (!entity?.schedule?.onDemand) {
+        }
+
+        <div class="">Description</div>
+        @for (language of languagesList(); track language) {
+          @if (form.description) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput
-                        [formField]="form.translation[language].schedule.notification.title"></textarea>
+              <textarea id="" matInput [formField]="form.description[language]"></textarea>
             </mat-form-field>
+          }
+        }
+
+        @if (entity?.showIntroduction !== 'no') {
+          <div class="">Start Text</div>
+          @for (language of languagesList(); track language) {
+            @if (form.startText) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="form.startText[language]"></textarea>
+              </mat-form-field>
+            }
+          }
+        }
+
+        <div class="">End Text</div>
+        @for (language of languagesList(); track language) {
+          @if (form.endText) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput
-                        [formField]="form.translation[language].schedule.notification.text"></textarea>
+              <textarea id="" matInput [formField]="form.endText[language]"></textarea>
+            </mat-form-field>
+          }
+        }
+
+        @if (entity?.warningEnabled) {
+          <div class="">Warn</div>
+          @for (language of languagesList(); track language) {
+            @if (form.warn) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="form.warn[language]"></textarea>
+              </mat-form-field>
+            }
+          }
+        }
+
+        @if (!entity?.schedule?.onDemand) {
+          <div class="">Notification Title</div>
+          @for (language of languagesList(); track language) {
+            @if (form.schedule?.notification?.title) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="form.schedule!.notification!.title![language]"></textarea>
+              </mat-form-field>
+            }
+          }
+
+          <div class="">Notification Text</div>
+          @for (language of languagesList(); track language) {
+            @if (form.schedule?.notification?.text) {
+              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                <textarea id="" matInput [formField]="form.schedule!.notification!.text![language]"></textarea>
+              </mat-form-field>
+            }
+          }
+        }
+
+        @for (question of form.questions; track $index; let i = $index) {
+          <div class="border-y">Question <code class="text-secondary">{{ entity?.questions?.[i]?.field_name }}</code></div>
+          @for (language of languagesList(); track language) {
+          <div></div>
+          }
+
+          <div class="">Field Label</div>
+          @for (language of languagesList(); track language) {
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <textarea id="" matInput [formField]="question.field_label[language]"></textarea>
             </mat-form-field>
           }
 
-          @for (question of form.translation[language].questions; track $index; ) {
-            <div class="border-y"></div>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="question.field_label"></textarea>
-            </mat-form-field>
-            @if (entity?.questions?.[$index]['section_header']?.[defaultLanguage.code]) {
+          <div class="">Section Header</div>
+          @for (language of languagesList(); track language) {
+            @if (question.section_header) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="question.section_header"></textarea>
+                <textarea id="" matInput [formField]="question.section_header[language]"></textarea>
               </mat-form-field>
             }
-            @if (entity?.questions?.[$index]['field_note']?.[defaultLanguage.code]) {
+          }
+
+          <div class="">Field Note</div>
+          @for (language of languagesList(); track language) {
+            @if (question.field_note) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="question.field_note"></textarea>
+                <textarea id="" matInput [formField]="question.field_note[language]"></textarea>
               </mat-form-field>
             }
-            @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {
-              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="choice.label"></textarea>
-              </mat-form-field>
+          }
+
+          @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {
+            <div>Choice {{ entity?.questions?.[i].select_choices_or_calculations?.[j]?.code }}</div>
+            @for (language of languagesList(); track language) {
+              <div></div>
+            }
+
+            <div class="">Label</div>
+            @for (language of languagesList(); track language) {
+                <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                  <textarea id="" matInput [formField]="choice.label[language]"></textarea>
+                </mat-form-field>
             }
           }
         }
       </div>
     </div>
+
+
+<!--    <div class="w-full overflow-x-auto border border-gray-300">-->
+<!--      <div [style.grid-template-rows]="`repeat(${numberOfGridRows}, max-content)`"-->
+<!--           class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">-->
+<!--        <div class=""></div>-->
+<!--        <div class="">Title</div>-->
+<!--        <div class="">Description</div>-->
+<!--        <div class="">End Text</div>-->
+<!--        @if (entity?.warningEnabled) {-->
+<!--          <div class="">Warn</div>-->
+<!--        }-->
+<!--        @if (!entity?.schedule?.onDemand) {-->
+<!--          <div class="">Notification Title</div>-->
+<!--          <div class="">Notification Text</div>-->
+<!--        }-->
+<!--        @for (question of entity?.questions; track question.field_name) {-->
+<!--          <div class="border-y">Question <code class="text-secondary">{{ question.field_name }}</code></div>-->
+<!--          <div>Field Label</div>-->
+<!--          @if (question.section_header?.[defaultLanguage.code]) {-->
+<!--            <div>Section Header</div>-->
+<!--          }-->
+<!--          @if (question.field_note?.[defaultLanguage.code]) {-->
+<!--            <div>Field Note</div>-->
+<!--          }-->
+<!--          @for (choice of question.select_choices_or_calculations; track choice.code) {-->
+<!--            <div>Choice {{ choice.code }}</div>-->
+<!--          }-->
+<!--        }-->
+
+<!--        @for (language of languagesList(); track language) {-->
+<!--          <div>{{ language }}</div>-->
+
+<!--          @if (form.title) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.title[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (form.description) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.description[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (form.endText) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.endText[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (entity?.warningEnabled && form.warn) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.warn[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+<!--          @if (!entity?.schedule?.onDemand) {-->
+<!--            @if (form.schedule?.notification?.title) {-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput-->
+<!--                          [formField]="form.schedule!.notification!.title![language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--            @if (form.schedule?.notification?.title) {-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput-->
+<!--                          [formField]="form.schedule!.notification!.text![language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--          }-->
+
+<!--          @for (question of form.questions; track $index; ) {-->
+<!--            <div class="border-y"></div>-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="question.field_label[language]"></textarea>-->
+<!--            </mat-form-field>-->
+
+<!--            @if (question.section_header) {-->
+<!--              &lt;!&ndash;            @if (entity?.questions?.[$index]['section_header']?.[defaultLanguage.code]) {&ndash;&gt;-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput [formField]="question.section_header[language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+
+<!--            @if (question.field_note) {-->
+<!--              &lt;!&ndash;            @if (entity?.questions?.[$index]['field_note']?.[defaultLanguage.code]) {&ndash;&gt;-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput [formField]="question.field_note[language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+
+<!--            &lt;!&ndash;            @if (question.select_choices_or_calculations) {&ndash;&gt;-->
+<!--            @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput [formField]="choice.label[language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--            &lt;!&ndash;            }&ndash;&gt;-->
+<!--          }-->
+<!--        }-->
+<!--      </div>-->
+<!--    </div>-->
   </form>
 }
+
+
+<!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
+<!--@let entity = dialogState.questionnaire();-->
+<!--@let defaultLanguage = entity?.defaultLanguage;-->
+
+<!--@if (defaultLanguage) {-->
+<!--  <form novalidate>-->
+<!--    <div class="">-->
+<!--      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>-->
+<!--      <app-searchable-multi-select [formField]="languagesForm.languages"-->
+<!--                                   [disabledItem]="defaultLanguage"-->
+<!--                                   [labelKey]="'label'"-->
+<!--                                   [options]="ISO_LANGUAGES"-->
+<!--                                   [valueKey]="'code'"-->
+<!--                                   [multiple]="true"/>-->
+<!--    </div>-->
+
+
+<!--    <div class="w-full overflow-x-auto border border-gray-300">-->
+<!--      <div [style.grid-template-rows]="`repeat(${numberOfGridRows}, max-content)`"-->
+<!--           class="grid grid-flow-col auto-cols-[minmax(300px,max-content)] text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">-->
+<!--        <div class=""></div>-->
+<!--        <div class="">Title</div>-->
+<!--        <div class="">Description</div>-->
+<!--        <div class="">End Text</div>-->
+<!--        @if (entity?.warningEnabled) {-->
+<!--          <div class="">Warn</div>-->
+<!--        }-->
+<!--        @if (!entity?.schedule?.onDemand) {-->
+<!--          <div class="">Notification Title</div>-->
+<!--          <div class="">Notification Text</div>-->
+<!--        }-->
+<!--        @for (question of entity?.questions; track question.field_name) {-->
+<!--          <div class="border-y">Question <code class="text-secondary">{{ question.field_name }}</code></div>-->
+<!--          <div>Field Label</div>-->
+<!--          @if (question.section_header?.[defaultLanguage.code]) {-->
+<!--            <div>Section Header</div>-->
+<!--          }-->
+<!--          @if (question.field_note?.[defaultLanguage.code]) {-->
+<!--            <div>Field Note</div>-->
+<!--          }-->
+<!--          @for (choice of question.select_choices_or_calculations; track choice.code) {-->
+<!--            <div>Choice {{ choice.code }}</div>-->
+<!--          }-->
+<!--        }-->
+
+<!--        @for (language of languagesList(); track language) {-->
+<!--          <div>{{ language }}</div>-->
+
+<!--          @if (form.title) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.title[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (form.description) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.description[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (form.endText) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.endText[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+
+<!--          @if (entity?.warningEnabled && form.warn) {-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="form.warn[language]"></textarea>-->
+<!--            </mat-form-field>-->
+<!--          }-->
+<!--          @if (!entity?.schedule?.onDemand) {-->
+<!--            @if (form.schedule?.notification?.title) {-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput-->
+<!--                          [formField]="form.schedule!.notification!.title![language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--            @if (form.schedule?.notification?.title) {-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput-->
+<!--                          [formField]="form.schedule!.notification!.text![language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+<!--          }-->
+
+<!--          @for (question of form.questions; track $index; ) {-->
+<!--            <div class="border-y"></div>-->
+<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--              <textarea id="" matInput [formField]="question.field_label[language]"></textarea>-->
+<!--            </mat-form-field>-->
+
+<!--            @if (question.section_header) {-->
+<!--&lt;!&ndash;            @if (entity?.questions?.[$index]['section_header']?.[defaultLanguage.code]) {&ndash;&gt;-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput [formField]="question.section_header[language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+
+<!--            @if (question.field_note) {-->
+<!--&lt;!&ndash;            @if (entity?.questions?.[$index]['field_note']?.[defaultLanguage.code]) {&ndash;&gt;-->
+<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                <textarea id="" matInput [formField]="question.field_note[language]"></textarea>-->
+<!--              </mat-form-field>-->
+<!--            }-->
+
+<!--&lt;!&ndash;            @if (question.select_choices_or_calculations) {&ndash;&gt;-->
+<!--              @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {-->
+<!--                <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--                  <textarea id="" matInput [formField]="choice.label[language]"></textarea>-->
+<!--                </mat-form-field>-->
+<!--              }-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--          }-->
+<!--        }-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </form>-->
+<!--}-->

@@ -1,4 +1,4 @@
-import {Component, effect, inject, output, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
@@ -39,8 +39,6 @@ export class QuestionnaireNotificationsComponent {
 
   protected readonly UNITS = UNITS;
 
-  valid = output<boolean>();
-
   protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()?.schedule,
     notification: {
@@ -55,9 +53,7 @@ export class QuestionnaireNotificationsComponent {
     }
   });
 
-  protected form = form(this.model, (schema) => {
-
-  });
+  protected form = form(this.model);
 
   constructor() {
     effect(() => {
@@ -87,10 +83,10 @@ export class QuestionnaireNotificationsComponent {
             unit: model.reminders.unit,
             amount: model.reminders.amount,
           }
-        }
+        },
+        isNotificationsTabValid: this.form().valid()
       } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form().valid());
     });
   }
 }

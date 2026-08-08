@@ -1,4 +1,4 @@
-import {Component, effect, inject, output, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
@@ -32,8 +32,6 @@ export interface QuestionnaireCustomMessagesForm {
 export class QuestionnaireCustomMessagesComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
 
-  valid = output<boolean>();
-
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()?.schedule,
     showIntroduction: this.dialogState.questionnaire()?.showIntroduction ?? 'no',
@@ -44,9 +42,7 @@ export class QuestionnaireCustomMessagesComponent {
     estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? ''
   });
 
-  protected form = form(this.model, (schema) => {
-
-  });
+  protected form = form(this.model);
 
   constructor() {
     effect(() => {
@@ -62,9 +58,9 @@ export class QuestionnaireCustomMessagesComponent {
         endText: {...entity?.endText, [defaultLanguage.code]: model.endText},
         warningEnabled: model.warningEnabled,
         warn: {...entity?.warn, [defaultLanguage.code]: model.warn},
+        isCustomMessagesTabValid: this.form().valid()
       } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
-      this.valid.emit(this.form().valid());
     });
   }
 }

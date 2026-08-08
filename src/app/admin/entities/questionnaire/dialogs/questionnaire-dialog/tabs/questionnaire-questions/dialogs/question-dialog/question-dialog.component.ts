@@ -2,49 +2,32 @@ import {
   AfterViewInit,
   Component,
   inject,
-  // OnDestroy,
   OnInit,
-  output,
   signal,
-  ViewChild, ViewContainerRef,
-  // ChangeDetectionStrategy,
-  effect
+  ViewContainerRef,
+  viewChild
 } from '@angular/core';
-// import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
-// import {Validator as CustomValidator, ValidatorError} from "../../../../../../../../shared/utils/validators";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
-// import {debounceTime} from 'rxjs/operators';
-// import {Subscription} from 'rxjs';
-// import {HttpErrorResponse} from '@angular/common/http';
-// import {
-//   ErrorMessageBoxComponent
-// } from '../../../../../../../../shared/components/message-box/error-message-box.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QUESTION_COMPONENTS, QUESTION_TYPES} from '../../components/question-type/question-type.registry';
-// import {TextFormGroupComponent} from '../text-form-group/text-form-group.component';
 import {
   ConditionalLogicDialogComponent
 } from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-// import {JsonPipe} from '@angular/common';
 import {
   OPERATOR_SYMBOLS
 } from '../conditional-logic/conditional-logic-operator-selector/conditional-logic-operator-selector.component';
 import {
-  // longTextField,
-  // normalTextField,
   requiredField
 } from '../../../../../../../../../shared/utils/signal-form-validators';
-// import {ProjectForm} from '../../../../../../project/dialogs/project-dialog/project-dialog.component';
-import {disabled, form, FormField, validate} from '@angular/forms/signals';
-// import {ProjectStore} from '../../../../../../project/services/project.store';
+import {applyEach, disabled, form, FormField, validate} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
 
@@ -56,16 +39,14 @@ export interface QuestionnaireQuestionForm {
   required_field: boolean;
   field_note: string;
   matrix_group_name: string;
-  // branching_logic: new FormControl<string>('', {nonNullable: true}),
   conditionalLogic: {operand: string; operator: string; value: string}[][];
+  // select_choices_or_calculations: AppQuestionChoice[];
 }
 
 @Component({
   selector: 'app-question-dialog',
   imports: [
-    // ReactiveFormsModule,
     MatDialogContent,
-    // ErrorMessageBoxComponent,
     TranslatePipe,
     MatButton,
     MatFormField,
@@ -75,15 +56,13 @@ export interface QuestionnaireQuestionForm {
     MatIcon,
     MatSelect,
     MatOption,
-    // TextFormGroupComponent,
     MatSlideToggle,
     MatDialogTitle,
     FormField,
-    // JsonPipe
   ],
   templateUrl: './question-dialog.component.html'
 })
-export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDestroy {
+export class QuestionDialogComponent implements OnInit, AfterViewInit {
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
   protected readonly DialogMode = DialogMode;
 
@@ -91,12 +70,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
   protected dialogState = inject(QuestionnaireDialogStateService);
   protected dialog = inject(MatDialog);
   private dialogRef = inject(MatDialogRef<QuestionDialogComponent>);
-
-  // protected readonly ValidatorError = ValidatorError;
-  // protected selected = false;
-
-  // loading = signal(false);
-  // error = signal<HttpErrorResponse | null>(null);
 
   dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
@@ -106,8 +79,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
     index: number;
     matrixIndex?: number;
   };
-
-  changeEvent = output<Partial<AppQuestion>>();
 
   private model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this.dialogData.entity,
@@ -119,7 +90,9 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
     field_note: this.dialogData.entity.field_note?.[this.dialogState.language().code] ?? '',
     matrix_group_name: this.dialogData.entity.matrix_group_name ?? '',
     // branching_logic: new FormControl<string>('', {nonNullable: true}),
-    conditionalLogic: this.dialogData.entity.conditionalLogic ?? []
+    conditionalLogic: this.dialogData.entity.conditionalLogic ?? [],
+    // select_choices_or_calculations: (this.dialogData.entity.select_choices_or_calculations ?? [])
+    //   .map((choice) => withChoiceLanguages(choice, this.dialogState.questionnaire()?.languages ?? []))
   });
 
   protected form = form(this.model, (schema) => {
@@ -136,56 +109,57 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
     requiredField(schema.field_type);
     disabled(schema.field_type);
     requiredField(schema.field_label);
+    // applyEach(schema.select_choices_or_calculations, (choice) => {
+    //   requiredField(choice.code);
+    //   validate(choice.label, ({value}) => {
+    //     if (value()[this.dialogState.language().code]?.trim()) return null;
+    //     return {
+    //       kind: 'required',
+    //       message: 'SHARED.validatorError.required',
+    //     };
+    //   });
+    // });
   });
 
   branchingLogicString = signal('');
 
-  // private subscription?: Subscription;
+  host = viewChild('questionHost', { read: ViewContainerRef });
 
-  question?: Partial<AppQuestion>;
-
-  @ViewChild('questionHost', { read: ViewContainerRef })
-  host!: ViewContainerRef;
-
-  constructor() {
-    effect(() => {
-      const model = this.model();
-      // this.question = this.mergeFormValueAndQuestion();
-      // this.question = {...this.question, ...change, branching_logic: this.branchingLogicString(), isValid: this.form.valid};
-      // console.log('Class: QuestionDialogComponent, Function: , Line 140 this.question new ' , this.question);
-      this.changeEvent.emit(this.toAppQuestion(model));
-      // if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
-      //   this.configService.setDialogState({
-      //     mode: this.dialogData.mode,
-      //     entity: this.dialogData.entity,
-      //     model,
-      //   });
-      // }
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     const model = this.model();
+  //
+  //     this.dialogState.questionnaire.update(value => {
+  //       const questions = value!.questions.map(q => {
+  //         if (q.dragId === this.dialogData.entity.dragId) {
+  //           return this.toAppQuestion(model);
+  //         }
+  //         return q;
+  //       }) ?? [];
+  //       return {
+  //         ...value!,
+  //         questions: [...questions],
+  //       }
+  //     })
+  //   });
+  // }
 
   ngAfterViewInit() {
     this.loadQuestionEditor();
     animateDialogIn(this.dialogData.id);
   }
-  //
-  // ngAfterViewInit(): void {
-  //   this.loadQuestionEditor();
-  //
-  //   const containerId = this.dialogData.id;
-  //   const innerContainer = document.getElementById(containerId);
-  //   const panel = innerContainer?.closest('.tailwind-slide-panel');
-  //   setTimeout(() => {
-  //     panel?.classList.add('dialog-enter-active');
-  //   });
-  // }
 
   private loadQuestionEditor(): void {
-    this.host.clear();
+    const host = this.host();
+    if (!host) return;
+
+    host.clear();
+
     const componentType = QUESTION_COMPONENTS[this.dialogData.entity.field_type];
-    const componentRef = this.host.createComponent(componentType);
+    const componentRef = host.createComponent(componentType);
     componentRef.instance.type = 'form';
-    componentRef.instance.form = this.form;
+    // componentRef.instance.form = this.form;
+    // componentRef.instance.form = this.form;
     componentRef.instance.index = this.dialogData.index;
     componentRef.instance.entity = signal(this.dialogData.entity);
   }
@@ -193,26 +167,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
   ngOnInit() {
     this.dialogState.question.set(this.dialogData.entity);
     this.dialogState.questionIndex.set(this.dialogData.index);
-    // this.question = this.dialogData.entity;
-    //
-    // // this.form.controls.field_name.addValidators(this.duplicateValidator);
-    // // this.form.controls.field_name.updateValueAndValidity();
-    //
-    // this.subscription = this.form.valueChanges.pipe(
-    //   debounceTime(300)
-    // ).subscribe(change => {
-    //   // logErrors(this.form);
-    //   // console.log('Class: QuestionDialogComponent, Function: , Line 130 ' , this.form.valid);
-    //   // console.log('Class: QuestionDialogComponent, Function: , Line 140 change' , change);
-    //   // console.log('Class: QuestionDialogComponent, Function: , Line 140 this.question old' , this.question);
-    //   this.question = this.mergeFormValueAndQuestion();
-    //   // this.question = {...this.question, ...change, branching_logic: this.branchingLogicString(), isValid: this.form.valid};
-    //   // console.log('Class: QuestionDialogComponent, Function: , Line 140 this.question new ' , this.question);
-    //   this.changeEvent.emit(this.question);
-    // });
 
     if (this.dialogData.entity) {
-      // this.form.patchValue(this.dialogData.entity);
       this.branchingLogicString.set(this.dialogData.entity?.conditionalLogic?.map((conditionalLogicItems) =>
         conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
       ).join(' or ') ?? '');
@@ -222,7 +178,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
     const question = this.dialogData.entity;
     return {
-      // ...this.question,
+      ...question,
       field_name: model.field_name,
       field_type: model.field_type,
       field_label: {
@@ -239,64 +195,34 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
         [this.dialogState.language().code]: model.field_note
       },
       conditionalLogic: model.conditionalLogic,
+      // select_choices_or_calculations: model.select_choices_or_calculations,
       branching_logic: this.branchingLogicString(),
       isValid: this.form().valid()
     }
   }
 
-  // mergeFormValueAndQuestion() {
-  //   const formValue = this.form.getRawValue();
-  //
-  //   return {
-  //     ...this.question,
-  //     ...formValue,
-  //     field_name: formValue.field_name,
-  //     field_type: this.question?.field_type,
-  //     field_label: {...this.question?.field_label, ...formValue.field_label},
-  //     section_header: {...this.question?.section_header, ...formValue.section_header},
-  //     required_field: formValue.required_field,
-  //     field_note: {...this.question?.field_note, ...formValue.field_note},
-  //     conditionalLogic: formValue.conditionalLogic,
-  //     branching_logic: this.branchingLogicString(),
-  //     isValid: this.form.valid
-  //   }
-  // }
-
-  // ngOnDestroy() {
-  //   this.subscription?.unsubscribe();
-  // }
-
   protected handleSaveAction(): void {
+    const model = this.model();
+
+    this.dialogState.questionnaire.update(value => {
+      const questions = value!.questions.map(q => {
+        if (q.dragId === this.dialogData.entity.dragId) {
+          return this.toAppQuestion(model);
+        }
+        return q;
+      }) ?? [];
+      return {
+        ...value!,
+        questions: [...questions],
+      }
+    })
+
     this.close();
   }
 
   close() {
-    // this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
-
-  // close() {
-  //   this.loading.set(false);
-  //   const containerId = this.dialogData.id;
-  //   const innerContainer = document.getElementById(containerId);
-  //   const panel = innerContainer?.closest('.tailwind-slide-panel');
-  //   panel?.classList.remove('dialog-enter-active');
-  //   panel?.classList.add('dialog-exit-active');
-  //
-  //   setTimeout(() => {
-  //     this.dialogRef?.close();
-  //     this.dialogState.question.set(null);
-  //     this.dialogState.questionIndex.set(null);
-  //   }, 300);
-  // }
-
-  // private duplicateValidator = (control: AbstractControl) => {
-  //   return (this.dialogData.questions ?? []).find(entity =>
-  //     control.value === entity.field_name && this.dialogData.entity?.field_name !== entity.field_name
-  //   )
-  //     ? {duplicate: true}
-  //     : null;
-  // }
 
   protected editConditionalLogic() {
     this.openConditionalLogicDialog();
@@ -305,7 +231,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
   openConditionalLogicDialog() {
     const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
       id: 'conditional-logic-dialog',
-      // data: {id: 'conditional-logic-dialog', entity: {value: this.form.controls.branching_logic?.value}, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
       data: {id: 'conditional-logic-dialog', entity: this.model().conditionalLogic, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '60%',
@@ -345,18 +270,4 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {//}, OnDe
       dialogActionSubscription.unsubscribe();
     });
   }
-
-
 }
-
-// function logErrors(form: FormGroup) {
-//   Object.keys(form.controls).forEach(key => {
-//     const control = form.get(key);
-//
-//     if (control instanceof FormGroup) {
-//       logErrors(control);
-//     } else if (control?.invalid) {
-//       console.log(key, control.errors);
-//     }
-//   });
-// }

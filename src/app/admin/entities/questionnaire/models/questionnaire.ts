@@ -42,6 +42,12 @@ export interface AppQuestionnaire {
       repeat?: string;
     };
   },
+  isGeneralTabValid?: boolean;
+  isSchedulingTabValid?: boolean;
+  isCustomMessagesTabValid?: boolean;
+  isNotificationsTabValid?: boolean;
+  isQuestionsTabValid?: boolean;
+  isTranslationsTabValid?: boolean;
   isActive?: boolean;
   isValid?: boolean;
 }
@@ -74,6 +80,7 @@ export interface AppQuestion {
   date_type?: string;
   isValid?: boolean;
   visible?: boolean;
+  dragId: string;
 }
 
 export interface AppQuestionChoice {
