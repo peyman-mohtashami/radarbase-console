@@ -5,10 +5,11 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
-import {UpperCasePipe} from '@angular/common';
+import {JsonPipe, UpperCasePipe} from '@angular/common';
 import {QUESTION_COMPONENTS} from '../question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
+import {MatHint} from '@angular/material/input';
 
 @Component({
   selector: 'app-question-button',
@@ -20,6 +21,8 @@ import {DialogMode} from '../../../../../../../../shared/enums/dialog';
     TagComponent,
     MatTooltip,
     UpperCasePipe,
+    MatHint,
+    JsonPipe,
   ],
 })
 export class QuestionButtonComponent {
@@ -31,14 +34,14 @@ export class QuestionButtonComponent {
   index = input.required<number>();
   matrixIndex = input<number>();
 
-  host = viewChild('questionHost', { read: ViewContainerRef });
+  // host = viewChild('questionHost', { read: ViewContainerRef });
 
   removeEvent = output<void>();
   selectEvent = output<void>();
 
-  constructor() {
-    effect(() => this.loadQuestionEditor());
-  }
+  // constructor() {
+    // effect(() => this.loadQuestionEditor());
+  // }
 
   protected removeQuestion(event: PointerEvent) {
     event.stopPropagation();
@@ -50,14 +53,14 @@ export class QuestionButtonComponent {
     this.selectEvent.emit();
   }
 
-  private loadQuestionEditor(): void {
-    const host = this.host();
-    if (!host) return;
-
-    host.clear();
-    const componentType = QUESTION_COMPONENTS[this.entity().field_type];
-    const componentRef = host.createComponent(componentType);
-    componentRef.instance.type = 'button';
-    componentRef.instance.entity = this.entity;
-  }
+  // private loadQuestionEditor(): void {
+  //   const host = this.host();
+  //   if (!host) return;
+  //
+  //   host.clear();
+  //   const componentType = QUESTION_COMPONENTS[this.entity().field_type];
+  //   const componentRef = host.createComponent(componentType);
+  //   componentRef.setInput('type', 'button');//.instance.type = 'button';
+  //   componentRef.setInput('entity', this.entity());//.instance.entity = this.entity;
+  // }
 }

@@ -28,10 +28,10 @@ export class QuestionViewComponent {
     host.clear();
     const componentType = QUESTION_COMPONENTS[this.question().field_type];
     const componentRef = host.createComponent(componentType);
-    componentRef.instance.type = 'logic';
-    componentRef.instance.entity = this.question;
-    componentRef.instance.value = this.conditionalLogicItem()?.value;
-    componentRef.instance.operator = this.operator();
+    componentRef.setInput('type', 'logic');
+    componentRef.setInput('type', this.question());//.instance.entity = this.question;
+    componentRef.setInput('value', this.conditionalLogicItem()?.value);
+    componentRef.setInput('operator', this.operator());
 
     componentRef.instance.logicValueChange.subscribe((value: any) => {
       console.log('Child emitted value:', value);

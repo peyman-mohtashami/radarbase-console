@@ -95,7 +95,330 @@
       </mat-form-field>
     </div>
 
-    <ng-container #questionHost></ng-container>
+<!--    <ng-container #questionHost></ng-container>-->
+    @let fieldType = form.field_type().value();
+
+<!--    Info / Checkbox / Radio-->
+    @if (fieldType === 'info' || fieldType === 'checkbox'  || fieldType === 'radio') {
+      <app-question-choices [formField]="form.select_choices_or_calculations"/>
+    }
+
+<!--    Text-->
+    @if (fieldType === 'text') {
+      <div>
+        <label for="text_validation_min" class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="text_validation_min" matInput [formField]="form.text_validation_min"/>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <label for="text_validation_max" class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="text_validation_max" matInput [formField]="form.text_validation_max"/>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <div>
+          <label for="" class="text-sm">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</label>
+        </div>
+        <mat-slide-toggle [formField]="form.multi_line"/>
+      </div>
+    }
+
+<!--    Calc-->
+    @if (fieldType === 'calc') {
+      <div class="mt-4">
+        <div>
+          <label for="calculation_fn"
+                 class="text-sm">{{ `${_prefix}.questionCalculationFn` | translate }}</label>
+        </div>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="calculation_fn" matInput [formField]="form.calculation_fn"/>
+        </mat-form-field>
+      </div>
+
+      <div class="mt-4">
+        <div>
+          <label for="calculation_args"
+                 class="text-sm">{{ `${_prefix}.questionCalculationArgs` | translate }}</label>
+        </div>
+        <mat-form-field class='small-input' appearance="outline">
+          <input id="calculation_args" matInput [formField]="form.calculation_args"/>
+        </mat-form-field>
+      </div>
+    }
+
+<!--    Date / Time-->
+    @if (fieldType === 'date' || fieldType === 'time') {
+      <label for="unit" class="text-sm">{{ `${_prefix}.questionDateTypeLabel` | translate }}</label>
+      <mat-form-field class='small-input w-full! grow-0' appearance='outline' subscriptSizing="dynamic">
+        <mat-select [formField]="form.date_type">
+          <mat-option [value]="'date'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeDate' | translate }}
+          </mat-option>
+          <mat-option [value]="'time'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeTime' | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="mt-4">
+        <fieldset class="p-2 rounded-sm border flex gap-2">
+          <div class="w-1/2">
+            <div>
+              <label for="text_validation_min"
+                     class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+            </div>
+            <mat-form-field class="small-input w-1/2" appearance='outline'>
+              <input
+                id="text_validation_min"
+                [formField]="form.text_validation_min"
+                matInput
+                placeholder="dd/MM/yyyy or [q1]">
+
+              @if (form.text_validation_min().value()) {
+                <button matIconButton
+                        matSuffix
+                        type="button"
+                        aria-label="Clear min date"
+                        (click)="$event.stopPropagation(); form.text_validation_min().reset()">
+                  <mat-icon class="material-symbols-outlined">close</mat-icon>
+                </button>
+              }
+
+              <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>
+              <mat-datepicker #dp1></mat-datepicker>
+            </mat-form-field>
+
+<!--            <input-->
+<!--              class="hidden"-->
+<!--              [matDatepicker]="dp1"-->
+<!--              (dateChange)="onValidationDatePicked($event, text_validation_min)">-->
+
+          </div>
+
+          <div class="w-1/2">
+            <div>
+              <label for="text_validation_max"
+                     class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+            </div>
+            <mat-form-field class="small-input w-1/2" appearance='outline'>
+              <input
+                id="text_validation_max"
+                [formField]="form.text_validation_max"
+                matInput
+                placeholder="dd/MM/yyyy or [q1]">
+
+              @if (form.text_validation_max().value()) {
+                <button matIconButton
+                        matSuffix
+                        type="button"
+                        aria-label="Clear max date"
+                        (click)="$event.stopPropagation(); form.text_validation_max().reset()">
+                  <mat-icon class="material-symbols-outlined">close</mat-icon>
+                </button>
+              }
+
+              <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+              <mat-datepicker #dp2></mat-datepicker>
+            </mat-form-field>
+
+<!--            <input-->
+<!--              class="hidden"-->
+<!--              [matDatepicker]="dp2"-->
+<!--              (dateChange)="onValidationDatePicked($event, text_validation_max)">-->
+
+          </div>
+        </fieldset>
+      </div>
+    }
+
+<!--    Number-->
+    @if (fieldType === 'number') {
+      <fieldset class="p-2 rounded-sm border flex gap-2">
+        <div class="w-1/2">
+          <div>
+            <label for="text_validation_min"
+                   class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
+          </div>
+          <mat-form-field class='small-input' appearance="outline">
+            <input id="text_validation_max" matInput [formField]="form.text_validation_min"/>
+          </mat-form-field>
+        </div>
+
+        <div class="w-1/2">
+          <div>
+            <label for="text_validation_max"
+                   class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+          </div>
+          <mat-form-field class='small-input' appearance="outline">
+            <input id="text_validation_max" matInput [formField]="form.text_validation_max"/>
+          </mat-form-field>
+        </div>
+      </fieldset>
+    }
+
+<!--    Range-->
+    @if (fieldType === 'range') {
+      <div>
+        <div>
+          <label for="show_code" class="text-sm">{{ `${_prefix}.showCode` | translate }}</label>
+        </div>
+        <mat-slide-toggle [formField]="form.show_code"/>
+      </div>
+
+      <div>
+        <div>
+          <label for="show_selected_label" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
+        </div>
+        <mat-slide-toggle [formField]="form.show_selected_label"/>
+      </div>
+    }
+
+<!--    Slider-->
+    @if (fieldType === 'slider') {
+      <label for="unit" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }} *</label>
+      <fieldset class="p-2 rounded-sm border">
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.min().invalid() ? 'text-red-500' : ''">
+              {{ `${_prefix}.questionRangeMin` | translate }} *
+            </label>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <input matInput [formField]="form.range.min" type="number">
+              <mat-error>
+                @if (form.range.min().touched() && form.range.min().invalid()) {
+                  @for (error of form.range.min().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.max().invalid() ? 'text-red-500' : ''">
+              {{ `${_prefix}.questionRangeMax` | translate }} *
+            </label>
+            <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+              <input matInput [formField]="form.range.max" type="number">
+              <mat-error>
+                @if (form.range.min().touched() && form.range.min().invalid()) {
+                  @for (error of form.range.min().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.step().invalid() ? 'text-red-500' : ''">
+              {{ `${_prefix}.questionRangeStep` | translate }} *
+            </label>
+            <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
+              <input matInput [formField]="form.range.step" type="number">
+              <mat-error>
+                @if (form.range.step().touched() && form.range.step().invalid()) {
+                  @for (error of form.range.step().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+<!--        @if (range.errors?.['minLessThanMax']) {-->
+<!--          <mat-error class="text-sm">Min should be less than max.</mat-error>-->
+<!--        }-->
+
+<!--        @if (range.errors?.['stepGreaterThanZero']) {-->
+<!--          <mat-error class="text-sm">Step should be greater than 0.</mat-error>-->
+<!--        }-->
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+<!--          <app-text-form-group class='small-input grow'-->
+<!--                               [textGroup]="asFormGroup(range.controls['labelLeft'])"-->
+<!--                               label="Min Label"/>-->
+
+<!--          <app-text-form-group class='small-input grow'-->
+<!--                               [textGroup]="asFormGroup(range.controls['labelRight'])"-->
+<!--                               label="Max Label"/>-->
+        </div>
+      </fieldset>
+    }
+
+<!--    Timed-->
+    @if (fieldType === 'timed') {
+      <label for="unit" class="text-sm">{{ `${_prefix}.questionAnnotationLabel` | translate }}</label>
+      <fieldset class="p-2 rounded-sm border">
+
+        <div>
+          <label for="select_choices_or_calculations" class="text-sm" [class]="form.field_annotation.image().invalid() ? 'text-red-500' : ''">{{ `${_prefix}.questionAnnotationImage` | translate }} *</label>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <input matInput [formField]="form.field_annotation.image" type="url">
+            <mat-error>
+              @if (form.field_annotation.image().touched() && form.field_annotation.image().invalid()) {
+                @for (error of form.field_annotation.image().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+          <div>
+            <label for="select_choices_or_calculations" class="text-sm" [class]="form.field_annotation.unit().invalid() ? 'text-red-500' : ''">{{ `${_prefix}.questionAnnotationUnit` | translate }}
+              *</label>
+            <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+              <input matInput [formField]="form.field_annotation.unit" type="text">
+              <mat-error>
+                @if (form.field_annotation.unit().touched() && form.field_annotation.unit().invalid()) {
+                  @for (error of form.field_annotation.unit().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="flex gap-2">
+            <div>
+              <label for="select_choices_or_calculations" class="text-sm" [class]="form.field_annotation.timer.start().invalid() ? 'text-red-500' : ''">
+                {{ `${_prefix}.questionAnnotationTimerStart` | translate }} *
+              </label>
+              <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+                <input matInput [formField]='form.field_annotation.timer.start' type="number">
+                <mat-error>
+                  @if (form.field_annotation.timer.start().touched() && form.field_annotation.timer.start().invalid()) {
+                    @for (error of form.field_annotation.timer.start().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label for="select_choices_or_calculations" class="text-sm" [class]="form.field_annotation.timer.end().invalid() ? 'text-red-500' : ''">
+                {{ `${_prefix}.questionAnnotationTimerEnd` | translate }} *
+              </label>
+              <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+                <input matInput [formField]='form.field_annotation.timer.end' type="number">
+                <mat-error>
+                  @if (form.field_annotation.timer.end().touched() && form.field_annotation.timer.end().invalid()) {
+                    @for (error of form.field_annotation.timer.end().errors(); track error.kind) {
+                      {{ error.message }}
+                    }
+                  }
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    }
 
     <div class="mt-4">
       <div>
@@ -133,7 +456,8 @@
     <button (click)='handleSaveAction()'
             mat-raised-button
             color="primary"
-            type="button">
+            type="button"
+            [disabled]="form().invalid()">
       {{ "SHARED.dialog.update" | translate }}
     </button>
   </div>

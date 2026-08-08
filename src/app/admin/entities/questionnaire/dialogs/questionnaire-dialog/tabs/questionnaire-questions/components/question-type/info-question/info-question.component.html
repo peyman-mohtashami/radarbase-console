@@ -1,6 +1,6 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-@switch (type) {
+@switch (type()) {
   @case ('button') {
     @let choices = entity().select_choices_or_calculations;
 
@@ -65,11 +65,9 @@
       </span>
     </div>
   }
-  @case ('form') {
-    <app-question-choices-form-array [choices]="choices"
-                                     [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations"/>
-  }
+<!--  @case ('form') {-->
+<!--    <app-question-choices [formField]="form.select_choices_or_calculations"/>-->
+<!--  }-->
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()"/>
 

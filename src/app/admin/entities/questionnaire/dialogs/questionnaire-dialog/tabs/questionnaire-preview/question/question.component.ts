@@ -41,10 +41,10 @@ export class QuestionComponent implements OnInit {
     host.clear();
     const componentType = QUESTION_COMPONENTS[this.question().field_type];
     const componentRef = host.createComponent(componentType);
-    componentRef.instance.type = 'preview';
-    componentRef.instance.language = this.language;
-    componentRef.instance.entity = this.question;
-    componentRef.instance.answer = this.answer;
+    componentRef.setInput('type', 'preview'); //.instance.type = 'preview';
+    componentRef.setInput('language', this.language());
+    componentRef.setInput('entity', this.question()); //.instance.entity = this.question;
+    componentRef.setInput('answer', this.answer());
 
     outputToObservable(componentRef.instance.previewValueChange)
       .pipe(debounceTime(300))
