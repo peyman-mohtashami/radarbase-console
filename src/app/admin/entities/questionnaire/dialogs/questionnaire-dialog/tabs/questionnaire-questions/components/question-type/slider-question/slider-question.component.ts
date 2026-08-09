@@ -18,9 +18,9 @@ import {ReplacePlaceholdersPipe} from '../../../../questionnaire-preview/pipes/r
 import {
   QuestionHeaderComponent
 } from '../../../../questionnaire-preview/question/question-header/question-header.component';
-import {
-  TextFormGroupComponent
-} from '../../text-form-group/text-form-group.component';
+// import {
+//   TextFormGroupComponent
+// } from '../../text-form-group/text-form-group.component';
 
 @Component({
   selector: 'app-slider-question',
@@ -35,7 +35,7 @@ import {
     MatSliderThumb,
     ReplacePlaceholdersPipe,
     QuestionHeaderComponent,
-    TextFormGroupComponent,
+    // TextFormGroupComponent,
     FormsModule,
   ],
   changeDetection: ChangeDetectionStrategy.Eager,

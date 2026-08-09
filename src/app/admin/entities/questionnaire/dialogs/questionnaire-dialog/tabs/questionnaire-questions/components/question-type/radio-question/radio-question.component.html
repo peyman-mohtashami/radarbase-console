@@ -66,9 +66,9 @@
     </div>
   }
   @case ('form') {
-    <app-question-choices-form-array [choices]="choices"
-                                     [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations" />
+<!--    <app-question-choices-form-array [choices]="choices"-->
+<!--                                     [index]="index"-->
+<!--                                     [_choices]="entity().select_choices_or_calculations" />-->
   }
   @case ('preview') {
     <app-question-header [question]="entity()" [language]="language()"/>
@@ -89,15 +89,15 @@
     }
   }
   @case ('logic') {
-    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
-        @for (option of entity().select_choices_or_calculations; track option.code) {
-          <mat-option [value]="option.code">
-            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+<!--    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">-->
+<!--        @for (option of entity().select_choices_or_calculations; track option.code) {-->
+<!--          <mat-option [value]="option.code">-->
+<!--            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>-->
+<!--          </mat-option>-->
+<!--        }-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
   }
 }
 

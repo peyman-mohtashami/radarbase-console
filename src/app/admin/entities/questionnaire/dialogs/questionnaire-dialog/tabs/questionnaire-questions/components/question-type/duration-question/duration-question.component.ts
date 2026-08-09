@@ -3,9 +3,9 @@ import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} fro
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
-import {
-  QuestionChoicesFormArray
-} from '../../question-choices-form-array/question-choices-form-array';
+// import {
+//   QuestionChoicesFormArray
+// } from '../../question-choices-form-array/question-choices-form-array';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 @Component({

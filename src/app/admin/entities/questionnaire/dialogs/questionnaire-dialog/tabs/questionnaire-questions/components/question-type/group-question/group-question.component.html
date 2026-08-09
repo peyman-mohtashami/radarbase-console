@@ -66,25 +66,25 @@
     </div>
   }
   @case ('form') {
-    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>
-    <div>
-      <div>
-        <label for="text_validation_min"
-               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
-      </div>
-      <mat-form-field class='small-input' appearance="outline">
-        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>
-      </mat-form-field>
-    </div>
+<!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
+<!--    <div>-->
+<!--      <div>-->
+<!--        <label for="text_validation_min"-->
+<!--               class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>-->
+<!--      </div>-->
+<!--      <mat-form-field class='small-input' appearance="outline">-->
+<!--        <input id="text_validation_max" matInput [formControl]='matrix_group_name'/>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
 
-    <app-question-choices-form-array [choices]="choices"
-                                     [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations" />
+<!--    <app-question-choices-form-array [choices]="choices"-->
+<!--                                     [index]="index"-->
+<!--                                     [_choices]="entity().select_choices_or_calculations" />-->
 
-    <div>
-      <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
-    </div>
-    <mat-slide-toggle [formControl]="show_selected_label" />
+<!--    <div>-->
+<!--      <label for="" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>-->
+<!--    </div>-->
+<!--    <mat-slide-toggle [formControl]="show_selected_label" />-->
 
   }
   @case ('preview') {
@@ -115,15 +115,15 @@
     }
   }
   @case ('logic') {
-    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">
-        @for (option of entity().select_choices_or_calculations; track option.code) {
-          <mat-option [value]="option.code">
-            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+<!--    <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--      <mat-select (selectionChange)="onLogicInputChange($event)" [value]="value">-->
+<!--        @for (option of entity().select_choices_or_calculations; track option.code) {-->
+<!--          <mat-option [value]="option.code">-->
+<!--            <p>[{{ option.code }}]: {{ option.label[language().code] }}</p>-->
+<!--          </mat-option>-->
+<!--        }-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
   }
 }
 

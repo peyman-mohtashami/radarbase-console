@@ -26,7 +26,7 @@
       </div>
     }
     @case ('questionCount') {
-      {{ entity().questions.length || '-' }}
+      {{ entity().questions?.length || '-' }}
     }
     @case ('type') {
       @if (entity().schedule?.onDemand) {

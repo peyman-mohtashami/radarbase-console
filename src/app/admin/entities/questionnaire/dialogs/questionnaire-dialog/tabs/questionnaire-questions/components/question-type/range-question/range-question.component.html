@@ -66,36 +66,36 @@
     </div>
   }
   @case ('form') {
-    <app-question-choices-form-array [choices]="choices"
-                                     [index]="index"
-                                     [_choices]="entity().select_choices_or_calculations"/>
+<!--    <app-question-choices-form-array [choices]="choices"-->
+<!--                                     [index]="index"-->
+<!--                                     [_choices]="entity().select_choices_or_calculations"/>-->
 
-    <div>
-      <div>
-        <label for="show_code" class="text-sm">{{ `${_prefix}.showCode` | translate }}</label>
-      </div>
-      <mat-slide-toggle [formControl]="show_code"/>
-    </div>
+<!--    <div>-->
+<!--      <div>-->
+<!--        <label for="show_code" class="text-sm">{{ `${_prefix}.showCode` | translate }}</label>-->
+<!--      </div>-->
+<!--      <mat-slide-toggle [formControl]="show_code"/>-->
+<!--    </div>-->
 
-    <div>
-      <div>
-        <label for="show_selected_label" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>
-      </div>
-      <mat-slide-toggle [formControl]="show_selected_label"/>
-    </div>
+<!--    <div>-->
+<!--      <div>-->
+<!--        <label for="show_selected_label" class="text-sm">{{ `${_prefix}.showSelectedLabel` | translate }}</label>-->
+<!--      </div>-->
+<!--      <mat-slide-toggle [formControl]="show_selected_label"/>-->
+<!--    </div>-->
 
 
 
-<!--    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>-->
-    <div class="mt-4">
-      <div>
-        <label for="matrix_group_name"
-               class="text-sm">{{ `${_prefix}.questionMatrixGroupName` | translate }}</label>
-      </div>
-      <mat-form-field class='small-input' appearance="outline">
-        <input id="matrix_group_name" matInput [formControl]='matrix_group_name'/>
-      </mat-form-field>
-    </div>
+<!--&lt;!&ndash;    <label for="unit" class="text-sm">{{ `${_prefix}.questionValidationLabel` | translate }}</label>&ndash;&gt;-->
+<!--    <div class="mt-4">-->
+<!--      <div>-->
+<!--        <label for="matrix_group_name"-->
+<!--               class="text-sm">{{ `${_prefix}.questionMatrixGroupName` | translate }}</label>-->
+<!--      </div>-->
+<!--      <mat-form-field class='small-input' appearance="outline">-->
+<!--        <input id="matrix_group_name" matInput [formControl]='matrix_group_name'/>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
 
   }
   @case ('preview') {

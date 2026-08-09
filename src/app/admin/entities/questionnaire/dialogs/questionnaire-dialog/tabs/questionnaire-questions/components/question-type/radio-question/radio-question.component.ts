@@ -3,9 +3,9 @@ import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/f
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
-import {
-  QuestionChoicesFormArray
-} from '../../question-choices-form-array/question-choices-form-array';
+// import {
+//   QuestionChoicesFormArray
+// } from '../../question-choices-form-array/question-choices-form-array';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {MatFormField} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
@@ -23,7 +23,7 @@ import {
     ReactiveFormsModule,
     TranslatePipe,
     MatIcon,
-    QuestionChoicesFormArray,
+    // QuestionChoicesFormArray,
     MatRadioButton,
     MatRadioGroup,
     MatFormField,

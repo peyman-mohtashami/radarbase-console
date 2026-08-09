@@ -442,6 +442,8 @@ export class QuestionnaireStore {
   }
 
   toRadarSubProtocol(schedule: AppQuestionnaire['schedule']):  SubProtocolDto | undefined {
+    if (!schedule) return undefined;
+
     if (schedule && schedule.onDemand) {
       return undefined;
     }
