@@ -13,9 +13,16 @@
        [class]="entity().field_name === dialogState.question()?.field_name ? 'border-2 border-tertiary!': ''">
     <div class="flex items-center gap-2 w-full justify-between mb-2">
       <div class="flex gap-2 items-center grow">
-        <app-tag class="bg-tertiary/20 text-primary cursor-pointer" [class]="!entity().field_name ? 'bg-red-500/20! text-red-500' : ''">
-          {{ entity().field_name || 'N/A' }}
-        </app-tag>
+        @if (entity().field_name) {
+          <app-tag class="cursor-pointer bg-tertiary/20 text-primary">
+            {{ entity().field_name || 'N/A' }}
+          </app-tag>
+        } @else {
+          <app-tag class="cursor-pointer bg-red-500/20 text-red-500">
+            {{ entity().field_name || 'N/A' }}
+          </app-tag>
+
+        }
       </div>
       <div class="flex gap-2 items-center">
         @if (entity().matrix_group_name) {
@@ -61,8 +68,8 @@
         <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
         <span>{{ section_header || 'N/A' }}</span>
       </div>
-<!--        <ng-container #questionHost></ng-container>-->
-<!--        Info / Checkbox / Radio / Range -->
+
+        <!--        Info / Checkbox / Radio / Range -->
         @if (entity().field_type === 'info' || entity().field_type === 'checkbox' || entity().field_type === 'radio' || entity().field_type === 'range') {
           @let choices = entity()?.select_choices_or_calculations;
 <!--          {{entity() | json}}-->
@@ -129,7 +136,8 @@
           </div>
         }
 
-<!--        Number-->
+
+        <!--        Number-->
         @if (entity().field_type === 'number') {
           @if (!!entity().text_validation_min || !!entity().text_validation_max) {
             <p>
@@ -138,7 +146,8 @@
           }
         }
 
-<!--        Slider-->
+
+        <!--        Slider-->
         @if (entity().field_type === 'slider') {
           <div class="flex gap-2">
             <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeLabel` | translate }}</span>
@@ -148,7 +157,8 @@
           </div>
         }
 
-<!--        Text-->
+
+        <!--        Text-->
         @if (entity().field_type === 'text') {
           <div class="flex gap-2">
             <span class="text-neutral-500">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</span>
@@ -156,7 +166,8 @@
           </div>
         }
 
-<!--        Timed-->
+
+        <!--        Timed-->
         @if (entity().field_type === 'timed') {
           <div class="flex gap-2">
             <span class="text-neutral-500" [class]="!entity().field_annotation ? 'text-red-500' : ''">{{ `${_prefix}.questionAnnotationLabel` | translate }}</span>

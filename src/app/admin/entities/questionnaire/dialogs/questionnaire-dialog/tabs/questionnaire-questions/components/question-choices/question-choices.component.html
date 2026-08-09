@@ -7,8 +7,8 @@
   <div class="w-full flex-col mt-0 mb-1 text-sm">
     <div class="flex items-center gap-1 w-full">
       <div class="w-7 grow-0"></div>
-      <div class="w-3/12 grow-0" [class]="formField()().invalid() ? 'text-red-500' : ''">{{ `${_prefix}.questionChoiceCode` | translate }} *</div>
-      <div class="grow" [class]="formField()().invalid() ? 'text-red-500' : ''">{{ `${_prefix}.questionChoiceLabel` | translate }} *</div>
+      <div class="w-3/12 grow-0" [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.questionChoiceCode` | translate }} *</div>
+      <div class="grow" [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.questionChoiceLabel` | translate }} *</div>
       <div class="w-7 grow-0"></div>
     </div>
 <!--{{formField()().invalid()}}-->

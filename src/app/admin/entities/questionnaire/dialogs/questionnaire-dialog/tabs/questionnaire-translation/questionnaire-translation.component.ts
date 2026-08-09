@@ -12,35 +12,35 @@ export interface QuestionnaireTranslationsLanguageForm {
   languages: string[];
 }
 
-export interface QuestionnaireTranslationsForm {
-  title?: Record<string, string>
-  description?: Record<string, string>
-  startText?: Record<string, string>
-  endText?: Record<string, string>
-  warn?: Record<string, string>
-  questions: QuestionnaireQuestionForm[]
-  schedule?: {
-    notification?: {
-      title?: Record<string, string>
-      text?: Record<string, string>
-    }
-  }
-}
+// export interface QuestionnaireTranslationsForm {
+//   title?: Record<string, string>
+//   description?: Record<string, string>
+//   startText?: Record<string, string>
+//   endText?: Record<string, string>
+//   warn?: Record<string, string>
+//   questions: QuestionnaireQuestionForm[]
+//   schedule?: {
+//     notification?: {
+//       title?: Record<string, string>
+//       text?: Record<string, string>
+//     }
+//   }
+// }
 
-export interface QuestionnaireQuestionForm {
-  field_label: Record<string, string>
-  section_header?: Record<string, string>
-  select_choices_or_calculations?: QuestionnaireQuestionChoiceForm[]
-  field_note?: Record<string, string>
-  range?: {
-    labelLeft?: Record<string, string>
-    labelRight?: Record<string, string>
-  }
-}
-
-export interface QuestionnaireQuestionChoiceForm {
-  label: Record<string, string>
-}
+// export interface QuestionnaireQuestionForm {
+//   field_label: Record<string, string>
+//   section_header?: Record<string, string>
+//   select_choices_or_calculations?: QuestionnaireQuestionChoiceForm[]
+//   field_note?: Record<string, string>
+//   range?: {
+//     labelLeft?: Record<string, string>
+//     labelRight?: Record<string, string>
+//   }
+// }
+//
+// export interface QuestionnaireQuestionChoiceForm {
+//   label: Record<string, string>
+// }
 
 
 @Component({
@@ -75,7 +75,7 @@ export class QuestionnaireTranslationComponent {
     ];
   });
 
-  protected model = signal<QuestionnaireTranslationsForm>({//this.dialogData.restoredModel ?? {
+  protected model = signal<AppQuestionnaire>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()!,
   });
 
@@ -106,6 +106,7 @@ export class QuestionnaireTranslationComponent {
 
       this.model.update((value) => {
         return {
+          ...value,
           title: languages.reduce((acc, lang) => ({...acc, [lang]: value.title?.[lang] ?? ''}), {} as Record<string, string>),
           description: languages.reduce((acc, lang) => ({...acc, [lang]: value.description?.[lang] ?? ''}), {} as Record<string, string>),
           startText: languages.reduce((acc, lang) => ({...acc, [lang]: value.startText?.[lang] ?? ''}), {} as Record<string, string>),
@@ -113,18 +114,21 @@ export class QuestionnaireTranslationComponent {
           warn: languages.reduce((acc, lang) => ({...acc, [lang]: value.warn?.[lang] ?? ''}), {} as Record<string, string>),
           questions: value.questions?.map(q => {
             return {
+              ...q,
               field_label: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_label?.[lang] ?? ''}), {} as Record<string, string>),
               section_header: languages.reduce((acc, lang) => ({...acc, [lang]: q.section_header?.[lang] ?? ''}), {} as Record<string, string>),
               select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
                 return {
+                  ...c,
                   label: languages.reduce((acc, lang) => ({...acc, [lang]: c.label?.[lang] ?? ''}), {} as Record<string, string>),
                 }
               }) ?? [],
               field_note: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_note?.[lang] ?? ''}), {} as Record<string, string>),
-              range: {
+              range: q.range ? {
+                ...q.range,
                 labelLeft: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelLeft?.[lang] ?? ''}), {} as Record<string, string>),
                 labelRight: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelRight?.[lang] ?? ''}), {} as Record<string, string>),
-              }
+              } : undefined
             }
           }) ?? [],
           schedule: {
@@ -139,18 +143,27 @@ export class QuestionnaireTranslationComponent {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
-
+      console.log('Class: QuestionnaireTranslationComponent, Function: , Line 142 model' , model);
+      console.log('Class: QuestionnaireTranslationComponent, Function: , Line 143 entity' , entity);
       const updated = {
         ...entity,
         ...model,
-        schedule: {
-          ...entity?.schedule,
-          notification: {
-            ...entity?.schedule?.notification,
-            title: model.schedule?.notification?.title,
-            text: model.schedule?.notification?.text,
-          }
-        }
+        // questions: [
+        //   ...(entity?.questions ?? []).map(q => {
+        //     return {
+        //       ...q,
+        //       ...model.questions
+        //     }
+        //   }),
+        // ],
+        // schedule: {
+        //   ...entity?.schedule,
+        //   notification: {
+        //     ...entity?.schedule?.notification,
+        //     title: model.schedule?.notification?.title,
+        //     text: model.schedule?.notification?.text,
+        //   }
+        // }
       } as AppQuestionnaire;
 
       this.dialogState.questionnaire.set(updated);

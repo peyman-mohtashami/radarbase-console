@@ -15,22 +15,23 @@ import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
 import {
-  ConditionalLogicDialogComponent
-} from '../conditional-logic/conditional-logic-dialog/conditional-logic-dialog.component';
+  ConditionalLogicDialogComponent, OPERATOR_SYMBOLS
+} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
-  OPERATOR_SYMBOLS
-} from '../conditional-logic/conditional-logic-operator-selector/conditional-logic-operator-selector.component';
-import {
   requiredField
 } from '../../../../../../../../../shared/utils/signal-form-validators';
-import {applyEach, disabled, form, FormField, required, validate} from '@angular/forms/signals';
+import {applyEach, disabled, FieldTree, form, FormField, required, validate} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {QuestionChoicesComponent} from '../../components/question-choices/question-choices.component';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerInputEvent,
+  MatDatepickerToggle
+} from '@angular/material/datepicker';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -54,8 +55,8 @@ export interface QuestionnaireQuestionForm {
     unit: string
   }
   range: {
-    labelLeft?: string;
-    labelRight?: string;
+    labelLeft: string;
+    labelRight: string;
     max: string
     min: string
     step: string
@@ -85,13 +86,11 @@ export interface QuestionnaireQuestionForm {
     MatSlideToggle,
     MatDialogTitle,
     FormField,
-    FormsModule,
     QuestionChoicesComponent,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
-    ReactiveFormsModule,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -199,6 +198,43 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         return v === 'slider'
       }
     });
+    required(schema.field_annotation.image, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'timed'
+      }
+    });
+    required(schema.field_annotation.timer.start, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'timed'
+      }
+    });
+    required(schema.field_annotation.timer.end, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'timed'
+      }
+    });
+    required(schema.field_annotation.unit, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'timed'
+      }
+    });
+    required(schema.calculation_fn, {
+      when: ({ valueOf }) => {
+        const v = valueOf(schema.field_type);
+        return v === 'calc'
+      }
+    });
+    // required(schema.calculation_args, {
+    //   when: ({ valueOf }) => {
+    //     const v = valueOf(schema.field_type);
+    //     return v === 'calc'
+    //   }
+    // });
+
   });
 
   branchingLogicString = signal('');
@@ -219,7 +255,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
-    console.log('Class: QuestionDialogComponent, Function: toAppQuestion, Line 313 this.form().valid()' , this.form().valid());
     const question = this.dialogData.entity;
     return {
       ...question,
@@ -341,4 +376,28 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       dialogActionSubscription.unsubscribe();
     });
   }
+
+  protected onValidationDatePicked(
+    event: MatDatepickerInputEvent<Date>,
+    field: FieldTree<string, string, "writable">
+  ) {
+    const value = event.value;
+
+    if (!value) {
+      return;
+    }
+
+    field().value.update(() => {
+      return value.toISOString();
+    });
+
+    // control.setValue(this.formatDateForValidation(value));
+    // control.markAsDirty();
+    // control.markAsTouched();
+  }
+
+  // private formatDateForValidation(value: Date): string {
+  //   return value.toISOString();
+  // }
+
 }
