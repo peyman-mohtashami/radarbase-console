@@ -20,7 +20,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {AppSubject} from '../../models/subject';
-import {AppGroup} from '../../../project-group/models/group';
+import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {SubjectStore} from '../../services/subject.store';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {form} from '@angular/forms/signals';
@@ -29,7 +29,7 @@ import {
 } from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 
 export interface AssignSubjectsToGroupForm {
-  group: string,
+  group: GroupDto | null,
 }
 
 export interface StoredAssignSubjectsToGroupsDialog {
@@ -76,7 +76,7 @@ export class SubjectDialogAssignGroupComponent implements AfterViewInit {
   formFields = this.configService.getFormFields();
 
   private model = signal<AssignSubjectsToGroupForm>(this.dialogData.restoredModel ?? {
-    group: '',
+    group: null,
   });
 
   protected form = form(this.model);
@@ -86,7 +86,9 @@ export class SubjectDialogAssignGroupComponent implements AfterViewInit {
   }
 
   protected async assign(): Promise<void> {
-    await this.store.addSubjectsToGroup(this.model().group, this.dialogData.selectedSubjects);
+    const groupName = this.model().group?.name;
+    if (!groupName) return;
+    await this.store.addSubjectsToGroup(groupName, this.dialogData.selectedSubjects);
 
     if (this.store.error()) return;
 

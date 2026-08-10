@@ -17,7 +17,7 @@ import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {SourceConfigService} from '../../services/source-config.service';
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSource, CreateSourceDto, UpdateSourceDto} from '../../models/source';
-import {AppSourceType} from '../../../source-type/models/source-type';
+import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {AppProject} from '../../../project/models/project';
@@ -40,7 +40,7 @@ export interface SourceForm {
   sourceId: string;
   sourceName: string;
   expectedSourceName: string;
-  sourceType: string;
+  sourceType: SourceTypeDto | null;
   attributes: Record<string, string>;
 }
 
@@ -99,7 +99,7 @@ export class SourceDialogComponent implements AfterViewInit {
     ...this.dialogData.entity,
     id: `${this.dialogData.entity?.id ?? ''}`,
     sourceId: this.dialogData.entity?.sourceId ?? '',
-    sourceType: `${this.dialogData.entity?.sourceType?.id ?? ''}`,
+    sourceType: this.dialogData.entity?.sourceType ?? null,
     sourceName: this.dialogData.entity?.sourceName ?? '',
     expectedSourceName: this.dialogData.entity?.expectedSourceName ?? '',
     attributes: {
@@ -173,7 +173,7 @@ export class SourceDialogComponent implements AfterViewInit {
   toCreateDtoModel(model: SourceForm): CreateSourceDto {
     return {
       ...model,
-      sourceType: this.dialogData.sourceTypeFullList.find(s => `${s.id}` === model.sourceType),
+      sourceType: model.sourceType ?? undefined,
       assigned: false,
       project: this.projectStore.selected()!,
     };
@@ -183,7 +183,7 @@ export class SourceDialogComponent implements AfterViewInit {
     return {
       ...model,
       id: Number(model.id),
-      sourceType: this.dialogData.sourceTypeFullList.find(s => `${s.id}` === model.sourceType),
+      sourceType: model.sourceType ?? undefined,
       project: this.projectStore.selected()!
     };
   }

@@ -21,7 +21,7 @@ import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSelect} from '@angular/material/select';
 import {DialogMode} from '../../../../shared/enums/dialog';
-import {AppSourceType} from '../../../source-type/models/source-type';
+import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -43,7 +43,7 @@ export interface SourceDataForm {
   id: string;
   sourceDataType: string,
   sourceDataName: string;
-  sourceType: string;
+  sourceType: SourceTypeDto | null;
   processingState: string,
   topic: string,
   keySchema: string,
@@ -109,7 +109,7 @@ export class SourceDataDialogComponent implements AfterViewInit {
     id: `${this.dialogData.entity?.id ?? ''}`,
     sourceDataType: this.dialogData.entity?.sourceDataType ?? '',
     sourceDataName: this.dialogData.entity?.sourceDataName ?? '',
-    sourceType: `${this.dialogData.entity?.sourceType?.id ?? ''}`,
+    sourceType: this.dialogData.entity?.sourceType ?? null,
     processingState: this.dialogData.entity?.processingState ?? '',
     topic: this.dialogData.entity?.topic ?? '',
     keySchema: this.dialogData.entity?.keySchema ?? '',
@@ -186,7 +186,7 @@ export class SourceDataDialogComponent implements AfterViewInit {
     return {
       ...model,
       processingState: toProcessingState(model.processingState),
-      sourceType: this.dialogData.sourceTypeFullList.find(sourceType => `${sourceType.id}` === model.sourceType),
+      sourceType: model.sourceType ?? undefined,
     };
   }
 
@@ -194,8 +194,8 @@ export class SourceDataDialogComponent implements AfterViewInit {
     return {
       ...model,
       id: Number(model.id),
-      processingState: toProcessingState(model.processingState),//ProcessingState.RAW,
-      sourceType: this.dialogData.sourceTypeFullList.find(sourceType => `${sourceType.id}` === model.sourceType),
+      processingState: toProcessingState(model.processingState),
+      sourceType: model.sourceType ?? undefined,
     };
   }
 }

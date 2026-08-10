@@ -50,9 +50,9 @@ export interface UserForm {
   _roles: {
     _sysAdmin: boolean;
     _organizationAdmin: boolean;
-    _organizations: string[];
+    _organizations: { id: number, name: string }[];
     _projectAdmin: boolean;
-    _projects: string[];
+    _projects: {id: number, projectName: string}[];
   }
 }
 
@@ -122,8 +122,8 @@ export class UserDialogComponent implements AfterViewInit {
       _sysAdmin: this.dialogData.entity?._roles?._sysAdmin ?? false,
       _organizationAdmin: this.dialogData.entity?._roles?._organizationAdmin ?? false,
       _projectAdmin: this.dialogData.entity?._roles?._projectAdmin ?? false,
-      _organizations: this.dialogData.entity?._roles?._organizations?.map((org) => org.name) ?? [],
-      _projects: this.dialogData.entity?._roles?._projects?.map((project) => project.projectName) ?? []
+      _organizations: this.dialogData.entity?._roles?._organizations ?? [],
+      _projects: this.dialogData.entity?._roles?._projects ?? [],
     }
   });
 
@@ -238,22 +238,20 @@ export class UserDialogComponent implements AfterViewInit {
 
     if (roles._organizationAdmin) {
       result = roles._organizations?.map((organization) => {
-        const matchedOrganization = this.dialogData.organizationFullList.find(o => o.name === organization)
         return {
           authorityName: ROLES.ORGANIZATION_ADMIN,
-          organizationId: matchedOrganization?.id,
-          organizationName: matchedOrganization?.name,
+          organizationId: organization?.id,
+          organizationName: organization?.name,
         }
       }) ?? [];
     }
 
     if (roles._projectAdmin) {
       result = [...result, ...(roles._projects?.map((project) => {
-        const matchedProject = this.dialogData.projectFullList.find(p => p.projectName === project)
         return {
           authorityName: ROLES.PROJECT_ADMIN,
-          projectId: matchedProject?.id,
-          projectName: matchedProject?.projectName,
+          projectId: project?.id,
+          projectName: project?.projectName,
         }
       }) ?? [])];
     }

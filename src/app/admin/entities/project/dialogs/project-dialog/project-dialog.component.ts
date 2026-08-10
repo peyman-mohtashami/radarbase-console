@@ -18,7 +18,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {AppSourceType} from '../../../source-type/models/source-type';
+import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -47,7 +47,7 @@ export interface ProjectForm {
   projectStatus: string,
   startDate: string,
   endDate: string,
-  sourceTypes: number[],
+  sourceTypes: SourceTypeDto[],
   attributes: Record<string, string>,
 }
 
@@ -126,7 +126,7 @@ export class ProjectDialogComponent implements AfterViewInit {
     projectStatus: `${this.dialogData.entity?.projectStatus ?? ''}`,
     startDate: this.dialogData.entity?.startDate ?? '',
     endDate: this.dialogData.entity?.endDate ?? '',
-    sourceTypes: this.dialogData.entity?.sourceTypes?.map(s => s.id) ?? [],
+    sourceTypes: this.dialogData.entity?.sourceTypes ?? [],
     attributes: {
       ...this.dialogData.entity?.attributes,
       'Phase': this.dialogData.entity?.attributes?.['Phase'] ?? '',
@@ -230,7 +230,7 @@ export class ProjectDialogComponent implements AfterViewInit {
       ...model,
       organization: this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
-      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => i.id === s)).filter(s => !!s)
+      sourceTypes: model.sourceTypes,
     };
   }
 
@@ -240,7 +240,7 @@ export class ProjectDialogComponent implements AfterViewInit {
       id: Number(model.id),
       organization: this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
-      sourceTypes: model.sourceTypes.map((s) => this.dialogData.sourceTypeFullList.find(i => i.id === s)).filter(s => !!s)
+      sourceTypes: model.sourceTypes,
     };
   }
 }

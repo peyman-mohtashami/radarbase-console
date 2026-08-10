@@ -11,6 +11,8 @@ import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-togg
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {JsonPipe} from '@angular/common';
+import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
+import {DialogMode} from '../../../../shared/enums/dialog';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -31,6 +33,7 @@ export class QuestionnaireTableRowComponent {
   protected readonly DetailType = DetailType;
 
   configService = inject(QuestionnaireConfigService);
+  dialogService = inject(QuestionnaireDialogService);
 
   entity = input.required<AppQuestionnaire>();
   extensionClass = input<string>();
@@ -40,6 +43,10 @@ export class QuestionnaireTableRowComponent {
 
   duplicateEvent = output<void>();
   activeEvent = output<boolean>();
+
+  async openDialog() {
+    await this.dialogService.openDialog(DialogMode.EDIT, this.entity());
+  }
 
   onDuplicate() {
     this.duplicateEvent.emit();

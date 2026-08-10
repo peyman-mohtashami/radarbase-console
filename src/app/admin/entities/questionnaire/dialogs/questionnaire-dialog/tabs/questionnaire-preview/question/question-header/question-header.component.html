@@ -8,7 +8,7 @@
 <!--      <app-preview-replace-placeholder [content]="question().field_label[language()!.code]"/>-->
 
       <span [innerHtml]="question().field_label[language()!.code] | replacePlaceholders"></span>
-      @if (question().required_field !== 'false') {
+      @if (question().required_field !== false) {
         <span class="text-red-700"> *</span>
       } @else {
         <span class="text-gray-500 text-sm"> (Optional)</span>

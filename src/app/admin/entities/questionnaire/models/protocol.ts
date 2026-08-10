@@ -1,19 +1,20 @@
 import {AppQuestionnaireLanguage} from './questionnaire';
 
-export interface ProtocolWrapperDto extends Record<string, string | string[] | null | ProtocolDto[]> {
-  version: string | null;
-  schemaVersion: string | null;
-  name: string | null;
-  healthIssues: string[] | null;
+export interface ProtocolWrapperDto {
+  version?: string;
+  schemaVersion?: string;
+  name?: string;
+  healthIssues?: string[];
   protocols: ProtocolDto[];
 }
 
 export interface ProtocolDto {
   name: string;
   type?: string;
+  onDemand: boolean;
   showIntroduction?: string;
-  showInCalendar?: string;
-  isDemo?: string;
+  showInCalendar?: boolean;
+  isDemo?: boolean;
   order?: string;
   questionnaire?: {
     repository: string;
@@ -32,6 +33,12 @@ export interface ProtocolDto {
   defaultLanguage: AppQuestionnaireLanguage;
   languages: AppQuestionnaireLanguage[];
   warningEnabled?: boolean;
+  isGeneralTabValid?: boolean;
+  isSchedulingTabValid?: boolean;
+  isCustomMessagesTabValid?: boolean;
+  isNotificationsTabValid?: boolean;
+  isQuestionsTabValid?: boolean;
+  isTranslationsTabValid?: boolean;
   isValid?: boolean;
   isActive?: boolean;
 }
@@ -70,7 +77,7 @@ export interface SubProtocolDto {
     amount: string;
   };
   //---
-  onDemand?: boolean;
+  // onDemand?: boolean;
   relativeToReferenceTime?: boolean;
   repeatedProtocol?: boolean;
 
@@ -87,7 +94,7 @@ export interface QuestionDto {
   id?: string;
   field_name: string;
   field_type: string;
-  required_field?: string;
+  required_field?: boolean;
   field_label: string;
   section_header?: string;
   select_choices_or_calculations?: {code: string, label: string}[];

@@ -1,4 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
+@let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
 <label for="select_choices_or_calculations" class="text-sm">
   {{ `${_prefix}.questionChoicesLabel` | translate }} *
@@ -31,7 +32,7 @@
         </mat-form-field>
 
         <mat-form-field class='small-input w-3/12! grow-0' appearance='outline' subscriptSizing="dynamic">
-          <input matInput [formField]="choice.label">
+          <input matInput [formField]="choice.label[language]">
           <mat-error>
             @if (choice.label().touched() && choice.label().invalid()) {
               @for (error of choice.label().errors(); track error.kind) {
@@ -48,7 +49,7 @@
 
         <button class="tiny" [disabled]="i === 0"
                 mat-icon-button color="warn"
-                (click)="removeChoice(i)">
+                (click)="removeChoice(i)" type="button">
           <mat-icon class="material-symbols-outlined text-xl!">do_not_disturb_on</mat-icon>
         </button>
       </div>
@@ -56,7 +57,7 @@
 
     <div class="flex items-center gap-1 w-full">
       <div class="grow"></div>
-      <button class="tiny w-7! grow-0 shrink-0 material-symbols-outlined" mat-icon-button (click)="addChoice()">
+      <button class="tiny w-7! grow-0 shrink-0 material-symbols-outlined" mat-icon-button (click)="addChoice()" type="button">
         <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
       </button>
     </div>

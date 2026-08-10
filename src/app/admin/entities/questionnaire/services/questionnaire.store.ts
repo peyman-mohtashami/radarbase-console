@@ -147,10 +147,10 @@ export class QuestionnaireStore {
 
     const {protocols: ps, questionnaires: qs} = this.splitProtocolsAndQuestionnaires(this.allItems());
     const radarProtocolWrapper: ProtocolWrapperDto = {
-      name: null,
+      name: undefined,
       healthIssues: [],
-      schemaVersion: null,
-      version: null,
+      schemaVersion: undefined,
+      version: undefined,
       protocols: ps
     };
     const protocolConfigs: AppConfig[] = [{
@@ -219,11 +219,12 @@ export class QuestionnaireStore {
       name: protocol.name,
       defaultLanguage: protocol.defaultLanguage,
       languages: protocol.languages,
+      onDemand: protocol.onDemand,
       title: protocol.title,
       description: protocol.description,
-      isDemo: protocol.isDemo === 'true',
-      order: protocol.order !== undefined ? `${protocol.order}` : undefined,
-      showInCalendar: protocol.showInCalendar === 'true',
+      isDemo: protocol.isDemo,
+      order: protocol.order,
+      showInCalendar: protocol.showInCalendar,
 
       showIntroduction: protocol.showIntroduction,
       startText: protocol.startText,
@@ -234,6 +235,12 @@ export class QuestionnaireStore {
 
       questions: this.toAppQuestions(questionnaire),
       schedule: schedule,
+      isGeneralTabValid: protocol.isGeneralTabValid,
+      isSchedulingTabValid: protocol.isSchedulingTabValid,
+      isCustomMessagesTabValid: protocol.isCustomMessagesTabValid,
+      isNotificationsTabValid: protocol.isNotificationsTabValid,
+      isQuestionsTabValid: protocol.isQuestionsTabValid,
+      isTranslationsTabValid: protocol.isTranslationsTabValid,
       isActive: protocol.isActive,
       isValid: protocol.isValid,
 
@@ -280,15 +287,15 @@ export class QuestionnaireStore {
             field_annotation: radarQuestion.field_annotation ? {
               image: radarQuestion.field_annotation?.image,
               timer: {
-                start: Number(radarQuestion.field_annotation.timer?.start ?? 0),
-                end: Number(radarQuestion.field_annotation.timer?.end ?? 0),
+                start: radarQuestion.field_annotation.timer?.start ?? '0',
+                end: radarQuestion.field_annotation.timer?.end ?? '0',
               },
               unit: radarQuestion.field_annotation.unit,
             } : undefined,
             range: radarQuestion.range ? {
-              min: Number(radarQuestion.range.min),
-              max: Number(radarQuestion.range.max),
-              step: Number(radarQuestion.range.step),
+              min: radarQuestion.range.min,
+              max: radarQuestion.range.max,
+              step: radarQuestion.range.step,
               labelLeft: {},
               labelRight: {},
             }: undefined,
@@ -359,9 +366,10 @@ export class QuestionnaireStore {
         description: q.description,
         defaultLanguage: q.defaultLanguage,
         languages: q.languages,
-        isDemo: q.isDemo ? 'true' : 'false',
+        onDemand: q.onDemand,
+        isDemo: q.isDemo,
         order: q.order,
-        showInCalendar: q.showInCalendar ? 'true' : 'false',
+        showInCalendar: q.showInCalendar,
         showIntroduction: q.showIntroduction,
         startText: q.startText ?? {},
         endText: q.endText ?? {},
@@ -370,6 +378,12 @@ export class QuestionnaireStore {
         estimatedCompletionTime: q.estimatedCompletionTime,
         protocol: this.toRadarSubProtocol(q.schedule),
         type: q.onDemand ? 'on_demand' : undefined,
+        isGeneralTabValid: q.isGeneralTabValid,
+        isSchedulingTabValid: q.isSchedulingTabValid,
+        isCustomMessagesTabValid: q.isCustomMessagesTabValid,
+        isNotificationsTabValid: q.isNotificationsTabValid,
+        isQuestionsTabValid: q.isQuestionsTabValid,
+        isTranslationsTabValid: q.isTranslationsTabValid,
         isValid: !!q.isValid,
         isActive: !!q.isActive
       });

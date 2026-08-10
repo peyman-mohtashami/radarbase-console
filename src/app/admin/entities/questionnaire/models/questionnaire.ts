@@ -14,7 +14,7 @@ export interface AppQuestionnaire {
   showInCalendar?: boolean;
   isDemo?: boolean;
   order?: string;
-  onDemand?: boolean;
+  onDemand: boolean;
   //
   showIntroduction?: string;
   startText?: Record<string, string>;
@@ -56,16 +56,16 @@ export interface AppQuestion {
   id?: string;
   field_name: string;
   field_type: string;
-  required_field?: string;
+  required_field?: boolean;
   field_label: Record<string, string>;
   section_header?: Record<string, string>;
   select_choices_or_calculations?: AppQuestionChoice[];
   text_validation_type_or_show_slider_number?: string;
   text_validation_min?: string;
   text_validation_max?: string;
-  field_annotation?: {image: string; timer: {start: number; end: number;}; unit: string;};
+  field_annotation?: {image: string; timer: {start: string; end: string;}; unit: string;};
   field_note?: Record<string, string>;
-  range?: {min: number; max: number; step: number; labelLeft?: Record<string, string>; labelRight?: Record<string, string>};
+  range?: {min: string; max: string; step: string; labelLeft?: Record<string, string>; labelRight?: Record<string, string>};
   matrix_group_name?: string;
   matrix_ranking?: string;
   branching_logic?: string;

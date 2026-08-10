@@ -1,4 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
+@let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
@@ -46,7 +47,7 @@
              [class]="form.field_label().touched() && form.field_label().invalid() ? 'text-red-700' : ''">{{ `${_prefix}.field_label` | translate }} *</label>
       <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                       appearance='outline'>
-        <input id="field_label" matInput [formField]="form.field_label">
+        <input id="field_label" matInput [formField]="form.field_label[language]">
         <mat-error>
           @if (form.field_label().touched() && form.field_label().invalid()) {
             @for (error of form.field_label().errors(); track error.kind) {
@@ -68,7 +69,7 @@
       <label for="section_header" class="text-sm">{{ `${_prefix}.section_header` | translate }}</label>
       <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                       appearance='outline'>
-        <input id="section_header" matInput [formField]="form.section_header">
+        <input id="section_header" matInput [formField]="form.section_header[language]">
         <mat-error>
           @if (form.section_header().touched() && form.section_header().invalid()) {
             @for (error of form.section_header().errors(); track error.kind) {
@@ -83,7 +84,7 @@
       <label for="field_note" class="text-sm">{{ `${_prefix}.field_note` | translate }}</label>
       <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                       appearance='outline'>
-        <input id="field_note" matInput [formField]="form.field_note">
+        <input id="field_note" matInput [formField]="form.field_note[language]">
         <mat-error>
           @if (form.field_note().touched() && form.field_note().invalid()) {
             @for (error of form.field_note().errors(); track error.kind) {
@@ -315,7 +316,7 @@
             <label for="range.labelLeft" class="text-sm">{{ `${_prefix}.range.labelLeft` | translate }}</label>
             <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                             appearance='outline'>
-              <input id="range.labelLeft" matInput [formField]="form.range.labelLeft">
+              <input id="range.labelLeft" matInput [formField]="form.range.labelLeft[language]">
               <mat-error>
                 @if (form.range.labelLeft().touched() && form.range.labelLeft().invalid()) {
                   @for (error of form.range.labelLeft().errors(); track error.kind) {
@@ -329,7 +330,7 @@
             <label for="range.labelRight" class="text-sm">{{ `${_prefix}.range.labelRight` | translate }}</label>
             <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                             appearance='outline'>
-              <input id="range.labelRight" matInput [formField]="form.range.labelRight">
+              <input id="range.labelRight" matInput [formField]="form.range.labelRight[language]">
               <mat-error>
                 @if (form.range.labelRight().touched() && form.range.labelRight().invalid()) {
                   @for (error of form.range.labelRight().errors(); track error.kind) {

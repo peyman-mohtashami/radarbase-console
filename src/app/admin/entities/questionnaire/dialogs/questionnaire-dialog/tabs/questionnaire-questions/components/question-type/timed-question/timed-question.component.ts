@@ -105,8 +105,8 @@ export class TimedQuestionComponent implements OnInit {
     const fieldAnnotation = this.entity().field_annotation as {
       image: string
       timer: {
-        start: number
-        end: number
+        start: string
+        end: string
       }
       unit: string
     };
@@ -118,10 +118,10 @@ export class TimedQuestionComponent implements OnInit {
       hasStarted: signal(false),
       hasFinished: signal(false),
       secondsElapsed: signal(0),
-      secondsRemaining: signal(start),
-      displayTime: signal(start),
-      start: start,
-      end: end,
+      secondsRemaining: signal(Number(start)),
+      displayTime: signal(Number(start)),
+      start: Number(start),
+      end: Number(end),
     }
   }
 

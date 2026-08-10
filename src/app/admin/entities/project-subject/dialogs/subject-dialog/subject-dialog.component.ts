@@ -10,12 +10,11 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatSelect, MatSuffix} from "@angular/material/select";
+import {MatSuffix} from "@angular/material/select";
 import {MatError} from "@angular/material/form-field";
 import {AppSubject, CreateSubjectDto, UpdateSubjectDto} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
@@ -34,7 +33,7 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
-import {AppGroup} from '../../../project-group/models/group';
+import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
@@ -47,7 +46,7 @@ export interface SubjectForm {
   dateOfBirth: string;
   externalId: string,
   externalLink: string,
-  group: string,
+  group: GroupDto | null,
   attributes: Record<string, string>,
 }
 
@@ -68,8 +67,6 @@ export interface StoredSubjectDialog {
     MatDatepickerInput,
     MatDatepickerToggle,
     MatDatepicker,
-    // MatSelect,
-    // MatOption,
     MatError,
     MatSuffix,
     SubjectDetailsComponent,
@@ -118,7 +115,7 @@ export class SubjectDialogComponent implements AfterViewInit {
     dateOfBirth: this.dialogData.entity?.dateOfBirth ?? '',
     externalId: this.dialogData.entity?.externalId ?? '',
     externalLink: this.dialogData.entity?.externalLink ?? '',
-    group: this.dialogData.entity?.group ?? '',
+    group: this.dialogData.groupFullList.find(g => g.name === this.dialogData.entity?.group) ?? null,
     attributes: {
       ...this.dialogData.entity?.attributes,
       'humanReadableIdentifier': this.dialogData.entity?.attributes?.['humanReadableIdentifier'] ?? '',
@@ -197,7 +194,7 @@ export class SubjectDialogComponent implements AfterViewInit {
       externalLink: model.externalLink || undefined,
       externalId: model.externalId || undefined,
       dateOfBirth: model.dateOfBirth || undefined,
-      group: model.group.length ? model.group : null,
+      group: model.group?.name ?? null,
       personName: model.personName || undefined,
       project: this.dialogData.project,
       sources: [],
@@ -213,7 +210,7 @@ export class SubjectDialogComponent implements AfterViewInit {
       externalLink: model.externalLink || undefined,
       externalId: model.externalId || undefined,
       dateOfBirth: model.dateOfBirth || undefined,
-      group: model.group.length ? model.group : null,
+      group: model.group?.name ?? null,
       personName: model.personName || undefined,
       project: this.dialogData.project,
       sources: [],

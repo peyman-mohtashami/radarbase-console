@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component,
+  Component, computed,
   inject,
   OnInit,
   signal,
@@ -36,13 +36,13 @@ import {
 export interface QuestionnaireQuestionForm {
   field_name: string;
   field_type: string;
-  field_label: string;
-  section_header: string
+  field_label: Record<string, string>;
+  section_header: Record<string, string>
   required_field: boolean;
-  field_note: string;
+  field_note: Record<string, string>
   matrix_group_name: string;
   conditionalLogic: {operand: string; operator: string; value: string}[][];
-  select_choices_or_calculations: {code: string; label: string}[];
+  select_choices_or_calculations: {code: string; label: Record<string, string>}[];
   // text_validation_type_or_show_slider_number?: string
   text_validation_min: string;
   text_validation_max: string
@@ -55,8 +55,8 @@ export interface QuestionnaireQuestionForm {
     unit: string
   }
   range: {
-    labelLeft: string;
-    labelRight: string;
+    labelLeft: Record<string, string>
+    labelRight: Record<string, string>
     max: string
     min: string
     step: string
@@ -112,18 +112,26 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     matrixIndex?: number;
   };
 
+  lang = computed(() => {
+    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+  })
+
   private model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this.dialogData.entity,
     field_name: this.dialogData.entity.field_name ?? '',
     field_type: this.dialogData.entity.field_type ?? '',
-    field_label: this.dialogData.entity.field_label[this.dialogState.language().code] ?? '',
-    section_header: this.dialogData.entity.section_header?.[this.dialogState.language().code] ?? '',
-    required_field: this.dialogData.entity.required_field === 'true',
-    field_note: this.dialogData.entity.field_note?.[this.dialogState.language().code] ?? '',
+    // field_label: this.dialogData.entity.field_label[this.dialogState.language().code] ?? '',
+    field_label: this.dialogData.entity?.field_label?.[this.lang()] ? this.dialogData.entity!.field_label! : {...this.dialogData.entity?.field_label, [this.lang()]: ''},
+    // section_header: this.dialogData.entity.section_header?.[this.dialogState.language().code] ?? '',
+    section_header: this.dialogData.entity?.section_header?.[this.lang()] ? this.dialogData.entity!.section_header! : {...this.dialogData.entity?.section_header, [this.lang()]: ''},
+    required_field: this.dialogData.entity.required_field ?? true,
+    // field_note: this.dialogData.entity.field_note?.[this.dialogState.language().code] ?? '',
+    field_note: this.dialogData.entity?.field_note?.[this.lang()] ? this.dialogData.entity!.field_note! : {...this.dialogData.entity?.field_note, [this.lang()]: ''},
     matrix_group_name: this.dialogData.entity.matrix_group_name ?? '',
     // branching_logic: new FormControl<string>('', {nonNullable: true}),
     conditionalLogic: this.dialogData.entity.conditionalLogic ?? [],
-    select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label[this.dialogState.language().code]})) ?? [{code: '', label: ''}],
+    // select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label[this.dialogState.language().code]})) ?? [{code: '', label: ''}],
+    select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label?.[this.lang()] ? c.label! : {...c.label, [this.lang()]: ''}})) ?? [{code: '', label: {[this.lang()]: ''}}],
     // text_validation_type_or_show_slider_number: this.dialogData.entity.text_validation_type_or_show_slider_number ?? '',
     text_validation_min: this.dialogData.entity.text_validation_min ?? '',
     text_validation_max: this.dialogData.entity.text_validation_max ?? '',
@@ -136,8 +144,9 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       unit: this.dialogData.entity.field_annotation?.unit ?? ''
     },
     range: {
-      labelLeft: this.dialogData.entity.range?.labelLeft?.[this.dialogState.language().code] ?? '',
-      labelRight: this.dialogData.entity.range?.labelRight?.[this.dialogState.language().code] ?? '',
+      labelLeft: this.dialogData.entity?.range?.labelLeft?.[this.lang()] ? this.dialogData.entity!.range.labelLeft! : {...this.dialogData.entity?.range?.labelLeft, [this.lang()]: ''},//this.dialogData.entity.range?.labelLeft?.[this.dialogState.language().code] ?? '',
+      labelRight: this.dialogData.entity?.range?.labelRight?.[this.lang()] ? this.dialogData.entity!.range.labelRight! : {...this.dialogData.entity?.range?.labelRight, [this.lang()]: ''},//this.dialogData.entity.range?.labelLeft?.[this.dialogState.language().code] ?? '',
+      // labelRight: this.dialogData.entity.range?.labelRight?.[this.dialogState.language().code] ?? '',
       max: `${this.dialogData.entity.range?.max ?? ''}`,
       min: `${this.dialogData.entity.range?.min ?? ''}`,
       step: `${this.dialogData.entity.range?.step ?? ''}`
@@ -255,54 +264,11 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
-    const question = this.dialogData.entity;
+    const entity = this.dialogData.entity;
+
     return {
-      ...question,
-      field_name: model.field_name,
-      field_type: model.field_type,
-      field_label: {
-        ...question.field_label,
-        [this.dialogState.language().code]: model.field_label
-      },
-      section_header: {
-        ...question.section_header,
-        [this.dialogState.language().code]: model.section_header
-      },
-      required_field: model.required_field ? 'true' : 'false',
-      field_note: {
-        ...question.field_note,
-        [this.dialogState.language().code]: model.field_note
-      },
-      conditionalLogic: model.conditionalLogic,
-      branching_logic: this.branchingLogicString(),
-      select_choices_or_calculations: [
-        ...(question.select_choices_or_calculations ?? []),
-        ...model.select_choices_or_calculations.map(((c, i) => {
-          return {
-            code: c.code,
-            label: {
-              ...question.select_choices_or_calculations?.[i]?.label,
-              [this.dialogState.language().code]: c.label
-            }
-          }
-        }))
-      ],
-      field_annotation: {
-        image: model.field_annotation?.image,
-        timer: {
-          start: Number(model.field_annotation?.timer?.start),
-          end: Number(model.field_annotation?.timer?.end),
-        },
-        unit: model.field_annotation?.unit
-      },
-      range: {
-        min: Number(model.range.min),
-        max: Number(model.range.max),
-        step: Number(model.range.step)
-      },
-      text_validation_min: model.text_validation_min,
-      text_validation_max: model.text_validation_max,
-      multi_line: model.multi_line,
+      ...entity,
+      ...model,
       isValid: this.form().valid()
     }
   }

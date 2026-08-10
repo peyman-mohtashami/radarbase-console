@@ -1,4 +1,4 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, computed, inject, input, signal} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
@@ -6,6 +6,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {ValidatorError} from '../../../../../../../../../shared/utils/validators';
 import {FieldTree, FormField} from '@angular/forms/signals';
+import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 
 @Component({
   selector: 'app-question-choices',
@@ -48,72 +49,23 @@ import {FieldTree, FormField} from '@angular/forms/signals';
     }
   `
 })
-export class QuestionChoicesComponent { //implements OnInit {
-  // private fb = inject(FormBuilder);
+export class QuestionChoicesComponent {
+  protected dialogState = inject(QuestionnaireDialogStateService);
 
-  // protected readonly ValidatorError = ValidatorError;
-
-  // index = input.required<number>();
-  readonly formField = input.required<FieldTree<{code: string; label: string;}[]>>();
-  // formField = input<AppQuestionChoice[]>();
-
-  // @Input({ required: true })
-  // choices!: FormArray;
+  readonly formField = input.required<FieldTree<{code: string; label: Record<string, string>;}[]>>();
 
   isValid = signal(false);
 
-  // protected get choices(): Field<{code: string; label: string;}>[] {
-  //   const length = this.formField()().value().length;
-  //   return Array.from({ length }, (_, index) => this.formField()[index]);
-  // }
-
-  // protected get choices() {
-  //   return this.formField().fields();
-  // }
-
-  // ngOnInit() {
-  //   if (this._choices() && this._choices()?.length) {
-  //     this._choices()?.forEach((choice) => {
-  //       this.choices.push(this.fb.group({
-  //         code: choice.code,
-  //         label: this.fb.group(choice.label ?? {}),
-  //       }));
-  //     });
-  //   } else {
-  //     this.addChoice();
-  //   }
-  //
-  //   this.choices.valueChanges.subscribe(() => {
-  //     this.isValid.set(this.choices.valid);
-  //   });
-  // }
-
-  // addChoice() {
-  //   this.formField()().value.update(v => {
-  //     v.push({
-  //       code: '',
-  //       label: '',
-  //     });
-  //     return v;
-  //   });
-  // }
+  lang = computed(() => {
+    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+  })
 
   addChoice() {
     this.formField()().value.update(v => [
       ...v,
-      {
-        code: '',
-        label: '',
-      },
+      {code: '', label: {[this.lang()]: ''}},
     ]);
   }
-
-  // removeChoice(index: number) {
-  //   this.formField()().value.update(v => {
-  //     v.splice(index, 1);
-  //     return v;
-  //   });
-  // }
 
   removeChoice(index: number) {
     this.formField()().value.update(v => v.filter((_, i) => i !== index));

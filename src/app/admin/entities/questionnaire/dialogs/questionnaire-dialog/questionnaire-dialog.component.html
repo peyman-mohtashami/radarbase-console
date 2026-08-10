@@ -65,7 +65,7 @@
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Custom Messages
           </h2>
-          @if (!dialogState.questionnaire()?.isCustomMessagesTabValid) {
+          @if (dialogState.questionnaire()?.isCustomMessagesTabValid === false) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
@@ -89,12 +89,12 @@
         </ng-template>
       </mat-tab>
 
-      <mat-tab [disabled]="!isGeneralTabValid">
+      <mat-tab [disabled]="(dialogState.questionnaire()?.languages?.length ?? 0) < 2 || !isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             Translations
           </h2>
-          @if (!dialogState.questionnaire()?.isTranslationsTabValid) {
+          @if ((dialogState.questionnaire()?.languages?.length ?? 0) > 1 && !dialogState.questionnaire()?.isTranslationsTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
         </ng-template>
