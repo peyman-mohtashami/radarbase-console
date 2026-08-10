@@ -54,26 +54,27 @@ export class QuestionnaireQuestionsComponent {
 
   protected addQuestion(type: string) {
     this.dialogState.questionnaire.update(value => {
+      const questions: AppQuestion[] = [...(value?.questions ?? []), {
+        id: crypto.randomUUID(),
+        field_name: '',
+        field_label: {},
+        field_type: type,
+      }];
       return {
         ...value!,
-        questions: [...(value?.questions ?? []), {
-          id: `${Date.now()}`,
-          field_name: '',
-          field_label: {},
-          field_type: type,
-          dragId: crypto.randomUUID(),
-        }],
-        isQuestionsTabValid: true
+        questions,
+        isQuestionsTabValid: questions.every(q => q.isValid)
       }
     });
   }
 
   protected removeQuestion(index: number) {
     this.dialogState.questionnaire.update(value => {
+      const questions = (value?.questions ?? []).filter((_, i) => i !== index);
       return {
         ...value!,
-        questions: [...(value?.questions ?? []).splice(index, 1)],
-        isQuestionsTabValid: true
+        questions,
+        isQuestionsTabValid: questions.every(q => q.isValid)
       }
     });
   }
@@ -90,10 +91,11 @@ export class QuestionnaireQuestionsComponent {
     );
 
     this.dialogState.questionnaire.update(value => {
+      const questions = [...(value?.questions ?? [])];
       return {
         ...value!,
-        questions: [...(value?.questions ?? [])],
-        isQuestionsTabValid: true
+        questions,
+        isQuestionsTabValid: questions.every(q => q.isValid)
       }
     });
   }

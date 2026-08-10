@@ -1,10 +1,14 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-json-editor',
   templateUrl: 'questionnaire-json-editor.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: []
+  imports: [
+    JsonPipe
+  ]
 })
 export class QuestionnaireJsonEditorComponent {
+  protected dialogState = inject(QuestionnaireDialogStateService);
 }

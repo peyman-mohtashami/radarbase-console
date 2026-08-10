@@ -19,7 +19,7 @@
     <div class="p-2 relative">
       <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>
       <div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" cdkDropListOrientation="vertical">
-        @for (question of dialogState.questionnaire()?.questions; track question.dragId; let index = $index) {
+        @for (question of dialogState.questionnaire()?.questions; track question.id; let index = $index) {
           <div
             cdkDrag
             [cdkDragBoundary]="choicesContainer"
