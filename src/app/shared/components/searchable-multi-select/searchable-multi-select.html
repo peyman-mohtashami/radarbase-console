@@ -1,6 +1,7 @@
 <mat-form-field class="w-full" appearance="outline">
   <mat-select [formField]="formField()"
               [multiple]="multiple()"
+              [compareWith]="compareWith"
               panelClass="searchable-multi-select-panel">
     <mat-select-trigger>
       <mat-chip-set>
@@ -34,7 +35,7 @@
         </mat-option>
       } @else {
         @for (option of filteredOptions(); track trackByOption($index, option)) {
-          <mat-option [value]="`${option[valueKey()]}`" [disabled]="disabledItem()?.[valueKey()] === option[valueKey()]">{{ display(option) }}</mat-option>
+          <mat-option [value]="option" [disabled]="disabledItem()?.[valueKey()] === option[valueKey()]">{{ display(option) }}</mat-option>
         }
       }
     }

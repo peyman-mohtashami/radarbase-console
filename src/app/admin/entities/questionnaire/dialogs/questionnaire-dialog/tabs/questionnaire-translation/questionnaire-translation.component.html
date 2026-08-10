@@ -4,15 +4,15 @@
 
 @if (defaultLanguage) {
   <form novalidate>
-    <div class="">
-      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>
-      <app-searchable-multi-select [formField]="languagesForm.languages"
-                                   [disabledItem]="defaultLanguage"
-                                   [labelKey]="'label'"
-                                   [options]="ISO_LANGUAGES"
-                                   [valueKey]="'code'"
-                                   [multiple]="true"/>
-    </div>
+<!--    <div class="">-->
+<!--      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>-->
+<!--      <app-searchable-multi-select [formField]="languagesForm.languages"-->
+<!--                                   [disabledItem]="defaultLanguage"-->
+<!--                                   [labelKey]="'label'"-->
+<!--                                   [options]="ISO_LANGUAGES"-->
+<!--                                   [valueKey]="'code'"-->
+<!--                                   [multiple]="true"/>-->
+<!--    </div>-->
 
     <div class="w-full overflow-x-auto border border-gray-300">
       <div [style.grid-template-columns]="`repeat(${languagesList().length + 1}, 300px)`"
@@ -20,14 +20,14 @@
 
         <div class=""></div>
         @for (language of languagesList(); track language) {
-          <div>{{ language }}</div>
+          <div>{{ language.label }}</div>
         }
 
         <div class="">Title</div>
         @for (language of languagesList(); track language) {
           @if (form.title) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="form.title[language]"></textarea>
+              <textarea id="" matInput [formField]="form.title[language.code]"></textarea>
             </mat-form-field>
           }
         }
@@ -36,7 +36,7 @@
         @for (language of languagesList(); track language) {
           @if (form.description) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="form.description[language]"></textarea>
+              <textarea id="" matInput [formField]="form.description[language.code]"></textarea>
             </mat-form-field>
           }
         }
@@ -46,7 +46,7 @@
           @for (language of languagesList(); track language) {
             @if (form.startText) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="form.startText[language]"></textarea>
+                <textarea id="" matInput [formField]="form.startText[language.code]"></textarea>
               </mat-form-field>
             }
           }
@@ -56,7 +56,7 @@
         @for (language of languagesList(); track language) {
           @if (form.endText) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="form.endText[language]"></textarea>
+              <textarea id="" matInput [formField]="form.endText[language.code]"></textarea>
             </mat-form-field>
           }
         }
@@ -66,18 +66,18 @@
           @for (language of languagesList(); track language) {
             @if (form.warn) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="form.warn[language]"></textarea>
+                <textarea id="" matInput [formField]="form.warn[language.code]"></textarea>
               </mat-form-field>
             }
           }
         }
 
-        @if (!entity?.schedule?.onDemand) {
+        @if (!entity?.onDemand) {
           <div class="">Notification Title</div>
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.title) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="form.schedule!.notification!.title![language]"></textarea>
+                <textarea id="" matInput [formField]="form.schedule!.notification!.title![language.code]"></textarea>
               </mat-form-field>
             }
           }
@@ -86,7 +86,7 @@
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.text) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="form.schedule!.notification!.text![language]"></textarea>
+                <textarea id="" matInput [formField]="form.schedule!.notification!.text![language.code]"></textarea>
               </mat-form-field>
             }
           }
@@ -101,7 +101,7 @@
           <div class="">Field Label</div>
           @for (language of languagesList(); track language) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-              <textarea id="" matInput [formField]="question.field_label[language]"></textarea>
+              <textarea id="" matInput [formField]="question.field_label[language.code]"></textarea>
             </mat-form-field>
           }
 
@@ -109,7 +109,7 @@
           @for (language of languagesList(); track language) {
             @if (question.section_header) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="question.section_header[language]"></textarea>
+                <textarea id="" matInput [formField]="question.section_header[language.code]"></textarea>
               </mat-form-field>
             }
           }
@@ -118,7 +118,7 @@
           @for (language of languagesList(); track language) {
             @if (question.field_note) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                <textarea id="" matInput [formField]="question.field_note[language]"></textarea>
+                <textarea id="" matInput [formField]="question.field_note[language.code]"></textarea>
               </mat-form-field>
             }
           }
@@ -132,7 +132,7 @@
             <div class="">Label</div>
             @for (language of languagesList(); track language) {
                 <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
-                  <textarea id="" matInput [formField]="choice.label[language]"></textarea>
+                  <textarea id="" matInput [formField]="choice.label[language.code]"></textarea>
                 </mat-form-field>
             }
           }

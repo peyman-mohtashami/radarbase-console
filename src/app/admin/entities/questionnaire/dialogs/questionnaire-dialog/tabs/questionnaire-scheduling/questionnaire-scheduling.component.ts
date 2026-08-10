@@ -1,4 +1,4 @@
-import {Component, effect, inject, output, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDivider} from '@angular/material/list';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
@@ -8,21 +8,16 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LocaleService} from '../../../../../../../core/locale/services/locale.service';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {
-  TimeFromZeroFormArrayComponent
-} from './time-from-zero-form-array/time-from-zero-form-array.component';
 import {UNITS} from '../../models/unit';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
-import {applyEach, applyWhen, form, FormField} from '@angular/forms/signals';
-import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
+import {applyEach, applyWhen, FieldTree, form, FormField} from '@angular/forms/signals';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
-import {moveItemInFormArray} from '../../questionnaire-dialog.component';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 
 export interface QuestionnaireSchedulingForm {
-  onDemand: boolean;
   relativeToReferenceTime: boolean;
   referenceTimestamp: string;
   repeatedProtocol: boolean;
@@ -54,7 +49,6 @@ export interface QuestionnaireSchedulingForm {
     MatSelect,
     MatSlideToggle,
     MatSuffix,
-    // TimeFromZeroFormArrayComponent,
     TranslatePipe,
     MatError,
     FormField,
@@ -63,7 +57,32 @@ export interface QuestionnaireSchedulingForm {
     FormsModule,
     MatIcon,
     MatIconButton
-  ]
+  ],
+  styles: `
+    .cdk-drag-preview {
+      background: white;
+      border-radius: 8px;
+      box-shadow:
+        0 5px 5px -3px rgb(0 0 0 / 20%),
+        0 8px 10px 1px rgb(0 0 0 / 14%),
+        0 3px 14px 2px rgb(0 0 0 / 12%);
+    }
+
+    .cdk-drag-placeholder {
+      background: #f3f4f6;
+      border: 2px dashed #9ca3af;
+      border-radius: 8px;
+      opacity: 0.6;
+    }
+
+    .cdk-drag-animating {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  `
 })
 export class QuestionnaireSchedulingComponent {
   protected readonly UNITS = UNITS;
@@ -73,7 +92,6 @@ export class QuestionnaireSchedulingComponent {
 
   protected model = signal<QuestionnaireSchedulingForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()?.schedule,
-    onDemand: this.dialogState.questionnaire()?.schedule?.onDemand ?? false,
     relativeToReferenceTime: this.dialogState.questionnaire()?.schedule?.relativeToReferenceTime ?? false,
     referenceTimestamp: this.dialogState.questionnaire()?.schedule?.referenceTimestamp ?? '',
     repeatedProtocol: this.dialogState.questionnaire()?.schedule?.repeatedProtocol ?? false,
@@ -91,21 +109,17 @@ export class QuestionnaireSchedulingComponent {
     },
   });
 
-
-
   protected form = form(this.model, (schema) => {
-    applyWhen(schema, ({valueOf}) => !valueOf(schema.onDemand),
-      (schemaPath) => {
-        requiredField(schemaPath.repeatQuestionnaire.unitsFromZero);
-        applyEach(schemaPath.repeatQuestionnaire.unitsFromZero, (item) => {
-          requiredField(item.day);
-          requiredField(item.time);
-        })
+    requiredField(schema.repeatQuestionnaire.unitsFromZero);
+    applyEach(schema.repeatQuestionnaire.unitsFromZero, (item) => {
+      requiredField(item.day);
+      requiredField(item.time);
+    })
 
-        requiredField(schemaPath.completionWindow.amount);
-        requiredField(schemaPath.completionWindow.unit);
-      },
-    );
+    requiredField(schema.completionWindow.amount);
+    requiredField(schema.completionWindow.unit);
+
+
     applyWhen(schema, ({valueOf}) => valueOf(schema.relativeToReferenceTime),
       (schemaPath) => {
         requiredField(schemaPath.referenceTimestamp);
@@ -127,26 +141,24 @@ export class QuestionnaireSchedulingComponent {
         ...entity,
         schedule: {
           ...entity?.schedule,
-          onDemand: model.onDemand,
-          relativeToReferenceTime: model.relativeToReferenceTime,
-          referenceTimestamp: model.referenceTimestamp,
-          repeatedProtocol: model.repeatedProtocol,
-          repeatProtocol: {
-            unit: model.repeatProtocol.unit,
-            amount: model.repeatProtocol.amount,
-          },
+          ...model,
           repeatQuestionnaire: {
             unit: 'min',
             unitsFromZero: this.convertUnitFromTimeZero2(model.repeatQuestionnaire.unitsFromZero), //{day: string; time: string;}[];
           },
-          completionWindow: {
-            unit: model.completionWindow.unit,
-            amount: model.completionWindow.amount,
-          },
         },
         isSchedulingTabValid: this.form().valid()
       } as AppQuestionnaire;
-      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 149 updated' , updated);
+
+      // if (!updated.schedule?.repeatedProtocol) {
+      //   delete updated.schedule?.repeatProtocol;
+      // }
+      //
+      // if (!updated.schedule?.relativeToReferenceTime) {
+      //   delete updated.schedule?.referenceTimestamp;
+      // }
+      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 160 updated' , updated);
+
       this.dialogState.questionnaire.set({...updated});
     });
   }
@@ -172,7 +184,7 @@ export class QuestionnaireSchedulingComponent {
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
-    // moveItemInFormArray(this.form, event.previousIndex, event.currentIndex);
+    moveItemInFormArray(this.form.repeatQuestionnaire.unitsFromZero, event.previousIndex, event.currentIndex);
   }
 
   convertUnitFromTimeZero(offsets?: string[]) {
@@ -183,4 +195,16 @@ export class QuestionnaireSchedulingComponent {
   convertUnitFromTimeZero2(offsets: { day: string; time: string; }[]): string[] {
     return offsets.map(o => `${(Number(o.day) * 1000) + Number(o.time)}`);
   }
+}
+
+export function moveItemInFormArray<T>(
+  arrayField: FieldTree<T[]>,
+  fromIndex: number,
+  toIndex: number
+): void {
+  arrayField().value.update(items => {
+    const reordered = [...items];
+    moveItemInArray(reordered, fromIndex, toIndex);
+    return reordered;
+  });
 }

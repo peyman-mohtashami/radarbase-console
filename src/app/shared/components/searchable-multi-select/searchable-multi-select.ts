@@ -83,33 +83,35 @@ export class SearchableMultiSelectComponent<T extends object> {
     });
   });
 
-  readonly selectedValues = computed(() => {
-    const value = this.formField()().value();
+  readonly selectedValues = computed<T[]>(() => this.toArray(this.formField()().value()));
 
-    if (!value) {
-      return [];
-    }
-
-    return Array.isArray(value)
-      ? value
-      : [value];
-  });
-
-  readonly selectedOptions = computed(() => {
-    const values = this.selectedValues();
+  readonly selectedOptions = computed<T[]>(() => {
     const valueKey = this.valueKey();
     const options = this.options();
-    const selectedOptions = options.filter(option =>  values.includes(`${option[valueKey]}`));
 
-    const disabledOption = selectedOptions.find(i => i[this.valueKey()] === this.disabledItem()?.[this.valueKey()]);
+    // Resolve the stored value against the option list so labels stay in sync
+    // even when the value came from a partial/stale object.
+    const selectedOptions = this.selectedValues().map(
+      value => options.find(option => option[valueKey] === value[valueKey]) ?? value
+    );
+
+    const disabledOption = selectedOptions.find(i => i[valueKey] === this.disabledItem()?.[valueKey]);
     if (disabledOption) {
       return [
         disabledOption,
-        ...selectedOptions.filter(i => i[this.valueKey()] !== this.disabledItem()?.[this.valueKey()])
+        ...selectedOptions.filter(i => i[valueKey] !== this.disabledItem()?.[valueKey])
       ];
     }
     return selectedOptions;
   });
+
+  // mat-select compares option values by reference, which fails once the value
+  // is an object coming from somewhere else than the options array.
+  readonly compareWith = (a: T | null, b: T | null): boolean => {
+    if (a === b) return true;
+    if (!a || !b) return false;
+    return a[this.valueKey()] === b[this.valueKey()];
+  };
 
   display(option: T): string {
     return String(option[this.labelKey()]);
@@ -119,11 +121,24 @@ export class SearchableMultiSelectComponent<T extends object> {
 
     const field = this.formField()();
     const valueKey = this.valueKey();
-    const selected = this.selectedValues();
 
-    const newValue = selected.filter(value => value !== option[valueKey]);
+    if (!this.multiple()) {
+      field.value.set(null);
+      return;
+    }
+
+    const newValue = this.toArray(field.value())
+      .filter(value => value[valueKey] !== option[valueKey]);
 
     field.value.set(newValue);
+  }
+
+  private toArray(value: unknown): T[] {
+    if (!value) {
+      return [];
+    }
+
+    return (Array.isArray(value) ? value : [value]) as T[];
   }
 
   trackByOption(_: number, option: T): unknown {

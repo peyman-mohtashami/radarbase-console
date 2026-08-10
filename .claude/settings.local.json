@@ -6,7 +6,8 @@
       "Bash(python3 -c \"import json; d=json.load\\(open\\('public/assets/i18n/en.json'\\)\\); print\\(json.dumps\\(d.get\\('SHARED',{}\\).get\\('validatorError',{}\\), indent=2\\)\\)\")",
       "Bash(npx ng *)",
       "Read(//Users/peyman/.nvm/versions/node/**)",
-      "Read(//opt/homebrew/opt/**)"
+      "Read(//opt/homebrew/opt/**)",
+      "Bash(./node_modules/.bin/ngc -p tsconfig.app.json --noEmit)"
     ]
   }
 }

@@ -17,39 +17,65 @@
     </div>
 
     <div class="">
+      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>
+      <app-searchable-multi-select [formField]="form.languages"
+                                   [disabledItem]="form.defaultLanguage().value()"
+                                   [labelKey]="'label'"
+                                   [options]="ISO_LANGUAGES"
+                                   [valueKey]="'code'"
+                                   [multiple]="true"/>
+    </div>
+
+    <div class="">
       <label for="defaultLanguageLabel" class="text-sm">{{ `${_prefix}.defaultLanguageLabel` | translate }} *</label>
       <app-searchable-multi-select [formField]="form.defaultLanguage"
                                    [labelKey]="'label'"
-                                   [options]="ISO_LANGUAGES"
+                                   [options]="form.languages().value()"
                                    [valueKey]="'code'"
                                    [multiple]="false"/>
     </div>
 
-    <div class="mb-4">
-      <label for="titleLabel" class="text-sm">
-        {{ `${_prefix}.titleLabel` | translate }}
+    <mat-slide-toggle [formField]="form.onDemand" class="my-4" color="primary">
+      {{ `${_prefix}.onDemand` | translate }}
+    </mat-slide-toggle>
+
+    <div>
+      <label for="estimatedCompletionTime" class="text-sm">
+        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="titleLabel" matInput [formField]="form.title">
+        <input id="estimatedCompletionTime" matInput type="number" [formField]="form.estimatedCompletionTime">
+        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
+        {{ `${_prefix}.minutes` | translate }}
+      </span>
       </mat-form-field>
-<!--      <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"-->
-<!--                           [textGroup]="form.controls.title"-->
-<!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>-->
     </div>
 
-    <div class="mb-4">
-      <label for="descriptionLabel" class="text-sm">
-        {{ `${_prefix}.descriptionLabel` | translate }}
-      </label>
-      <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="descriptionLabel" matInput [formField]="form.description">
-      </mat-form-field>
-<!--      <app-text-form-group [label]="`${_prefix}.descriptionLabel` | translate"-->
-<!--                           [textarea]="true"-->
-<!--                           [textareaAutosize]="true"-->
-<!--                           [textGroup]="form.controls.description"-->
-<!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>-->
-    </div>
+<!--    <div class="mb-4">-->
+<!--      <label for="titleLabel" class="text-sm">-->
+<!--        {{ `${_prefix}.titleLabel` | translate }}-->
+<!--      </label>-->
+<!--      <mat-form-field class='small-input w-full' appearance='outline'>-->
+<!--        <input id="titleLabel" matInput [formField]="form.title">-->
+<!--      </mat-form-field>-->
+<!--&lt;!&ndash;      <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [textGroup]="form.controls.title"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>&ndash;&gt;-->
+<!--    </div>-->
+
+<!--    <div class="mb-4">-->
+<!--      <label for="descriptionLabel" class="text-sm">-->
+<!--        {{ `${_prefix}.descriptionLabel` | translate }}-->
+<!--      </label>-->
+<!--      <mat-form-field class='small-input w-full' appearance='outline'>-->
+<!--        <input id="descriptionLabel" matInput [formField]="form.description">-->
+<!--      </mat-form-field>-->
+<!--&lt;!&ndash;      <app-text-form-group [label]="`${_prefix}.descriptionLabel` | translate"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [textarea]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [textareaAutosize]="true"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [textGroup]="form.controls.description"&ndash;&gt;-->
+<!--&lt;!&ndash;                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>&ndash;&gt;-->
+<!--    </div>-->
   </div>
 
   <!--  <div>-->

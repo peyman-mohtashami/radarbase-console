@@ -149,7 +149,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected async save(): Promise<void> {
     const entity = this.dialogState.questionnaire();
-    console.log('Class: QuestionnaireDialogComponent, Function: save, Line 152 entity' , entity);
+    console.log('^^^Class: QuestionnaireDialogComponent, Function: save, Line 152 entity' , entity);
     if (entity) {
       entity.isValid = entity.isGeneralTabValid && entity.isQuestionsTabValid && entity.isSchedulingTabValid && entity.isCustomMessagesTabValid && entity.isNotificationsTabValid && entity.isTranslationsTabValid;
       switch(this.dialogData.mode) {

@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal, untracked} from '@angular/core';
+import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
@@ -8,12 +8,13 @@ import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 
 export interface QuestionnaireCustomMessagesForm {
+  title: Record<string, string>;
+  description: Record<string, string>;
   showIntroduction: string;
-  startText: string;
-  endText: string;
+  startText: Record<string, string>;
+  endText: Record<string, string>;
   warningEnabled: boolean;
-  warn: string;
-  estimatedCompletionTime: string;
+  warn: Record<string, string>;
 }
 
 @Component({
@@ -32,14 +33,19 @@ export interface QuestionnaireCustomMessagesForm {
 export class QuestionnaireCustomMessagesComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
 
+  lang = computed(() => {
+    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+  })
+
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire()?.schedule,
+    ...this.dialogState.questionnaire(),
+    title: this.dialogState.questionnaire()?.title?.[this.lang()] ? this.dialogState.questionnaire()!.title! : {...this.dialogState.questionnaire()?.title, [this.lang()]: ''},
+    description: this.dialogState.questionnaire()?.description?.[this.lang()] ? this.dialogState.questionnaire()!.description! : {...this.dialogState.questionnaire()?.description, [this.lang()]: ''},
     showIntroduction: this.dialogState.questionnaire()?.showIntroduction ?? 'no',
-    startText: this.dialogState.questionnaire()?.startText?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
-    endText: this.dialogState.questionnaire()?.endText?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    startText: this.dialogState.questionnaire()?.startText?.[this.lang()] ? this.dialogState.questionnaire()!.startText! : {...this.dialogState.questionnaire()?.startText, [this.lang()]: ''},
+    endText: this.dialogState.questionnaire()?.endText?.[this.lang()] ? this.dialogState.questionnaire()!.endText! : {...this.dialogState.questionnaire()?.endText, [this.lang()]: ''},
     warningEnabled: this.dialogState.questionnaire()?.warningEnabled ?? false,
-    warn: this.dialogState.questionnaire()?.warn?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
-    estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? ''
+    warn: this.dialogState.questionnaire()?.warn?.[this.lang()] ? this.dialogState.questionnaire()!.warn! : {...this.dialogState.questionnaire()?.warn, [this.lang()]: ''},
   });
 
   protected form = form(this.model);
@@ -53,13 +59,10 @@ export class QuestionnaireCustomMessagesComponent {
 
       const updated = {
         ...entity,
-        showIntroduction: model.showIntroduction,
-        startText: {...entity?.startText, [defaultLanguage.code]: model.startText},
-        endText: {...entity?.endText, [defaultLanguage.code]: model.endText},
-        warningEnabled: model.warningEnabled,
-        warn: {...entity?.warn, [defaultLanguage.code]: model.warn},
+        ...model,
         isCustomMessagesTabValid: this.form().valid()
       } as AppQuestionnaire;
+      console.log('Class: QuestionnaireCustomMessagesComponent, Function: , Line 71 updated' , updated);
       this.dialogState.questionnaire.set(updated);
     });
   }

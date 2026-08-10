@@ -1,18 +1,45 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
+@let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
 <form novalidate class="w-125">
 
-  <div>
-    <label for="estimatedCompletionTime" class="text-sm">
-      {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
-    </label>
-    <mat-form-field class='small-input w-full' appearance='outline'>
-      <input id="estimatedCompletionTime" matInput type="number" [formField]="form.estimatedCompletionTime">
-      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-        {{ `${_prefix}.minutes` | translate }}
-      </span>
-    </mat-form-field>
-  </div>
+      <div class="mb-4">
+        <label for="titleLabel" class="text-sm">
+          {{ `${_prefix}.titleLabel` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline'>
+          <input id="titleLabel" matInput [formField]="form.title[language]">
+        </mat-form-field>
+  <!--      <app-text-form-group [label]="`${_prefix}.titleLabel` | translate"-->
+  <!--                           [textGroup]="form.controls.title"-->
+  <!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.title)"/>-->
+      </div>
+
+      <div class="mb-4">
+        <label for="descriptionLabel" class="text-sm">
+          {{ `${_prefix}.descriptionLabel` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline'>
+          <textarea id="descriptionLabel" matInput [formField]="form.description[language]"></textarea>
+        </mat-form-field>
+  <!--      <app-text-form-group [label]="`${_prefix}.descriptionLabel` | translate"-->
+  <!--                           [textarea]="true"-->
+  <!--                           [textareaAutosize]="true"-->
+  <!--                           [textGroup]="form.controls.description"-->
+  <!--                           [value]="$safeNavigationMigration(dialogState.questionnaire()?.description)"/>-->
+      </div>
+
+<!--  <div>-->
+<!--    <label for="estimatedCompletionTime" class="text-sm">-->
+<!--      {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}-->
+<!--    </label>-->
+<!--    <mat-form-field class='small-input w-full' appearance='outline'>-->
+<!--      <input id="estimatedCompletionTime" matInput type="number" [formField]="form.estimatedCompletionTime">-->
+<!--      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">-->
+<!--        {{ `${_prefix}.minutes` | translate }}-->
+<!--      </span>-->
+<!--    </mat-form-field>-->
+<!--  </div>-->
 
   <div class="text-sm w-1/2">
     <label for="showIntroduction">
@@ -39,7 +66,7 @@
         {{ `${_prefix}.startTextLabel` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="startTextLabel" matInput [formField]="form.startText">
+        <textarea id="startTextLabel" matInput [formField]="form.startText[language]"></textarea>
       </mat-form-field>
 <!--      <app-text-form-group [label]="`${_prefix}.startTextLabel` | translate"-->
 <!--                           [textarea]="true"-->
@@ -54,7 +81,7 @@
       {{ `${_prefix}.endTextLabel` | translate }}
     </label>
     <mat-form-field class='small-input w-full' appearance='outline'>
-      <input id="endTextLabel" matInput [formField]="form.endText">
+      <textarea id="endTextLabel" matInput [formField]="form.endText[language]"></textarea>
     </mat-form-field>
 <!--    <app-text-form-group [label]="`${_prefix}.endTextLabel` | translate"-->
 <!--                         [textarea]="true"-->
@@ -73,7 +100,7 @@
         {{ `${_prefix}.warningTextLabel` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="warningTextLabel" matInput [formField]="form.warn">
+        <input id="warningTextLabel" matInput [formField]="form.warn[language]">
       </mat-form-field>
 <!--      <app-text-form-group [label]="`${_prefix}.warningTextLabel` | translate"-->
 <!--                           [textGroup]="form.controls.warn"-->

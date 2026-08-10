@@ -2,7 +2,7 @@ import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
-  AppQuestionnaire,
+  AppQuestionnaire, AppQuestionnaireLanguage, DEFAULT_LANGUAGE,
   ISO_LANGUAGES
 } from '../../../../models/questionnaire';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
@@ -11,12 +11,17 @@ import {requiredField} from '../../../../../../../shared/utils/signal-form-valid
 import {
   SearchableMultiSelectComponent
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 export interface QuestionnaireGeneralForm {
   name: string;
-  defaultLanguage: string;
-  title: string;
-  description: string;
+  defaultLanguage: AppQuestionnaireLanguage;
+  languages: AppQuestionnaireLanguage[];
+  onDemand: boolean;
+  isDemo: boolean;
+  estimatedCompletionTime: string;
+  order: string;
+  showInCalendar: boolean;
 }
 
 @Component({
@@ -29,6 +34,7 @@ export interface QuestionnaireGeneralForm {
     TranslatePipe,
     FormField,
     SearchableMultiSelectComponent,
+    MatSlideToggle,
   ]
 })
 export class QuestionnaireGeneralComponent {
@@ -39,9 +45,16 @@ export class QuestionnaireGeneralComponent {
   protected model = signal<QuestionnaireGeneralForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire(),
     name: this.dialogState.questionnaire()?.name ?? '',
-    defaultLanguage: this.dialogState.questionnaire()?.defaultLanguage.code ?? 'en',
-    title: this.dialogState.questionnaire()?.title?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
-    description: this.dialogState.questionnaire()?.description?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    defaultLanguage: this.dialogState.questionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE,
+    languages: this.dialogState.questionnaire()?.languages ?? [DEFAULT_LANGUAGE],
+    onDemand: this.dialogState.questionnaire()?.onDemand ?? false,
+    isDemo: this.dialogState.questionnaire()?.isDemo ?? false,
+    estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? '',
+    order: this.dialogState.questionnaire()?.order ?? '',
+    showInCalendar: this.dialogState.questionnaire()?.showInCalendar ?? false,
+
+    // title: this.dialogState.questionnaire()?.title?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+    // description: this.dialogState.questionnaire()?.description?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
   });
 
   protected form = form(this.model, (schema) => {
@@ -57,7 +70,8 @@ export class QuestionnaireGeneralComponent {
     //   };
     // });
     // TODO stringId
-    validate(schema.defaultLanguage, ({value}) => {
+    requiredField(schema.defaultLanguage);
+    validate(schema.languages, ({value}) => {
       if (value().length) return null;
       return {
         kind: 'required',
@@ -70,24 +84,27 @@ export class QuestionnaireGeneralComponent {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
-      let languages = entity?.languages ?? [];
-      const defaultLanguage = ISO_LANGUAGES.find(l => l.code === model.defaultLanguage);
-      if (!defaultLanguage) return;
+      // let languages = entity?.languages ?? [];
+      // const defaultLanguage = ISO_LANGUAGES.find(l => l.code === model.defaultLanguage);
+      // if (!defaultLanguage) return;
+      //
+      // const questionnaireDefaultLanguage = entity?.languages.find(l => l.code === defaultLanguage.code);
+      // if (!questionnaireDefaultLanguage) {
+      //   languages = [...entity?.languages ?? [], defaultLanguage];
+      // }
 
-      const questionnaireDefaultLanguage = entity?.languages.find(l => l.code === defaultLanguage.code);
-      if (!questionnaireDefaultLanguage) {
-        languages = [...entity?.languages ?? [], defaultLanguage];
-      }
+      const updated = {...entity, ...model, isGeneralTabValid: this.form().valid()} as AppQuestionnaire;
+      console.log('Class: QuestionnaireGeneralComponent, Function: , Line 97 updated' , updated);
 
-      const updated = {
-        ...entity,
-        name: model.name,
-        defaultLanguage: defaultLanguage,
-        title: {...entity?.title, [defaultLanguage.code]: model.title},
-        description: {...entity?.description, [defaultLanguage.code]: model.description},
-        languages,
-        isGeneralTabValid: this.form().valid(),
-      } as AppQuestionnaire;
+      // const updated = {
+      //   ...entity,
+      //   name: model.name,
+      //   defaultLanguage: defaultLanguage,
+      //   title: {...entity?.title, [defaultLanguage.code]: model.title},
+      //   description: {...entity?.description, [defaultLanguage.code]: model.description},
+      //   languages,
+      //   isGeneralTabValid: this.form().valid(),
+      // } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
     });
   }

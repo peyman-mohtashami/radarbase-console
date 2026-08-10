@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal, untracked} from '@angular/core';
+import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
@@ -10,8 +10,8 @@ import {AppQuestionnaire} from '../../../../models/questionnaire';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
-    title: string;
-    text: string;
+    title: Record<string, string>;
+    text: Record<string, string>;
   };
   reminders: {
     enabled: boolean;
@@ -39,11 +39,15 @@ export class QuestionnaireNotificationsComponent {
 
   protected readonly UNITS = UNITS;
 
+  lang = computed(() => {
+    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+  });
+
   protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()?.schedule,
     notification: {
-      title: this.dialogState.questionnaire()?.schedule?.notification?.title?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
-      text: this.dialogState.questionnaire()?.schedule?.notification?.text?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
+      title: this.dialogState.questionnaire()?.schedule?.notification?.title?.[this.lang()] ? this.dialogState.questionnaire()!.schedule!.notification!.title! : {...this.dialogState.questionnaire()?.schedule?.notification?.title, [this.lang()]: ''},
+      text: this.dialogState.questionnaire()?.schedule?.notification?.text?.[this.lang()] ? this.dialogState.questionnaire()!.schedule!.notification!.text! : {...this.dialogState.questionnaire()?.schedule?.notification?.text, [this.lang()]: ''},
     },
     reminders: {
       enabled: this.dialogState.questionnaire()?.schedule?.reminders?.enabled ?? false,
@@ -59,33 +63,17 @@ export class QuestionnaireNotificationsComponent {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
-      const defaultLanguage = entity?.defaultLanguage;
-      if (!defaultLanguage) return;
 
       const updated = {
         ...entity,
         schedule: {
           ...entity?.schedule,
-          notification: {
-            title: {
-              ...entity.schedule?.notification?.title,
-              [defaultLanguage.code]: model.notification.title,
-            },
-            text: {
-              ...entity.schedule?.notification?.text,
-              [defaultLanguage.code]: model.notification.text,
-            }
-          },
-          reminders: {
-            ...entity.schedule?.reminders,
-            enabled: model.reminders.enabled,
-            repeat: model.reminders.repeat,
-            unit: model.reminders.unit,
-            amount: model.reminders.amount,
-          }
+          notification: model.notification,
+          reminders: model.reminders,
         },
         isNotificationsTabValid: this.form().valid()
       } as AppQuestionnaire;
+      console.log('Class: QuestionnaireNotificationsComponent, Function: , Line 74 updated' , updated);
       this.dialogState.questionnaire.set(updated);
     });
   }

@@ -184,9 +184,8 @@ export class QuestionnaireStore {
 
   toAppQuestionnaire(protocol: ProtocolDto, questionnaire?: Record<string, QuestionDto[]>): AppQuestionnaire {
     const schedule: AppQuestionnaire['schedule'] = protocol.type === 'on_demand' ?
-      {onDemand: true} :
+      undefined :
       {
-        onDemand: false,
         completionWindow: {
           unit: protocol.protocol?.completionWindow?.unit,
           amount: protocol.protocol?.completionWindow?.amount,
@@ -370,7 +369,7 @@ export class QuestionnaireStore {
         warn: q.warn ?? {},
         estimatedCompletionTime: q.estimatedCompletionTime,
         protocol: this.toRadarSubProtocol(q.schedule),
-        type: q.schedule?.onDemand ? 'on_demand' : undefined,
+        type: q.onDemand ? 'on_demand' : undefined,
         isValid: !!q.isValid,
         isActive: !!q.isActive
       });
@@ -444,9 +443,9 @@ export class QuestionnaireStore {
   toRadarSubProtocol(schedule: AppQuestionnaire['schedule']):  SubProtocolDto | undefined {
     if (!schedule) return undefined;
 
-    if (schedule && schedule.onDemand) {
-      return undefined;
-    }
+    // if (schedule && schedule.onDemand) {
+    //   return undefined;
+    // }
 
     const {relativeToReferenceTime, referenceTimestamp, repeatedProtocol, repeatProtocol, repeatQuestionnaire, completionWindow, notification, reminders} = schedule!;
     return {

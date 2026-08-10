@@ -10,6 +10,7 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../shared/enums/detail-type';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -22,6 +23,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
     TranslatePipe,
     TagComponent,
     MatSlideToggle,
+    JsonPipe,
   ]
 })
 export class QuestionnaireTableRowComponent {

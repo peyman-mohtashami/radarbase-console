@@ -1,4 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
+@let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
 <div class="w-125">
   <div class="mt-4">
@@ -9,7 +10,7 @@
           {{ `${_prefix}.notificationTitleLabel` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline'>
-          <input id="notificationTitleLabel" matInput [formField]="form.notification.title">
+          <input id="notificationTitleLabel" matInput [formField]="form.notification.title[language]">
         </mat-form-field>
 <!--        <app-text-form-group class="mb-4"-->
 <!--                             [textGroup]="form.controls.schedule.controls.notification.controls.title"-->
@@ -21,7 +22,7 @@
           {{ `${_prefix}.notificationMessageLabel` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline'>
-          <input id="notificationMessageLabel" matInput [formField]="form.notification.text">
+          <textarea id="notificationMessageLabel" matInput [formField]="form.notification.text[language]"></textarea>
         </mat-form-field>
 <!--        <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"-->
 <!--                             [label]="`${_prefix}.notificationMessageLabel` | translate"-->

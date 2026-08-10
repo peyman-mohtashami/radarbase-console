@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
-import {AppQuestionnaire, ISO_LANGUAGES} from '../../../../models/questionnaire';
+import {AppQuestionnaire, AppQuestionnaireLanguage, ISO_LANGUAGES} from '../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {form, FormField} from '@angular/forms/signals';
@@ -8,9 +8,9 @@ import {
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 import {MatFormField, MatInput} from '@angular/material/input';
 
-export interface QuestionnaireTranslationsLanguageForm {
-  languages: string[];
-}
+// export interface QuestionnaireTranslationsLanguageForm {
+//   languages: AppQuestionnaireLanguage[];
+// }
 
 // export interface QuestionnaireTranslationsForm {
 //   title?: Record<string, string>
@@ -47,9 +47,9 @@ export interface QuestionnaireTranslationsLanguageForm {
   selector: 'app-questionnaire-translation',
   templateUrl: 'questionnaire-translation.component.html',
   imports: [
-    TranslatePipe,
+    // TranslatePipe,
     FormField,
-    SearchableMultiSelectComponent,
+    // SearchableMultiSelectComponent,
     MatFormField,
     MatInput,
   ]
@@ -61,25 +61,55 @@ export class QuestionnaireTranslationComponent {
 
   // numberOfGridRows = this.getNumberOfGridRows();
 
-  protected languagesModel = signal<QuestionnaireTranslationsLanguageForm>({//this.dialogData.restoredModel ?? {
-    languages: this.dialogState.questionnaire()?.languages.map(l => l.code) ?? [],
-  });
+  // protected languagesModel = signal<QuestionnaireTranslationsLanguageForm>({//this.dialogData.restoredModel ?? {
+  //   languages: this.dialogState.questionnaire()?.languages ?? [],
+  // });
 
-  defaultLanguage = this.dialogState.questionnaire()!.defaultLanguage.code;
+  defaultLanguage = this.dialogState.questionnaire()!.defaultLanguage;
 
   readonly languagesList = computed(() => {
-    const { languages } = this.languagesModel();
+    const languages = this.dialogState.questionnaire()!.languages;
     return [
       this.defaultLanguage,
-      ...languages.filter(lang => lang !== this.defaultLanguage),
+      ...languages.filter(lang => lang.code !== this.defaultLanguage.code),
     ];
   });
 
   protected model = signal<AppQuestionnaire>({//this.dialogData.restoredModel ?? {
     ...this.dialogState.questionnaire()!,
+    title: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
+    description: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.description?.[lang.code] ?? ''}), {} as Record<string, string>),
+    startText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.startText?.[lang.code] ?? ''}), {} as Record<string, string>),
+    endText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.endText?.[lang.code] ?? ''}), {} as Record<string, string>),
+    warn: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.warn?.[lang.code] ?? ''}), {} as Record<string, string>),
+    //       questions: value.questions?.map(q => {
+    //         return {
+    //           ...q,
+    //           field_label: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_label?.[lang] ?? ''}), {} as Record<string, string>),
+    //           section_header: languages.reduce((acc, lang) => ({...acc, [lang]: q.section_header?.[lang] ?? ''}), {} as Record<string, string>),
+    //           select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
+    //             return {
+    //               ...c,
+    //               label: languages.reduce((acc, lang) => ({...acc, [lang]: c.label?.[lang] ?? ''}), {} as Record<string, string>),
+    //             }
+    //           }) ?? [],
+    //           field_note: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_note?.[lang] ?? ''}), {} as Record<string, string>),
+    //           range: q.range ? {
+    //             ...q.range,
+    //             labelLeft: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelLeft?.[lang] ?? ''}), {} as Record<string, string>),
+    //             labelRight: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelRight?.[lang] ?? ''}), {} as Record<string, string>),
+    //           } : undefined
+    //         }
+    //       }) ?? [],
+    schedule: {
+      notification: {
+        title: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
+        text: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.text?.[lang.code] ?? ''}), {} as Record<string, string>),
+      }
+    }
   });
 
-  protected languagesForm = form(this.languagesModel);
+  // protected languagesForm = form(this.languagesModel);
 
   protected form = form(this.model);
 
@@ -101,45 +131,45 @@ export class QuestionnaireTranslationComponent {
 
 
   constructor() {
-    effect(() => {
-      const languages = this.languagesModel().languages;
-
-      this.model.update((value) => {
-        return {
-          ...value,
-          title: languages.reduce((acc, lang) => ({...acc, [lang]: value.title?.[lang] ?? ''}), {} as Record<string, string>),
-          description: languages.reduce((acc, lang) => ({...acc, [lang]: value.description?.[lang] ?? ''}), {} as Record<string, string>),
-          startText: languages.reduce((acc, lang) => ({...acc, [lang]: value.startText?.[lang] ?? ''}), {} as Record<string, string>),
-          endText: languages.reduce((acc, lang) => ({...acc, [lang]: value.endText?.[lang] ?? ''}), {} as Record<string, string>),
-          warn: languages.reduce((acc, lang) => ({...acc, [lang]: value.warn?.[lang] ?? ''}), {} as Record<string, string>),
-          questions: value.questions?.map(q => {
-            return {
-              ...q,
-              field_label: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_label?.[lang] ?? ''}), {} as Record<string, string>),
-              section_header: languages.reduce((acc, lang) => ({...acc, [lang]: q.section_header?.[lang] ?? ''}), {} as Record<string, string>),
-              select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
-                return {
-                  ...c,
-                  label: languages.reduce((acc, lang) => ({...acc, [lang]: c.label?.[lang] ?? ''}), {} as Record<string, string>),
-                }
-              }) ?? [],
-              field_note: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_note?.[lang] ?? ''}), {} as Record<string, string>),
-              range: q.range ? {
-                ...q.range,
-                labelLeft: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelLeft?.[lang] ?? ''}), {} as Record<string, string>),
-                labelRight: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelRight?.[lang] ?? ''}), {} as Record<string, string>),
-              } : undefined
-            }
-          }) ?? [],
-          schedule: {
-            notification: {
-              title: languages.reduce((acc, lang) => ({...acc, [lang]: value.schedule?.notification?.title?.[lang] ?? ''}), {} as Record<string, string>),
-              text: languages.reduce((acc, lang) => ({...acc, [lang]: value.schedule?.notification?.text?.[lang] ?? ''}), {} as Record<string, string>),
-            }
-          }
-        }
-      })
-    });
+    // effect(() => {
+    //   const languages = this.languagesModel().languages.map(l => l.code);
+    //
+    //   this.model.update((value) => {
+    //     return {
+    //       ...value,
+    //       title: languages.reduce((acc, lang) => ({...acc, [lang]: value.title?.[lang] ?? ''}), {} as Record<string, string>),
+    //       description: languages.reduce((acc, lang) => ({...acc, [lang]: value.description?.[lang] ?? ''}), {} as Record<string, string>),
+    //       startText: languages.reduce((acc, lang) => ({...acc, [lang]: value.startText?.[lang] ?? ''}), {} as Record<string, string>),
+    //       endText: languages.reduce((acc, lang) => ({...acc, [lang]: value.endText?.[lang] ?? ''}), {} as Record<string, string>),
+    //       warn: languages.reduce((acc, lang) => ({...acc, [lang]: value.warn?.[lang] ?? ''}), {} as Record<string, string>),
+    //       questions: value.questions?.map(q => {
+    //         return {
+    //           ...q,
+    //           field_label: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_label?.[lang] ?? ''}), {} as Record<string, string>),
+    //           section_header: languages.reduce((acc, lang) => ({...acc, [lang]: q.section_header?.[lang] ?? ''}), {} as Record<string, string>),
+    //           select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
+    //             return {
+    //               ...c,
+    //               label: languages.reduce((acc, lang) => ({...acc, [lang]: c.label?.[lang] ?? ''}), {} as Record<string, string>),
+    //             }
+    //           }) ?? [],
+    //           field_note: languages.reduce((acc, lang) => ({...acc, [lang]: q.field_note?.[lang] ?? ''}), {} as Record<string, string>),
+    //           range: q.range ? {
+    //             ...q.range,
+    //             labelLeft: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelLeft?.[lang] ?? ''}), {} as Record<string, string>),
+    //             labelRight: languages.reduce((acc, lang) => ({...acc, [lang]: q.range?.labelRight?.[lang] ?? ''}), {} as Record<string, string>),
+    //           } : undefined
+    //         }
+    //       }) ?? [],
+    //       schedule: {
+    //         notification: {
+    //           title: languages.reduce((acc, lang) => ({...acc, [lang]: value.schedule?.notification?.title?.[lang] ?? ''}), {} as Record<string, string>),
+    //           text: languages.reduce((acc, lang) => ({...acc, [lang]: value.schedule?.notification?.text?.[lang] ?? ''}), {} as Record<string, string>),
+    //         }
+    //       }
+    //     }
+    //   })
+    // });
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());

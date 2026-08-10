@@ -14,6 +14,7 @@ export interface AppQuestionnaire {
   showInCalendar?: boolean;
   isDemo?: boolean;
   order?: string;
+  onDemand?: boolean;
   //
   showIntroduction?: string;
   startText?: Record<string, string>;
@@ -24,7 +25,6 @@ export interface AppQuestionnaire {
   questions: AppQuestion[];
   //
   schedule?: {
-    onDemand?: boolean;
     relativeToReferenceTime?: boolean;
     referenceTimestamp?: string;
     repeatedProtocol?: boolean;
