@@ -1,5 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire';
-
+<!--{{entity() | json}}-->
 <app-entity-table-row [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
@@ -81,13 +81,18 @@
       }
     }
     @case ('active') {
-      <mat-slide-toggle [checked]="entity().isActive" (change)="onActiveChange($event)" />
+      <mat-slide-toggle [disabled]="!entity().isValid" [checked]="entity().isActive" (change)="onActiveChange($event)" />
     }
     @case ('status') {
-      <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
-      {{ entity().isValid ? 'Valid' : 'Invalid' }}
-<!--        / Active: {{ entity().isActive }}-->
-      </app-tag>
+      @if (entity().isValid) {
+        <app-tag class="bg-green-500/10 text-green-700 dark:bg-primary-dark/10 dark:text-primary-dark">
+          {{ 'Valid' }}
+        </app-tag>
+      } @else {
+        <app-tag class="bg-red-500/10 text-red-700 dark:bg-primary-dark/10 dark:text-primary-dark">
+          {{ 'Invalid' }}
+        </app-tag>
+      }
     }
     @default {
       {{ $any(entity())[property.name] || '-' }}

@@ -9,6 +9,7 @@ export interface ProtocolWrapperDto {
 }
 
 export interface ProtocolDto {
+  id: string;
   name: string;
   type?: string;
   onDemand: boolean;
@@ -84,6 +85,7 @@ export interface SubProtocolDto {
 }
 
 export interface QuestionnaireDto {
+  id: string;
   name: string;
   languages: string[];
   questions: Record<string, QuestionDto[]>;
@@ -91,7 +93,7 @@ export interface QuestionnaireDto {
 
 
 export interface QuestionDto {
-  id?: string;
+  id: string;
   field_name: string;
   field_type: string;
   required_field?: boolean;

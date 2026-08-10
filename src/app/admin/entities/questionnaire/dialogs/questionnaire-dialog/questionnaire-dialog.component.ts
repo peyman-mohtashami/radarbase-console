@@ -3,9 +3,6 @@ import {
   inject,
   OnInit, AfterViewInit
 } from '@angular/core';
-import {
-  FormArray
-} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
@@ -52,17 +49,17 @@ import {QuestionnaireStore} from '../../services/questionnaire.store';
 
 export interface QuestionnaireForm {
   id: string;
-  projectName: string,
-  description: string;
-  location: string;
-  humanReadableProjectName: string,
-  organizationName: string,
-  organization: string,
-  projectStatus: string,
-  startDate: string,
-  endDate: string,
-  sourceTypes: number[],
-  attributes: Record<string, string>,
+  // projectName: string,
+  // description: string;
+  // location: string;
+  // humanReadableProjectName: string,
+  // organizationName: string,
+  // organization: string,
+  // projectStatus: string,
+  // startDate: string,
+  // endDate: string,
+  // sourceTypes: number[],
+  // attributes: Record<string, string>,
 }
 
 export interface StoredQuestionnaireDialog {
@@ -149,9 +146,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected async save(): Promise<void> {
     const entity = this.dialogState.questionnaire();
-    console.log('^^^Class: QuestionnaireDialogComponent, Function: save, Line 152 entity' , entity);
     if (entity) {
-      entity.isValid = entity.isGeneralTabValid && entity.isQuestionsTabValid && entity.isSchedulingTabValid && entity.isCustomMessagesTabValid && entity.isNotificationsTabValid && entity.isTranslationsTabValid;
       switch(this.dialogData.mode) {
         case DialogMode.ADD:
           await this.store.add(entity);
@@ -185,17 +180,17 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 }
 
-export function moveItemInFormArray(
-  formArray: FormArray,
-  fromIndex: number,
-  toIndex: number
-): void {
-  const dir = toIndex > fromIndex ? 1 : -1;
-
-  const item = formArray.at(fromIndex);
-  for (let i = fromIndex; i * dir < toIndex * dir; i = i + dir) {
-    const current = formArray.at(i + dir);
-    formArray.setControl(i, current);
-  }
-  formArray.setControl(toIndex, item);
-}
+// export function moveItemInFormArray(
+//   formArray: FormArray,
+//   fromIndex: number,
+//   toIndex: number
+// ): void {
+//   const dir = toIndex > fromIndex ? 1 : -1;
+//
+//   const item = formArray.at(fromIndex);
+//   for (let i = fromIndex; i * dir < toIndex * dir; i = i + dir) {
+//     const current = formArray.at(i + dir);
+//     formArray.setControl(i, current);
+//   }
+//   formArray.setControl(toIndex, item);
+// }

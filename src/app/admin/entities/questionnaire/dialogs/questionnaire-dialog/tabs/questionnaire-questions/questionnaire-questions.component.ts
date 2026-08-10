@@ -7,7 +7,7 @@ import {MatButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../shared/enums/dialog';
-import {QUESTION_TYPES} from './components/question-type/question-type.registry';
+import {QUESTION_TYPES} from '../questionnaire-preview/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 
 @Component({
@@ -62,7 +62,8 @@ export class QuestionnaireQuestionsComponent {
           field_label: {},
           field_type: type,
           dragId: crypto.randomUUID(),
-        }]
+        }],
+        isQuestionsTabValid: true
       }
     });
   }
@@ -71,7 +72,8 @@ export class QuestionnaireQuestionsComponent {
     this.dialogState.questionnaire.update(value => {
       return {
         ...value!,
-        questions: [...(value?.questions ?? []).splice(index, 1)]
+        questions: [...(value?.questions ?? []).splice(index, 1)],
+        isQuestionsTabValid: true
       }
     });
   }
@@ -90,7 +92,8 @@ export class QuestionnaireQuestionsComponent {
     this.dialogState.questionnaire.update(value => {
       return {
         ...value!,
-        questions: [...(value?.questions ?? [])]
+        questions: [...(value?.questions ?? [])],
+        isQuestionsTabValid: true
       }
     });
   }

@@ -7,7 +7,7 @@ import {
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../models/kafka';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
-import {QUESTION_COMPONENTS} from '../../questionnaire-questions/components/question-type/question-type.registry';
+import {QUESTION_COMPONENTS} from '../question-type/question-type.registry';
 import {debounceTime} from 'rxjs/operators';
 import {outputToObservable} from '@angular/core/rxjs-interop';
 
@@ -41,7 +41,6 @@ export class QuestionComponent implements OnInit {
     host.clear();
     const componentType = QUESTION_COMPONENTS[this.question().field_type];
     const componentRef = host.createComponent(componentType);
-    componentRef.setInput('type', 'preview'); //.instance.type = 'preview';
     componentRef.setInput('language', this.language());
     componentRef.setInput('entity', this.question()); //.instance.entity = this.question;
     componentRef.setInput('answer', this.answer());

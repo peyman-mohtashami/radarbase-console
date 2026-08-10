@@ -13,7 +13,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QUESTION_TYPES} from '../../components/question-type/question-type.registry';
+import {QUESTION_TYPES} from '../../../questionnaire-preview/question-type/question-type.registry';
 import {
   ConditionalLogicDialogComponent, OPERATOR_SYMBOLS
 } from '../conditional-logic-dialog/conditional-logic-dialog.component';
@@ -25,7 +25,7 @@ import {
 import {applyEach, disabled, FieldTree, form, FormField, required, validate} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {QuestionChoicesComponent} from '../../components/question-choices/question-choices.component';
+import {QuestionChoicesComponent} from './question-choices/question-choices.component';
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -278,7 +278,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
     this.dialogState.questionnaire.update(value => {
       const questions = value!.questions.map(q => {
-        if (q.dragId === this.dialogData.entity.dragId) {
+        if (q.id === this.dialogData.entity.id) {
           return this.toAppQuestion(model);//, ...this.childFormValue.formValue};
         }
         return q;

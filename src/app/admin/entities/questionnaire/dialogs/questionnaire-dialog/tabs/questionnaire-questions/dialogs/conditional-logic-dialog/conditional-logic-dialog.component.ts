@@ -22,7 +22,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
-import {QuestionType} from '../../components/question-type/question-type.registry';
+import {QuestionType} from '../../../questionnaire-preview/question-type/question-type.registry';
 
 export const OPERATOR_SYMBOLS: Record<string, string> = {
   equal: '=',

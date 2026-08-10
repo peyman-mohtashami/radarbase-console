@@ -52,9 +52,6 @@ export class QuestionnaireGeneralComponent {
     estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? '',
     order: this.dialogState.questionnaire()?.order ?? '',
     showInCalendar: this.dialogState.questionnaire()?.showInCalendar ?? false,
-
-    // title: this.dialogState.questionnaire()?.title?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
-    // description: this.dialogState.questionnaire()?.description?.[this.dialogState.questionnaire()!.defaultLanguage.code] ?? '',
   });
 
   protected form = form(this.model, (schema) => {

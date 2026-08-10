@@ -1,0 +1,21 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<section class="">
+  <app-question-header [question]="entity()" [language]="language()"/>
+
+  @for (item of previewItems(); track item.code) {
+    <p>
+      <mat-checkbox class="w-full"
+                    (click)="onPreviewInputChange(item.code)"
+                    [disabled]="isPreviewDisabled"
+                    [checked]="item.checked">
+        <span class="ion-text-wrap" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
+      </mat-checkbox>
+    </p>
+  }
+</section>
+@if (!isPreviewDisabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+    Clear
+  </button>
+}

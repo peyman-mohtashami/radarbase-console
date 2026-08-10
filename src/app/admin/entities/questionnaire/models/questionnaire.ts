@@ -1,4 +1,5 @@
 export interface AppQuestionnaire {
+  id: string;
   // _name: string;
   search: string;
 
@@ -53,7 +54,7 @@ export interface AppQuestionnaire {
 }
 
 export interface AppQuestion {
-  id?: string;
+  id: string;
   field_name: string;
   field_type: string;
   required_field?: boolean;
@@ -80,7 +81,7 @@ export interface AppQuestion {
   date_type?: string;
   isValid?: boolean;
   visible?: boolean;
-  dragId: string;
+  // dragId: string;
 }
 
 export interface AppQuestionChoice {

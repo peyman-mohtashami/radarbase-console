@@ -1,0 +1,20 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<app-question-header [question]="entity()" [language]="language()"/>
+
+<mat-radio-group aria-label="Select an option" [value]="answer()?.value">
+  @for (option of entity().select_choices_or_calculations; track option.code) {
+    <div>
+      <mat-radio-button [value]="option.code" (click)="onPreviewInputChange(option.code)"
+                        [disabled]="isPreviewDisabled">
+        <span class="ion-text-wrap" [innerHtml]="option.label[language()!.code] | replacePlaceholders"></span>
+      </mat-radio-button>
+    </div>
+  }
+</mat-radio-group>
+@if (!isPreviewDisabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+    Clear
+  </button>
+}
+

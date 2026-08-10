@@ -88,8 +88,8 @@
 <ng-template #itemTemplate let-entity>
   <app-questionnaire-table-row [entity]="entity"
                                [gridView]="gridView"
-                               [extensionClass]="extensionClass()"
-                               (duplicateEvent)="onDuplicate(entity)"
-                               (activeEvent)="onActiveChange($event, entity)" />
+                               [extensionClass]="extensionClass()" />
+<!--                               (duplicateEvent)="onDuplicate(entity)"-->
+<!--                               (activeEvent)="onActiveChange($event, entity)" />-->
 <!--                               [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"-->
 </ng-template>

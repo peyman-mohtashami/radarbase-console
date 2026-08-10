@@ -128,15 +128,16 @@ export class QuestionnaireStore {
   }
 
   async update(entity: AppQuestionnaire): Promise<boolean> {
+    console.log('Class: QuestionnaireStore, Function: update, Line 131 entity' , entity);
     this.allItems.update((items) =>
-      ([...items.map(item => item.name === entity.name ? entity : item)])
+      ([...items.map(item => item.id === entity.id ? entity : item)])
     );
     return true;
   }
 
   async delete(entity: AppQuestionnaire): Promise<boolean> {
     this.allItems.update((items) =>
-      [...items.filter(item => item.name !== entity.name)]
+      [...items.filter(item => item.id !== entity.id)]
     );
     return true;
   }
@@ -213,7 +214,9 @@ export class QuestionnaireStore {
         }
       };
 
+    // const isValid = protocol.isGeneralTabValid !== false && protocol.isCustomMessagesTabValid !== false && protocol.isQuestionsTabValid !== false && protocol.isNotificationsTabValid !== false && protocol.isSchedulingTabValid !== false// && protocol.isTranslationsTabValid,
     return {
+      id: protocol.id,
       modelVersion: "",
       version: "",
       name: protocol.name,
@@ -241,8 +244,8 @@ export class QuestionnaireStore {
       isNotificationsTabValid: protocol.isNotificationsTabValid,
       isQuestionsTabValid: protocol.isQuestionsTabValid,
       isTranslationsTabValid: protocol.isTranslationsTabValid,
-      isActive: protocol.isActive,
-      isValid: protocol.isValid,
+      isActive: protocol.isActive,// : false,
+      isValid: protocol.isValid,//protocol.isGeneralTabValid !== false && protocol.isCustomMessagesTabValid !== false && protocol.isQuestionsTabValid !== false && protocol.isNotificationsTabValid !== false && protocol.isSchedulingTabValid !== false,// && protocol.isTranslationsTabValid,
 
       // _name: protocol.name,
       search: protocol.name,
@@ -302,7 +305,7 @@ export class QuestionnaireStore {
             calculation_fn: radarQuestion.calculation_fn,
             calculation_args: radarQuestion.calculation_args,
             isValid: radarQuestion.isValid,
-            dragId: crypto.randomUUID()
+            // dragId: crypto.randomUUID()
           };
 
           if (radarQuestion.select_choices_or_calculations) {
@@ -359,8 +362,11 @@ export class QuestionnaireStore {
   splitProtocolsAndQuestionnaires(questionnaires: AppQuestionnaire[]): {protocols: ProtocolDto[], questionnaires: QuestionnaireDto[]} {
     console.log('Class: QuestionnaireService, Function: splitProtocolsAndQuestionnaires, Line 319 questionnaires' , questionnaires);
     const result: {protocols: ProtocolDto[]; questionnaires: QuestionnaireDto[]} = {protocols: [], questionnaires: []};
+
     questionnaires.forEach(q => {
+      const isValid = q.isGeneralTabValid && q.isCustomMessagesTabValid !== false && q.isQuestionsTabValid !== false && ((!q.onDemand && q.isNotificationsTabValid !== false && q.isSchedulingTabValid) || q.onDemand)// && protocol.isTranslationsTabValid,
       result.protocols.push({
+        id: q.id ?? crypto.randomUUID(),
         name: q.name,
         title: q.title,
         description: q.description,
@@ -384,10 +390,11 @@ export class QuestionnaireStore {
         isNotificationsTabValid: q.isNotificationsTabValid,
         isQuestionsTabValid: q.isQuestionsTabValid,
         isTranslationsTabValid: q.isTranslationsTabValid,
-        isValid: !!q.isValid,
-        isActive: !!q.isActive
+        isValid: isValid,
+        isActive: isValid ? !!q.isActive : false
       });
       result.questionnaires.push({
+        id: q.id ?? crypto.randomUUID(),
         name: q.name,
         languages: q.languages.map(l => l.code.toString()),
         questions: this.toRadarQuestionsWrapper(q.questions ?? [], q.languages),
@@ -410,6 +417,7 @@ export class QuestionnaireStore {
       //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
       // ).join(' or ');
       return {
+        id: q.id,
         field_name: q.field_name,
         field_type: q.field_type,
         required_field: q.required_field,
@@ -457,13 +465,12 @@ export class QuestionnaireStore {
   toRadarSubProtocol(schedule: AppQuestionnaire['schedule']):  SubProtocolDto | undefined {
     if (!schedule) return undefined;
 
-    // if (schedule && schedule.onDemand) {
-    //   return undefined;
-    // }
-
     const {relativeToReferenceTime, referenceTimestamp, repeatedProtocol, repeatProtocol, repeatQuestionnaire, completionWindow, notification, reminders} = schedule!;
     return {
+      // ...schedule,
+      relativeToReferenceTime: relativeToReferenceTime ?? false,
       referenceTimestamp: relativeToReferenceTime ? {timestamp: referenceTimestamp!, format: ''} : undefined,
+      repeatedProtocol: repeatedProtocol ?? false,
       repeatProtocol: repeatedProtocol ? {
         unit: repeatProtocol!.unit!,
         amount: repeatProtocol!.amount!
@@ -498,8 +505,6 @@ export class QuestionnaireStore {
         unit: completionWindow!.unit!,
         amount: completionWindow!.amount!
       },
-      relativeToReferenceTime: relativeToReferenceTime ?? false,
-      repeatedProtocol: repeatedProtocol ?? false,
 
     };
   }

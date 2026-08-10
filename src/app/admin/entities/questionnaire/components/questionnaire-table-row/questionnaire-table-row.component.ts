@@ -13,6 +13,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
 import {JsonPipe} from '@angular/common';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
 import {DialogMode} from '../../../../shared/enums/dialog';
+import {QuestionnaireStore} from '../../services/questionnaire.store';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -34,6 +35,7 @@ export class QuestionnaireTableRowComponent {
 
   configService = inject(QuestionnaireConfigService);
   dialogService = inject(QuestionnaireDialogService);
+  store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestionnaire>();
   extensionClass = input<string>();
@@ -41,18 +43,24 @@ export class QuestionnaireTableRowComponent {
 
   updated = signal(false);
 
-  duplicateEvent = output<void>();
-  activeEvent = output<boolean>();
+  // duplicateEvent = output<void>();
+  // activeEvent = output<boolean>();
 
   async openDialog() {
     await this.dialogService.openDialog(DialogMode.EDIT, this.entity());
   }
 
-  onDuplicate() {
-    this.duplicateEvent.emit();
+  async onDuplicate() {
+    // this.duplicateEvent.emit();
+    const duplicateEntity: AppQuestionnaire = {...this.entity(), name: `${this.entity().name}_copy`};
+    await this.store.add(duplicateEntity);//.subscribe(() => this.handleDialogUpdate());
+    await this.store.publish();
   }
 
-  protected onActiveChange($event: MatSlideToggleChange) {
-    this.activeEvent.emit($event.checked);
+  protected async onActiveChange($event: MatSlideToggleChange) {
+    console.log('Class: QuestionnaireTableRowComponent, Function: onActiveChange, Line 60 $event.checked' , $event.checked);
+    await this.store.update({...this.entity(), isActive: $event.checked});
+    await this.store.publish();
+    // this.activeEvent.emit($event.checked);
   }
 }
