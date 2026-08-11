@@ -4,9 +4,9 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {UNITS} from '../../models/unit';
 import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
+import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
 
 export interface QuestionnaireNotificationsForm {
   notification: {

@@ -8,7 +8,6 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LocaleService} from '../../../../../../../core/locale/services/locale.service';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {UNITS} from '../../models/unit';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
 import {applyEach, applyWhen, FieldTree, form, FormField} from '@angular/forms/signals';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -16,6 +15,16 @@ import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
+
+export const UNITS = [
+  { name: 'min', label: 'Minute' },
+  { name: 'hour', label: 'Hour' },
+  { name: 'day', label: 'Day' },
+  { name: 'week', label: 'Week' },
+  { name: 'month', label: 'Month' },
+  { name: 'year', label: 'Year' },
+];
+
 
 export interface QuestionnaireSchedulingForm {
   relativeToReferenceTime: boolean;
