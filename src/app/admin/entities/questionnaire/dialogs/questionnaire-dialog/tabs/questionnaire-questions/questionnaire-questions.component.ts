@@ -1,6 +1,7 @@
-import {Component, inject} from '@angular/core';
+import {afterNextRender, Component, ElementRef, inject, Injector, viewChild} from '@angular/core';
 import {AppQuestion} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkScrollable} from '@angular/cdk/scrolling';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionButtonComponent} from './components/question-button/question-button.component';
 import {MatButton} from '@angular/material/button';
@@ -19,6 +20,7 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
     QuestionButtonComponent,
     MatButton,
     CdkDrag,
+    CdkScrollable,
   ],
   styles: `
     .cdk-drag-preview {
@@ -32,6 +34,7 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
 
     .cdk-drag-placeholder {
       background: #f3f4f6;
+      width: 100%;
       border: 2px dashed #9ca3af;
       border-radius: 8px;
       opacity: 0.6;
@@ -44,6 +47,21 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
     .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
       transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
+
+    /* Highlight the questions list while a question type is dragged over it. */
+    #questions-drop-list.cdk-drop-list-receiving {
+      outline: 2px dashed #9ca3af;
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+
+    #questions-drop-list.cdk-drop-list-receiving .question-drop-hint {
+      display: none;
+    }
+
+    .cdk-drag-dragging {
+      cursor: grabbing;
+    }
   `
 })
 export class QuestionnaireQuestionsComponent {
@@ -52,15 +70,22 @@ export class QuestionnaireQuestionsComponent {
   protected dialog = inject(MatDialog);
   protected dialogState = inject(QuestionnaireDialogStateService);
 
-  protected addQuestion(type: string) {
+  private readonly injector = inject(Injector);
+  private readonly questionsContainer = viewChild<ElementRef<HTMLElement>>('choicesContainer');
+
+  /** Adds a question of the given type at `index` (appended when omitted) and scrolls it into view. */
+  protected addQuestion(type: string, index?: number) {
+    const id = crypto.randomUUID();
+
     this.dialogState.questionnaire.update(value => {
-      const questions: AppQuestion[] = [...(value?.questions ?? []), {
-        id: crypto.randomUUID(),
+      const questions: AppQuestion[] = [...(value?.questions ?? [])];
+      questions.splice(index ?? questions.length, 0, {
+        id,
         field_name: '',
         field_label: {},
         required_field: true,
         field_type: type,
-      }];
+      });
       checkValidation(questions);
       return {
         ...value!,
@@ -68,6 +93,18 @@ export class QuestionnaireQuestionsComponent {
         isQuestionsTabValid: questions.every(q => q.isValid)
       }
     });
+
+    this.scrollToQuestion(id);
+  }
+
+  private scrollToQuestion(id: string) {
+    afterNextRender({
+      read: () => {
+        this.questionsContainer()?.nativeElement
+          .querySelector(`[data-question-id="${id}"]`)
+          ?.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+      }
+    }, {injector: this.injector});
   }
 
   protected removeQuestion(index: number) {
@@ -86,15 +123,16 @@ export class QuestionnaireQuestionsComponent {
     this.openQuestionDialog(index, question);
   }
 
-  protected onDrop(event: CdkDragDrop<AppQuestion>) {
-    moveItemInArray(
-      this.dialogState.questionnaire()?.questions ?? [],
-      event.previousIndex,
-      event.currentIndex
-    );
+  protected onDrop(event: CdkDragDrop<unknown, unknown, AppQuestion | string>) {
+    // Dragged in from the question types palette: create a question of that type at the drop position.
+    if (event.previousContainer !== event.container) {
+      this.addQuestion(event.item.data as string, event.currentIndex);
+      return;
+    }
 
     this.dialogState.questionnaire.update(value => {
       const questions = [...(value?.questions ?? [])];
+      moveItemInArray(questions, event.previousIndex, event.currentIndex);
       checkValidation(questions);
       return {
         ...value!,

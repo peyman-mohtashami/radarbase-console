@@ -1601,6 +1601,7 @@
 
         "questionTitle": "Question",
         "questionsLabel": "Questions",
+        "dropQuestionTypeHint": "Drag a question type here, or click it to add a question",
         "addQuestionButtonLabel": "Add Question",
         "questionLabelLabel": "Question Label",
         "questionHeaderLabel": "Question Header",
