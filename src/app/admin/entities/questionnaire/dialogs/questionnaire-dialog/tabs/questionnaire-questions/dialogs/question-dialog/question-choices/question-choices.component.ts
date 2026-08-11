@@ -3,10 +3,10 @@ import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/dra
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
-import {ValidatorError} from '../../../../../../../../../../shared/utils/validators';
+import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
 import {QuestionnaireDialogStateService} from '../../../../../services/questionnaire-dialog-state.service';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-question-choices',
@@ -17,11 +17,11 @@ import {QuestionnaireDialogStateService} from '../../../../../services/questionn
     MatIconButton,
     TranslatePipe,
     CdkDrag,
-    MatError,
     MatFormField,
     MatInput,
     CdkDragHandle,
     FormField,
+    CdkTextareaAutosize,
   ],
   styles: `
     .cdk-drag-preview {

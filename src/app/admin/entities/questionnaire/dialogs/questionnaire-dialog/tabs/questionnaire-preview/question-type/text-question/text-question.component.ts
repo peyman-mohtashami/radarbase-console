@@ -11,6 +11,7 @@ import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-text-question',
@@ -19,6 +20,7 @@ import {
     MatInput,
     MatButton,
     QuestionHeaderComponent,
+    JsonPipe,
   ],
   templateUrl: './text-question.component.html'
 })
@@ -32,7 +34,7 @@ export class TextQuestionComponent {
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
 
-  protected error: any;
+  protected error: string | null = null;
 
   protected onPreviewInputChange(event: Event | null) {
     if (event === null) {
@@ -70,7 +72,7 @@ export class TextQuestionComponent {
 }
 
 
-export function isValidRegex(pattern: string, flags: string = ''): boolean {
+export function isValidRegex(pattern: string, flags = ''): boolean {
   try {
     new RegExp(pattern, flags);
     return true;
@@ -79,7 +81,7 @@ export function isValidRegex(pattern: string, flags: string = ''): boolean {
   }
 }
 
-export function matchesRegex(pattern: string, value: string, flags: string = ''): boolean {
+export function matchesRegex(pattern: string, value: string, flags = ''): boolean {
   try {
     const regex = new RegExp(pattern, flags);
     return regex.test(value);

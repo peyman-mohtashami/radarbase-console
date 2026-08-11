@@ -7,11 +7,12 @@
     <code class="italic text-secondary"> {{ dialogData.entity?.field_name ? `${dialogData.entity?.field_name}` : `` }}</code>
 </h2>
 
-<mat-dialog-content class="h-full overflow-auto">
-  <form>
+<mat-dialog-content class="h-full flex! gap-4!">
+  <form class="pt-4 h-full overflow-y-auto w-1/2">
     <label for="field_name" class="text-sm"
-           [class]="form.field_name().touched() && form.field_name().invalid() ? 'text-red-700' : ''">{{ `${_prefix}.questionFieldNameLabel` | translate }}
-      *</label>
+           [class]="form.field_name().touched() && form.field_name().invalid() ? 'text-red-700' : ''">
+      {{ `${_prefix}.questionFieldNameLabel` | translate }} *
+    </label>
     <mat-form-field class='small-input w-1/2' appearance="outline">
       <input matInput [formField]='form.field_name'/>
         <mat-error>
@@ -24,8 +25,9 @@
     </mat-form-field>
 
     <label for="field_type" class="text-sm"
-           [class]="form.field_type().touched() && form.field_type().invalid() ? 'text-red-700' : ''">{{ `${_prefix}.questionFieldTypeLabel` | translate }}
-      *</label>
+           [class]="form.field_type().touched() && form.field_type().invalid() ? 'text-red-700' : ''">
+      {{ `${_prefix}.questionFieldTypeLabel` | translate }} *
+    </label>
     <mat-form-field class='small-input w-1/2' appearance="outline">
       <mat-select [formField]='form.field_type'>
         @for (item of QUESTION_TYPES; track item) {
@@ -34,23 +36,26 @@
           }
         }
       </mat-select>
-      @if (form.field_type().touched() && form.field_type().invalid()) {
-        @for (error of form.field_type().errors(); track error.kind) {
-          {{ error.message }}
+      <mat-error>
+        @if (form.field_type().touched() && form.field_type().invalid()) {
+          @for (error of form.field_type().errors(); track error.kind) {
+            {{ error.message }}
+          }
         }
-      }
+      </mat-error>
     </mat-form-field>
 
     <div class="mb-4">
       <!--        <app-text-editor />-->
       <label for="field_label" class="text-sm"
-             [class]="form.field_label().touched() && form.field_label().invalid() ? 'text-red-700' : ''">{{ `${_prefix}.field_label` | translate }} *</label>
-      <mat-form-field class='small-input w-full' subscriptSizing="fixed"
-                      appearance='outline'>
-        <input id="field_label" matInput [formField]="form.field_label[language]">
+             [class]="form.field_label[language]().touched() && form.field_label[language]().invalid() ? 'text-red-700' : ''">
+        {{ `${_prefix}.field_label` | translate }} *
+      </label>
+      <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+        <textarea id="field_label" matInput [formField]="form.field_label[language]" cdkTextareaAutosize rows="3"></textarea>
         <mat-error>
-          @if (form.field_label().touched() && form.field_label().invalid()) {
-            @for (error of form.field_label().errors(); track error.kind) {
+          @if (form.field_label[language]().touched() && form.field_label[language]().invalid()) {
+            @for (error of form.field_label[language]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -67,12 +72,11 @@
 
     <div class="mb-4">
       <label for="section_header" class="text-sm">{{ `${_prefix}.section_header` | translate }}</label>
-      <mat-form-field class='small-input w-full' subscriptSizing="fixed"
-                      appearance='outline'>
-        <input id="section_header" matInput [formField]="form.section_header[language]">
+      <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+        <textarea id="section_header" matInput [formField]="form.section_header[language]" cdkTextareaAutosize rows="3"></textarea>
         <mat-error>
-          @if (form.section_header().touched() && form.section_header().invalid()) {
-            @for (error of form.section_header().errors(); track error.kind) {
+          @if (form.section_header[language]().touched() && form.section_header[language]().invalid()) {
+            @for (error of form.section_header[language]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -82,12 +86,11 @@
 
     <div class="mb-4">
       <label for="field_note" class="text-sm">{{ `${_prefix}.field_note` | translate }}</label>
-      <mat-form-field class='small-input w-full' subscriptSizing="fixed"
-                      appearance='outline'>
-        <input id="field_note" matInput [formField]="form.field_note[language]">
+      <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+        <textarea id="field_note" matInput [formField]="form.field_note[language]" cdkTextareaAutosize rows="3"></textarea>
         <mat-error>
-          @if (form.field_note().touched() && form.field_note().invalid()) {
-            @for (error of form.field_note().errors(); track error.kind) {
+          @if (form.field_note[language]().touched() && form.field_note[language]().invalid()) {
+            @for (error of form.field_note[language]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -259,7 +262,7 @@
             <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.min().invalid() && form.range.min().dirty() ? 'text-red-700' : ''">
               {{ `${_prefix}.questionRangeMin` | translate }} *
             </label>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
               <input matInput [formField]="form.range.min" type="number">
               <mat-error>
                 @if (form.range.min().touched() && form.range.min().invalid()) {
@@ -275,7 +278,7 @@
             <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.max().invalid() && form.range.max().dirty() ? 'text-red-700' : ''">
               {{ `${_prefix}.questionRangeMax` | translate }} *
             </label>
-            <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="dynamic">
+            <mat-form-field class='small-input w-1/3' appearance='outline' subscriptSizing="fixed">
               <input matInput [formField]="form.range.max" type="number">
               <mat-error>
                 @if (form.range.min().touched() && form.range.min().invalid()) {
@@ -291,7 +294,7 @@
             <label for="select_choices_or_calculations" class="text-sm" [class]="form.range.step().invalid() && form.range.step().dirty() ? 'text-red-700' : ''">
               {{ `${_prefix}.questionRangeStep` | translate }} *
             </label>
-            <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="dynamic">
+            <mat-form-field class='w-1/3' appearance='outline' subscriptSizing="fixed">
               <input matInput [formField]="form.range.step" type="number">
               <mat-error>
                 @if (form.range.step().touched() && form.range.step().invalid()) {
@@ -312,7 +315,7 @@
 <!--        }-->
 
         <div class="grid grid-cols-2 gap-4 mt-4">
-          <div class="mb-4">
+          <div class="">
             <label for="range.labelLeft" class="text-sm">{{ `${_prefix}.range.labelLeft` | translate }}</label>
             <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                             appearance='outline'>
@@ -326,7 +329,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="mb-4">
+          <div class="">
             <label for="range.labelRight" class="text-sm">{{ `${_prefix}.range.labelRight` | translate }}</label>
             <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                             appearance='outline'>
@@ -353,19 +356,19 @@
 
     <!--    Text-->
     @if (fieldType === 'text') {
-      <div>
-        <label for="text_validation_min" class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>
-        <mat-form-field class='small-input' appearance="outline">
-          <input id="text_validation_min" matInput [formField]="form.text_validation_min"/>
-        </mat-form-field>
-      </div>
+<!--      <div>-->
+<!--        <label for="text_validation_min" class="text-sm">{{ `${_prefix}.questionTextValidationMin` | translate }}</label>-->
+<!--        <mat-form-field class='small-input' appearance="outline">-->
+<!--          <input id="text_validation_min" matInput [formField]="form.text_validation_min"/>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
 
-      <div>
-        <label for="text_validation_max" class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
-        <mat-form-field class='small-input' appearance="outline">
-          <input id="text_validation_max" matInput [formField]="form.text_validation_max"/>
-        </mat-form-field>
-      </div>
+<!--      <div>-->
+<!--        <label for="text_validation_max" class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>-->
+<!--        <mat-form-field class='small-input' appearance="outline">-->
+<!--          <input id="text_validation_max" matInput [formField]="form.text_validation_max"/>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
 
       <div>
         <div>
@@ -468,6 +471,7 @@
     }
 
   </form>
+  <div class="bg-red-200 w-1/2 h-full"></div>
 </mat-dialog-content>
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>

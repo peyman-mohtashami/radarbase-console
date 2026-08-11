@@ -12,6 +12,14 @@ export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root
   required(path, {message: 'SHARED.validatorError.required'});
 }
 
+/** Marks a field as required with the shared error message. */
+// export function requiredField<TValue, TPathKind extends PathKind>(
+//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+// ): void {
+//   required(path, {message: 'SHARED.validatorError.required'});
+// }
+
+
 /** Applies the shared "normal text" pattern to a string field. */
 export function normalTextField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,

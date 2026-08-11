@@ -10,26 +10,8 @@
       <input matInput type="time" required (input)="onPreviewTimeInputChange($event)"/>
     </mat-form-field>
   }
-  <!--      @case ('datetime') {-->
-    <!--        <mat-form-field class='small-input'-->
-    <!--                        appearance='outline'-->
-    <!--                        subscriptSizing="dynamic">-->
-    <!--          <input matInput type="time" required />-->
-    <!--        </mat-form-field>-->
-    <!--      }-->
   @default {
-    <!--        <pre>Min: {{entity().text_validation_min}}</pre>-->
-      <!--        <pre>Max: {{entity().text_validation_max}}</pre>-->
-      <!--        <pre>MinP: {{entity().text_validation_min | replacePlaceholders}}</pre>-->
-      <!--        <pre>MaxP: {{entity().text_validation_max | replacePlaceholders}}</pre>-->
-      <!--        <pre>MinF: {{entity().text_validation_min | replacePlaceholders | date}}</pre>-->
-      <!--        <pre>MaxF: {{entity().text_validation_max | replacePlaceholders | date}}</pre>-->
     <mat-form-field class="small-input" appearance='outline'>
-      <!--          <input-->
-      <!--          [min]="entity().text_validation_min" [max]="entity().text_validation_max"-->
-
-      <!--                 [value]="previewDateValue" matInput [matDatepicker]="dp3" readonly (click)="dp3.open()"-->
-      <!--                 (dateChange)="onPreviewDateInputChange($event)">-->
       <input
         [min]="getDateISOString(entity().text_validation_min | replacePlaceholders)"
         [max]="getDateISOString(entity().text_validation_max | replacePlaceholders)"
@@ -39,15 +21,6 @@
       <mat-datepicker #dp3></mat-datepicker>
     </mat-form-field>
   }
-  <!--      @case ('date') {-->
-    <!--        <mat-form-field class="small-input w-1/2" appearance='outline'>-->
-    <!--          <input [min]="entity().text_validation_min" [max]="entity().text_validation_max"-->
-    <!--                 [value]="previewDateValue" matInput [matDatepicker]="dp3" readonly (click)="dp3.open()"-->
-    <!--                 (dateChange)="onPreviewInputChange($event)">-->
-    <!--          <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>-->
-    <!--          <mat-datepicker #dp3></mat-datepicker>-->
-    <!--        </mat-form-field>-->
-    <!--      }-->
 }
 
 @if (!isPreviewDisabled) {

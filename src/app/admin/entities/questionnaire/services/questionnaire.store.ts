@@ -328,10 +328,6 @@ export class QuestionnaireStore {
       ...schedule,
       referenceTimestamp: schedule.relativeToReferenceTime ? {timestamp: schedule.referenceTimestamp!, format: ''} : undefined,
       repeatProtocol: schedule.repeatedProtocol ? {...schedule.repeatProtocol!} : {unit: 'year', amount: '999'},
-      repeatQuestionnaire: {
-        unit: 'min',
-        unitsFromZero: schedule.repeatQuestionnaire?.unitsFromZero ?? []
-      },
     };
   }
 }

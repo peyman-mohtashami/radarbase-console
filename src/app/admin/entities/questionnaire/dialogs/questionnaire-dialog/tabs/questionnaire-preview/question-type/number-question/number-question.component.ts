@@ -37,7 +37,7 @@ export class NumberQuestionComponent {
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
 
-  protected error: any;
+  protected error: string | null = null;
 
   protected onPreviewInputChange(event: Event | null) {
     if (event === null) {

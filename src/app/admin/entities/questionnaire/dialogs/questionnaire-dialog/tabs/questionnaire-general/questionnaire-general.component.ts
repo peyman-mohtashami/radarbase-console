@@ -81,27 +81,7 @@ export class QuestionnaireGeneralComponent {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
-      // let languages = entity?.languages ?? [];
-      // const defaultLanguage = ISO_LANGUAGES.find(l => l.code === model.defaultLanguage);
-      // if (!defaultLanguage) return;
-      //
-      // const questionnaireDefaultLanguage = entity?.languages.find(l => l.code === defaultLanguage.code);
-      // if (!questionnaireDefaultLanguage) {
-      //   languages = [...entity?.languages ?? [], defaultLanguage];
-      // }
-
       const updated = {...entity, ...model, isGeneralTabValid: this.form().valid()} as AppQuestionnaire;
-      console.log('Class: QuestionnaireGeneralComponent, Function: , Line 97 updated' , updated);
-
-      // const updated = {
-      //   ...entity,
-      //   name: model.name,
-      //   defaultLanguage: defaultLanguage,
-      //   title: {...entity?.title, [defaultLanguage.code]: model.title},
-      //   description: {...entity?.description, [defaultLanguage.code]: model.description},
-      //   languages,
-      //   isGeneralTabValid: this.form().valid(),
-      // } as AppQuestionnaire;
       this.dialogState.questionnaire.set(updated);
     });
   }

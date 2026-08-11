@@ -12,10 +12,6 @@
         <mat-form-field class='small-input w-full' appearance='outline'>
           <input id="notificationTitleLabel" matInput [formField]="form.notification.title[language]">
         </mat-form-field>
-<!--        <app-text-form-group class="mb-4"-->
-<!--                             [textGroup]="form.controls.schedule.controls.notification.controls.title"-->
-<!--                             [label]="`${_prefix}.notificationTitleLabel` | translate"-->
-<!--                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.title)"/>-->
       </div>
       <div class="mb-4">
         <label for="notificationMessageLabel" class="text-sm">
@@ -24,11 +20,6 @@
         <mat-form-field class='small-input w-full' appearance='outline'>
           <textarea id="notificationMessageLabel" matInput [formField]="form.notification.text[language]"></textarea>
         </mat-form-field>
-<!--        <app-text-form-group [textGroup]="form.controls.schedule.controls.notification.controls.text"-->
-<!--                             [label]="`${_prefix}.notificationMessageLabel` | translate"-->
-<!--                             [textarea]="true"-->
-<!--                             [textareaAutosize]="true"-->
-<!--                             [value]="$safeNavigationMigration(dialogState.questionnaire()?.schedule?.notification?.text)"/>-->
       </div>
     </div>
 

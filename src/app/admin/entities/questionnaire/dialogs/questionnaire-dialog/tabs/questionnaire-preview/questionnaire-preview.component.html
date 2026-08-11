@@ -24,7 +24,7 @@
     <div class="h-full aspect-9/16 bg-primary/20 border-2 border-gray-300 rounded-lg">
       <div class="h-full flex flex-col">
         @if (selectedLanguage) {
-          <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.code] ?? _entity.name }}</span>
+          <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.code] || _entity.name }}</span>
         }
         @if (!loading) {
           @if (groupedQuestions) {

@@ -73,7 +73,6 @@ export class QuestionnaireNotificationsComponent {
         },
         isNotificationsTabValid: this.form().valid()
       } as AppQuestionnaire;
-      console.log('Class: QuestionnaireNotificationsComponent, Function: , Line 74 updated' , updated);
       this.dialogState.questionnaire.set(updated);
     });
   }

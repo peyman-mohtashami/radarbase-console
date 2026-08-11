@@ -3,7 +3,7 @@ import {
   input,
   OnInit,
   output, viewChild, ViewContainerRef,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy, ComponentRef
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../models/kafka';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../models/questionnaire';
@@ -30,6 +30,9 @@ export class QuestionComponent implements OnInit {
 
   host = viewChild('questionHost', { read: ViewContainerRef });
 
+  private componentRef?: ComponentRef<any>;
+  private currentFieldType?: string;
+
   constructor() {
     effect(() => this.loadQuestionEditor());
   }
@@ -38,18 +41,36 @@ export class QuestionComponent implements OnInit {
     const host = this.host();
     if (!host) return;
 
-    host.clear();
-    const componentType = QUESTION_COMPONENTS[this.question().field_type];
-    const componentRef = host.createComponent(componentType);
-    componentRef.setInput('language', this.language());
-    componentRef.setInput('entity', this.question()); //.instance.entity = this.question;
-    componentRef.setInput('answer', this.answer());
+    // host.clear();
+    // const componentType = QUESTION_COMPONENTS[this.question().field_type];
+    // const componentRef = host.createComponent(componentType);
+    // componentRef.setInput('language', this.language());
+    // componentRef.setInput('entity', this.question()); //.instance.entity = this.question;
+    // componentRef.setInput('answer', this.answer());
+    //
+    // outputToObservable(componentRef.instance.previewValueChange)
+    //   .pipe(debounceTime(300))
+    //   .subscribe((value: any) => {
+    //     this.emitAnswer(value);
+    //   });
+    const question = this.question();
+    const componentType = QUESTION_COMPONENTS[question.field_type];
 
-    outputToObservable(componentRef.instance.previewValueChange)
-      .pipe(debounceTime(300))
-      .subscribe((value: any) => {
-        this.emitAnswer(value);
-      });
+    if (!this.componentRef || this.currentFieldType !== question.field_type) {
+      host.clear();
+      this.componentRef = host.createComponent(componentType);
+      this.currentFieldType = question.field_type;
+
+      outputToObservable(this.componentRef.instance.previewValueChange)
+        .pipe(debounceTime(300))
+        .subscribe((value: any) => {
+          this.emitAnswer(value);
+        });
+    }
+
+    this.componentRef.setInput('language', this.language());
+    this.componentRef.setInput('entity', question);
+    this.componentRef.setInput('answer', this.answer());
   }
 
   ngOnInit(): void {

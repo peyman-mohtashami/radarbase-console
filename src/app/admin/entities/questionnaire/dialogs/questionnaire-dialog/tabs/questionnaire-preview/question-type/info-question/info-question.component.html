@@ -1,6 +1,6 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="entity()" [language]="language()" [disableRequiredAsterisk]="true"/>
 
 <div class="flex flex-col h-full gap-2">
   @for (item of entity().select_choices_or_calculations; track item.code;) {

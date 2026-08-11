@@ -35,7 +35,7 @@ export interface QuestionnaireSchedulingForm {
     amount: string;
   };
   repeatQuestionnaire: {
-    // unit: string;
+    unit: string;
     unitsFromZero: {day: string; time: string;}[];
   };
   completionWindow: {
@@ -109,7 +109,7 @@ export class QuestionnaireSchedulingComponent {
       amount: this.dialogState.questionnaire()?.schedule?.repeatProtocol?.amount ?? '',
     },
     repeatQuestionnaire: {
-      // unit: this.dialogState.questionnaire()?.schedule?.repeatQuestionnaire?.unit ?? '',
+      unit: 'min',//this.dialogState.questionnaire()?.schedule?.repeatQuestionnaire?.unit ?? '',
       unitsFromZero: this.convertUnitFromTimeZero(this.dialogState.questionnaire()?.schedule?.repeatQuestionnaire?.unitsFromZero) ?? [{day: '0', time: ''}],
     },
     completionWindow: {

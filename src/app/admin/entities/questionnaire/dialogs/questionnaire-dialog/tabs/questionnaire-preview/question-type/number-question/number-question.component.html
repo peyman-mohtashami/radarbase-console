@@ -7,9 +7,18 @@
          (input)="onPreviewInputChange($event)" [min]="Number(entity().text_validation_min | replacePlaceholders)"
          [max]="Number(entity().text_validation_max | replacePlaceholders)"
          [type]="'number'">
-  <mat-hint>Enter a number between {{ entity().text_validation_min | replacePlaceholders }}
-    and {{ entity().text_validation_max | replacePlaceholders }}
-  </mat-hint>
+  @if (entity().text_validation_min && entity().text_validation_max) {
+    <mat-hint>Enter a number between {{ entity().text_validation_min | replacePlaceholders }}
+      and {{ entity().text_validation_max | replacePlaceholders }}
+    </mat-hint>
+  }
+  @if (entity().text_validation_min && !entity().text_validation_max) {
+    <mat-hint>Enter a number greater than {{ entity().text_validation_min | replacePlaceholders }}</mat-hint>
+  }
+  @if (!entity().text_validation_min && entity().text_validation_max) {
+    <mat-hint>Enter a number less than {{ entity().text_validation_max | replacePlaceholders }}</mat-hint>
+  }
+
 </mat-form-field>
 @if (error) {
   <p class="text-red-700 text-sm mt-4">{{ error }}</p>

@@ -54,15 +54,11 @@ export class QuestionnaireCustomMessagesComponent {
     effect(() => {
       const model = this.model();
       const entity = untracked(() => this.dialogState.questionnaire());
-      const defaultLanguage = entity?.defaultLanguage;
-      if (!defaultLanguage) return;
-
       const updated = {
         ...entity,
         ...model,
         isCustomMessagesTabValid: this.form().valid()
       } as AppQuestionnaire;
-      console.log('Class: QuestionnaireCustomMessagesComponent, Function: , Line 71 updated' , updated);
       this.dialogState.questionnaire.set(updated);
     });
   }

@@ -32,6 +32,8 @@ import {
   MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {JsonPipe} from '@angular/common';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -91,6 +93,8 @@ export interface QuestionnaireQuestionForm {
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
+    CdkTextareaAutosize,
+    JsonPipe,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -173,7 +177,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     });
     requiredField(schema.field_type);
     disabled(schema.field_type);
-    requiredField(schema.field_label);
+    requiredField(schema.field_label[this.lang()]);
     applyEach(schema.select_choices_or_calculations, (choice) => {
       required(choice.code, {
         when: ({ valueOf }) => {
@@ -265,7 +269,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
     const entity = this.dialogData.entity;
-
     return {
       ...entity,
       ...model,
@@ -279,13 +282,14 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     this.dialogState.questionnaire.update(value => {
       const questions = value!.questions.map(q => {
         if (q.id === this.dialogData.entity.id) {
-          return this.toAppQuestion(model);//, ...this.childFormValue.formValue};
+          return this.toAppQuestion(model);
         }
         return q;
       }) ?? [];
       return {
         ...value!,
         questions: [...questions],
+        isQuestionsTabValid: questions.every(q => q.isValid)
       }
     })
 

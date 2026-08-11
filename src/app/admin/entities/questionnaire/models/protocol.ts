@@ -56,7 +56,7 @@ export interface SubProtocolDto {
   referenceTimestamp?: ProtocolReferenceTimestampDto;
   repeatedProtocol?: boolean;
   repeatProtocol: ProtocolRepeatDto;
-  repeatQuestionnaire: ProtocolRepeatQuestionnaireDto;
+  repeatQuestionnaire?: ProtocolRepeatQuestionnaireDto;
   reminders?: ProtocolReminderDto;
   clinicalProtocol?: ClinicalProtocolDto;
   notification?: ProtocolNotificationDto;
@@ -74,8 +74,8 @@ export interface ProtocolRepeatDto {
 }
 
 export interface ProtocolRepeatQuestionnaireDto {
-  unit: string;
-  unitsFromZero: string[];
+  unit?: string;
+  unitsFromZero?: string[];
 }
 
 export interface ProtocolReminderDto {
