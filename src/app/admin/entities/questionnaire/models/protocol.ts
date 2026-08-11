@@ -27,10 +27,10 @@ export interface ProtocolDto {
   title?: Record<string, string>;
   description?: Record<string, string>;
   showIntroduction?: string;
-  startText: Record<string, string>;
+  startText?: Record<string, string>;
   endText: Record<string, string>;
   warningEnabled?: boolean;
-  warn: Record<string, string>;
+  warn?: Record<string, string>;
   //---
   protocol?: SubProtocolDto;
   //---
@@ -79,10 +79,10 @@ export interface ProtocolRepeatQuestionnaireDto {
 }
 
 export interface ProtocolReminderDto {
-  enabled?: boolean;
-  unit: string;
-  amount: string;
-  repeat: string;
+  enabled: boolean;
+  unit?: string;
+  amount?: string;
+  repeat?: string;
   title?: Record<string, string>;
   text?: Record<string, string>;
 }

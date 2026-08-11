@@ -58,6 +58,7 @@ export class QuestionnaireQuestionsComponent {
         id: crypto.randomUUID(),
         field_name: '',
         field_label: {},
+        required_field: true,
         field_type: type,
       }];
       return {

@@ -16,7 +16,7 @@ export interface AppQuestionnaire {
   description?: Record<string, string>;
   showIntroduction?: string;
   startText?: Record<string, string>;
-  endText?: Record<string, string>;
+  endText: Record<string, string>;
   warningEnabled?: boolean;
   warn?: Record<string, string>;
   //---
@@ -49,7 +49,7 @@ export interface AppQuestionnaireSchedule {
 }
 
 export interface AppScheduleRepeat {
-  unit?: string; amount?: string;
+  unit: string; amount: string;
 }
 
 export interface AppScheduleRepeatQuestionnaire {
@@ -57,7 +57,7 @@ export interface AppScheduleRepeatQuestionnaire {
 }
 
 export interface AppScheduleDuration {
-  unit?: string; amount?: string
+  unit: string; amount: string
 }
 
 export interface AppScheduleNotification {
@@ -66,7 +66,7 @@ export interface AppScheduleNotification {
 }
 
 export interface AppScheduleReminder {
-  enabled?: boolean;
+  enabled: boolean;
   unit?: string;
   amount?: string;
   repeat?: string;

@@ -1,5 +1,10 @@
 import {computed, ErrorHandler, inject, Injectable, signal} from '@angular/core';
-import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from "../models/questionnaire";
+import {
+  AppQuestion,
+  AppQuestionnaire,
+  AppQuestionnaireLanguage,
+  AppQuestionnaireSchedule
+} from "../models/questionnaire";
 import {firstValueFrom} from "rxjs";
 import {AppConfig} from "../../config/models/config";
 import {Params} from '@angular/router';
@@ -128,7 +133,6 @@ export class QuestionnaireStore {
   }
 
   async update(entity: AppQuestionnaire): Promise<boolean> {
-    console.log('Class: QuestionnaireStore, Function: update, Line 131 entity' , entity);
     this.allItems.update((items) =>
       ([...items.map(item => item.id === entity.id ? entity : item)])
     );
@@ -184,171 +188,76 @@ export class QuestionnaireStore {
   }
 
   toAppQuestionnaire(protocol: ProtocolDto, questionnaire?: Record<string, QuestionDto[]>): AppQuestionnaire {
-    const schedule: AppQuestionnaire['schedule'] = protocol.type === 'on_demand' ?
-      undefined :
-      {
-        completionWindow: {
-          unit: protocol.protocol?.completionWindow?.unit,
-          amount: protocol.protocol?.completionWindow?.amount,
-        },
-        notification: {
-          title: protocol.protocol?.notification?.title,
-          text: protocol.protocol?.notification?.text,
-        },
-        referenceTimestamp: protocol.protocol?.referenceTimestamp?.timestamp,
-        relativeToReferenceTime: !!protocol.protocol?.referenceTimestamp,
-        reminders: {
-          enabled: !!protocol.protocol?.reminders?.amount,
-          unit: protocol.protocol?.reminders?.unit,
-          amount: protocol.protocol?.reminders?.amount,
-          repeat: protocol.protocol?.reminders?.repeat,
-        },
-        repeatedProtocol: protocol.protocol?.repeatProtocol.amount !== '999',
-        repeatProtocol: {
-          unit: protocol.protocol?.repeatProtocol.unit,
-          amount: protocol.protocol?.repeatProtocol.amount,
-        },
-        repeatQuestionnaire: {
-          unit: protocol.protocol?.repeatQuestionnaire.unit,
-          unitsFromZero: protocol.protocol?.repeatQuestionnaire.unitsFromZero,
-        }
-      };
-
-    // const isValid = protocol.isGeneralTabValid !== false && protocol.isCustomMessagesTabValid !== false && protocol.isQuestionsTabValid !== false && protocol.isNotificationsTabValid !== false && protocol.isSchedulingTabValid !== false// && protocol.isTranslationsTabValid,
     return {
-      id: protocol.id,
-      modelVersion: "",
+      ...protocol,
       version: "",
-      name: protocol.name,
-      defaultLanguage: protocol.defaultLanguage,
-      languages: protocol.languages,
-      onDemand: protocol.onDemand,
-      title: protocol.title,
-      description: protocol.description,
-      isDemo: protocol.isDemo,
-      order: protocol.order,
-      showInCalendar: protocol.showInCalendar,
-
-      showIntroduction: protocol.showIntroduction,
-      startText: protocol.startText,
-      endText: protocol.endText,
-      warningEnabled: protocol.warningEnabled,
-      warn: protocol.warn,
-      estimatedCompletionTime: protocol.estimatedCompletionTime !== undefined ? `${protocol.estimatedCompletionTime}` : undefined,
-
+      modelVersion: "",
       questions: this.toAppQuestions(questionnaire),
-      schedule: schedule,
-      isGeneralTabValid: protocol.isGeneralTabValid,
-      isSchedulingTabValid: protocol.isSchedulingTabValid,
-      isCustomMessagesTabValid: protocol.isCustomMessagesTabValid,
-      isNotificationsTabValid: protocol.isNotificationsTabValid,
-      isQuestionsTabValid: protocol.isQuestionsTabValid,
-      isTranslationsTabValid: protocol.isTranslationsTabValid,
-      isActive: protocol.isActive,// : false,
-      isValid: protocol.isValid,//protocol.isGeneralTabValid !== false && protocol.isCustomMessagesTabValid !== false && protocol.isQuestionsTabValid !== false && protocol.isNotificationsTabValid !== false && protocol.isSchedulingTabValid !== false,// && protocol.isTranslationsTabValid,
-
-      // _name: protocol.name,
       search: protocol.name,
     }
   }
 
-  toAppQuestions(
-    radarQuestionsWrapper: Record<string, QuestionDto[]> | undefined
-  ): AppQuestion[] {
-    if (!radarQuestionsWrapper) {
-      return [];
-    }
+  toAppQuestions(questionnaire: Record<string, QuestionDto[]> | undefined): AppQuestion[] {
+    if (!questionnaire) return [];
 
     const result = new Map<string, AppQuestion>();
 
-    for (const [lang, questions] of Object.entries(radarQuestionsWrapper)) {
-      for (const radarQuestion of questions) {
+    for (const [lang, questions] of Object.entries(questionnaire)) {
+      for (const question of questions) {
         // Use id if available, otherwise field_name
-        const key = radarQuestion.id ?? radarQuestion.field_name;
+        const key = question.id ?? question.field_name;
 
         let appQuestion = result.get(key);
 
         if (!appQuestion) {
           appQuestion = {
-            id: radarQuestion.id,
-            field_name: radarQuestion.field_name,
-            field_type: radarQuestion.field_type,
-            required_field: radarQuestion.required_field,
+            ...question,
             field_label: {},
             section_header: {},
             field_note: {},
-            matrix_group_name: radarQuestion.matrix_group_name,
-            matrix_ranking: radarQuestion.matrix_ranking,
-            branching_logic: radarQuestion.branching_logic,
-            conditionalLogic: radarQuestion.conditionalLogic,
-            show_selected_label: radarQuestion.show_selected_label,
-            multi_line: radarQuestion.multi_line,
-            text_validation_type_or_show_slider_number: radarQuestion.text_validation_type_or_show_slider_number,
-            text_validation_min: radarQuestion.text_validation_min,
-            text_validation_max: radarQuestion.text_validation_max,
-            date_type: radarQuestion.date_type,
-            field_annotation: radarQuestion.field_annotation ? {
-              image: radarQuestion.field_annotation?.image,
-              timer: {
-                start: radarQuestion.field_annotation.timer?.start ?? '0',
-                end: radarQuestion.field_annotation.timer?.end ?? '0',
-              },
-              unit: radarQuestion.field_annotation.unit,
-            } : undefined,
-            range: radarQuestion.range ? {
-              min: radarQuestion.range.min,
-              max: radarQuestion.range.max,
-              step: radarQuestion.range.step,
+            range: question.range ? {
+              ...question.range,
               labelLeft: {},
               labelRight: {},
             }: undefined,
-            calculation_fn: radarQuestion.calculation_fn,
-            calculation_args: radarQuestion.calculation_args,
-            isValid: radarQuestion.isValid,
-            // dragId: crypto.randomUUID()
+            select_choices_or_calculations: question.select_choices_or_calculations?.map(choice => ({
+              code: choice.code,
+              label: {},
+            }))
           };
-
-          if (radarQuestion.select_choices_or_calculations) {
-            appQuestion.select_choices_or_calculations =
-              radarQuestion.select_choices_or_calculations.map(choice => ({
-                code: choice.code,
-                label: {},
-              }));
-          }
-
           result.set(key, appQuestion);
         }
 
         // Localized fields
-        appQuestion.field_label[lang] = radarQuestion.field_label;
+        appQuestion.field_label[lang] = question.field_label;
 
-        if (radarQuestion.section_header) {
+        if (question.section_header) {
           appQuestion.section_header ??= {};
-          appQuestion.section_header[lang] = radarQuestion.section_header;
+          appQuestion.section_header[lang] = question.section_header;
         }
 
-        if (radarQuestion.field_note) {
+        if (question.field_note) {
           appQuestion.field_note ??= {};
-          appQuestion.field_note[lang] = radarQuestion.field_note;
+          appQuestion.field_note[lang] = question.field_note;
         }
 
-        if (appQuestion.range && radarQuestion.range) {
-          if (radarQuestion.range.labelLeft) {
+        if (appQuestion.range && question.range) {
+          if (question.range.labelLeft) {
             appQuestion.range.labelLeft ??= {};
-            appQuestion.range.labelLeft[lang] = radarQuestion.range.labelLeft;
+            appQuestion.range.labelLeft[lang] = question.range.labelLeft;
           }
 
-          if (radarQuestion.range.labelRight) {
+          if (question.range.labelRight) {
             appQuestion.range.labelRight ??= {};
-            appQuestion.range.labelRight[lang] = radarQuestion.range.labelRight;
+            appQuestion.range.labelRight[lang] = question.range.labelRight;
           }
         }
 
         if (
           appQuestion.select_choices_or_calculations &&
-          radarQuestion.select_choices_or_calculations
+          question.select_choices_or_calculations
         ) {
-          radarQuestion.select_choices_or_calculations.forEach((choice, index) => {
+          question.select_choices_or_calculations.forEach((choice, index) => {
             appQuestion!.select_choices_or_calculations![index].label[lang] =
               choice.label;
           });
@@ -360,36 +269,15 @@ export class QuestionnaireStore {
   }
 
   splitProtocolsAndQuestionnaires(questionnaires: AppQuestionnaire[]): {protocols: ProtocolDto[], questionnaires: QuestionnaireDto[]} {
-    console.log('Class: QuestionnaireService, Function: splitProtocolsAndQuestionnaires, Line 319 questionnaires' , questionnaires);
     const result: {protocols: ProtocolDto[]; questionnaires: QuestionnaireDto[]} = {protocols: [], questionnaires: []};
 
     questionnaires.forEach(q => {
       const isValid = q.isGeneralTabValid && q.isCustomMessagesTabValid !== false && q.isQuestionsTabValid !== false && ((!q.onDemand && q.isNotificationsTabValid !== false && q.isSchedulingTabValid) || q.onDemand)// && protocol.isTranslationsTabValid,
       result.protocols.push({
+        ...q,
         id: q.id ?? crypto.randomUUID(),
-        name: q.name,
-        title: q.title,
-        description: q.description,
-        defaultLanguage: q.defaultLanguage,
-        languages: q.languages,
-        onDemand: q.onDemand,
-        isDemo: q.isDemo,
-        order: q.order,
-        showInCalendar: q.showInCalendar,
-        showIntroduction: q.showIntroduction,
-        startText: q.startText ?? {},
-        endText: q.endText ?? {},
-        warningEnabled: !!q.warningEnabled,
-        warn: q.warn ?? {},
-        estimatedCompletionTime: q.estimatedCompletionTime,
-        protocol: this.toRadarSubProtocol(q.schedule),
         type: q.onDemand ? 'on_demand' : undefined,
-        isGeneralTabValid: q.isGeneralTabValid,
-        isSchedulingTabValid: q.isSchedulingTabValid,
-        isCustomMessagesTabValid: q.isCustomMessagesTabValid,
-        isNotificationsTabValid: q.isNotificationsTabValid,
-        isQuestionsTabValid: q.isQuestionsTabValid,
-        isTranslationsTabValid: q.isTranslationsTabValid,
+        protocol: this.toRadarSubProtocol(q.schedule),
         isValid: isValid,
         isActive: isValid ? !!q.isActive : false
       });
@@ -413,14 +301,8 @@ export class QuestionnaireStore {
 
   toRadarQuestions(appQuestions: AppQuestion[], language: AppQuestionnaireLanguage): QuestionDto[] {
     return appQuestions.map(q => {
-      // const branchingLogic = q.conditionalLogic?.map((conditionalLogicItems) =>
-      //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
-      // ).join(' or ');
       return {
-        id: q.id,
-        field_name: q.field_name,
-        field_type: q.field_type,
-        required_field: q.required_field,
+        ...q,
         field_label: q.field_label[language.code],
         section_header: q.section_header?.[language.code],
         select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
@@ -429,83 +311,27 @@ export class QuestionnaireStore {
             label: c.label[language.code]
           }
         }),
-        text_validation_type_or_show_slider_number: q.text_validation_type_or_show_slider_number,
-        text_validation_min: q.text_validation_min,
-        text_validation_max: q.text_validation_max,
-        field_annotation: q.field_annotation ? {
-          image: q.field_annotation.image,
-          timer: {
-            start: q.field_annotation.timer.start.toString(),
-            end: q.field_annotation.timer.end.toString()
-          },
-          unit: q.field_annotation.unit
-        } : undefined,
         field_note: q.field_note?.[language.code],
-        multi_line: q.multi_line,
-        show_selected_label: q.show_selected_label,
-        date_type: q.date_type,
         range: q.range ? {
-          min: q.range?.min?.toString() ?? "",
-          max: q.range?.max?.toString() ?? "",
-          step: q.range?.step?.toString() ?? "",
+          ...q.range,
           labelLeft: q.range?.labelLeft?.[language.code],
           labelRight: q.range?.labelRight?.[language.code]
         } : undefined,
-        matrix_group_name: q.matrix_group_name,
-        //matrix_ranking?:
-        branching_logic: q.branching_logic,//branchingLogic,
-        conditionalLogic: q.conditionalLogic,
-        calculation_fn: q.calculation_fn,
-        calculation_args: q.calculation_args,
-        isValid: q.isValid
       }
     });
   }
 
-  toRadarSubProtocol(schedule: AppQuestionnaire['schedule']):  SubProtocolDto | undefined {
+  toRadarSubProtocol(schedule: AppQuestionnaireSchedule | undefined):  SubProtocolDto | undefined {
     if (!schedule) return undefined;
 
-    const {relativeToReferenceTime, referenceTimestamp, repeatedProtocol, repeatProtocol, repeatQuestionnaire, completionWindow, notification, reminders} = schedule!;
     return {
-      // ...schedule,
-      relativeToReferenceTime: relativeToReferenceTime ?? false,
-      referenceTimestamp: relativeToReferenceTime ? {timestamp: referenceTimestamp!, format: ''} : undefined,
-      repeatedProtocol: repeatedProtocol ?? false,
-      repeatProtocol: repeatedProtocol ? {
-        unit: repeatProtocol!.unit!,
-        amount: repeatProtocol!.amount!
-      } : {
-        unit: 'year',
-        amount: '999'
-      },
+      ...schedule,
+      referenceTimestamp: schedule.relativeToReferenceTime ? {timestamp: schedule.referenceTimestamp!, format: ''} : undefined,
+      repeatProtocol: schedule.repeatedProtocol ? {...schedule.repeatProtocol!} : {unit: 'year', amount: '999'},
       repeatQuestionnaire: {
         unit: 'min',
-        unitsFromZero: repeatQuestionnaire?.unitsFromZero ?? []
+        unitsFromZero: schedule.repeatQuestionnaire?.unitsFromZero ?? []
       },
-      reminders: reminders && reminders.enabled ? {
-        enabled: reminders.enabled,
-        unit: reminders.unit!,
-        amount: reminders.amount!,
-        repeat: reminders.repeat!,
-        title: {},
-        text: {}
-      } : undefined,
-      // clinicalProtocol?: {
-      //   requiresInClinicCompletion: boolean;
-      //   repeatAfterClinicVisit?: {
-      //     unit: string;
-      //     unitsFromZero: number[];
-      //   };
-      // };
-      notification: {
-        title: notification?.title,
-        text: notification?.text
-      },
-      completionWindow: {
-        unit: completionWindow!.unit!,
-        amount: completionWindow!.amount!
-      },
-
     };
   }
 }
