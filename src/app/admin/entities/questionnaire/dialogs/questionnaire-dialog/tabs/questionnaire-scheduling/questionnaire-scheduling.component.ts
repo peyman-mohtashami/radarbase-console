@@ -99,22 +99,24 @@ export class QuestionnaireSchedulingComponent {
   protected dialogState = inject(QuestionnaireDialogStateService);
   localeService = inject(LocaleService);
 
+  _schedule = this.dialogState.questionnaire()?.schedule;
+
   protected model = signal<QuestionnaireSchedulingForm>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire()?.schedule,
-    relativeToReferenceTime: this.dialogState.questionnaire()?.schedule?.relativeToReferenceTime ?? false,
-    referenceTimestamp: this.dialogState.questionnaire()?.schedule?.referenceTimestamp ?? '',
-    repeatedProtocol: this.dialogState.questionnaire()?.schedule?.repeatedProtocol ?? false,
+    ...this._schedule,
+    relativeToReferenceTime: this._schedule?.relativeToReferenceTime ?? false,
+    referenceTimestamp: this._schedule?.referenceTimestamp ?? '',
+    repeatedProtocol: this._schedule?.repeatedProtocol ?? false,
     repeatProtocol: {
-      unit: this.dialogState.questionnaire()?.schedule?.repeatProtocol?.unit ?? '',
-      amount: this.dialogState.questionnaire()?.schedule?.repeatProtocol?.amount ?? '',
+      unit: this._schedule?.repeatProtocol?.unit ?? '',
+      amount: this._schedule?.repeatProtocol?.amount ?? '',
     },
     repeatQuestionnaire: {
-      unit: 'min',//this.dialogState.questionnaire()?.schedule?.repeatQuestionnaire?.unit ?? '',
-      unitsFromZero: this.convertUnitFromTimeZero(this.dialogState.questionnaire()?.schedule?.repeatQuestionnaire?.unitsFromZero) ?? [{day: '0', time: ''}],
+      unit: 'min',
+      unitsFromZero: this.convertUnitFromTimeZero(this._schedule?.repeatQuestionnaire?.unitsFromZero) ?? [{day: '0', time: ''}],
     },
     completionWindow: {
-      unit: this.dialogState.questionnaire()?.schedule?.completionWindow?.unit ?? '',
-      amount: this.dialogState.questionnaire()?.schedule?.completionWindow?.amount ?? '',
+      unit: this._schedule?.completionWindow?.unit ?? '',
+      amount: this._schedule?.completionWindow?.amount ?? '',
     },
   });
 
@@ -166,8 +168,6 @@ export class QuestionnaireSchedulingComponent {
       // if (!updated.schedule?.relativeToReferenceTime) {
       //   delete updated.schedule?.referenceTimestamp;
       // }
-      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 160 updated' , updated);
-
       this.dialogState.questionnaire.set({...updated});
     });
   }

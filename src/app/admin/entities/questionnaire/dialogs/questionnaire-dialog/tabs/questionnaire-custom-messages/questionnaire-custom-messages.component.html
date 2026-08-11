@@ -1,77 +1,113 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 @let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
-<form novalidate class="w-125">
-
-  <div class="mb-4">
-    <label for="titleLabel" class="text-sm">
-      {{ `${_prefix}.titleLabel` | translate }}
-    </label>
-    <mat-form-field class='small-input w-full' appearance='outline'>
-      <input id="titleLabel" matInput [formField]="form.title[language]">
-    </mat-form-field>
-  </div>
-
-  <div class="mb-4">
-    <label for="descriptionLabel" class="text-sm">
-      {{ `${_prefix}.descriptionLabel` | translate }}
-    </label>
-    <mat-form-field class='small-input w-full' appearance='outline'>
-      <textarea id="descriptionLabel" matInput [formField]="form.description[language]"></textarea>
-    </mat-form-field>
-  </div>
-
-  <div class="text-sm w-1/2">
-    <label for="showIntroduction">
-      {{ `${_prefix}.showIntroductionLabel` | translate }}
-    </label>
-    <mat-form-field class='small-input' appearance='outline'>
-      <mat-select id="showIntroduction" [formField]="form.showIntroduction">
-        <mat-option value="no">
-          {{ `${_prefix}.showIntroductionNo` | translate }}
-        </mat-option>
-        <mat-option value="once">
-          {{ `${_prefix}.showIntroductionOnce` | translate }}
-        </mat-option>
-        <mat-option value="always">
-          {{ `${_prefix}.showIntroductionAlways` | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  @if (model().showIntroduction !== 'no') {
-    <div class="mb-4">
-      <label for="startTextLabel" class="text-sm">
-        {{ `${_prefix}.startTextLabel` | translate }}
+<form novalidate class="grid grid-cols-2 gap-4">
+  <div>
+    <div class="">
+      <label for="title" class="text-sm">
+        {{ `${_prefix}.title` | translate }}
       </label>
-      <mat-form-field class='small-input w-full' appearance='outline'>
-        <textarea id="startTextLabel" matInput [formField]="form.startText[language]"></textarea>
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+        <input id="title" matInput [formField]="form.title[language]">
+        <mat-error>
+          @if (form.title[language]().touched() && form.title[language]().invalid()) {
+            @for (error of form.title[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
-  }
 
-  <div class="mb-4">
-    <label for="endTextLabel" class="text-sm">
-      {{ `${_prefix}.endTextLabel` | translate }}
-    </label>
-    <mat-form-field class='small-input w-full' appearance='outline'>
-      <textarea id="endTextLabel" matInput [formField]="form.endText[language]"></textarea>
-    </mat-form-field>
-  </div>
-
-  <mat-slide-toggle [formField]="form.warningEnabled" class="my-4" color="primary">
-    {{ `${_prefix}.warningEnabled` | translate }}
-  </mat-slide-toggle>
-
-  @if (model().warningEnabled) {
-    <div class="mb-4">
-      <label for="warningTextLabel" class="text-sm">
-        {{ `${_prefix}.warningTextLabel` | translate }}
+    <div class="">
+      <label for="description" class="text-sm">
+        {{ `${_prefix}.description` | translate }}
       </label>
-      <mat-form-field class='small-input w-full' appearance='outline'>
-        <input id="warningTextLabel" matInput [formField]="form.warn[language]">
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+        <textarea id="description" matInput [formField]="form.description[language]" cdkTextareaAutosize rows="2"></textarea>
+        <mat-error>
+          @if (form.description[language]().touched() && form.description[language]().invalid()) {
+            @for (error of form.description[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
-  }
+
+    <div>
+      <label class="text-sm" for="showIntroduction">
+        {{ `${_prefix}.showIntroduction` | translate }}
+      </label>
+      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+        <mat-select id="showIntroduction" [formField]="form.showIntroduction">
+          <mat-option value="no">
+            {{ `${_prefix}.showIntroductionNo` | translate }}
+          </mat-option>
+          <mat-option value="once">
+            {{ `${_prefix}.showIntroductionOnce` | translate }}
+          </mat-option>
+          <mat-option value="always">
+            {{ `${_prefix}.showIntroductionAlways` | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (model().showIntroduction !== 'no') {
+      <div class="">
+        <label for="startText" class="text-sm">
+          {{ `${_prefix}.startText` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+          <textarea id="startText" matInput [formField]="form.startText[language]" cdkTextareaAutosize rows="4"></textarea>
+          <mat-error>
+            @if (form.startText[language]().touched() && form.startText[language]().invalid()) {
+              @for (error of form.startText[language]().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="">
+      <label for="endText" class="text-sm">
+        {{ `${_prefix}.endText` | translate }}
+      </label>
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+        <textarea id="endText" matInput [formField]="form.endText[language]" cdkTextareaAutosize rows="4"></textarea>
+        <mat-error>
+          @if (form.endText[language]().touched() && form.endText[language]().invalid()) {
+            @for (error of form.endText[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-slide-toggle [formField]="form.warningEnabled" class="my-4" color="primary">
+      {{ `${_prefix}.warningEnabled` | translate }}
+    </mat-slide-toggle>
+
+    @if (model().warningEnabled) {
+      <div class="">
+        <label for="warningText" class="text-sm">
+          {{ `${_prefix}.warningText` | translate }}
+        </label>
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+          <input id="warningText" matInput [formField]="form.warn[language]">
+          <mat-error>
+            @if (form.warn[language]().touched() && form.warn[language]().invalid()) {
+              @for (error of form.warn[language]().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+    }
+  </div>
 </form>

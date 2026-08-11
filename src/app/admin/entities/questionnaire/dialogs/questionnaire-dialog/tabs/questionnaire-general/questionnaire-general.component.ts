@@ -42,16 +42,18 @@ export class QuestionnaireGeneralComponent {
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
 
+  _questionnaire = this.dialogState.questionnaire();
+
   protected model = signal<QuestionnaireGeneralForm>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire(),
-    name: this.dialogState.questionnaire()?.name ?? '',
-    defaultLanguage: this.dialogState.questionnaire()?.defaultLanguage ?? DEFAULT_LANGUAGE,
-    languages: this.dialogState.questionnaire()?.languages ?? [DEFAULT_LANGUAGE],
-    onDemand: this.dialogState.questionnaire()?.onDemand ?? false,
-    isDemo: this.dialogState.questionnaire()?.isDemo ?? false,
-    estimatedCompletionTime: this.dialogState.questionnaire()?.estimatedCompletionTime ?? '',
-    order: this.dialogState.questionnaire()?.order ?? '',
-    showInCalendar: this.dialogState.questionnaire()?.showInCalendar ?? false,
+    ...this._questionnaire,
+    name: this._questionnaire?.name ?? '',
+    defaultLanguage: this._questionnaire?.defaultLanguage ?? DEFAULT_LANGUAGE,
+    languages: this._questionnaire?.languages ?? [DEFAULT_LANGUAGE],
+    onDemand: this._questionnaire?.onDemand ?? false,
+    isDemo: this._questionnaire?.isDemo ?? false,
+    estimatedCompletionTime: this._questionnaire?.estimatedCompletionTime ?? '',
+    order: this._questionnaire?.order ?? '',
+    showInCalendar: this._questionnaire?.showInCalendar ?? false,
   });
 
   protected form = form(this.model, (schema) => {

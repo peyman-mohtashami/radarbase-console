@@ -5,7 +5,7 @@
   {{ `${_prefix}.questionChoicesLabel` | translate }} *
 </label>
 <div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" class="" cdkDropListOrientation="vertical">
-  <div class="w-full flex flex-col text-sm gap-1">
+  <div class="w-full flex flex-col text-sm gap-1 border rounded p-2 mb-4">
     <div class="flex items-center gap-1 w-full">
       <div class="w-7 grow-0 shrink-0"></div>
       <div class="w-3/12! grow-0"
@@ -25,30 +25,16 @@
         </button>
         <mat-form-field class='small-input w-3/12! grow-0' appearance='outline' subscriptSizing="dynamic">
           <input matInput [formField]="choice.code">
-          <!--          <mat-error>-->
-          <!--            @if (choice.code().touched() && choice.code().invalid()) {-->
-          <!--              @for (error of choice.code().errors(); track error.kind) {-->
-          <!--                {{ error.message }}-->
-          <!--              }-->
-          <!--            }-->
-          <!--          </mat-error>-->
         </mat-form-field>
 
         <mat-form-field class='small-input grow' appearance='outline' subscriptSizing="dynamic">
           <textarea matInput [formField]="choice.label[language]" rows="1" cdkTextareaAutosize></textarea>
-          <!--          <mat-error>-->
-          <!--            @if (choice.label().touched() && choice.label().invalid()) {-->
-          <!--              @for (error of choice.label().errors(); track error.kind) {-->
-          <!--                {{ error.message }}-->
-          <!--              }-->
-          <!--            }-->
-          <!--          </mat-error>-->
         </mat-form-field>
 
         <button class="w-7! grow-0 shrink-0 tiny" [disabled]="i === 0"
                 mat-icon-button color="warn"
                 (click)="removeChoice(i)" type="button">
-          <mat-icon class="material-symbols-outlined text-xl!">do_not_disturb_on</mat-icon>
+          <mat-icon class="material-symbols-outlined">do_not_disturb_on</mat-icon>
         </button>
       </div>
     }
@@ -62,3 +48,4 @@
     </div>
   </div>
 </div>
+

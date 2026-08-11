@@ -61,6 +61,7 @@ export class QuestionnaireQuestionsComponent {
         required_field: true,
         field_type: type,
       }];
+      checkValidation(questions);
       return {
         ...value!,
         questions,
@@ -72,6 +73,7 @@ export class QuestionnaireQuestionsComponent {
   protected removeQuestion(index: number) {
     this.dialogState.questionnaire.update(value => {
       const questions = (value?.questions ?? []).filter((_, i) => i !== index);
+      checkValidation(questions);
       return {
         ...value!,
         questions,
@@ -93,6 +95,7 @@ export class QuestionnaireQuestionsComponent {
 
     this.dialogState.questionnaire.update(value => {
       const questions = [...(value?.questions ?? [])];
+      checkValidation(questions);
       return {
         ...value!,
         questions,
@@ -115,4 +118,14 @@ export class QuestionnaireQuestionsComponent {
       restoreFocus: false
     });
   }
+}
+
+export function checkValidation(questions: AppQuestion[]) {
+  questions.forEach(q => validateQuestion(q));
+}
+
+export function validateQuestion(question: AppQuestion) {
+  // check conditional logic
+  // check calc
+  // check template variables
 }

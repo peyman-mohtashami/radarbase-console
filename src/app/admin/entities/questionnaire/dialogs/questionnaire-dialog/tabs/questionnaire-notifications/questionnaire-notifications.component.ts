@@ -1,12 +1,14 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatFormField, MatInput} from '@angular/material/input';
+import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -32,6 +34,8 @@ export interface QuestionnaireNotificationsForm {
     MatSelect,
     MatOption,
     FormField,
+    MatError,
+    CdkTextareaAutosize,
   ]
 })
 export class QuestionnaireNotificationsComponent {
@@ -43,17 +47,20 @@ export class QuestionnaireNotificationsComponent {
     return this.dialogState.questionnaire()!.defaultLanguage!.code;
   });
 
+  _schedule = this.dialogState.questionnaire()?.schedule;
+  _lang = this.lang();
+
   protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire()?.schedule,
+    ...this._schedule,
     notification: {
-      title: this.dialogState.questionnaire()?.schedule?.notification?.title?.[this.lang()] ? this.dialogState.questionnaire()!.schedule!.notification!.title! : {...this.dialogState.questionnaire()?.schedule?.notification?.title, [this.lang()]: ''},
-      text: this.dialogState.questionnaire()?.schedule?.notification?.text?.[this.lang()] ? this.dialogState.questionnaire()!.schedule!.notification!.text! : {...this.dialogState.questionnaire()?.schedule?.notification?.text, [this.lang()]: ''},
+      title: withLanguage(this._schedule?.notification?.title, this._lang),
+      text: withLanguage(this._schedule?.notification?.text, this._lang),
     },
     reminders: {
-      enabled: this.dialogState.questionnaire()?.schedule?.reminders?.enabled ?? false,
-      unit: this.dialogState.questionnaire()?.schedule?.reminders?.unit ?? '',
-      amount: this.dialogState.questionnaire()?.schedule?.reminders?.amount ?? '',
-      repeat: this.dialogState.questionnaire()?.schedule?.reminders?.repeat ?? '',
+      enabled: this._schedule?.reminders?.enabled ?? false,
+      unit: this._schedule?.reminders?.unit ?? '',
+      amount: this._schedule?.reminders?.amount ?? '',
+      repeat: this._schedule?.reminders?.repeat ?? '',
     }
   });
 

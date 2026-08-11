@@ -1,11 +1,12 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatFormField, MatInput} from '@angular/material/input';
+import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -28,6 +29,8 @@ export interface QuestionnaireCustomMessagesForm {
     MatSelect,
     MatOption,
     FormField,
+    CdkTextareaAutosize,
+    MatError,
   ]
 })
 export class QuestionnaireCustomMessagesComponent {
@@ -35,17 +38,20 @@ export class QuestionnaireCustomMessagesComponent {
 
   lang = computed(() => {
     return this.dialogState.questionnaire()!.defaultLanguage!.code;
-  })
+  });
+
+  _questionnaire = this.dialogState.questionnaire();
+  _lang = this.lang();
 
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire(),
-    title: this.dialogState.questionnaire()?.title?.[this.lang()] ? this.dialogState.questionnaire()!.title! : {...this.dialogState.questionnaire()?.title, [this.lang()]: ''},
-    description: this.dialogState.questionnaire()?.description?.[this.lang()] ? this.dialogState.questionnaire()!.description! : {...this.dialogState.questionnaire()?.description, [this.lang()]: ''},
-    showIntroduction: this.dialogState.questionnaire()?.showIntroduction ?? 'no',
-    startText: this.dialogState.questionnaire()?.startText?.[this.lang()] ? this.dialogState.questionnaire()!.startText! : {...this.dialogState.questionnaire()?.startText, [this.lang()]: ''},
-    endText: this.dialogState.questionnaire()?.endText?.[this.lang()] ? this.dialogState.questionnaire()!.endText! : {...this.dialogState.questionnaire()?.endText, [this.lang()]: ''},
-    warningEnabled: this.dialogState.questionnaire()?.warningEnabled ?? false,
-    warn: this.dialogState.questionnaire()?.warn?.[this.lang()] ? this.dialogState.questionnaire()!.warn! : {...this.dialogState.questionnaire()?.warn, [this.lang()]: ''},
+    ...this._questionnaire,
+    title: withLanguage(this._questionnaire?.title, this._lang),
+    description: withLanguage(this._questionnaire?.description, this._lang),
+    showIntroduction: this._questionnaire?.showIntroduction ?? 'no',
+    startText: withLanguage(this._questionnaire?.startText, this._lang),
+    endText: withLanguage(this._questionnaire?.endText, this._lang),
+    warningEnabled: this._questionnaire?.warningEnabled ?? false,
+    warn: withLanguage(this._questionnaire?.warn, this._lang),
   });
 
   protected form = form(this.model);
@@ -62,4 +68,14 @@ export class QuestionnaireCustomMessagesComponent {
       this.dialogState.questionnaire.set(updated);
     });
   }
+}
+
+export function withLanguage(
+  value: Record<string, string> | undefined,
+  lang: string,
+): Record<string, string> {
+  return {
+    ...value,
+    [lang]: value?.[lang] ?? '',
+  };
 }

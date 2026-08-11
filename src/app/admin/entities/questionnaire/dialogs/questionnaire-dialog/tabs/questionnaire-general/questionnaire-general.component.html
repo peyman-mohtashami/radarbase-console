@@ -3,9 +3,9 @@
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
     <div class="">
-      <label for="name" class="text-sm">{{ `${_prefix}.nameLabel` | translate }} *</label>
-      <mat-form-field class='small-input' appearance='outline'>
-        <input matInput [formField]="form.name">
+      <label for="name" class="text-sm">{{ `${_prefix}.name` | translate }} *</label>
+      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+        <input id="name" matInput [formField]="form.name">
         <mat-error>
           @if (form.name().touched() && form.name().invalid()) {
             @for (error of form.name().errors(); track error.kind) {
@@ -17,7 +17,7 @@
     </div>
 
     <div class="">
-      <label for="languagesLabel" class="text-sm">{{ `${_prefix}.languagesLabel` | translate }}</label>
+      <label for="languages" class="text-sm">{{ `${_prefix}.languages` | translate }}</label>
       <app-searchable-multi-select [formField]="form.languages"
                                    [disabledItem]="form.defaultLanguage().value()"
                                    [labelKey]="'label'"
@@ -27,7 +27,7 @@
     </div>
 
     <div class="">
-      <label for="defaultLanguageLabel" class="text-sm">{{ `${_prefix}.defaultLanguageLabel` | translate }} *</label>
+      <label for="defaultLanguage" class="text-sm">{{ `${_prefix}.defaultLanguage` | translate }} *</label>
       <app-searchable-multi-select [formField]="form.defaultLanguage"
                                    [labelKey]="'label'"
                                    [options]="form.languages().value()"
@@ -41,13 +41,20 @@
 
     <div>
       <label for="estimatedCompletionTime" class="text-sm">
-        {{ `${_prefix}.estimatedCompletionTimeLabel` | translate }}
+        {{ `${_prefix}.estimatedCompletionTime` | translate }}
       </label>
-      <mat-form-field class='small-input w-full' appearance='outline'>
+      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
         <input id="estimatedCompletionTime" matInput type="number" [formField]="form.estimatedCompletionTime">
         <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-        {{ `${_prefix}.minutes` | translate }}
-      </span>
+          {{ `${_prefix}.minutes` | translate }}
+        </span>
+        <mat-error>
+          @if (form.estimatedCompletionTime().touched() && form.estimatedCompletionTime().invalid()) {
+            @for (error of form.estimatedCompletionTime().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
       </mat-form-field>
     </div>
   </div>

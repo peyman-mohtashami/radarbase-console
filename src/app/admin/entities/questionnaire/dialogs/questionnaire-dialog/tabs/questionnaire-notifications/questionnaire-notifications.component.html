@@ -1,68 +1,103 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 @let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
-<div class="w-125">
-  <div class="mt-4">
-    <div class="mt-4">
-      <p class="text-base">{{ `${_prefix}.notificationLabel` | translate }}</p>
-      <div class="mb-4">
-        <label for="notificationTitleLabel" class="text-sm">
+<form novalidate class="grid grid-cols-2 gap-4">
+  <div class="">
+    <div class="">
+      <p class="text-base">{{ `${_prefix}.notification` | translate }}</p>
+      <div class="">
+        <label for="notificationTitle" class="text-sm">
           {{ `${_prefix}.notificationTitleLabel` | translate }}
         </label>
-        <mat-form-field class='small-input w-full' appearance='outline'>
-          <input id="notificationTitleLabel" matInput [formField]="form.notification.title[language]">
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+          <input id="notificationTitle" matInput [formField]="form.notification.title[language]">
+          <mat-error>
+            @if (form.notification.title[language]().touched() && form.notification.title[language]().invalid()) {
+              @for (error of form.notification.title[language]().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
-      <div class="mb-4">
-        <label for="notificationMessageLabel" class="text-sm">
-          {{ `${_prefix}.notificationMessageLabel` | translate }}
+      <div class="">
+        <label for="notificationMessage" class="text-sm">
+          {{ `${_prefix}.notificationMessage` | translate }}
         </label>
-        <mat-form-field class='small-input w-full' appearance='outline'>
-          <textarea id="notificationMessageLabel" matInput [formField]="form.notification.text[language]"></textarea>
+        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
+          <textarea id="notificationMessage" matInput [formField]="form.notification.text[language]" cdkTextareaAutosize rows="3"></textarea>
+          <mat-error>
+            @if (form.notification.text[language]().touched() && form.notification.text[language]().invalid()) {
+              @for (error of form.notification.text[language]().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
 
     <div>
-      <p class="text-sm my-2">{{ `${_prefix}.remindersLabel` | translate }}</p>
+      <p class="text-sm my-2">{{ `${_prefix}.reminders` | translate }}</p>
       <mat-slide-toggle [formField]="form.reminders.enabled" class="mb-4" color="primary">
-        {{ `${_prefix}.remindersEnableLabel` | translate }}
+        {{ `${_prefix}.remindersEnable` | translate }}
       </mat-slide-toggle>
 
       @if (model().reminders.enabled) {
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-3 gap-2">
           <div>
             <label for="reminders-repeat" class="text-sm">
               {{ `${_prefix}.reminderRepeat` | translate }} *
             </label>
             <mat-form-field class='small-input w-1/3'
-                            subscriptSizing="dynamic"
+                            subscriptSizing="fixed"
                             appearance='outline'>
               <input id="reminders-repeat" matInput type="number" [formField]="form.reminders.repeat">
+              <mat-error>
+                @if (form.reminders.repeat().touched() && form.reminders.repeat().invalid()) {
+                  @for (error of form.reminders.repeat().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
             </mat-form-field>
           </div>
           <div>
             <label for="reminders-amount" class="text-sm">
               {{ `${_prefix}.reminderAmount` | translate }} *
             </label>
-            <mat-form-field class='small-input' appearance='outline'>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
               <input id="reminders-amount" matInput [formField]="form.reminders.amount" type="number">
+              <mat-error>
+                @if (form.reminders.amount().touched() && form.reminders.amount().invalid()) {
+                  @for (error of form.reminders.amount().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
             </mat-form-field>
           </div>
           <div>
             <label for="reminders-unit" class="text-sm">
               {{ `${_prefix}.reminderUnit` | translate }} *
             </label>
-            <mat-form-field class='small-input' appearance='outline'>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
               <mat-select id="reminders-unit" [formField]="form.reminders.unit">
                 @for (unit of UNITS; track unit.name) {
                   <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
                 }
               </mat-select>
+              <mat-error>
+                @if (form.reminders.unit().touched() && form.reminders.unit().invalid()) {
+                  @for (error of form.reminders.unit().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
       }
     </div>
   </div>
-</div>
+</form>

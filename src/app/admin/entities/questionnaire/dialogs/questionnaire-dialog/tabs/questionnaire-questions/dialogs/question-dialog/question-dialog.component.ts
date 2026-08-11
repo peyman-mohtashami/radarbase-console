@@ -33,7 +33,8 @@ import {
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {JsonPipe} from '@angular/common';
+import {checkValidation} from '../../questionnaire-questions.component';
+import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire-custom-messages.component';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -94,7 +95,6 @@ export interface QuestionnaireQuestionForm {
     MatDatepickerToggle,
     MatSuffix,
     CdkTextareaAutosize,
-    JsonPipe,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -120,48 +120,44 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     return this.dialogState.questionnaire()!.defaultLanguage!.code;
   })
 
+  _question = this.dialogData.entity;
+  _lang = this.lang();
+
   private model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
-    ...this.dialogData.entity,
-    field_name: this.dialogData.entity.field_name ?? '',
-    field_type: this.dialogData.entity.field_type ?? '',
-    // field_label: this.dialogData.entity.field_label[this.dialogState.language().code] ?? '',
-    field_label: this.dialogData.entity?.field_label?.[this.lang()] ? this.dialogData.entity!.field_label! : {...this.dialogData.entity?.field_label, [this.lang()]: ''},
-    // section_header: this.dialogData.entity.section_header?.[this.dialogState.language().code] ?? '',
-    section_header: this.dialogData.entity?.section_header?.[this.lang()] ? this.dialogData.entity!.section_header! : {...this.dialogData.entity?.section_header, [this.lang()]: ''},
-    required_field: this.dialogData.entity.required_field ?? true,
-    // field_note: this.dialogData.entity.field_note?.[this.dialogState.language().code] ?? '',
-    field_note: this.dialogData.entity?.field_note?.[this.lang()] ? this.dialogData.entity!.field_note! : {...this.dialogData.entity?.field_note, [this.lang()]: ''},
-    matrix_group_name: this.dialogData.entity.matrix_group_name ?? '',
-    // branching_logic: new FormControl<string>('', {nonNullable: true}),
-    conditionalLogic: this.dialogData.entity.conditionalLogic ?? [],
-    // select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label[this.dialogState.language().code]})) ?? [{code: '', label: ''}],
-    select_choices_or_calculations: this.dialogData.entity.select_choices_or_calculations?.map(c => ({code: c.code, label: c.label?.[this.lang()] ? c.label! : {...c.label, [this.lang()]: ''}})) ?? [{code: '', label: {[this.lang()]: ''}}],
-    // text_validation_type_or_show_slider_number: this.dialogData.entity.text_validation_type_or_show_slider_number ?? '',
-    text_validation_min: this.dialogData.entity.text_validation_min ?? '',
-    text_validation_max: this.dialogData.entity.text_validation_max ?? '',
+    ...this._question,
+    field_name: this._question.field_name ?? '',
+    field_type: this._question.field_type ?? '',
+    field_label: withLanguage(this._question?.field_label, this._lang),
+    section_header: withLanguage(this._question?.section_header, this._lang),
+    required_field: this._question.required_field ?? true,
+    field_note: withLanguage(this._question?.field_note, this._lang),
+    matrix_group_name: this._question.matrix_group_name ?? '',
+    conditionalLogic: this._question.conditionalLogic ?? [],
+    select_choices_or_calculations: this._question.select_choices_or_calculations?.map(c =>
+      ({code: c.code, label: withLanguage(c.label, this._lang)})) ?? [{code: '', label: {[this._lang]: ''}}],
+    text_validation_min: this._question.text_validation_min ?? '',
+    text_validation_max: this._question.text_validation_max ?? '',
     field_annotation: {
-      image: this.dialogData.entity.field_annotation?.image ?? '',
+      image: this._question.field_annotation?.image ?? '',
       timer: {
-        start: `${this.dialogData.entity.field_annotation?.timer?.start ?? ''}`,
-        end: `${this.dialogData.entity.field_annotation?.timer?.end ?? ''}`
+        start: `${this._question.field_annotation?.timer?.start ?? ''}`,
+        end: `${this._question.field_annotation?.timer?.end ?? ''}`
       },
-      unit: this.dialogData.entity.field_annotation?.unit ?? ''
+      unit: this._question.field_annotation?.unit ?? ''
     },
     range: {
-      labelLeft: this.dialogData.entity?.range?.labelLeft?.[this.lang()] ? this.dialogData.entity!.range.labelLeft! : {...this.dialogData.entity?.range?.labelLeft, [this.lang()]: ''},//this.dialogData.entity.range?.labelLeft?.[this.dialogState.language().code] ?? '',
-      labelRight: this.dialogData.entity?.range?.labelRight?.[this.lang()] ? this.dialogData.entity!.range.labelRight! : {...this.dialogData.entity?.range?.labelRight, [this.lang()]: ''},//this.dialogData.entity.range?.labelLeft?.[this.dialogState.language().code] ?? '',
-      // labelRight: this.dialogData.entity.range?.labelRight?.[this.dialogState.language().code] ?? '',
-      max: `${this.dialogData.entity.range?.max ?? ''}`,
-      min: `${this.dialogData.entity.range?.min ?? ''}`,
-      step: `${this.dialogData.entity.range?.step ?? ''}`
+      labelLeft: withLanguage(this._question?.range?.labelLeft, this._lang),
+      labelRight: withLanguage(this._question?.range?.labelRight, this._lang),
+      max: `${this._question.range?.max ?? ''}`,
+      min: `${this._question.range?.min ?? ''}`,
+      step: `${this._question.range?.step ?? ''}`
     },
-    // // branching_logic?: string
-    show_selected_label: this.dialogData.entity.show_selected_label ?? false,
-    show_code: this.dialogData.entity.show_code ?? false,
-    multi_line: this.dialogData.entity.multi_line ?? false,
-    calculation_fn: this.dialogData.entity.calculation_fn ?? '',
-    calculation_args: this.dialogData.entity.calculation_args ?? '',
-    date_type: this.dialogData.entity.date_type ?? ''
+    show_selected_label: this._question.show_selected_label ?? false,
+    show_code: this._question.show_code ?? false,
+    multi_line: this._question.multi_line ?? false,
+    calculation_fn: this._question.calculation_fn ?? '',
+    calculation_args: this._question.calculation_args ?? '',
+    date_type: this._question.date_type ?? ''
   });
 
   protected form = form(this.model, (schema) => {
@@ -169,7 +165,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     validate(schema.field_name, ({value}) => {
       const matchedFieldName = this.dialogData.questions?.find((question) => question.field_name === value());
       if (!matchedFieldName) return null;
-      if (this.dialogData.entity?.field_name === value()) return null;
+      if (this._question?.field_name === value()) return null;
       return {
         kind: 'duplicate',
         message: 'SHARED.validatorError.duplicateName',
@@ -257,18 +253,18 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dialogState.question.set(this.dialogData.entity);
+    this.dialogState.question.set(this._question);
     this.dialogState.questionIndex.set(this.dialogData.index);
 
-    if (this.dialogData.entity) {
-      this.branchingLogicString.set(this.dialogData.entity?.conditionalLogic?.map((conditionalLogicItems) =>
+    if (this._question) {
+      this.branchingLogicString.set(this._question?.conditionalLogic?.map((conditionalLogicItems) =>
         conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
       ).join(' or ') ?? '');
     }
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
-    const entity = this.dialogData.entity;
+    const entity = this._question;
     return {
       ...entity,
       ...model,
@@ -281,11 +277,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
     this.dialogState.questionnaire.update(value => {
       const questions = value!.questions.map(q => {
-        if (q.id === this.dialogData.entity.id) {
+        if (q.id === this._question.id) {
           return this.toAppQuestion(model);
         }
         return q;
       }) ?? [];
+      checkValidation(questions);
       return {
         ...value!,
         questions: [...questions],
