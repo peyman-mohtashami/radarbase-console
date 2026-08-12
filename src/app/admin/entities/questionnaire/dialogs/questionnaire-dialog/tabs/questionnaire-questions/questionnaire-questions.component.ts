@@ -26,10 +26,9 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
     .cdk-drag-preview {
       background: white;
       border-radius: 8px;
-      box-shadow:
-        0 5px 5px -3px rgb(0 0 0 / 20%),
-        0 8px 10px 1px rgb(0 0 0 / 14%),
-        0 3px 14px 2px rgb(0 0 0 / 12%);
+      box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%),
+      0 8px 10px 1px rgb(0 0 0 / 14%),
+      0 3px 14px 2px rgb(0 0 0 / 12%);
     }
 
     .cdk-drag-placeholder {
@@ -48,16 +47,10 @@ import {QuestionnaireDialogStateService} from '../../services/questionnaire-dial
       transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     }
 
-    /* Highlight the questions list while a question type is dragged over it. */
-    #questions-drop-list.cdk-drop-list-receiving {
-      outline: 2px dashed #9ca3af;
-      outline-offset: 4px;
-      border-radius: 8px;
+    #questions-drop-list.cdk-drop-list-dragging .question-drop-hint {
+      background-color: #eeeeee;
     }
 
-    #questions-drop-list.cdk-drop-list-receiving .question-drop-hint {
-      display: none;
-    }
 
     .cdk-drag-dragging {
       cursor: grabbing;

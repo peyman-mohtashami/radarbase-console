@@ -32,7 +32,7 @@
       <div #choicesContainer
            cdkDropList
            id="questions-drop-list"
-           class="grow min-h-32"
+           class="relative grow min-h-32 flex flex-col gap-2"
            (cdkDropListDropped)="onDrop($event)"
            cdkDropListOrientation="vertical">
         @for (question of dialogState.questionnaire()?.questions; track question.id; let index = $index) {
@@ -47,7 +47,7 @@
                                    (selectEvent)="onSelectQuestion(index, question)"/>
           </div>
         } @empty {
-          <div class="question-drop-hint h-32 flex items-center justify-center rounded border-2 border-dashed border-gray-300 text-neutral-500 text-sm">
+          <div class="question-drop-hint absolute inset-0 grow flex items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-neutral-500 text-sm">
             {{ `${_prefix}.dropQuestionTypeHint` | translate }}
           </div>
         }
