@@ -154,13 +154,13 @@
           @if (conditionalLogicRule().valid()) {
             <code class="text-xs text-secondary">{{`[${conditionalLogicRule.operand().value()?.field_name}] ${OPERATOR_SYMBOLS[conditionalLogicRule.operator().value()]} '${conditionalLogicRule.value().value()}'` }}</code>
           } @else {
-            <code class="text-xs text-red-700">{{ `${_prefix}.invalid` }}</code>
+            <code class="text-xs text-red-700">{{ `${_prefix}.invalid` | translate }}</code>
           }
 
 
           <div class="flex items-center my-1 border-t border-t-gray-300">
             <div>
-              <app-tag class="text-secondary bg-secondary/20">{{ `${_prefix}.and` }}</app-tag>
+              <app-tag class="text-secondary bg-secondary/20">{{ `${_prefix}.and`  | translate }}</app-tag>
             </div>
             <div>
               <button class="tiny" type="button"
@@ -174,7 +174,7 @@
 
         <div class="flex items-center my-1 border-t border-t-gray-300">
           <div>
-            <app-tag class="text-primary bg-primary/20">{{ `${_prefix}.or` }}</app-tag>
+            <app-tag class="text-primary bg-primary/20">{{ `${_prefix}.or` | translate }}</app-tag>
           </div>
           <div>
             <button class="tiny" type="button"

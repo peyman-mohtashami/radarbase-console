@@ -3,7 +3,7 @@
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.questionTitle` | translate }}</span>
+  <span> {{ `${_prefix}.title` | translate }}</span>
   <code
     class="italic text-secondary"> {{ form.field_name().value() }}</code>
 </h2>
@@ -39,7 +39,7 @@
           <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
             {{ `${_prefix}.isActive` | translate }}
           </mat-slide-toggle>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1">
             @if (form.matrix_group_name().value()) {
               <app-tag class="bg-green-500/20 text-green-700">
                 {{ form.matrix_group_name().value() | uppercase }}
@@ -47,7 +47,7 @@
             }
 
             @if (form.conditionalLogic().value().length) {
-              <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
+              <mat-icon class="material-symbols-outlined text-orange-500! cursor-pointer"
                         [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
                 rule
               </mat-icon>
@@ -55,8 +55,8 @@
 
 
             @if (form().valid()) {
-              <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                        [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+              <mat-icon class="material-symbols-outlined text-green-700! cursor-pointer"
+                        [matTooltip]="`${_prefix}.questionIsValid` | translate">
                 check_circle
               </mat-icon>
             } @else {
@@ -66,9 +66,9 @@
               </mat-icon>
             }
 
-            <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center">
-              <span>{{ dialogData.index + 1 }}</span>
-            </div>
+<!--            <div class="text-xs rounded-full bg-primary/50 text-white size-5 p-1 flex justify-center items-center">-->
+              <span>#{{ dialogData.index + 1 }}</span>
+<!--            </div>-->
           </div>
         </div>
       </div>
@@ -487,7 +487,7 @@
       </mat-form-field>
 
       @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
-        <div class="flex items-center justify-between">
+        <div class="flex items-center">
           <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic` | translate }}</label>
           <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()" type="button">
             <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
