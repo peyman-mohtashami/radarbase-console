@@ -78,6 +78,7 @@ export class QuestionnaireQuestionsComponent {
         field_label: {},
         required_field: true,
         field_type: type,
+        isActive: true,
       });
       checkValidation(questions);
       return {

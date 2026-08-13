@@ -97,6 +97,7 @@ export interface AppQuestion {
   calculation_args?: string;
   date_type?: string;
   isValid?: boolean;
+  isActive: boolean;
   visible?: boolean;
 }
 

@@ -35,6 +35,9 @@ import {
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {checkValidation} from '../../questionnaire-questions.component';
 import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire-custom-messages.component';
+import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
+import {UpperCasePipe} from '@angular/common';
+import {MatTooltip} from '@angular/material/tooltip';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -70,7 +73,8 @@ export interface QuestionnaireQuestionForm {
   multi_line: boolean;
   calculation_fn: string;
   calculation_args: string;
-  date_type: string
+  date_type: string;
+  isActive: boolean;
 }
 
 @Component({
@@ -95,6 +99,9 @@ export interface QuestionnaireQuestionForm {
     MatDatepickerToggle,
     MatSuffix,
     CdkTextareaAutosize,
+    TagComponent,
+    UpperCasePipe,
+    MatTooltip,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -157,7 +164,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     multi_line: this._question.multi_line ?? false,
     calculation_fn: this._question.calculation_fn ?? '',
     calculation_args: this._question.calculation_args ?? '',
-    date_type: this._question.date_type ?? ''
+    date_type: this._question.date_type ?? '',
+    isActive: this._question.isActive ?? false,
   });
 
   protected form = form(this.model, (schema) => {

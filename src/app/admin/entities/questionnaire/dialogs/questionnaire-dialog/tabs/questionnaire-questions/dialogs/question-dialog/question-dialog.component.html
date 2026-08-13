@@ -5,49 +5,101 @@
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
   <span> {{ `${_prefix}.questionTitle` | translate }}</span>
   <code
-    class="italic text-secondary"> {{ dialogData.entity?.field_name ? `${dialogData.entity?.field_name}` : `` }}</code>
+    class="italic text-secondary"> {{ form.field_name().value() }}</code>
 </h2>
 
-<mat-dialog-content class="">
+<mat-dialog-content class="p-4!">
   <div class="grid grid-cols-2 gap-4 h-full">
 
     <form class="h-full overflow-y-auto">
+      <div class="grid grid-cols-2 gap-2 items-center">
+        <div>
+          <label for="field_type" class="text-sm"
+                 [class]="form.field_type().touched() && form.field_type().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.fieldType` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.field_type'>
+              @for (item of QUESTION_TYPES; track item) {
+                @for (type of item.types; track type.type) {
+                  <mat-option [value]="type.type">{{ type.label }}</mat-option>
+                }
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.field_type().touched() && form.field_type().invalid()) {
+                @for (error of form.field_type().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex items-center justify-between">
+<!--          <div class="flex items-center justify-end gap-2">-->
+                  <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
+                    {{ `${_prefix}.isActive` | translate }}
+                  </mat-slide-toggle>
+          <div class="flex items-center gap-2">
+            @if (form.matrix_group_name().value()) {
+              <app-tag class="bg-green-500/20 text-green-700">
+                {{ form.matrix_group_name().value() | uppercase }}
+              </app-tag>
+            }
 
-      <label for="field_name" class="text-sm"
-             [class]="form.field_name().touched() && form.field_name().invalid() ? 'text-red-700' : ''">
-        {{ `${_prefix}.fieldName` | translate }} *
-      </label>
-      <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-        <input matInput [formField]='form.field_name'/>
-        <mat-error>
-          @if (form.field_name().touched() && form.field_name().invalid()) {
-            @for (error of form.field_name().errors(); track error.kind) {
-              {{ error.message }}
+            @if (branchingLogicString()) {
+              <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
+                        [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
+                rule
+              </mat-icon>
             }
-          }
-        </mat-error>
-      </mat-form-field>
 
-      <label for="field_type" class="text-sm"
-             [class]="form.field_type().touched() && form.field_type().invalid() ? 'text-red-700' : ''">
-        {{ `${_prefix}.fieldType` | translate }} *
-      </label>
-      <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-        <mat-select [formField]='form.field_type'>
-          @for (item of QUESTION_TYPES; track item) {
-            @for (type of item.types; track type.type) {
-              <mat-option [value]="type.type">{{ type.label }}</mat-option>
+
+            @if (form().valid()) {
+              <mat-icon class="material-symbols-outlined text-xl! text-green-500! cursor-pointer"
+                        [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+                check_circle
+              </mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+                        [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+                warning
+              </mat-icon>
             }
-          }
-        </mat-select>
-        <mat-error>
-          @if (form.field_type().touched() && form.field_type().invalid()) {
-            @for (error of form.field_type().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+
+            <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center">
+              <span>{{ dialogData.index + 1 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 items-center">
+        <div>
+          <label for="field_name" class="text-sm"
+                 [class]="form.field_name().touched() && form.field_name().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.fieldName` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <input matInput [formField]='form.field_name'/>
+            <mat-error>
+              @if (form.field_name().touched() && form.field_name().invalid()) {
+                @for (error of form.field_name().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+                <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
+                  {{ `${_prefix}.requiredField` | translate }}
+                </mat-slide-toggle>
+      </div>
+
+
+<!--      </div>-->
 
       <!--        <app-text-editor />-->
       <label for="field_label" class="text-sm"
@@ -66,9 +118,6 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
-        {{ `${_prefix}.requiredField` | translate }}
-      </mat-slide-toggle>
 
       <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
@@ -104,7 +153,7 @@
         <app-question-choices [formField]="form.select_choices_or_calculations"/>
       }
 
-      @switch(fieldType) {
+      @switch (fieldType) {
         @case ('calc') {
           <label for="calculation_fn"
                  class="text-sm">{{ `${_prefix}.calculationFn` | translate }} *</label>
@@ -182,7 +231,7 @@
 
             <div>
               <label for="text_validation_max"
-                     class="text-sm">{{ `${_prefix}.questionTextValidationMax` | translate }}</label>
+                     class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>
               <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">
                 <input
                   id="text_validation_max"
@@ -212,8 +261,7 @@
             </div>
           </fieldset>
         }
-
-        @case('number') {
+        @case ('number') {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
             <div>
               <label for="text_validation_min"
@@ -246,19 +294,20 @@
             </div>
           </fieldset>
         }
-
-        @case('range') {
-          <mat-slide-toggle [formField]="form.show_code" class="my-4" color="primary">
-            {{ `${_prefix}.showCode` | translate }}
-          </mat-slide-toggle>
-
-          <mat-slide-toggle [formField]="form.show_selected_label" class="my-4" color="primary">
-            {{ `${_prefix}.showSelectedLabel` | translate }}
-          </mat-slide-toggle>
+        @case ('range') {
+          <div>
+            <mat-slide-toggle [formField]="form.show_code" class="my-4" color="primary">
+              {{ `${_prefix}.showCode` | translate }}
+            </mat-slide-toggle>
+          </div>
+          <div>
+            <mat-slide-toggle [formField]="form.show_selected_label" class="my-4" color="primary">
+              {{ `${_prefix}.showSelectedLabel` | translate }}
+            </mat-slide-toggle>
+          </div>
         }
-
-        @case('slider') {
-          <label for="" class="text-sm">{{ `${_prefix}.questionRangeLabel` | translate }} *</label>
+        @case ('slider') {
+          <label for="" class="text-sm">{{ `${_prefix}.rangeLabel` | translate }} *</label>
           <fieldset class="p-2 rounded-sm border">
             <div class="grid grid-cols-3 gap-2">
               <div>
@@ -345,15 +394,15 @@
             </div>
           </fieldset>
         }
-
-        @case('text') {
-          <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
-            {{ `${_prefix}.multiLineEnabled` | translate }}
-          </mat-slide-toggle>
+        @case ('text') {
+          <div>
+            <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
+              {{ `${_prefix}.multiLineEnabled` | translate }}
+            </mat-slide-toggle>
+          </div>
         }
-
-        @case('timed') {
-          <label for="unit" class="text-sm">{{ `${_prefix}.questionAnnotationLabel` | translate }}</label>
+        @case ('timed') {
+          <label for="unit" class="text-sm">{{ `${_prefix}.annotationLabel` | translate }}</label>
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
 
             <!--          <div>-->
@@ -395,7 +444,8 @@
                 {{ `${_prefix}.annotationTimerStart` | translate }} *
               </label>
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-                <input id="annotation-timer-start" matInput [formField]='form.field_annotation.timer.start' type="number">
+                <input id="annotation-timer-start" matInput [formField]='form.field_annotation.timer.start'
+                       type="number">
                 <mat-error>
                   @if (form.field_annotation.timer.start().touched() && form.field_annotation.timer.start().invalid()) {
                     @for (error of form.field_annotation.timer.start().errors(); track error.kind) {

@@ -134,6 +134,7 @@ export interface QuestionDto {
   calculation_args?: string;
   date_type?: string;
   isValid?: boolean;
+  isActive: boolean;
 }
 
 export interface QuestionChoiceDto {

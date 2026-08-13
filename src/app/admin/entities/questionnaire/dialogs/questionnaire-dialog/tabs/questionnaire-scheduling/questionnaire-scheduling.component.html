@@ -2,7 +2,7 @@
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
     <mat-slide-toggle [formField]="form.relativeToReferenceTime" class="my-4" color="primary">
-      {{ `${_prefix}.relativeToReferenceTimeLabel` | translate }}
+      {{ `${_prefix}.relativeToReferenceTime` | translate }}
     </mat-slide-toggle>
 
     @if (model().relativeToReferenceTime) {
@@ -81,6 +81,7 @@
 
       <div>
         <p class="text-sm mt-2">{{ `${_prefix}.timeOffsets` | translate }}</p>
+        <fieldset class="p-2 rounded-sm border">
         <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="">
           <div class="w-full flex-col mt-4 mb-1 text-sm">
             <div class="flex items-center gap-1 w-full">
@@ -118,6 +119,7 @@
             </div>
           </div>
         </div>
+        </fieldset>
       </div>
 
       <mat-divider class="mb-2!"/>
