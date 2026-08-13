@@ -36,10 +36,9 @@
           </mat-form-field>
         </div>
         <div class="flex items-center justify-between">
-<!--          <div class="flex items-center justify-end gap-2">-->
-                  <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
-                    {{ `${_prefix}.isActive` | translate }}
-                  </mat-slide-toggle>
+          <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
+            {{ `${_prefix}.isActive` | translate }}
+          </mat-slide-toggle>
           <div class="flex items-center gap-2">
             @if (form.matrix_group_name().value()) {
               <app-tag class="bg-green-500/20 text-green-700">
@@ -47,7 +46,7 @@
               </app-tag>
             }
 
-            @if (branchingLogicString()) {
+            @if (form.conditionalLogic().value().length) {
               <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
                         [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
                 rule
@@ -56,12 +55,12 @@
 
 
             @if (form().valid()) {
-              <mat-icon class="material-symbols-outlined text-xl! text-green-500! cursor-pointer"
+              <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
                         [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
                 check_circle
               </mat-icon>
             } @else {
-              <mat-icon class="material-symbols-outlined text-xl! text-red-500! cursor-pointer"
+              <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
                         [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
                 warning
               </mat-icon>
@@ -93,13 +92,11 @@
         </div>
 
 
-                <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
-                  {{ `${_prefix}.requiredField` | translate }}
-                </mat-slide-toggle>
+        <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
+          {{ `${_prefix}.requiredField` | translate }}
+        </mat-slide-toggle>
       </div>
 
-
-<!--      </div>-->
 
       <!--        <app-text-editor />-->
       <label for="field_label" class="text-sm"
@@ -492,11 +489,11 @@
       @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
         <div class="flex items-center justify-between">
           <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic` | translate }}</label>
-          <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()">
+          <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()" type="button">
             <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
           </button>
         </div>
-        <pre>{{ branchingLogicString() }}</pre>
+        <p><code class="text-orange-500">{{ branching_logic() }}</code></p>
       }
 
     </form>

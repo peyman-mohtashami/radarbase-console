@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {AppQuestion} from '../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -47,7 +47,7 @@ export interface QuestionnaireQuestionForm {
   required_field: boolean;
   field_note: Record<string, string>
   matrix_group_name: string;
-  conditionalLogic: {operand: string; operator: string; value: string}[][];
+  conditionalLogic: AppQuestionConditionalLogic;
   select_choices_or_calculations: {code: string; label: Record<string, string>}[];
   // text_validation_type_or_show_slider_number?: string
   text_validation_min: string;
@@ -254,7 +254,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   });
 
-  branchingLogicString = signal('');
+  branching_logic = computed(() => {
+    const model = this.model();
+    return model.conditionalLogic?.map((conditionalLogicItems) =>
+      conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+    ).join(' or ') ?? '';
+  })
 
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
@@ -263,21 +268,75 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.dialogState.question.set(this._question);
     this.dialogState.questionIndex.set(this.dialogData.index);
-
-    if (this._question) {
-      this.branchingLogicString.set(this._question?.conditionalLogic?.map((conditionalLogicItems) =>
-        conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
-      ).join(' or ') ?? '');
-    }
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
     const entity = this._question;
-    return {
+    return this.normalizeQuestion({
       ...entity,
       ...model,
       isValid: this.form().valid()
+    });
+  }
+
+  normalizeQuestion(question: AppQuestion) {
+    const updatedQuestion: AppQuestion = {
+      id: question.id,
+      field_name: question.field_name,
+      field_type: question.field_type,
+      field_label: question.field_label,
+      section_header: question.section_header?.[this._lang] ? question.section_header : undefined,
+      required_field: question.required_field,
+      field_note: question.field_note?.[this._lang] ? question.field_note : undefined,
+      matrix_group_name: question.matrix_group_name || undefined,
+      conditionalLogic: question.conditionalLogic?.length ? question.conditionalLogic : undefined,
+      branching_logic: question.branching_logic || undefined,
+      isActive: question.isActive,
+      isValid: question.isValid
     }
+    switch (question.field_type) {
+      case 'text':
+        updatedQuestion.multi_line = question.multi_line;
+        break;
+      case 'number':
+        updatedQuestion.text_validation_min = question.text_validation_min;
+        updatedQuestion.text_validation_max = question.text_validation_max;
+        break;
+      case 'datetime':
+        updatedQuestion.text_validation_min = question.text_validation_min;
+        updatedQuestion.text_validation_max = question.text_validation_max;
+        updatedQuestion.date_type = question.date_type;
+        break;
+      case 'checkbox':
+      case 'radio':
+      case 'info':
+        updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
+        break;
+      case 'range':
+        updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
+        updatedQuestion.show_selected_label = question.show_selected_label;
+        updatedQuestion.show_code = question.show_code;
+        break;
+      case 'slider':
+        updatedQuestion.range = question.range ? {
+          min: question.range?.min,
+          max: question.range?.max,
+          step: question.range?.step,
+          labelLeft: question.range.labelLeft?.[this._lang] ? question.range.labelLeft : undefined,
+          labelRight: question.range.labelRight?.[this._lang] ? question.range.labelRight : undefined,
+        } : undefined;
+        break;
+      case 'timed':
+        updatedQuestion.field_annotation = question.field_annotation;
+        break;
+      case 'calc':
+        updatedQuestion.calculation_fn = question.calculation_fn;
+        updatedQuestion.calculation_args = question.calculation_args;
+        break;
+      default:
+        return updatedQuestion;
+    }
+    return updatedQuestion;
   }
 
   protected handleSaveAction(): void {
@@ -325,23 +384,14 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
     const dialogActionSubscription =
       dialogRef.componentInstance.dialogActionEvent.subscribe(
-        (value) => {
-          // const branchingLogicString = value.entity?.map((conditionalLogicItems) =>
-          //   conditionalLogicItems.map(i => `[${i.operand}]${i.operator}'${i.value}'`).join(' and ')
-          // ).join(' or ') ?? '';
-          // this.form.patchValue({branching_logic: value.entity?.value});
-          if (value.entity && value.action !== DialogMode.CLOSE) {
-
-            this.branchingLogicString.set(value.entity?.map((conditionalLogicItems) =>
-              conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
-            ).join(' or ') ?? '');
+        (conditionalLogicValue) => {
+          if (conditionalLogicValue.entity && conditionalLogicValue.action !== DialogMode.CLOSE) {
             this.model.update(value => {
               return {
                 ...value,
-                conditionalLogic: value.conditionalLogic
+                conditionalLogic: conditionalLogicValue.entity ?? []
               };
             })
-            // this.form.patchValue({conditionalLogic: value.entity});
           }
           dialogRef.close();
         }
@@ -374,5 +424,4 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   // private formatDateForValidation(value: Date): string {
   //   return value.toISOString();
   // }
-
 }

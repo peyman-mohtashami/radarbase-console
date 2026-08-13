@@ -213,16 +213,16 @@ export class QuestionnaireStore {
           appQuestion = {
             ...question,
             field_label: {},
-            section_header: {},
-            field_note: {},
+            section_header: undefined,//{},
+            field_note: undefined,//{},
             range: question.range ? {
               ...question.range,
-              labelLeft: {},
-              labelRight: {},
+              labelLeft: undefined,//{},
+              labelRight: undefined,//{},
             }: undefined,
             select_choices_or_calculations: question.select_choices_or_calculations?.map(choice => ({
               code: choice.code,
-              label: {},
+              label: {},//undefined,//{},
             }))
           };
           result.set(key, appQuestion);
@@ -253,13 +253,9 @@ export class QuestionnaireStore {
           }
         }
 
-        if (
-          appQuestion.select_choices_or_calculations &&
-          question.select_choices_or_calculations
-        ) {
+        if (appQuestion.select_choices_or_calculations && question.select_choices_or_calculations) {
           question.select_choices_or_calculations.forEach((choice, index) => {
-            appQuestion!.select_choices_or_calculations![index].label[lang] =
-              choice.label;
+            appQuestion.select_choices_or_calculations![index].label[lang] = choice.label;
           });
         }
       }

@@ -1,28 +1,20 @@
-import {
-  AfterViewInit, Component, inject, output, signal,
-} from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogContent, MatDialogRef, MatDialogTitle,
-} from '@angular/material/dialog';
+import {AfterViewInit, Component, computed, inject, output, signal,} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle,} from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {HttpErrorResponse} from '@angular/common/http';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {
-  ErrorMessageBoxComponent
-} from '../../../../../../../../../shared/components/message-box/error-message-box.component';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
-import {AppQuestion} from '../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../models/questionnaire';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {form, FormField} from '@angular/forms/signals';
+import {applyEach, form, FormField} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {QuestionType} from '../../../questionnaire-preview/question-type/question-type.registry';
+import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
 
 export const OPERATOR_SYMBOLS: Record<string, string> = {
   equal: '=',
@@ -112,14 +104,10 @@ export const OPERATORS: Record<string, {name: string; value: string}[]> = {
   ],
 }
 
+export type ConditionalLogicForm = ConditionalLogicGroupForm[];
+export type ConditionalLogicGroupForm = ConditionalLogicRuleForm[];
 
-export interface ConditionalLogicItem {
-  operand: string;
-  operator: string;
-  value: string;
-}
-
-export interface ConditionalLogicItemForm {
+export interface  ConditionalLogicRuleForm {
   operand: AppQuestion | null;
   operator: string;
   value: string;
@@ -131,7 +119,6 @@ export interface ConditionalLogicItemForm {
   imports: [
     TranslatePipe,
     MatDialogContent,
-    ErrorMessageBoxComponent,
     MatButton,
     MatIcon,
     TagComponent,
@@ -146,6 +133,7 @@ export interface ConditionalLogicItemForm {
 })
 export class ConditionalLogicDialogComponent implements AfterViewInit {
   protected readonly OPERATORS = OPERATORS;
+  protected readonly OPERATOR_SYMBOLS: Record<string, string> = OPERATOR_SYMBOLS;
   protected readonly DialogMode = DialogMode;
 
   private dialogRef = inject(MatDialogRef<ConditionalLogicDialogComponent>);
@@ -154,24 +142,33 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
   protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: DialogMode;
-    entity?: ConditionalLogicItem[][];
+    entity?:  AppQuestionConditionalLogic;
     questions: AppQuestion[];
     selectedIndex: number;
   };
 
-  loading = signal(false);
-  error = signal<HttpErrorResponse | null>(null);
+  dialogActionEvent = output<{ action: DialogMode | string, entity?: AppQuestionConditionalLogic }>();
 
-  dialogActionEvent = output<{ action: DialogMode | string, entity?: ConditionalLogicItem[][] }>();
+  model = signal<ConditionalLogicForm>(this.toFormModel(this.dialogData.entity ?? []));
 
-  conditionalLogicItemsArray: ConditionalLogicItem[][] = [];
-  conditionalLogicString = '';
+  protected form = form(this.model, (schema) => {
+    applyEach(schema, (group) => {
+      applyEach(group, (rule) => {
+        requiredField(rule.operand);
+        requiredField(rule.operator);
+        requiredField(rule.value);
+      })
+    })
+  });
 
-  model = signal<ConditionalLogicItemForm[][]>(this.toFormModel(this.dialogData.entity ?? []));
+  branching_logic = computed(() => {
+    const model = this.model();
+    return model.map((conditionalLogicItems) =>
+      conditionalLogicItems.map(i => `[${i.operand?.field_name}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+    ).join(' or ') ?? '';
+  })
 
-  form = form(this.model);
-
-  toFormModel(conditionalLogic: ConditionalLogicItem[][]): ConditionalLogicItemForm[][] {
+  toFormModel(conditionalLogic: AppQuestionConditionalLogic): ConditionalLogicForm {
     return conditionalLogic.map(items => items.map(item => ({
       operand: this.dialogData.questions.find(q => q.field_name === item.operand) ?? null,
       operator: item.operator,
@@ -179,36 +176,28 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
     })))
   }
 
-  addConditionalLogicItems() {
-    this.model.update(items => [...items, [{
+  addConditionalLogicGroup() {
+    this.model.update(groups => [...groups, [{
       operand: null,
       operator: '',
       value: ''
     }]]);
   }
 
-  // removeConditionalLogicItems(index: number) {
-  //   this.model.update(items => {
-  //     const newItems = [...items];
-  //     newItems.splice(index, 1);
-  //     return newItems;
-  //   });
-  // }
-
-  addConditionalLogicItem(parentIndex: number) {
-    this.model.update(items => items.map((group, i) =>
+  addConditionalLogicRule(parentIndex: number) {
+    this.model.update(groups => groups.map((group, i) =>
       i === parentIndex
         ? [...group, {operand: null, operator: '', value: ''}]
         : group
     ));
   }
 
-  removeConditionalLogicItem(parentIndex: number, index: number) {
-    this.model.update(items => items.map((group, i) =>
+  removeConditionalLogicRule(parentIndex: number, index: number) {
+    this.model.update(groups => groups.map((group, i) =>
       i === parentIndex
-        ? group.filter((_, j) => j !== index)
-        : group
-    ));
+         ? group.filter((_, j) => j !== index)
+         : group
+    ).filter(group => group.length > 0));
   }
 
 
@@ -217,23 +206,13 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
   }
 
   protected handleSaveAction(): void {
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: this.conditionalLogicItemsArray});
+    const t = this.model().map((group) => group.map(i => {
+      return {operand: i.operand!.field_name, operator: i.operator, value: i.value};
+    }));
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: t});
   }
 
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
-
-  // protected onItemEvent(event: ConditionalLogicItem[], index: number) {
-  //   if (event.length) {
-  //     this.conditionalLogicItemsArray[index] = event;
-  //   } else {
-  //     this.conditionalLogicItemsArray.splice(index, 1);
-  //   }
-  //
-  //   this.conditionalLogicString = this.conditionalLogicItemsArray.map((conditionalLogicItems) =>
-  //     conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
-  //   ).join(' or ');
-  // }
-
 }

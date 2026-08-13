@@ -12,6 +12,7 @@ import {
   SearchableMultiSelectComponent
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {JsonPipe} from '@angular/common';
 
 export interface QuestionnaireGeneralForm {
   name: string;
@@ -35,6 +36,7 @@ export interface QuestionnaireGeneralForm {
     FormField,
     SearchableMultiSelectComponent,
     MatSlideToggle,
+    JsonPipe,
   ]
 })
 export class QuestionnaireGeneralComponent {

@@ -4,11 +4,12 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {form, FormField} from '@angular/forms/signals';
+import {applyWhen, form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
+import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -64,7 +65,15 @@ export class QuestionnaireNotificationsComponent {
     }
   });
 
-  protected form = form(this.model);
+  protected form = form(this.model, (schema) => {
+    applyWhen(schema, ({valueOf}) => valueOf(schema.reminders.enabled),
+      (schemaPath) => {
+        requiredField(schemaPath.reminders.repeat);
+        requiredField(schemaPath.reminders.amount);
+        requiredField(schemaPath.reminders.unit);
+      },
+    );
+  });
 
   constructor() {
     effect(() => {

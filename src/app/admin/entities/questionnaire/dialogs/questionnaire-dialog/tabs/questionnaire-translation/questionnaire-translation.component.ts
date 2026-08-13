@@ -7,6 +7,8 @@ import {
   SearchableMultiSelectComponent
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 import {MatFormField, MatInput} from '@angular/material/input';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
 
 // export interface QuestionnaireTranslationsLanguageForm {
 //   languages: AppQuestionnaireLanguage[];
@@ -52,6 +54,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
     // SearchableMultiSelectComponent,
     MatFormField,
     MatInput,
+    CdkTextareaAutosize,
   ]
 })
 export class QuestionnaireTranslationComponent {
@@ -75,13 +78,44 @@ export class QuestionnaireTranslationComponent {
     ];
   });
 
+  _questionnaire = this.dialogState.questionnaire()!;
+
   protected model = signal<AppQuestionnaire>({//this.dialogData.restoredModel ?? {
-    ...this.dialogState.questionnaire()!,
-    title: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
-    description: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.description?.[lang.code] ?? ''}), {} as Record<string, string>),
-    startText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.startText?.[lang.code] ?? ''}), {} as Record<string, string>),
-    endText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.endText?.[lang.code] ?? ''}), {} as Record<string, string>),
-    warn: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.warn?.[lang.code] ?? ''}), {} as Record<string, string>),
+    ...this._questionnaire,
+    // title: withLanguage(this._questionnaire?.title, this._lang),
+    title: this.withLanguages(this._questionnaire.title),
+    // title: this._questionnaire.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
+    // description: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.description?.[lang.code] ?? ''}), {} as Record<string, string>),
+    description: this.withLanguages(this._questionnaire.description),
+
+    // startText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.startText?.[lang.code] ?? ''}), {} as Record<string, string>),
+    startText: this.withLanguages(this._questionnaire.startText),
+
+    // endText: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.endText?.[lang.code] ?? ''}), {} as Record<string, string>),
+    endText: this.withLanguages(this._questionnaire.endText)!,
+
+    // warn: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.warn?.[lang.code] ?? ''}), {} as Record<string, string>),
+    warn: this.withLanguages(this._questionnaire.warn),
+
+    questions: this._questionnaire.questions.map(q => {
+      return {
+        ...q,
+        field_label: this.withLanguages(q.field_label)!,
+        section_header: this.withLanguages(q.section_header),
+        field_note: this.withLanguages(q.field_note),
+        select_choices_or_calculations: q.select_choices_or_calculations?.map(c => {
+          return {
+            ...c,
+            label: this.withLanguages(c.label)!,
+          }
+        }),
+        range: q.range ? {
+          ...q.range,
+          labelLeft: this.withLanguages(q.range?.labelLeft),
+          labelRight: this.withLanguages(q.range?.labelRight),
+        } : undefined
+      }
+    }),
     //       questions: value.questions?.map(q => {
     //         return {
     //           ...q,
@@ -102,12 +136,21 @@ export class QuestionnaireTranslationComponent {
     //         }
     //       }) ?? [],
     schedule: {
+      ...this._questionnaire.schedule,
       notification: {
-        title: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
-        text: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.text?.[lang.code] ?? ''}), {} as Record<string, string>),
+        title: this.withLanguages(this._questionnaire.schedule?.notification?.title),
+        // title: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.title?.[lang.code] ?? ''}), {} as Record<string, string>),
+        // text: this.dialogState.questionnaire()!.languages.reduce((acc, lang) => ({...acc, [lang.code]: this.dialogState.questionnaire()?.schedule?.notification?.text?.[lang.code] ?? ''}), {} as Record<string, string>),
+        text: this.withLanguages(this._questionnaire.schedule?.notification?.text),
+
       }
     }
   });
+
+  withLanguages(value: Record<string, string> | undefined) {
+    if (!value) return undefined;
+    return this._questionnaire.languages.reduce((acc, lang) => ({...acc, [lang.code]: value?.[lang.code] ?? ''}), {} as Record<string, string>);
+  }
 
   // protected languagesForm = form(this.languagesModel);
 
