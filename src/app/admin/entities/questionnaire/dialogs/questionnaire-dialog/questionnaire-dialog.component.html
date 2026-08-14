@@ -102,14 +102,21 @@
           <app-questionnaire-translation />
         </ng-template>
       </mat-tab>
+
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Intervention Flow</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
+            Variables
+          </h2>
+<!--          @if (!dialogState.questionnaire()?.onDemand &&!dialogState.questionnaire()?.isSchedulingTabValid) {-->
+<!--            <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>-->
+<!--          }-->
         </ng-template>
         <ng-template matTabContent>
-          <app-questionnaire-intervention-flow />
+          <app-questionnaire-variables />
         </ng-template>
       </mat-tab>
+
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Preview</h2>
@@ -118,6 +125,16 @@
           <app-questionnaire-preview />
         </ng-template>
       </mat-tab>
+
+      <mat-tab [disabled]="!isGeneralTabValid">
+        <ng-template mat-tab-label>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Intervention Flow</h2>
+        </ng-template>
+        <ng-template matTabContent>
+          <app-questionnaire-intervention-flow />
+        </ng-template>
+      </mat-tab>
+
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Advanced (JSON) Editor</h2>

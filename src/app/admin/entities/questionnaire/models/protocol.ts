@@ -1,4 +1,7 @@
 import {AppQuestionnaireLanguage} from './questionnaire';
+import {
+  QuestionTemplateVariable
+} from '../dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
 
 export interface ProtocolWrapperDto {
   version?: string;
@@ -40,6 +43,8 @@ export interface ProtocolDto {
   isNotificationsTabValid?: boolean;
   isQuestionsTabValid?: boolean;
   isTranslationsTabValid?: boolean;
+  //---
+  variables?: QuestionTemplateVariable[];
   //---
   isValid?: boolean;
   isActive?: boolean;

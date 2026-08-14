@@ -1,0 +1,175 @@
+<!--<h2 mat-dialog-title>Insert variable</h2>-->
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span>Insert template variable for '' in question ''</span>
+<!--  <span> {{ `${_prefix}.title` | translate }}</span>-->
+<!--  <code-->
+<!--    class="italic text-secondary"> {{ form.field_name().value() }}</code>-->
+</h2>
+
+<mat-dialog-content class="p-4!">
+
+<!--<mat-dialog-content class="flex flex-col gap-4">-->
+
+<form novalidate>
+  <label for="template-variable" class="text-sm">Select a Template Variable</label>
+  <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+    <mat-select [formField]="selectForm">
+      @for (variable of dialogState.questionnaire()?.variables; track $index) {
+        <mat-option [value]="variable">{{ variable.name }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>
+      @if (selectForm().touched() && selectForm().invalid()) {
+        @for (error of selectForm().errors(); track error.kind) {
+          {{ error.message }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+
+  <p>Or create one</p>
+
+
+<!--  <mat-form-field class="w-full">-->
+<!--    <mat-label>Template Variables</mat-label>-->
+<!--    <mat-select [formField]="selectForm">-->
+<!--      @for (variable of dialogState.questionnaire()?.variables; track $index) {-->
+<!--        <mat-option [value]="variable">{{ variable.name }}</mat-option>-->
+<!--      }-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
+
+
+<!--  <mat-form-field class="w-full">-->
+<!--    <mat-label>Name</mat-label>-->
+<!--    <input matInput [formField]="form.name" />-->
+<!--  </mat-form-field>-->
+
+  <label for="name" class="text-sm">Name</label>
+  <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <input id="section_header" matInput [formField]="form.name" />
+    <mat-error>
+      @if (form.name().touched() && form.name().invalid()) {
+        @for (error of form.name().errors(); track error.kind) {
+          {{ error.message }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+
+<!--  <mat-form-field class="w-full">-->
+<!--    <mat-label>Question</mat-label>-->
+<!--    <mat-select [formField]="form.questionId">-->
+<!--      @for (question of dialogState.questionnaire()?.questions; track question.id) {-->
+<!--        <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>-->
+<!--      }-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
+
+  <label for="question" class="text-sm">Select a Question</label>
+  <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+    <mat-select [formField]="form.questionId">
+      @for (question of dialogState.questionnaire()?.questions; track question.id) {
+        <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>
+      @if (form.questionId().touched() && form.questionId().invalid()) {
+        @for (error of form.questionId().errors(); track error.kind) {
+          {{ error.message }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+
+
+<!--  <mat-form-field class="w-full">-->
+<!--    <mat-label>Calculation</mat-label>-->
+
+<!--    <mat-select [formField]="form.function">-->
+<!--&lt;!&ndash;      <mat-option [value]="undefined">Value</mat-option>&ndash;&gt;-->
+<!--      @for (item of aggregations; track item.value) {-->
+<!--        <mat-option [value]="item.value">{{ item.label }}</mat-option>-->
+<!--      }-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
+
+  <label for="question" class="text-sm">Select a Function</label>
+  <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+    <mat-select [formField]="form.function">
+      @for (item of aggregations; track item.value) {
+        <mat-option [value]="item.value">{{ item.label }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>
+      @if (form.function().touched() && form.function().invalid()) {
+        @for (error of form.function().errors(); track error.kind) {
+          {{ error.message }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+
+  @if (form.function().value()) {
+    <label for="section_header" class="text-sm">Start</label>
+    <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <input id="section_header" matInput [formField]="form.start" type="date" />
+      <mat-error>
+        @if (form.start().touched() && form.start().invalid()) {
+          @for (error of form.start().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        }
+      </mat-error>
+    </mat-form-field>
+
+<!--    <mat-form-field class="w-full">-->
+<!--      <mat-label>Start</mat-label>-->
+<!--      <input matInput type="date" [formField]="form.start" />-->
+<!--    </mat-form-field>-->
+
+
+<!--    <mat-form-field class="w-full">-->
+<!--      <mat-label>End</mat-label>-->
+<!--      <input matInput type="date" [formField]="form.end" />-->
+<!--    </mat-form-field>-->
+
+    <label for="section_header" class="text-sm">End</label>
+    <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+      <input id="section_header" matInput [formField]="form.end" type="date" />
+      <mat-error>
+        @if (form.end().touched() && form.end().invalid()) {
+          @for (error of form.end().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        }
+      </mat-error>
+    </mat-form-field>
+  }
+</form>
+</mat-dialog-content>
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ 'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <button (click)='save()'
+            mat-raised-button
+            color="primary"
+            type="button"
+            [disabled]="selectForm().invalid()">
+      {{ "SHARED.dialog.update" | translate }}
+    </button>
+  </div>
+</div>
+<!--<mat-dialog-actions align="end">-->
+<!--  <button mat-button mat-dialog-close>Cancel</button>-->
+<!--  <button mat-flat-button [disabled]="selectForm().invalid()" (click)="save()">Insert</button>-->
+<!--</mat-dialog-actions>-->

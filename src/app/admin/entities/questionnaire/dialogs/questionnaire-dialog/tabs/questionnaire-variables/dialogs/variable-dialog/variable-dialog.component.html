@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>
+  Insert variable
+</h2>
+
+<mat-dialog-content class="flex flex-col gap-4">
+
+<form novalidate>
+  <mat-form-field class="w-full">
+    <mat-label>Name</mat-label>
+    <input matInput [formField]="form.name" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Question</mat-label>
+    <mat-select [formField]="form.questionId">
+      @for (question of dialogState.questionnaire()?.questions; track question.id) {
+        <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field class="w-full">
+    <mat-label>Calculation</mat-label>
+
+    <mat-select [formField]="form.function">
+<!--      <mat-option [value]="undefined">Value</mat-option>-->
+      @for (item of aggregations; track item.value) {
+        <mat-option [value]="item.value">{{ item.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (form.function().value()) {
+    <mat-form-field class="w-full">
+      <mat-label>Start</mat-label>
+      <input matInput type="date" [formField]="form.start" />
+    </mat-form-field>
+
+
+    <mat-form-field class="w-full">
+      <mat-label>End</mat-label>
+      <input matInput type="date" [formField]="form.end" />
+    </mat-form-field>
+  }
+</form>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button [disabled]="form().invalid()" (click)="save()">Insert</button>
+</mat-dialog-actions>

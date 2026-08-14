@@ -1,0 +1,19 @@
+@let _prefix = 'ADMIN.questionnaire.dialog';
+
+<button (click)="openDialog(DialogMode.ADD)" mat-stroked-button color="primary" type="button">
+        <span class="font-bold flex items-center gap-2">
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          Add
+        </span>
+</button>
+
+@for (variable of dialogState.questionnaire()?.variables; track variable.id) {
+  <div>{{variable | json}}</div>
+  <button (click)="openDialog(DialogMode.EDIT, variable)" mat-stroked-button color="primary" type="button">
+        <span class="font-bold flex items-center gap-2">
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          Edit
+        </span>
+  </button>
+
+}

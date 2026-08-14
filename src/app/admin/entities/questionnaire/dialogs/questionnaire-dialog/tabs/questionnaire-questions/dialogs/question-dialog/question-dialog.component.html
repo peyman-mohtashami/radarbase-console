@@ -98,13 +98,17 @@
       </div>
 
 
-      <!--        <app-text-editor />-->
-      <label for="field_label" class="text-sm"
-             [class]="form.field_label[language]().touched() && form.field_label[language]().invalid() ? 'text-red-700' : ''">
-        {{ `${_prefix}.fieldLabel` | translate }} *
-      </label>
+      <div class="flex justify-between items-baseline">
+        <label for="field_label" class="text-sm"
+               [class]="form.field_label[language]().touched() && form.field_label[language]().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.fieldLabel` | translate }} *
+        </label>
+        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_label', fieldLabelInput)">
+          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
+        </button>
+      </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-          <textarea id="field_label" matInput [formField]="form.field_label[language]" cdkTextareaAutosize
+          <textarea #fieldLabelInput id="field_label" matInput [formField]="form.field_label[language]" cdkTextareaAutosize
                     rows="3"></textarea>
         <mat-error>
           @if (form.field_label[language]().touched() && form.field_label[language]().invalid()) {
@@ -115,10 +119,14 @@
         </mat-error>
       </mat-form-field>
 
-
-      <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
+      <div class="flex justify-between items-baseline">
+        <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
+        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('section_header', sectionHeaderInput)">
+          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
+        </button>
+      </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-          <textarea id="section_header" matInput [formField]="form.section_header[language]" cdkTextareaAutosize
+          <textarea #sectionHeaderInput id="section_header" matInput [formField]="form.section_header[language]" cdkTextareaAutosize
                     rows="3"></textarea>
         <mat-error>
           @if (form.section_header[language]().touched() && form.section_header[language]().invalid()) {
@@ -129,9 +137,14 @@
         </mat-error>
       </mat-form-field>
 
-      <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
+      <div class="flex justify-between items-baseline">
+        <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
+        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_note', fieldNoteInput)">
+          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
+        </button>
+      </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-          <textarea id="field_note" matInput [formField]="form.field_note[language]" cdkTextareaAutosize
+          <textarea #fieldNoteInput id="field_note" matInput [formField]="form.field_note[language]" cdkTextareaAutosize
                     rows="3"></textarea>
         <mat-error>
           @if (form.field_note[language]().touched() && form.field_note[language]().invalid()) {

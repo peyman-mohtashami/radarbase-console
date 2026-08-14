@@ -1,3 +1,7 @@
+import {
+  QuestionTemplateVariable
+} from '../dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
+
 export interface AppQuestionnaire {
   id: string;
   version: string;
@@ -30,6 +34,8 @@ export interface AppQuestionnaire {
   isNotificationsTabValid?: boolean;
   isQuestionsTabValid?: boolean;
   isTranslationsTabValid?: boolean;
+  //---
+  variables?: QuestionTemplateVariable[];
   //---
   isActive?: boolean;
   isValid?: boolean;

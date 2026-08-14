@@ -12,7 +12,6 @@ import {PreviewStateService} from './services/preview-state.service';
 import {evaluateConditionalLogic} from './services/parsers';
 import {QuestionType} from './models/question';
 import {parsePlaceholder, Placeholder} from './pipes/replace-placeholders.pipe';
-import {MatFormField, MatInput} from '@angular/material/input';
 import {debounceTime} from 'rxjs/operators';
 import {
   PreviewPlaceholderFormComponent

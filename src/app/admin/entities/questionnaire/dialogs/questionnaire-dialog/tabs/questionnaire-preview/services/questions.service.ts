@@ -62,7 +62,7 @@ export class QuestionsService {
       const questions = groupedQuestions.get(key) ?? [];
       questions.push({
         ...question,
-        section_header: i > 0 && !section_header && matrix_group_name === questions[i - 1].matrix_group_name ? questions[i - 1].section_header : section_header,
+        section_header: i > 0 && !section_header && matrix_group_name === questions[i - 1]?.matrix_group_name ? questions[i - 1]?.section_header : section_header,
         visible: true
         // isAutoNext: autoNextQuestionnaireTypes.has(field_type),
       });

@@ -38,6 +38,11 @@ import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
+// import {
+//   InsertVariableDialogComponent
+// } from '../../../questionnaire-variables/dialogs/insert-variable.dialog.component.ts/insert-variable.dialog.component';
+import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/template-field.model';
+import {VariableDialogComponent} from '../variable-dialog/variable-dialog.component';
 
 export interface QuestionnaireQuestionForm {
   field_name: string;
@@ -75,6 +80,7 @@ export interface QuestionnaireQuestionForm {
   calculation_args: string;
   date_type: string;
   isActive: boolean;
+  // variables: QuestionTemplateVariable[];
 }
 
 @Component({
@@ -166,6 +172,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     calculation_args: this._question.calculation_args ?? '',
     date_type: this._question.date_type ?? 'date',
     isActive: this._question.isActive ?? false,
+    // variables: this._question.variables ?? []
   });
 
   protected form = form(this.model, (schema) => {
@@ -297,11 +304,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       section_header: question.section_header?.[this._lang] ? question.section_header : undefined,
       required_field: question.required_field,
       field_note: question.field_note?.[this._lang] ? question.field_note : undefined,
-      matrix_group_name: question.matrix_group_name || undefined,
+      matrix_group_name: question.matrix_group_name || '',
       conditionalLogic: question.conditionalLogic?.length ? question.conditionalLogic : undefined,
       branching_logic: question.branching_logic || undefined,
       isActive: question.isActive,
-      isValid: question.isValid
+      isValid: question.isValid,
+      // variables: question.variables,
     }
     switch (question.field_type) {
       case 'text':
@@ -375,20 +383,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     this.close();
   }
 
-  // private updateQuestionList(questions: AppQuestion[]){
-  //   this.dialogState.questionnaire.update(value => {
-  //     // const questions = [...(value?.questions ?? [])];
-  //     // moveItemInArray(questions, event.previousIndex, event.currentIndex);
-  //     const validated = checkValidation(questions);
-  //     console.log('^^^Class: QuestionnaireQuestionsComponent, Function: , Line 163 validated' , validated);
-  //     return {
-  //       ...value!,
-  //       questions: [...validated],
-  //       isQuestionsTabValid: validated.every(q => q.isValid)
-  //     }
-  //   });
-  // }
-
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
@@ -453,4 +447,168 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   // private formatDateForValidation(value: Date): string {
   //   return value.toISOString();
   // }
+
+  protected insertVariable(
+    name: string,
+    input: HTMLTextAreaElement,
+  ): void {
+    // const dialogRef = this.dialog.open(
+    //   VariableDialogComponent,
+    //   {
+    //     width: '500px',
+    //     data: {
+    //       // pass your actual questionnaire questions here
+    //       // questions: this.questions,
+    //     },
+    //   },
+    // );
+    //
+    // dialogRef.afterClosed().subscribe(
+    //   (variable: QuestionTemplateVariable | undefined) => {
+    //     if (!variable) {
+    //       return;
+    //     }
+    //     console.log('Class: QuestionDialogComponent, Function: , Line 470 variable' , variable);
+    //
+    //     this.insertVariableAtCursor(input, variable);
+    //   },
+    // );
+
+
+    const dialogRef = this.dialog.open(VariableDialogComponent, {
+      id: 'insert-variable-dialog',
+      data: {id: 'insert-variable-dialog'}, //, entity: this.model().conditionalLogic, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
+      panelClass: 'tailwind-slide-panel',
+      width: '40%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    const dialogActionSubscription = dialogRef.afterClosed().subscribe(
+      (variable: QuestionTemplateVariable | undefined) => {
+        if (!variable) {
+          return;
+        }
+        console.log('Class: QuestionDialogComponent, Function: , Line 470 variable' , variable);
+
+        this.insertVariableAtCursor(name, input, variable);
+      },
+    );
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
+  // protected readonly fieldLabel = signal<TemplateField>({
+  //   value: '',
+  //   variables: [],
+  // });
+
+  private insertVariableAtCursor(
+    name: string,
+    input: HTMLTextAreaElement,
+    variable: QuestionTemplateVariable,
+  ): void {
+    const placeholder = `{{${variable.name}}}`;
+
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? start;
+
+    const editedText = input.value.substring(0, start) + placeholder + input.value.substring(end);
+
+    this.updateModel(name, editedText);
+
+    // this.model.update(value => {
+    //   return {
+    //     ...value,
+    //     field_label: {
+    //       ...value.field_label,
+    //       [this._lang]: editedText,
+    //     },
+    //     // variables: [
+    //     //   ...value.variables,
+    //     //   variable,
+    //     // ],
+    //   }
+    // })
+    // this.fieldLabel.set({
+    //   value,
+    //   variables: [
+    //     ...current.variables,
+    //     variable,
+    //   ],
+    // });
+
+    requestAnimationFrame(() => {
+      const cursorPosition = start + placeholder.length;
+
+      input.focus();
+      input.setSelectionRange(
+        cursorPosition,
+        cursorPosition,
+      );
+    });
+  }
+
+  updateModel(name: string, editedText: string) {
+    this.model.update(value => {
+      switch (name) {
+        case 'field_label':
+          return {
+            ...value,
+            field_label: {
+              ...value.field_label,
+              [this._lang]: editedText,
+            },
+          }
+        case 'section_header':
+          return {
+            ...value,
+            section_header: {
+              ...value.section_header,
+              [this._lang]: editedText,
+            },
+          }
+        case 'field_note':
+          return {
+            ...value,
+            field_note: {
+              ...value.field_note,
+              [this._lang]: editedText,
+            },
+          }
+      }
+      return {
+        ...value,
+        field_label: {
+          ...value.field_label,
+          [this._lang]: editedText,
+        },
+        // variables: [
+        //   ...value.variables,
+        //   variable,
+        // ],
+      }
+    })
+  }
+
+  protected readonly questions = [
+    {
+      id: 'firstName',
+      label: 'First name',
+    },
+    {
+      id: 'gameScore',
+      label: 'Game score',
+    },
+    {
+      id: 'heartRate',
+      label: 'Heart rate',
+    },
+  ];
 }
