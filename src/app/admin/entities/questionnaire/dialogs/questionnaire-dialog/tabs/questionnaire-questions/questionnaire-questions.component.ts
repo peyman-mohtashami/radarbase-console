@@ -1,5 +1,8 @@
 import {afterNextRender, Component, ElementRef, inject, Injector, viewChild} from '@angular/core';
-import {AppQuestion} from '../../../../models/questionnaire';
+import {
+  AppQuestion,
+  AppQuestionConditionalLogicRule
+} from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {CdkScrollable} from '@angular/cdk/scrolling';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -10,6 +13,7 @@ import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog
 import {DialogMode} from '../../../../../../shared/enums/dialog';
 import {QUESTION_TYPES} from '../questionnaire-preview/question-type/question-type.registry';
 import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
+import {OPERATORS} from './dialogs/conditional-logic-dialog/conditional-logic-dialog.component';
 
 @Component({
   selector: 'app-questionnaire-questions',
@@ -69,24 +73,34 @@ export class QuestionnaireQuestionsComponent {
   /** Adds a question of the given type at `index` (appended when omitted) and scrolls it into view. */
   protected addQuestion(type: string, index?: number) {
     const id = crypto.randomUUID();
-
-    this.dialogState.questionnaire.update(value => {
-      const questions: AppQuestion[] = [...(value?.questions ?? [])];
-      questions.splice(index ?? questions.length, 0, {
-        id,
-        field_name: '',
-        field_label: {},
-        required_field: true,
-        field_type: type,
-        isActive: true,
-      });
-      checkValidation(questions);
-      return {
-        ...value!,
-        questions,
-        isQuestionsTabValid: questions.every(q => q.isValid)
-      }
+    const questions: AppQuestion[] = [...(this.dialogState.questionnaire()?.questions ?? [])];
+    questions.splice(index ?? questions.length, 0, {
+      id,
+      field_name: '',
+      field_label: {},
+      required_field: true,
+      field_type: type,
+      isActive: true,
     });
+    this.updateQuestionList(questions);
+
+    // this.dialogState.questionnaire.update(value => {
+    //   const questions: AppQuestion[] = [...(value?.questions ?? [])];
+    //   questions.splice(index ?? questions.length, 0, {
+    //     id,
+    //     field_name: '',
+    //     field_label: {},
+    //     required_field: true,
+    //     field_type: type,
+    //     isActive: true,
+    //   });
+    //   checkValidation(questions);
+    //   return {
+    //     ...value!,
+    //     questions,
+    //     isQuestionsTabValid: questions.every(q => q.isValid)
+    //   }
+    // });
 
     this.scrollToQuestion(id);
   }
@@ -102,15 +116,17 @@ export class QuestionnaireQuestionsComponent {
   }
 
   protected removeQuestion(index: number) {
-    this.dialogState.questionnaire.update(value => {
-      const questions = (value?.questions ?? []).filter((_, i) => i !== index);
-      checkValidation(questions);
-      return {
-        ...value!,
-        questions,
-        isQuestionsTabValid: questions.every(q => q.isValid)
-      }
-    });
+    const questions = (this.dialogState.questionnaire()?.questions ?? []).filter((_, i) => i !== index);
+    this.updateQuestionList(questions);
+    // this.dialogState.questionnaire.update(value => {
+    //   const questions = (value?.questions ?? []).filter((_, i) => i !== index);
+    //   checkValidation(questions);
+    //   return {
+    //     ...value!,
+    //     questions,
+    //     isQuestionsTabValid: questions.every(q => q.isValid)
+    //   }
+    // });
   }
 
   protected onSelectQuestion(index: number, question: AppQuestion) {
@@ -124,14 +140,32 @@ export class QuestionnaireQuestionsComponent {
       return;
     }
 
+    const questions = [...(this.dialogState.questionnaire()?.questions ?? [])];
+    moveItemInArray(questions, event.previousIndex, event.currentIndex);
+    this.updateQuestionList(questions);
+
+    // this.dialogState.questionnaire.update(value => {
+    //   const questions = [...(value?.questions ?? [])];
+    //   moveItemInArray(questions, event.previousIndex, event.currentIndex);
+    //   const validated = checkValidation(questions);
+    //   return {
+    //     ...value!,
+    //     questions: [...validated],
+    //     isQuestionsTabValid: validated.every(q => q.isValid)
+    //   }
+    // });
+  }
+
+  private updateQuestionList(questions: AppQuestion[]){
     this.dialogState.questionnaire.update(value => {
-      const questions = [...(value?.questions ?? [])];
-      moveItemInArray(questions, event.previousIndex, event.currentIndex);
-      checkValidation(questions);
+      // const questions = [...(value?.questions ?? [])];
+      // moveItemInArray(questions, event.previousIndex, event.currentIndex);
+      const validated = checkValidation(questions);
+      console.log('^^^Class: QuestionnaireQuestionsComponent, Function: , Line 163 validated' , validated);
       return {
         ...value!,
-        questions,
-        isQuestionsTabValid: questions.every(q => q.isValid)
+        questions: [...validated],
+        isQuestionsTabValid: validated.every(q => q.isValid)
       }
     });
   }
@@ -153,11 +187,46 @@ export class QuestionnaireQuestionsComponent {
 }
 
 export function checkValidation(questions: AppQuestion[]) {
-  questions.forEach(q => validateQuestion(q));
+  return questions.map((q, i) => {
+    if (validateQuestion(q, i, questions)) {
+      return {...q, isValid: true};
+    } else {
+      return {...q, isValid: false};
+    }
+  });
 }
 
-export function validateQuestion(question: AppQuestion) {
+export function validateQuestion(question: AppQuestion, index: number, questions: AppQuestion[]) {
   // check conditional logic
+  const t = question.conditionalLogic?.some(group => {
+    return group.some(rule => {
+        return !validateConditionalLogic(rule, index, questions);
+      }
+    )
+  });
+  console.log('^^^Class: validateQuestion, Function: validateQuestion, Line 206 !t' , !t);
+  return !t;
   // check calc
   // check template variables
+}
+
+export function validateConditionalLogic(rule: AppQuestionConditionalLogicRule, questionIndex: number, questions: AppQuestion[]) {
+
+  const matchedQuestion = questions.find((q, i) => {
+    return (i < questionIndex && q.field_name === rule.operand);
+  });
+  if (!matchedQuestion) return false;
+
+  if (matchedQuestion.field_type === 'radio' || matchedQuestion.field_type === 'range' || matchedQuestion.field_type === 'checkbox') {
+    const matchedChoice = matchedQuestion.select_choices_or_calculations?.find((choice) => choice.code === rule.value)
+    if (!matchedChoice) return false;
+  }
+
+  if (matchedQuestion.field_type === 'yesno') {
+    if (rule.value !== '1' && rule.value !== '0') {
+      return false;
+    }
+  }
+
+  return true;
 }

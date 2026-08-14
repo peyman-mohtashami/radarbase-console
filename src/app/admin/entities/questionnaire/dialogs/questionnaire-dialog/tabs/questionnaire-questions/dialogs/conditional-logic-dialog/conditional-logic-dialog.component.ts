@@ -8,7 +8,7 @@ import {TagComponent} from '../../../../../../../../../shared/components/tag/tag
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../models/questionnaire';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {applyEach, form, FormField} from '@angular/forms/signals';
+import {applyEach, form, FormField, validate} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
@@ -151,10 +151,37 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
 
   model = signal<ConditionalLogicForm>(this.toFormModel(this.dialogData.entity ?? []));
 
+  protected readonly compareQuestions = (a: AppQuestion | null, b: AppQuestion | null) =>
+    a?.field_name === b?.field_name;
+
   protected form = form(this.model, (schema) => {
     applyEach(schema, (group) => {
       applyEach(group, (rule) => {
         requiredField(rule.operand);
+        validate(rule.operand, ({value}) => {
+          const operand = value();
+
+          if (!operand) {
+            return null;
+          }
+
+          const isAllowedOperand = this.dialogData.questions
+            .slice(0, this.dialogData.selectedIndex)
+            .some(question =>
+              question.field_name === operand.field_name &&
+              question.field_type !== 'descriptive' &&
+              question.field_type !== 'audion' &&
+              question.field_type !== 'info'
+            );
+
+          return isAllowedOperand
+            ? null
+            : {
+              kind: 'invalidOperand',
+              message: 'Selected question is no longer available',
+            };
+        });
+
         requiredField(rule.operator);
         requiredField(rule.value);
       })

@@ -349,16 +349,36 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         }
         return q;
       }) ?? [];
-      checkValidation(questions);
+      // checkValidation(questions);
+      const validated = checkValidation(questions);
       return {
         ...value!,
-        questions: [...questions],
-        isQuestionsTabValid: questions.every(q => q.isValid)
+        questions: [...validated],
+        isQuestionsTabValid: validated.every(q => q.isValid)
       }
+      // return {
+      //   ...value!,
+      //   questions: [...questions],
+      //   isQuestionsTabValid: questions.every(q => q.isValid)
+      // }
     })
 
     this.close();
   }
+
+  // private updateQuestionList(questions: AppQuestion[]){
+  //   this.dialogState.questionnaire.update(value => {
+  //     // const questions = [...(value?.questions ?? [])];
+  //     // moveItemInArray(questions, event.previousIndex, event.currentIndex);
+  //     const validated = checkValidation(questions);
+  //     console.log('^^^Class: QuestionnaireQuestionsComponent, Function: , Line 163 validated' , validated);
+  //     return {
+  //       ...value!,
+  //       questions: [...validated],
+  //       isQuestionsTabValid: validated.every(q => q.isValid)
+  //     }
+  //   });
+  // }
 
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
