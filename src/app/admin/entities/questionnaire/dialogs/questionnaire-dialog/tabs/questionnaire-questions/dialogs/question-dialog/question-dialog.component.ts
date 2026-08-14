@@ -182,6 +182,15 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     requiredField(schema.field_type);
     disabled(schema.field_type);
     requiredField(schema.field_label[this.lang()]);
+    validate(schema.field_label, ({value}) => {
+      //extract template vars
+      //validate
+      return null;
+      return {
+        kind: 'wrongTemplateVariable',
+        message: 'SHARED.validatorError.wrongTemplateVariable',
+      };
+    });
     applyEach(schema.select_choices_or_calculations, (choice) => {
       required(choice.code, {
         when: ({ valueOf }) => {
