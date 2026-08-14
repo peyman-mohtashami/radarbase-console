@@ -13,7 +13,7 @@
           <div>{{ language.label }}</div>
         }
 
-        <div class="">Title</div>
+        <div class="">{{ `${_prefix}.title` | translate }}</div>
         @for (language of languagesList(); track language) {
           @if (form.title) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -22,7 +22,7 @@
           }
         }
 
-        <div class="">Description</div>
+        <div class="">{{ `${_prefix}.description` | translate }}</div>
         @for (language of languagesList(); track language) {
           @if (form.description) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -32,7 +32,7 @@
         }
 
         @if (entity?.showIntroduction !== 'no') {
-          <div class="">Start Text</div>
+          <div class="">{{ `${_prefix}.startText` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.startText) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -43,17 +43,15 @@
           }
         }
 
-        <div class="">End Text</div>
+        <div class="">{{ `${_prefix}.endText` | translate }}</div>
         @for (language of languagesList(); track language) {
-          <!--          @if (form.endText) {-->
           <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
             <textarea id="" matInput [formField]="form.endText[language.code]" cdkTextareaAutosize rows="4"></textarea>
           </mat-form-field>
-          <!--          }-->
         }
 
         @if (entity?.warningEnabled) {
-          <div class="">Warn</div>
+          <div class="">{{ `${_prefix}.warningText` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.warn) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -64,7 +62,7 @@
         }
 
         @if (!entity?.onDemand) {
-          <div class="">Notification Title</div>
+          <div class="">{{ `${_prefix}.notificationTitle` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.title) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -74,7 +72,7 @@
             }
           }
 
-          <div class="">Notification Text</div>
+          <div class="">{{ `${_prefix}.notificationMessage` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.text) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
@@ -87,13 +85,13 @@
 
         @for (question of form.questions; track $index; let i = $index) {
           <div class="border-y">
-            Question <code class="text-secondary">[{{ entity?.questions?.[i]?.field_name }}] ({{ entity?.questions?.[i]?.field_type }})</code>
+            {{ `${_prefix}.question.title` | translate }} <code class="text-secondary">[{{ entity?.questions?.[i]?.field_name }}] ({{ entity?.questions?.[i]?.field_type }})</code>
           </div>
           @for (language of languagesList(); track language) {
             <div></div>
           }
 
-          <div class="px-8!">Field Label</div>
+          <div class="px-8!">{{ `${_prefix}.question.fieldLabel` | translate }}</div>
           @for (language of languagesList(); track language) {
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
               <textarea id="" matInput [formField]="question.field_label[language.code]" cdkTextareaAutosize
@@ -102,7 +100,7 @@
           }
 
           @if (question.section_header) {
-            <div class="px-8!">Section Header</div>
+            <div class="px-8!">{{ `${_prefix}.question.sectionHeader` | translate }}</div>
             @for (language of languagesList(); track language) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
                 <textarea id="" matInput [formField]="question.section_header[language.code]" cdkTextareaAutosize
@@ -112,7 +110,7 @@
           }
 
           @if (question.field_note) {
-            <div class="px-8!">Field Note</div>
+            <div class="px-8!">{{ `${_prefix}.question.fieldNote` | translate }}</div>
             @for (language of languagesList(); track language) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
                 <textarea id="" matInput [formField]="question.field_note[language.code]" cdkTextareaAutosize
@@ -122,12 +120,7 @@
           }
 
           @for (choice of question.select_choices_or_calculations; track $index; let j = $index) {
-<!--            <div>Choice {{ entity?.questions?.[i].select_choices_or_calculations?.[j]?.code }}</div>-->
-<!--            @for (language of languagesList(); track language) {-->
-<!--              <div></div>-->
-<!--            }-->
-
-            <div class="px-8!">Choice <code class="text-secondary">[{{ entity?.questions?.[i].select_choices_or_calculations?.[j]?.code }}]</code> Label</div>
+            <div class="px-8!">{{ `${_prefix}.question.choice` | translate }} <code class="text-secondary">[{{ entity?.questions?.[i].select_choices_or_calculations?.[j]?.code }}]</code> {{ `${_prefix}.question.choiceLabel` | translate }}</div>
             @for (language of languagesList(); track language) {
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
                 <textarea id="" matInput [formField]="choice.label[language.code]" cdkTextareaAutosize rows="1"></textarea>
@@ -136,26 +129,22 @@
           }
 
           @if (question.range?.labelLeft) {
-            <div class="px-8!">Range Left Label</div>
+            <div class="px-8!">{{ `${_prefix}.question.rangeLabelLeft` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <!--            @if (question.range?.labelLeft) {-->
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
                 <textarea matInput [formField]="question.range!.labelLeft![language.code]" cdkTextareaAutosize
                           rows="1"></textarea>
               </mat-form-field>
-              <!--            }-->
             }
           }
 
           @if (question.range?.labelRight) {
-            <div class="px-8!">Range Right Label</div>
+            <div class="px-8!">{{ `${_prefix}.question.rangeLabelRight` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <!--            @if (question.range?.labelRight) {-->
               <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
                 <textarea matInput [formField]="question.range!.labelRight![language.code]" cdkTextareaAutosize
                           rows="1"></textarea>
               </mat-form-field>
-              <!--            }-->
             }
           }
 

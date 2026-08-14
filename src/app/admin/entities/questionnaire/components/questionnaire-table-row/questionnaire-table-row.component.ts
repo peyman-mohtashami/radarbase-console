@@ -14,6 +14,7 @@ import {JsonPipe} from '@angular/common';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
+import {OffsetTimePipe} from '../../../../../shared/pipes/offset-time.pipe';
 
 @Component({
   selector: 'app-questionnaire-table-row',
@@ -27,6 +28,7 @@ import {QuestionnaireStore} from '../../services/questionnaire.store';
     TagComponent,
     MatSlideToggle,
     JsonPipe,
+    OffsetTimePipe,
   ]
 })
 export class QuestionnaireTableRowComponent {

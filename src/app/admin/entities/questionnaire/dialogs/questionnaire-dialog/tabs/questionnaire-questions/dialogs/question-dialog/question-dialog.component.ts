@@ -164,7 +164,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     multi_line: this._question.multi_line ?? false,
     calculation_fn: this._question.calculation_fn ?? '',
     calculation_args: this._question.calculation_args ?? '',
-    date_type: this._question.date_type ?? '',
+    date_type: this._question.date_type ?? 'date',
     isActive: this._question.isActive ?? false,
   });
 
@@ -215,12 +215,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         return v === 'slider'
       }
     });
-    required(schema.field_annotation.image, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'timed'
-      }
-    });
+    // required(schema.field_annotation.image, {
+    //   when: ({ valueOf }) => {
+    //     const v = valueOf(schema.field_type);
+    //     return v === 'timed'
+    //   }
+    // });
     required(schema.field_annotation.timer.start, {
       when: ({ valueOf }) => {
         const v = valueOf(schema.field_type);
@@ -233,12 +233,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         return v === 'timed'
       }
     });
-    required(schema.field_annotation.unit, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'timed'
-      }
-    });
+    // required(schema.field_annotation.unit, {
+    //   when: ({ valueOf }) => {
+    //     const v = valueOf(schema.field_type);
+    //     return v === 'timed'
+    //   }
+    // });
     required(schema.calculation_fn, {
       when: ({ valueOf }) => {
         const v = valueOf(schema.field_type);

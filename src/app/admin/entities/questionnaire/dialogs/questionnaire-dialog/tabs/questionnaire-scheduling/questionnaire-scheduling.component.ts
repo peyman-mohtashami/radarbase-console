@@ -112,7 +112,7 @@ export class QuestionnaireSchedulingComponent {
     },
     repeatQuestionnaire: {
       unit: 'min',
-      unitsFromZero: this.convertUnitFromTimeZero(this._schedule?.repeatQuestionnaire?.unitsFromZero) ?? [{day: '0', time: ''}],
+      unitsFromZero: this.minutesToOffsets(this._schedule?.repeatQuestionnaire?.unitsFromZero) ?? [{day: '0', time: ''}],
     },
     completionWindow: {
       unit: this._schedule?.completionWindow?.unit ?? '',
@@ -155,7 +155,7 @@ export class QuestionnaireSchedulingComponent {
           ...model,
           repeatQuestionnaire: {
             unit: 'min',
-            unitsFromZero: this.convertUnitFromTimeZero2(model.repeatQuestionnaire.unitsFromZero), //{day: string; time: string;}[];
+            unitsFromZero: this.offsetsToMinutes(model.repeatQuestionnaire.unitsFromZero), //{day: string; time: string;}[];
           },
         },
         isSchedulingTabValid: this.form().valid()
@@ -168,6 +168,7 @@ export class QuestionnaireSchedulingComponent {
       // if (!updated.schedule?.relativeToReferenceTime) {
       //   delete updated.schedule?.referenceTimestamp;
       // }
+      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 171 updated' , updated);
       this.dialogState.questionnaire.set({...updated});
     });
   }
@@ -196,14 +197,33 @@ export class QuestionnaireSchedulingComponent {
     moveItemInFormArray(this.form.repeatQuestionnaire.unitsFromZero, event.previousIndex, event.currentIndex);
   }
 
-  convertUnitFromTimeZero(offsets?: string[]) {
-    if (!offsets) return undefined;
-    return [{day: '0', time: ''}]
+  minutesToOffsets(minutes?: string[]): { day: string; time: string; }[] {
+    // if (!minutes) return undefined;
+    return minutes?.map(m => minuteToOffset(Number(m))) ?? [];
+    // return [{day: '0', time: ''}]
   }
 
-  convertUnitFromTimeZero2(offsets: { day: string; time: string; }[]): string[] {
-    return offsets.map(o => `${(Number(o.day) * 1000) + Number(o.time)}`);
+  offsetsToMinutes(offsets: { day: string; time: string; }[]): string[] {
+    return offsets.map(o => `${offsetToMinute(o.day, o.time)}`); //`${(Number(o.day) * ) + Number(o.time)}`);
   }
+}
+
+function minuteToOffset(minute: number) {
+  const day = Math.floor(minute / (24 * 60));
+  const remainingMinutes = minute % (24 * 60);
+
+  const hours = Math.floor(remainingMinutes / 60);
+  const minutes = remainingMinutes % 60;
+
+  return {
+    day: String(day),
+    time: `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`,
+  };
+}
+
+function offsetToMinute(day: string, time: string) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return Number(day) * 24 * 60 + hours * 60 + minutes;
 }
 
 export function moveItemInFormArray<T>(

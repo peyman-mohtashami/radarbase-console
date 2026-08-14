@@ -1,19 +1,19 @@
-@let _prefix = 'ADMIN.questionnaire.dialog';
+@let _prefix = 'ADMIN.questionnaire.dialog.question';
 @let language = dialogState.questionnaire()!.defaultLanguage!.code;
 
 <label for="select_choices_or_calculations" class="text-sm">
-  {{ `${_prefix}.questionChoicesLabel` | translate }} *
+  {{ `${_prefix}.choices` | translate }} *
 </label>
 <div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" class="" cdkDropListOrientation="vertical">
   <div class="w-full flex flex-col text-sm gap-1 border rounded p-2 mb-4">
     <div class="flex items-center gap-1 w-full">
       <div class="w-7 grow-0 shrink-0"></div>
       <div class="w-3/12! grow-0"
-           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.questionChoiceCode` | translate }}
+           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.choiceCode` | translate }}
         *
       </div>
       <div class="grow"
-           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.questionChoiceLabel` | translate }}
+           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.choiceLabel` | translate }}
         *
       </div>
       <div class="w-7 grow-0 shrink-0"></div>

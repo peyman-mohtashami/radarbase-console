@@ -1,5 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire';
-<!--{{entity() | json}}-->
+
 <app-entity-table-row [gridView]="gridView()"
             [tableFields]="configService.getTableFields()"
             [extensionClass]="extensionClass()"
@@ -15,7 +15,7 @@
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
     @case ('name') {
-      <a class="font-bold cursor-pointer" (click)="openDialog()">{{ entity()['name'] || '-' }}</a>
+      <button class="font-bold cursor-pointer" (click)="openDialog()">{{ entity()['name'] || '-' }}</button>
       <div class="flex items-center flex-wrap gap-2">
         <span class="text-xs font-bold text-neutral-400 uppercase">{{`${_prefix}.availableLanguages` | translate}}</span>
         <span>
@@ -36,27 +36,21 @@
     @case ('type') {
       @if (entity().onDemand) {
         <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
-          On Demand
+          {{`${_prefix}.onDemand` | translate}}
         </app-tag>
       } @else {
+        <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
+          {{`${_prefix}.scheduled` | translate}}
+        </app-tag>
         @if (!entity().schedule?.repeatedProtocol) {
-          <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">
-            Scheduled
-          </app-tag>
-          <div
-            [innerHTML]="`${_prefix}.oneTimeProtocol.tableContent` | translate">
-          </div>
+          <p class="font-bold">{{ `${_prefix}.oneTimeProtocol.tableContent` | translate }}</p>
         } @else {
-  <!--        @if (repeatProtocol.amount === 9999 && repeatProtocol.unit === 'year' ) {-->
-  <!--          <div-->
-  <!--            [innerHTML]="'ADMIN.protocol.oneTimeProtocol.tableContent' | translate">-->
-  <!--          </div>-->
-  <!--        } @else {-->
           @let repeatProtocol = entity().schedule?.repeatProtocol;
-            <div
-              [innerHTML]="`${_prefix}.repeatProtocol.tableContent` | translate: {amount: repeatProtocol?.amount, unit: repeatProtocol?.unit}">
-            </div>
-          }
+          <p class="font-bold">{{ `${_prefix}.repeatProtocol.tableContent` | translate: {amount: repeatProtocol?.amount, unit: repeatProtocol?.unit} }}</p>
+        }
+        @for(offset of entity().schedule?.repeatQuestionnaire?.unitsFromZero; track $index){
+          <p>{{offset | offsetTime}}</p>
+        }
         @if (entity().schedule?.completionWindow; as completionWindow) {
           <div>
             {{
@@ -68,10 +62,6 @@
           </div>
         }
       }
-<!--      } @else {-->
-<!--        {{'On Demand'}}-->
-<!--      }-->
-
     }
     @case ('completionWindow') {
       @if (entity().schedule?.completionWindow; as completionWindow) {

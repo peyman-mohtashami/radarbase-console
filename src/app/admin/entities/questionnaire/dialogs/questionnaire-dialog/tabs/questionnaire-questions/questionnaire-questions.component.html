@@ -7,7 +7,7 @@
        id="question-types-drop-list"
        cdkDropListSortingDisabled
        [cdkDropListConnectedTo]="['questions-drop-list']">
-    <span class="font-bold">Question Types</span>
+    <span class="font-bold">{{ `${_prefix}.questionTypes` | translate }}</span>
     @for (group of QUESTION_TYPES; track $index) {
       <div class="flex flex-col gap-2">
         @for (type of group.types; track type.type) {
@@ -28,7 +28,7 @@
 
   <div class="grow w-3/4 h-full overflow-y-auto" cdkScrollable>
     <div class="p-2 relative flex flex-col min-h-full">
-      <span class="font-bold">{{ `${_prefix}.questionsLabel` | translate }}</span>
+      <span class="font-bold">{{ `${_prefix}.questions` | translate }}</span>
       <div #choicesContainer
            cdkDropList
            id="questions-drop-list"

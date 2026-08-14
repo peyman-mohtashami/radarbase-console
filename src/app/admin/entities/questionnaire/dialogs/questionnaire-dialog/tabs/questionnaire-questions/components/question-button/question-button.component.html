@@ -1,4 +1,4 @@
-@let _prefix = 'ADMIN.questionnaire.dialog';
+@let _prefix = 'ADMIN.questionnaire.dialog.question';
 
 
 <div class="flex gap-2 items-center">
@@ -38,31 +38,31 @@
 
         @if (entity().conditionalLogic?.length){
           <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
+                    [matTooltip]="`${_prefix}.hasConditionalLogic` | translate">
             rule
           </mat-icon>
         }
 
         @if (!entity().isValid) {
           <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+                    [matTooltip]="`${_prefix}.isInvalid` | translate">
             warning
           </mat-icon>
         } @else {
           <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionIsValid` | translate">
+                    [matTooltip]="`${_prefix}.isValid` | translate">
             check_circle
           </mat-icon>
         }
 
         @if (!entity().isActive) {
           <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+                    [matTooltip]="`${_prefix}.isInactive` | translate">
             visibility_off
           </mat-icon>
         } @else {
           <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.questionIsValid` | translate">
+                    [matTooltip]="`${_prefix}.isActive` | translate">
             visibility
           </mat-icon>
         }
@@ -84,23 +84,22 @@
       <div class="text-black">
         <div class="flex gap-2">
         @let field_label = entity().field_label?.[dialogState.questionnaire()!.defaultLanguage!.code];
-        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.questionLabelLabel` | translate }}:</span>
+        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.fieldLabel` | translate }}:</span>
         <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
       </div>
       <div class="flex gap-2">
         @let section_header = entity().section_header?.[dialogState.questionnaire()!.defaultLanguage!.code];
-        <span class="text-neutral-500">{{ `${_prefix}.questionHeaderLabel` | translate }}:</span>
+        <span class="text-neutral-500">{{ `${_prefix}.sectionHeader` | translate }}:</span>
         <span>{{ section_header || 'N/A' }}</span>
       </div>
 
         <!--        Info / Checkbox / Radio / Range -->
         @if (entity().field_type === 'info' || entity().field_type === 'checkbox' || entity().field_type === 'radio' || entity().field_type === 'range') {
           @let choices = entity()?.select_choices_or_calculations;
-<!--          {{entity() | json}}-->
 
           <div class="flex gap-2">
             <span class="text-neutral-500" [class]="!choices ? 'text-red-500' : ''">
-              {{ `${_prefix}.questionChoicesLabel` | translate }}:
+              {{ `${_prefix}.choices` | translate }}:
             </span>
             <span class="font-bold" [class]="!choices ? 'text-red-500' : ''">
               <div class="flex flex-wrap gap-x-2 items-center">
@@ -149,55 +148,101 @@
                           }
                         }
                       </mat-icon>
-                      <span class="pt-0.5">N/A: N/A</span>
+                      <span class="pt-0.5">{{ `${_prefix}.notAvailable` | translate }}: {{ `${_prefix}.notAvailable` | translate }}</span>
                     </span>
                   }
                 } @empty {
-                  <span class="font-bold text-red-500">N/A</span>
+                  <span class="font-bold text-red-500">{{ `${_prefix}.notAvailable` | translate }}</span>
                 }
               </div>
             </span>
           </div>
         }
 
+        @if (entity().field_type === 'range') {
+          @if (entity().show_code) {
+            <div class="flex gap-2">
+              <span>{{ `${_prefix}.showCode` | translate }}</span>
+            </div>
+          }
+          @if (entity().show_selected_label) {
+            <div class="flex gap-2">
+              <span>{{ `${_prefix}.showSelectedLabel` | translate }}</span>
+            </div>
+          }
+        }
+
 
         <!--        Number-->
         @if (entity().field_type === 'number') {
-          @if (!!entity().text_validation_min || !!entity().text_validation_max) {
-            <p>
-              <mat-hint>A number between {{ entity().text_validation_min }} and {{ entity().text_validation_max }}</mat-hint>
-            </p>
-          }
+            <div class="flex gap-2">
+            @if (!!entity().text_validation_min) {
+              <span class="text-neutral-500">{{ `${_prefix}.textValidationMin` | translate }}:</span> {{ entity().text_validation_min }}
+            }
+              @if (!!entity().text_validation_max) {
+                <span class="text-neutral-500">{{ `${_prefix}.textValidationMax` | translate }}:</span> {{ entity().text_validation_max }}
+              }
+            </div>
+        }
+
+<!--        Datetime-->
+        @if (entity().field_type === 'datetime') {
+          <div class="flex gap-2">
+            <span [class]="!entity().date_type ? 'text-red-500' : ''">{{ `${_prefix}.dateType` | translate }}: {{entity().date_type ?? `${_prefix}.notAvailable` | translate }}</span>
+          </div>
+          <div class="flex gap-2">
+            @if (!!entity().text_validation_min) {
+              <span class="text-neutral-500">{{ `${_prefix}.textValidationMin` | translate }}:</span> {{ entity().text_validation_min }}
+            }
+            @if (!!entity().text_validation_max) {
+              <span class="text-neutral-500">{{ `${_prefix}.textValidationMax` | translate }}:</span> {{ entity().text_validation_max }}
+            }
+          </div>
         }
 
 
         <!--        Slider-->
         @if (entity().field_type === 'slider') {
           <div class="flex gap-2">
-            <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.questionRangeLabel` | translate }}</span>
-            <span [class]="(entity().range?.min) === null ? 'text-red-500' : ''">Min: {{entity().range?.min ?? 'N/A'}}, </span>
-            <span [class]="(entity().range?.max) === null ? 'text-red-500' : ''">Max: {{entity().range?.max ?? 'N/A'}}, </span>
-            <span [class]="(entity().range?.step) === null ? 'text-red-500' : ''">Step: {{entity().range?.step ?? 'N/A'}}</span>
+            <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.range` | translate }}</span>
+            <span [class]="(entity().range?.min) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMin` | translate }}: {{entity().range?.min ?? `${_prefix}.notAvailable` | translate }}, </span>
+            <span [class]="(entity().range?.max) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMax` | translate }}: {{entity().range?.max ?? `${_prefix}.notAvailable` | translate }}, </span>
+            <span [class]="(entity().range?.step) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeStep` | translate }}: {{entity().range?.step ?? `${_prefix}.notAvailable` | translate }}</span>
           </div>
         }
 
 
         <!--        Text-->
         @if (entity().field_type === 'text') {
-          <div class="flex gap-2">
-            <span class="text-neutral-500">{{ `${_prefix}.questionMultiLineEnabledLabel` | translate }}</span>
-            <span>{{ entity().multi_line ? 'Yes' : 'No' }}</span>
-          </div>
+          @if (entity().multi_line) {
+            <div class="flex gap-2">
+              <span>{{ `${_prefix}.multiLineEnabled` | translate }}</span>
+            </div>
+          }
+<!--          <div class="flex gap-2">-->
+<!--            <span class="text-neutral-500">{{ `${_prefix}.multiLineEnabled` | translate }}</span>-->
+<!--            <span>{{ entity().multi_line ? 'Yes' : 'No' }}</span>-->
+<!--          </div>-->
         }
 
 
         <!--        Timed-->
         @if (entity().field_type === 'timed') {
           <div class="flex gap-2">
-            <span class="text-neutral-500" [class]="!entity().field_annotation ? 'text-red-500' : ''">{{ `${_prefix}.questionAnnotationLabel` | translate }}</span>
-            <span [class]="(entity().field_annotation?.image) === null ? 'text-red-500' : ''">Image: {{entity().field_annotation?.image ?? 'N/A'}}, </span>
-            <span [class]="(entity().field_annotation?.unit) === null ? 'text-red-500' : ''">Unit: {{entity().field_annotation?.unit ?? 'N/A'}}, </span>
-            <span [class]="(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">Timer: {{entity().field_annotation?.timer ?? 'N/A'}}</span>
+            <span class="text-neutral-500" [class]="!entity().field_annotation ? 'text-red-500' : ''">{{ `${_prefix}.annotation` | translate }}</span>
+<!--            <span [class]="(entity().field_annotation?.image) === null ? 'text-red-500' : ''">Image: {{entity().field_annotation?.image ?? 'N/A'}}, </span>-->
+<!--            <span [class]="(entity().field_annotation?.unit) === null ? 'text-red-500' : ''">Unit: {{entity().field_annotation?.unit ?? 'N/A'}}, </span>-->
+            <span [class]="(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimerStart` | translate }}: {{entity().field_annotation?.timer?.start ?? `${_prefix}.notAvailable` | translate }}</span>
+            <span [class]="(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimerEnd` | translate }}: {{entity().field_annotation?.timer?.end ?? `${_prefix}.notAvailable` | translate }}</span>
+          </div>
+        }
+
+        @if (entity().field_type === 'calc') {
+          <div class="flex gap-2">
+            <span class="text-neutral-500">{{ `${_prefix}.calculationFn` | translate }}:</span> <code>{{entity().calculation_fn ?? 'N/A'}}</code>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-neutral-500">{{ `${_prefix}.calculationArgs` | translate }}:</span> <code>{{entity().calculation_args ?? 'N/A'}}</code>
           </div>
         }
       </div>

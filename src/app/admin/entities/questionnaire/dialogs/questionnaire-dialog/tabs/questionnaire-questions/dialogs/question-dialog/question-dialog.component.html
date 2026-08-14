@@ -178,14 +178,13 @@
             </mat-error>
           </mat-form-field>
         }
-        @case ('date')
-        @case ('time') {
+        @case ('datetime') {
           <label for="date-type" class="text-sm">{{ `${_prefix}.dateType` | translate }}</label>
           <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
             <mat-select [formField]="form.date_type">
-              <mat-option [value]="'date'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeDate' | translate }}
+              <mat-option [value]="'date'">{{ `${_prefix}.dateTypeDate` | translate }}
               </mat-option>
-              <mat-option [value]="'time'">{{ 'ADMIN.questionnaire.dialog.questionDateTypeTime' | translate }}
+              <mat-option [value]="'time'">{{ `${_prefix}.dateTypeTime` | translate }}
               </mat-option>
             </mat-select>
             <mat-error>
@@ -304,7 +303,7 @@
           </div>
         }
         @case ('slider') {
-          <label for="" class="text-sm">{{ `${_prefix}.rangeLabel` | translate }} *</label>
+          <label for="" class="text-sm">{{ `${_prefix}.range` | translate }} *</label>
           <fieldset class="p-2 rounded-sm border">
             <div class="grid grid-cols-3 gap-2">
               <div>
@@ -399,7 +398,7 @@
           </div>
         }
         @case ('timed') {
-          <label for="unit" class="text-sm">{{ `${_prefix}.annotationLabel` | translate }}</label>
+          <label for="unit" class="text-sm">{{ `${_prefix}.annotation` | translate }}</label>
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
 
             <!--          <div>-->
@@ -488,12 +487,16 @@
 
       @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
         <div class="flex items-center">
-          <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic` | translate }}</label>
+          <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic.title` | translate }}</label>
           <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()" type="button">
             <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
           </button>
         </div>
-        <p><code class="text-orange-500">{{ branching_logic() }}</code></p>
+        @if(branching_logic()) {
+          <p><code class="text-orange-500">{{ `${_prefix}.conditionalLogic.message` | translate }}: {{ branching_logic() }}</code></p>
+        } @else {
+          <p><code class="text-orange-500">{{ `${_prefix}.conditionalLogic.noConditionalLogic` | translate }}</code></p>
+        }
       }
 
     </form>
