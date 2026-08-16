@@ -3,10 +3,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -34,13 +34,13 @@ export interface QuestionnaireCustomMessagesForm {
   ]
 })
 export class QuestionnaireCustomMessagesComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   lang = computed(() => {
-    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage!.code;
   });
 
-  _questionnaire = this.dialogState.questionnaire();
+  _questionnaire = this.store.selected();
   _lang = this.lang();
 
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
@@ -59,13 +59,13 @@ export class QuestionnaireCustomMessagesComponent {
   constructor() {
     effect(() => {
       const model = this.model();
-      const entity = untracked(() => this.dialogState.questionnaire());
+      const entity = untracked(() => this.store.selected());
       const updated = {
         ...entity,
         ...model,
         isCustomMessagesTabValid: this.form().valid()
       } as AppQuestionnaire;
-      this.dialogState.questionnaire.set(updated);
+      this.store.selected.set(updated);
     });
   }
 }

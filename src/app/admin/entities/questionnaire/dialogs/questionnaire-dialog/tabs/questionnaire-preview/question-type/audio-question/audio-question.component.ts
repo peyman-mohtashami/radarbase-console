@@ -9,7 +9,7 @@ import {AppQuestion} from '../../../../../../models/questionnaire';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-audio-question',
@@ -20,10 +20,10 @@ import {QuestionnaireDialogStateService} from '../../../../services/questionnair
 })
 export class AudioQuestionComponent implements OnInit {
 
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

@@ -10,7 +10,7 @@ import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-info-question',
@@ -21,10 +21,10 @@ import {QuestionnaireDialogStateService} from '../../../../services/questionnair
   templateUrl: './info-question.component.html'
 })
 export class InfoQuestionComponent implements OnInit {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

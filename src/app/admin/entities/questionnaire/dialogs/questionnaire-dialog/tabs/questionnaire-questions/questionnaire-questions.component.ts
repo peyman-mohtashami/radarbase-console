@@ -12,8 +12,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../shared/enums/dialog';
 import {QUESTION_TYPES} from '../questionnaire-preview/question-type/question-type.registry';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
-import {OPERATORS} from './dialogs/conditional-logic-dialog/conditional-logic-dialog.component';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-questionnaire-questions',
@@ -65,7 +64,7 @@ export class QuestionnaireQuestionsComponent {
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
 
   protected dialog = inject(MatDialog);
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   private readonly injector = inject(Injector);
   private readonly questionsContainer = viewChild<ElementRef<HTMLElement>>('choicesContainer');
@@ -73,7 +72,7 @@ export class QuestionnaireQuestionsComponent {
   /** Adds a question of the given type at `index` (appended when omitted) and scrolls it into view. */
   protected addQuestion(type: string, index?: number) {
     const id = crypto.randomUUID();
-    const questions: AppQuestion[] = [...(this.dialogState.questionnaire()?.questions ?? [])];
+    const questions: AppQuestion[] = [...(this.store.selected()?.questions ?? [])];
     questions.splice(index ?? questions.length, 0, {
       id,
       field_name: '',
@@ -116,7 +115,7 @@ export class QuestionnaireQuestionsComponent {
   }
 
   protected removeQuestion(index: number) {
-    const questions = (this.dialogState.questionnaire()?.questions ?? []).filter((_, i) => i !== index);
+    const questions = (this.store.selected()?.questions ?? []).filter((_, i) => i !== index);
     this.updateQuestionList(questions);
     // this.dialogState.questionnaire.update(value => {
     //   const questions = (value?.questions ?? []).filter((_, i) => i !== index);
@@ -140,7 +139,7 @@ export class QuestionnaireQuestionsComponent {
       return;
     }
 
-    const questions = [...(this.dialogState.questionnaire()?.questions ?? [])];
+    const questions = [...(this.store.selected()?.questions ?? [])];
     moveItemInArray(questions, event.previousIndex, event.currentIndex);
     this.updateQuestionList(questions);
 
@@ -157,7 +156,7 @@ export class QuestionnaireQuestionsComponent {
   }
 
   private updateQuestionList(questions: AppQuestion[]){
-    this.dialogState.questionnaire.update(value => {
+    this.store.selected.update(value => {
       // const questions = [...(value?.questions ?? [])];
       // moveItemInArray(questions, event.previousIndex, event.currentIndex);
       const validated = checkValidation(questions);
@@ -173,7 +172,7 @@ export class QuestionnaireQuestionsComponent {
   openQuestionDialog(index: number, question: AppQuestion) {
     this.dialog.open(QuestionDialogComponent, {
       id: 'question-dialog',
-      data: {id: 'question-dialog', entity: question, questions: this.dialogState.questionnaire()?.questions ?? [], index: index, mode: DialogMode.EDIT},
+      data: {id: 'question-dialog', entity: question, questions: this.store.selected()?.questions ?? [], index: index, mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '70%',
       height: '100vh',

@@ -5,7 +5,6 @@ import {
   AppQuestionnaire, AppQuestionnaireLanguage, DEFAULT_LANGUAGE,
   ISO_LANGUAGES
 } from '../../../../models/questionnaire';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {form, FormField, validate} from '@angular/forms/signals';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
 import {
@@ -13,6 +12,7 @@ import {
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {JsonPipe} from '@angular/common';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 export interface QuestionnaireGeneralForm {
   name: string;
@@ -40,11 +40,11 @@ export interface QuestionnaireGeneralForm {
   ]
 })
 export class QuestionnaireGeneralComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
 
-  _questionnaire = this.dialogState.questionnaire();
+  _questionnaire = this.store.selected();
 
   protected model = signal<QuestionnaireGeneralForm>({//this.dialogData.restoredModel ?? {
     ...this._questionnaire,
@@ -84,9 +84,9 @@ export class QuestionnaireGeneralComponent {
   constructor() {
     effect(() => {
       const model = this.model();
-      const entity = untracked(() => this.dialogState.questionnaire());
+      const entity = untracked(() => this.store.selected());
       const updated = {...entity, ...model, isGeneralTabValid: this.form().valid()} as AppQuestionnaire;
-      this.dialogState.questionnaire.set(updated);
+      this.store.selected.set(updated);
     });
   }
 }

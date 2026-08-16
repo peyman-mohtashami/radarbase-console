@@ -2,7 +2,6 @@ import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angul
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AppQuestion, AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../models/questionnaire';
 import {QuestionsService} from './services/questions.service';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {AnswerWithTimeLog} from './models/kafka';
 import {ToolbarAction, ToolbarComponent} from './toolbar/toolbar.component';
 import {JsonPipe} from '@angular/common';
@@ -16,6 +15,7 @@ import {debounceTime} from 'rxjs/operators';
 import {
   PreviewPlaceholderFormComponent
 } from './components/preview-placeholder-form/preview-placeholder-form.component';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 type PlaceholderFormGroup = FormGroup<{
   questionnaireId: FormControl<string>;
@@ -43,12 +43,12 @@ type PlaceholderFormGroup = FormGroup<{
 })
 export class QuestionnairePreviewComponent implements OnInit {
   private questionsService = inject(QuestionsService);
-  dialogState = inject(QuestionnaireDialogStateService);
+  store = inject(QuestionnaireStore);
   previewState = inject(PreviewStateService);
 
   private fb = inject(FormBuilder);
 
-  entity = this.dialogState.questionnaire;
+  entity = this.store.selected;
   selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as AppQuestionnaireLanguage;
 
   protected loading = true;

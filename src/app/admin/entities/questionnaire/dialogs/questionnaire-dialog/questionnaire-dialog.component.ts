@@ -41,12 +41,12 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {QuestionnaireDialogStateService} from './services/questionnaire-dialog-state.service';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
+import {QuestionsStore} from './tabs/questionnaire-questions/services/questions.store';
 
 export interface QuestionnaireForm {
   id: string;
@@ -102,7 +102,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected localeService = inject(LocaleService);
   protected store = inject(QuestionnaireStore);
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected questionsStore = inject(QuestionsStore);
   private configService = inject(QuestionnaireConfigService);
   private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   protected activatedRoute = inject(ActivatedRoute);
@@ -138,7 +138,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   //TODO CHECK
   ngOnInit() {
     // super.ngOnInit();
-    this.dialogState.questionnaire.set(this.dialogData.entity);
+    this.store.selected.set(this.dialogData.entity ?? null);
   }
 
 
@@ -147,7 +147,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   }
 
   protected async save(): Promise<void> {
-    const entity = this.dialogState.questionnaire();
+    const entity = this.store.selected();
     if (entity) {
       switch(this.dialogData.mode) {
         case DialogMode.ADD:

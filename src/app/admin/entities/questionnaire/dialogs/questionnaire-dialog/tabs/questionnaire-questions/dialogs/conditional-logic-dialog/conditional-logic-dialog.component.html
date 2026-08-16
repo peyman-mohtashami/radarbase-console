@@ -1,5 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog.question.conditionalLogic';
-@let language = dialogState.questionnaire()!.defaultLanguage.code;
+@let language = store.selected()!.defaultLanguage.code;
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>

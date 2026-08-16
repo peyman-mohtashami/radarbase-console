@@ -35,7 +35,7 @@
            class="relative grow min-h-32 flex flex-col gap-2"
            (cdkDropListDropped)="onDrop($event)"
            cdkDropListOrientation="vertical">
-        @for (question of dialogState.questionnaire()?.questions; track question.id; let index = $index) {
+        @for (question of store.selected()?.questions; track question.id; let index = $index) {
           <div
             cdkDrag
             [attr.data-question-id]="question.id"

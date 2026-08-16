@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {JsonPipe} from '@angular/common';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-questionnaire-json-editor',
@@ -10,5 +10,5 @@ import {JsonPipe} from '@angular/common';
   ]
 })
 export class QuestionnaireJsonEditorComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 }

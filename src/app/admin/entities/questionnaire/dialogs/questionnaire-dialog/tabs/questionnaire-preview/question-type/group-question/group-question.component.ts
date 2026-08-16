@@ -9,12 +9,12 @@ import {AppQuestion, AppQuestionChoice, AppQuestionnaireLanguage} from '../../..
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect, MatSelectChange} from '@angular/material/select';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-group-question',
@@ -37,10 +37,10 @@ import {
 })
 export class GroupQuestionComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   @Input({ required: true }) type!: 'form' | 'button'| 'preview' | 'logic';
-  @Input() language = signal(this.dialogState.questionnaire()!.defaultLanguage);
+  @Input() language = signal(this.store.selected()!.defaultLanguage);
   @Input({ required: true }) entity!: InputSignal<AppQuestion>;
   @Input() form!: FormGroup;
   @Input() languages!: AppQuestionnaireLanguage[];

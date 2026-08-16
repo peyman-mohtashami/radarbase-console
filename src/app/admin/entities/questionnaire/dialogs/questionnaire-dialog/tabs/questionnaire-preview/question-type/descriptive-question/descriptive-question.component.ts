@@ -6,10 +6,10 @@ import {
   input
 } from '@angular/core';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-descriptive-question',
@@ -19,10 +19,10 @@ import {
   templateUrl: './descriptive-question.component.html'
 })
 export class DescriptiveQuestionComponent implements OnInit {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

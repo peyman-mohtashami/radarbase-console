@@ -4,8 +4,8 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {debounceTime} from 'rxjs/operators';
 import {PreviewStateService} from '../../services/preview-state.service';
 import {parsePlaceholder, Placeholder} from '../../pipes/replace-placeholders.pipe';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../../../models/questionnaire';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 type PlaceholderFormGroup = FormGroup<{
   questionnaireId: FormControl<string>;
@@ -27,12 +27,12 @@ type PlaceholderFormGroup = FormGroup<{
   ]
 })
 export class PreviewPlaceholderFormComponent implements OnInit {
-  dialogState = inject(QuestionnaireDialogStateService);
+  store = inject(QuestionnaireStore);
   previewState = inject(PreviewStateService);
 
   private fb = inject(FormBuilder);
 
-  entity = this.dialogState.questionnaire;
+  entity = this.store.selected;
   selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as AppQuestionnaireLanguage;
 
   protected loading = true;

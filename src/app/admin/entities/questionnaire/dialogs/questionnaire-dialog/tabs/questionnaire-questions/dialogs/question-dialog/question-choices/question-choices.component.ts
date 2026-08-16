@@ -5,8 +5,8 @@ import {MatIconButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
-import {QuestionnaireDialogStateService} from '../../../../../services/questionnaire-dialog-state.service';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-question-choices',
@@ -50,14 +50,14 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
   `
 })
 export class QuestionChoicesComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   readonly formField = input.required<FieldTree<{code: string; label: Record<string, string>;}[]>>();
 
   isValid = signal(false);
 
   lang = computed(() => {
-    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage!.code;
   })
 
   addChoice() {

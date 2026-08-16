@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 import {AppQuestion} from '../../../../../../models/questionnaire';
 import {MatFormField, MatInput} from '@angular/material/input';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
 import {JsonPipe} from '@angular/common';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-text-question',
@@ -25,10 +25,10 @@ import {JsonPipe} from '@angular/common';
   templateUrl: './text-question.component.html'
 })
 export class TextQuestionComponent {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

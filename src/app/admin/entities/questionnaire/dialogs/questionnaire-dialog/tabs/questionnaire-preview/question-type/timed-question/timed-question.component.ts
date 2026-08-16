@@ -12,7 +12,7 @@ import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 export interface TaskTimer {
   secondsElapsed: WritableSignal<number>;
@@ -33,10 +33,10 @@ export interface TaskTimer {
   templateUrl: './timed-question.component.html'
 })
 export class TimedQuestionComponent implements OnInit {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

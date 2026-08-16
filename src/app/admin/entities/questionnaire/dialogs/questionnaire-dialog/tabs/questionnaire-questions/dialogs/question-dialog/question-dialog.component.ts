@@ -17,7 +17,6 @@ import {QUESTION_TYPES} from '../../../questionnaire-preview/question-type/quest
 import {
   ConditionalLogicDialogComponent, OPERATOR_SYMBOLS
 } from '../conditional-logic-dialog/conditional-logic-dialog.component';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   requiredField
@@ -58,6 +57,7 @@ import {
   MatChip,
   MatChipSet, MatChipsModule
 } from '@angular/material/chips';
+import {QuestionsStore} from '../../services/questions.store';
 
 export interface QuestionnaireQuestionForm extends Record<string, any>{
   field_name: string;
@@ -138,7 +138,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   protected readonly DialogMode = DialogMode;
 
   protected store = inject(QuestionnaireStore);
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected questionsStore = inject(QuestionsStore);
   protected dialog = inject(MatDialog);
   private dialogRef = inject(MatDialogRef<QuestionDialogComponent>);
 
@@ -152,7 +152,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   };
 
   lang = computed(() => {
-    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage!.code;
   })
 
   _question = this.dialogData.entity;
@@ -371,8 +371,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dialogState.question.set(this._question);
-    this.dialogState.questionIndex.set(this.dialogData.index);
+    this.questionsStore.question.set(this._question);
+    // this.dialogState.questionIndex.set(this.dialogData.index);
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
@@ -448,7 +448,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   protected handleSaveAction(): void {
     const model = this.model();
 
-    this.dialogState.questionnaire.update(value => {
+    this.store.selected.update(value => {
       const questions = value!.questions.map(q => {
         if (q.id === this._question.id) {
           return this.toAppQuestion(model);

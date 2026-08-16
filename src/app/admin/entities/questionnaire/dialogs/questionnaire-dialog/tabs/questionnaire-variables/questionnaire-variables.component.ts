@@ -1,5 +1,4 @@
 import {Component, inject, } from '@angular/core';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {JsonPipe, NgTemplateOutlet} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
@@ -23,6 +22,7 @@ import {TableQueryReflectorDirective} from '../../../../../../shared/directives/
 import {FilterItem, TableElement} from '../../../../../../shared/models/table.model';
 import {FormFieldType} from '../../../../../../shared/models/dialog.model';
 import {VariableTableRowComponent} from './components/variable-table-row/variable-table-row.component';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 export const TableFields: TableElement[] = [
   {name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true},
@@ -83,7 +83,7 @@ export const TableFields: TableElement[] = [
   ]
 })
 export class QuestionnaireVariablesComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   protected readonly DialogMode = DialogMode;
   protected dialog = inject(MatDialog);

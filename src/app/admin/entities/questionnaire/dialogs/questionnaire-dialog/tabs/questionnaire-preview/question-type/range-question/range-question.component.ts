@@ -6,12 +6,12 @@ import {
   input
 } from '@angular/core';
 import {AppQuestion} from '../../../../../../models/questionnaire';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-range-question',
@@ -23,10 +23,10 @@ import {
   templateUrl: './range-question.component.html'
 })
 export class RangeQuestionComponent implements OnInit {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

@@ -1,8 +1,8 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
 import {SafeHtml} from "@angular/platform-browser";
 import {PreviewStateService} from '../services/preview-state.service';
-import {QuestionnaireDialogStateService} from '../../../services/questionnaire-dialog-state.service';
 import {QuestionType} from '../models/question';
+import {QuestionnaireStore} from '../../../../../services/questionnaire.store';
 
 const RESERVED_VALUES = ['current_date', 'current_time'];
 
@@ -12,7 +12,7 @@ const RESERVED_VALUES = ['current_date', 'current_time'];
 })
 export class ReplacePlaceholdersPipe implements PipeTransform {
   private previewState = inject(PreviewStateService);
-  private questionnaireDialogState = inject(QuestionnaireDialogStateService);
+  private store = inject(QuestionnaireStore);
 
   transform(value: string | undefined, ...args: unknown[]): string | undefined {
     if (value?.toString()) {
@@ -70,7 +70,7 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
     const answer = answers?.[questionId]?.[0];
     if (!answer) { return null}
     if (answer.type === QuestionType.CHECKBOX || answer.type === QuestionType.RADIO || answer.type === QuestionType.RANGE) {
-      const questions = this.questionnaireDialogState.questionnaire()?.questions;
+      const questions = this.store.selected()?.questions;
       const question = questions?.find(q => q.field_name === questionId);
       return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
     } else {

@@ -10,7 +10,6 @@ import {MatButton} from '@angular/material/button';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {form, FormField} from '@angular/forms/signals';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {
   QuestionTemplateVariable,
   TemplateVariableFunction
@@ -19,6 +18,7 @@ import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../../../models/questionnaire';
 import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 export interface TemplateVariableForm {
   id: string;
@@ -50,7 +50,8 @@ export interface TemplateVariableForm {
 })
 export class VariableDialogComponent implements AfterViewInit {
   private readonly dialogRef = inject(MatDialogRef<VariableDialogComponent>);
-  dialogState = inject(QuestionnaireDialogStateService);
+  // dialogState = inject(QuestionnaireDialogStateService);
+  store = inject(QuestionnaireStore);
   dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: string;
@@ -136,7 +137,7 @@ export class VariableDialogComponent implements AfterViewInit {
         ...model,
       };
 
-      this.dialogState.questionnaire.update(q => {
+      this.store.selected.update(q => {
         const variables = [...(q?.variables ?? [])];
         switch(this.dialogData.mode) {
           case 'add':

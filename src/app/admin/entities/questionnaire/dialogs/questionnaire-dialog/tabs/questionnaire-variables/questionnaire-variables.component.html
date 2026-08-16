@@ -92,7 +92,7 @@
 <!--  &lt;!&ndash;                               [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"&ndash;&gt;-->
 <!--</ng-template>-->
 
-@let entities = dialogState.questionnaire()?.variables;
+@let entities = store.selected()?.variables;
 
 <div class="w-full text-sm relative mt-4">
 <!--     [sort]="sort()"-->

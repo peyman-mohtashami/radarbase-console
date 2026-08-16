@@ -7,7 +7,6 @@ import {MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LocaleService} from '../../../../../../../core/locale/services/locale.service';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
 import {applyEach, applyWhen, FieldTree, form, FormField} from '@angular/forms/signals';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -15,6 +14,7 @@ import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 export const UNITS = [
   { name: 'min', label: 'Minute' },
@@ -96,10 +96,10 @@ export interface QuestionnaireSchedulingForm {
 export class QuestionnaireSchedulingComponent {
   protected readonly UNITS = UNITS;
 
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
   localeService = inject(LocaleService);
 
-  _schedule = this.dialogState.questionnaire()?.schedule;
+  _schedule = this.store.selected()?.schedule;
 
   protected model = signal<QuestionnaireSchedulingForm>({//this.dialogData.restoredModel ?? {
     ...this._schedule,
@@ -147,7 +147,7 @@ export class QuestionnaireSchedulingComponent {
   constructor() {
     effect(() => {
       const model = this.model();
-      const entity = untracked(() => this.dialogState.questionnaire());
+      const entity = untracked(() => this.store.selected());
       const updated = {
         ...entity,
         schedule: {
@@ -169,7 +169,7 @@ export class QuestionnaireSchedulingComponent {
       //   delete updated.schedule?.referenceTimestamp;
       // }
       console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 171 updated' , updated);
-      this.dialogState.questionnaire.set({...updated});
+      this.store.selected.set({...updated});
     });
   }
 

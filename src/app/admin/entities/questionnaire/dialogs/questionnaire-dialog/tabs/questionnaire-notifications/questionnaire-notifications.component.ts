@@ -3,13 +3,13 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {applyWhen, form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -40,15 +40,15 @@ export interface QuestionnaireNotificationsForm {
   ]
 })
 export class QuestionnaireNotificationsComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
   protected readonly UNITS = UNITS;
 
   lang = computed(() => {
-    return this.dialogState.questionnaire()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage!.code;
   });
 
-  _schedule = this.dialogState.questionnaire()?.schedule;
+  _schedule = this.store.selected()?.schedule;
   _lang = this.lang();
 
   protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
@@ -78,7 +78,7 @@ export class QuestionnaireNotificationsComponent {
   constructor() {
     effect(() => {
       const model = this.model();
-      const entity = untracked(() => this.dialogState.questionnaire());
+      const entity = untracked(() => this.store.selected());
 
       const updated = {
         ...entity,
@@ -89,7 +89,7 @@ export class QuestionnaireNotificationsComponent {
         },
         isNotificationsTabValid: this.form().valid()
       } as AppQuestionnaire;
-      this.dialogState.questionnaire.set(updated);
+      this.store.selected.set(updated);
     });
   }
 }

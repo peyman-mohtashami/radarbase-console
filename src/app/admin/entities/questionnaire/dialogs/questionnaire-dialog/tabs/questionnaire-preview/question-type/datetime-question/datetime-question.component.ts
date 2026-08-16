@@ -12,12 +12,12 @@ import {
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {MatFormField, MatInput, MatSuffix} from '@angular/material/input';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
   selector: 'app-datetime-question',
@@ -35,12 +35,12 @@ import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
   templateUrl: './datetime-question.component.html'
 })
 export class DatetimeQuestionComponent {
-  private dialogState = inject(QuestionnaireDialogStateService);
+  private store= inject(QuestionnaireStore);
 
   protected readonly Number = Number;
 
   entity = input.required<AppQuestion>();
-  language = input(this.dialogState.questionnaire()!.defaultLanguage);
+  language = input(this.store.selected()!.defaultLanguage);
   answer = input.required<{ value: string}>();
 
   protected isPreviewDisabled = false;

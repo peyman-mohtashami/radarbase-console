@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core'
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../models/questionnaire';
-import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {QuestionsStore} from '../../../questionnaire-questions/services/questions.store';
 
 @Component({
   selector: 'app-question-header',
@@ -17,6 +17,6 @@ export class QuestionHeaderComponent {
   note = input<boolean>(true);
   disableRequiredAsterisk = input<boolean>(false);
 
-  questionnaireStateService = inject(QuestionnaireDialogStateService);
+  questionsStore = inject(QuestionsStore);
 
 }

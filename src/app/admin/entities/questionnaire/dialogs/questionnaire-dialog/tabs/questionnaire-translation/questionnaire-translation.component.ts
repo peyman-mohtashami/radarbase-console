@@ -1,11 +1,11 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
-import {QuestionnaireDialogStateService} from '../../services/questionnaire-dialog-state.service';
 import {applyEach, form, FormField} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
 import {TranslatePipe} from '@ngx-translate/core';
+import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 
 @Component({
@@ -20,19 +20,19 @@ import {TranslatePipe} from '@ngx-translate/core';
   ]
 })
 export class QuestionnaireTranslationComponent {
-  protected dialogState = inject(QuestionnaireDialogStateService);
+  protected store = inject(QuestionnaireStore);
 
-  defaultLanguage = this.dialogState.questionnaire()!.defaultLanguage;
+  defaultLanguage = this.store.selected()!.defaultLanguage;
 
   readonly languagesList = computed(() => {
-    const languages = this.dialogState.questionnaire()!.languages;
+    const languages = this.store.selected()!.languages;
     return [
       this.defaultLanguage,
       ...languages.filter(lang => lang.code !== this.defaultLanguage.code),
     ];
   });
 
-  _questionnaire = this.dialogState.questionnaire()!;
+  _questionnaire = this.store.selected()!;
 
   protected model = signal<AppQuestionnaire>({//this.dialogData.restoredModel ?? {
     ...this._questionnaire,
@@ -97,14 +97,14 @@ export class QuestionnaireTranslationComponent {
   constructor() {
     effect(() => {
       const model = this.model();
-      const entity = untracked(() => this.dialogState.questionnaire());
+      const entity = untracked(() => this.store.selected());
       const updated = {
         ...entity,
         ...model,
         isTranslationsTabValid: this.form().valid()
       } as AppQuestionnaire;
 
-      this.dialogState.questionnaire.set(updated);
+      this.store.selected.set(updated);
     });
   }
 }

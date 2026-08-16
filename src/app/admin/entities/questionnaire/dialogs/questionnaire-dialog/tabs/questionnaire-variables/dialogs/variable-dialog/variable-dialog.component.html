@@ -28,7 +28,7 @@
         <label for="template-variable" class="text-sm">Select a Template Variable</label>
         <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
           <mat-select [formField]="selectForm">
-            @for (variable of dialogState.questionnaire()?.variables; track $index) {
+            @for (variable of store.selected()?.variables; track $index) {
               <mat-option [value]="variable">{{ variable.name }}</mat-option>
             }
           </mat-select>
@@ -76,7 +76,7 @@
       <label for="question" class="text-sm">Select a Question</label>
       <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
         <mat-select [formField]="form.questionId">
-          @for (question of dialogState.questionnaire()?.questions; track question.id) {
+          @for (question of store.selected()?.questions; track question.id) {
             @if ($index < dialogData.questionIndex) {
               <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
             }
