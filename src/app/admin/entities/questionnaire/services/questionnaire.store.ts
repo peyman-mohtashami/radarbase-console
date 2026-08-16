@@ -223,7 +223,8 @@ export class QuestionnaireStore {
             select_choices_or_calculations: question.select_choices_or_calculations?.map(choice => ({
               code: choice.code,
               label: {},//undefined,//{},
-            }))
+            })),
+            variables: question.variables ?? {},
           };
           result.set(key, appQuestion);
         }

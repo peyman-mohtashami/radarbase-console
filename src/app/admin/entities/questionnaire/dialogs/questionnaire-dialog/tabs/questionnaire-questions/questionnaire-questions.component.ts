@@ -208,6 +208,7 @@ export function validateQuestion(question: AppQuestion, index: number, questions
   return !t;
   // check calc
   // check template variables
+
 }
 
 export function validateConditionalLogic(rule: AppQuestionConditionalLogicRule, questionIndex: number, questions: AppQuestion[]) {

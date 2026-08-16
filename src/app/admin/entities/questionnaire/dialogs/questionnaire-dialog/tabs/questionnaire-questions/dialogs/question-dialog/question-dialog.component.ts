@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectorRef,
   Component, computed,
   inject,
   OnInit,
@@ -22,7 +22,17 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   requiredField
 } from '../../../../../../../../../shared/utils/signal-form-validators';
-import {applyEach, disabled, FieldTree, form, FormField, required, validate} from '@angular/forms/signals';
+import {
+  applyEach,
+  disabled,
+  FieldTree,
+  form,
+  FormField,
+  PathKind,
+  required,
+  SchemaPath, SchemaPathRules,
+  validate
+} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
 import {QuestionChoicesComponent} from './question-choices/question-choices.component';
@@ -38,16 +48,22 @@ import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
-// import {
-//   InsertVariableDialogComponent
-// } from '../../../questionnaire-variables/dialogs/insert-variable.dialog.component.ts/insert-variable.dialog.component';
 import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/template-field.model';
-import {VariableDialogComponent} from '../variable-dialog/variable-dialog.component';
+import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
+import {ToolbarComponent} from '../../../questionnaire-preview/toolbar/toolbar.component';
+import {
+  VariableDialogComponent
+} from '../../../questionnaire-variables/dialogs/variable-dialog/variable-dialog.component';
+import {
+  MatChip,
+  MatChipSet, MatChipsModule
+} from '@angular/material/chips';
 
-export interface QuestionnaireQuestionForm {
+export interface QuestionnaireQuestionForm extends Record<string, any>{
   field_name: string;
   field_type: string;
   field_label: Record<string, string>;
+  // fieldLabelVariables?: QuestionTemplateVariable[];
   section_header: Record<string, string>
   required_field: boolean;
   field_note: Record<string, string>
@@ -83,6 +99,7 @@ export interface QuestionnaireQuestionForm {
   // variables: QuestionTemplateVariable[];
 }
 
+
 @Component({
   selector: 'app-question-dialog',
   imports: [
@@ -108,6 +125,11 @@ export interface QuestionnaireQuestionForm {
     TagComponent,
     UpperCasePipe,
     MatTooltip,
+    QuestionComponent,
+    ToolbarComponent,
+    MatChipSet,
+    MatChip,
+    MatChipsModule,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -136,7 +158,10 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   _question = this.dialogData.entity;
   _lang = this.lang();
 
-  private model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
+  // variables = signal<Record<string, QuestionTemplateVariable[]>>(this._question.variables ?? {});
+  variables: Record<string, QuestionTemplateVariable[]> = this._question.variables ?? {};
+
+  protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this._question,
     field_name: this._question.field_name ?? '',
     field_type: this._question.field_type ?? '',
@@ -189,15 +214,31 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     requiredField(schema.field_type);
     disabled(schema.field_type);
     requiredField(schema.field_label[this.lang()]);
-    validate(schema.field_label, ({value}) => {
-      //extract template vars
-      //validate
-      return null;
-      return {
-        kind: 'wrongTemplateVariable',
-        message: 'SHARED.validatorError.wrongTemplateVariable',
-      };
-    });
+    this.validateTemplateVariables(schema.field_label[this.lang()], 'field_label');
+    // validate(schema.field_label[this.lang()], ({value}) => {
+    //   const variables = this.parseAndValidateTemplateVariables(value());
+    //
+    //   if (variables) {
+    //     this.variables['field_label'] = variables;
+    //     return null;
+    //   }
+    //
+    //   return {
+    //     kind: 'wrongTemplateVariable',
+    //     message: 'SHARED.validatorError.wrongTemplateVariable',
+    //   };
+    // });
+    // validate(schema.field_label, ({value}) => {
+    //   const v = this.validateTemplateVariables(value()[this._lang], this.model().fieldLabelVariables);
+    //   if (v) return null;
+    //   return {
+    //     kind: 'wrongTemplateVariable',
+    //     message: 'SHARED.validatorError.wrongTemplateVariable',
+    //   };
+    // });
+    this.validateTemplateVariables(schema.section_header[this.lang()], 'section_header');
+    this.validateTemplateVariables(schema.field_note[this.lang()], 'field_note');
+
     applyEach(schema.select_choices_or_calculations, (choice) => {
       required(choice.code, {
         when: ({ valueOf }) => {
@@ -270,6 +311,54 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   });
 
+  private cdr = inject(ChangeDetectorRef)
+
+  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
+    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, name: string
+  ): void {
+    validate(path, ({value}) => {
+      const variables = this.parseAndValidateTemplateVariables(value() as string, name);
+
+      if (variables) {
+        this.variables = {
+          ...this.variables,
+          [name]: variables
+        }
+        return null;
+      }
+
+      return {
+        kind: 'wrongTemplateVariable',
+        message: 'SHARED.validatorError.wrongTemplateVariable',
+      };
+    });
+  }
+
+
+  private parseAndValidateTemplateVariables(value: string, name: string): QuestionTemplateVariable[] | null {
+    const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
+
+    const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
+
+    // Detect unmatched {{
+    if (stripped.includes('{{') || stripped.includes('}}')) return null;
+
+    const variables: QuestionTemplateVariable[] = [];
+
+    for (const match of matches) {
+      const id = match[1].trim();
+      if (!id) return null;
+
+      const variable = this.variables[name]?.find(item => item.name === id);
+      if (!variable) return null;
+
+      if (!isValidTemplateVariable(variable)) return null;
+      variables.push(variable);
+    }
+    return variables;
+  }
+
+
   branching_logic = computed(() => {
     const model = this.model();
     return model.conditionalLogic?.map((conditionalLogicItems) =>
@@ -309,7 +398,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       branching_logic: question.branching_logic || undefined,
       isActive: question.isActive,
       isValid: question.isValid,
-      // variables: question.variables,
+      variables: this.variables,//question.variables,
     }
     switch (question.field_type) {
       case 'text':
@@ -366,18 +455,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         }
         return q;
       }) ?? [];
-      // checkValidation(questions);
       const validated = checkValidation(questions);
       return {
         ...value!,
         questions: [...validated],
         isQuestionsTabValid: validated.every(q => q.isValid)
       }
-      // return {
-      //   ...value!,
-      //   questions: [...questions],
-      //   isQuestionsTabValid: questions.every(q => q.isValid)
-      // }
     })
 
     this.close();
@@ -448,36 +531,67 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   //   return value.toISOString();
   // }
 
+  protected editVariable(field: string, entity: QuestionTemplateVariable) {
+    const dialogRef = this.dialog.open(VariableDialogComponent, {
+      id: 'variable-dialog',
+      data: {id: 'variable-dialog', mode: 'edit', entity, questionIndex: this.dialogData.index},
+      panelClass: 'tailwind-slide-panel',
+      width: '40%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    const dialogActionSubscription = dialogRef.afterClosed().subscribe(
+      (variable: QuestionTemplateVariable | undefined) => {
+        console.log('Class: QuestionDialogComponent, Function: , Line 573 variable' , variable);
+        if (!variable) {
+          return;
+        }
+
+        let oldVariable: string;
+        this.variables = {
+          ...this.variables,
+          [field]: this.variables[field].map(v => {
+            if (v.id === variable.id) {
+              oldVariable = v.name;
+              return variable;
+            } else{
+              return v
+            }
+          })
+        }
+        this.cdr.markForCheck();
+        this.model.update(value => {
+          const text = value[field][this._lang];
+          const regex = new RegExp(`{{\\s*${oldVariable}\\s*}}`, 'g');
+          const updated = text.replace(regex, `{{${variable.name}}}`);
+          return {
+            ...value,
+            [field]: {
+              ...value[field],
+              [this._lang]: updated
+            }
+          }
+        })
+      },
+    );
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
   protected insertVariable(
-    name: string,
+    field: string,
     input: HTMLTextAreaElement,
   ): void {
-    // const dialogRef = this.dialog.open(
-    //   VariableDialogComponent,
-    //   {
-    //     width: '500px',
-    //     data: {
-    //       // pass your actual questionnaire questions here
-    //       // questions: this.questions,
-    //     },
-    //   },
-    // );
-    //
-    // dialogRef.afterClosed().subscribe(
-    //   (variable: QuestionTemplateVariable | undefined) => {
-    //     if (!variable) {
-    //       return;
-    //     }
-    //     console.log('Class: QuestionDialogComponent, Function: , Line 470 variable' , variable);
-    //
-    //     this.insertVariableAtCursor(input, variable);
-    //   },
-    // );
-
-
     const dialogRef = this.dialog.open(VariableDialogComponent, {
-      id: 'insert-variable-dialog',
-      data: {id: 'insert-variable-dialog'}, //, entity: this.model().conditionalLogic, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
+      id: 'variable-dialog',
+      data: {id: 'variable-dialog', mode: 'add', questionIndex: this.dialogData.index},
       panelClass: 'tailwind-slide-panel',
       width: '40%',
       height: '100vh',
@@ -493,9 +607,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         if (!variable) {
           return;
         }
-        console.log('Class: QuestionDialogComponent, Function: , Line 470 variable' , variable);
-
-        this.insertVariableAtCursor(name, input, variable);
+        this.variables = {
+          ...this.variables,
+          [field]: [...this.variables[field], variable]//.map(v => v.id === variable.id ? variable : v)
+        }
+        this.cdr.markForCheck();
+        this.insertVariableAtCursor(field, input, variable);
       },
     );
 
@@ -504,13 +621,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // protected readonly fieldLabel = signal<TemplateField>({
-  //   value: '',
-  //   variables: [],
-  // });
-
   private insertVariableAtCursor(
-    name: string,
+    field: string,
     input: HTMLTextAreaElement,
     variable: QuestionTemplateVariable,
   ): void {
@@ -521,28 +633,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
     const editedText = input.value.substring(0, start) + placeholder + input.value.substring(end);
 
-    this.updateModel(name, editedText);
-
-    // this.model.update(value => {
-    //   return {
-    //     ...value,
-    //     field_label: {
-    //       ...value.field_label,
-    //       [this._lang]: editedText,
-    //     },
-    //     // variables: [
-    //     //   ...value.variables,
-    //     //   variable,
-    //     // ],
-    //   }
-    // })
-    // this.fieldLabel.set({
-    //   value,
-    //   variables: [
-    //     ...current.variables,
-    //     variable,
-    //   ],
-    // });
+    this.updateModel(field, editedText);
 
     requestAnimationFrame(() => {
       const cursorPosition = start + placeholder.length;
@@ -555,9 +646,9 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateModel(name: string, editedText: string) {
+  updateModel(field: string, editedText: string) {
     this.model.update(value => {
-      switch (name) {
+      switch (field) {
         case 'field_label':
           return {
             ...value,
@@ -596,19 +687,13 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       }
     })
   }
+}
 
-  protected readonly questions = [
-    {
-      id: 'firstName',
-      label: 'First name',
-    },
-    {
-      id: 'gameScore',
-      label: 'Game score',
-    },
-    {
-      id: 'heartRate',
-      label: 'Heart rate',
-    },
-  ];
+
+export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
+  if (!variable.id) return false;
+  if (variable.type !== 'question') return false;
+  if (!variable.questionId) return false;
+  if (variable.start && variable.end && variable.start > variable.end) return false;
+  return true;
 }

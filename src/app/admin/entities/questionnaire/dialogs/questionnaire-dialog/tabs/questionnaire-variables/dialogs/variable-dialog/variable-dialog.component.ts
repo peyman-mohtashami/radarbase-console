@@ -1,21 +1,24 @@
-import {Component, inject, signal} from '@angular/core';
+import {AfterViewInit, Component, inject, signal} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
-import {QuestionTemplateVariable, TemplateVariableFunction} from '../../model/template-field.model';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {form, FormField} from '@angular/forms/signals';
 import {QuestionnaireDialogStateService} from '../../../../services/questionnaire-dialog-state.service';
+import {
+  QuestionTemplateVariable,
+  TemplateVariableFunction
+} from '../../model/template-field.model';
+import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
+import {TranslatePipe} from '@ngx-translate/core';
 import {AppQuestionnaire} from '../../../../../../models/questionnaire';
-import {DialogMode} from '../../../../../../../../shared/enums/dialog';
+import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
 
 export interface TemplateVariableForm {
   id: string;
@@ -23,57 +26,59 @@ export interface TemplateVariableForm {
   type: 'question';
   questionId: string;
   questionnaireId: string;
-  function: string;//TemplateVariableFunction;
+  method: string;//TemplateVariableFunction;
   start: string;
   end: string;
+  function: string;
 }
-
-// export interface InsertVariableDialogData {
-//   questions: {
-//     id: string;
-//     label: string;
-//   }[];
-// }
 
 @Component({
   selector: 'app-variable-dialog',
   imports: [
     MatFormField,
-    MatLabel,
     MatInput,
-    MatDialogActions,
     MatButton,
     MatOption,
     MatSelect,
     MatDialogContent,
     MatDialogTitle,
-    MatDialogClose,
-    FormField
+    FormField,
+    TranslatePipe,
+    MatError,
   ],
   templateUrl: './variable-dialog.component.html'
 })
-export class VariableDialogComponent {
+export class VariableDialogComponent implements AfterViewInit {
   private readonly dialogRef = inject(MatDialogRef<VariableDialogComponent>);
   dialogState = inject(QuestionnaireDialogStateService);
   dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
-    mode: DialogMode;
+    mode: string;
     entity?: QuestionTemplateVariable;
+    questionIndex: number;
   };
+
+  selectModel = signal<QuestionTemplateVariable | null>(null);
+  selectForm = form(this.selectModel);
+
   model = signal<TemplateVariableForm>({
     id: this.dialogData.entity?.id ?? `v_${crypto.randomUUID()}`,
     name: this.dialogData.entity?.name ?? '',
     type: 'question',
     questionId: this.dialogData.entity?.questionId ?? '',
-    questionnaireId: this.dialogData.entity?.questionnaireId ?? '',
-    function: this.dialogData.entity?.function ?? '',
+    questionnaireId: this.dialogData.entity?.questionnaireId ?? 'self',
+    method: this.dialogData.entity?.function ?? 'value',
     start: this.dialogData.entity?.start ?? '',
     end: this.dialogData.entity?.end ?? '',
+    function: this.dialogData.entity?.function ?? '',
   });
 
-  form = form(this.model);
+  protected form = form(this.model, (schema) => {
+    requiredField(schema.name);
+    requiredField(schema.questionId);
+  });
 
-  protected readonly aggregations: {
+  protected readonly functions: {
     value: TemplateVariableFunction;
     label: string;
   }[] = [
@@ -107,24 +112,50 @@ export class VariableDialogComponent {
     },
   ];
 
+  ngAfterViewInit() {
+    animateDialogIn(this.dialogData.id);
+  }
+
+  close() {
+    animateDialogOut(this.dialogData.id, this.dialogRef);
+  }
+
   protected save(): void {
+    if (this.dialogData.mode === 'insert') {
 
-    const model = this.model();
+      const selectModel = this.selectModel();
+      this.dialogRef.close(selectModel);
 
-    if (!model.questionId) return;
+    } else {
 
-    const variable: QuestionTemplateVariable = {
-      ...this.dialogData.entity,
-      ...model,
-    };
+      const model = this.model();
+      if (!model.questionId) return;
 
-    this.dialogState.questionnaire.update(q => {
-      return {
-        ...q,
-        variables: [...(q?.variables ?? []), variable],
-      } as AppQuestionnaire;
-    });
+      const variable: QuestionTemplateVariable = {
+        ...this.dialogData.entity,
+        ...model,
+      };
 
-    this.dialogRef.close();
+      this.dialogState.questionnaire.update(q => {
+        const variables = [...(q?.variables ?? [])];
+        switch(this.dialogData.mode) {
+          case 'add':
+            variables.push(variable);
+            break;
+          case 'delete':
+            variables.splice(variables.findIndex(v => v.id === variable.id), 1);
+            break;
+          case 'edit':
+            variables[variables.findIndex(v => v.id === variable.id)] = variable;
+            break;
+        }
+        return {
+          ...q,
+          variables,
+        } as AppQuestionnaire;
+      });
+      this.dialogRef.close(variable);
+
+    }
   }
 }

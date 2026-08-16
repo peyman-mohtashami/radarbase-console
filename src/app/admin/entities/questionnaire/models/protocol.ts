@@ -122,6 +122,7 @@ export interface QuestionDto {
   field_type: string;
   required_field: boolean;
   field_label: string;
+  fieldLabelVariables?: QuestionTemplateVariable[];
   section_header?: string;
   select_choices_or_calculations?: QuestionChoiceDto[];
   text_validation_type_or_show_slider_number?: string;
@@ -140,6 +141,7 @@ export interface QuestionDto {
   date_type?: string;
   isValid?: boolean;
   isActive: boolean;
+  variables?: Record<string, QuestionTemplateVariable[]>;
 }
 
 export interface QuestionChoiceDto {

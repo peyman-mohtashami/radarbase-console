@@ -125,7 +125,7 @@
                           }
                         }
                       </mat-icon>
-                      <span class="pt-0.5">{{ choice.code }}: {{ choice.label[dialogState.language().code] }}</span>
+                      <span class="pt-0.5">{{ choice.code }}: {{ choice.label[dialogState.questionnaire()!.defaultLanguage!.code] }}</span>
                     </span>
                   } @else {
                     <span class="inline-flex gap-1 text-red-500">

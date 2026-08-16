@@ -91,7 +91,6 @@
           </mat-form-field>
         </div>
 
-
         <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
           {{ `${_prefix}.requiredField` | translate }}
         </mat-slide-toggle>
@@ -103,13 +102,38 @@
                [class]="form.field_label[language]().touched() && form.field_label[language]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
-        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_label', fieldLabelInput)">
-          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
-        </button>
       </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
           <textarea #fieldLabelInput id="field_label" matInput [formField]="form.field_label[language]" cdkTextareaAutosize
                     rows="3"></textarea>
+<!--        <div>-->
+<!--          @for (variable of variables['field_label']; track variable.id) {-->
+<!--            <app-tag class="bg-primary/20 text-primary">-->
+<!--            <span class="flex items-center gap-2">-->
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>-->
+<!--                {{variable.name}}-->
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>-->
+<!--            </span>-->
+<!--            </app-tag>-->
+<!--          }-->
+<!--        </div>-->
+
+
+        <mat-chip-set>
+          @for (variable of variables['field_label']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!" (click)="editVariable('field_label', variable)">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>-->
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_label', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
+
         <mat-error>
           @if (form.field_label[language]().touched() && form.field_label[language]().invalid()) {
             @for (error of form.field_label[language]().errors(); track error.kind) {
@@ -121,13 +145,25 @@
 
       <div class="flex justify-between items-baseline">
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
-        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('section_header', sectionHeaderInput)">
-          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
-        </button>
       </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
           <textarea #sectionHeaderInput id="section_header" matInput [formField]="form.section_header[language]" cdkTextareaAutosize
                     rows="3"></textarea>
+        <mat-chip-set>
+          @for (variable of variables['section_header']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center gap-2">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('section_header', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
+
         <mat-error>
           @if (form.section_header[language]().touched() && form.section_header[language]().invalid()) {
             @for (error of form.section_header[language]().errors(); track error.kind) {
@@ -139,13 +175,24 @@
 
       <div class="flex justify-between items-baseline">
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
-        <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_note', fieldNoteInput)">
-          <mat-icon class="material-symbols-outlined">data_object</mat-icon>
-        </button>
       </div>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
           <textarea #fieldNoteInput id="field_note" matInput [formField]="form.field_note[language]" cdkTextareaAutosize
                     rows="3"></textarea>
+        <mat-chip-set>
+          @for (variable of variables['field_note']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center gap-2">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_note', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
         <mat-error>
           @if (form.field_note[language]().touched() && form.field_note[language]().invalid()) {
             @for (error of form.field_note[language]().errors(); track error.kind) {
@@ -513,7 +560,30 @@
       }
 
     </form>
-    <div class="bg-red-200 h-full"></div>
+    <div class="h-full">
+      <div class="flex h-[90%] justify-between">
+        <div class="h-full aspect-9/16 bg-primary/20 border-2 border-gray-300 rounded-lg">
+          <div class="h-full flex flex-col">
+            <span class="p-4 shrink-0 font-bold">Questionnaire Name</span>
+<!--              @if (groupedQuestions) {-->
+                <div class="grow overflow-auto p-4">
+<!--                  @for (q of currentQuestionsGroup.questions; track q.field_name) {-->
+<!--                    @if (q.visible) {-->
+                      <app-question [answer]="undefined" [answers]="{}" [language]="dialogState.questionnaire()?.defaultLanguage!" [question]="{...dialogData.entity, ...model()}"/>
+<!--                  }-->
+<!--                  }-->
+                </div>
+                <div>
+                  <app-toolbar [leftButton]="{enabled: false, label: '' }" [progress]="{current: 0, enabled: true, total: 100}"
+                               [rightButton]="{enabled: false, label: '' }"/>
+                </div>
+<!--              } @else {-->
+<!--                Loading...-->
+<!--              }-->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </mat-dialog-content>
 
