@@ -1,5 +1,5 @@
 @let _prefix = 'ADMIN.questionnaire.dialog.question';
-@let language = store.selected()!.defaultLanguage!.code;
+@let language = _lang();
 
 <label for="select_choices_or_calculations" class="text-sm">
   {{ `${_prefix}.choices` | translate }} *

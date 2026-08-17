@@ -56,14 +56,14 @@ export class QuestionChoicesComponent {
 
   isValid = signal(false);
 
-  lang = computed(() => {
-    return this.store.selected()!.defaultLanguage!.code;
+  _lang = computed(() => {
+    return this.store.selected()!.defaultLanguage.code;
   })
 
   addChoice() {
     this.formField()().value.update(v => [
       ...v,
-      {code: '', label: {[this.lang()]: ''}},
+      {code: '', label: {[this._lang()]: ''}},
     ]);
   }
 

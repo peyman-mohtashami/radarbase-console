@@ -152,7 +152,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   };
 
   lang = computed(() => {
-    return this.store.selected()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage.code;
   })
 
   _question = this.dialogData.entity;

@@ -45,7 +45,7 @@ export class QuestionnaireNotificationsComponent {
   protected readonly UNITS = UNITS;
 
   lang = computed(() => {
-    return this.store.selected()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage.code;
   });
 
   _schedule = this.store.selected()?.schedule;

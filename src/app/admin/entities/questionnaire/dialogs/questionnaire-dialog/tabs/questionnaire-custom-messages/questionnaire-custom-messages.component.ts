@@ -37,7 +37,7 @@ export class QuestionnaireCustomMessagesComponent {
   protected store = inject(QuestionnaireStore);
 
   lang = computed(() => {
-    return this.store.selected()!.defaultLanguage!.code;
+    return this.store.selected()!.defaultLanguage.code;
   });
 
   _questionnaire = this.store.selected();

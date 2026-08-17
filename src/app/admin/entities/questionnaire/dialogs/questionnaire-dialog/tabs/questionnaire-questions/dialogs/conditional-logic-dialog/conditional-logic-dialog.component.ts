@@ -151,6 +151,10 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
 
   model = signal<ConditionalLogicForm>(this.toFormModel(this.dialogData.entity ?? []));
 
+  _lang = computed(() => {
+    return this.store.selected()!.defaultLanguage.code
+  })
+
   protected readonly compareQuestions = (a: AppQuestion | null, b: AppQuestion | null) =>
     a?.field_name === b?.field_name;
 

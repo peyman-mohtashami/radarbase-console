@@ -1,5 +1,4 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let language = store.selected()!.defaultLanguage!.code;
 
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
@@ -8,10 +7,10 @@
         {{ `${_prefix}.title` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-        <input id="title" matInput [formField]="form.title[language]">
+        <input id="title" matInput [formField]="form.title[_lang]">
         <mat-error>
-          @if (form.title[language]().touched() && form.title[language]().invalid()) {
-            @for (error of form.title[language]().errors(); track error.kind) {
+          @if (form.title[_lang]().touched() && form.title[_lang]().invalid()) {
+            @for (error of form.title[_lang]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -24,10 +23,10 @@
         {{ `${_prefix}.description` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-        <textarea id="description" matInput [formField]="form.description[language]" cdkTextareaAutosize rows="2"></textarea>
+        <textarea id="description" matInput [formField]="form.description[_lang]" cdkTextareaAutosize rows="2"></textarea>
         <mat-error>
-          @if (form.description[language]().touched() && form.description[language]().invalid()) {
-            @for (error of form.description[language]().errors(); track error.kind) {
+          @if (form.description[_lang]().touched() && form.description[_lang]().invalid()) {
+            @for (error of form.description[_lang]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -60,10 +59,10 @@
           {{ `${_prefix}.startText` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <textarea id="startText" matInput [formField]="form.startText[language]" cdkTextareaAutosize rows="4"></textarea>
+          <textarea id="startText" matInput [formField]="form.startText[_lang]" cdkTextareaAutosize rows="4"></textarea>
           <mat-error>
-            @if (form.startText[language]().touched() && form.startText[language]().invalid()) {
-              @for (error of form.startText[language]().errors(); track error.kind) {
+            @if (form.startText[_lang]().touched() && form.startText[_lang]().invalid()) {
+              @for (error of form.startText[_lang]().errors(); track error.kind) {
                 {{ error.message }}
               }
             }
@@ -77,10 +76,10 @@
         {{ `${_prefix}.endText` | translate }}
       </label>
       <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-        <textarea id="endText" matInput [formField]="form.endText[language]" cdkTextareaAutosize rows="4"></textarea>
+        <textarea id="endText" matInput [formField]="form.endText[_lang]" cdkTextareaAutosize rows="4"></textarea>
         <mat-error>
-          @if (form.endText[language]().touched() && form.endText[language]().invalid()) {
-            @for (error of form.endText[language]().errors(); track error.kind) {
+          @if (form.endText[_lang]().touched() && form.endText[_lang]().invalid()) {
+            @for (error of form.endText[_lang]().errors(); track error.kind) {
               {{ error.message }}
             }
           }
@@ -98,10 +97,10 @@
           {{ `${_prefix}.warningText` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <input id="warningText" matInput [formField]="form.warn[language]">
+          <input id="warningText" matInput [formField]="form.warn[_lang]">
           <mat-error>
-            @if (form.warn[language]().touched() && form.warn[language]().invalid()) {
-              @for (error of form.warn[language]().errors(); track error.kind) {
+            @if (form.warn[_lang]().touched() && form.warn[_lang]().invalid()) {
+              @for (error of form.warn[_lang]().errors(); track error.kind) {
                 {{ error.message }}
               }
             }

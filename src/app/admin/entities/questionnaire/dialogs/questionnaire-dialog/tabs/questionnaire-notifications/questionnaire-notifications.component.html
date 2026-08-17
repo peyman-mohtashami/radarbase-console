@@ -1,5 +1,4 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
-@let language = store.selected()!.defaultLanguage!.code;
 
 <form novalidate class="grid grid-cols-2 gap-4">
   <div class="">
@@ -10,10 +9,10 @@
           {{ `${_prefix}.notificationTitle` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <input id="notificationTitle" matInput [formField]="form.notification.title[language]">
+          <input id="notificationTitle" matInput [formField]="form.notification.title[_lang]">
           <mat-error>
-            @if (form.notification.title[language]().touched() && form.notification.title[language]().invalid()) {
-              @for (error of form.notification.title[language]().errors(); track error.kind) {
+            @if (form.notification.title[_lang]().touched() && form.notification.title[_lang]().invalid()) {
+              @for (error of form.notification.title[_lang]().errors(); track error.kind) {
                 {{ error.message }}
               }
             }
@@ -25,10 +24,10 @@
           {{ `${_prefix}.notificationMessage` | translate }}
         </label>
         <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <textarea id="notificationMessage" matInput [formField]="form.notification.text[language]" cdkTextareaAutosize rows="3"></textarea>
+          <textarea id="notificationMessage" matInput [formField]="form.notification.text[_lang]" cdkTextareaAutosize rows="3"></textarea>
           <mat-error>
-            @if (form.notification.text[language]().touched() && form.notification.text[language]().invalid()) {
-              @for (error of form.notification.text[language]().errors(); track error.kind) {
+            @if (form.notification.text[_lang]().touched() && form.notification.text[_lang]().invalid()) {
+              @for (error of form.notification.text[_lang]().errors(); track error.kind) {
                 {{ error.message }}
               }
             }
