@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {LoaderComponent} from '../../../../../shared/components/loader/loader.component';
 import {
   DataTableFilterComponent, FilterEvent,
@@ -40,7 +40,7 @@ import {AppQuestionnaire} from '../../models/questionnaire';
     TranslatePipe,
   ]
 })
-export class QuestionnaireListPageComponent {
+export class QuestionnaireListPageComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
   protected readonly ROLES = ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
@@ -60,6 +60,7 @@ export class QuestionnaireListPageComponent {
   ngOnInit() {
     // Reopen a dialog that was interrupted by session expiry, with its entered fields.
     void this.dialogService.restorePendingDialog();
+    console.log('Class: QuestionnaireListPageComponent, Function: ngOnInit, Line 63 this.store.allItems()' , this.store.allItems());
   }
 
   handleFilterChange(event: FilterEvent) {

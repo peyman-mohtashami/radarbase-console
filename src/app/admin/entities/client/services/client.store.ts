@@ -12,7 +12,6 @@ import {
 } from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {AppSubject} from '../../project-subject/models/subject';
 import {HttpParams} from '@angular/common/http';
-import {first} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ClientStore {

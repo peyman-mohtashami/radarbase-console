@@ -76,6 +76,11 @@
   <app-loader/>
 }
 
+<!--<div class="text-sm">-->
+<!--@for(item of store.items(); track $index){-->
+<!--  <p>{{item.id}} / {{item.name}} / {{item.questions?.length}}</p>-->
+<!--}-->
+<!--</div>-->
 <app-entity-list-page [entities]="store.items()"
                       [tableFields]="tableFields"
                       [entityMetadata]="entityMetadata"

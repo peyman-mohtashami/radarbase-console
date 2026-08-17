@@ -54,7 +54,7 @@ export class QuestionnaireTableRowComponent {
 
   async onDuplicate() {
     // this.duplicateEvent.emit();
-    const duplicateEntity: AppQuestionnaire = {...this.entity(), name: `${this.entity().name}_copy`};
+    const duplicateEntity: AppQuestionnaire = {...this.entity(), id: crypto.randomUUID(), name: `${this.entity().name}_copy`};
     await this.store.add(duplicateEntity);//.subscribe(() => this.handleDialogUpdate());
     await this.store.publish();
   }

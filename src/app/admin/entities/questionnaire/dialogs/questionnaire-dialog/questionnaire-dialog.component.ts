@@ -148,6 +148,7 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected async save(): Promise<void> {
     const entity = this.store.selected();
+    console.log('Class: QuestionnaireDialogComponent, Function: save, Line 151 entity' , entity);
     if (entity) {
       switch(this.dialogData.mode) {
         case DialogMode.ADD:

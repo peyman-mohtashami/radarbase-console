@@ -46,7 +46,7 @@ export class QuestionnaireStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<RbSort>({sortField: 'name', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppQuestionnaire[]>(() => {
@@ -80,7 +80,7 @@ export class QuestionnaireStore {
       length: 0,
     });
     this.sort.set({
-      sortField: queryParams['sortField'] ?? 'id',
+      sortField: queryParams['sortField'] ?? 'name',
       sortOrder: queryParams['sortOrder'] ?? 'desc',
     });
     this.filter.set(this.buildFilter(queryParams));
@@ -128,6 +128,7 @@ export class QuestionnaireStore {
   }
 
   async add(entity: AppQuestionnaire): Promise<boolean> {
+    console.log('Class: QuestionnaireStore, Function: add, Line 131 entity' , entity);
     this.allItems.update((value) => ([...value, entity]));
     return true;
   }
@@ -170,6 +171,8 @@ export class QuestionnaireStore {
         questionnaireConfigs.push({search: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
       })
     });
+
+    console.log('Class: QuestionnaireStore, Function: publish, Line 175 protocolConfigs, questionnaireConfigs' , protocolConfigs, questionnaireConfigs);
 
     this.loading.set(true);
     this.error.set(null);
@@ -276,7 +279,30 @@ export class QuestionnaireStore {
         type: q.onDemand ? 'on_demand' : undefined,
         protocol: this.toRadarSubProtocol(q.schedule),
         isValid: isValid,
-        isActive: isValid ? !!q.isActive : false
+        isActive: isValid ? !!q.isActive : false,
+
+        name: q.name,
+        languages: q.languages,
+        defaultLanguage: q.defaultLanguage,
+        onDemand: q.onDemand,
+        showInCalendar: q.showInCalendar,
+        estimatedCompletionTime: q.estimatedCompletionTime,
+        isDemo: q.isDemo,
+        order: q.order,
+        title: q.title,
+        description: q.description,
+        showIntroduction: q.showIntroduction,
+        startText: q.startText,
+        endText: q.endText,
+        warningEnabled: q.warningEnabled,
+        warn: q.warn,
+        isGeneralTabValid: q.isGeneralTabValid,
+        isSchedulingTabValid: q.isSchedulingTabValid,
+        isCustomMessagesTabValid: q.isCustomMessagesTabValid,
+        isNotificationsTabValid: q.isNotificationsTabValid,
+        isQuestionsTabValid: q.isQuestionsTabValid,
+        isTranslationsTabValid: q.isTranslationsTabValid,
+        variables: q.variables,
       });
       result.questionnaires.push({
         id: q.id ?? crypto.randomUUID(),

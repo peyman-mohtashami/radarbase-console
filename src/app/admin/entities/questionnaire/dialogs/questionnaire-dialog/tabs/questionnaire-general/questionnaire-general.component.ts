@@ -60,16 +60,15 @@ export class QuestionnaireGeneralComponent {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.name);
-    // TODO
-    // validate(schema.name, ({value}) => {
-    //   const matchedQuestionnaireName = this.dialogState.questionnaires()?.find((questionnaire) => questionnaire.name === value());
-    //   if (!matchedQuestionnaireName) return null;
-    //   if (this.dialogState.questionnaire()?.name === value()) return null;
-    //   return {
-    //     kind: 'duplicate',
-    //     message: 'SHARED.validatorError.duplicateName',
-    //   };
-    // });
+    validate(schema.name, ({value}) => {
+      const matchedQuestionnaireName = this.store.allItems()?.find((questionnaire) => questionnaire.name === value());
+      if (!matchedQuestionnaireName) return null;
+      if (this._questionnaire?.name === value()) return null;
+      return {
+        kind: 'duplicate',
+        message: 'SHARED.validatorError.duplicateName',
+      };
+    });
     // TODO stringId
     requiredField(schema.defaultLanguage);
     validate(schema.languages, ({value}) => {
