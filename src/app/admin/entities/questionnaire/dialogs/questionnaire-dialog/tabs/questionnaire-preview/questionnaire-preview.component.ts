@@ -1,14 +1,19 @@
 import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {AppQuestion, AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../models/questionnaire';
-import {QuestionsService} from './services/questions.service';
+import {
+  AppQuestion,
+  AppQuestionConditionalLogic,
+  AppQuestionnaireLanguage,
+  DEFAULT_LANGUAGE
+} from '../../../../models/questionnaire';
+// import {QuestionsService} from './services/questions.service';
 import {AnswerWithTimeLog} from './models/kafka';
 import {ToolbarAction, ToolbarComponent} from './toolbar/toolbar.component';
 import {JsonPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {QuestionComponent} from './question/question.component';
 import {PreviewStateService} from './services/preview-state.service';
-import {evaluateConditionalLogic} from './services/parsers';
+// import {evaluateConditionalLogic} from './services/parsers';
 import {QuestionType} from './models/question';
 import {parsePlaceholder, Placeholder} from './pipes/replace-placeholders.pipe';
 import {debounceTime} from 'rxjs/operators';
@@ -16,6 +21,7 @@ import {
   PreviewPlaceholderFormComponent
 } from './components/preview-placeholder-form/preview-placeholder-form.component';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
+import {isArray} from '@ngx-translate/core';
 
 type PlaceholderFormGroup = FormGroup<{
   questionnaireId: FormControl<string>;
@@ -42,7 +48,7 @@ type PlaceholderFormGroup = FormGroup<{
   ]
 })
 export class QuestionnairePreviewComponent implements OnInit {
-  private questionsService = inject(QuestionsService);
+  // private questionsService = inject(QuestionsService);
   store = inject(QuestionnaireStore);
   previewState = inject(PreviewStateService);
 
@@ -92,7 +98,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   private async initQuestionnaire(): Promise<void> {
     // this.startTime = Date.now();
     const modifiedQuestions = this.modifyQuestions(this.entity()!.questions);
-    this.groupedQuestions = this.questionsService.groupQuestionsByMatrixGroup(modifiedQuestions);
+    this.groupedQuestions = this.groupQuestionsByMatrixGroup(modifiedQuestions);
     this.progress.set({enabled: true, current: 0, total: this.groupedQuestions.size});
 
     this.placeholders = this.findPlaceholders();
@@ -108,6 +114,84 @@ export class QuestionnairePreviewComponent implements OnInit {
 
     this.loading = false;
     await this.startQuestionnaire();
+  }
+
+  groupQuestionsByMatrixGroup(questions: AppQuestion[]): Map<string, AppQuestion[]> {
+    // const autoNextQuestionnaireTypes = await this.getAutoNextQuestionnaireTypes();
+
+    const groupedQuestions = new Map<string, AppQuestion[]>();
+    const fieldNames = new Set<string>();
+
+    for (const [i, question] of questions.entries()) {
+      const {
+        field_name,
+        field_type,
+        text_validation_type_or_show_slider_number,
+        matrix_group_name,
+        section_header,
+      } = question;
+
+      if (fieldNames.has(field_name)) {
+        throw new Error(`Duplicate field_name found: ${field_name}`);
+      }
+      fieldNames.add(field_name);
+
+      if (field_type === QuestionType.TEXT) {
+        question.field_type = this.getModifiedFieldType(text_validation_type_or_show_slider_number);
+      }
+
+      const key = matrix_group_name ? matrix_group_name : field_name;
+
+      // if (!groupedQuestions.get(key)) {
+      //   groupedQuestions.set(key, []);
+      // }
+
+      const questions = groupedQuestions.get(key) ?? [];
+      questions.push({
+        ...question,
+        section_header: i > 0 && !section_header && matrix_group_name === questions[i - 1]?.matrix_group_name ? questions[i - 1]?.section_header : section_header,
+        visible: true
+        // isAutoNext: autoNextQuestionnaireTypes.has(field_type),
+      });
+      groupedQuestions.set(key, questions);
+    }
+
+
+
+
+    // Convert Healthkit questionnaire to Health questionnaire
+    // for (const key in groupedQuestions) {
+    //   const isHealthkitGroup = groupedQuestions[key].some(question => question.field_type === 'healthkit');
+    //   if (isHealthkitGroup) {
+    //     const firstQuestion = groupedQuestions[key][0];
+    //     const healthQuestion: AppQuestion = {
+    //       field_name: firstQuestion.field_name,
+    //       field_type: 'health',
+    //       field_label: firstQuestion.section_header ?? {},
+    //       field_note: firstQuestion.field_note,
+    //       select_choices_or_calculations: groupedQuestions[key].map(q => ({
+    //         code: q.field_name,
+    //         label: q.field_label || ""
+    //       })),
+    //     }
+    //     groupedQuestions[key] = [healthQuestion];
+    //   }
+    // }
+    console.log('Class: QuestionsService, Function: groupQuestionsByMatrixGroup, Line 87 groupedQuestions' , groupedQuestions);
+    return groupedQuestions;
+  }
+
+  private getModifiedFieldType(textFieldType?: string) {
+    if (textFieldType?.includes('date')) {
+      return QuestionType.DATE;
+    }
+    if (textFieldType?.includes('time')) {
+      return QuestionType.TIME;
+    }
+    if (textFieldType?.includes('duration')) {
+      return QuestionType.DURATION;
+    }
+    return QuestionType.TEXT;
   }
 
   private buildPlaceholderForm(placeholders: Placeholder[]): void {
@@ -246,21 +330,20 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   private isVisible(question: AppQuestion) {
-    if (!question.branching_logic) {
+    if (!question.conditionalLogic || question.conditionalLogic.length === 0) {
       return true;
     } else {
-      const branchingLogic = question.branching_logic;
-      return this.branchingLogicPass(branchingLogic);
+      return this.conditionalLogicPass(question.conditionalLogic);
     }
   }
 
-  private branchingLogicPass(branchingLogic: string): boolean {
+  private conditionalLogicPass(conditionalLogic: AppQuestionConditionalLogic): boolean {
     const answersArray:  AnswerWithTimeLog[] = Object.values(this.previewState.answers()).flat();
     const _answers = answersArray.reduce((acc: Record<string, AnswerWithTimeLog>, answer) => {
       acc[answer.id] = answer;
       return acc;
     }, {});
-    return evaluateConditionalLogic(_answers, branchingLogic);
+    return evaluateConditionalLogic(_answers, conditionalLogic);
   }
 
   private allRequiredFieldsAnswered() {
@@ -341,4 +424,41 @@ function extractPlaceholders(str?: string) {
     return [];
   }
   return matches.map(match => match.slice(1, -1));
+}
+
+
+export function evaluateConditionalLogic(answers: Record<string, AnswerWithTimeLog>, conditionalLogic: AppQuestionConditionalLogic) {
+  return conditionalLogic.some(group => {
+    return group.every(rule => {
+      const operand = answers[rule.operand]?.value;
+      if (!operand) return false;
+      const value = rule.value;
+      switch(rule.operator) {
+        case 'equal':
+          if (isArray(operand)) {
+            return operand.some(item => item === value);
+          }
+          return operand === value;
+        case 'notEqual':
+          return operand !== value;
+        case 'greaterThan':
+          return Number(operand) > Number(value);
+        case 'greaterThanOrEqual':
+          return Number(operand) >= Number(value);
+        case 'lessThan':
+          return Number(operand) < Number(value);
+        case 'lessThanOrEqual':
+          return Number(operand) <= Number(value);
+        case 'isEmpty':
+          return operand === null || operand === undefined || operand === '';
+        case 'isNotEmpty':
+          return operand !== null && operand !== undefined;
+        case 'contains':
+          return operand?.includes(value);
+        default:
+          return true;
+      }
+
+    })
+  })
 }

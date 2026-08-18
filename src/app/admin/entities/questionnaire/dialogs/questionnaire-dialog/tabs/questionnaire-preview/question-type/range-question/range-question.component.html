@@ -4,13 +4,13 @@
 
 <div class="w-full flex flex-wrap items-center mt-4 gap-px">
   @for (item of entity().select_choices_or_calculations; track item) {
-    <div
-      class="cursor-pointer flex grow items-center justify-center py-3 border-2 border-primary text-lg first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+    <button
+      class="cursor-pointer flex grow items-center justify-center py-3 px-1 border-2 border-primary text-lg first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
       [class]="(previewValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
       (click)="onPreviewInputChange(item.code)">
           <span class="ion-text-wrap text-center"
                 [innerHtml]="(entity().show_code ? item.code : item.label[language().code]) | replacePlaceholders"></span>
-    </div>
+    </button>
   }
 </div>
 

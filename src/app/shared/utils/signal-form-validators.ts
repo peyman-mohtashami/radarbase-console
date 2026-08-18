@@ -167,6 +167,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
       return null;
     }
 
+    if (!context.value() || !context.valueOf(maxPath)) return null;
     switch(type) {
       case 'number': {
         const min = Number(context.value());
@@ -177,7 +178,6 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
         break;
       }
       case 'date': {
-        if (!context.value() || !context.valueOf(maxPath)) return null;
         const min = new Date(context.value() as Date);
         const max = new Date(context.valueOf(maxPath) as Date);
         if (min.getTime() < max.getTime()) return null;
@@ -192,7 +192,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
     }
 
     return {
-      kind: 'rangeMinLessThanMax',
+      kind: 'minLessThanMax',
       message: 'Min must be less than max',
     };
   });
@@ -209,6 +209,8 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
       return null;
     }
 
+    if (!context.value() || !context.valueOf(minPath)) return null;
+
     switch(type) {
       case 'number': {
         const max = Number(context.value());
@@ -219,7 +221,6 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
         break;
       }
       case 'date': {
-        if (!context.value() || !context.valueOf(minPath)) return null;
         const max = new Date(context.value() as Date);
         const min = new Date(context.valueOf(minPath) as Date);
         if (min.getTime() < max.getTime()) return null;
@@ -234,8 +235,8 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
     }
 
     return {
-      kind: 'rangeMinLessThanMax',
-      message: 'Min must be less than max',
+      kind: 'maxGreaterThanMin',
+      message: 'Max must be greater than min',
     };
   });
 }

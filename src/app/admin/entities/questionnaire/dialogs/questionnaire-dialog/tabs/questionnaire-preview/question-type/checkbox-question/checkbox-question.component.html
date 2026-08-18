@@ -9,7 +9,7 @@
                     (click)="onPreviewInputChange(item.code)"
                     [disabled]="isPreviewDisabled"
                     [checked]="item.checked">
-        <span class="ion-text-wrap" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
+        <span class="ion-text-wrap text-lg" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
       </mat-checkbox>
     </p>
   }

@@ -93,7 +93,6 @@ export interface QuestionnaireQuestionForm extends Record<string, any> {
   // variables: QuestionTemplateVariable[];
 }
 
-
 @Component({
   selector: 'app-question-dialog',
   imports: [
