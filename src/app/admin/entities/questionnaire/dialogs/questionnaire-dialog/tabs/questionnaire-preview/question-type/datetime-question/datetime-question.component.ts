@@ -11,13 +11,14 @@ import {
   MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
-import {MatFormField, MatInput, MatSuffix} from '@angular/material/input';
+import {MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
+import {timeToMinutes} from '../../../questionnaire-questions/dialogs/question-dialog/question-dialog.component';
 
 @Component({
   selector: 'app-datetime-question',
@@ -31,11 +32,14 @@ import {QuestionnaireStore} from '../../../../../../services/questionnaire.store
     MatButton,
     QuestionHeaderComponent,
     ReplacePlaceholdersPipe,
+    MatHint,
   ],
+  providers: [ReplacePlaceholdersPipe],
   templateUrl: './datetime-question.component.html'
 })
 export class DatetimeQuestionComponent {
   private store= inject(QuestionnaireStore);
+  private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 
   protected readonly Number = Number;
 
@@ -45,6 +49,8 @@ export class DatetimeQuestionComponent {
 
   protected isPreviewDisabled = false;
   previewValueChange = output<string | null>();
+
+  protected error: string | null = null;
 
   protected get previewDateValue(): Date | null {
     if (!this.answer()?.value) return null;
@@ -66,10 +72,34 @@ export class DatetimeQuestionComponent {
   protected onPreviewTimeInputChange(event: Event | null) {
     if (event === null) {
       this.previewValueChange.emit(null);
+      this.error = null;
       return;
     }
     const value = (event.target as HTMLInputElement).value;
-    this.previewValueChange.emit(value);
+    this.validate(value);
+
+    if (this.error === null) {
+      this.previewValueChange.emit(value);
+    }
+  }
+
+  validate(valueString: string) {
+    const minValueString = this.replacePlaceholdersPipe.transform(this.entity()?.text_validation_min);
+    const maxValueString = this.replacePlaceholdersPipe.transform(this.entity().text_validation_max);
+
+    const value = timeToMinutes(valueString);
+    const minValue = minValueString !== undefined ? timeToMinutes(minValueString) : undefined;
+    const maxValue = maxValueString !== undefined ? timeToMinutes(maxValueString) : undefined;
+
+    if (minValue !== undefined && value < minValue) {
+      this.error = "MIN_VALIDATION_ERROR";
+      return;
+    } else if (maxValue !== undefined && value > maxValue) {
+      this.error = "MAX_VALIDATION_ERROR";
+      return;
+    } else {
+      this.error = null;
+    }
   }
 
   protected getDateISOString(timestamp: string | undefined) {

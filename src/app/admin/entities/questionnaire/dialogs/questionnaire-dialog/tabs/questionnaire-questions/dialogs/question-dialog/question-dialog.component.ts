@@ -58,6 +58,8 @@ import {
   MatChipSet, MatChipsModule
 } from '@angular/material/chips';
 import {QuestionsStore} from '../../services/questions.store';
+import {PreviewStateService} from '../../../questionnaire-preview/services/preview-state.service';
+import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 
 export interface QuestionnaireQuestionForm extends Record<string, any>{
   field_name: string;
@@ -160,7 +162,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   // variables = signal<Record<string, QuestionTemplateVariable[]>>(this._question.variables ?? {});
   variables: Record<string, QuestionTemplateVariable[]> = this._question.variables ?? {};
-
+  previewState = inject(PreviewStateService);
   protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this._question,
     field_name: this._question.field_name ?? '',
@@ -272,6 +274,116 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         return v === 'slider'
       }
     });
+    validate(schema.range.min, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'slider') return null;
+
+      const min = Number(value());
+      const max = Number(valueOf(schema.range.max));
+
+      if (Number.isNaN(min) || Number.isNaN(max)) return null;
+      if (min < max) return null;
+
+      return {
+        kind: 'rangeMinLessThanMax',
+        message: 'Min must be less than max',
+      };
+    });
+
+    validate(schema.range.max, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'slider') return null;
+
+      const max = Number(value());
+      const min = Number(valueOf(schema.range.min));
+
+      if (Number.isNaN(min) || Number.isNaN(max)) return null;
+      if (min < max) return null;
+
+      return {
+        kind: 'rangeMaxGreaterThanMin',
+        message: 'Max must be greater than min',
+      };
+    });
+
+    validate(schema.range.step, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'slider') return null;
+
+      const step = Number(value());
+
+      if (Number.isNaN(step)) return null;
+      if (step > 0) return null;
+
+      return {
+        kind: 'rangeStepPositive',
+        message: 'Step must be positive',
+      };
+    });
+
+    validate(schema.text_validation_min, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'number' && valueOf(schema.field_type) !== 'datetime') return null;
+
+      if (!value() || !valueOf(schema.text_validation_max)) return null;
+
+      if (valueOf(schema.field_type) === 'number') {
+        const min = Number(value());
+        const max = Number(valueOf(schema.text_validation_max));
+        if (Number.isNaN(min) || Number.isNaN(max)) return null;
+        if (min < max) return null;
+      }
+      if (valueOf(schema.field_type) === 'datetime') {
+        if (valueOf(schema.date_type) === 'date') {
+          const min = new Date(value());
+          const max = new Date(valueOf(schema.text_validation_max));
+          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
+          if (min.getTime() < max.getTime()) return null;
+        }
+        if (valueOf(schema.date_type) === 'time') {
+          const min = timeToMinutes(value());
+          const max = timeToMinutes(valueOf(schema.text_validation_max));
+          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
+          if (min < max) return null;
+        }
+      }
+
+      return {
+        kind: 'minLessThanMax',
+        message: 'Min must be less than max',
+      };
+    });
+
+    validate(schema.text_validation_max, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'number' && valueOf(schema.field_type) !== 'datetime') return null;
+
+      if (!value() || !valueOf(schema.text_validation_min)) return null;
+
+      if (valueOf(schema.field_type) === 'number') {
+        const max = Number(value());
+        const min = Number(valueOf(schema.text_validation_min));
+
+        if (Number.isNaN(min) || Number.isNaN(max)) return null;
+        if (min < max) return null;
+      }
+      if (valueOf(schema.field_type) === 'datetime') {
+        if (valueOf(schema.date_type) === 'date') {
+          const max = new Date(value());
+          const min = new Date(valueOf(schema.text_validation_min));
+          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
+          if (min.getTime() < max.getTime()) return null;
+        }
+        if (valueOf(schema.date_type) === 'time') {
+          const max = timeToMinutes(value());
+          const min = timeToMinutes(valueOf(schema.text_validation_min));
+
+          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
+          if (min < max) return null;
+        }
+      }
+
+      return {
+        kind: 'maxGreaterThanMin',
+        message: 'Max must be greater than min',
+      };
+    });
+
     // required(schema.field_annotation.image, {
     //   when: ({ valueOf }) => {
     //     const v = valueOf(schema.field_type);
@@ -289,6 +401,36 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         const v = valueOf(schema.field_type);
         return v === 'timed'
       }
+    });
+
+    validate(schema.field_annotation.timer.start, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'timed') return null;
+
+      const max = Number(value());
+      const min = Number(valueOf(schema.field_annotation.timer.end));
+
+      if (Number.isNaN(min) || Number.isNaN(max)) return null;
+      if (min < max) return null;
+
+      return {
+        kind: 'endLessThanStart',
+        message: 'Start must be greater than end',
+      };
+    });
+
+    validate(schema.field_annotation.timer.end, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== 'timed') return null;
+
+      const min = Number(value());
+      const max = Number(valueOf(schema.field_annotation.timer.start));
+
+      if (Number.isNaN(min) || Number.isNaN(max)) return null;
+      if (min < max) return null;
+
+      return {
+        kind: 'startGreaterThanEnd',
+        message: 'Start must be greater than end',
+      };
     });
     // required(schema.field_annotation.unit, {
     //   when: ({ valueOf }) => {
@@ -333,7 +475,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       };
     });
   }
-
 
   private parseAndValidateTemplateVariables(value: string, name: string): QuestionTemplateVariable[] | null {
     const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
@@ -687,6 +828,36 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       }
     })
   }
+
+  async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
+    const answers = this.previewState.answers();
+    answers[answer.id] = [answer];
+    this.previewState.answers.set({...answers});
+
+    // for (const questions of this.groupedQuestions.values()) {
+    //   for (const q of questions) {
+    //     q.visible = this.isVisible(q);
+    //   }
+    // }
+
+    // if (!this.anyQuestionLeft(this.currentQuestionsGroup.index)) {
+    //   this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.currentQuestionsGroup.index + 1});
+    //   this.rightButtonLabel.set('finish');
+    // } else {
+    //   this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.groupedQuestions.size});
+    //   this.rightButtonLabel.set('next');
+    // }
+    //
+    // if (this.allRequiredFieldsAnswered()) {
+    //   const questions = this.currentQuestionsGroup.questions;
+    //   // if (questions.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(questions[0].field_type)) {
+    //   //   await this.nextQuestion(this.currentQuestionsGroup.index)
+    //   // } else {
+    //   this.rightButtonEnabled.set(this.rightButtonLabel() !== 'finish');
+    // } else {
+    //   this.rightButtonEnabled.set(false);
+    // }
+  }
 }
 
 
@@ -696,4 +867,9 @@ export function isValidTemplateVariable(variable: QuestionTemplateVariable): boo
   if (!variable.questionId) return false;
   if (variable.start && variable.end && variable.start > variable.end) return false;
   return true;
+}
+
+export function timeToMinutes(time: string) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
 }
