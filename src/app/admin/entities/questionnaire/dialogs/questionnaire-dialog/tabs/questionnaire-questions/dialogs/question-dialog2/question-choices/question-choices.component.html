@@ -1,0 +1,51 @@
+@let _prefix = 'ADMIN.questionnaire.dialog.question';
+@let language = _lang();
+
+<label for="select_choices_or_calculations" class="text-sm">
+  {{ `${_prefix}.choices` | translate }} *
+</label>
+<div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" class="" cdkDropListOrientation="vertical">
+  <div class="w-full flex flex-col text-sm gap-1 border rounded p-2 mb-4">
+    <div class="flex items-center gap-1 w-full">
+      <div class="w-7 grow-0 shrink-0"></div>
+      <div class="w-3/12! grow-0"
+           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.choiceCode` | translate }}
+        *
+      </div>
+      <div class="grow"
+           [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">{{ `${_prefix}.choiceLabel` | translate }}
+        *
+      </div>
+      <div class="w-7 grow-0 shrink-0"></div>
+    </div>
+    @for (choice of formField(); let i = $index; track $index) {
+      <div class="w-full flex items-start gap-1" cdkDrag [cdkDragBoundary]="choicesContainer" cdkDragLockAxis="y">
+        <button mat-icon-button class="w-7! grow-0 shrink-0 cursor-move tiny" cdkDragHandle>
+          <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>
+        </button>
+        <mat-form-field class='small-input w-3/12! grow-0' appearance='outline' subscriptSizing="dynamic">
+          <input matInput [formField]="choice.code">
+        </mat-form-field>
+
+        <mat-form-field class='small-input grow' appearance='outline' subscriptSizing="dynamic">
+          <textarea matInput [formField]="choice.label[language]" rows="1" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+
+        <button class="w-7! grow-0 shrink-0 tiny" [disabled]="i === 0"
+                mat-icon-button color="warn"
+                (click)="removeChoice(i)" type="button">
+          <mat-icon class="material-symbols-outlined">do_not_disturb_on</mat-icon>
+        </button>
+      </div>
+    }
+
+    <div class="flex items-center gap-1 w-full">
+      <div class="grow"></div>
+      <button class="tiny w-7! grow-0 shrink-0 material-symbols-outlined" mat-icon-button (click)="addChoice()"
+              type="button">
+        <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+

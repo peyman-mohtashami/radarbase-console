@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
   Component, computed,
   inject,
   OnInit,
@@ -14,12 +14,10 @@ import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/inp
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {QUESTION_TYPES} from '../../../questionnaire-preview/question-type/question-type.registry';
-import {
-  ConditionalLogicDialogComponent, OPERATOR_SYMBOLS
-} from '../conditional-logic-dialog/conditional-logic-dialog.component';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
-  requiredField
+  parseAndValidateTemplateVariables,
+  requiredField, RequiredWhen, validateDuplicate, validateMaxMin, validateMinMax
 } from '../../../../../../../../../shared/utils/signal-form-validators';
 import {
   applyEach,
@@ -41,7 +39,6 @@ import {
   MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {checkValidation} from '../../questionnaire-questions.component';
 import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
@@ -50,18 +47,13 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/template-field.model';
 import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
 import {ToolbarComponent} from '../../../questionnaire-preview/toolbar/toolbar.component';
-import {
-  VariableDialogComponent
-} from '../../../questionnaire-variables/dialogs/variable-dialog/variable-dialog.component';
-import {
-  MatChip,
-  MatChipSet, MatChipsModule
-} from '@angular/material/chips';
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStateService} from '../../../questionnaire-preview/services/preview-state.service';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
+import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
+import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
 
-export interface QuestionnaireQuestionForm extends Record<string, any>{
+export interface QuestionnaireQuestionForm extends Record<string, any> {
   field_name: string;
   field_type: string;
   field_label: Record<string, string>;
@@ -71,7 +63,7 @@ export interface QuestionnaireQuestionForm extends Record<string, any>{
   field_note: Record<string, string>
   matrix_group_name: string;
   conditionalLogic: AppQuestionConditionalLogic;
-  select_choices_or_calculations: {code: string; label: Record<string, string>}[];
+  select_choices_or_calculations: { code: string; label: Record<string, string> }[];
   // text_validation_type_or_show_slider_number?: string
   text_validation_min: string;
   text_validation_max: string
@@ -123,15 +115,13 @@ export interface QuestionnaireQuestionForm extends Record<string, any>{
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
-    CdkTextareaAutosize,
     TagComponent,
     UpperCasePipe,
     MatTooltip,
     QuestionComponent,
     ToolbarComponent,
-    MatChipSet,
-    MatChip,
-    MatChipsModule,
+    QuestionConditionalLogicComponent,
+    QuestionTemplateVariablesComponent,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -160,9 +150,10 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   _question = this.dialogData.entity;
   _lang = this.lang();
 
-  // variables = signal<Record<string, QuestionTemplateVariable[]>>(this._question.variables ?? {});
   variables: Record<string, QuestionTemplateVariable[]> = this._question.variables ?? {};
+
   previewState = inject(PreviewStateService);
+
   protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this._question,
     field_name: this._question.field_name ?? '',
@@ -204,107 +195,31 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.field_name);
-    validate(schema.field_name, ({value}) => {
-      const matchedFieldName = this.dialogData.questions?.find((question) => question.field_name === value());
-      if (!matchedFieldName) return null;
-      if (this._question?.field_name === value()) return null;
-      return {
-        kind: 'duplicate',
-        message: 'SHARED.validatorError.duplicateName',
-      };
-    });
+    validateDuplicate(schema.field_name, this.dialogData.questions, this._question, 'field_name');
+
     requiredField(schema.field_type);
     disabled(schema.field_type);
+
     requiredField(schema.field_label[this.lang()]);
     this.validateTemplateVariables(schema.field_label[this.lang()], 'field_label');
-    // validate(schema.field_label[this.lang()], ({value}) => {
-    //   const variables = this.parseAndValidateTemplateVariables(value());
-    //
-    //   if (variables) {
-    //     this.variables['field_label'] = variables;
-    //     return null;
-    //   }
-    //
-    //   return {
-    //     kind: 'wrongTemplateVariable',
-    //     message: 'SHARED.validatorError.wrongTemplateVariable',
-    //   };
-    // });
-    // validate(schema.field_label, ({value}) => {
-    //   const v = this.validateTemplateVariables(value()[this._lang], this.model().fieldLabelVariables);
-    //   if (v) return null;
-    //   return {
-    //     kind: 'wrongTemplateVariable',
-    //     message: 'SHARED.validatorError.wrongTemplateVariable',
-    //   };
-    // });
+
     this.validateTemplateVariables(schema.section_header[this.lang()], 'section_header');
     this.validateTemplateVariables(schema.field_note[this.lang()], 'field_note');
 
     applyEach(schema.select_choices_or_calculations, (choice) => {
-      required(choice.code, {
-        when: ({ valueOf }) => {
-          const v = valueOf(schema.field_type);
-          return v === 'info' || v === 'checkbox' || v === 'radio' || v === 'range'
-        }
-      });
-
-      required(choice.label, {
-        when: ({ valueOf }) => {
-          const v = valueOf(schema.field_type);
-          return v === 'info' || v === 'checkbox' || v === 'radio' || v === 'range'
-        }
-      });
-    });
-    required(schema.range.min, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'slider'
-      }
-    });
-    required(schema.range.max, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'slider'
-      }
-    });
-    required(schema.range.step, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'slider'
-      }
-    });
-    validate(schema.range.min, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'slider') return null;
-
-      const min = Number(value());
-      const max = Number(valueOf(schema.range.max));
-
-      if (Number.isNaN(min) || Number.isNaN(max)) return null;
-      if (min < max) return null;
-
-      return {
-        kind: 'rangeMinLessThanMax',
-        message: 'Min must be less than max',
-      };
+      const whenRequired: RequiredWhen = ({valueOf}) => ['info', 'checkbox', 'radio', 'range'].includes(valueOf(schema.field_type));
+      requiredField(choice.code, {when: whenRequired});
+      requiredField(choice.label[this._lang], {when: whenRequired});
     });
 
-    validate(schema.range.max, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'slider') return null;
+    requiredField(schema.range.min, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
+    requiredField(schema.range.max, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
+    requiredField(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
 
-      const max = Number(value());
-      const min = Number(valueOf(schema.range.min));
+    validateMinMax(schema.range.min, schema.range.max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
+    validateMaxMin(schema.range.max, schema.range.min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
 
-      if (Number.isNaN(min) || Number.isNaN(max)) return null;
-      if (min < max) return null;
-
-      return {
-        kind: 'rangeMaxGreaterThanMin',
-        message: 'Max must be greater than min',
-      };
-    });
-
-    validate(schema.range.step, ({ value, valueOf }) => {
+    validate(schema.range.step, ({value, valueOf}) => {
       if (valueOf(schema.field_type) !== 'slider') return null;
 
       const step = Number(value());
@@ -318,128 +233,23 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       };
     });
 
-    validate(schema.text_validation_min, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'number' && valueOf(schema.field_type) !== 'datetime') return null;
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'number'});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'number'});
 
-      if (!value() || !valueOf(schema.text_validation_max)) return null;
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'date'});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'date'});
 
-      if (valueOf(schema.field_type) === 'number') {
-        const min = Number(value());
-        const max = Number(valueOf(schema.text_validation_max));
-        if (Number.isNaN(min) || Number.isNaN(max)) return null;
-        if (min < max) return null;
-      }
-      if (valueOf(schema.field_type) === 'datetime') {
-        if (valueOf(schema.date_type) === 'date') {
-          const min = new Date(value());
-          const max = new Date(valueOf(schema.text_validation_max));
-          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
-          if (min.getTime() < max.getTime()) return null;
-        }
-        if (valueOf(schema.date_type) === 'time') {
-          const min = timeToMinutes(value());
-          const max = timeToMinutes(valueOf(schema.text_validation_max));
-          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
-          if (min < max) return null;
-        }
-      }
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'time'});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'time'});
 
-      return {
-        kind: 'minLessThanMax',
-        message: 'Min must be less than max',
-      };
-    });
+    requiredField(schema.field_annotation.timer.start, {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
+    requiredField(schema.field_annotation.timer.end, {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
 
-    validate(schema.text_validation_max, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'number' && valueOf(schema.field_type) !== 'datetime') return null;
+    validateMinMax(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
+    validateMaxMin(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
 
-      if (!value() || !valueOf(schema.text_validation_min)) return null;
-
-      if (valueOf(schema.field_type) === 'number') {
-        const max = Number(value());
-        const min = Number(valueOf(schema.text_validation_min));
-
-        if (Number.isNaN(min) || Number.isNaN(max)) return null;
-        if (min < max) return null;
-      }
-      if (valueOf(schema.field_type) === 'datetime') {
-        if (valueOf(schema.date_type) === 'date') {
-          const max = new Date(value());
-          const min = new Date(valueOf(schema.text_validation_min));
-          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
-          if (min.getTime() < max.getTime()) return null;
-        }
-        if (valueOf(schema.date_type) === 'time') {
-          const max = timeToMinutes(value());
-          const min = timeToMinutes(valueOf(schema.text_validation_min));
-
-          // if (Number.isNaN(min) || Number.isNaN(max)) return null;
-          if (min < max) return null;
-        }
-      }
-
-      return {
-        kind: 'maxGreaterThanMin',
-        message: 'Max must be greater than min',
-      };
-    });
-
-    // required(schema.field_annotation.image, {
-    //   when: ({ valueOf }) => {
-    //     const v = valueOf(schema.field_type);
-    //     return v === 'timed'
-    //   }
-    // });
-    required(schema.field_annotation.timer.start, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'timed'
-      }
-    });
-    required(schema.field_annotation.timer.end, {
-      when: ({ valueOf }) => {
-        const v = valueOf(schema.field_type);
-        return v === 'timed'
-      }
-    });
-
-    validate(schema.field_annotation.timer.start, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'timed') return null;
-
-      const max = Number(value());
-      const min = Number(valueOf(schema.field_annotation.timer.end));
-
-      if (Number.isNaN(min) || Number.isNaN(max)) return null;
-      if (min < max) return null;
-
-      return {
-        kind: 'endLessThanStart',
-        message: 'Start must be greater than end',
-      };
-    });
-
-    validate(schema.field_annotation.timer.end, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== 'timed') return null;
-
-      const min = Number(value());
-      const max = Number(valueOf(schema.field_annotation.timer.start));
-
-      if (Number.isNaN(min) || Number.isNaN(max)) return null;
-      if (min < max) return null;
-
-      return {
-        kind: 'startGreaterThanEnd',
-        message: 'Start must be greater than end',
-      };
-    });
-    // required(schema.field_annotation.unit, {
-    //   when: ({ valueOf }) => {
-    //     const v = valueOf(schema.field_type);
-    //     return v === 'timed'
-    //   }
-    // });
     required(schema.calculation_fn, {
-      when: ({ valueOf }) => {
+      when: ({valueOf}) => {
         const v = valueOf(schema.field_type);
         return v === 'calc'
       }
@@ -453,67 +263,12 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   });
 
-  private cdr = inject(ChangeDetectorRef)
-
-  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, name: string
-  ): void {
-    validate(path, ({value}) => {
-      const variables = this.parseAndValidateTemplateVariables(value() as string, name);
-
-      if (variables) {
-        this.variables = {
-          ...this.variables,
-          [name]: variables
-        }
-        return null;
-      }
-
-      return {
-        kind: 'wrongTemplateVariable',
-        message: 'SHARED.validatorError.wrongTemplateVariable',
-      };
-    });
-  }
-
-  private parseAndValidateTemplateVariables(value: string, name: string): QuestionTemplateVariable[] | null {
-    const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
-
-    const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
-
-    // Detect unmatched {{
-    if (stripped.includes('{{') || stripped.includes('}}')) return null;
-
-    const variables: QuestionTemplateVariable[] = [];
-
-    for (const match of matches) {
-      const id = match[1].trim();
-      if (!id) return null;
-
-      const variable = this.variables[name]?.find(item => item.name === id);
-      if (!variable) return null;
-
-      if (!isValidTemplateVariable(variable)) return null;
-      variables.push(variable);
-    }
-    return variables;
-  }
-
-
-  branching_logic = computed(() => {
-    const model = this.model();
-    return model.conditionalLogic?.map((conditionalLogicItems) =>
-      conditionalLogicItems.map(i => `[${i.operand}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
-    ).join(' or ') ?? '';
-  })
-
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
 
   ngOnInit() {
     this.questionsStore.question.set(this._question);
-    // this.dialogState.questionIndex.set(this.dialogData.index);
   }
 
   toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
@@ -611,44 +366,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  protected editConditionalLogic() {
-    this.openConditionalLogicDialog();
-  }
-
-  openConditionalLogicDialog() {
-    const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
-      id: 'conditional-logic-dialog',
-      data: {id: 'conditional-logic-dialog', entity: this.model().conditionalLogic, questions: this.dialogData.questions, selectedIndex: this.dialogData.index, mode: DialogMode.EDIT},
-      panelClass: 'tailwind-slide-panel',
-      width: '60%',
-      height: '100vh',
-      position: {top: '0', right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
-
-    const dialogActionSubscription =
-      dialogRef.componentInstance.dialogActionEvent.subscribe(
-        (conditionalLogicValue) => {
-          if (conditionalLogicValue.entity && conditionalLogicValue.action !== DialogMode.CLOSE) {
-            this.model.update(value => {
-              return {
-                ...value,
-                conditionalLogic: conditionalLogicValue.entity ?? []
-              };
-            })
-          }
-          dialogRef.close();
-        }
-      );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
   protected onValidationDatePicked(
     event: MatDatepickerInputEvent<Date>,
     field: FieldTree<string, string, "writable">
@@ -666,167 +383,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     // control.setValue(this.formatDateForValidation(value));
     // control.markAsDirty();
     // control.markAsTouched();
-  }
-
-  // private formatDateForValidation(value: Date): string {
-  //   return value.toISOString();
-  // }
-
-  protected editVariable(field: string, entity: QuestionTemplateVariable) {
-    const dialogRef = this.dialog.open(VariableDialogComponent, {
-      id: 'variable-dialog',
-      data: {id: 'variable-dialog', mode: 'edit', entity, questionIndex: this.dialogData.index},
-      panelClass: 'tailwind-slide-panel',
-      width: '40%',
-      height: '100vh',
-      position: {top: '0', right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
-
-    const dialogActionSubscription = dialogRef.afterClosed().subscribe(
-      (variable: QuestionTemplateVariable | undefined) => {
-        console.log('Class: QuestionDialogComponent, Function: , Line 573 variable' , variable);
-        if (!variable) {
-          return;
-        }
-
-        let oldVariable: string;
-        this.variables = {
-          ...this.variables,
-          [field]: this.variables[field].map(v => {
-            if (v.id === variable.id) {
-              oldVariable = v.name;
-              return variable;
-            } else{
-              return v
-            }
-          })
-        }
-        this.cdr.markForCheck();
-        this.model.update(value => {
-          const text = value[field][this._lang];
-          const regex = new RegExp(`{{\\s*${oldVariable}\\s*}}`, 'g');
-          const updated = text.replace(regex, `{{${variable.name}}}`);
-          return {
-            ...value,
-            [field]: {
-              ...value[field],
-              [this._lang]: updated
-            }
-          }
-        })
-      },
-    );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  protected insertVariable(
-    field: string,
-    input: HTMLTextAreaElement,
-  ): void {
-    const dialogRef = this.dialog.open(VariableDialogComponent, {
-      id: 'variable-dialog',
-      data: {id: 'variable-dialog', mode: 'add', questionIndex: this.dialogData.index},
-      panelClass: 'tailwind-slide-panel',
-      width: '40%',
-      height: '100vh',
-      position: {top: '0', right: '0'},
-      hasBackdrop: true,
-      disableClose: true,
-      autoFocus: false,
-      restoreFocus: false
-    });
-
-    const dialogActionSubscription = dialogRef.afterClosed().subscribe(
-      (variable: QuestionTemplateVariable | undefined) => {
-        if (!variable) {
-          return;
-        }
-        this.variables = {
-          ...this.variables,
-          [field]: [...this.variables[field], variable]//.map(v => v.id === variable.id ? variable : v)
-        }
-        this.cdr.markForCheck();
-        this.insertVariableAtCursor(field, input, variable);
-      },
-    );
-
-    dialogRef.afterClosed().subscribe(() => {
-      dialogActionSubscription.unsubscribe();
-    });
-  }
-
-  private insertVariableAtCursor(
-    field: string,
-    input: HTMLTextAreaElement,
-    variable: QuestionTemplateVariable,
-  ): void {
-    const placeholder = `{{${variable.name}}}`;
-
-    const start = input.selectionStart ?? input.value.length;
-    const end = input.selectionEnd ?? start;
-
-    const editedText = input.value.substring(0, start) + placeholder + input.value.substring(end);
-
-    this.updateModel(field, editedText);
-
-    requestAnimationFrame(() => {
-      const cursorPosition = start + placeholder.length;
-
-      input.focus();
-      input.setSelectionRange(
-        cursorPosition,
-        cursorPosition,
-      );
-    });
-  }
-
-  updateModel(field: string, editedText: string) {
-    this.model.update(value => {
-      switch (field) {
-        case 'field_label':
-          return {
-            ...value,
-            field_label: {
-              ...value.field_label,
-              [this._lang]: editedText,
-            },
-          }
-        case 'section_header':
-          return {
-            ...value,
-            section_header: {
-              ...value.section_header,
-              [this._lang]: editedText,
-            },
-          }
-        case 'field_note':
-          return {
-            ...value,
-            field_note: {
-              ...value.field_note,
-              [this._lang]: editedText,
-            },
-          }
-      }
-      return {
-        ...value,
-        field_label: {
-          ...value.field_label,
-          [this._lang]: editedText,
-        },
-        // variables: [
-        //   ...value.variables,
-        //   variable,
-        // ],
-      }
-    })
   }
 
   async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
@@ -858,18 +414,39 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     //   this.rightButtonEnabled.set(false);
     // }
   }
-}
 
+  protected updateConditionalLogic(conditionalLogic: AppQuestionConditionalLogic) {
+    this.model.update(value => {
+      return {
+        ...value,
+        conditionalLogic,
+      };
+    })
+  }
 
-export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
-  if (!variable.id) return false;
-  if (variable.type !== 'question') return false;
-  if (!variable.questionId) return false;
-  if (variable.start && variable.end && variable.start > variable.end) return false;
-  return true;
-}
+  protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
+    this.variables = {
+      ...this.variables,
+      [field]: variables
+    }
+  }
 
-export function timeToMinutes(time: string) {
-  const [hours, minutes] = time.split(':').map(Number);
-  return hours * 60 + minutes;
+  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
+    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
+    validate(path, ({value}) => {
+      const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
+      if (_variables) {
+        this.variables = {
+          ...this.variables,
+          [field]: _variables
+        }
+        return null;
+      }
+
+      return {
+        kind: 'wrongTemplateVariable',
+        message: 'SHARED.validatorError.wrongTemplateVariable',
+      };
+    });
+  }
 }

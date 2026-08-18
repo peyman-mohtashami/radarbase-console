@@ -1,0 +1,26 @@
+@let _prefix = 'ADMIN.questionnaire.dialog.question';
+
+<mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+  <textarea #input id="field_label" matInput [formField]="formField()" cdkTextareaAutosize
+            rows="3"></textarea>
+  <mat-chip-set>
+    @for (variable of variables(); track variable.id) {
+      <mat-chip>
+                  <span class="flex items-center">
+                    <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!" (click)="editVariable(variable)">edit</mat-icon>
+                    <span class="text-sm">{{variable.name}}</span>
+                </span>
+      </mat-chip>
+    }
+    <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable(input)">
+      <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+    </button>
+  </mat-chip-set>
+  <mat-error>
+    @if (formField()().touched() && formField()().invalid()) {
+      @for (error of formField()().errors(); track error.kind) {
+        {{ error.message }}
+      }
+    }
+  </mat-error>
+</mat-form-field>

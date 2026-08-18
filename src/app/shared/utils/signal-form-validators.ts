@@ -1,4 +1,7 @@
-import {pattern, required, PathKind, SchemaPath, SchemaPathRules} from '@angular/forms/signals';
+import {pattern, required, PathKind, SchemaPath, SchemaPathRules, validate, LogicFn} from '@angular/forms/signals';
+import {
+  QuestionTemplateVariable
+} from '../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-20 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
@@ -6,11 +9,70 @@ export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
 
 /** Marks a field as required with the shared error message. */
-export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root>(
+// export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root>(
+//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+// ): void {
+//   required(path, {message: 'SHARED.validatorError.required'});
+// }
+// type RequiredOptions = NonNullable<Parameters<typeof required>[1]>;
+// type RequiredWhen = NonNullable<RequiredOptions['when']>;
+//
+// export function requiredField<
+//   TValue,
+//   TPathKind extends PathKind = PathKind.Root
+// >(
+//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+//   options?: Omit<RequiredOptions, 'message'>
+// ): void {
+//   required(path, {
+//     ...options,
+//     message: 'SHARED.validatorError.required'
+//   });
+// }
+// type RequiredOptions = NonNullable<Parameters<typeof required>[1]>;
+//
+// export function requiredField<
+//   TValue,
+//   TPathKind extends PathKind = PathKind.Root
+// >(
+//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+//   options?: Omit<RequiredOptions, 'message'>
+// ): void {
+//   required(path, {
+//     ...options,
+//     message: 'SHARED.validatorError.required',
+//   });
+// }
+export type RequiredWhen = NonNullable<
+  NonNullable<Parameters<typeof required>[1]>['when']
+>;
+
+export function requiredField<
+  TValue,
+  TPathKind extends PathKind = PathKind.Root
+>(
   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  options?: { when?: RequiredWhen }
 ): void {
-  required(path, {message: 'SHARED.validatorError.required'});
+  required(path, {
+    ...options,
+    message: 'SHARED.validatorError.required',
+  });
 }
+// export function requiredField<
+//   TValue,
+//   TPathKind extends PathKind = PathKind.Root
+// >(
+//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+//   options?: {
+//     when?: (ctx: { valueOf: <T>(path: SchemaPath<T>) => T }) => boolean;
+//   }
+// ): void {
+//   required(path, {
+//     message: 'SHARED.validatorError.required',
+//     ...options
+//   });
+// }
 
 /** Marks a field as required with the shared error message. */
 // export function requiredField<TValue, TPathKind extends PathKind>(
@@ -35,5 +97,145 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
 ): void {
   pattern(path, LONG_TEXT_PATTERN, {
     message: 'SHARED.validatorError.longTextValidator',
+  });
+}
+
+
+export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {
+  const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
+
+  const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
+
+  // Detect unmatched {{
+  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 134 ' , );
+  if (stripped.includes('{{') || stripped.includes('}}')) return null;
+  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 136 ' , );
+
+  const _variables: QuestionTemplateVariable[] = [];
+
+  for (const match of matches) {
+    const id = match[1].trim();
+    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 142 ' , );
+    if (!id) return null;
+
+    const variable = variables[field]?.find(item => item.name === id);
+    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 146 variable' , variable);
+    if (!variable) return null;
+    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 148 ' , );
+    if (!isValidTemplateVariable(variable)) return null;
+    _variables.push(variable);
+  }
+  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 152 _variables' , _variables);
+  return _variables;
+}
+
+export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
+  if (!variable.id) return false;
+  if (variable.type !== 'question') return false;
+  if (!variable.questionId) return false;
+  if (variable.start && variable.end && variable.start > variable.end) return false;
+  return true;
+}
+
+export function timeToMinutes(time: string) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+export function validateDuplicate<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, source: any[], item: any, field: string
+): void {
+  validate(path, ({value}) => {
+    const matchedFieldName = source?.find((question) => question[field] === value());
+    if (!matchedFieldName) return null;
+    if (item?.[field] === value()) return null;
+    return {
+      kind: 'duplicate',
+      message: 'SHARED.validatorError.duplicateName',
+    };
+  });
+}
+
+export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Root>(
+  minPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  maxPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  type: string,
+  options?: { when?: LogicFn<TValue, boolean, TPathKind>; }
+) {
+  validate(minPath, (context) => {
+    if (options?.when && !options.when(context)) {
+      return null;
+    }
+
+    switch(type) {
+      case 'number': {
+        const min = Number(context.value());
+        const max = Number(context.valueOf(maxPath));
+
+        if (Number.isNaN(min) || Number.isNaN(max)) return null;
+        if (min < max) return null;
+        break;
+      }
+      case 'date': {
+        if (!context.value() || !context.valueOf(maxPath)) return null;
+        const min = new Date(context.value() as Date);
+        const max = new Date(context.valueOf(maxPath) as Date);
+        if (min.getTime() < max.getTime()) return null;
+        break;
+      }
+      case 'time': {
+        const min = timeToMinutes(context.value() as string);
+        const max = timeToMinutes(context.valueOf(maxPath) as string);
+        if (min < max) return null;
+        break;
+      }
+    }
+
+    return {
+      kind: 'rangeMinLessThanMax',
+      message: 'Min must be less than max',
+    };
+  });
+}
+
+export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Root>(
+  maxPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  minPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  type: string,
+  options?: { when?: LogicFn<TValue, boolean, TPathKind>; }
+) {
+  validate(maxPath, (context) => {
+    if (options?.when && !options.when(context)) {
+      return null;
+    }
+
+    switch(type) {
+      case 'number': {
+        const max = Number(context.value());
+        const min = Number(context.valueOf(minPath));
+
+        if (Number.isNaN(min) || Number.isNaN(max)) return null;
+        if (min < max) return null;
+        break;
+      }
+      case 'date': {
+        if (!context.value() || !context.valueOf(minPath)) return null;
+        const max = new Date(context.value() as Date);
+        const min = new Date(context.valueOf(minPath) as Date);
+        if (min.getTime() < max.getTime()) return null;
+        break;
+      }
+      case 'time': {
+        const max = timeToMinutes(context.value() as string);
+        const min = timeToMinutes(context.valueOf(minPath) as string);
+        if (min < max) return null;
+        break;
+      }
+    }
+
+    return {
+      kind: 'rangeMinLessThanMax',
+      message: 'Min must be less than max',
+    };
   });
 }

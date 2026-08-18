@@ -18,7 +18,8 @@ import {
 } from '../../question/question-header/question-header.component';
 import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
-import {timeToMinutes} from '../../../questionnaire-questions/dialogs/question-dialog/question-dialog.component';
+import {timeToMinutes} from '../../../../../../../../../shared/utils/signal-form-validators';
+// import {timeToMinutes} from '../../../questionnaire-questions/dialogs/question-dialog/question-dialog.component';
 
 @Component({
   selector: 'app-datetime-question',

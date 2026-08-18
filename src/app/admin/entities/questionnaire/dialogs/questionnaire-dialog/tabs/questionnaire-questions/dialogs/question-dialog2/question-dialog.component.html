@@ -97,28 +97,110 @@
       </div>
 
 
-      <div>
+      <div class="flex justify-between items-baseline">
         <label for="field_label" class="text-sm"
                [class]="form.field_label[language]().touched() && form.field_label[language]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
-          <app-question-template-variables [variables]="variables['field_label']"
-                                           [questionIndex]="dialogData.index"
-                                           [formField]="form.field_label[language]"
-                                           (variableUpdateEvent)="updateVariables('field_label', $event)"/>
       </div>
+      <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <textarea #fieldLabelInput id="field_label" matInput [formField]="form.field_label[language]" cdkTextareaAutosize
+                    rows="3"></textarea>
+<!--        <div>-->
+<!--          @for (variable of variables['field_label']; track variable.id) {-->
+<!--            <app-tag class="bg-primary/20 text-primary">-->
+<!--            <span class="flex items-center gap-2">-->
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>-->
+<!--                {{variable.name}}-->
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>-->
+<!--            </span>-->
+<!--            </app-tag>-->
+<!--          }-->
+<!--        </div>-->
+
+
+        <mat-chip-set>
+          @for (variable of variables['field_label']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!" (click)="editVariable('field_label', variable)">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+<!--                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>-->
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_label', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
+
+        <mat-error>
+          @if (form.field_label[language]().touched() && form.field_label[language]().invalid()) {
+            @for (error of form.field_label[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
 
       <div class="flex justify-between items-baseline">
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
       </div>
-      <app-question-template-variables [variables]="variables['section_header']"
-                                       [questionIndex]="dialogData.index" [formField]="form.section_header[language]"/>
+      <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <textarea #sectionHeaderInput id="section_header" matInput [formField]="form.section_header[language]" cdkTextareaAutosize
+                    rows="3"></textarea>
+        <mat-chip-set>
+          @for (variable of variables['section_header']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center gap-2">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('section_header', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
+
+        <mat-error>
+          @if (form.section_header[language]().touched() && form.section_header[language]().invalid()) {
+            @for (error of form.section_header[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
 
       <div class="flex justify-between items-baseline">
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
       </div>
-      <app-question-template-variables [variables]="variables['field_note']"
-                                       [questionIndex]="dialogData.index" [formField]="form.field_note[language]"/>
+      <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <textarea #fieldNoteInput id="field_note" matInput [formField]="form.field_note[language]" cdkTextareaAutosize
+                    rows="3"></textarea>
+        <mat-chip-set>
+          @for (variable of variables['field_note']; track variable.id) {
+            <mat-chip>
+              <span class="flex items-center gap-2">
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">edit</mat-icon>
+                <span class="text-sm">{{variable.name}}</span>
+                <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">cancel</mat-icon>
+            </span>
+            </mat-chip>
+          }
+          <button class="tiny" mat-icon-button matSuffix type="button" matTooltip="Insert variable" (click)="insertVariable('field_note', fieldLabelInput)">
+            <mat-icon class="material-symbols-outlined text-lg! leading-5! size-5!">data_object</mat-icon>
+          </button>
+        </mat-chip-set>
+        <mat-error>
+          @if (form.field_note[language]().touched() && form.field_note[language]().invalid()) {
+            @for (error of form.field_note[language]().errors(); track error.kind) {
+              {{ error.message }}
+            }
+          }
+        </mat-error>
+      </mat-form-field>
 
       @let fieldType = form.field_type().value();
       @let hasChoices = fieldType === 'info' || fieldType === 'checkbox' || fieldType === 'radio' || fieldType === 'range';
@@ -516,12 +598,18 @@
       </mat-form-field>
       }
 
-
       @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
-        <app-question-conditional-logic [conditionalLogic]="model().conditionalLogic"
-                                        [questions]="dialogData.questions"
-                                        [selectedIndex]="dialogData.index"
-                                        (updateEvent)="updateConditionalLogic($event)" />
+        <div class="flex items-center">
+          <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic.title` | translate }}</label>
+          <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()" type="button">
+            <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
+          </button>
+        </div>
+        @if(branching_logic()) {
+          <p><code class="text-sm text-orange-500">{{ `${_prefix}.conditionalLogic.message` | translate }}: {{ branching_logic() }}</code></p>
+        } @else {
+          <p><code class="text-sm text-gray-500">{{ `${_prefix}.conditionalLogic.noConditionalLogic` | translate }}</code></p>
+        }
       }
 
     </form>
