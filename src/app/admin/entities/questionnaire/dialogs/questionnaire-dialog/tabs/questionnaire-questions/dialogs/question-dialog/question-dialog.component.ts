@@ -6,14 +6,13 @@ import {
   signal,
 } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QUESTION_TYPES} from '../../../questionnaire-preview/question/question-type/question-type.registry';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   parseAndValidateTemplateVariables,
@@ -39,7 +38,7 @@ import {
   MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
-import {checkValidation} from '../../questionnaire-questions.component';
+import {checkValidation, QUESTION_TYPES} from '../../questionnaire-questions.component';
 import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
@@ -53,18 +52,16 @@ import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
 
-export interface QuestionnaireQuestionForm extends Record<string, any> {
+export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   field_name: string;
   field_type: string;
   field_label: Record<string, string>;
-  // fieldLabelVariables?: QuestionTemplateVariable[];
   section_header: Record<string, string>
   required_field: boolean;
   field_note: Record<string, string>
   matrix_group_name: string;
   conditionalLogic: AppQuestionConditionalLogic;
   select_choices_or_calculations: { code: string; label: Record<string, string> }[];
-  // text_validation_type_or_show_slider_number?: string
   text_validation_min: string;
   text_validation_max: string
   field_annotation: {
@@ -82,15 +79,12 @@ export interface QuestionnaireQuestionForm extends Record<string, any> {
     min: string
     step: string
   }
-  // branching_logic?: string
   show_selected_label: boolean
   show_code: boolean
   multi_line: boolean;
   calculation_fn: string;
   calculation_args: string;
-  date_type: string;
   isActive: boolean;
-  // variables: QuestionTemplateVariable[];
 }
 
 @Component({
@@ -125,6 +119,7 @@ export interface QuestionnaireQuestionForm extends Record<string, any> {
   templateUrl: './question-dialog.component.html'
 })
 export class QuestionDialogComponent implements OnInit, AfterViewInit {
+  protected readonly QuestionType = QuestionType;
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
   protected readonly DialogMode = DialogMode;
 
@@ -187,9 +182,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     multi_line: this._question.multi_line ?? false,
     calculation_fn: this._question.calculation_fn ?? '',
     calculation_args: this._question.calculation_args ?? '',
-    date_type: this._question.date_type ?? 'date',
     isActive: this._question.isActive ?? false,
-    // variables: this._question.variables ?? []
   });
 
   protected form = form(this.model, (schema) => {
@@ -206,20 +199,20 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     this.validateTemplateVariables(schema.field_note[this.lang()], 'field_note');
 
     applyEach(schema.select_choices_or_calculations, (choice) => {
-      const whenRequired: RequiredWhen = ({valueOf}) => ['info', 'checkbox', 'radio', 'range'].includes(valueOf(schema.field_type));
+      const whenRequired: RequiredWhen = ({valueOf}) => [QuestionType.INFO, QuestionType.CHECKBOX, QuestionType.RADIO, QuestionType.RANGE].includes(valueOf(schema.field_type) as QuestionType);
       requiredField(choice.code, {when: whenRequired});
       requiredField(choice.label[this._lang], {when: whenRequired});
     });
 
-    requiredField(schema.range.min, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
-    requiredField(schema.range.max, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
-    requiredField(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
+    requiredField(schema.range.min, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
+    requiredField(schema.range.max, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
+    requiredField(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
 
-    validateMinMax(schema.range.min, schema.range.max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
-    validateMaxMin(schema.range.max, schema.range.min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'slider'});
+    validateMinMax(schema.range.min, schema.range.max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
+    validateMaxMin(schema.range.max, schema.range.min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
 
     validate(schema.range.step, ({value, valueOf}) => {
-      if (valueOf(schema.field_type) !== 'slider') return null;
+      if (valueOf(schema.field_type) !== QuestionType.SLIDER) return null;
 
       const step = Number(value());
 
@@ -232,25 +225,25 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       };
     });
 
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'number'});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'number'});
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
 
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'date'});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'date'});
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.DATE});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.DATE});
 
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'time'});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === 'datetime' && valueOf(schema.date_type) === 'time'});
+    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIME});
+    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIME});
 
-    requiredField(schema.field_annotation.timer.start, {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
-    requiredField(schema.field_annotation.timer.end, {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
+    requiredField(schema.field_annotation.timer.start, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
+    requiredField(schema.field_annotation.timer.end, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
 
-    validateMinMax(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
-    validateMaxMin(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === 'timed'});
+    validateMinMax(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
+    validateMaxMin(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
 
     required(schema.calculation_fn, {
       when: ({valueOf}) => {
         const v = valueOf(schema.field_type);
-        return v === 'calc'
+        return v === QuestionType.CALC
       }
     });
     // required(schema.calculation_args, {
@@ -296,29 +289,26 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       variables: this.variables,//question.variables,
     }
     switch (question.field_type) {
-      case 'text':
+      case QuestionType.TEXT:
         updatedQuestion.multi_line = question.multi_line;
         break;
-      case 'number':
+      case QuestionType.NUMBER:
+      case QuestionType.DATE:
+      case QuestionType.TIME:
         updatedQuestion.text_validation_min = question.text_validation_min;
         updatedQuestion.text_validation_max = question.text_validation_max;
         break;
-      case 'datetime':
-        updatedQuestion.text_validation_min = question.text_validation_min;
-        updatedQuestion.text_validation_max = question.text_validation_max;
-        updatedQuestion.date_type = question.date_type;
-        break;
-      case 'checkbox':
-      case 'radio':
-      case 'info':
+      case QuestionType.CHECKBOX:
+      case QuestionType.RADIO:
+      case QuestionType.INFO:
         updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
         break;
-      case 'range':
+      case QuestionType.RANGE:
         updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
         updatedQuestion.show_selected_label = question.show_selected_label;
         updatedQuestion.show_code = question.show_code;
         break;
-      case 'slider':
+      case QuestionType.SLIDER:
         updatedQuestion.range = question.range ? {
           min: question.range?.min,
           max: question.range?.max,
@@ -327,10 +317,10 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
           labelRight: question.range.labelRight?.[this._lang] ? question.range.labelRight : undefined,
         } : undefined;
         break;
-      case 'timed':
+      case QuestionType.TIMED:
         updatedQuestion.field_annotation = question.field_annotation;
         break;
-      case 'calc':
+      case QuestionType.CALC:
         updatedQuestion.calculation_fn = question.calculation_fn;
         updatedQuestion.calculation_args = question.calculation_args;
         break;

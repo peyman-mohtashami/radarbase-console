@@ -1,7 +1,7 @@
 import {afterNextRender, Component, ElementRef, inject, Injector, viewChild} from '@angular/core';
 import {
   AppQuestion,
-  AppQuestionConditionalLogicRule
+  AppQuestionConditionalLogicRule, QuestionType
 } from '../../../../models/questionnaire';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {CdkScrollable} from '@angular/cdk/scrolling';
@@ -11,8 +11,62 @@ import {MatButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../shared/enums/dialog';
-import {QUESTION_TYPES} from '../questionnaire-preview/question/question-type/question-type.registry';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
+
+
+
+export const QUESTION_TYPES = [
+  {
+    types: [
+      {type: QuestionType.DESCRIPTIVE, icon: '', label: 'Descriptive', disabled: false},
+      {type: QuestionType.INFO, icon: '', label: 'Info', disabled: true},
+    ]
+  },
+  {
+    types: [
+      {type: QuestionType.RADIO, icon: '', label: 'Radio', disabled: false},
+      {type: QuestionType.DROPDOWN, icon: '', label: 'Dropdown', disabled: true},
+      // {type: QuestionType.DROPDOWN_MULTISELECT, icon: '', label: 'Multi-Select Dropdown', disabled: true},
+      {type: QuestionType.YESNO, icon: '', label: 'Yes/No', disabled: false},
+      {type: QuestionType.CHECKBOX, icon: '', label: 'Checkbox', disabled: false},
+      {type: QuestionType.SLIDER, icon: '', label: 'Slider', disabled: false},
+      {type: QuestionType.RANGE, icon: '', label: 'Range', disabled: false},
+      // {type: QuestionType.RANGE_INFO, icon: '', label: 'RangeInfo', disabled: false},
+      {type: QuestionType.RATING, icon: '', label: 'Rating', disabled: true},
+      {type: QuestionType.SVG_CHECKBOX, icon: '', label: 'SVG Checkbox', disabled: true},
+      // {type: QuestionType.SINGLE_SELECT_MATRIX, icon: '', label: 'Single Select Matrix', disabled: false},
+      // {type: QuestionType.MULTISELECT_MATRIX, icon: '', label: 'Multi Select Matrix', disabled: true},
+    ]
+  },
+  {
+    types: [
+      {type: QuestionType.TEXT, icon: '', label: 'Text', disabled: false},
+      {type: QuestionType.NUMBER, icon: '', label: 'Number', disabled: false},
+      // {type: QuestionType.NOTE, icon: '', label: 'Note', disabled: false},
+      {type: QuestionType.DATE, icon: '', label: 'DateTime', disabled: false},
+      {type: QuestionType.TIME, icon: '', label: 'DateTime', disabled: false},
+      // {type: QuestionType.DURATION, icon: '', label: 'Duration', disabled: true},
+      // {type: QuestionType.TEXT_INPUT_MATRIX, icon: '', label: 'Text Input Matrix', disabled: false},
+    ]
+  },
+  {
+    types: [
+      {type: QuestionType.WEB, icon: '', label: 'Web', disabled: true},
+      {type: QuestionType.AUDIO, icon: '', label: 'Audio', disabled: false},
+      {type: QuestionType.FILE_UPLOAD, icon: '', label: 'File Upload', disabled: true},
+      {type: QuestionType.IMAGE_PICKER, icon: '', label: 'Image Picker', disabled: true},
+      {type: QuestionType.SIGNATURE, icon: '', label: 'Signature', disabled: true},
+      {type: QuestionType.VIDEO_PICKER, icon: '', label: 'Video Picker', disabled: true},
+      {type: QuestionType.SORTING, icon: '', label: 'Sorting', disabled: true},
+      {type: QuestionType.TIMED, icon: '', label: 'Timed', disabled: false},
+    ]
+  },
+  {
+    types: [
+      {type: QuestionType.CALC, icon: '', label: 'Calculation', disabled: false},
+    ]
+  }
+]
 
 @Component({
   selector: 'app-questionnaire-questions',

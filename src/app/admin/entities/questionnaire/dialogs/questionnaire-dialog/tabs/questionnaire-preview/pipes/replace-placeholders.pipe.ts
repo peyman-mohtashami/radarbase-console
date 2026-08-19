@@ -1,9 +1,8 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
 import {SafeHtml} from "@angular/platform-browser";
 import {PreviewStore} from '../services/preview.store';
-import {QuestionType} from '../models/question';
 import {QuestionnaireStore} from '../../../../../services/questionnaire.store';
-import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionChoice, QuestionType} from '../../../../../models/questionnaire';
 import {QuestionTemplateVariable} from '../../questionnaire-variables/model/template-field.model';
 
 const RESERVED_VALUES = ['current_date', 'current_time'];

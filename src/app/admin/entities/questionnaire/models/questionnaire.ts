@@ -102,7 +102,7 @@ export interface AppQuestion {
   multi_line?: boolean;
   calculation_fn?: string;
   calculation_args?: string;
-  date_type?: string;
+  // date_type?: string;
   isValid?: boolean;
   isActive: boolean;
   visible?: boolean;
@@ -146,3 +146,38 @@ export const ISO_LANGUAGES: AppQuestionnaireLanguage[] = [
   {code:"pl",label:"Polish",nativeLabel:"polski"},
   {code:"es",label:"Spanish; Castilian",nativeLabel:"español, castellano"},
 ]
+
+export enum QuestionType {
+  DESCRIPTIVE = 'descriptive',
+  INFO = 'info',
+  RADIO = 'radio',
+  DROPDOWN = 'dropdown',
+  DROPDOWN_MULTISELECT = 'dropdown-multiselect',
+  YESNO = 'yesno',
+  CHECKBOX = 'checkbox',
+  SLIDER = 'slider',
+  RANGE = 'range',
+  RANGE_INFO = 'range-info',
+  RATING = 'rating',
+  SVG_CHECKBOX = 'svg-checkbox',
+  SINGLE_SELECT_MATRIX = 'single-select-matrix',
+  MULTISELECT_MATRIX = 'multiselect-matrix',
+  TEXT = 'text',
+  NUMBER = 'number',
+  NOTE = 'note',
+  DATE = 'date',
+  TIME = 'time',
+  DURATION = 'duration',
+  TEXT_INPUT_MATRIX = 'text-input-matrix',
+  WEB = 'web',
+  AUDIO = 'audio',
+  FILE_UPLOAD = 'file-upload',
+  IMAGE_PICKER = 'image-picker',
+  SIGNATURE = 'signature',
+  VIDEO_PICKER = 'video-picker',
+  SORTING = 'sorting',
+  TIMED = 'timed',
+  CALC = 'calc',
+  MATRIX_RADIO = 'matrix-radio',
+  HEALTHKIT = 'healthkit',
+}

@@ -138,7 +138,7 @@ export interface QuestionDto {
   multi_line?: boolean;
   calculation_fn?: string;
   calculation_args?: string;
-  date_type?: string;
+  // date_type?: string;
   isValid?: boolean;
   isActive: boolean;
   variables?: Record<string, QuestionTemplateVariable[]>;

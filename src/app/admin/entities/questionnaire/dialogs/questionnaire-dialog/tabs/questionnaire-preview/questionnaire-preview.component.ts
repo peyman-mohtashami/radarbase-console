@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal, ChangeDetectionStrategy, computed} fr
 import {
   AppQuestion,
   AppQuestionConditionalLogic,
-  AppQuestionnaireLanguage,
+  AppQuestionnaireLanguage, QuestionType,
 } from '../../../../models/questionnaire';
 import {AnswerWithTimeLog} from './models/kafka';
 import {ToolbarAction, ToolbarComponent} from './components/toolbar/toolbar.component';
@@ -10,7 +10,6 @@ import {JsonPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {QuestionComponent} from './question/question.component';
 import {PreviewStore} from './services/preview.store';
-import {QuestionType} from './models/question';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {evaluateConditionalLogic} from './services/utils';
 
@@ -109,7 +108,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   private readonly AUTO_NEXT_QUESTION_TYPES: string[] = [
     QuestionType.RADIO,
     QuestionType.YESNO,
-    QuestionType.CALCULATION,
+    QuestionType.CALC,
     QuestionType.AUDIO,
     QuestionType.RANGE,
     QuestionType.TIMED

@@ -6,13 +6,13 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
-import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
 import {applyEach, form, FormField, validate} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {QuestionType} from '../../../questionnaire-preview/question/question-type/question-type.registry';
+// import {QuestionType} from '../../../questionnaire-preview/question/question-type/question-type.registry';
 import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
@@ -71,7 +71,17 @@ export const OPERATORS: Record<string, {name: string; value: string}[]> = {
     {name: 'Is Empty', value: 'isEmpty'},
     {name: 'Is not Empty', value: 'isNotEmpty'},
   ],
-  [QuestionType.DATETIME]: [
+  [QuestionType.DATE]: [
+    {name: 'Equal', value: 'equal'},
+    {name: 'Not Equal', value: 'notEqual'},
+    {name: 'Greater Than', value: 'greaterThan'},
+    {name: 'Greater Than or Equal', value: 'greaterThanOrEqual'},
+    {name: 'Less Than', value: 'lessThan'},
+    {name: 'Less Than or Equal', value: 'lessThanOrEqual'},
+    {name: 'Is Empty', value: 'isEmpty'},
+    {name: 'Is not Empty', value: 'isNotEmpty'},
+  ],
+  [QuestionType.TIME]: [
     {name: 'Equal', value: 'equal'},
     {name: 'Not Equal', value: 'notEqual'},
     {name: 'Greater Than', value: 'greaterThan'},

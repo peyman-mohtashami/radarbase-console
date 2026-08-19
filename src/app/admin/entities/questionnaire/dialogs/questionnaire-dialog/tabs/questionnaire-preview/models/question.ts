@@ -41,25 +41,7 @@ export interface Range {
   labelRight?: string
 }
 
-export enum QuestionType {
-  CHECKBOX = 'checkbox',
-  RADIO = 'radio',
-  RANGE = 'range',
-  RANGE_INFO = 'range-info',
-  SLIDER = 'slider',
-  AUDIO = 'audio',
-  TIMED = 'timed',
-  INFO = 'info',
-  TEXT = 'text',
-  YESNO = 'yesno',
-  DESCRIPTIVE = 'descriptive',
-  MATRIX_RADIO = 'matrix-radio',
-  HEALTHKIT = 'healthkit',
-  DATE = 'date',
-  TIME = 'time',
-  DURATION = 'duration',
-  CALCULATION = 'calc',
-}
+
 
 export enum WebInputType {
   NHS = 'nhs'

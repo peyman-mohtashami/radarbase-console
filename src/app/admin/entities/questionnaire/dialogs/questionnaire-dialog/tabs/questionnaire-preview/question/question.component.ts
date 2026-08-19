@@ -41,6 +41,7 @@ export class QuestionComponent implements OnInit {
 
     const question = this.question();
     const componentType = QUESTION_COMPONENTS[question.field_type];
+    // if (!componentType) return;
 
     if (!this.componentRef || this.currentFieldType !== question.field_type) {
       host.clear();

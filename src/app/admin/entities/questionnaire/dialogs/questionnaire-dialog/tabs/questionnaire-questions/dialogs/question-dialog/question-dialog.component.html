@@ -121,7 +121,7 @@
                                        [questionIndex]="dialogData.index" [formField]="form.field_note[language]"/>
 
       @let fieldType = form.field_type().value();
-      @let hasChoices = fieldType === 'info' || fieldType === 'checkbox' || fieldType === 'radio' || fieldType === 'range';
+      @let hasChoices = fieldType === QuestionType.INFO || fieldType === QuestionType.CHECKBOX || fieldType === QuestionType.RADIO || fieldType === QuestionType.RANGE;
 
       <!--    Info / Checkbox / Radio / Range -->
       @if (hasChoices) {
@@ -129,7 +129,7 @@
       }
 
       @switch (fieldType) {
-        @case ('calc') {
+        @case (QuestionType.CALC) {
           <label for="calculation_fn"
                  class="text-sm">{{ `${_prefix}.calculationFn` | translate }} *</label>
           <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
@@ -156,103 +156,233 @@
             </mat-error>
           </mat-form-field>
         }
-        @case ('datetime') {
-          <label for="date-type" class="text-sm">{{ `${_prefix}.dateType` | translate }}</label>
-          <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-            <mat-select [formField]="form.date_type">
-              <mat-option [value]="'date'">{{ `${_prefix}.dateTypeDate` | translate }}
-              </mat-option>
-              <mat-option [value]="'time'">{{ `${_prefix}.dateTypeTime` | translate }}
-              </mat-option>
-            </mat-select>
-            <mat-error>
-              @if (form.date_type().touched() && form.date_type().invalid()) {
-                @for (error of form.date_type().errors(); track error.kind) {
-                  {{ error.message }}
-                }
-              }
-            </mat-error>
-          </mat-form-field>
+        @case (QuestionType.DATE) {
+<!--          <label for="date-type" class="text-sm">{{ `${_prefix}.dateType` | translate }}</label>-->
+<!--          <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+<!--            <mat-select [formField]="form.date_type">-->
+<!--              <mat-option [value]="'date'">{{ `${_prefix}.dateTypeDate` | translate }}-->
+<!--              </mat-option>-->
+<!--              <mat-option [value]="'time'">{{ `${_prefix}.dateTypeTime` | translate }}-->
+<!--              </mat-option>-->
+<!--            </mat-select>-->
+<!--            <mat-error>-->
+<!--              @if (form.date_type().touched() && form.date_type().invalid()) {-->
+<!--                @for (error of form.date_type().errors(); track error.kind) {-->
+<!--                  {{ error.message }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
 
-          @if (form.date_type().value() === 'date') {
+<!--          @if (form.date_type().value() === 'date') {-->
             <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
-            <div>
-              <label for="text_validation_min"
-                     class="text-sm">{{ `${_prefix}.textValidationMin` | translate }}</label>
-              <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">
-                <input id="text_validation_min" [formField]="form.text_validation_min" matInput
-                       placeholder="dd/MM/yyyy or [q1]">
+              <div>
+                <label for="text_validation_min"
+                       class="text-sm">{{ `${_prefix}.textValidationMin` | translate }}</label>
+                <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">
+                  <input id="text_validation_min" [formField]="form.text_validation_min" matInput
+                         placeholder="dd/MM/yyyy or [q1]">
 
-                @if (form.text_validation_min().value()) {
-                  <button matIconButton
-                          matSuffix
-                          type="button"
-                          aria-label="Clear min date"
-                          (click)="$event.stopPropagation(); form.text_validation_min().reset()">
-                    <mat-icon class="material-symbols-outlined">close</mat-icon>
-                  </button>
-                }
-
-                <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>
-                <mat-datepicker #dp1></mat-datepicker>
-                <mat-error>
-                  @if (form.text_validation_min().touched() && form.text_validation_min().invalid()) {
-                    @for (error of form.text_validation_min().errors(); track error.kind) {
-                      {{ error.message }}
-                    }
+                  @if (form.text_validation_min().value()) {
+                    <button matIconButton
+                            matSuffix
+                            type="button"
+                            aria-label="Clear min date"
+                            (click)="$event.stopPropagation(); form.text_validation_min().reset()">
+                      <mat-icon class="material-symbols-outlined">close</mat-icon>
+                    </button>
                   }
-                </mat-error>
-              </mat-form-field>
 
-              <input
-                class="hidden"
-                [matDatepicker]="dp1"
-                (dateChange)="onValidationDatePicked($event, form.text_validation_min)">
+                  <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>
+                  <mat-datepicker #dp1></mat-datepicker>
+                  <mat-error>
+                    @if (form.text_validation_min().touched() && form.text_validation_min().invalid()) {
+                      @for (error of form.text_validation_min().errors(); track error.kind) {
+                        {{ error.message }}
+                      }
+                    }
+                  </mat-error>
+                </mat-form-field>
 
-
-            </div>
-
-            <div>
-              <label for="text_validation_max"
-                     class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>
-              <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">
                 <input
-                  id="text_validation_max"
-                  [formField]="form.text_validation_max"
-                  matInput
-                  placeholder="dd/MM/yyyy or [q1]">
+                  class="hidden"
+                  [matDatepicker]="dp1"
+                  (dateChange)="onValidationDatePicked($event, form.text_validation_min)">
 
-                @if (form.text_validation_max().value()) {
-                  <button matIconButton
-                          matSuffix
-                          type="button"
-                          aria-label="Clear max date"
-                          (click)="$event.stopPropagation(); form.text_validation_max().reset()">
-                    <mat-icon class="material-symbols-outlined">close</mat-icon>
-                  </button>
-                }
 
-                <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
-                <mat-datepicker #dp2></mat-datepicker>
-                <mat-error>
-                  @if (form.text_validation_max().touched() && form.text_validation_max().invalid()) {
-                    @for (error of form.text_validation_max().errors(); track error.kind) {
-                      {{ error.message }}
-                    }
+              </div>
+
+              <div>
+                <label for="text_validation_max"
+                       class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>
+                <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">
+                  <input
+                    id="text_validation_max"
+                    [formField]="form.text_validation_max"
+                    matInput
+                    placeholder="dd/MM/yyyy or [q1]">
+
+                  @if (form.text_validation_max().value()) {
+                    <button matIconButton
+                            matSuffix
+                            type="button"
+                            aria-label="Clear max date"
+                            (click)="$event.stopPropagation(); form.text_validation_max().reset()">
+                      <mat-icon class="material-symbols-outlined">close</mat-icon>
+                    </button>
                   }
-                </mat-error>
-              </mat-form-field>
 
-              <input
-                class="hidden"
-                [matDatepicker]="dp2"
-                (dateChange)="onValidationDatePicked($event, form.text_validation_max)">
+                  <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+                  <mat-datepicker #dp2></mat-datepicker>
+                  <mat-error>
+                    @if (form.text_validation_max().touched() && form.text_validation_max().invalid()) {
+                      @for (error of form.text_validation_max().errors(); track error.kind) {
+                        {{ error.message }}
+                      }
+                    }
+                  </mat-error>
+                </mat-form-field>
+
+                <input
+                  class="hidden"
+                  [matDatepicker]="dp2"
+                  (dateChange)="onValidationDatePicked($event, form.text_validation_max)">
 
 
-            </div>
-          </fieldset>
-          }
-          @if (form.date_type().value() === 'time') {
+              </div>
+            </fieldset>
+<!--          }-->
+<!--          @if (form.date_type().value() === 'time') {-->
+<!--            <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">-->
+<!--              <div>-->
+<!--                <label for="text_validation_min"-->
+<!--                       class="text-sm">{{ `${_prefix}.textValidationMin` | translate }}</label>-->
+<!--                <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">-->
+<!--                  <input id="text_validation_max" matInput [formField]="form.text_validation_min" type="time"/>-->
+<!--                  <mat-error>-->
+<!--                    @if (form.text_validation_min().touched() && form.text_validation_min().invalid()) {-->
+<!--                      @for (error of form.text_validation_min().errors(); track error.kind) {-->
+<!--                        {{ error.message }}-->
+<!--                      }-->
+<!--                    }-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+
+<!--              <div>-->
+<!--                <label for="text_validation_max"-->
+<!--                       class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>-->
+<!--                <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">-->
+<!--                  <input id="text_validation_max" matInput [formField]="form.text_validation_max"  type="time"/>-->
+<!--                  <mat-error>-->
+<!--                    @if (form.text_validation_max().touched() && form.text_validation_max().invalid()) {-->
+<!--                      @for (error of form.text_validation_max().errors(); track error.kind) {-->
+<!--                        {{ error.message }}-->
+<!--                      }-->
+<!--                    }-->
+<!--                  </mat-error>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+<!--            </fieldset>-->
+<!--          }-->
+        }
+        @case (QuestionType.TIME) {
+<!--          <label for="date-type" class="text-sm">{{ `${_prefix}.dateType` | translate }}</label>-->
+<!--          <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+<!--            <mat-select [formField]="form.date_type">-->
+<!--              <mat-option [value]="'date'">{{ `${_prefix}.dateTypeDate` | translate }}-->
+<!--              </mat-option>-->
+<!--              <mat-option [value]="'time'">{{ `${_prefix}.dateTypeTime` | translate }}-->
+<!--              </mat-option>-->
+<!--            </mat-select>-->
+<!--            <mat-error>-->
+<!--              @if (form.date_type().touched() && form.date_type().invalid()) {-->
+<!--                @for (error of form.date_type().errors(); track error.kind) {-->
+<!--                  {{ error.message }}-->
+<!--                }-->
+<!--              }-->
+<!--            </mat-error>-->
+<!--          </mat-form-field>-->
+
+<!--          @if (form.date_type().value() === 'date') {-->
+<!--            <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">-->
+<!--            <div>-->
+<!--              <label for="text_validation_min"-->
+<!--                     class="text-sm">{{ `${_prefix}.textValidationMin` | translate }}</label>-->
+<!--              <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">-->
+<!--                <input id="text_validation_min" [formField]="form.text_validation_min" matInput-->
+<!--                       placeholder="dd/MM/yyyy or [q1]">-->
+
+<!--                @if (form.text_validation_min().value()) {-->
+<!--                  <button matIconButton-->
+<!--                          matSuffix-->
+<!--                          type="button"-->
+<!--                          aria-label="Clear min date"-->
+<!--                          (click)="$event.stopPropagation(); form.text_validation_min().reset()">-->
+<!--                    <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+<!--                  </button>-->
+<!--                }-->
+
+<!--                <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #dp1></mat-datepicker>-->
+<!--                <mat-error>-->
+<!--                  @if (form.text_validation_min().touched() && form.text_validation_min().invalid()) {-->
+<!--                    @for (error of form.text_validation_min().errors(); track error.kind) {-->
+<!--                      {{ error.message }}-->
+<!--                    }-->
+<!--                  }-->
+<!--                </mat-error>-->
+<!--              </mat-form-field>-->
+
+<!--              <input-->
+<!--                class="hidden"-->
+<!--                [matDatepicker]="dp1"-->
+<!--                (dateChange)="onValidationDatePicked($event, form.text_validation_min)">-->
+
+
+<!--            </div>-->
+
+<!--            <div>-->
+<!--              <label for="text_validation_max"-->
+<!--                     class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>-->
+<!--              <mat-form-field class="small-input w-1/2" appearance='outline' subscriptSizing="fixed">-->
+<!--                <input-->
+<!--                  id="text_validation_max"-->
+<!--                  [formField]="form.text_validation_max"-->
+<!--                  matInput-->
+<!--                  placeholder="dd/MM/yyyy or [q1]">-->
+
+<!--                @if (form.text_validation_max().value()) {-->
+<!--                  <button matIconButton-->
+<!--                          matSuffix-->
+<!--                          type="button"-->
+<!--                          aria-label="Clear max date"-->
+<!--                          (click)="$event.stopPropagation(); form.text_validation_max().reset()">-->
+<!--                    <mat-icon class="material-symbols-outlined">close</mat-icon>-->
+<!--                  </button>-->
+<!--                }-->
+
+<!--                <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker #dp2></mat-datepicker>-->
+<!--                <mat-error>-->
+<!--                  @if (form.text_validation_max().touched() && form.text_validation_max().invalid()) {-->
+<!--                    @for (error of form.text_validation_max().errors(); track error.kind) {-->
+<!--                      {{ error.message }}-->
+<!--                    }-->
+<!--                  }-->
+<!--                </mat-error>-->
+<!--              </mat-form-field>-->
+
+<!--              <input-->
+<!--                class="hidden"-->
+<!--                [matDatepicker]="dp2"-->
+<!--                (dateChange)="onValidationDatePicked($event, form.text_validation_max)">-->
+
+
+<!--            </div>-->
+<!--          </fieldset>-->
+<!--          }-->
+<!--          @if (form.date_type().value() === 'time') {-->
             <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
               <div>
                 <label for="text_validation_min"
@@ -284,9 +414,9 @@
                 </mat-form-field>
               </div>
             </fieldset>
-          }
+<!--          }-->
         }
-        @case ('number') {
+        @case (QuestionType.NUMBER) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
             <div>
               <label for="text_validation_min"
@@ -319,7 +449,7 @@
             </div>
           </fieldset>
         }
-        @case ('range') {
+        @case (QuestionType.RANGE) {
           <div>
             <mat-slide-toggle [formField]="form.show_code" class="my-4" color="primary">
               {{ `${_prefix}.showCode` | translate }}
@@ -331,7 +461,7 @@
             </mat-slide-toggle>
           </div>
         }
-        @case ('slider') {
+        @case (QuestionType.SLIDER) {
           <label for="" class="text-sm">{{ `${_prefix}.range` | translate }} *</label>
           <fieldset class="p-2 rounded-sm border">
             <div class="grid grid-cols-3 gap-2">
@@ -419,14 +549,14 @@
             </div>
           </fieldset>
         }
-        @case ('text') {
+        @case (QuestionType.TEXT) {
           <div>
             <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
               {{ `${_prefix}.multiLineEnabled` | translate }}
             </mat-slide-toggle>
           </div>
         }
-        @case ('timed') {
+        @case (QuestionType.TIMED) {
           <label for="unit" class="text-sm">{{ `${_prefix}.annotation` | translate }}</label>
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
 
@@ -501,7 +631,7 @@
         }
       }
 
-      @if (fieldType === 'range' || fieldType === 'text' || fieldType === 'number' || fieldType === 'datetime' || fieldType === 'radio' || fieldType === 'checkbox' || fieldType === 'slider' || fieldType === 'yesno' || fieldType === 'calc') {
+      @if (fieldType === QuestionType.RANGE || fieldType === QuestionType.TEXT || fieldType === QuestionType.NUMBER || fieldType === QuestionType.DATE || fieldType === QuestionType.RADIO || fieldType === QuestionType.CHECKBOX || fieldType === QuestionType.SLIDER || fieldType === QuestionType.YESNO) {
         <label for="matrix_group_name"
                class="text-sm">{{ `${_prefix}.matrixGroupName` | translate }}</label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
