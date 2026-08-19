@@ -48,7 +48,7 @@ import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/t
 import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
 import {ToolbarComponent} from '../../../questionnaire-preview/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
-import {PreviewStateService} from '../../../questionnaire-preview/services/preview-state.service';
+import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
@@ -151,7 +151,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   variables: Record<string, QuestionTemplateVariable[]> = this._question.variables ?? {};
 
-  previewState = inject(PreviewStateService);
+  previewState = inject(PreviewStore);
 
   protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this._question,

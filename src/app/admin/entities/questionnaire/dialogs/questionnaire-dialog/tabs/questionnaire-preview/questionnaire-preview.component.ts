@@ -6,14 +6,12 @@ import {
   AppQuestionnaireLanguage,
   DEFAULT_LANGUAGE
 } from '../../../../models/questionnaire';
-// import {QuestionsService} from './services/questions.service';
 import {AnswerWithTimeLog} from './models/kafka';
 import {ToolbarAction, ToolbarComponent} from './toolbar/toolbar.component';
 import {JsonPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {QuestionComponent} from './question/question.component';
-import {PreviewStateService} from './services/preview-state.service';
-// import {evaluateConditionalLogic} from './services/parsers';
+import {PreviewStore} from './services/preview.store';
 import {QuestionType} from './models/question';
 import {parsePlaceholder, Placeholder} from './pipes/replace-placeholders.pipe';
 import {debounceTime} from 'rxjs/operators';
@@ -21,16 +19,28 @@ import {
   PreviewPlaceholderFormComponent
 } from './components/preview-placeholder-form/preview-placeholder-form.component';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {isArray} from '@ngx-translate/core';
+import {evaluateConditionalLogic, extractPlaceholders} from './services/utils';
+import {form} from '@angular/forms/signals';
 
-type PlaceholderFormGroup = FormGroup<{
-  questionnaireId: FormControl<string>;
-  questionId: FormControl<string>;
-  operator: FormControl<string>;
-  startTimestamp: FormControl<string>;
-  endTimestamp: FormControl<string>;
-  value: FormControl<string>;
-}>;
+// export interface PlaceHoldersForm {
+//   id: string;
+//   name: string;
+//   type: "question";
+//   questionId: string;
+//   questionnaireId: string;
+//   function: string;
+//   start: string;
+//   end: string;
+// }
+
+// type PlaceholderFormGroup = FormGroup<{
+//   questionnaireId: FormControl<string>;
+//   questionId: FormControl<string>;
+//   operator: FormControl<string>;
+//   startTimestamp: FormControl<string>;
+//   endTimestamp: FormControl<string>;
+//   value: FormControl<string>;
+// }>;
 
 @Component({
   selector: 'app-questionnaire-preview',
@@ -42,20 +52,17 @@ type PlaceholderFormGroup = FormGroup<{
     QuestionComponent,
     ToolbarComponent,
     JsonPipe,
-    // MatFormField,
-    // MatInput,
-    PreviewPlaceholderFormComponent
+    // PreviewPlaceholderFormComponent
   ]
 })
 export class QuestionnairePreviewComponent implements OnInit {
-  // private questionsService = inject(QuestionsService);
   store = inject(QuestionnaireStore);
-  previewState = inject(PreviewStateService);
+  previewStore = inject(PreviewStore);
 
-  private fb = inject(FormBuilder);
+  // private fb = inject(FormBuilder);
 
-  entity = this.store.selected;
-  selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as AppQuestionnaireLanguage;
+  entity = this.store.selected()!;
+  // selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as AppQuestionnaireLanguage;
 
   protected loading = true;
 
@@ -69,15 +76,28 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   protected progress = signal({enabled: false, current: 0, total: 1});
 
-  placeholders: Placeholder[] = [];
+  // placeHoldersModel = signal<PlaceHoldersForm>({
+  //   id: '',
+  //   name: '',
+  //   type: 'question',
+  //   questionId: '',
+  //   questionnaireId: '',
+  //   function: '',
+  //   start: '',
+  //   end: '',
+  // });
+  //
+  // placeHolderForm = form(this.placeHoldersModel);
+  //
+  // placeholders: Placeholder[] = [];
 
-  placeholderForm = this.fb.group({
-    placeholders: this.fb.array<PlaceholderFormGroup>([]),
-  });
+  // placeholderForm = this.fb.group({
+  //   placeholders: this.fb.array<PlaceholderFormGroup>([]),
+  // });
 
-  get placeholderControls(): PlaceholderFormGroup[] {
-    return this.placeholderForm.controls.placeholders.controls;
-  }
+  // get placeholderControls(): PlaceholderFormGroup[] {
+  //   return this.placeholderForm.controls.placeholders.controls;
+  // }
 
   private readonly AUTO_NEXT_QUESTION_TYPES: string[] = [
     QuestionType.RADIO,
@@ -88,29 +108,24 @@ export class QuestionnairePreviewComponent implements OnInit {
     QuestionType.TIMED
   ];
 
-
-
   async ngOnInit(): Promise<void> {
-    this.previewState.answers.set({});
+    this.previewStore.answers.set({});
     await this.initQuestionnaire();
   }
 
   private async initQuestionnaire(): Promise<void> {
     // this.startTime = Date.now();
-    const modifiedQuestions = this.modifyQuestions(this.entity()!.questions);
+    const modifiedQuestions = this.modifyQuestions(this.entity.questions);
     this.groupedQuestions = this.groupQuestionsByMatrixGroup(modifiedQuestions);
     this.progress.set({enabled: true, current: 0, total: this.groupedQuestions.size});
 
-    this.placeholders = this.findPlaceholders();
-    console.log('Class: QuestionnairePreviewComponent, Function: initQuestionnaire, Line 67 placeholders' , this.placeholders);
-    this.buildPlaceholderForm(this.placeholders);
+    // this.buildPlaceholderForm(this.findPlaceholders());
 
-    this.placeholderForm.valueChanges.pipe(
-      debounceTime(500),
-    ).subscribe(change => {
-      console.log('Class: QuestionnairePreviewComponent, Function: , Line 98 change' , change);
-      this.previewState.placeholderAnswers.set(change);
-    });
+    // this.placeholderForm.valueChanges.pipe(
+    //   debounceTime(500),
+    // ).subscribe(change => {
+    //   this.previewStore.placeholderAnswers.set(change);
+    // });
 
     this.loading = false;
     await this.startQuestionnaire();
@@ -194,22 +209,22 @@ export class QuestionnairePreviewComponent implements OnInit {
     return QuestionType.TEXT;
   }
 
-  private buildPlaceholderForm(placeholders: Placeholder[]): void {
-    const placeholderArray = this.placeholderForm.controls.placeholders;
-
-    placeholderArray.clear();
-
-    placeholders.forEach((placeholder) => {
-      placeholderArray.push(this.fb.nonNullable.group({
-        questionnaireId: placeholder.questionnaireId ?? '',
-        questionId: placeholder.questionId,
-        operator: placeholder.operator ?? 'latest',
-        startTimestamp: placeholder.startTimestamp ?? '',
-        endTimestamp: placeholder.endTimestamp ?? '',
-        value: '',
-      }));
-    });
-  }
+  // private buildPlaceholderForm(placeholders: Placeholder[]): void {
+  //   const placeholderArray = this.placeholderForm.controls.placeholders;
+  //
+  //   placeholderArray.clear();
+  //
+  //   placeholders.forEach((placeholder) => {
+  //     placeholderArray.push(this.fb.nonNullable.group({
+  //       questionnaireId: placeholder.questionnaireId ?? '',
+  //       questionId: placeholder.questionId,
+  //       operator: placeholder.operator ?? 'latest',
+  //       startTimestamp: placeholder.startTimestamp ?? '',
+  //       endTimestamp: placeholder.endTimestamp ?? '',
+  //       value: '',
+  //     }));
+  //   });
+  // }
 
   private modifyQuestions(questions: AppQuestion[]): AppQuestion[] {
     return [...questions];
@@ -221,9 +236,9 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
-    const answers = this.previewState.answers();
+    const answers = this.previewStore.answers();
     answers[answer.id] = [answer];
-    this.previewState.answers.set({...answers});
+    this.previewStore.answers.set({...answers});
 
     for (const questions of this.groupedQuestions.values()) {
       for (const q of questions) {
@@ -240,7 +255,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     }
 
     if (this.allRequiredFieldsAnswered()) {
-      const questions = this.currentQuestionsGroup.questions;
+      // const questions = this.currentQuestionsGroup.questions;
       // if (questions.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(questions[0].field_type)) {
       //   await this.nextQuestion(this.currentQuestionsGroup.index)
       // } else {
@@ -338,7 +353,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   private conditionalLogicPass(conditionalLogic: AppQuestionConditionalLogic): boolean {
-    const answersArray:  AnswerWithTimeLog[] = Object.values(this.previewState.answers()).flat();
+    const answersArray:  AnswerWithTimeLog[] = Object.values(this.previewStore.answers()).flat();
     const _answers = answersArray.reduce((acc: Record<string, AnswerWithTimeLog>, answer) => {
       acc[answer.id] = answer;
       return acc;
@@ -350,7 +365,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     return this.currentQuestionsGroup.questions.every(q => {
       if (q.visible) {
         if (q.required_field) {
-          const answer = this.previewState.answers()[q.field_name]?.[0];
+          const answer = this.previewStore.answers()[q.field_name]?.[0];
           return answer && answer.value !== null;
         } else {
           return true;
@@ -379,86 +394,43 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   protected switchPreviewLanguage(event: Event, language: AppQuestionnaireLanguage) {
     event.stopPropagation();
-    this.selectedLanguage = language;
-    this.previewState.language.set(language);
+    this.previewStore.language.set(language);
   }
 
-  findPlaceholders() {
-    const result: string[] = [];
-
-    this.entity()!.questions.forEach((question) => {
-      result.push(...extractPlaceholders(question.field_label[this.selectedLanguage.code]));
-      result.push(...extractPlaceholders(question.section_header?.[this.selectedLanguage.code]));
-      result.push(...extractPlaceholders(question.field_note?.[this.selectedLanguage.code]));
-      question.select_choices_or_calculations?.forEach((choice) => {
-        result.push(...extractPlaceholders(choice.label[this.selectedLanguage.code]));
-      });
-    });
-
-    return result.map((p) => {
-      const placeholder = parsePlaceholder(p);
-      if (!placeholder) {
-        // Invalid placeholder, leave unchanged
-        return null;
-      }
-
-      const {
-        questionnaireId,
-        questionId,
-        operator,
-        startTimestamp,
-        endTimestamp,
-      } = placeholder;
-
-      if (questionnaireId) {
-        return placeholder;
-      }
-      return null;
-    }).filter((p) => p !== null);
-  }
-}
-
-function extractPlaceholders(str?: string) {
-  const matches = str?.match(/\[([^[\]]+)]/g);
-  if (!matches) {
-    return [];
-  }
-  return matches.map(match => match.slice(1, -1));
+  // findPlaceholders() {
+  //   const result: string[] = [];
+  //
+  //   this.entity.questions.forEach((question) => {
+  //     result.push(...extractPlaceholders(question.field_label[this.previewStore.language().code]));
+  //     result.push(...extractPlaceholders(question.section_header?.[this.previewStore.language().code]));
+  //     result.push(...extractPlaceholders(question.field_note?.[this.previewStore.language().code]));
+  //     question.select_choices_or_calculations?.forEach((choice) => {
+  //       result.push(...extractPlaceholders(choice.label[this.previewStore.language().code]));
+  //     });
+  //   });
+  //
+  //   return result.map((p) => {
+  //     const placeholder = parsePlaceholder(p);
+  //     if (!placeholder) {
+  //       // Invalid placeholder, leave unchanged
+  //       return null;
+  //     }
+  //
+  //     const {
+  //       questionnaireId,
+  //       questionId,
+  //       operator,
+  //       startTimestamp,
+  //       endTimestamp,
+  //     } = placeholder;
+  //
+  //     if (questionnaireId) {
+  //       return placeholder;
+  //     }
+  //     return null;
+  //   }).filter((p) => p !== null);
+  // }
 }
 
 
-export function evaluateConditionalLogic(answers: Record<string, AnswerWithTimeLog>, conditionalLogic: AppQuestionConditionalLogic) {
-  return conditionalLogic.some(group => {
-    return group.every(rule => {
-      const operand = answers[rule.operand]?.value;
-      if (!operand) return false;
-      const value = rule.value;
-      switch(rule.operator) {
-        case 'equal':
-          if (isArray(operand)) {
-            return operand.some(item => item === value);
-          }
-          return operand === value;
-        case 'notEqual':
-          return operand !== value;
-        case 'greaterThan':
-          return Number(operand) > Number(value);
-        case 'greaterThanOrEqual':
-          return Number(operand) >= Number(value);
-        case 'lessThan':
-          return Number(operand) < Number(value);
-        case 'lessThanOrEqual':
-          return Number(operand) <= Number(value);
-        case 'isEmpty':
-          return operand === null || operand === undefined || operand === '';
-        case 'isNotEmpty':
-          return operand !== null && operand !== undefined;
-        case 'contains':
-          return operand?.includes(value);
-        default:
-          return true;
-      }
 
-    })
-  })
-}

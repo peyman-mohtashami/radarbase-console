@@ -1,16 +1,17 @@
 <!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
-@let _entity = entity();
+<!--@let _entity = entity();-->
+@let _selectedLanguage = previewStore.language();
 
-@if (_entity) {
+<!--@if (entity) {-->
   <div class="flex justify-between items-center sticky top-0 z-10 py-2">
     <span class="font-bold"></span>
     <div class="flex gap-2 items-center">
       <div class='small-input text-sm flex justify-end gap-1'>
-        @for (language of _entity.languages; track language) {
+        @for (language of entity.languages; track language) {
           <button mat-icon-button
                   class="tiny uppercase"
                   (click)='switchPreviewLanguage($event, language)'
-                  [class]="selectedLanguage?.code === language.code ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
+                  [class]="_selectedLanguage.code === language.code ? 'text-primary! dark:text-primary-dark!' : 'text-neutral-400! dark:text-neutral-500!'">
               <span class="h-full flex items-center justify-center">
                 <span class="text-sm font-bold">{{ language.code }}</span>
               </span>
@@ -23,8 +24,8 @@
   <div class="flex h-[90%] justify-between">
     <div class="h-full aspect-9/16 bg-primary/20 border-2 border-gray-300 rounded-lg">
       <div class="h-full flex flex-col">
-        @if (selectedLanguage) {
-          <span class="p-4 shrink-0 font-bold">{{ _entity.title?.[selectedLanguage.code] || _entity.name }}</span>
+        @if (_selectedLanguage) {
+          <span class="p-4 shrink-0 font-bold">{{ entity.title?.[_selectedLanguage.code] || entity.name }}</span>
         }
         @if (!loading) {
           @if (groupedQuestions) {
@@ -32,9 +33,9 @@
               @for (q of currentQuestionsGroup.questions; track q.field_name) {
                 @if (q.visible) {
                   <app-question [question]="q"
-                                [language]="selectedLanguage"
-                                [answers]="previewState.answers()"
-                                [answer]="previewState.answers()[q.field_name]?.[0]"
+                                [language]="_selectedLanguage"
+                                [answers]="previewStore.answers()"
+                                [answer]="previewStore.answers()[q.field_name]?.[0]"
                                 (answerEvent)="onAnswer($event)"/>
                 }
               }
@@ -52,10 +53,12 @@
       </div>
     </div>
     <div class="h-full overflow-auto w-1/3 text-sm">
-      <pre>{{ previewState.answers() | json }}</pre>
+      <pre>{{ previewStore.answers() | json }}</pre>
     </div>
 
-    <app-preview-placeholder-form class="w-1/3" />
+<!--    <app-preview-placeholder-form class="w-1/3" />-->
+
+
 <!--    <div class="h-full overflow-auto w-1/3 text-sm">-->
 <!--      List of templates values-->
 <!--      @for (p of placeholders; track $index) {-->
@@ -88,4 +91,4 @@
 <!--    </div>-->
 
   </div>
-}
+<!--}-->

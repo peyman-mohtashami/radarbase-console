@@ -11,7 +11,7 @@ import {
   QuestionHeaderComponent
 } from '../../question/question-header/question-header.component';
 import jexl from 'jexl';
-import {PreviewStateService} from '../../services/preview-state.service';
+import {PreviewStore} from '../../services/preview.store';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 
 @Component({
@@ -23,7 +23,7 @@ import {QuestionnaireStore} from '../../../../../../services/questionnaire.store
 })
 export class CalculationQuestionComponent implements OnInit {
   private store = inject(QuestionnaireStore);
-  private previewState = inject(PreviewStateService);
+  private previewState = inject(PreviewStore);
 
   entity = input.required<AppQuestion>();
   language = input(this.store.selected()!.defaultLanguage);

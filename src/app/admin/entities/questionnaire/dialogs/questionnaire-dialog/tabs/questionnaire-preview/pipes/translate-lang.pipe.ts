@@ -1,12 +1,12 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
-import {PreviewStateService} from '../services/preview-state.service';
+import {PreviewStore} from '../services/preview.store';
 
 @Pipe({
   name: 'translateLang',
   pure: false
 })
 export class TranslateLangPipe implements PipeTransform {
-  private previewState = inject(PreviewStateService);
+  private previewState = inject(PreviewStore);
 
   transform(key: string): string {
     return this.previewState.translate(key);

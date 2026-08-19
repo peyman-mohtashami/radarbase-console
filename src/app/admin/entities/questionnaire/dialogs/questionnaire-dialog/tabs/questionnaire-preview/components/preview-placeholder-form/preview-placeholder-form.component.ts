@@ -2,7 +2,7 @@ import {Component, inject, OnInit, ChangeDetectionStrategy} from '@angular/core'
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {debounceTime} from 'rxjs/operators';
-import {PreviewStateService} from '../../services/preview-state.service';
+import {PreviewStore} from '../../services/preview.store';
 import {parsePlaceholder, Placeholder} from '../../pipes/replace-placeholders.pipe';
 import {AppQuestionnaireLanguage, DEFAULT_LANGUAGE} from '../../../../../../models/questionnaire';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
@@ -28,7 +28,7 @@ type PlaceholderFormGroup = FormGroup<{
 })
 export class PreviewPlaceholderFormComponent implements OnInit {
   store = inject(QuestionnaireStore);
-  previewState = inject(PreviewStateService);
+  previewState = inject(PreviewStore);
 
   private fb = inject(FormBuilder);
 

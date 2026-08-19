@@ -1,6 +1,6 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
 import {SafeHtml} from "@angular/platform-browser";
-import {PreviewStateService} from '../services/preview-state.service';
+import {PreviewStore} from '../services/preview.store';
 import {QuestionType} from '../models/question';
 import {QuestionnaireStore} from '../../../../../services/questionnaire.store';
 import {AppQuestion, AppQuestionChoice} from '../../../../../models/questionnaire';
@@ -13,7 +13,7 @@ const RESERVED_VALUES = ['current_date', 'current_time'];
   pure: false
 })
 export class ReplacePlaceholdersPipe implements PipeTransform {
-  private previewState = inject(PreviewStateService);
+  private previewState = inject(PreviewStore);
   private store = inject(QuestionnaireStore);
 
   transform(value: string | undefined, variables?: QuestionTemplateVariable[]): string | undefined {
