@@ -1,0 +1,45 @@
+<div class="h-1 toolbar-progress-bar bg-primary"
+     [style.width]="progressBarPercentage() + '%'">
+</div>
+
+<div class="flex gap-2 items-center py-4 w-full">
+  <button matButton
+          class="text-sm flex items-center flex-1"
+          aria-label="Example icon-button with menu icon"
+          [disabled]="!leftButton().enabled"
+          (click)="leftButtonHandler()">
+
+    <span class="flex items-center">
+      @if (leftButton().label === 'close') {
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+        <span class="font-bold">{{ `close` | translateLang }}</span>
+
+      } @else {
+        <mat-icon class="material-symbols-outlined">chevron_left</mat-icon>
+        <div class="mx-2 font-bold">{{ 'previous' | translateLang }}</div>
+      }
+    </span>
+  </button>
+
+  <span class="justify-self-center">
+    @if (progress().enabled) {
+      {{ progressBarPercentage() + '%' }}
+    }
+  </span>
+
+  <button matButton
+          class="flex-1 justify-end text-sm flex items-center"
+          aria-label="Example icon-button with heart icon"
+          [class]="!rightButton().enabled ? 'opacity-50' : ''" (click)="rightButtonHandler()">
+    <span class="flex items-center">
+      <span class="mx-2 font-bold">
+        @if (rightButton().label === 'finish') {
+          {{ 'finish' | translateLang }}
+        } @else {
+          {{ 'next' | translateLang }}
+        }
+      </span>
+      <mat-icon class="material-symbols-outlined">chevron_right</mat-icon>
+    </span>
+  </button>
+</div>

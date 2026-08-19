@@ -12,7 +12,7 @@ import {applyEach, form, FormField, validate} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-import {QuestionType} from '../../../questionnaire-preview/question-type/question-type.registry';
+import {QuestionType} from '../../../questionnaire-preview/question/question-type/question-type.registry';
 import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 

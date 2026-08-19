@@ -13,7 +13,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {QUESTION_TYPES} from '../../../questionnaire-preview/question-type/question-type.registry';
+import {QUESTION_TYPES} from '../../../questionnaire-preview/question/question-type/question-type.registry';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   parseAndValidateTemplateVariables,
@@ -46,7 +46,7 @@ import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/template-field.model';
 import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
-import {ToolbarComponent} from '../../../questionnaire-preview/toolbar/toolbar.component';
+import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';

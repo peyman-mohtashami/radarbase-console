@@ -501,19 +501,19 @@
         }
       }
 
-      @if (fieldType === 'range' || fieldType === 'text' || fieldType === 'number' || fieldType === 'date') {
-      <label for="matrix_group_name"
-             class="text-sm">{{ `${_prefix}.matrixGroupName` | translate }}</label>
-      <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-        <input id="matrix_group_name" matInput [formField]='form.matrix_group_name'/>
-        <mat-error>
-          @if (form.matrix_group_name().touched() && form.matrix_group_name().invalid()) {
-            @for (error of form.matrix_group_name().errors(); track error.kind) {
-              {{ error.message }}
+      @if (fieldType === 'range' || fieldType === 'text' || fieldType === 'number' || fieldType === 'datetime' || fieldType === 'radio' || fieldType === 'checkbox' || fieldType === 'slider' || fieldType === 'yesno' || fieldType === 'calc') {
+        <label for="matrix_group_name"
+               class="text-sm">{{ `${_prefix}.matrixGroupName` | translate }}</label>
+        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+          <input id="matrix_group_name" matInput [formField]='form.matrix_group_name'/>
+          <mat-error>
+            @if (form.matrix_group_name().touched() && form.matrix_group_name().invalid()) {
+              @for (error of form.matrix_group_name().errors(); track error.kind) {
+                {{ error.message }}
+              }
             }
-          }
-        </mat-error>
-      </mat-form-field>
+          </mat-error>
+        </mat-form-field>
       }
 
 
@@ -535,10 +535,10 @@
 <!--                  @for (q of currentQuestionsGroup.questions; track q.field_name) {-->
 <!--                    @if (q.visible) {-->
                   <app-question [question]="{...dialogData.entity, ...model()}"
-                                [language]="store.selected()?.defaultLanguage!"
-                                [answers]="previewState.answers()"
-                                [answer]="previewState.answers()[model().field_name]?.[0]"
                                 (answerEvent)="onAnswer($event)"/>
+<!--                                [answers]="previewState.answers()"-->
+<!--                                [answer]="previewState.answers()[model().field_name]?.[0]"-->
+<!--                                [language]="store.selected()?.defaultLanguage!"-->
 <!--                      <app-question [answer]="undefined" [answers]="{}" [language]="store.selected()?.defaultLanguage!" [question]="{...dialogData.entity, ...model()}"/>-->
 <!--                  }-->
 <!--                  }-->

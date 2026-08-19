@@ -3,8 +3,8 @@
 @let defaultLanguage = entity?.defaultLanguage;
 
 @if (defaultLanguage) {
-  <form novalidate>
-    <div class="w-full overflow-x-auto border border-gray-300">
+  <form class="h-full" novalidate>
+    <div class="h-full w-full overflow-auto border border-gray-300">
       <div [style.grid-template-columns]="`repeat(${languagesList().length + 1}, 300px)`"
            class="grid text-xs *:border *:border-gray-300 *:p-2 *:-mt-px *:-ml-px">
 

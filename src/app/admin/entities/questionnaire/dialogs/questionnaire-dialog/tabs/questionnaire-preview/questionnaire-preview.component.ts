@@ -1,26 +1,18 @@
-import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy, computed} from '@angular/core';
 import {
   AppQuestion,
   AppQuestionConditionalLogic,
   AppQuestionnaireLanguage,
-  DEFAULT_LANGUAGE
 } from '../../../../models/questionnaire';
 import {AnswerWithTimeLog} from './models/kafka';
-import {ToolbarAction, ToolbarComponent} from './toolbar/toolbar.component';
+import {ToolbarAction, ToolbarComponent} from './components/toolbar/toolbar.component';
 import {JsonPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {QuestionComponent} from './question/question.component';
 import {PreviewStore} from './services/preview.store';
 import {QuestionType} from './models/question';
-import {parsePlaceholder, Placeholder} from './pipes/replace-placeholders.pipe';
-import {debounceTime} from 'rxjs/operators';
-import {
-  PreviewPlaceholderFormComponent
-} from './components/preview-placeholder-form/preview-placeholder-form.component';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {evaluateConditionalLogic, extractPlaceholders} from './services/utils';
-import {form} from '@angular/forms/signals';
+import {evaluateConditionalLogic} from './services/utils';
 
 // export interface PlaceHoldersForm {
 //   id: string;
@@ -47,11 +39,11 @@ import {form} from '@angular/forms/signals';
   templateUrl: 'questionnaire-preview.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
-    ReactiveFormsModule,
     MatIconButton,
     QuestionComponent,
     ToolbarComponent,
     JsonPipe,
+    // KeyValuePipe,
     // PreviewPlaceholderFormComponent
   ]
 })
@@ -62,19 +54,34 @@ export class QuestionnairePreviewComponent implements OnInit {
   // private fb = inject(FormBuilder);
 
   entity = this.store.selected()!;
+  protected questionGroups = new Map<string, AppQuestion[]>();
+
+  index = signal(-1);
   // selectedLanguage = (this.entity()?.defaultLanguage ?? [DEFAULT_LANGUAGE]) as AppQuestionnaireLanguage;
 
   protected loading = true;
 
-  protected groupedQuestions = new Map<string, AppQuestion[]>();
-  protected currentQuestionsGroup: {index: number, key: string; questions: AppQuestion[]} = {index: -1, key: '', questions: []};
-
-  leftButtonLabel = signal('close');
-  rightButtonLabel = signal('next');
   leftButtonEnabled = signal(false);
   rightButtonEnabled = signal(false);
 
-  protected progress = signal({enabled: false, current: 0, total: 1});
+  progress = computed(() => {
+    const index = this.index();
+    return {
+      enabled: (!(index < 0 || index >= this.questionGroups.size)),
+      current: index,
+      total: this.questionGroups.size
+    };
+  });
+
+  leftButtonLabel = computed(() => {
+    const index = this.index();
+    return index < 0 ? 'close' : 'previous';
+  });
+
+  rightButtonLabel = computed(() => {
+    const index = this.index();
+    return index >= this.questionGroups.size ? 'finish' : 'next';
+  });
 
   // placeHoldersModel = signal<PlaceHoldersForm>({
   //   id: '',
@@ -108,6 +115,10 @@ export class QuestionnairePreviewComponent implements OnInit {
     QuestionType.TIMED
   ];
 
+  autoNextEnabled = false;
+  editEnabled = true;
+  previousEnabled = true;
+
   async ngOnInit(): Promise<void> {
     this.previewStore.answers.set({});
     await this.initQuestionnaire();
@@ -115,9 +126,8 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   private async initQuestionnaire(): Promise<void> {
     // this.startTime = Date.now();
-    const modifiedQuestions = this.modifyQuestions(this.entity.questions);
-    this.groupedQuestions = this.groupQuestionsByMatrixGroup(modifiedQuestions);
-    this.progress.set({enabled: true, current: 0, total: this.groupedQuestions.size});
+    // const modifiedQuestions = this.modifyQuestions(this.entity.questions);
+    this.questionGroups = this.groupQuestionsByMatrixGroup(this.entity.questions);
 
     // this.buildPlaceholderForm(this.findPlaceholders());
 
@@ -131,7 +141,7 @@ export class QuestionnairePreviewComponent implements OnInit {
     await this.startQuestionnaire();
   }
 
-  groupQuestionsByMatrixGroup(questions: AppQuestion[]): Map<string, AppQuestion[]> {
+  groupQuestionsByMatrixGroup(questions: AppQuestion[]) {
     // const autoNextQuestionnaireTypes = await this.getAutoNextQuestionnaireTypes();
 
     const groupedQuestions = new Map<string, AppQuestion[]>();
@@ -226,88 +236,103 @@ export class QuestionnairePreviewComponent implements OnInit {
   //   });
   // }
 
-  private modifyQuestions(questions: AppQuestion[]): AppQuestion[] {
-    return [...questions];
-  }
+  // private modifyQuestions(questions: AppQuestion[]): AppQuestion[] {
+  //   return [...questions];
+  // }
 
   async startQuestionnaire(): Promise<void> {
-    const groupedQuestionsKeys = [...this.groupedQuestions.keys()];
-    this.currentQuestionsGroup = {index: 0, key: groupedQuestionsKeys[0], questions: this.groupedQuestions.get(groupedQuestionsKeys[0]) ?? []};
+    if (this.index() !== -1 || this.entity.showIntroduction === 'no') {
+      this.index.update(value => value + 1);
+    } else {
+      this.rightButtonEnabled.set(true);
+      // this.progress.set({enabled: true, current: this.index(), total: this.questionGroups.size});
+      // this.rightButtonLabel.set('finish');
+    }
+    // if index === -1 && showIntro && intro => nothing
+    // else index++
+
+    // const groupedQuestionsKeys = [...this.groupedQuestions.keys()];
+    // this.currentQuestionsGroup = {index: 0, key: groupedQuestionsKeys[0], questions: this.groupedQuestions.get(groupedQuestionsKeys[0]) ?? []};
   }
 
   async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
     const answers = this.previewStore.answers();
     answers[answer.id] = [answer];
-    this.previewStore.answers.set({...answers});
+    this.previewStore.answers.update(() => ({...answers}));
 
-    for (const questions of this.groupedQuestions.values()) {
-      for (const q of questions) {
-        q.visible = this.isVisible(q);
+    for (const group of this.questionGroups.values()) {
+      for (const question of group) {
+        question.visible = this.isVisible(question);
       }
     }
 
-    if (!this.anyQuestionLeft(this.currentQuestionsGroup.index)) {
-      this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.currentQuestionsGroup.index + 1});
-      this.rightButtonLabel.set('finish');
-    } else {
-      this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.groupedQuestions.size});
-      this.rightButtonLabel.set('next');
-    }
+    // if (!this.anyQuestionLeft(this.index())) {
+      // this.progress.set({enabled: true, current: this.index(), total: this.questionGroups.size});
+      // this.rightButtonLabel.set('finish');
+    // } else {
+      // this.progress.set({enabled: true, current: this.index(), total: this.questionGroups.size});
+      // this.rightButtonLabel.set('next');
+    // }
 
-    if (this.allRequiredFieldsAnswered()) {
-      // const questions = this.currentQuestionsGroup.questions;
-      // if (questions.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(questions[0].field_type)) {
-      //   await this.nextQuestion(this.currentQuestionsGroup.index)
-      // } else {
-      this.rightButtonEnabled.set(this.rightButtonLabel() !== 'finish');
+    if (this.allRequiredFieldsAnswered(this.index())) {
+      const group = Array.from(this.questionGroups.values())[this.index()];
+      if (this.autoNextEnabled && group.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(group[0].field_type)) {
+        await this.nextQuestion(this.index());
+      } else {
+      this.rightButtonEnabled.set(true);//this.rightButtonLabel() !== 'finish');
+        }
     } else {
       this.rightButtonEnabled.set(false);
     }
   }
 
   private async nextQuestion(index: number): Promise<void> {
-    const groupedQuestionsKeys = [...this.groupedQuestions.keys()];
     const nextIndex = index + 1;
-    if (nextIndex === groupedQuestionsKeys.length) {
+
+    if (nextIndex >= this.questionGroups.size) {
+      this.index.update(() => nextIndex);
       return;
     }
 
-    const questions = this.groupedQuestions.get(groupedQuestionsKeys[nextIndex]) ?? [];
-    if (questions.some(q => q.visible)) {
-      this.currentQuestionsGroup = {index: nextIndex, key: groupedQuestionsKeys[nextIndex], questions: this.groupedQuestions.get(groupedQuestionsKeys[nextIndex]) ?? []};
+    const group = Array.from(this.questionGroups.values())[nextIndex];
+    if (group.some(q => q.visible)) {
 
-      this.leftButtonLabel.set('previous');
-      this.leftButtonEnabled.set(true);
+      // this.leftButtonLabel.set('previous');
+      // this.leftButtonEnabled.set(true);
 
-      if (!this.anyQuestionLeft(nextIndex)) {
-        this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.currentQuestionsGroup.index + 1});
-        this.rightButtonLabel.set('finish');
-      } else {
-        this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.groupedQuestions.size});
-        this.rightButtonLabel.set('next');
-      }
-      if (this.allRequiredFieldsAnswered()) {
-        this.rightButtonEnabled.set(this.rightButtonLabel() !== 'finish');
+      // if (!this.anyQuestionLeft(nextIndex)) {
+        // this.progress.set({enabled: true, current: this.index(), total: this.questionGroups.size});
+        // this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.currentQuestionsGroup.index + 1});
+        // this.rightButtonLabel.set('finish');
+      // } else {
+        // this.progress.set({enabled: true, current: this.index(), total: this.questionGroups.size});
+        // this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.questionGroups.size});
+        // this.rightButtonLabel.set('next');
+      // }
+      // if (this.index() === -1) {
+      //   this.index.update(() => nextIndex);
+      // }
+      if (this.allRequiredFieldsAnswered(nextIndex)) {
+        this.rightButtonEnabled.set(true);
       } else {
         this.rightButtonEnabled.set(false);
       }
-
-      this.progress.set({enabled: true, current: nextIndex, total: this.groupedQuestions.size});
-
+      this.leftButtonEnabled.set(this.previousEnabled);
+      this.index.update(() => nextIndex);
     } else {
       await this.nextQuestion(nextIndex);
     }
   }
 
   private anyQuestionLeft(index: number): boolean {
-    const groupedQuestionsKeys = [...this.groupedQuestions.keys()];
+    const groupedQuestionsKeys = [...this.questionGroups.keys()];
     const nextIndex = index + 1;
     if (nextIndex === groupedQuestionsKeys.length) {
       // this.rightButton.set({enabled: false, label: 'finish'})
       return false;
     }
 
-    const questions = this.groupedQuestions.get(groupedQuestionsKeys[nextIndex]) ?? [];
+    const questions = this.questionGroups.get(groupedQuestionsKeys[nextIndex]) ?? [];
     if (questions.some(q => q.visible)) {
       return true;
     } else {
@@ -316,29 +341,18 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   private previousQuestion(index: number): void {
-    if (index === 0) {
+    const previousIndex = index - 1;
+
+    if (previousIndex < 0) {
+      this.index.update(() => -1);
       return;
     }
 
-    const groupedQuestionsKeys = [...this.groupedQuestions.keys()];
-    const previousIndex = index - 1;
-    const questions = this.groupedQuestions.get(groupedQuestionsKeys[previousIndex]) ?? [];
-    if (questions.some(q => q.visible)) {
-      this.currentQuestionsGroup = {index: previousIndex, key: groupedQuestionsKeys[previousIndex], questions: this.groupedQuestions.get(groupedQuestionsKeys[previousIndex]) ?? []};
-
-      if (previousIndex === 0) {
-        this.leftButtonLabel.set('close');
-        this.leftButtonEnabled.set(false);
-      } else {
-        this.leftButtonLabel.set('previous');
-        this.leftButtonEnabled.set(true);
-      }
-
-      this.rightButtonLabel.set('next');
+    const group = Array.from(this.questionGroups.values())[previousIndex];
+    if (group.some(q => q.visible)) {
+      this.leftButtonEnabled.set(this.previousEnabled);
       this.rightButtonEnabled.set(true);
-
-      this.progress.set({enabled: true, current: previousIndex, total: this.groupedQuestions.size});
-
+      this.index.update(() => previousIndex);
     } else {
       this.previousQuestion(previousIndex);
     }
@@ -361,11 +375,12 @@ export class QuestionnairePreviewComponent implements OnInit {
     return evaluateConditionalLogic(_answers, conditionalLogic);
   }
 
-  private allRequiredFieldsAnswered() {
-    return this.currentQuestionsGroup.questions.every(q => {
-      if (q.visible) {
-        if (q.required_field) {
-          const answer = this.previewStore.answers()[q.field_name]?.[0];
+  private allRequiredFieldsAnswered(index: number) {
+    const group = Array.from(this.questionGroups.values())[index];
+    return group.every(question => {
+      if (question.visible) {
+        if (question.required_field) {
+          const answer = this.previewStore.answers()[question.field_name]?.[0];
           return answer && answer.value !== null;
         } else {
           return true;
@@ -380,10 +395,10 @@ export class QuestionnairePreviewComponent implements OnInit {
     switch (event) {
       case ToolbarAction.NEXT:
       case ToolbarAction.FINISH:
-        await this.nextQuestion(this.currentQuestionsGroup.index);
+        await this.nextQuestion(this.index());
         break;
       case ToolbarAction.PREVIOUS:
-        this.previousQuestion(this.currentQuestionsGroup.index);
+        this.previousQuestion(this.index());
         break;
       case ToolbarAction.CLOSE:
         break;

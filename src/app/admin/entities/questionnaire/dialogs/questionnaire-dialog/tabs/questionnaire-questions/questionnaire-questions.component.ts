@@ -11,7 +11,7 @@ import {MatButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog.component';
 import {DialogMode} from '../../../../../../shared/enums/dialog';
-import {QUESTION_TYPES} from '../questionnaire-preview/question-type/question-type.registry';
+import {QUESTION_TYPES} from '../questionnaire-preview/question/question-type/question-type.registry';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
 @Component({
