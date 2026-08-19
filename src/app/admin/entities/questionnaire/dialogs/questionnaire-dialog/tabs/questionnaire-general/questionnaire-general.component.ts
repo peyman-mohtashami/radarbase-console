@@ -23,6 +23,9 @@ export interface QuestionnaireGeneralForm {
   estimatedCompletionTime: string;
   order: string;
   showInCalendar: boolean;
+  autoNextEnabled: boolean;
+  editEnabled: boolean;
+  previousEnabled: boolean;
 }
 
 @Component({
@@ -56,6 +59,9 @@ export class QuestionnaireGeneralComponent {
     estimatedCompletionTime: this._questionnaire?.estimatedCompletionTime ?? '',
     order: this._questionnaire?.order ?? '',
     showInCalendar: this._questionnaire?.showInCalendar ?? false,
+    autoNextEnabled: this._questionnaire?.autoNextEnabled ?? false,
+    editEnabled: this._questionnaire?.editEnabled ?? false,
+    previousEnabled: this._questionnaire?.previousEnabled ?? false,
   });
 
   protected form = form(this.model, (schema) => {

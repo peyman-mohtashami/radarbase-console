@@ -57,6 +57,18 @@
         </mat-error>
       </mat-form-field>
     </div>
+
+    <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4" color="primary">
+      {{ `${_prefix}.autoNextEnabled` | translate }}
+    </mat-slide-toggle>
+
+    <mat-slide-toggle [formField]="form.previousEnabled" class="my-4" color="primary">
+      {{ `${_prefix}.previousEnabled` | translate }}
+    </mat-slide-toggle>
+
+    <mat-slide-toggle [formField]="form.editEnabled" class="my-4" color="primary">
+      {{ `${_prefix}.editEnabled` | translate }}
+    </mat-slide-toggle>
   </div>
 
   <!--  <div>-->

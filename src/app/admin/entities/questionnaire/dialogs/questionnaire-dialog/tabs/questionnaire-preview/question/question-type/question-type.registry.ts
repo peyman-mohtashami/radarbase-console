@@ -11,9 +11,10 @@ import {NumberQuestionComponent} from './number-question/number-question.compone
 import {AudioQuestionComponent} from './audio-question/audio-question.component';
 // import {DurationQuestionComponent} from './duration-question/duration-question.component';
 import {TimedQuestionComponent} from './timed-question/timed-question.component';
-import {DatetimeQuestionComponent} from './datetime-question/datetime-question.component';
 import {CalculationQuestionComponent} from './calculation-question/calculation-question.component';
 import {QuestionType} from '../../../../../../models/questionnaire';
+import {DateQuestionComponent} from './date-question/date-question.component';
+import {TimeQuestionComponent} from './time-question/time-question.component';
 // import {
 //   SingleSelectMatrixQuestionComponent
 // } from './single-select-matrix-question/single-select-matrix-question.component';
@@ -48,8 +49,8 @@ export const QUESTION_COMPONENTS: Record<string, Type<unknown>> = {
   [QuestionType.RANGE]: RangeQuestionComponent,
   [QuestionType.TEXT]: TextQuestionComponent,
   [QuestionType.NUMBER]: NumberQuestionComponent,
-  [QuestionType.DATE]: DatetimeQuestionComponent,
-  [QuestionType.TIME]: DatetimeQuestionComponent,
+  [QuestionType.DATE]: DateQuestionComponent,
+  [QuestionType.TIME]: TimeQuestionComponent,
   [QuestionType.AUDIO]: AudioQuestionComponent,
   [QuestionType.TIMED]: TimedQuestionComponent,
   [QuestionType.CALC]: CalculationQuestionComponent,

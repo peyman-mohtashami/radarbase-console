@@ -15,6 +15,9 @@ export interface AppQuestionnaire {
   estimatedCompletionTime?: string;
   isDemo?: boolean;
   order?: string;
+  autoNextEnabled?: boolean;
+  editEnabled?: boolean;
+  previousEnabled?: boolean;
   //---
   title?: Record<string, string>;
   description?: Record<string, string>;

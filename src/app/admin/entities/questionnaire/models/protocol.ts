@@ -23,6 +23,9 @@ export interface ProtocolDto {
   estimatedCompletionTime?: string;
   isDemo?: boolean;
   order?: string;
+  autoNextEnabled?: boolean;
+  editEnabled?: boolean;
+  previousEnabled?: boolean;
   //---
   questionnaire?: ProtocolQuestionnaireDto;
   appQuestionnaire?: string;

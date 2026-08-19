@@ -27,7 +27,7 @@ import {OffsetTimePipe} from '../../../../../shared/pipes/offset-time.pipe';
     TranslatePipe,
     TagComponent,
     MatSlideToggle,
-    JsonPipe,
+    // JsonPipe,
     OffsetTimePipe,
   ]
 })

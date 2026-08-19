@@ -1,0 +1,31 @@
+<!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
+
+<app-question-header [question]="entity()" [language]="language()"/>
+
+<mat-form-field class='small-input'
+                appearance='outline'
+                subscriptSizing="dynamic">
+  <input matInput type="time" required (input)="onPreviewTimeInputChange($event)"/>
+  @if (entity().text_validation_min && entity().text_validation_max) {
+    <mat-hint>Enter a time between {{ entity().text_validation_min | replacePlaceholders }}
+      and {{ entity().text_validation_max | replacePlaceholders }}
+    </mat-hint>
+  }
+  @if (entity().text_validation_min && !entity().text_validation_max) {
+    <mat-hint>Enter a time after {{ entity().text_validation_min | replacePlaceholders }}</mat-hint>
+  }
+  @if (!entity().text_validation_min && entity().text_validation_max) {
+    <mat-hint>Enter a time before {{ entity().text_validation_max | replacePlaceholders }}</mat-hint>
+  }
+</mat-form-field>
+
+@if (error) {
+  <p class="text-red-700 text-sm mt-4">{{ error }}</p>
+}
+
+
+@if (!isPreviewDisabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewDateInputChange(null)">
+    Clear
+  </button>
+}

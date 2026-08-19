@@ -21,7 +21,7 @@ import {QuestionnaireStore} from '../../../../../../../services/questionnaire.st
 import {timeToMinutes} from '../../../../../../../../../../shared/utils/signal-form-validators';
 
 @Component({
-  selector: 'app-datetime-question',
+  selector: 'app-date-question',
   imports: [
     MatDatepicker,
     MatDatepickerInput,
@@ -32,12 +32,12 @@ import {timeToMinutes} from '../../../../../../../../../../shared/utils/signal-f
     MatButton,
     QuestionHeaderComponent,
     ReplacePlaceholdersPipe,
-    MatHint,
+    // MatHint,
   ],
   providers: [ReplacePlaceholdersPipe],
-  templateUrl: './datetime-question.component.html'
+  templateUrl: './date-question.component.html'
 })
-export class DatetimeQuestionComponent {
+export class DateQuestionComponent {
   private store= inject(QuestionnaireStore);
   private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 

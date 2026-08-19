@@ -2,7 +2,7 @@ import {Component, inject, input, output} from '@angular/core';
 import {MatIconButton} from "@angular/material/button";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatIcon} from '@angular/material/icon';
-import {AppQuestion} from '../../../../../../models/questionnaire';
+import {AppQuestion, QuestionType} from '../../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
 import {UpperCasePipe} from '@angular/common';
@@ -21,7 +21,7 @@ import {QuestionsStore} from '../../services/questions.store';
     TagComponent,
     MatTooltip,
     UpperCasePipe,
-    MatHint,
+    // MatHint,
   ],
 })
 export class QuestionButtonComponent {
@@ -47,4 +47,6 @@ export class QuestionButtonComponent {
     event.stopPropagation();
     this.selectEvent.emit();
   }
+
+  protected readonly QuestionType = QuestionType;
 }

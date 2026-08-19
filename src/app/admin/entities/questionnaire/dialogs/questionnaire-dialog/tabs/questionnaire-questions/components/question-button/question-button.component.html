@@ -186,10 +186,10 @@
         }
 
 <!--        Datetime-->
-        @if (entity().field_type === 'datetime') {
-          <div class="flex gap-2">
-            <span [class]="!entity().date_type ? 'text-red-500' : ''">{{ `${_prefix}.dateType` | translate }}: {{entity().date_type ?? `${_prefix}.notAvailable` | translate }}</span>
-          </div>
+        @if (entity().field_type === QuestionType.DATE || entity().field_type === QuestionType.TIME) {
+<!--          <div class="flex gap-2">-->
+<!--            <span [class]="!entity().date_type ? 'text-red-500' : ''">{{ `${_prefix}.dateType` | translate }}: {{entity().date_type ?? `${_prefix}.notAvailable` | translate }}</span>-->
+<!--          </div>-->
           <div class="flex gap-2">
             @if (!!entity().text_validation_min) {
               <span class="text-neutral-500">{{ `${_prefix}.textValidationMin` | translate }}:</span> {{ entity().text_validation_min }}

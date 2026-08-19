@@ -45,7 +45,7 @@ import {LocaleService} from '../../../../../core/locale/services/locale.service'
 import {ActivatedRoute} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
-import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
+// import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
 import {QuestionsStore} from './tabs/questionnaire-questions/services/questions.store';
 
 export interface QuestionnaireForm {
@@ -94,7 +94,7 @@ export interface StoredQuestionnaireDialog {
     MatProgressSpinner,
     MatDialogTitle,
     JsonPipe,
-    QuestionnaireVariablesComponent,
+    // QuestionnaireVariablesComponent,
   ]
 })
 export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {

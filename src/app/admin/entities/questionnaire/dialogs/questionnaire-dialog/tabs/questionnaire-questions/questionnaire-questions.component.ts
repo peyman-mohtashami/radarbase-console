@@ -43,8 +43,8 @@ export const QUESTION_TYPES = [
       {type: QuestionType.TEXT, icon: '', label: 'Text', disabled: false},
       {type: QuestionType.NUMBER, icon: '', label: 'Number', disabled: false},
       // {type: QuestionType.NOTE, icon: '', label: 'Note', disabled: false},
-      {type: QuestionType.DATE, icon: '', label: 'DateTime', disabled: false},
-      {type: QuestionType.TIME, icon: '', label: 'DateTime', disabled: false},
+      {type: QuestionType.DATE, icon: '', label: 'Date', disabled: false},
+      {type: QuestionType.TIME, icon: '', label: 'Time', disabled: false},
       // {type: QuestionType.DURATION, icon: '', label: 'Duration', disabled: true},
       // {type: QuestionType.TEXT_INPUT_MATRIX, icon: '', label: 'Text Input Matrix', disabled: false},
     ]
