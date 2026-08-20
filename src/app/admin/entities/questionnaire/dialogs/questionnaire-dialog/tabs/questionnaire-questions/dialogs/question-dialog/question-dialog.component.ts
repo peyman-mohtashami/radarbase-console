@@ -9,23 +9,23 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTit
 import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
+  identifierField,
   parseAndValidateTemplateVariables,
   requiredField, RequiredWhen, validateDuplicate, validateMaxMin, validateMinMax
 } from '../../../../../../../../../shared/utils/signal-form-validators';
 import {
   applyEach,
   disabled,
-  FieldTree,
+  // FieldTree,
   form,
   FormField,
   PathKind,
-  required,
   SchemaPath, SchemaPathRules,
   validate
 } from '@angular/forms/signals';
@@ -35,7 +35,7 @@ import {QuestionChoicesComponent} from './question-choices/question-choices.comp
 import {
   MatDatepicker,
   MatDatepickerInput,
-  MatDatepickerInputEvent,
+  // MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {checkValidation, QUESTION_TYPES} from '../../questionnaire-questions.component';
@@ -51,6 +51,7 @@ import {PreviewStore} from '../../../questionnaire-preview/services/preview.stor
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
+// import {ReplacePlaceholdersPipe} from '../../../questionnaire-preview/pipes/replace-placeholders.pipe';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   field_name: string;
@@ -96,7 +97,7 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     MatFormField,
     MatError,
     MatInput,
-    MatIconButton,
+    // MatIconButton,
     MatIcon,
     MatSelect,
     MatOption,
@@ -115,6 +116,7 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     QuestionTemplateVariablesComponent,
+    // ReplacePlaceholdersPipe,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -187,6 +189,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.field_name);
+    identifierField(schema.field_name);
     validateDuplicate(schema.field_name, this.dialogData.questions, this._question, 'field_name');
 
     requiredField(schema.field_type);
@@ -240,12 +243,8 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     validateMinMax(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
     validateMaxMin(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
 
-    required(schema.calculation_fn, {
-      when: ({valueOf}) => {
-        const v = valueOf(schema.field_type);
-        return v === QuestionType.CALC
-      }
-    });
+    requiredField(schema.calculation_fn, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.CALC});
+
     // required(schema.calculation_args, {
     //   when: ({ valueOf }) => {
     //     const v = valueOf(schema.field_type);
@@ -355,24 +354,24 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  protected onValidationDatePicked(
-    event: MatDatepickerInputEvent<Date>,
-    field: FieldTree<string, string, "writable">
-  ) {
-    const value = event.value;
-
-    if (!value) {
-      return;
-    }
-
-    field().value.update(() => {
-      return value.toISOString();
-    });
-
-    // control.setValue(this.formatDateForValidation(value));
-    // control.markAsDirty();
-    // control.markAsTouched();
-  }
+  // protected onValidationDatePicked(
+  //   event: MatDatepickerInputEvent<Date>,
+  //   field: FieldTree<string, string, "writable">
+  // ) {
+  //   const value = event.value;
+  //
+  //   if (!value) {
+  //     return;
+  //   }
+  //
+  //   field().value.update(() => {
+  //     return value.toISOString();
+  //   });
+  //
+  //   // control.setValue(this.formatDateForValidation(value));
+  //   // control.markAsDirty();
+  //   // control.markAsTouched();
+  // }
 
   async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
     const answers = this.previewState.answers();

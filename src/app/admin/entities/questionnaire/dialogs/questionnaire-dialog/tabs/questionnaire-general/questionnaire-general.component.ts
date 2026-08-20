@@ -60,8 +60,8 @@ export class QuestionnaireGeneralComponent {
     order: this._questionnaire?.order ?? '',
     showInCalendar: this._questionnaire?.showInCalendar ?? false,
     autoNextEnabled: this._questionnaire?.autoNextEnabled ?? false,
-    editEnabled: this._questionnaire?.editEnabled ?? false,
-    previousEnabled: this._questionnaire?.previousEnabled ?? false,
+    editEnabled: this._questionnaire?.editEnabled ?? true,
+    previousEnabled: this._questionnaire?.previousEnabled ?? true,
   });
 
   protected form = form(this.model, (schema) => {

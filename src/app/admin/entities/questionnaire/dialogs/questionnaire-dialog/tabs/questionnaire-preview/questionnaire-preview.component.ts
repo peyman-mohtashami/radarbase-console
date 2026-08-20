@@ -12,6 +12,8 @@ import {QuestionComponent} from './question/question.component';
 import {PreviewStore} from './services/preview.store';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {evaluateConditionalLogic} from './services/utils';
+import {IntroductionPageComponent} from './question/introduction-page/introduction-page.component';
+import {FinishPageComponent} from './question/finish-page/finish-page.component';
 
 @Component({
   selector: 'app-questionnaire-preview',
@@ -21,6 +23,8 @@ import {evaluateConditionalLogic} from './services/utils';
     QuestionComponent,
     ToolbarComponent,
     JsonPipe,
+    IntroductionPageComponent,
+    FinishPageComponent,
   ]
 })
 export class QuestionnairePreviewComponent implements OnInit {

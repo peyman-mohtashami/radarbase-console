@@ -9,48 +9,9 @@ export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
 
 /** Marks a field as required with the shared error message. */
-// export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root>(
-//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-// ): void {
-//   required(path, {message: 'SHARED.validatorError.required'});
-// }
-// type RequiredOptions = NonNullable<Parameters<typeof required>[1]>;
-// type RequiredWhen = NonNullable<RequiredOptions['when']>;
-//
-// export function requiredField<
-//   TValue,
-//   TPathKind extends PathKind = PathKind.Root
-// >(
-//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-//   options?: Omit<RequiredOptions, 'message'>
-// ): void {
-//   required(path, {
-//     ...options,
-//     message: 'SHARED.validatorError.required'
-//   });
-// }
-// type RequiredOptions = NonNullable<Parameters<typeof required>[1]>;
-//
-// export function requiredField<
-//   TValue,
-//   TPathKind extends PathKind = PathKind.Root
-// >(
-//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-//   options?: Omit<RequiredOptions, 'message'>
-// ): void {
-//   required(path, {
-//     ...options,
-//     message: 'SHARED.validatorError.required',
-//   });
-// }
-export type RequiredWhen = NonNullable<
-  NonNullable<Parameters<typeof required>[1]>['when']
->;
+export type RequiredWhen = NonNullable<NonNullable<Parameters<typeof required>[1]>['when']>;
 
-export function requiredField<
-  TValue,
-  TPathKind extends PathKind = PathKind.Root
->(
+export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
   options?: { when?: RequiredWhen }
 ): void {
@@ -59,27 +20,16 @@ export function requiredField<
     message: 'SHARED.validatorError.required',
   });
 }
-// export function requiredField<
-//   TValue,
-//   TPathKind extends PathKind = PathKind.Root
-// >(
-//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-//   options?: {
-//     when?: (ctx: { valueOf: <T>(path: SchemaPath<T>) => T }) => boolean;
-//   }
-// ): void {
-//   required(path, {
-//     message: 'SHARED.validatorError.required',
-//     ...options
-//   });
-// }
 
-/** Marks a field as required with the shared error message. */
-// export function requiredField<TValue, TPathKind extends PathKind>(
-//   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-// ): void {
-//   required(path, {message: 'SHARED.validatorError.required'});
-// }
+const IDENTIFIER_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,39}$/;
+
+export function identifierField<TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
+): void {
+  pattern(path, IDENTIFIER_PATTERN, {
+    message: 'SHARED.validatorError.identifierValidator',
+  });
+}
 
 
 /** Applies the shared "normal text" pattern to a string field. */
@@ -99,7 +49,6 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
     message: 'SHARED.validatorError.longTextValidator',
   });
 }
-
 
 export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {
   const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];

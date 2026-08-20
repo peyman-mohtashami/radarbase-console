@@ -1,0 +1,13 @@
+<!--<app-question-header [question]="entity()" [language]="language()" [disableRequiredAsterisk]="true"/>-->
+
+<!--@if (language()) {-->
+<!--  @if (sectionHeader()) {-->
+<!--    <p class="text-sm font-bold mb-4" [innerHtml]="question().section_header?.[language()!.code] | replacePlaceholders:question().variables?.['section_header']"></p>-->
+<!--  }-->
+<!--  @if (label() && question().field_label) {-->
+    <p class="text-lg">
+<!--      <span [innerHtml]="entity().startText?.[language()!.code] | replacePlaceholders:question().variables?.['field_label']"></span>-->
+<!--      <span [innerHtml]="entity().startText?.[language()!.code] | replacePlaceholders:question().variables?.['field_label']"></span>-->
+      <span [innerHtml]="entity().startText?.[language()!.code]"></span>
+    </p>
+<!--}-->

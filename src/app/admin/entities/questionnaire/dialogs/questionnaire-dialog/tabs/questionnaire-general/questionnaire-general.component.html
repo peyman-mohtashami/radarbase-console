@@ -58,44 +58,49 @@
       </mat-form-field>
     </div>
 
-    <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4" color="primary">
-      {{ `${_prefix}.autoNextEnabled` | translate }}
-    </mat-slide-toggle>
+    <div>
+      <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4 block" color="primary">
+        {{ `${_prefix}.autoNextEnabled` | translate }}
+      </mat-slide-toggle>
+    </div>
 
-    <mat-slide-toggle [formField]="form.previousEnabled" class="my-4" color="primary">
-      {{ `${_prefix}.previousEnabled` | translate }}
-    </mat-slide-toggle>
+    <div>
+      <mat-slide-toggle [formField]="form.previousEnabled" class="my-4 block" color="primary">
+        {{ `${_prefix}.previousEnabled` | translate }}
+      </mat-slide-toggle>
+    </div>
 
-    <mat-slide-toggle [formField]="form.editEnabled" class="my-4" color="primary">
-      {{ `${_prefix}.editEnabled` | translate }}
-    </mat-slide-toggle>
+    <div>
+      <mat-slide-toggle [formField]="form.editEnabled" class="my-4 block" color="primary">
+        {{ `${_prefix}.editEnabled` | translate }}
+      </mat-slide-toggle>
+    </div>
   </div>
+    <!--  <div>-->
+    <!--    <div class="">-->
+    <!--      <div>-->
+    <!--        <label for="order" class="text-sm">-->
+    <!--          {{ `${_prefix}.orderLabel` | translate }}-->
+    <!--        </label>-->
+    <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+    <!--          <input id="order" matInput type="number" formControlName='order'>-->
+    <!--        </mat-form-field>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-  <!--  <div>-->
-  <!--    <div class="">-->
-  <!--      <div>-->
-  <!--        <label for="order" class="text-sm">-->
-  <!--          {{ `${_prefix}.orderLabel` | translate }}-->
-  <!--        </label>-->
-  <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
-  <!--          <input id="order" matInput type="number" formControlName='order'>-->
-  <!--        </mat-form-field>-->
-  <!--      </div>-->
-  <!--    </div>-->
+    <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
+    <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
+    <!--    </mat-slide-toggle>-->
 
-  <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
-  <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
-  <!--    </mat-slide-toggle>-->
+    <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
+    <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
+    <!--    </mat-slide-toggle>-->
 
-  <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
-  <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
-  <!--    </mat-slide-toggle>-->
-
-  <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
-  <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
-  <!--    </mat-slide-toggle>-->
-  <!--  </div>-->
-  <pre class="text-sm">
-    {{store.selected() | json}}
+    <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
+    <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
+    <!--    </mat-slide-toggle>-->
+    <!--  </div>-->
+    <pre class="text-sm">
+    {{ store.selected() | json }}
   </pre>
 </form>
