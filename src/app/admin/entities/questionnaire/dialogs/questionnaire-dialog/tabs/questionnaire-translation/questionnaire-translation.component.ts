@@ -1,9 +1,9 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
-import {AppQuestionnaire} from '../../../../models/questionnaire';
+import {AppQuestionnaire, QuestionType} from '../../../../models/questionnaire';
 import {applyEach, form, FormField} from '@angular/forms/signals';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
+import {requiredField, RequiredWhen} from '../../../../../../../shared/utils/signal-form-validators';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
@@ -89,6 +89,28 @@ export class QuestionnaireTranslationComponent {
       if (question.field_note) {
         this._questionnaire.languages.forEach(l => {
           requiredField(question.field_note![l.code]);
+        })
+      }
+
+      if (question.select_choices_or_calculations) {
+        applyEach(question.select_choices_or_calculations, (choice) => {
+          const whenRequired: RequiredWhen = ({valueOf}) => [QuestionType.INFO, QuestionType.CHECKBOX, QuestionType.RADIO, QuestionType.RANGE].includes(valueOf(question.field_type) as QuestionType);
+          requiredField(choice.code, {when: whenRequired});
+          this._questionnaire.languages.forEach(l => {
+            requiredField(choice.label[l.code], {when: whenRequired});
+          })
+        });
+      }
+
+      if (question.range?.labelLeft) {
+        this._questionnaire.languages.forEach(l => {
+          requiredField(question.range!.labelLeft![l.code]);
+        })
+      }
+
+      if (question.range?.labelRight) {
+        this._questionnaire.languages.forEach(l => {
+          requiredField(question.range!.labelRight![l.code]);
         })
       }
     });
