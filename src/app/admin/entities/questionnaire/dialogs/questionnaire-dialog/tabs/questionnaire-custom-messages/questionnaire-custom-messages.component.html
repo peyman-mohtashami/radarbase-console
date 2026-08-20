@@ -54,37 +54,27 @@
     </div>
 
     @if (model().showIntroduction !== 'no') {
-      <div class="">
-        <label for="startText" class="text-sm">
-          {{ `${_prefix}.startText` | translate }}
+      <div>
+        <label for="startText" class="text-sm"
+               [class]="form.startText[_lang]().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.startText` | translate }} *
         </label>
-        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <textarea id="startText" matInput [formField]="form.startText[_lang]" cdkTextareaAutosize rows="4"></textarea>
-          <mat-error>
-            @if (form.startText[_lang]().touched() && form.startText[_lang]().invalid()) {
-              @for (error of form.startText[_lang]().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+        <app-question-template-variables [variables]="variables['startText']"
+                                         [questionIndex]="10"
+                                         [formField]="form.startText[_lang]"
+                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>
       </div>
     }
 
-    <div class="">
-      <label for="endText" class="text-sm">
-        {{ `${_prefix}.endText` | translate }}
+    <div>
+      <label for="endText" class="text-sm"
+             [class]="form.endText[_lang]().invalid() ? 'text-red-700' : ''">
+        {{ `${_prefix}.endText` | translate }} *
       </label>
-      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-        <textarea id="endText" matInput [formField]="form.endText[_lang]" cdkTextareaAutosize rows="4"></textarea>
-        <mat-error>
-          @if (form.endText[_lang]().touched() && form.endText[_lang]().invalid()) {
-            @for (error of form.endText[_lang]().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-question-template-variables [variables]="variables['endText']"
+                                       [questionIndex]="10"
+                                       [formField]="form.endText[_lang]"
+                                       (variableUpdateEvent)="updateVariables('endText', $event)"/>
     </div>
 
     <mat-slide-toggle [formField]="form.warningEnabled" class="my-4" color="primary">

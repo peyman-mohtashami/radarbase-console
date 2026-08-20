@@ -22,7 +22,6 @@ import {
 import {
   applyEach,
   disabled,
-  // FieldTree,
   form,
   FormField,
   PathKind,
@@ -35,7 +34,6 @@ import {QuestionChoicesComponent} from './question-choices/question-choices.comp
 import {
   MatDatepicker,
   MatDatepickerInput,
-  // MatDatepickerInputEvent,
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {checkValidation, QUESTION_TYPES} from '../../questionnaire-questions.component';
@@ -51,7 +49,6 @@ import {PreviewStore} from '../../../questionnaire-preview/services/preview.stor
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
-// import {ReplacePlaceholdersPipe} from '../../../questionnaire-preview/pipes/replace-placeholders.pipe';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   field_name: string;
@@ -97,7 +94,6 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     MatFormField,
     MatError,
     MatInput,
-    // MatIconButton,
     MatIcon,
     MatSelect,
     MatOption,
@@ -116,7 +112,6 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     QuestionTemplateVariablesComponent,
-    // ReplacePlaceholdersPipe,
   ],
   templateUrl: './question-dialog.component.html'
 })
@@ -351,56 +346,14 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   }
 
   close() {
+    this.questionsStore.question.set(null);
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
-
-  // protected onValidationDatePicked(
-  //   event: MatDatepickerInputEvent<Date>,
-  //   field: FieldTree<string, string, "writable">
-  // ) {
-  //   const value = event.value;
-  //
-  //   if (!value) {
-  //     return;
-  //   }
-  //
-  //   field().value.update(() => {
-  //     return value.toISOString();
-  //   });
-  //
-  //   // control.setValue(this.formatDateForValidation(value));
-  //   // control.markAsDirty();
-  //   // control.markAsTouched();
-  // }
 
   async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
     const answers = this.previewState.answers();
     answers[answer.id] = [answer];
     this.previewState.answers.set({...answers});
-
-    // for (const questions of this.groupedQuestions.values()) {
-    //   for (const q of questions) {
-    //     q.visible = this.isVisible(q);
-    //   }
-    // }
-
-    // if (!this.anyQuestionLeft(this.currentQuestionsGroup.index)) {
-    //   this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.currentQuestionsGroup.index + 1});
-    //   this.rightButtonLabel.set('finish');
-    // } else {
-    //   this.progress.set({enabled: true, current: this.currentQuestionsGroup.index, total: this.groupedQuestions.size});
-    //   this.rightButtonLabel.set('next');
-    // }
-    //
-    // if (this.allRequiredFieldsAnswered()) {
-    //   const questions = this.currentQuestionsGroup.questions;
-    //   // if (questions.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(questions[0].field_type)) {
-    //   //   await this.nextQuestion(this.currentQuestionsGroup.index)
-    //   // } else {
-    //   this.rightButtonEnabled.set(this.rightButtonLabel() !== 'finish');
-    // } else {
-    //   this.rightButtonEnabled.set(false);
-    // }
   }
 
   protected updateConditionalLogic(conditionalLogic: AppQuestionConditionalLogic) {

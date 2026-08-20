@@ -24,25 +24,25 @@
   } @else {
 
     <form novalidate>
-      @if (dialogData.mode === 'insert') {
-        <label for="template-variable" class="text-sm">Select a Template Variable</label>
-        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-          <mat-select [formField]="selectForm">
-            @for (variable of store.selected()?.variables; track $index) {
-              <mat-option [value]="variable">{{ variable.name }}</mat-option>
-            }
-          </mat-select>
-          <mat-error>
-            @if (selectForm().touched() && selectForm().invalid()) {
-              @for (error of selectForm().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+<!--      @if (dialogData.mode === 'insert') {-->
+<!--        <label for="template-variable" class="text-sm">Select a Template Variable</label>-->
+<!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+<!--          <mat-select [formField]="selectForm">-->
+<!--            @for (variable of store.selected()?.variables; track $index) {-->
+<!--              <mat-option [value]="variable">{{ variable.name }}</mat-option>-->
+<!--            }-->
+<!--          </mat-select>-->
+<!--          <mat-error>-->
+<!--            @if (selectForm().touched() && selectForm().invalid()) {-->
+<!--              @for (error of selectForm().errors(); track error.kind) {-->
+<!--                {{ error.message }}-->
+<!--              }-->
+<!--            }-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
 
-        <p>Or create one</p>
-      }
+<!--        <p>Or create one</p>-->
+<!--      }-->
 
       <label for="name" class="text-sm">Name</label>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>

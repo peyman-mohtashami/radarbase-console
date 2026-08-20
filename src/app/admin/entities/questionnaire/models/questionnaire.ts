@@ -38,7 +38,7 @@ export interface AppQuestionnaire {
   isQuestionsTabValid?: boolean;
   isTranslationsTabValid?: boolean;
   //---
-  variables?: QuestionTemplateVariable[];
+  variables?: Record<string,QuestionTemplateVariable[]>;
   //---
   isActive?: boolean;
   isValid?: boolean;

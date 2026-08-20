@@ -137,24 +137,24 @@ export class VariableDialogComponent implements AfterViewInit {
         ...model,
       };
 
-      this.store.selected.update(q => {
-        const variables = [...(q?.variables ?? [])];
-        switch(this.dialogData.mode) {
-          case 'add':
-            variables.push(variable);
-            break;
-          case 'delete':
-            variables.splice(variables.findIndex(v => v.id === variable.id), 1);
-            break;
-          case 'edit':
-            variables[variables.findIndex(v => v.id === variable.id)] = variable;
-            break;
-        }
-        return {
-          ...q,
-          variables,
-        } as AppQuestionnaire;
-      });
+      // this.store.selected.update(q => {
+      //   const variables = [...(q?.variables ?? [])];
+      //   switch(this.dialogData.mode) {
+      //     case 'add':
+      //       variables.push(variable);
+      //       break;
+      //     case 'delete':
+      //       variables.splice(variables.findIndex(v => v.id === variable.id), 1);
+      //       break;
+      //     case 'edit':
+      //       variables[variables.findIndex(v => v.id === variable.id)] = variable;
+      //       break;
+      //   }
+      //   return {
+      //     ...q,
+      //     variables,
+      //   } as AppQuestionnaire;
+      // });
       this.dialogRef.close(variable);
 
     }

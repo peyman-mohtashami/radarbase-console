@@ -81,26 +81,6 @@
           </label>
           <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
             <input matInput [formField]='form.field_name'/>
-<!--            <p>touched: {{form.field_name().touched()}}</p>-->
-<!--            <p>value: {{form.field_name().value()}}</p>-->
-<!--            <p>invalid: {{form.field_name().invalid()}}</p>-->
-<!--            <p>valid: {{form.field_name().valid()}}</p>-->
-<!--            <p>errors: {{form.field_name().errors()}}</p>-->
-<!--            <p>dirty: {{form.field_name().dirty()}}</p>-->
-<!--            <p>controlValue: {{form.field_name().controlValue()}}</p>-->
-<!--            <p>disabled: {{form.field_name().disabled()}}</p>-->
-<!--            <p>disabledReasons: {{form.field_name().disabledReasons()}}</p>-->
-<!--            <p>errorSummary: {{form.field_name().errorSummary()}}</p>-->
-<!--            <p>fieldTree: {{form.field_name().fieldTree()}}</p>-->
-<!--            <p>formFieldBindings: {{form.field_name().formFieldBindings()}}</p>-->
-<!--            <p>hidden: {{form.field_name().hidden()}}</p>-->
-<!--            <p>keyInParent: {{form.field_name().keyInParent()}}</p>-->
-<!--            <p>name: {{form.field_name().name()}}</p>-->
-<!--            <p>pattern: {{form.field_name().pattern()}}</p>-->
-<!--            <p>pending: {{form.field_name().pending()}}</p>-->
-<!--            <p>readonly: {{form.field_name().readonly()}}</p>-->
-<!--            <p>required: {{form.field_name().required()}}</p>-->
-<!--            <p>submitting: {{form.field_name().submitting()}}</p>-->
             <mat-error>
               @if (form.field_name().invalid()) {
                 @for (error of form.field_name().errors(); track error.kind) {

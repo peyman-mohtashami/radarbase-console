@@ -4,36 +4,59 @@
   <div class="">
     <div class="">
       <p class="text-base">{{ `${_prefix}.notification` | translate }}</p>
-      <div class="">
-        <label for="notificationTitle" class="text-sm">
-          {{ `${_prefix}.notificationTitle` | translate }}
+      <div>
+        <label for="notificationTitle" class="text-sm"
+               [class]="form.notification.title[_lang]().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.notificationTitle` | translate }} *
         </label>
-        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <input id="notificationTitle" matInput [formField]="form.notification.title[_lang]">
-          <mat-error>
-            @if (form.notification.title[_lang]().touched() && form.notification.title[_lang]().invalid()) {
-              @for (error of form.notification.title[_lang]().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+        <app-question-template-variables [variables]="variables['notificationTitle']"
+                                         [questionIndex]="10"
+                                         [formField]="form.notification.title[_lang]"
+                                         (variableUpdateEvent)="updateVariables('notificationTitle', $event)"/>
       </div>
-      <div class="">
-        <label for="notificationMessage" class="text-sm">
-          {{ `${_prefix}.notificationMessage` | translate }}
+
+<!--      <div class="">-->
+<!--        <label for="notificationTitle" class="text-sm">-->
+<!--          {{ `${_prefix}.notificationTitle` | translate }}-->
+<!--        </label>-->
+<!--        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">-->
+<!--          <input id="notificationTitle" matInput [formField]="form.notification.title[_lang]">-->
+<!--          <mat-error>-->
+<!--            @if (form.notification.title[_lang]().touched() && form.notification.title[_lang]().invalid()) {-->
+<!--              @for (error of form.notification.title[_lang]().errors(); track error.kind) {-->
+<!--                {{ error.message }}-->
+<!--              }-->
+<!--            }-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+
+      <div>
+        <label for="notificationMessage" class="text-sm"
+               [class]="form.notification.text[_lang]().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.notificationMessage` | translate }} *
         </label>
-        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-          <textarea id="notificationMessage" matInput [formField]="form.notification.text[_lang]" cdkTextareaAutosize rows="3"></textarea>
-          <mat-error>
-            @if (form.notification.text[_lang]().touched() && form.notification.text[_lang]().invalid()) {
-              @for (error of form.notification.text[_lang]().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+        <app-question-template-variables [variables]="variables['notificationMessage']"
+                                         [questionIndex]="10"
+                                         [formField]="form.notification.text[_lang]"
+                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>
       </div>
+
+<!--      <div class="">-->
+<!--        <label for="notificationMessage" class="text-sm">-->
+<!--          {{ `${_prefix}.notificationMessage` | translate }}-->
+<!--        </label>-->
+<!--        <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">-->
+<!--          <textarea id="notificationMessage" matInput [formField]="form.notification.text[_lang]" cdkTextareaAutosize rows="3"></textarea>-->
+<!--          <mat-error>-->
+<!--            @if (form.notification.text[_lang]().touched() && form.notification.text[_lang]().invalid()) {-->
+<!--              @for (error of form.notification.text[_lang]().errors(); track error.kind) {-->
+<!--                {{ error.message }}-->
+<!--              }-->
+<!--            }-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
     </div>
 
     <div>

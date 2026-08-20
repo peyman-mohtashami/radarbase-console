@@ -47,7 +47,7 @@ export interface ProtocolDto {
   isQuestionsTabValid?: boolean;
   isTranslationsTabValid?: boolean;
   //---
-  variables?: QuestionTemplateVariable[];
+  variables?: Record<string, QuestionTemplateVariable[]>;
   //---
   isValid?: boolean;
   isActive?: boolean;
