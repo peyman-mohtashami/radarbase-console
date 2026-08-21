@@ -80,10 +80,15 @@ export function parseAndValidateTemplateVariables(value: string, field: string, 
 
 export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
   if (!variable.id) return false;
-  if (variable.type !== 'question') return false;
-  if (!variable.questionId) return false;
-  if (variable.start && variable.end && variable.start > variable.end) return false;
   return true;
+  // switch (variable.type) {
+  //   case 'reservedVariable':
+  //     return true;
+  // }
+  // if (variable.type !== 'question') return false;
+  // if (!variable.questionId) return false;
+  // if (variable.start && variable.end && variable.start > variable.end) return false;
+  // return true;
 }
 
 export function timeToMinutes(time: string) {

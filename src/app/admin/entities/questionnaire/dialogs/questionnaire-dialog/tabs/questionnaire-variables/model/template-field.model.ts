@@ -10,12 +10,16 @@ export type TemplateVariableFunction =
 export interface QuestionTemplateVariable {
   id: string;
   name: string;
-  type: 'question';
-  questionId: string;
+  type: 'reservedVariable' | 'question' | 'questionnaire' | 'topic';
+  reservedVariable?: string;
+  questionId?: string;
   questionnaireId?: string;
-  function: string;//TemplateVariableFunction;
+  method?: string;//TemplateVariableFunction;
   start?: string;
   end?: string;
+  function?: string;
+  topic?: string;
+  topicVariable?: string;
 }
 
 // export interface TemplateField {

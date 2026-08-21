@@ -43,80 +43,209 @@
 
 <!--        <p>Or create one</p>-->
 <!--      }-->
-
-      <label for="name" class="text-sm">Name</label>
-      <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-        <input id="section_header" matInput [formField]="form.name"/>
-        <mat-error>
-          @if (form.name().touched() && form.name().invalid()) {
-            @for (error of form.name().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-
-      <label for="question" class="text-sm">Select a Questionnaire</label>
-      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-        <mat-select [formField]="form.questionnaireId">
-          <mat-option [value]="'self'">This questionnaire</mat-option>
-<!--          @for (questionnaire of store.questionnaires(); track questionnaire.id) {-->
-<!--            <mat-option [value]="questionnaire.name">{{ questionnaire.name }}</mat-option>-->
-<!--          }-->
-        </mat-select>
-        <mat-error>
-          @if (form.questionnaireId().touched() && form.questionnaireId().invalid()) {
-            @for (error of form.questionnaireId().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-
-      <label for="question" class="text-sm">Select a Question</label>
-      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-        <mat-select [formField]="form.questionId">
-          @for (question of store.selected()?.questions; track question.id) {
-            @if ($index < dialogData.questionIndex) {
-              <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
-            }
-          }
-        </mat-select>
-        <mat-error>
-          @if (form.questionId().touched() && form.questionId().invalid()) {
-            @for (error of form.questionId().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-
-      <label for="question" class="text-sm">Select a Method</label>
-      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-        <mat-select [formField]="form.method">
-          @if (form.questionnaireId().value() === 'self') {
-            <mat-option [value]="'value'">Value</mat-option>
-          } @else {
-            @for (item of functions; track item.value) {
-              <mat-option [value]="item.value">{{ item.label }}</mat-option>
-            }
-          }
-        </mat-select>
-        <mat-error>
-          @if (form.method().touched() && form.method().invalid()) {
-            @for (error of form.method().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-
-      @if (form.method().value() !== 'value') {
-        <label for="section_header" class="text-sm">Start</label>
+      <div>
+        <label for="name" class="text-sm" [class]="form.name().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.name` | translate }} *
+        </label>
         <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-          <input id="section_header" matInput [formField]="form.start" type="date"/>
+          <input id="name" matInput [formField]="form.name"/>
           <mat-error>
-            @if (form.start().touched() && form.start().invalid()) {
+            @if (form.name().invalid()) {
+              @for (error of form.name().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <label for="type" class="text-sm" [class]="form.type().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.type` | translate }} *
+        </label>
+        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+          <mat-select [formField]='form.type'>
+            <mat-option [value]="'reservedVariable'">{{ `${_prefix}.reservedVariable` | translate }}</mat-option>
+            <mat-option [value]="'question'">{{ `${_prefix}.question` | translate }}</mat-option>
+            <mat-option [value]="'questionnaire'">{{ `${_prefix}.questionnaire` | translate }}</mat-option>
+            <mat-option [value]="'topic'">{{ `${_prefix}.topic` | translate }}</mat-option>
+          </mat-select>
+          <mat-error>
+            @if (form.type().invalid()) {
+              @for (error of form.type().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      @if (form.type().value() === 'reservedVariable') {
+      <div>
+        <label for="reservedVariable" class="text-sm" [class]="form.reservedVariable().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.reservedVariable` | translate }} *
+        </label>
+        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+          <mat-select [formField]='form.reservedVariable'>
+            @for (reservedVariable of RESERVED_VARIABLES; track $index) {
+              <mat-option [value]="reservedVariable.value">{{ `${_prefix}.${reservedVariable.label}` | translate }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>
+            @if (form.reservedVariable().invalid()) {
+              @for (error of form.reservedVariable().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+      }
+
+      @if (form.type().value() === 'questionnaire') {
+        <div>
+          <label for="questionnaireId" class="text-sm" [class]="form.questionnaireId().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.questionnaireId` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.questionnaireId'>
+              @for (questionnaire of store.allItems(); track questionnaire.id) {
+                <mat-option [value]="questionnaire.name">{{ questionnaire.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.questionnaireId().invalid()) {
+                @for (error of form.questionnaireId().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label for="questionId" class="text-sm" [class]="form.questionId().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.questionId` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.questionId'>
+              @for (question of store.selected()?.questions; track question.id) {
+                @if ($index < dialogData.questionIndex) {
+                  <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
+                }
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.questionId().invalid()) {
+                @for (error of form.questionId().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+      }
+
+      @if (form.type().value() === 'question') {
+        <div>
+          <label for="questionId" class="text-sm" [class]="form.questionId().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.questionId` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.questionId'>
+              @for (question of store.selected()?.questions; track question.id) {
+                @if ($index < dialogData.questionIndex) {
+                  <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
+                }
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.questionId().invalid()) {
+                @for (error of form.questionId().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+      }
+
+
+      @if (form.type().value() === 'topic') {
+        <div>
+          <label for="topic" class="text-sm" [class]="form.topic().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.topic` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.topic'>
+              @for (topic of TOPICS | keyvalue; track $index) {
+                <mat-option [value]="topic.key">{{ topic.key }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.topic().invalid()) {
+                @for (error of form.topic().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label for="topicVariable" class="text-sm" [class]="form.topicVariable().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.topicVariable` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+            <mat-select [formField]='form.topicVariable'>
+              @for (topicVariable of TOPICS[form.topic().value()]; track $index) {
+                <mat-option [value]="topicVariable.name">{{ topicVariable.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>
+              @if (form.topicVariable().invalid()) {
+                @for (error of form.topicVariable().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+      }
+
+      @if (form.type().value() !== 'reservedVariable') {
+      <div>
+        <label for="method" class="text-sm" [class]="form.method().invalid() ? 'text-red-700' : ''">
+          {{ `${_prefix}.method` | translate }} *
+        </label>
+        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+          <mat-select [formField]='form.method'>
+            @if (form.type().value() === 'question') {
+              <mat-option [value]="'value'">Value</mat-option>
+            } @else {
+              @for (method of METHODS; track $index) {
+                <mat-option [value]="method.value">{{ method.label }}</mat-option>
+              }
+            }
+          </mat-select>
+          <mat-error>
+            @if (form.method().invalid()) {
+              @for (error of form.method().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
+      </div>
+      }
+
+
+      @if (form.type().value() === 'questionnaire' || form.type().value() === 'topic') {
+        <label for="start" class="text-sm">Start</label>
+        <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
+          <input id="start" matInput [formField]="form.start" type="date"/>
+          <mat-error>
+            @if (form.start().invalid()) {
               @for (error of form.start().errors(); track error.kind) {
                 {{ error.message }}
               }
@@ -124,11 +253,11 @@
           </mat-error>
         </mat-form-field>
 
-        <label for="section_header" class="text-sm">End</label>
+        <label for="end" class="text-sm">End</label>
         <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-          <input id="section_header" matInput [formField]="form.end" type="date"/>
+          <input id="end" matInput [formField]="form.end" type="date"/>
           <mat-error>
-            @if (form.end().touched() && form.end().invalid()) {
+            @if (form.end().invalid()) {
               @for (error of form.end().errors(); track error.kind) {
                 {{ error.message }}
               }
@@ -139,9 +268,9 @@
 
       <label for="function" class="text-sm">Function</label>
       <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-        <input id="section_header" matInput [formField]="form.function"/>
+        <input id="function" matInput [formField]="form.function"/>
         <mat-error>
-          @if (form.function().touched() && form.function().invalid()) {
+          @if (form.function().invalid()) {
             @for (error of form.function().errors(); track error.kind) {
               {{ error.message }}
             }

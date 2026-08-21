@@ -27,18 +27,20 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   replacePlaceholders(str = "", variables?: QuestionTemplateVariable[]): string {
-    return str.toString().replace(/\{\{([^{}]*)\}\}/g, (_, content: string) => {
-      console.log('Class: ReplacePlaceholdersPipe, Function: , Line 30 content' , content);
-      console.log('Class: ReplacePlaceholdersPipe, Function: , Line 33 variables' , variables);
-      const variable = variables?.find((v) => v.name === content);
-      console.log('Class: ReplacePlaceholdersPipe, Function: , Line 34 variable' , variable);
-      if (!variable) return content;
-      const r = this.getAnswer(variable.questionId);
-      console.log('Class: ReplacePlaceholdersPipe, Function: , Line 37 r' , r);
-      if (!r) return content;
-      console.log('Class: ReplacePlaceholdersPipe, Function: , Line 39 ' , );
-      return r;
-    });
+
+    return str;
+    // return str.toString().replace(/\{\{([^{}]*)\}\}/g, (_, content: string) => {
+    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 30 content' , content);
+    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 33 variables' , variables);
+    //   const variable = variables?.find((v) => v.name === content);
+    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 34 variable' , variable);
+    //   if (!variable) return content;
+    //   const r = this.getAnswer(variable.questionId);
+    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 37 r' , r);
+    //   if (!r) return content;
+    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 39 ' , );
+    //   return r;
+    // });
 
     return str.toString().replace(/\[([^[\]]+)]/g, (_, content: string) => {
       const placeholder = parsePlaceholder(content);
