@@ -2,6 +2,7 @@ import {pattern, required, PathKind, SchemaPath, SchemaPathRules, validate, Logi
 import {
   QuestionTemplateVariable
 } from '../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
+import {AppQuestion} from '../../admin/entities/questionnaire/models/questionnaire';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-20 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
@@ -50,46 +51,96 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
   });
 }
 
-export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {
-  const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
+export function validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  variables: QuestionTemplateVariable[] | undefined,
+  questions: AppQuestion[],
+  index: number
+): void {
+  validate(path, ({value}) => {
+  const _variables = parseAndValidateTemplateVariables(value() as string, variables, questions, index);
+  if (_variables) return null;
 
-  const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
+  return {
+    kind: 'wrongTemplateVariable',
+    message: 'SHARED.validatorError.wrongTemplateVariable',
+  };
+});
+}
+
+export function parseAndValidateTemplateVariables(value: string, variables: QuestionTemplateVariable[] | undefined, questions: AppQuestion[], index: number): QuestionTemplateVariable[] | null {
+  const matches = [...value.matchAll(/\{\{([^{}]*)}}/g),];
+
+  const stripped = value.replace(/\{\{([^{}]*)}}/g,'',);
 
   // Detect unmatched {{
-  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 134 ' , );
   if (stripped.includes('{{') || stripped.includes('}}')) return null;
-  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 136 ' , );
 
   const _variables: QuestionTemplateVariable[] = [];
 
   for (const match of matches) {
     const id = match[1].trim();
-    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 142 ' , );
     if (!id) return null;
 
-    const variable = variables[field]?.find(item => item.name === id);
-    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 146 variable' , variable);
+    // const variables = this.store.selected()?.variables;
+    const variable = variables?.find(item => item.name === id);
     if (!variable) return null;
-    console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 148 ' , );
-    if (!isValidTemplateVariable(variable)) return null;
+    if (!isValidTemplateVariable(variable, questions, index)) return null;
     _variables.push(variable);
   }
-  console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 152 _variables' , _variables);
   return _variables;
 }
 
-export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
-  if (!variable.id) return false;
-  return true;
-  // switch (variable.type) {
-  //   case 'reservedVariable':
-  //     return true;
-  // }
-  // if (variable.type !== 'question') return false;
-  // if (!variable.questionId) return false;
-  // if (variable.start && variable.end && variable.start > variable.end) return false;
-  // return true;
+export function isValidTemplateVariable(variable: QuestionTemplateVariable, questions: AppQuestion[], index: number): boolean {
+  if (variable.type !== 'question') return true;
+
+  const indexOfQuestionInVariable = questions.findIndex(item => item.field_name === variable.questionId);
+  if (indexOfQuestionInVariable < index) {
+    return true;
+  }
+  return false;
 }
+
+// export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {
+//   const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
+//
+//   const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
+//
+//   // Detect unmatched {{
+//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 134 ' , );
+//   if (stripped.includes('{{') || stripped.includes('}}')) return null;
+//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 136 ' , );
+//
+//   const _variables: QuestionTemplateVariable[] = [];
+//
+//   for (const match of matches) {
+//     const id = match[1].trim();
+//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 142 ' , );
+//     if (!id) return null;
+//
+//     const variable = variables[field]?.find(item => item.name === id);
+//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 146 variable' , variable);
+//     if (!variable) return null;
+//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 148 ' , );
+//     if (!isValidTemplateVariable(variable)) return null;
+//     _variables.push(variable);
+//   }
+//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 152 _variables' , _variables);
+//   return _variables;
+// }
+//
+// export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
+//   if (!variable.id) return false;
+//   return true;
+//   // switch (variable.type) {
+//   //   case 'reservedVariable':
+//   //     return true;
+//   // }
+//   // if (variable.type !== 'question') return false;
+//   // if (!variable.questionId) return false;
+//   // if (variable.start && variable.end && variable.start > variable.end) return false;
+//   // return true;
+// }
 
 export function timeToMinutes(time: string) {
   const [hours, minutes] = time.split(':').map(Number);

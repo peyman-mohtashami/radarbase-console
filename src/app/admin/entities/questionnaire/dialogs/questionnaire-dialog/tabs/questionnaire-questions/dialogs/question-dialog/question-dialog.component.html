@@ -102,23 +102,26 @@
                [class]="form.field_label[language]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
-        <app-question-template-variables [variables]="variables['field_label']"
-                                         [questionIndex]="dialogData.index"
-                                         [formField]="form.field_label[language]"
-                                         (variableUpdateEvent)="updateVariables('field_label', $event)"/>
+<!--        <app-question-template-variables [variables]="variables['field_label']"-->
+<!--                                         [questionIndex]="dialogData.index"-->
+<!--                                         [formField]="form.field_label[language]"-->
+<!--                                         (variableUpdateEvent)="updateVariables('field_label', $event)"/>-->
+        <app-question-template-variables [questionIndex]="dialogData.index"
+                                         [formField]="form.field_label[language]"/>
+<!--                                         (variableUpdateEvent)="updateVariables('field_label', $event)"/>-->
       </div>
 
       <div class="flex justify-between items-baseline">
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
       </div>
-      <app-question-template-variables [variables]="variables['section_header']"
-                                       [questionIndex]="dialogData.index" [formField]="form.section_header[language]"/>
+<!--      <app-question-template-variables [variables]="variables['section_header']"-->
+<!--                                       [questionIndex]="dialogData.index" [formField]="form.section_header[language]"/>-->
 
       <div class="flex justify-between items-baseline">
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
       </div>
-      <app-question-template-variables [variables]="variables['field_note']"
-                                       [questionIndex]="dialogData.index" [formField]="form.field_note[language]"/>
+<!--      <app-question-template-variables [variables]="variables['field_note']"-->
+<!--                                       [questionIndex]="dialogData.index" [formField]="form.field_note[language]"/>-->
 
       @let fieldType = form.field_type().value();
       @let hasChoices = fieldType === QuestionType.INFO || fieldType === QuestionType.CHECKBOX || fieldType === QuestionType.RADIO || fieldType === QuestionType.RANGE;

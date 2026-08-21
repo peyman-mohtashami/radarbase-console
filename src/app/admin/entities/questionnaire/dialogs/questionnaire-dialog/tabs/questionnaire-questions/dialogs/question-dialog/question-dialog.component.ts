@@ -16,16 +16,13 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
-  parseAndValidateTemplateVariables,
-  requiredField, RequiredWhen, validateDuplicate, validateMaxMin, validateMinMax
+  requiredField, RequiredWhen, validateDuplicate, validateMaxMin, validateMinMax, validateTemplateVariables
 } from '../../../../../../../../../shared/utils/signal-form-validators';
 import {
   applyEach,
   disabled,
   form,
   FormField,
-  PathKind,
-  SchemaPath, SchemaPathRules,
   validate
 } from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
@@ -41,7 +38,6 @@ import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
-import {QuestionTemplateVariable} from '../../../questionnaire-variables/model/template-field.model';
 import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
 import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
@@ -141,8 +137,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   _question = this.dialogData.entity;
   _lang = this.lang();
 
-  variables: Record<string, QuestionTemplateVariable[]> = this._question.variables ?? {};
-
   previewState = inject(PreviewStore);
 
   protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
@@ -190,11 +184,11 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     requiredField(schema.field_type);
     disabled(schema.field_type);
 
-    requiredField(schema.field_label[this.lang()]);
-    this.validateTemplateVariables(schema.field_label[this.lang()], 'field_label');
+    requiredField(schema.field_label[this._lang]);
+    validateTemplateVariables(schema.field_label[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
 
-    this.validateTemplateVariables(schema.section_header[this.lang()], 'section_header');
-    this.validateTemplateVariables(schema.field_note[this.lang()], 'field_note');
+    validateTemplateVariables(schema.section_header[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
+    validateTemplateVariables(schema.field_note[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
 
     applyEach(schema.select_choices_or_calculations, (choice) => {
       const whenRequired: RequiredWhen = ({valueOf}) => [QuestionType.INFO, QuestionType.CHECKBOX, QuestionType.RADIO, QuestionType.RANGE].includes(valueOf(schema.field_type) as QuestionType);
@@ -280,7 +274,6 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       branching_logic: question.branching_logic || undefined,
       isActive: question.isActive,
       isValid: question.isValid,
-      variables: this.variables,//question.variables,
     }
     switch (question.field_type) {
       case QuestionType.TEXT:
@@ -363,31 +356,5 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
         conditionalLogic,
       };
     })
-  }
-
-  protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
-    this.variables = {
-      ...this.variables,
-      [field]: variables
-    }
-  }
-
-  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
-    validate(path, ({value}) => {
-      const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
-      if (_variables) {
-        this.variables = {
-          ...this.variables,
-          [field]: _variables
-        }
-        return null;
-      }
-
-      return {
-        kind: 'wrongTemplateVariable',
-        message: 'SHARED.validatorError.wrongTemplateVariable',
-      };
-    });
   }
 }

@@ -1,11 +1,10 @@
-@let _prefix = 'ADMIN.questionnaire';
+@let _prefix = 'ADMIN.questionnaire.dialog.variable';
 
 <app-entity-table-row [gridView]="false"
             [tableFields]="TableFields"
             [extensionClass]="extensionClass()"
             [customTemplate]="entityTemplate"
             [updated]="updated()">
-<!--  <app-questionnaire-details extension-row [entity]='entity()' [detailType]="DetailType.TABLE"/>-->
   <div class="flex items-center" extra-actions>
     <button class="tiny"
             mat-icon-button color="primary" [matTooltip]="`ADMIN.vairable.edit` | translate"
@@ -18,95 +17,33 @@
       <mat-icon class="material-symbols-outlined text-xl!">delete</mat-icon>
     </button>
   </div>
-<!--  <app-questionnaire-actions extra-actions-->
-<!--                            *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity().name}]'-->
-<!--                            [entity]="entity()"-->
-<!--                            [isExpanded]="true"-->
-<!--                            (duplicate)="onDuplicate()"/>-->
 </app-entity-table-row>
+
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
     @case ('name') {
-<!--      <button class="font-bold cursor-pointer" (click)="openDialog()">-->
         {{ entity()['name'] || '-' }}
-<!--      </button>-->
-<!--      <div class="flex items-center flex-wrap gap-2">-->
-<!--        <span class="text-xs font-bold text-neutral-400 uppercase">{{`${_prefix}.availableLanguages` | translate}}</span>-->
-<!--        <span>-->
-<!--          <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold text-primary">{{entity().defaultLanguage.code}}</span></span>-->
-<!--        </span>-->
-<!--        @for (l of entity().languages; track l.code) {-->
-<!--          @if (l.code !== entity().defaultLanguage.code) {-->
-<!--            <span>-->
-<!--              <span class="h-full flex items-center justify-center uppercase"><span class="text-sm font-bold">{{l.code}}</span></span>-->
-<!--            </span>-->
-<!--          }-->
-<!--        }-->
-<!--      </div>-->
     }
-    @case ('questionId') {
-      {{ entity().questionId || '-' }}
+    @case ('variables') {
+      <p>{{ `${_prefix}.variables` | translate }}: <span>
+      @switch(entity().type) {
+        @case ('reservedVariable') {
+          {{ entity().reservedVariable || '-' }}
+        }
+        @case ('question') {
+          {{ entity().questionId || '-' }}
+        }
+        @case ('questionnaire') {
+          {{ entity().questionnaireId || '-' }} | {{ entity().questionId || '-' }}
+        }
+        @case ('topic') {
+          {{ entity().topic || '-' }} | {{ entity().topicVariable || '-' }}
+        }
+      }</span></p>
+      <p>{{ `${_prefix}.method` | translate }}: <span>{{entity().method || '-'}}</span></p>
+      <p>{{ `${_prefix}.function` | translate }}: <span>{{entity().function || '-'}}</span></p>
+      <p>{{ `${_prefix}.timeWindow` | translate }}: <span>{{entity().start || '-'}} - {{entity().end || '-'}}</span></p>
     }
-    @case ('questionnaireId') {
-      {{ entity().questionnaireId || '-' }}
-    }
-    @case ('function') {
-      {{ entity().function || '-' }}
-    }
-    @case ('timeWindow') {
-      {{ entity().start || '-' }} - {{ entity().end || '-' }}
-    }
-<!--    @case ('end') {-->
-<!--      {{ entity().questionId || '-' }}-->
-<!--    }-->
-<!--    @case ('type') {-->
-<!--      @if (entity().onDemand) {-->
-<!--        <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">-->
-<!--          {{`${_prefix}.onDemand` | translate}}-->
-<!--        </app-tag>-->
-<!--      } @else {-->
-<!--        <app-tag class="bg-primary/10 text-primary dark:bg-primary-dark/10 dark:text-primary-dark">-->
-<!--          {{`${_prefix}.scheduled` | translate}}-->
-<!--        </app-tag>-->
-<!--        @if (!entity().schedule?.repeatedProtocol) {-->
-<!--          <p class="font-bold">{{ `${_prefix}.oneTimeProtocol.tableContent` | translate }}</p>-->
-<!--        } @else {-->
-<!--          @let repeatProtocol = entity().schedule?.repeatProtocol;-->
-<!--          <p class="font-bold">{{ `${_prefix}.repeatProtocol.tableContent` | translate: {amount: repeatProtocol?.amount, unit: repeatProtocol?.unit} }}</p>-->
-<!--        }-->
-<!--        @for(offset of entity().schedule?.repeatQuestionnaire?.unitsFromZero; track $index){-->
-<!--          <p>{{offset}}</p>-->
-<!--        }-->
-<!--        @if (entity().schedule?.completionWindow; as completionWindow) {-->
-<!--          <div>-->
-<!--            {{-->
-<!--              `${_prefix}.completionWindow.tableContent` | translate: {-->
-<!--                amount: completionWindow.amount,-->
-<!--                unit: completionWindow.unit-->
-<!--              }-->
-<!--            }}-->
-<!--          </div>-->
-<!--        }-->
-<!--      }-->
-<!--    }-->
-<!--    @case ('completionWindow') {-->
-<!--      @if (entity().schedule?.completionWindow; as completionWindow) {-->
-<!--        {{ completionWindow.amount }} {{ completionWindow.unit }}-->
-<!--      } @else {-->
-<!--        - -->
-<!--      }-->
-<!--    }-->
-<!--    @case ('status') {-->
-<!--      @if (entity().isValid) {-->
-<!--        <app-tag class="bg-green-500/10 text-green-700 dark:bg-primary-dark/10 dark:text-primary-dark">-->
-<!--          {{ 'Valid' }}-->
-<!--        </app-tag>-->
-<!--      } @else {-->
-<!--        <app-tag class="bg-red-500/10 text-red-700 dark:bg-primary-dark/10 dark:text-primary-dark">-->
-<!--          {{ 'Invalid' }}-->
-<!--        </app-tag>-->
-<!--      }-->
-<!--    }-->
     @default {
       {{ $any(entity())[property.name] || '-' }}
     }

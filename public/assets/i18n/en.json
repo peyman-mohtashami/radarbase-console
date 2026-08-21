@@ -1691,6 +1691,34 @@
             "or": "Or (|)"
           },
           "notAvailable": "N/A"
+        },
+        "variable": {
+          "insert": "Insert",
+          "add": "Add",
+          "edit": "Edit",
+          "delete": "Delete",
+          "title": "Variable",
+          "deleteWarningMessage": "Are you sure you want to delete this variable?",
+          "select": "Select a Template Variable",
+          "create": "Create a new Variable",
+          "name": "Name",
+          "type": "Type",
+          "reservedVariable": "Reserved Variable",
+          "question": "Question",
+          "questionnaire": "Questionnaire",
+          "topic": "Topic",
+          "questionnaireId": "Questionnaire ID",
+          "questionId": "Question ID",
+          "topicVariable": "Topic Variable",
+          "method": "Method",
+          "start": "Start",
+          "end": "End",
+          "function": "Function",
+          "templateVariables": "Template Variables",
+          "noVariableFound": "No Variable Found",
+          "variables": "Variables",
+          "timeWindow": "Time Window",
+          "actions": "Actions"
         }
       },
       "filters": {

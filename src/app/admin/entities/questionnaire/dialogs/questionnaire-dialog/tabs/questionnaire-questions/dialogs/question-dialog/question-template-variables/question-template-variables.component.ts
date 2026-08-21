@@ -97,7 +97,7 @@ export class QuestionTemplateVariablesComponent {
   protected insertVariable(input: HTMLTextAreaElement): void {
     const dialogRef = this.dialog.open(VariableDialogComponent, {
       id: 'variable-dialog',
-      data: {id: 'variable-dialog', mode: 'add', questionIndex: this.questionIndex()},
+      data: {id: 'variable-dialog', mode: 'insert', questionIndex: this.questionIndex()},
       panelClass: 'tailwind-slide-panel',
       width: '40%',
       height: '100vh',

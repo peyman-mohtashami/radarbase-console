@@ -17,7 +17,7 @@
     </button>
   </mat-chip-set>
   <mat-error>
-    @if (formField()().touched() && formField()().invalid()) {
+    @if (formField()().invalid()) {
       @for (error of formField()().errors(); track error.kind) {
         {{ error.message }}
       }

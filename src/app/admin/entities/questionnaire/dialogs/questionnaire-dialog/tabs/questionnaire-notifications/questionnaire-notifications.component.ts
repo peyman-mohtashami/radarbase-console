@@ -72,8 +72,8 @@ export class QuestionnaireNotificationsComponent {
   });
 
   protected form = form(this.model, (schema) => {
-    this.validateTemplateVariables(schema.notification.title[this._lang], 'notificationTitle');
-    this.validateTemplateVariables(schema.notification.text[this._lang], 'notificationText');
+    // this.validateTemplateVariables(schema.notification.title[this._lang], 'notificationTitle');
+    // this.validateTemplateVariables(schema.notification.text[this._lang], 'notificationText');
 
     applyWhen(schema, ({valueOf}) => valueOf(schema.reminders.enabled),
       (schemaPath) => {
@@ -84,7 +84,7 @@ export class QuestionnaireNotificationsComponent {
     );
   });
 
-  variables: Record<string, QuestionTemplateVariable[]> = this.store.selected()!.variables ?? {};
+  // variables: Record<string, QuestionTemplateVariable[]> = this.store.selected()!.variables ?? {};
 
   constructor() {
     effect(() => {
@@ -104,29 +104,29 @@ export class QuestionnaireNotificationsComponent {
     });
   }
 
-  protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
-    this.variables = {
-      ...this.variables,
-      [field]: variables
-    }
-  }
-
-  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
-    validate(path, ({value}) => {
-      const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
-      if (_variables) {
-        this.variables = {
-          ...this.variables,
-          [field]: _variables
-        }
-        return null;
-      }
-
-      return {
-        kind: 'wrongTemplateVariable',
-        message: 'SHARED.validatorError.wrongTemplateVariable',
-      };
-    });
-  }
+  // protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
+  //   this.variables = {
+  //     ...this.variables,
+  //     [field]: variables
+  //   }
+  // }
+  //
+  // private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
+  //   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
+  //   validate(path, ({value}) => {
+  //     const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
+  //     if (_variables) {
+  //       this.variables = {
+  //         ...this.variables,
+  //         [field]: _variables
+  //       }
+  //       return null;
+  //     }
+  //
+  //     return {
+  //       kind: 'wrongTemplateVariable',
+  //       message: 'SHARED.validatorError.wrongTemplateVariable',
+  //     };
+  //   });
+  // }
 }

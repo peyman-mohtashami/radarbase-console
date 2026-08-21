@@ -227,7 +227,7 @@ export class QuestionnaireStore {
               code: choice.code,
               label: {},//undefined,//{},
             })),
-            variables: question.variables ?? {},
+            // variables: question.variables ?? {},
           };
           result.set(key, appQuestion);
         }

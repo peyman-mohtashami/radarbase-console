@@ -59,10 +59,10 @@
                [class]="form.startText[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.startText` | translate }} *
         </label>
-        <app-question-template-variables [variables]="variables['startText']"
-                                         [questionIndex]="10"
-                                         [formField]="form.startText[_lang]"
-                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>
+<!--        <app-question-template-variables [variables]="variables['startText']"-->
+<!--                                         [questionIndex]="10"-->
+<!--                                         [formField]="form.startText[_lang]"-->
+<!--                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>-->
       </div>
     }
 
@@ -71,10 +71,10 @@
              [class]="form.endText[_lang]().invalid() ? 'text-red-700' : ''">
         {{ `${_prefix}.endText` | translate }} *
       </label>
-      <app-question-template-variables [variables]="variables['endText']"
-                                       [questionIndex]="10"
-                                       [formField]="form.endText[_lang]"
-                                       (variableUpdateEvent)="updateVariables('endText', $event)"/>
+<!--      <app-question-template-variables [variables]="variables['endText']"-->
+<!--                                       [questionIndex]="10"-->
+<!--                                       [formField]="form.endText[_lang]"-->
+<!--                                       (variableUpdateEvent)="updateVariables('endText', $event)"/>-->
     </div>
 
     <mat-slide-toggle [formField]="form.warningEnabled" class="my-4" color="primary">

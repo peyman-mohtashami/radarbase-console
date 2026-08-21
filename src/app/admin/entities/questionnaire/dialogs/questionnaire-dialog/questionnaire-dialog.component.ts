@@ -47,6 +47,7 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 // import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
 import {QuestionsStore} from './tabs/questionnaire-questions/services/questions.store';
+import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
 
 export interface QuestionnaireForm {
   id: string;
@@ -94,6 +95,7 @@ export interface StoredQuestionnaireDialog {
     MatProgressSpinner,
     MatDialogTitle,
     JsonPipe,
+    QuestionnaireVariablesComponent,
     // QuestionnaireVariablesComponent,
   ]
 })

@@ -1,154 +1,40 @@
-@let _prefix = 'ADMIN.questionnaire.dialog';
-
-<!--<button (click)="openDialog(DialogMode.ADD)" mat-stroked-button color="primary" type="button">-->
-<!--        <span class="font-bold flex items-center gap-2">-->
-<!--          <mat-icon class="material-symbols-outlined">add</mat-icon>-->
-<!--          Add-->
-<!--        </span>-->
-<!--</button>-->
-
-<!--@for (variable of dialogState.questionnaire()?.variables; track variable.id) {-->
-<!--  <div>{{variable | json}}</div>-->
-<!--  <button (click)="openDialog(DialogMode.EDIT, variable)" mat-stroked-button color="primary" type="button">-->
-<!--        <span class="font-bold flex items-center gap-2">-->
-<!--          <mat-icon class="material-symbols-outlined">edit</mat-icon>-->
-<!--          Edit-->
-<!--        </span>-->
-<!--  </button>-->
-
-<!--}-->
-
-<!--@let tableFilters = configService.getTableFilters();-->
-<!--@let entityMetadata = configService.getEntityMetadata();-->
-<!--@let tableFields = configService.getTableFields();-->
+@let _prefix = 'ADMIN.questionnaire.dialog.variable';
 
 <div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 w-full bg-app-background dark:bg-app-background-dark'>
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
-<!--    <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">-->
-<!--      <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata.icon }}</span>-->
-<!--      <span class="material-symbols-outlined absolute left-2 top-2">{{ entityMetadata.icon }}</span>-->
-<!--    </span>-->
     <span class="text-primary dark:text-primary-dark">
-      Template Variables
-<!--      {{ 'ADMIN.' + entityMetadata.name + '.title.plural' | translate }}-->
+      {{ `${_prefix}.templateVariables` | translate }}
     </span>
   </h2>
 
   <div class="flex items-center gap-2">
-    <!--    <button type='button' class="small" mat-icon-button color="primary" (click)="toggleViewMode()">-->
-    <!--      <span class="material-symbols-outlined">list</span>-->
-    <!--    </button>-->
-<!--    <button type='button'-->
-<!--            class="small"-->
-<!--            mat-stroked-button-->
-<!--            color="primary"-->
-<!--            (click)="showHistory()">-->
-<!--      <span class="font-bold flex items-center gap-2">-->
-<!--        <mat-icon class="material-symbols-outlined">history</mat-icon>-->
-<!--      </span>-->
-<!--    </button>-->
-
-<!--    <ng-container *appShowIfHasRole="[{role: ROLES.SYS_ADMIN}]">-->
       <button (click)="openDialog('add')" mat-stroked-button color="primary" type="button">
         <span class="font-bold flex items-center gap-2">
           <mat-icon class="material-symbols-outlined">add</mat-icon>
-          Add Variable
-<!--          {{ 'ADMIN.' + entityMetadata.name + '.create' | translate }}-->
+          {{ `${_prefix}.add` | translate }} {{ `${_prefix}.title` | translate }}
         </span>
       </button>
-<!--    </ng-container>-->
   </div>
 </div>
 
-<!--<div class="px-4">-->
-<!--  @if (tableFilters.length && store.total() > MIN_ENTITIES_FOR_FILTERS) {-->
-<!--    <app-data-table-filter [filters]='tableFilters'-->
-<!--                           [filterOpened]='isFilterOpened'-->
-<!--                           (filterChanged)='handleFilterChange($event)' />-->
-<!--    &lt;!&ndash;                           (filterEnableChanged)="onFilterEnabledChanged($event)"/>&ndash;&gt;-->
-<!--  }-->
-<!--</div>-->
-
-<!--@if (store.loading()) {-->
-<!--  <app-loader/>-->
-<!--}-->
-
-<!--<app-entity-list-page [entities]="dialogState.questionnaire()!.variables ?? []"-->
-<!--                      [tableFields]="tableFields"-->
-<!--                      [entityMetadata]="entityMetadata"-->
-<!--                      (switchPageEvent)="switchPage($event)"-->
-<!--                      (switchSortEvent)="switchSort($event)"-->
-<!--                      [customTemplate]="itemTemplate"-->
-<!--                      [totalEntities]="store.total()"/>-->
-<!--&lt;!&ndash;[page]="store.page()"&ndash;&gt;-->
-<!--&lt;!&ndash;[sort]="store.sort()"&ndash;&gt;-->
-
-<!--<ng-template #itemTemplate let-entity>-->
-<!--  <app-questionnaire-table-row [entity]="entity"-->
-<!--                               [gridView]="gridView"-->
-<!--                               [extensionClass]="extensionClass()" />-->
-<!--  &lt;!&ndash;                               (duplicateEvent)="onDuplicate(entity)"&ndash;&gt;-->
-<!--  &lt;!&ndash;                               (activeEvent)="onActiveChange($event, entity)" />&ndash;&gt;-->
-<!--  &lt;!&ndash;                               [entityUpdateTrigger]="dialogService.dialogUpdateEvent()"&ndash;&gt;-->
-<!--</ng-template>-->
-
 @let entities = store.selected()?.variables;
 
-<div class="w-full text-sm relative mt-4">
-<!--     [sort]="sort()"-->
-<!--     [page]="page()"-->
-<!--     (activeQueryParams)="handleActiveQueryChange($event)">-->
-<!--     appTableQueryReflector-->
-
+<div class="w-full text-sm relative mt-4 px-2">
   @if (entities?.length) {
-<!--    <div class="sticky top-18 z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background mat-app-background">-->
       <div class="z-20 flex items-center gap-4 w-full py-2 px-4 font-bold border-y border-neutral-300 bg-background mat-app-background">
       @for (tableField of TableFields; track $index) {
-        <!--        //tableField.name) {-->
-<!--        @if (tableField.name === 'checkbox') {-->
-<!--          <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"-->
-<!--               [class.flex-1]="!tableField.width"-->
-<!--               [class.shrink-0]="!!tableField.width">-->
-<!--            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"-->
-<!--                          [checked]="selection().hasValue() && isAllSelected()"-->
-<!--                          [indeterminate]="selection().hasValue() && !isAllSelected()"-->
-<!--                          [aria-label]="checkboxLabel()"/>-->
-<!--          </div>-->
-<!--        } @else {-->
           <div [class]="tableField.tableClass + ' ' + tableField.width + ' ' + tableField.classes"
                [class.flex-1]="!tableField.width"
                [class.shrink-0]="!!tableField.width">
             <button class="flex items-center gap-2 group">
-<!--              [class]="tableField.sortable ? 'cursor-pointer': ''"-->
-<!--              (click)="switchSort(tableField)"-->
-              <span>{{ tableField.name }}</span>
-<!--              @if (tableField.sortable) {-->
-<!--                <div class="group-hover:opacity-70 transition-opacity duration-500">-->
-<!--                  @if (sort().sortField !== tableField.name) {-->
-<!--                    <mat-icon class="opacity-40 w-4! h-4! text-base! material-symbols-outlined">-->
-<!--                      swap_vert-->
-<!--                    </mat-icon>-->
-<!--                  } @else {-->
-<!--                    <mat-icon class="w-3.5! h-3.5! text-base! material-symbols-outlined">-->
-<!--                      {{ sort().sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}-->
-<!--                    </mat-icon>-->
-<!--                  }-->
-<!--                </div>-->
-<!--              }-->
+              <span>{{ `${_prefix}.${tableField.name}` | translate }}</span>
             </button>
           </div>
-<!--        }-->
       }
     </div>
   }
   @if (entities?.length) {
     @for (entity of entities; track $index) {
-      <!--      -->
-        <!--    entity.name) {-->
-<!--      @if (customTemplate()) {-->
-<!--        <ng-container *ngTemplateOutlet="customTemplate()!; context: { $implicit: entity }" />-->
-        <!--        selection: selection()-->
-<!--      }-->
       <app-variable-table-row [entity]="entity"/>
     }
   }
@@ -156,20 +42,6 @@
 
 <div class="flex items-center px-4 text-sm font-bold">
   @if (!entities?.length) {
-    <span class="py-4">No variable found</span>
+    <span class="py-4">{{ `${_prefix}.noVariableFound` | translate }}</span>
   }
-<!--  @else {-->
-<!--    @if (entities().length === 0) {-->
-<!--      <span class="py-4">{{ `ADMIN.${entityMetadata().name}.noItemFoundWithTheFilter` | translate }}</span>-->
-<!--    }-->
-<!--  }-->
 </div>
-
-<!--@if (entities().length > MIN_ENTITIES_FOR_PAGINATION) {-->
-<!--  <mat-paginator class="mt-4" (page)="switchPage($event)"-->
-<!--                 [length]="totalEntities()"-->
-<!--                 [pageSize]="page().pageSize"-->
-<!--                 [pageSizeOptions]="PAGE_SIZE_OPTIONS"-->
-<!--                 [pageIndex]="page().pageIndex"-->
-<!--                 aria-label="Select page"/>-->
-<!--}-->

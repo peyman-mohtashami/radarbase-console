@@ -63,7 +63,9 @@ export class VariableDialogComponent implements AfterViewInit {
   };
 
   selectModel = signal<QuestionTemplateVariable | null>(null);
-  // selectForm = form(this.selectModel);
+  protected selectForm = form(this.selectModel, (schema) => {
+    requiredField(schema);
+  })
 
   model = signal<TemplateVariableForm>({
     id: this.dialogData.entity?.id ?? `v_${crypto.randomUUID()}`,
@@ -81,6 +83,7 @@ export class VariableDialogComponent implements AfterViewInit {
   });
 
   protected form = form(this.model, (schema) => {
+
     requiredField(schema.name);
     requiredField(schema.type);
     requiredField(schema.method, {when: ({valueOf}) => ['topic', 'questionnaire', 'question'].includes(valueOf(schema.type)) });
@@ -123,40 +126,6 @@ export class VariableDialogComponent implements AfterViewInit {
     }
   ]
 
-  // protected readonly methods: {
-  //   value: TemplateVariableFunction;
-  //   label: string;
-  // }[] = [
-  //   {
-  //     value: 'value',
-  //     label: 'Value',
-  //   },
-  //   {
-  //     value: 'average',
-  //     label: 'Average',
-  //   },
-  //   {
-  //     value: 'sum',
-  //     label: 'Sum',
-  //   },
-  //   {
-  //     value: 'min',
-  //     label: 'Minimum',
-  //   },
-  //   {
-  //     value: 'max',
-  //     label: 'Maximum',
-  //   },
-  //   {
-  //     value: 'first',
-  //     label: 'First',
-  //   },
-  //   {
-  //     value: 'last',
-  //     label: 'Last',
-  //   },
-  // ];
-
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
   }
@@ -166,8 +135,8 @@ export class VariableDialogComponent implements AfterViewInit {
   }
 
   protected save(): void {
-    if (this.dialogData.mode === 'insert') {
-      const selectModel = this.selectModel();
+    const selectModel = this.selectModel();
+    if (this.dialogData.mode === 'insert' && selectModel) {
       this.dialogRef.close(selectModel);
     } else {
       const model = this.model();
@@ -186,6 +155,25 @@ export class VariableDialogComponent implements AfterViewInit {
         topic: topic || undefined,
         topicVariable: topicVariable || undefined,
       };
+
+      const entity = this.store.selected()!;
+      let updatedVariables = [...(entity.variables ?? []) ];
+      switch(this.dialogData.mode){
+        case 'add':
+        case 'insert':
+          updatedVariables = [...updatedVariables, variable];
+          break;
+        case 'edit':
+          updatedVariables = updatedVariables.map(i => i.id === variable.id ? variable : i);
+          break;
+        case 'delete':
+          updatedVariables = updatedVariables.filter(i => i.id !== variable.id);
+          break;
+      }
+      this.store.selected.set({
+        ...entity,
+        variables: updatedVariables
+      });
       this.dialogRef.close(variable);
     }
   }
@@ -272,4 +260,10 @@ export class VariableDialogComponent implements AfterViewInit {
       { "name": "fullSleep", "type": "float", "doc": "Average number of breaths taken per minute throughout the entire period of sleep which you can compare to the sleep stage-specific measurements."}
     ],
   };
+  protected addNewVariableEnabled = false;
+
+  protected createNewVariable() {
+    this.selectModel.set(null);
+    this.addNewVariableEnabled = true;
+  }
 }

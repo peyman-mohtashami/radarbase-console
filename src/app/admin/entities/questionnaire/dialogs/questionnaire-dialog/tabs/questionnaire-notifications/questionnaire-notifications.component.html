@@ -9,10 +9,10 @@
                [class]="form.notification.title[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.notificationTitle` | translate }} *
         </label>
-        <app-question-template-variables [variables]="variables['notificationTitle']"
-                                         [questionIndex]="10"
-                                         [formField]="form.notification.title[_lang]"
-                                         (variableUpdateEvent)="updateVariables('notificationTitle', $event)"/>
+<!--        <app-question-template-variables [variables]="variables['notificationTitle']"-->
+<!--                                         [questionIndex]="10"-->
+<!--                                         [formField]="form.notification.title[_lang]"-->
+<!--                                         (variableUpdateEvent)="updateVariables('notificationTitle', $event)"/>-->
       </div>
 
 <!--      <div class="">-->
@@ -36,10 +36,10 @@
                [class]="form.notification.text[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.notificationMessage` | translate }} *
         </label>
-        <app-question-template-variables [variables]="variables['notificationMessage']"
-                                         [questionIndex]="10"
-                                         [formField]="form.notification.text[_lang]"
-                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>
+<!--        <app-question-template-variables [variables]="variables['notificationMessage']"-->
+<!--                                         [questionIndex]="10"-->
+<!--                                         [formField]="form.notification.text[_lang]"-->
+<!--                                         (variableUpdateEvent)="updateVariables('startText', $event)"/>-->
       </div>
 
 <!--      <div class="">-->

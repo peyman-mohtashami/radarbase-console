@@ -65,11 +65,11 @@ export class QuestionnaireCustomMessagesComponent {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.startText[this._lang], {when: ({valueOf}) => valueOf(schema.showIntroduction) !== 'no'});
-    this.validateTemplateVariables(schema.startText[this.lang()], 'startText');
-    this.validateTemplateVariables(schema.endText[this.lang()], 'endText');
+    // this.validateTemplateVariables(schema.startText[this.lang()], 'startText');
+    // this.validateTemplateVariables(schema.endText[this.lang()], 'endText');
   });
 
-  variables: Record<string, QuestionTemplateVariable[]> = this._questionnaire.variables ?? {};
+  // variables: Record<string, QuestionTemplateVariable[]> = this._questionnaire.variables ?? {};
 
   constructor() {
     effect(() => {
@@ -84,31 +84,31 @@ export class QuestionnaireCustomMessagesComponent {
     });
   }
 
-  protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
-    this.variables = {
-      ...this.variables,
-      [field]: variables
-    }
-  }
-
-  private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-    path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
-    validate(path, ({value}) => {
-      const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
-      if (_variables) {
-        this.variables = {
-          ...this.variables,
-          [field]: _variables
-        }
-        return null;
-      }
-
-      return {
-        kind: 'wrongTemplateVariable',
-        message: 'SHARED.validatorError.wrongTemplateVariable',
-      };
-    });
-  }
+  // protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
+  //   this.variables = {
+  //     ...this.variables,
+  //     [field]: variables
+  //   }
+  // }
+  //
+  // private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
+  //   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
+  //   validate(path, ({value}) => {
+  //     const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
+  //     if (_variables) {
+  //       this.variables = {
+  //         ...this.variables,
+  //         [field]: _variables
+  //       }
+  //       return null;
+  //     }
+  //
+  //     return {
+  //       kind: 'wrongTemplateVariable',
+  //       message: 'SHARED.validatorError.wrongTemplateVariable',
+  //     };
+  //   });
+  // }
 }
 
 export function withLanguage(
