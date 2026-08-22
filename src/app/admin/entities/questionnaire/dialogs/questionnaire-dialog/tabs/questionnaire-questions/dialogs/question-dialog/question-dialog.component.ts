@@ -34,7 +34,6 @@ import {
   MatDatepickerToggle
 } from '@angular/material/datepicker';
 import {checkValidation, QUESTION_TYPES} from '../../questionnaire-questions.component';
-import {withLanguage} from '../../../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -45,6 +44,7 @@ import {PreviewStore} from '../../../questionnaire-preview/services/preview.stor
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
+import {withLanguage} from '../../../../services/utils';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   field_name: string;
