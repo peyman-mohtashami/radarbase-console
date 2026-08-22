@@ -93,7 +93,6 @@
         <span>{{ section_header || 'N/A' }}</span>
       </div>
 
-        <!--        Info / Checkbox / Radio / Range -->
         @if (entity().field_type === 'info' || entity().field_type === 'checkbox' || entity().field_type === 'radio' || entity().field_type === 'range') {
           @let choices = entity()?.select_choices_or_calculations;
 

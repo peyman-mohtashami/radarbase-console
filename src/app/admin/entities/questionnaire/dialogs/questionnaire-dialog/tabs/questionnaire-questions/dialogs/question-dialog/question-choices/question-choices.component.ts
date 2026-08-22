@@ -7,6 +7,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
+import {dragDropStyles} from '../../../../../services/utils';
 
 @Component({
   selector: 'app-question-choices',
@@ -23,31 +24,7 @@ import {QuestionnaireStore} from '../../../../../../../services/questionnaire.st
     FormField,
     CdkTextareaAutosize,
   ],
-  styles: `
-    .cdk-drag-preview {
-      background: white;
-      border-radius: 8px;
-      box-shadow:
-        0 5px 5px -3px rgb(0 0 0 / 20%),
-        0 8px 10px 1px rgb(0 0 0 / 14%),
-        0 3px 14px 2px rgb(0 0 0 / 12%);
-    }
-
-    .cdk-drag-placeholder {
-      background: #f3f4f6;
-      border: 2px dashed #9ca3af;
-      border-radius: 8px;
-      opacity: 0.6;
-    }
-
-    .cdk-drag-animating {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-
-    .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-  `
+  styles: dragDropStyles
 })
 export class QuestionChoicesComponent {
   protected store = inject(QuestionnaireStore);

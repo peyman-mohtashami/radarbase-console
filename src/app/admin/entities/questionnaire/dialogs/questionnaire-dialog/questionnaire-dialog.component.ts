@@ -48,18 +48,7 @@ import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
 
 export interface QuestionnaireForm {
-  id: string;
-  // projectName: string,
-  // description: string;
-  // location: string;
-  // humanReadableProjectName: string,
-  // organizationName: string,
-  // organization: string,
-  // projectStatus: string,
-  // startDate: string,
-  // endDate: string,
-  // sourceTypes: number[],
-  // attributes: Record<string, string>,
+  id: string; //TODO
 }
 
 export interface StoredQuestionnaireDialog {

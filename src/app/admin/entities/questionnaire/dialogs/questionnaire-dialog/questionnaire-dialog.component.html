@@ -1,4 +1,4 @@
-@let _prefix = 'ADMIN.questionnaire';
+@let _prefix = 'ADMIN.questionnaire.dialog';
 @let isGeneralTabValid = store.selected()?.isGeneralTabValid;
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
@@ -23,7 +23,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            General
+            {{ `${_prefix}.general` | translate}}
           </h2>
           @if (!isGeneralTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
@@ -36,7 +36,7 @@
 
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Questions</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.general` | translate}}</h2>
           @if (store.selected()?.isQuestionsTabValid === false) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }
@@ -49,7 +49,7 @@
       <mat-tab [disabled]="store.selected()?.onDemand || !isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            Scheduling
+            {{ `${_prefix}.scheduling` | translate}}
           </h2>
           @if (!store.selected()?.onDemand && !store.selected()?.isSchedulingTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
@@ -63,7 +63,7 @@
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            Custom Messages
+            {{ `${_prefix}.customMessages` | translate}}
           </h2>
           @if (store.selected()?.isCustomMessagesTabValid === false) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
@@ -78,7 +78,7 @@
       <mat-tab [disabled]="store.selected()?.onDemand || !isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            Notifications
+            {{ `${_prefix}.notifications` | translate}}
           </h2>
           @if (store.selected()?.isNotificationsTabValid === false && !store.selected()?.onDemand) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
@@ -92,7 +92,7 @@
       <mat-tab [disabled]="(store.selected()?.languages?.length ?? 0) < 2 || !isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            Translations
+            {{ `${_prefix}.translations` | translate}}
           </h2>
           @if ((store.selected()?.languages?.length ?? 0) > 1 && !store.selected()?.isTranslationsTabValid) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
@@ -106,11 +106,8 @@
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
-            Variables
+            {{ `${_prefix}.variables` | translate}}
           </h2>
-<!--          @if (!dialogState.questionnaire()?.onDemand &&!dialogState.questionnaire()?.isSchedulingTabValid) {-->
-<!--            <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>-->
-<!--          }-->
         </ng-template>
         <ng-template matTabContent>
           <app-questionnaire-variables />
@@ -119,7 +116,7 @@
 
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Preview</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.preview` | translate}}</h2>
         </ng-template>
         <ng-template matTabContent>
           <app-questionnaire-preview />
@@ -128,7 +125,7 @@
 
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Intervention Flow</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.interventionFlow` | translate}}</h2>
         </ng-template>
         <ng-template matTabContent>
           <app-questionnaire-intervention-flow />
@@ -137,7 +134,7 @@
 
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>Advanced (JSON) Editor</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.jsonEditor` | translate}}</h2>
         </ng-template>
         <ng-template matTabContent>
           <app-questionnaire-json-editor />

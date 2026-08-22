@@ -8,13 +8,14 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LocaleService} from '../../../../../../../core/locale/services/locale.service';
 import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
-import {applyEach, applyWhen, FieldTree, form, FormField} from '@angular/forms/signals';
-import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {applyEach, applyWhen, form, FormField} from '@angular/forms/signals';
+import {CdkDrag, CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
+import {dragDropStyles, minuteToOffset, moveItemInFormArray, offsetToMinute} from '../../services/utils';
 
 export const UNITS = [
   { name: 'min', label: 'Minute' },
@@ -67,31 +68,7 @@ export interface QuestionnaireSchedulingForm {
     MatIcon,
     MatIconButton
   ],
-  styles: `
-    .cdk-drag-preview {
-      background: white;
-      border-radius: 8px;
-      box-shadow:
-        0 5px 5px -3px rgb(0 0 0 / 20%),
-        0 8px 10px 1px rgb(0 0 0 / 14%),
-        0 3px 14px 2px rgb(0 0 0 / 12%);
-    }
-
-    .cdk-drag-placeholder {
-      background: #f3f4f6;
-      border: 2px dashed #9ca3af;
-      border-radius: 8px;
-      opacity: 0.6;
-    }
-
-    .cdk-drag-animating {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-
-    .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-  `
+  styles: dragDropStyles
 })
 export class QuestionnaireSchedulingComponent {
   protected readonly UNITS = UNITS;
@@ -207,32 +184,3 @@ export class QuestionnaireSchedulingComponent {
   }
 }
 
-function minuteToOffset(minute: number) {
-  const day = Math.floor(minute / (24 * 60));
-  const remainingMinutes = minute % (24 * 60);
-
-  const hours = Math.floor(remainingMinutes / 60);
-  const minutes = remainingMinutes % 60;
-
-  return {
-    day: String(day),
-    time: `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`,
-  };
-}
-
-function offsetToMinute(day: string, time: string) {
-  const [hours, minutes] = time.split(':').map(Number);
-  return Number(day) * 24 * 60 + hours * 60 + minutes;
-}
-
-export function moveItemInFormArray<T>(
-  arrayField: FieldTree<T[]>,
-  fromIndex: number,
-  toIndex: number
-): void {
-  arrayField().value.update(items => {
-    const reordered = [...items];
-    moveItemInArray(reordered, fromIndex, toIndex);
-    return reordered;
-  });
-}

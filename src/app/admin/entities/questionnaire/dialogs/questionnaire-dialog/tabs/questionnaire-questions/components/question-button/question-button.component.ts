@@ -7,7 +7,6 @@ import {TagComponent} from '../../../../../../../../../shared/components/tag/tag
 import {MatTooltip} from '@angular/material/tooltip';
 import {UpperCasePipe} from '@angular/common';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
-import {MatHint} from '@angular/material/input';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {QuestionsStore} from '../../services/questions.store';
 
@@ -21,11 +20,11 @@ import {QuestionsStore} from '../../services/questions.store';
     TagComponent,
     MatTooltip,
     UpperCasePipe,
-    // MatHint,
   ],
 })
 export class QuestionButtonComponent {
   protected readonly DialogMode = DialogMode;
+  protected readonly QuestionType = QuestionType;
 
   protected questionsStore = inject(QuestionsStore);
   protected store = inject(QuestionnaireStore);
@@ -33,7 +32,6 @@ export class QuestionButtonComponent {
   entity = input.required<AppQuestion>();
   index = input.required<number>();
   matrixIndex = input<number>();
-
 
   removeEvent = output<void>();
   selectEvent = output<void>();
@@ -47,6 +45,4 @@ export class QuestionButtonComponent {
     event.stopPropagation();
     this.selectEvent.emit();
   }
-
-  protected readonly QuestionType = QuestionType;
 }
