@@ -47,9 +47,9 @@ export interface QuestionnaireGeneralForm {
   ]
 })
 export class QuestionnaireGeneralComponent {
-  protected store = inject(QuestionnaireStore);
-
   protected readonly ISO_LANGUAGES = ISO_LANGUAGES;
+
+  protected store = inject(QuestionnaireStore);
 
   _questionnaire = this.store.selected();
 

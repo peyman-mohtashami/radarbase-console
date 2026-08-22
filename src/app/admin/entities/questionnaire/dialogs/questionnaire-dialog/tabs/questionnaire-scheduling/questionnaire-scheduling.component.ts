@@ -168,7 +168,6 @@ export class QuestionnaireSchedulingComponent {
       // if (!updated.schedule?.relativeToReferenceTime) {
       //   delete updated.schedule?.referenceTimestamp;
       // }
-      console.log('Class: QuestionnaireSchedulingComponent, Function: , Line 171 updated' , updated);
       this.store.selected.set({...updated});
     });
   }

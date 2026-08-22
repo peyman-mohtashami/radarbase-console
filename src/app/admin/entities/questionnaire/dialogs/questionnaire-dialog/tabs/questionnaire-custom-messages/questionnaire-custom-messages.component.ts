@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
@@ -13,6 +13,7 @@ import {
 import {
   requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
+import {withLanguage} from '../../services/utils';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -43,12 +44,8 @@ export interface QuestionnaireCustomMessagesForm {
 export class QuestionnaireCustomMessagesComponent {
   protected store = inject(QuestionnaireStore);
 
-  lang = computed(() => {
-    return this.store.selected()!.defaultLanguage.code;
-  });
-
   _questionnaire = this.store.selected()!;
-  _lang = this.lang();
+  _lang = this._questionnaire.defaultLanguage.code;
 
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
     title: withLanguage(this._questionnaire?.title, this._lang),
@@ -80,12 +77,3 @@ export class QuestionnaireCustomMessagesComponent {
   }
 }
 
-export function withLanguage(
-  value: Record<string, string> | undefined,
-  lang: string,
-): Record<string, string> {
-  return {
-    ...value,
-    [lang]: value?.[lang] ?? '',
-  };
-}

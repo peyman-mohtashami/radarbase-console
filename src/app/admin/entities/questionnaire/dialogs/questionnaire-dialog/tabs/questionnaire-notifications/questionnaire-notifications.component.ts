@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
@@ -6,7 +6,6 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {applyWhen, form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
-import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {
   requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
@@ -14,6 +13,7 @@ import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {
   QuestionTemplateVariablesComponent
 } from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
+import {withLanguage} from '../../services/utils';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -44,16 +44,13 @@ export interface QuestionnaireNotificationsForm {
   ]
 })
 export class QuestionnaireNotificationsComponent {
-  protected store = inject(QuestionnaireStore);
-
   protected readonly UNITS = UNITS;
 
-  lang = computed(() => {
-    return this.store.selected()!.defaultLanguage.code;
-  });
+  protected store = inject(QuestionnaireStore);
 
-  _schedule = this.store.selected()!.schedule;
-  _lang = this.lang();
+  _questionnaire = this.store.selected()!;
+  _schedule = this._questionnaire.schedule;
+  _lang = this._questionnaire.defaultLanguage.code;
 
   protected model = signal<QuestionnaireNotificationsForm>({//this.dialogData.restoredModel ?? {
     ...this._schedule,

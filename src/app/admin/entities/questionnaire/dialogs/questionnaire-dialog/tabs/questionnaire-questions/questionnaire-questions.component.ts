@@ -13,8 +13,6 @@ import {QuestionDialogComponent} from './dialogs/question-dialog/question-dialog
 import {DialogMode} from '../../../../../../shared/enums/dialog';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 
-
-
 export const QUESTION_TYPES = [
   {
     types: [
