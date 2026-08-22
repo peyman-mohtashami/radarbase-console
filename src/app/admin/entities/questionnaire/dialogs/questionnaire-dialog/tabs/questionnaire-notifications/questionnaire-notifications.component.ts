@@ -3,16 +3,14 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {applyWhen, form, FormField, PathKind, SchemaPath, SchemaPathRules, validate} from '@angular/forms/signals';
+import {applyWhen, form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {UNITS} from '../questionnaire-scheduling/questionnaire-scheduling.component';
 import {withLanguage} from '../questionnaire-custom-messages/questionnaire-custom-messages.component';
 import {
-  parseAndValidateTemplateVariables,
-  requiredField
+  requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {QuestionTemplateVariable} from '../questionnaire-variables/model/template-field.model';
 import {
   QuestionTemplateVariablesComponent
 } from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
@@ -72,8 +70,8 @@ export class QuestionnaireNotificationsComponent {
   });
 
   protected form = form(this.model, (schema) => {
-    // this.validateTemplateVariables(schema.notification.title[this._lang], 'notificationTitle');
-    // this.validateTemplateVariables(schema.notification.text[this._lang], 'notificationText');
+    validateTemplateVariables(schema.notification.title[this._lang], () => this.store.selected());
+    validateTemplateVariables(schema.notification.title[this._lang], () => this.store.selected());
 
     applyWhen(schema, ({valueOf}) => valueOf(schema.reminders.enabled),
       (schemaPath) => {
@@ -83,8 +81,6 @@ export class QuestionnaireNotificationsComponent {
       },
     );
   });
-
-  // variables: Record<string, QuestionTemplateVariable[]> = this.store.selected()!.variables ?? {};
 
   constructor() {
     effect(() => {
@@ -103,30 +99,4 @@ export class QuestionnaireNotificationsComponent {
       this.store.selected.set(updated);
     });
   }
-
-  // protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
-  //   this.variables = {
-  //     ...this.variables,
-  //     [field]: variables
-  //   }
-  // }
-  //
-  // private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-  //   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
-  //   validate(path, ({value}) => {
-  //     const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
-  //     if (_variables) {
-  //       this.variables = {
-  //         ...this.variables,
-  //         [field]: _variables
-  //       }
-  //       return null;
-  //     }
-  //
-  //     return {
-  //       kind: 'wrongTemplateVariable',
-  //       message: 'SHARED.validatorError.wrongTemplateVariable',
-  //     };
-  //   });
-  // }
 }

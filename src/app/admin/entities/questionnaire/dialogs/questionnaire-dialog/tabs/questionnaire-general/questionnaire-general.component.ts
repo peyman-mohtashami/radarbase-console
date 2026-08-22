@@ -6,7 +6,11 @@ import {
   ISO_LANGUAGES
 } from '../../../../models/questionnaire';
 import {form, FormField, validate} from '@angular/forms/signals';
-import {requiredField} from '../../../../../../../shared/utils/signal-form-validators';
+import {
+  identifierField,
+  requiredField,
+  validateDuplicate
+} from '../../../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
 } from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
@@ -66,16 +70,9 @@ export class QuestionnaireGeneralComponent {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.name);
-    validate(schema.name, ({value}) => {
-      const matchedQuestionnaireName = this.store.allItems()?.find((questionnaire) => questionnaire.name === value());
-      if (!matchedQuestionnaireName) return null;
-      if (this._questionnaire?.name === value()) return null;
-      return {
-        kind: 'duplicate',
-        message: 'SHARED.validatorError.duplicateName',
-      };
-    });
-    // TODO stringId
+    validateDuplicate(schema.name, this.store.allItems(), this._questionnaire, 'name');
+    identifierField(schema.name);
+
     requiredField(schema.defaultLanguage);
     validate(schema.languages, ({value}) => {
       if (value().length) return null;

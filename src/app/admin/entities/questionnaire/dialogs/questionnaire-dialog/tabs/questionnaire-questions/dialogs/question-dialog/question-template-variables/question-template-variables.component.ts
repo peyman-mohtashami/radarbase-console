@@ -38,7 +38,7 @@ export class QuestionTemplateVariablesComponent {
   readonly formField = input.required<FieldTree<string>>();
 
   variables = input<QuestionTemplateVariable[]>();
-  questionIndex = input.required<number>();
+  questionIndex = input<number>();
 
   variableUpdateEvent = output<QuestionTemplateVariable[]>();
 
@@ -64,7 +64,6 @@ export class QuestionTemplateVariablesComponent {
 
     const dialogActionSubscription = dialogRef.afterClosed().subscribe(
       (variable: QuestionTemplateVariable | undefined) => {
-        console.log('Class: QuestionDialogComponent, Function: , Line 573 variable' , variable);
         if (!variable) {
           return;
         }

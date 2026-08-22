@@ -45,8 +45,6 @@ import {LocaleService} from '../../../../../core/locale/services/locale.service'
 import {ActivatedRoute} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
-// import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
-import {QuestionsStore} from './tabs/questionnaire-questions/services/questions.store';
 import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
 
 export interface QuestionnaireForm {
@@ -96,7 +94,6 @@ export interface StoredQuestionnaireDialog {
     MatDialogTitle,
     JsonPipe,
     QuestionnaireVariablesComponent,
-    // QuestionnaireVariablesComponent,
   ]
 })
 export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
@@ -104,7 +101,6 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected localeService = inject(LocaleService);
   protected store = inject(QuestionnaireStore);
-  protected questionsStore = inject(QuestionsStore);
   private configService = inject(QuestionnaireConfigService);
   private dialogRef = inject(MatDialogRef<QuestionnaireDialogComponent>);
   protected activatedRoute = inject(ActivatedRoute);
@@ -124,22 +120,8 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected isLoading = false;
 
-  // constructor() {
-  //   effect(() => {
-  //     const model = this.model();
-  //     if (this.dialogData.mode === DialogMode.ADD || this.dialogData.mode === DialogMode.EDIT) {
-  //       this.configService.setDialogState({
-  //         mode: this.dialogData.mode,
-  //         entity: this.dialogData.entity,
-  //         model,
-  //       });
-  //     }
-  //   });
-  // }
-
   //TODO CHECK
   ngOnInit() {
-    // super.ngOnInit();
     this.store.selected.set(this.dialogData.entity ?? null);
   }
 
@@ -150,7 +132,6 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
 
   protected async save(): Promise<void> {
     const entity = this.store.selected();
-    console.log('Class: QuestionnaireDialogComponent, Function: save, Line 151 entity' , entity);
     if (entity) {
       switch(this.dialogData.mode) {
         case DialogMode.ADD:
@@ -184,18 +165,3 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 }
-
-// export function moveItemInFormArray(
-//   formArray: FormArray,
-//   fromIndex: number,
-//   toIndex: number
-// ): void {
-//   const dir = toIndex > fromIndex ? 1 : -1;
-//
-//   const item = formArray.at(fromIndex);
-//   for (let i = fromIndex; i * dir < toIndex * dir; i = i + dir) {
-//     const current = formArray.at(i + dir);
-//     formArray.setControl(i, current);
-//   }
-//   formArray.setControl(toIndex, item);
-// }

@@ -3,17 +3,15 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {form, FormField, PathKind, SchemaPath, SchemaPathRules, validate} from '@angular/forms/signals';
+import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {
   QuestionTemplateVariablesComponent
 } from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
-import {QuestionTemplateVariable} from '../questionnaire-variables/model/template-field.model';
 import {
-  parseAndValidateTemplateVariables,
-  requiredField, RequiredWhen
+  requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
 
 export interface QuestionnaireCustomMessagesForm {
@@ -53,7 +51,6 @@ export class QuestionnaireCustomMessagesComponent {
   _lang = this.lang();
 
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
-    ...this._questionnaire,
     title: withLanguage(this._questionnaire?.title, this._lang),
     description: withLanguage(this._questionnaire?.description, this._lang),
     showIntroduction: this._questionnaire?.showIntroduction ?? 'no',
@@ -65,11 +62,9 @@ export class QuestionnaireCustomMessagesComponent {
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.startText[this._lang], {when: ({valueOf}) => valueOf(schema.showIntroduction) !== 'no'});
-    // this.validateTemplateVariables(schema.startText[this.lang()], 'startText');
-    // this.validateTemplateVariables(schema.endText[this.lang()], 'endText');
+    validateTemplateVariables(schema.startText[this._lang], () => this.store.selected());
+    validateTemplateVariables(schema.endText[this._lang], () => this.store.selected());
   });
-
-  // variables: Record<string, QuestionTemplateVariable[]> = this._questionnaire.variables ?? {};
 
   constructor() {
     effect(() => {
@@ -83,32 +78,6 @@ export class QuestionnaireCustomMessagesComponent {
       this.store.selected.set(updated);
     });
   }
-
-  // protected updateVariables(field: string, variables: QuestionTemplateVariable[]) {
-  //   this.variables = {
-  //     ...this.variables,
-  //     [field]: variables
-  //   }
-  // }
-  //
-  // private validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
-  //   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>, field: string): void {
-  //   validate(path, ({value}) => {
-  //     const _variables = parseAndValidateTemplateVariables(value() as string, field, this.variables);
-  //     if (_variables) {
-  //       this.variables = {
-  //         ...this.variables,
-  //         [field]: _variables
-  //       }
-  //       return null;
-  //     }
-  //
-  //     return {
-  //       kind: 'wrongTemplateVariable',
-  //       message: 'SHARED.validatorError.wrongTemplateVariable',
-  //     };
-  //   });
-  // }
 }
 
 export function withLanguage(

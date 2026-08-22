@@ -185,10 +185,10 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     disabled(schema.field_type);
 
     requiredField(schema.field_label[this._lang]);
-    validateTemplateVariables(schema.field_label[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
+    validateTemplateVariables(schema.field_label[this._lang], () => this.store.selected(), this.dialogData.index);
 
-    validateTemplateVariables(schema.section_header[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
-    validateTemplateVariables(schema.field_note[this._lang], this.store.selected()?.variables, this.dialogData.questions, this.dialogData.index);
+    validateTemplateVariables(schema.section_header[this._lang], () => this.store.selected(), this.dialogData.index);
+    validateTemplateVariables(schema.field_note[this._lang], () => this.store.selected(), this.dialogData.index);
 
     applyEach(schema.select_choices_or_calculations, (choice) => {
       const whenRequired: RequiredWhen = ({valueOf}) => [QuestionType.INFO, QuestionType.CHECKBOX, QuestionType.RADIO, QuestionType.RANGE].includes(valueOf(schema.field_type) as QuestionType);

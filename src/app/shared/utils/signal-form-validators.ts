@@ -2,7 +2,8 @@ import {pattern, required, PathKind, SchemaPath, SchemaPathRules, validate, Logi
 import {
   QuestionTemplateVariable
 } from '../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
-import {AppQuestion} from '../../admin/entities/questionnaire/models/questionnaire';
+import {AppQuestionnaire} from '../../admin/entities/questionnaire/models/questionnaire';
+import {untracked} from '@angular/core';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-20 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
@@ -53,52 +54,49 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
 
 export function validateTemplateVariables<TValue, TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
-  variables: QuestionTemplateVariable[] | undefined,
-  questions: AppQuestion[],
-  index: number
+  getQuestionnaire: () => AppQuestionnaire | null,
+  index?: number
 ): void {
   validate(path, ({value}) => {
-  const _variables = parseAndValidateTemplateVariables(value() as string, variables, questions, index);
-  if (_variables) return null;
+    const questionnaire = untracked(getQuestionnaire);
+    const _variables = parseAndValidateTemplateVariables(value() as string, questionnaire, index);
+    if (_variables) return null;
 
-  return {
-    kind: 'wrongTemplateVariable',
-    message: 'SHARED.validatorError.wrongTemplateVariable',
-  };
-});
+    return {
+      kind: 'wrongTemplateVariable',
+      message: 'SHARED.validatorError.wrongTemplateVariable',
+    };
+  });
 }
 
-export function parseAndValidateTemplateVariables(value: string, variables: QuestionTemplateVariable[] | undefined, questions: AppQuestion[], index: number): QuestionTemplateVariable[] | null {
+export function parseAndValidateTemplateVariables(value: string, questionnaire: AppQuestionnaire | null, index: number | undefined): QuestionTemplateVariable[] | null {
   const matches = [...value.matchAll(/\{\{([^{}]*)}}/g),];
 
   const stripped = value.replace(/\{\{([^{}]*)}}/g,'',);
 
   // Detect unmatched {{
   if (stripped.includes('{{') || stripped.includes('}}')) return null;
-
   const _variables: QuestionTemplateVariable[] = [];
 
   for (const match of matches) {
     const id = match[1].trim();
     if (!id) return null;
 
-    // const variables = this.store.selected()?.variables;
-    const variable = variables?.find(item => item.name === id);
+    const variable = questionnaire?.variables?.find(item => item.name === id);
     if (!variable) return null;
-    if (!isValidTemplateVariable(variable, questions, index)) return null;
+    if (!isValidTemplateVariable(variable, questionnaire, index)) return null;
     _variables.push(variable);
   }
   return _variables;
 }
 
-export function isValidTemplateVariable(variable: QuestionTemplateVariable, questions: AppQuestion[], index: number): boolean {
+export function isValidTemplateVariable(variable: QuestionTemplateVariable, questionnaire: AppQuestionnaire | null, index: number | undefined): boolean {
+  if (index === undefined) return true;
+
   if (variable.type !== 'question') return true;
 
-  const indexOfQuestionInVariable = questions.findIndex(item => item.field_name === variable.questionId);
-  if (indexOfQuestionInVariable < index) {
-    return true;
-  }
-  return false;
+  const indexOfQuestionInVariable = questionnaire!.questions.findIndex(item => item.field_name === variable.questionId);
+  return indexOfQuestionInVariable < index;
 }
 
 // export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {

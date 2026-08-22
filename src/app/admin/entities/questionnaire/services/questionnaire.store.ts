@@ -128,7 +128,6 @@ export class QuestionnaireStore {
   }
 
   async add(entity: AppQuestionnaire): Promise<boolean> {
-    console.log('Class: QuestionnaireStore, Function: add, Line 131 entity' , entity);
     this.allItems.update((value) => ([...value, entity]));
     return true;
   }
@@ -151,13 +150,13 @@ export class QuestionnaireStore {
     const project = this.projectStore.selected() ?? undefined;
     const subject = this.subjectStore.selected() ?? undefined;
 
-    const {protocols: ps, questionnaires: qs} = this.splitProtocolsAndQuestionnaires(this.allItems());
+    const {protocols, questionnaires} = this.splitProtocolsAndQuestionnaires(this.allItems());
     const radarProtocolWrapper: ProtocolWrapperDto = {
       name: undefined,
       healthIssues: [],
       schemaVersion: undefined,
       version: undefined,
-      protocols: ps
+      protocols
     };
     const protocolConfigs: AppConfig[] = [{
       name: 'main', value: JSON.stringify(radarProtocolWrapper),
@@ -165,14 +164,12 @@ export class QuestionnaireStore {
     }];
 
     const questionnaireConfigs: AppConfig[] = [];
-    qs.forEach(q => {
+    questionnaires.forEach(q => {
       const name = q.name;
       Object.keys(q.questions).forEach(lang => {
         questionnaireConfigs.push({search: '', name: `${name}_${lang}`, value: JSON.stringify(q.questions[lang])});
       })
     });
-
-    console.log('Class: QuestionnaireStore, Function: publish, Line 175 protocolConfigs, questionnaireConfigs' , protocolConfigs, questionnaireConfigs);
 
     this.loading.set(true);
     this.error.set(null);
