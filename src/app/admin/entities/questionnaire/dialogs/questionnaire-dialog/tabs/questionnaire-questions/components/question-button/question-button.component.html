@@ -1,249 +1,182 @@
 @let _prefix = 'ADMIN.questionnaire.dialog.question';
+@let _language = store.selected()!.defaultLanguage!.code;
+@let _question = entity();
+@let _index = index();
+@let _isSelected = _question.field_name === questionsStore.question()?.field_name;
+@let _field_label = _question.field_label[_language];
+@let _section_header = _question.section_header?.[_language];
+@let _field_type = _question.field_type;
+@let _hasChoices = ([`${QuestionType.INFO}`, `${QuestionType.RADIO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.RANGE}`].includes(_field_type));
+@let _choices = _question.select_choices_or_calculations;
 
-
-<div class="flex gap-2 items-center">
+<div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
   <div class="rounded-full bg-primary/50 text-white size-8 p-1 flex justify-center items-center"
-       [class]="entity().field_name === questionsStore.question()?.field_name ? 'bg-tertiary': ''">
-    <span>{{ index() + 1 }}</span>
+       [class]="_isSelected ? 'bg-tertiary': ''">
+    <span>{{ _index + 1 }}</span>
   </div>
-  <div class="w-full border border-primary hover:border-tertiary/50 rounded px-4 py-1 text-sm!"
-       role="button"
-       tabindex="0"
+  <button class="w-full border border-primary hover:border-tertiary/50 rounded px-3 py-1 text-sm text-start"
        (click)='selectQuestion($event)'
-       [class]="entity().field_name === questionsStore.question()?.field_name ? 'border-2 border-tertiary!': ''">
+       [class]="_isSelected ? 'border-2 border-tertiary!': ''">
+
     <div class="flex items-center gap-2 w-full justify-between mb-2">
       <button class="app-icon-button-small"
               mat-icon-button color="primary"
               (click)='selectQuestion($event)'>
         <mat-icon class="material-symbols-outlined">edit</mat-icon>
       </button>
-      <div class="flex gap-2 items-center grow">
-        @if (entity().field_name) {
-          <app-tag class="cursor-pointer bg-tertiary/20 text-primary">
-            {{ entity().field_name || 'N/A' }}
-          </app-tag>
-        } @else {
-          <app-tag class="cursor-pointer bg-red-500/20 text-red-500">
-            {{ entity().field_name || 'N/A' }}
-          </app-tag>
-
-        }
-      </div>
-      <div class="flex gap-2 items-center">
-        @if (entity().matrix_group_name) {
-          <app-tag class="bg-green-500/20 text-green-700">
-            {{ entity().matrix_group_name | uppercase }}
-          </app-tag>
-        }
-
-        @if (entity().conditionalLogic?.length){
-          <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
-                    [matTooltip]="`${_prefix}.hasConditionalLogic` | translate">
-            rule
-          </mat-icon>
-        }
-
-        @if (!entity().isValid) {
-          <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.isInvalid` | translate">
-            warning
-          </mat-icon>
-        } @else {
-          <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.isValid` | translate">
-            check_circle
-          </mat-icon>
-        }
-
-        @if (!entity().isActive) {
-          <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.isInactive` | translate">
-            visibility_off
-          </mat-icon>
-        } @else {
-          <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                    [matTooltip]="`${_prefix}.isActive` | translate">
-            visibility
-          </mat-icon>
-        }
-
-        <app-tag class="bg-secondary/20 text-primary">
-          {{ entity().field_type | uppercase }}
+      <div class="grow">
+        <app-tag class="cursor-pointer"
+                 [class]="_question.field_name ? 'bg-tertiary/20 text-primary' : 'bg-red-500/20 text-red-500'">
+          {{ _question.field_name || `${_prefix}.notAvailable` | translate }}
         </app-tag>
-
-
-
-        <button class="app-icon-button-small"
-                mat-icon-button color="warn"
-                (click)='removeQuestion($event)'>
-          <mat-icon class="material-symbols-outlined">delete</mat-icon>
-        </button>
       </div>
+
+      @if (_question.matrix_group_name) {
+        <app-tag class="bg-green-500/20 text-green-700">
+          {{ _question.matrix_group_name | uppercase }}
+        </app-tag>
+      }
+
+      @if (_question.conditionalLogic?.length) {
+        <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
+                  [matTooltip]="`${_prefix}.hasConditionalLogic` | translate">
+          rule
+        </mat-icon>
+      }
+
+      @if (!_question.isValid) {
+        <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
+                  [matTooltip]="`${_prefix}.isInvalid` | translate">
+          warning
+        </mat-icon>
+      } @else {
+        <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
+                  [matTooltip]="`${_prefix}.isValid` | translate">
+          check_circle
+        </mat-icon>
+      }
+
+      @if (!_question.isActive) {
+        <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
+                  [matTooltip]="`${_prefix}.isInactive` | translate">
+          visibility_off
+        </mat-icon>
+      } @else {
+        <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
+                  [matTooltip]="`${_prefix}.isActive` | translate">
+          visibility
+        </mat-icon>
+      }
+
+      <app-tag class="bg-secondary/20 text-primary">
+        {{ _field_type | uppercase }}
+      </app-tag>
+
+
+      <button class="app-icon-button-small"
+              mat-icon-button color="warn"
+              (click)='removeQuestion($event)'>
+        <mat-icon class="material-symbols-outlined">delete</mat-icon>
+      </button>
     </div>
 
-      <div class="text-black">
-        <div class="flex gap-2">
-        @let field_label = entity().field_label?.[store.selected()!.defaultLanguage!.code];
-        <span class="text-neutral-500" [class]="!field_label ? 'text-red-500' : ''">{{ `${_prefix}.fieldLabel` | translate }}:</span>
-        <span class="font-bold" [class]="!field_label ? 'text-red-500' : ''">{{ field_label || 'N/A' }}</span>
-      </div>
-      <div class="flex gap-2">
-        @let section_header = entity().section_header?.[store.selected()!.defaultLanguage!.code];
-        <span class="text-neutral-500">{{ `${_prefix}.sectionHeader` | translate }}:</span>
-        <span>{{ section_header || 'N/A' }}</span>
-      </div>
+    <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 [&>div:nth-child(odd)]:text-neutral-500">
+        <span [class]="!_field_label ? 'text-red-500' : ''">{{ `${_prefix}.fieldLabel` | translate }}</span>
+        <span class="font-bold" [class]="!_field_label ? 'text-red-500' : ''">{{ _field_label || `${_prefix}.notAvailable` | translate }}</span>
 
-        @if (entity().field_type === 'info' || entity().field_type === 'checkbox' || entity().field_type === 'radio' || entity().field_type === 'range') {
-          @let choices = entity()?.select_choices_or_calculations;
+        <span>{{ `${_prefix}.sectionHeader` | translate }}</span>
+        <span>{{ _section_header || `${_prefix}.notAvailable` | translate }}</span>
 
-          <div class="flex gap-2">
-            <span class="text-neutral-500" [class]="!choices ? 'text-red-500' : ''">
-              {{ `${_prefix}.choices` | translate }}:
-            </span>
-            <span class="font-bold" [class]="!choices ? 'text-red-500' : ''">
-              <div class="flex flex-wrap gap-x-2 items-center">
-                @for (choice of choices; track choice.code) {
-                  @if (choice.code) {
-                    <span class="inline-flex gap-1">
-                      <mat-icon class="material-symbols-outlined text-base!">
-                        @switch (entity().field_type) {
-                          @case ('radio') {
-                            radio_button_unchecked
-                          }
-                          @case ('checkbox') {
-                            check_box_outline_blank
-                          }
-                          @case ('range') {
-                            radio_button_unchecked
-                          }
-                          @case ('range-info') {
-                            radio_button_unchecked
-                          }
-                          @case ('info') {
-                            info
-                          }
-                        }
-                      </mat-icon>
-                      <span class="pt-0.5">{{ choice.code }}: {{ choice.label[store.selected()!.defaultLanguage!.code] }}</span>
-                    </span>
-                  } @else {
-                    <span class="inline-flex gap-1 text-red-500">
-                      <mat-icon class="material-symbols-outlined text-base!">
-                        @switch (entity().field_type) {
-                          @case ('radio') {
-                            radio_button_unchecked
-                          }
-                          @case ('checkbox') {
-                            check_box_outline_blank
-                          }
-                          @case ('range') {
-                            radio_button_unchecked
-                          }
-                          @case ('range-info') {
-                            radio_button_unchecked
-                          }
-                          @case ('info') {
-                            info
-                          }
-                        }
-                      </mat-icon>
-                      <span class="pt-0.5">{{ `${_prefix}.notAvailable` | translate }}: {{ `${_prefix}.notAvailable` | translate }}</span>
-                    </span>
-                  }
-                } @empty {
-                  <span class="font-bold text-red-500">{{ `${_prefix}.notAvailable` | translate }}</span>
+      @if (_hasChoices) {
+          <span [class]="!_choices ? 'text-red-500' : ''">
+            {{ `${_prefix}.choices` | translate }}:
+          </span>
+          <span class="grid grid-cols-[auto_1fr] gap-y-1 font-bold" [class]="!_choices ? 'text-red-500' : ''">
+              @for (choice of _choices; track choice.code) {
+                @if (choice.code) {
+                    <mat-icon class="material-symbols-outlined text-base!">
+                      {{ CHOICE_ICON_REGISTRY[_field_type] }}
+                    </mat-icon>
+                    <span> {{ choice.code }}: {{ choice.label[_language] }}</span>
+                } @else {
+                    <mat-icon class="material-symbols-outlined text-base!">
+                      {{ CHOICE_ICON_REGISTRY[_field_type] }}
+                    </mat-icon>
+                    <span> {{ `${_prefix}.notAvailable` | translate }}: {{ `${_prefix}.notAvailable` | translate }}</span>
                 }
-              </div>
-            </span>
-          </div>
-        }
-
-        @if (entity().field_type === 'range') {
-          @if (entity().show_code) {
-            <div class="flex gap-2">
-              <span>{{ `${_prefix}.showCode` | translate }}</span>
-            </div>
-          }
-          @if (entity().show_selected_label) {
-            <div class="flex gap-2">
-              <span>{{ `${_prefix}.showSelectedLabel` | translate }}</span>
-            </div>
-          }
-        }
-
-
-        <!--        Number-->
-        @if (entity().field_type === 'number') {
-            <div class="flex gap-2">
-            @if (!!entity().text_validation_min) {
-              <span class="text-neutral-500">{{ `${_prefix}.textValidationMin` | translate }}:</span> {{ entity().text_validation_min }}
-            }
-              @if (!!entity().text_validation_max) {
-                <span class="text-neutral-500">{{ `${_prefix}.textValidationMax` | translate }}:</span> {{ entity().text_validation_max }}
+              } @empty {
+                <span></span>
+                <span class="font-bold text-red-500">{{ `${_prefix}.notAvailable` | translate }}</span>
               }
-            </div>
-        }
+          </span>
+      }
 
-<!--        Datetime-->
-        @if (entity().field_type === QuestionType.DATE || entity().field_type === QuestionType.TIME) {
-<!--          <div class="flex gap-2">-->
-<!--            <span [class]="!entity().date_type ? 'text-red-500' : ''">{{ `${_prefix}.dateType` | translate }}: {{entity().date_type ?? `${_prefix}.notAvailable` | translate }}</span>-->
-<!--          </div>-->
-          <div class="flex gap-2">
-            @if (!!entity().text_validation_min) {
-              <span class="text-neutral-500">{{ `${_prefix}.textValidationMin` | translate }}:</span> {{ entity().text_validation_min }}
-            }
-            @if (!!entity().text_validation_max) {
-              <span class="text-neutral-500">{{ `${_prefix}.textValidationMax` | translate }}:</span> {{ entity().text_validation_max }}
-            }
-          </div>
-        }
+      @switch (_field_type) {
 
-
-        <!--        Slider-->
-        @if (entity().field_type === 'slider') {
-          <div class="flex gap-2">
-            <span class="text-neutral-500" [class]="!entity().range ? 'text-red-500' : ''">{{ `${_prefix}.range` | translate }}</span>
-            <span [class]="(entity().range?.min) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMin` | translate }}: {{entity().range?.min ?? `${_prefix}.notAvailable` | translate }}, </span>
-            <span [class]="(entity().range?.max) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMax` | translate }}: {{entity().range?.max ?? `${_prefix}.notAvailable` | translate }}, </span>
-            <span [class]="(entity().range?.step) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeStep` | translate }}: {{entity().range?.step ?? `${_prefix}.notAvailable` | translate }}</span>
-          </div>
-        }
-
-
-        <!--        Text-->
-        @if (entity().field_type === 'text') {
-          @if (entity().multi_line) {
-            <div class="flex gap-2">
-              <span>{{ `${_prefix}.multiLineEnabled` | translate }}</span>
-            </div>
+        @case (QuestionType.RANGE) {
+          @if (_question.show_code) {
+            <span></span>
+            <span>{{ `${_prefix}.showCode` | translate}}</span>
           }
-<!--          <div class="flex gap-2">-->
-<!--            <span class="text-neutral-500">{{ `${_prefix}.multiLineEnabled` | translate }}</span>-->
-<!--            <span>{{ entity().multi_line ? 'Yes' : 'No' }}</span>-->
-<!--          </div>-->
+          @if (_question.show_selected_label) {
+            <span></span>
+            <span>{{ `${_prefix}.showSelectedLabel` | translate }}</span>
+          }
         }
 
-
-        <!--        Timed-->
-        @if (entity().field_type === 'timed') {
-          <div class="flex gap-2">
-            <span class="text-neutral-500" [class]="!entity().field_annotation ? 'text-red-500' : ''">{{ `${_prefix}.annotation` | translate }}</span>
-<!--            <span [class]="(entity().field_annotation?.image) === null ? 'text-red-500' : ''">Image: {{entity().field_annotation?.image ?? 'N/A'}}, </span>-->
-<!--            <span [class]="(entity().field_annotation?.unit) === null ? 'text-red-500' : ''">Unit: {{entity().field_annotation?.unit ?? 'N/A'}}, </span>-->
-            <span [class]="(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimerStart` | translate }}: {{entity().field_annotation?.timer?.start ?? `${_prefix}.notAvailable` | translate }}</span>
-            <span [class]="(entity().field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimerEnd` | translate }}: {{entity().field_annotation?.timer?.end ?? `${_prefix}.notAvailable` | translate }}</span>
-          </div>
+        @case (QuestionType.NUMBER) {
+          @if (_question.text_validation_min || _question.text_validation_max) {
+            <span>{{`${_prefix}.validation` | translate }}</span>
+            <span>
+                <span>{{ `${_prefix}.textValidationMin` | translate }}: {{ _question.text_validation_min || `${_prefix}.notAvailable` | translate }}, </span>
+                <span>{{ `${_prefix}.textValidationMax` | translate }}: {{ _question.text_validation_max || `${_prefix}.notAvailable` | translate }}</span>
+            </span>
+          }
         }
 
-        @if (entity().field_type === 'calc') {
-          <div class="flex gap-2">
-            <span class="text-neutral-500">{{ `${_prefix}.calculationFn` | translate }}:</span> <code>{{entity().calculation_fn ?? 'N/A'}}</code>
-          </div>
-          <div class="flex gap-2">
-            <span class="text-neutral-500">{{ `${_prefix}.calculationArgs` | translate }}:</span> <code>{{entity().calculation_args ?? 'N/A'}}</code>
-          </div>
+        @case (QuestionType.DATE)
+        @case (QuestionType.TIME) {
+          @if (_question.text_validation_min || _question.text_validation_max) {
+            <span>{{`${_prefix}.validation` | translate }}</span>
+            <span>
+                <span>{{ `${_prefix}.textValidationMin` | translate }}: {{ _question.text_validation_min || `${_prefix}.notAvailable` | translate }}, </span>
+                <span>{{ `${_prefix}.textValidationMax` | translate }}: {{ _question.text_validation_max || `${_prefix}.notAvailable` | translate }}</span>
+            </span>
+          }
         }
-      </div>
-  </div>
+
+        @case (QuestionType.SLIDER) {
+          <span [class]="!_question.range ? 'text-red-500' : ''">{{ `${_prefix}.range` | translate }}</span>
+          <span>
+            <span [class]="(_question.range?.min) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMin` | translate }}: {{ _question.range?.min ?? `${_prefix}.notAvailable` | translate }}, </span>
+            <span [class]="(_question.range?.max) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMax` | translate }}: {{ _question.range?.max ?? `${_prefix}.notAvailable` | translate }}, </span>
+            <span [class]="(_question.range?.step) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeStep` | translate }}: {{ _question.range?.step ?? `${_prefix}.notAvailable` | translate }}</span>
+          </span>
+        }
+
+        @case (QuestionType.TEXT) {
+          @if (_question.multi_line) {
+            <span></span>
+            <p>{{ `${_prefix}.multiLineEnabled` | translate }}</p>
+          }
+        }
+
+        @case (QuestionType.TIMED) {
+          <span [class]="(_question.field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimer` | translate}}</span>
+          <span [class]="(_question.field_annotation?.timer) === null ? 'text-red-500' : ''">
+            <span>{{ `${_prefix}.annotationTimerStart` | translate }}: {{ _question.field_annotation?.timer?.start ?? `${_prefix}.notAvailable` | translate }}, </span>
+            <span>{{ `${_prefix}.annotationTimerEnd` | translate }}: {{ _question.field_annotation?.timer?.end ?? `${_prefix}.notAvailable` | translate }}</span>
+          </span>
+        }
+
+        @case (QuestionType.CALC) {
+          <span>{{ `${_prefix}.calculationFn` | translate }}</span>
+          <code>{{ _question.calculation_fn ?? `${_prefix}.notAvailable` | translate }}</code>
+          <span>{{ `${_prefix}.calculationArgs` | translate }}:</span>
+          <code>{{ _question.calculation_args ?? `${_prefix}.notAvailable` | translate }}</code>
+        }
+
+      }
+    </div>
+  </button>
 </div>

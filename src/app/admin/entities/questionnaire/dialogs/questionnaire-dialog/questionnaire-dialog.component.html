@@ -36,7 +36,7 @@
 
       <mat-tab [disabled]="!isGeneralTabValid">
         <ng-template mat-tab-label>
-          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.general` | translate}}</h2>
+          <h2 class='flex items-center gap-2 m-0 text-base font-bold'>{{ `${_prefix}.questions` | translate}}</h2>
           @if (store.selected()?.isQuestionsTabValid === false) {
             <mat-icon class="absolute -right-6 material-symbols-outlined text-base! text-red-600! font-bold">warning</mat-icon>
           }

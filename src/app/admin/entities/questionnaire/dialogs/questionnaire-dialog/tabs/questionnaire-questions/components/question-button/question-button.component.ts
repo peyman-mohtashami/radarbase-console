@@ -36,6 +36,13 @@ export class QuestionButtonComponent {
   removeEvent = output<void>();
   selectEvent = output<void>();
 
+  protected CHOICE_ICON_REGISTRY: Record<string, string> = {
+    [QuestionType.RADIO]: 'radio_button_unchecked',
+    [QuestionType.CHECKBOX]: 'check_box_outline_blank',
+    [QuestionType.RANGE]: 'radio_button_unchecked',
+    [QuestionType.INFO]: 'info',
+  }
+
   protected removeQuestion(event: PointerEvent) {
     event.stopPropagation();
     this.removeEvent.emit();
