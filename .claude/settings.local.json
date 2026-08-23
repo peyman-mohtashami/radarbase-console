@@ -8,7 +8,8 @@
       "Read(//Users/peyman/.nvm/versions/node/**)",
       "Read(//opt/homebrew/opt/**)",
       "Bash(./node_modules/.bin/ngc -p tsconfig.app.json --noEmit)",
-      "Bash(git --no-pager diff -- src/app/admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/)"
+      "Bash(git --no-pager diff -- src/app/admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/)",
+      "Bash(PATH=/Users/peyman/.nvm/versions/node/v24.18.0/bin:__TRACKED_VAR__ npx ng build --configuration development)"
     ]
   }
 }

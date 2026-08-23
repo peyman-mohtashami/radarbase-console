@@ -1695,11 +1695,12 @@
           "questionIsValid": "Question is valid",
           "validation": "Validation",
           "conditionalLogic": {
-            "title": "Conditional Logic",
+            "title": "Edit Conditional Logic of Question",
             "message": "Show this question if",
-            "noConditionalLogic": "No Conditional Logic",
+            "noConditionalLogic": "There is no conditional logic, always shows this question",
             "and": "AND (&)",
-            "or": "Or (|)"
+            "or": "Or (|)",
+            "invalid": "Invalid"
           },
           "notAvailable": "N/A"
         },

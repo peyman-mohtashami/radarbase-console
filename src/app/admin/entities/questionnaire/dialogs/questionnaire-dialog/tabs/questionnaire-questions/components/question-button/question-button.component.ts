@@ -5,7 +5,7 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, QuestionType} from '../../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
-import {UpperCasePipe} from '@angular/common';
+import {DatePipe, UpperCasePipe} from '@angular/common';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {QuestionsStore} from '../../services/questions.store';
@@ -20,11 +20,19 @@ import {QuestionsStore} from '../../services/questions.store';
     TagComponent,
     MatTooltip,
     UpperCasePipe,
+    DatePipe,
   ],
 })
 export class QuestionButtonComponent {
   protected readonly DialogMode = DialogMode;
   protected readonly QuestionType = QuestionType;
+  protected CHOICES_ENABLED_FIELDS = [`${QuestionType.INFO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.RADIO}`, `${QuestionType.RANGE}`];
+  protected CHOICE_ICON_REGISTRY: Record<string, string> = {
+    [QuestionType.RADIO]: 'radio_button_unchecked',
+    [QuestionType.CHECKBOX]: 'check_box_outline_blank',
+    [QuestionType.RANGE]: 'radio_button_unchecked',
+    [QuestionType.INFO]: 'info',
+  }
 
   protected questionsStore = inject(QuestionsStore);
   protected store = inject(QuestionnaireStore);
@@ -35,13 +43,6 @@ export class QuestionButtonComponent {
 
   removeEvent = output<void>();
   selectEvent = output<void>();
-
-  protected CHOICE_ICON_REGISTRY: Record<string, string> = {
-    [QuestionType.RADIO]: 'radio_button_unchecked',
-    [QuestionType.CHECKBOX]: 'check_box_outline_blank',
-    [QuestionType.RANGE]: 'radio_button_unchecked',
-    [QuestionType.INFO]: 'info',
-  }
 
   protected removeQuestion(event: PointerEvent) {
     event.stopPropagation();

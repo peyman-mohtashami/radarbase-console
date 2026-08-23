@@ -46,6 +46,7 @@ import {QuestionTemplateVariablesComponent} from './question-template-variables/
 import {checkValidation, QUESTION_TYPES, withLanguage} from '../../../../services/utils';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
+  id: string;
   field_name: string;
   field_type: string;
   field_label: Record<string, string>;
@@ -115,6 +116,9 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   protected readonly QUESTION_TYPES = QUESTION_TYPES;
   protected readonly DialogMode = DialogMode;
 
+  protected CHOICES_ENABLED_FIELDS = [`${QuestionType.INFO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.RADIO}`, `${QuestionType.RANGE}`];
+  protected MATRIX_GROUP_NAME_ENABLED_FIELDS = [`${QuestionType.RANGE}`, `${QuestionType.TEXT}`, `${QuestionType.NUMBER}`, `${QuestionType.DATE}`, `${QuestionType.RADIO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.SLIDER}`, `${QuestionType.YESNO}`];
+
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);
   protected dialog = inject(MatDialog);
@@ -138,6 +142,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
     ...this._question,
+    id: this._question.id ?? crypto.randomUUID(),
     field_name: this._question.field_name ?? '',
     field_type: this._question.field_type ?? '',
     field_label: withLanguage(this._question?.field_label, this._lang),

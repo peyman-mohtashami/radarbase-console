@@ -1,5 +1,4 @@
 @let _prefix = 'ADMIN.questionnaire.dialog.question';
-@let language = store.selected()!.defaultLanguage!.code;
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
@@ -97,30 +96,29 @@
 
       <div>
         <label for="field_label" class="text-sm"
-               [class]="form.field_label[language]().invalid() ? 'text-red-700' : ''">
+               [class]="form.field_label[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
 
-        <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_label[language]"/>
+        <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_label[_lang]"/>
       </div>
 
       <div class="flex justify-between items-baseline">
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
       </div>
-      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.section_header[language]"/>
+      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.section_header[_lang]"/>
 
       <div class="flex justify-between items-baseline">
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
       </div>
-      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[language]"/>
+      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[_lang]"/>
 
-      @let fieldType = form.field_type().value();
-      @let hasChoices = fieldType === QuestionType.INFO || fieldType === QuestionType.CHECKBOX || fieldType === QuestionType.RADIO || fieldType === QuestionType.RANGE;
-      @if (hasChoices) {
+      @if (CHOICES_ENABLED_FIELDS.includes(form.field_type().value())) {
         <app-question-choices [formField]="form.select_choices_or_calculations"/>
       }
 
-      @switch (fieldType) {
+      @switch (form.field_type().value()) {
+
         @case (QuestionType.CALC) {
           <label for="calculation_fn"
                  class="text-sm">{{ `${_prefix}.calculationFn` | translate }} *</label>
@@ -148,6 +146,7 @@
             </mat-error>
           </mat-form-field>
         }
+
         @case (QuestionType.DATE) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
             <div>
@@ -191,6 +190,7 @@
             </div>
           </fieldset>
         }
+
         @case (QuestionType.TIME) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
             <div>
@@ -224,6 +224,7 @@
             </div>
           </fieldset>
         }
+
         @case (QuestionType.NUMBER) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
             <div>
@@ -257,6 +258,7 @@
             </div>
           </fieldset>
         }
+
         @case (QuestionType.RANGE) {
           <div>
             <mat-slide-toggle [formField]="form.show_code" class="my-4" color="primary">
@@ -269,6 +271,7 @@
             </mat-slide-toggle>
           </div>
         }
+
         @case (QuestionType.SLIDER) {
           <label for="" class="text-sm">{{ `${_prefix}.range` | translate }} *</label>
           <fieldset class="p-2 rounded-sm border">
@@ -330,7 +333,7 @@
                 <label for="range-label-left" class="text-sm">{{ `${_prefix}.rangeLabelLeft` | translate }}</label>
                 <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                                 appearance='outline'>
-                  <input id="range-label-left" matInput [formField]="form.range.labelLeft[language]">
+                  <input id="range-label-left" matInput [formField]="form.range.labelLeft[_lang]">
                   <mat-error>
                     @if (form.range.labelLeft().invalid()) {
                       @for (error of form.range.labelLeft().errors(); track error.kind) {
@@ -344,7 +347,7 @@
                 <label for="range-label-right" class="text-sm">{{ `${_prefix}.rangeLabelRight` | translate }}</label>
                 <mat-form-field class='small-input w-full' subscriptSizing="fixed"
                                 appearance='outline'>
-                  <input id="range-label-right" matInput [formField]="form.range.labelRight[language]">
+                  <input id="range-label-right" matInput [formField]="form.range.labelRight[_lang]">
                   <mat-error>
                     @if (form.range.labelRight().invalid()) {
                       @for (error of form.range.labelRight().errors(); track error.kind) {
@@ -357,6 +360,7 @@
             </div>
           </fieldset>
         }
+
         @case (QuestionType.TEXT) {
           <div>
             <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
@@ -364,6 +368,7 @@
             </mat-slide-toggle>
           </div>
         }
+
         @case (QuestionType.TIMED) {
           <label for="unit" class="text-sm">{{ `${_prefix}.annotation` | translate }}</label>
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
@@ -403,9 +408,10 @@
             </div>
           </fieldset>
         }
+
       }
 
-      @if (fieldType === QuestionType.RANGE || fieldType === QuestionType.TEXT || fieldType === QuestionType.NUMBER || fieldType === QuestionType.DATE || fieldType === QuestionType.RADIO || fieldType === QuestionType.CHECKBOX || fieldType === QuestionType.SLIDER || fieldType === QuestionType.YESNO) {
+      @if (MATRIX_GROUP_NAME_ENABLED_FIELDS.includes(form.field_type().value())) {
         <label for="matrix_group_name"
                class="text-sm">{{ `${_prefix}.matrixGroupName` | translate }}</label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
@@ -424,6 +430,7 @@
       @if ((dialogData.matrixIndex ?? 0) > 0 || (dialogData.index ?? 0) > 0) {
         <app-question-conditional-logic [conditionalLogic]="model().conditionalLogic"
                                         [questions]="dialogData.questions"
+                                        [question]="model()"
                                         [selectedIndex]="dialogData.index"
                                         (updateEvent)="updateConditionalLogic($event)"/>
       }

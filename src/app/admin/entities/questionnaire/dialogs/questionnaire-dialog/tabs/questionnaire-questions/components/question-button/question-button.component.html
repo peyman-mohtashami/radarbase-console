@@ -6,7 +6,6 @@
 @let _field_label = _question.field_label[_language];
 @let _section_header = _question.section_header?.[_language];
 @let _field_type = _question.field_type;
-@let _hasChoices = ([`${QuestionType.INFO}`, `${QuestionType.RADIO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.RANGE}`].includes(_field_type));
 @let _choices = _question.select_choices_or_calculations;
 
 <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
@@ -87,7 +86,7 @@
         <span>{{ `${_prefix}.sectionHeader` | translate }}</span>
         <span>{{ _section_header || `${_prefix}.notAvailable` | translate }}</span>
 
-      @if (_hasChoices) {
+      @if (CHOICES_ENABLED_FIELDS.includes(_field_type)) {
           <span [class]="!_choices ? 'text-red-500' : ''">
             {{ `${_prefix}.choices` | translate }}:
           </span>
@@ -124,7 +123,8 @@
           }
         }
 
-        @case (QuestionType.NUMBER) {
+        @case (QuestionType.NUMBER)
+        @case (QuestionType.TIME) {
           @if (_question.text_validation_min || _question.text_validation_max) {
             <span>{{`${_prefix}.validation` | translate }}</span>
             <span>
@@ -134,13 +134,12 @@
           }
         }
 
-        @case (QuestionType.DATE)
-        @case (QuestionType.TIME) {
+        @case (QuestionType.DATE) {
           @if (_question.text_validation_min || _question.text_validation_max) {
             <span>{{`${_prefix}.validation` | translate }}</span>
             <span>
-                <span>{{ `${_prefix}.textValidationMin` | translate }}: {{ _question.text_validation_min || `${_prefix}.notAvailable` | translate }}, </span>
-                <span>{{ `${_prefix}.textValidationMax` | translate }}: {{ _question.text_validation_max || `${_prefix}.notAvailable` | translate }}</span>
+                <span>{{ `${_prefix}.textValidationMin` | translate }}: {{ (_question.text_validation_min | date) || `${_prefix}.notAvailable` | translate }}, </span>
+                <span>{{ `${_prefix}.textValidationMax` | translate }}: {{ (_question.text_validation_max | date) || `${_prefix}.notAvailable` | translate }}</span>
             </span>
           }
         }

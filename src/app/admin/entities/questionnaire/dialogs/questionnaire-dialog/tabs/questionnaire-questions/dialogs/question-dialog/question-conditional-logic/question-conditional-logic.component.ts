@@ -25,6 +25,7 @@ export class QuestionConditionalLogicComponent {
   protected dialog = inject(MatDialog);
 
   conditionalLogic = input.required<AppQuestionConditionalLogic>();
+  question = input.required<AppQuestion>();
   questions = input.required<AppQuestion[]>();
   selectedIndex = input.required<number>();
 
@@ -43,7 +44,7 @@ export class QuestionConditionalLogicComponent {
   openConditionalLogicDialog() {
     const dialogRef = this.dialog.open(ConditionalLogicDialogComponent, {
       id: 'conditional-logic-dialog',
-      data: {id: 'conditional-logic-dialog', entity: this.conditionalLogic(), questions: this.questions(), selectedIndex: this.selectedIndex(), mode: DialogMode.EDIT},
+      data: {id: 'conditional-logic-dialog', entity: this.conditionalLogic(), questions: this.questions(), question: this.question(), selectedIndex: this.selectedIndex(), mode: DialogMode.EDIT},
       panelClass: 'tailwind-slide-panel',
       width: '60%',
       height: '100vh',

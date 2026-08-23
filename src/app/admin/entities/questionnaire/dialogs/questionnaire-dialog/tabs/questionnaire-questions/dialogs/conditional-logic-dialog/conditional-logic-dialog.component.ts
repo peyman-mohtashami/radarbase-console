@@ -8,13 +8,18 @@ import {TagComponent} from '../../../../../../../../../shared/components/tag/tag
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {applyEach, form, FormField, validate} from '@angular/forms/signals';
-import {MatFormField, MatInput} from '@angular/material/input';
+import {applyEach, FieldTree, form, FormField, validate} from '@angular/forms/signals';
+import {MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
-// import {QuestionType} from '../../../questionnaire-preview/question/question-type/question-type.registry';
 import {requiredField} from '../../../../../../../../../shared/utils/signal-form-validators';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerInputEvent,
+  MatDatepickerToggle
+} from '@angular/material/datepicker';
 
 export const OPERATOR_SYMBOLS: Record<string, string> = {
   equal: '=',
@@ -139,9 +144,14 @@ export interface  ConditionalLogicRuleForm {
     MatSelect,
     FormField,
     MatInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatSuffix,
   ]
 })
 export class ConditionalLogicDialogComponent implements AfterViewInit {
+  protected readonly QuestionType = QuestionType;
   protected readonly OPERATORS = OPERATORS;
   protected readonly OPERATOR_SYMBOLS: Record<string, string> = OPERATOR_SYMBOLS;
   protected readonly DialogMode = DialogMode;
@@ -152,14 +162,13 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
   protected dialogData = inject(MAT_DIALOG_DATA) as {
     id: string;
     mode: DialogMode;
-    entity?:  AppQuestionConditionalLogic;
+    entity?: AppQuestionConditionalLogic;
+    question: AppQuestion;
     questions: AppQuestion[];
     selectedIndex: number;
   };
 
   dialogActionEvent = output<{ action: DialogMode | string, entity?: AppQuestionConditionalLogic }>();
-
-  model = signal<ConditionalLogicForm>(this.toFormModel(this.dialogData.entity ?? []));
 
   _lang = computed(() => {
     return this.store.selected()!.defaultLanguage.code
@@ -167,6 +176,8 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
 
   protected readonly compareQuestions = (a: AppQuestion | null, b: AppQuestion | null) =>
     a?.field_name === b?.field_name;
+
+  model = signal<ConditionalLogicForm>(this.toFormModel(this.dialogData.entity ?? []));
 
   protected form = form(this.model, (schema) => {
     applyEach(schema, (group) => {
@@ -204,40 +215,63 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
 
   branching_logic = computed(() => {
     const model = this.model();
-    return model.map((conditionalLogicItems) =>
-      conditionalLogicItems.map(i => `[${i.operand?.field_name}]${OPERATOR_SYMBOLS[i.operator]}'${i.value}'`).join(' and ')
+    return model.map(
+      (group) =>
+        group.map(
+          rule =>
+            `[${rule.operand?.field_name}]${OPERATOR_SYMBOLS[rule.operator]}'${rule.value}'`
+        ).join(' and ')
     ).join(' or ') ?? '';
   })
 
   toFormModel(conditionalLogic: AppQuestionConditionalLogic): ConditionalLogicForm {
-    return conditionalLogic.map(items => items.map(item => ({
-      operand: this.dialogData.questions.find(q => q.field_name === item.operand) ?? null,
-      operator: item.operator,
-      value: item.value
-    })))
+    return conditionalLogic.map(
+      group => group.map(
+        rule => ({
+          operand: this.dialogData.questions.find(q => q.field_name === rule.operand) ?? null,
+          operator: rule.operator,
+          value: rule.value
+        })
+      )
+    );
   }
 
   addConditionalLogicGroup() {
-    this.model.update(groups => [...groups, [{
-      operand: null,
-      operator: '',
-      value: ''
-    }]]);
+    this.model.update(conditionalLogic => [
+      ...conditionalLogic,
+      [{
+        operand: null,
+        operator: '',
+        value: ''
+      }]
+    ]);
   }
 
   addConditionalLogicRule(parentIndex: number) {
-    this.model.update(groups => groups.map((group, i) =>
-      i === parentIndex
-        ? [...group, {operand: null, operator: '', value: ''}]
-        : group
+    this.model.update(conditionalLogic => conditionalLogic.map(
+      (group, i) =>
+        i === parentIndex ? [...group, {operand: null, operator: '', value: ''}] : group
     ));
   }
 
+  protected toDate(value: string): Date | null {
+    if (!value) return null;
+    const timestamp = Number(value);
+    return Number.isNaN(timestamp) ? null : new Date(timestamp);
+  }
+
+  protected setDateValue(field: FieldTree<string>, event: MatDatepickerInputEvent<Date>) {
+    const date = event.value;
+    const state = field();
+    state.value.set(date ? `${date.getTime()}` : '');
+    state.markAsDirty();
+    state.markAsTouched();
+  }
+
   removeConditionalLogicRule(parentIndex: number, index: number) {
-    this.model.update(groups => groups.map((group, i) =>
-      i === parentIndex
-         ? group.filter((_, j) => j !== index)
-         : group
+    this.model.update(conditionalLogic => conditionalLogic.map(
+      (group, i) =>
+        i === parentIndex ? group.filter((_, j) => j !== index) : group
     ).filter(group => group.length > 0));
   }
 
@@ -247,13 +281,16 @@ export class ConditionalLogicDialogComponent implements AfterViewInit {
   }
 
   protected handleSaveAction(): void {
-    const t = this.model().map((group) => group.map(i => {
-      return {operand: i.operand!.field_name, operator: i.operator, value: i.value};
-    }));
-    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: t});
+    const validatedModel = this.model().map(
+      (group) => group.map(
+        rule => ({operand: rule.operand!.field_name, operator: rule.operator, value: rule.value})
+      )
+    );
+    this.dialogActionEvent.emit({action: this.dialogData.mode, entity: validatedModel});
   }
 
   close() {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
+
 }
