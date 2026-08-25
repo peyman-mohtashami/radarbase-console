@@ -6,29 +6,21 @@ import {
 } from '@angular/core';
 import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {
-  MatDatepicker,
-  MatDatepickerInput,
   MatDatepickerInputEvent,
-  MatDatepickerToggle
 } from '@angular/material/datepicker';
-import {MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
+import {MatFormField, MatHint, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
 } from '../../question-header/question-header.component';
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
-import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 import {timeToMinutes} from '../../../../../../../../../../shared/utils/signal-form-validators';
 
 @Component({
   selector: 'app-time-question',
   imports: [
-    // MatDatepicker,
-    // MatDatepickerInput,
-    // MatDatepickerToggle,
     MatFormField,
     MatInput,
-    // MatSuffix,
     MatButton,
     QuestionHeaderComponent,
     ReplacePlaceholdersPipe,
@@ -38,7 +30,6 @@ import {timeToMinutes} from '../../../../../../../../../../shared/utils/signal-f
   templateUrl: './time-question.component.html'
 })
 export class TimeQuestionComponent {
-  private store= inject(QuestionnaireStore);
   private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 
   protected readonly Number = Number;
@@ -51,13 +42,6 @@ export class TimeQuestionComponent {
   previewValueChange = output<string | null>();
 
   protected error: string | null = null;
-
-  protected get previewDateValue(): Date | null {
-    if (!this.answer()?.value) return null;
-
-    const timestamp = Number(this.answer().value);
-    return Number.isNaN(timestamp) ? null : new Date(timestamp);
-  }
 
   protected onPreviewDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
     if (event === null) {
@@ -100,12 +84,5 @@ export class TimeQuestionComponent {
     } else {
       this.error = null;
     }
-  }
-
-  protected getDateISOString(timestamp: string | undefined) {
-    if (!timestamp) return null;
-    const t = Number(timestamp);
-    if (isNaN(t)) return timestamp;
-    return new Date(t).toISOString();
   }
 }

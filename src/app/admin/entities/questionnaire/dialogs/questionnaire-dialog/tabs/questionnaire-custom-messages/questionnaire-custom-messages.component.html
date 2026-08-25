@@ -2,7 +2,7 @@
 
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
-    <div class="">
+    <div>
       <label for="title" class="text-sm">
         {{ `${_prefix}.title` | translate }}
       </label>
@@ -18,7 +18,7 @@
       </mat-form-field>
     </div>
 
-    <div class="">
+    <div>
       <label for="description" class="text-sm">
         {{ `${_prefix}.description` | translate }}
       </label>
@@ -76,7 +76,7 @@
     </mat-slide-toggle>
 
     @if (model().warningEnabled) {
-      <div class="">
+      <div>
         <label for="warningText" class="text-sm">
           {{ `${_prefix}.warningText` | translate }}
         </label>

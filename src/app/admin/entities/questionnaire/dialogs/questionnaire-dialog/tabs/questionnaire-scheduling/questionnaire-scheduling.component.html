@@ -1,11 +1,14 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
+
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
-    <mat-slide-toggle [formField]="form.relativeToReferenceTime" class="my-4" color="primary">
+    <mat-slide-toggle [formField]="form.relativeToReferenceTime" class="" color="primary">
       {{ `${_prefix}.relativeToReferenceTime` | translate }}
     </mat-slide-toggle>
 
     @if (model().relativeToReferenceTime) {
+      <mat-divider class="my-4!"/>
+
       <div>
         <label for="referenceTimestamp" class="text-sm">
           {{ `${_prefix}.referenceTime` | translate }} *
@@ -27,144 +30,141 @@
       </div>
     }
 
-    <mat-divider class="mb-2!"/>
+    <mat-divider class="my-4!"/>
 
-    <mat-slide-toggle [formField]="form.repeatedProtocol" class="my-4" color="primary">
+    <mat-slide-toggle [formField]="form.repeatedProtocol" class="" color="primary">
       {{ `${_prefix}.repeatedProtocol` | translate }}
     </mat-slide-toggle>
 
     @if (model().repeatedProtocol) {
-      <div>
-        <p class="text-sm">
-          {{ `${_prefix}.repeatProtocol` | translate }}
-        </p>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label for="repeat-protocol-amount" class="text-sm">
-              {{ `${_prefix}.repeatProtocolAmount` | translate }} *
-            </label>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-              <input id="repeat-protocol-amount" matInput [formField]="form.repeatProtocol.amount" type="number">
+      <mat-divider class="my-4!"/>
+      <p class="text-sm">
+        {{ `${_prefix}.repeatProtocol` | translate }}
+      </p>
+      <div class="grid grid-cols-2 gap-2">
+        <!--      <fieldset class="mb-4 p-2 rounded border border-gray-300 grid grid-cols-2 gap-2">-->
+        <!--        <div class="grid grid-cols-2 gap-2">-->
+        <div>
+          <label for="repeat-protocol-amount" class="text-sm">
+            {{ `${_prefix}.repeatProtocolAmount` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+            <input id="repeat-protocol-amount" matInput [formField]="form.repeatProtocol.amount" type="number">
+            <mat-error>
+              @if (form.repeatProtocol.amount().touched() && form.repeatProtocol.amount().invalid()) {
+                @for (error of form.repeatProtocol.amount().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label for="repeat-protocol-unit" class="text-sm">
+            {{ `${_prefix}.repeatProtocolUnit` | translate }} *
+          </label>
+          <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+            <mat-select id="repeat-protocol-unit" [formField]="form.repeatProtocol.unit">
+              @for (unit of UNITS; track unit.name) {
+                <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
+              }
               <mat-error>
-                @if (form.repeatProtocol.amount().touched() && form.repeatProtocol.amount().invalid()) {
-                  @for (error of form.repeatProtocol.amount().errors(); track error.kind) {
+                @if (form.repeatProtocol.unit().touched() && form.repeatProtocol.unit().invalid()) {
+                  @for (error of form.repeatProtocol.unit().errors(); track error.kind) {
                     {{ error.message }}
                   }
                 }
               </mat-error>
-            </mat-form-field>
-          </div>
+            </mat-select>
 
-          <div>
-            <label for="repeat-protocol-unit" class="text-sm">
-              {{ `${_prefix}.repeatProtocolUnit` | translate }} *
-            </label>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-              <mat-select id="repeat-protocol-unit" [formField]="form.repeatProtocol.unit">
-                @for (unit of UNITS; track unit.name) {
-                  <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
-                }
-                <mat-error>
-                  @if (form.repeatProtocol.unit().touched() && form.repeatProtocol.unit().invalid()) {
-                    @for (error of form.repeatProtocol.unit().errors(); track error.kind) {
-                      {{ error.message }}
-                    }
-                  }
-                </mat-error>
-              </mat-select>
-
-            </mat-form-field>
-          </div>
+          </mat-form-field>
         </div>
+        <!--      </fieldset>-->
       </div>
     }
 
-      <div>
-        <p class="text-sm mt-2">{{ `${_prefix}.timeOffsets` | translate }}</p>
-        <fieldset class="p-2 rounded-sm border">
-        <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="">
-          <div class="w-full flex-col mt-4 mb-1 text-sm">
-            <div class="flex items-center gap-1 w-full">
-              <div class="w-1/12 grow-0"></div>
-              <div class="w-3/12 grow-0">{{ `${_prefix}.timeOffsetsDay` | translate }} *</div>
-              <div class="w-7/12 grow-0">{{ `${_prefix}.timeOffsetsTime` | translate }} *</div>
-              <div class="w-1/12 grow-0"></div>
-            </div>
-              @for (offset of form.repeatQuestionnaire.unitsFromZero; track $index) {
-                <div cdkDrag class="w-full flex items-center gap-1">
-                  <button mat-icon-button class="w-1/12! grow-0 shrink-0 cursor-move tiny">
-                    <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>
-                  </button>
-                  <mat-form-field class='small-input w-3/12! grow-0' appearance='outline' subscriptSizing="dynamic">
-                    <input class="" matInput type="number" [formField]="offset.day">
-                  </mat-form-field>
-                  <mat-form-field class='small-input w-7/12!  grow-0' appearance='outline' subscriptSizing="dynamic">
-                    <input matInput [formField]="offset.time" type="time" />
-                  </mat-form-field>
+    <mat-divider class="my-4!"/>
 
-                  <button mat-icon-button class="tiny w-1/12! grow-0 shrink-0 material-symbols-outlined"
-                          color="warn"
-                          [disabled]="form.repeatQuestionnaire.unitsFromZero.length === 1"
-                          (click)="removeTime($index)">
-                    <mat-icon class="material-symbols-outlined">remove_circle</mat-icon>
-                  </button>
-                </div>
+    <p class="text-sm">{{ `${_prefix}.timeOffsets` | translate }}</p>
+    <div>
+      <div cdkDropList (cdkDropListDropped)="onDrop($event)">
+        <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1 items-center">
+          <div></div>
+          <div>{{ `${_prefix}.timeOffsetsDay` | translate }} *</div>
+          <div>{{ `${_prefix}.timeOffsetsTime` | translate }} *</div>
+          <div></div>
+        </div>
+        @for (offset of form.repeatQuestionnaire.unitsFromZero; track $index) {
+          <div cdkDrag class="text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1 items-center">
+            <button mat-icon-button class="cursor-move tiny">
+              <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>
+            </button>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <input class="" matInput type="number" [formField]="offset.day">
+            </mat-form-field>
+            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+              <input matInput [formField]="offset.time" type="time"/>
+            </mat-form-field>
+            <button mat-icon-button class="tiny"
+                    color="warn"
+                    [disabled]="form.repeatQuestionnaire.unitsFromZero.length === 1"
+                    (click)="removeTime($index)">
+              <mat-icon class="material-symbols-outlined">remove_circle</mat-icon>
+            </button>
+          </div>
+        }
+        <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1 items-center ">
+          <div></div>
+          <div></div>
+          <div></div>
+          <button class="tiny" mat-icon-button (click)="addTime()">
+            <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="my-4!"/>
+
+    <p class="text-sm">{{ `${_prefix}.completionWindow` | translate }}</p>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="">
+        <label for="completion-window-amount" class="text-sm">
+          {{ `${_prefix}.completionWindowAmount` | translate }} *
+        </label>
+        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+          <input id="completion-window-amount" matInput [formField]="form.completionWindow.amount"
+                 type="number">
+          <mat-error>
+            @if (form.completionWindow.amount().touched() && form.completionWindow.amount().invalid()) {
+              @for (error of form.completionWindow.amount().errors(); track error.kind) {
+                {{ error.message }}
               }
-            <div class="flex items-center gap-1 w-full">
-              <div class="w-11/12 grow-0"></div>
-              <button class="tiny w-1/12! grow-0 shrink-0 material-symbols-outlined" mat-icon-button
-                      (click)="addTime()">
-                <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-        </fieldset>
+            }
+          </mat-error>
+        </mat-form-field>
       </div>
 
-      <mat-divider class="mb-2!"/>
-
-      <div class="mt-2">
-        <p class="text-sm">{{ `${_prefix}.completionWindow` | translate }}</p>
-        <div class="grid grid-cols-2 gap-2">
-
-          <div class="">
-            <label for="completion-window-amount" class="text-sm">
-              {{ `${_prefix}.completionWindowAmount` | translate }} *
-            </label>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-              <input id="completion-window-amount" matInput [formField]="form.completionWindow.amount"
-                     type="number">
-              <mat-error>
-                @if (form.completionWindow.amount().touched() && form.completionWindow.amount().invalid()) {
-                  @for (error of form.completionWindow.amount().errors(); track error.kind) {
-                    {{ error.message }}
-                  }
-                }
-              </mat-error>
-            </mat-form-field>
-          </div>
-
-          <div class="">
-            <label for="completion-window-unit" class="text-sm">
-              {{ `${_prefix}.completionWindowUnit` | translate }} *
-            </label>
-            <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-              <mat-select id="completion-window-unit" [formField]="form.completionWindow.unit">
-                @for (unit of UNITS; track unit.name) {
-                  <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
-                }
-              </mat-select>
-              <mat-error>
-                @if (form.completionWindow.unit().touched() && form.completionWindow.unit().invalid()) {
-                  @for (error of form.completionWindow.unit().errors(); track error.kind) {
-                    {{ error.message }}
-                  }
-                }
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
+      <div class="">
+        <label for="completion-window-unit" class="text-sm">
+          {{ `${_prefix}.completionWindowUnit` | translate }} *
+        </label>
+        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+          <mat-select id="completion-window-unit" [formField]="form.completionWindow.unit">
+            @for (unit of UNITS; track unit.name) {
+              <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>
+            @if (form.completionWindow.unit().touched() && form.completionWindow.unit().invalid()) {
+              @for (error of form.completionWindow.unit().errors(); track error.kind) {
+                {{ error.message }}
+              }
+            }
+          </mat-error>
+        </mat-form-field>
       </div>
+    </div>
   </div>
 </form>

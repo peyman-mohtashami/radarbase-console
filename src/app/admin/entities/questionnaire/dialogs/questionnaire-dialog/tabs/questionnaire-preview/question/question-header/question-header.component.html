@@ -1,10 +1,12 @@
+@let variables = store.selected()?.variables;
+
 @if (language()) {
   @if (sectionHeader()) {
-    <p class="text-sm font-bold mb-4" [innerHtml]="question().section_header?.[language()!.code] | replacePlaceholders:question().variables?.['section_header']"></p>
+    <p class="text-sm font-bold mb-4" [innerHtml]="question().section_header?.[language()!.code] | replacePlaceholders"></p>
   }
   @if (label() && question().field_label) {
     <p class="text-lg">
-      <span [innerHtml]="question().field_label[language()!.code] | replacePlaceholders:question().variables?.['field_label']"></span>
+      <span [innerHtml]="question().field_label[language()!.code] | replacePlaceholders"></span>
       @if (!disableRequiredAsterisk()) {
         @if (question().required_field) {
           <span class="text-red-700"> *</span>
@@ -16,6 +18,6 @@
   }
 
   @if (note()) {
-    <p class="text-sm my-2" [innerHtml]="question().field_note?.[language()!.code] | replacePlaceholders:question().variables?.['field_note']"></p>
+    <p class="text-sm my-2" [innerHtml]="question().field_note?.[language()!.code] | replacePlaceholders"></p>
   }
 }

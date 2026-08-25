@@ -26,6 +26,8 @@ import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe'
   templateUrl: './number-question.component.html'
 })
 export class NumberQuestionComponent {
+  protected readonly Number = Number;
+
   private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 
   entity = input.required<AppQuestion>();
@@ -70,6 +72,4 @@ export class NumberQuestionComponent {
       this.error = null;
     }
   }
-
-  protected readonly Number = Number;
 }

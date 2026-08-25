@@ -2,7 +2,7 @@
 
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
-    <div class="">
+    <div>
       <label for="name" class="text-sm">{{ `${_prefix}.name` | translate }} *</label>
       <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
         <input id="name" matInput [formField]="form.name">
@@ -16,7 +16,7 @@
       </mat-form-field>
     </div>
 
-    <div class="">
+    <div>
       <label for="languages" class="text-sm">{{ `${_prefix}.languages` | translate }}</label>
       <app-searchable-multi-select [formField]="form.languages"
                                    [disabledItem]="form.defaultLanguage().value()"
@@ -26,7 +26,7 @@
                                    [multiple]="true"/>
     </div>
 
-    <div class="">
+    <div>
       <label for="defaultLanguage" class="text-sm">{{ `${_prefix}.defaultLanguage` | translate }} *</label>
       <app-searchable-multi-select [formField]="form.defaultLanguage"
                                    [labelKey]="'label'"
@@ -59,48 +59,48 @@
     </div>
 
     <div>
-      <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4 block" color="primary">
-        {{ `${_prefix}.autoNextEnabled` | translate }}
+      <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4" color="primary">
+        {{ `${_prefix}.autoNextQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
-      <mat-slide-toggle [formField]="form.previousEnabled" class="my-4 block" color="primary">
-        {{ `${_prefix}.previousEnabled` | translate }}
+      <mat-slide-toggle [formField]="form.previousEnabled" class="my-4" color="primary">
+        {{ `${_prefix}.previousQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
-      <mat-slide-toggle [formField]="form.editEnabled" class="my-4 block" color="primary">
-        {{ `${_prefix}.editEnabled` | translate }}
+      <mat-slide-toggle [formField]="form.editEnabled" class="my-4" color="primary">
+        {{ `${_prefix}.editQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
   </div>
-    <!--  <div>-->
-    <!--    <div class="">-->
-    <!--      <div>-->
-    <!--        <label for="order" class="text-sm">-->
-    <!--          {{ `${_prefix}.orderLabel` | translate }}-->
-    <!--        </label>-->
-    <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
-    <!--          <input id="order" matInput type="number" formControlName='order'>-->
-    <!--        </mat-form-field>-->
-    <!--      </div>-->
-    <!--    </div>-->
+  <!--  <div>-->
+  <!--    <div class="">-->
+  <!--      <div>-->
+  <!--        <label for="order" class="text-sm">-->
+  <!--          {{ `${_prefix}.orderLabel` | translate }}-->
+  <!--        </label>-->
+  <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
+  <!--          <input id="order" matInput type="number" formControlName='order'>-->
+  <!--        </mat-form-field>-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-    <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
-    <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
-    <!--    </mat-slide-toggle>-->
+  <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
+  <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
 
-    <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
-    <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
-    <!--    </mat-slide-toggle>-->
+  <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
+  <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
 
-    <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
-    <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
-    <!--    </mat-slide-toggle>-->
-    <!--  </div>-->
-    <pre class="text-sm">
+  <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
+  <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
+  <!--    </mat-slide-toggle>-->
+  <!--  </div>-->
+  <pre class="text-sm">
     {{ store.selected() | json }}
   </pre>
 </form>

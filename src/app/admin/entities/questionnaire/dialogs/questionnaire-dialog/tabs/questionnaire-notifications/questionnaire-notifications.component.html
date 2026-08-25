@@ -1,13 +1,13 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
 <form novalidate class="grid grid-cols-2 gap-4">
-  <div class="">
-    <div class="">
-      <p class="text-base">{{ `${_prefix}.notification` | translate }}</p>
+  <div>
+    <div>
+      <p class="text-sm">{{ `${_prefix}.notification` | translate }}</p>
       <div>
         <label for="notificationTitle" class="text-sm"
                [class]="form.notification.title[_lang]().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.notificationTitle` | translate }} *
+          {{ `${_prefix}.notificationTitle` | translate }}
         </label>
         <app-question-template-variables [formField]="form.notification.title[_lang]" />
       </div>
@@ -15,15 +15,17 @@
       <div>
         <label for="notificationMessage" class="text-sm"
                [class]="form.notification.text[_lang]().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.notificationMessage` | translate }} *
+          {{ `${_prefix}.notificationMessage` | translate }}
         </label>
         <app-question-template-variables [formField]="form.notification.text[_lang]" />
       </div>
     </div>
 
+    <mat-divider class="my-4!"/>
+
     <div>
-      <p class="text-sm my-2">{{ `${_prefix}.reminders` | translate }}</p>
-      <mat-slide-toggle [formField]="form.reminders.enabled" class="mb-4" color="primary">
+      <p class="text-sm">{{ `${_prefix}.reminders` | translate }}</p>
+      <mat-slide-toggle [formField]="form.reminders.enabled" class="my-4" color="primary">
         {{ `${_prefix}.remindersEnable` | translate }}
       </mat-slide-toggle>
 

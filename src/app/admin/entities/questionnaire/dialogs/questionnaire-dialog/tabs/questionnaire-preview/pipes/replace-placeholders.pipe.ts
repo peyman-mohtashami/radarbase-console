@@ -1,9 +1,7 @@
 import {inject, Pipe, PipeTransform} from '@angular/core';
-import {SafeHtml} from "@angular/platform-browser";
 import {PreviewStore} from '../services/preview.store';
 import {QuestionnaireStore} from '../../../../../services/questionnaire.store';
-import {AppQuestion, AppQuestionChoice, QuestionType} from '../../../../../models/questionnaire';
-import {QuestionTemplateVariable} from '../../questionnaire-variables/model/template-field.model';
+import {AppQuestionChoice, QuestionType} from '../../../../../models/questionnaire';
 
 const RESERVED_VALUES = ['current_date', 'current_time'];
 
@@ -14,19 +12,20 @@ const RESERVED_VALUES = ['current_date', 'current_time'];
 export class ReplacePlaceholdersPipe implements PipeTransform {
   private previewState = inject(PreviewStore);
   private store = inject(QuestionnaireStore);
+  private variables = this.store.selected()?.variables;
 
-  transform(value: string | undefined, variables?: QuestionTemplateVariable[]): string | undefined {
+  transform(value: string | undefined): string | undefined {
     if (value?.toString()) {
-      return this.buildTextWithTemplateVariables(value.toString(), variables);
+      return this.buildTextWithTemplateVariables(value.toString());
     }
     return undefined;
   }
 
-  buildTextWithTemplateVariables(value: string, variables?: QuestionTemplateVariable[]): string {
-    return this.replacePlaceholders(value, variables);
+  buildTextWithTemplateVariables(value: string): string {
+    return this.replacePlaceholders(value);
   }
 
-  replacePlaceholders(str = "", variables?: QuestionTemplateVariable[]): string {
+  replacePlaceholders(str = ""): string {
 
     return str;
     // return str.toString().replace(/\{\{([^{}]*)\}\}/g, (_, content: string) => {

@@ -5,9 +5,9 @@ import {MatIconButton} from '@angular/material/button';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 import {dragDropStyles} from '../../../../../services/utils';
+import {QuestionTemplateVariablesComponent} from '../question-template-variables/question-template-variables.component';
 
 @Component({
   selector: 'app-question-choices',
@@ -22,7 +22,7 @@ import {dragDropStyles} from '../../../../../services/utils';
     MatInput,
     CdkDragHandle,
     FormField,
-    CdkTextareaAutosize,
+    QuestionTemplateVariablesComponent,
   ],
   styles: dragDropStyles
 })
@@ -30,9 +30,9 @@ export class QuestionChoicesComponent {
   protected store = inject(QuestionnaireStore);
 
   readonly formField = input.required<FieldTree<{code: string; label: Record<string, string>;}[]>>();
+  index = input(0);
 
   isValid = signal(false);
-
   _lang = computed(() => {
     return this.store.selected()!.defaultLanguage.code;
   })

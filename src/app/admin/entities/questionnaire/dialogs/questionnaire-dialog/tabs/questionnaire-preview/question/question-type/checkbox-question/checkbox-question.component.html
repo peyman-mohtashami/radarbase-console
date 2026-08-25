@@ -1,14 +1,12 @@
-<!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
-
 <section class="">
   <app-question-header [question]="entity()" [language]="language()"/>
 
-  @for (item of previewItems(); track item.code) {
+  @for (item of entity().select_choices_or_calculations; track item.code) {
     <p>
       <mat-checkbox class="w-full"
                     (click)="onPreviewInputChange(item.code)"
                     [disabled]="isPreviewDisabled"
-                    [checked]="item.checked">
+                    [checked]="previewItems()[item.code]">
         <span class="ion-text-wrap text-lg" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
       </mat-checkbox>
     </p>

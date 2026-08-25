@@ -114,18 +114,20 @@
       <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[_lang]"/>
 
       @if (CHOICES_ENABLED_FIELDS.includes(form.field_type().value())) {
-        <app-question-choices [formField]="form.select_choices_or_calculations"/>
+        <app-question-choices [formField]="form.select_choices_or_calculations" [index]="dialogData.index"/>
       }
 
       @switch (form.field_type().value()) {
 
         @case (QuestionType.CALC) {
-          <label for="calculation_fn"
-                 class="text-sm">{{ `${_prefix}.calculationFn` | translate }} *</label>
+          <label for="calculation_fn" class="text-sm"
+                 [class]="form.calculation_fn().invalid() ? 'text-red-700' : ''">
+           {{ `${_prefix}.calculationFn` | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
             <input id="calculation_fn" matInput [formField]="form.calculation_fn"/>
             <mat-error>
-              @if (form.calculation_fn().touched() && form.calculation_fn().invalid()) {
+              @if (form.calculation_fn().invalid()) {
                 @for (error of form.calculation_fn().errors(); track error.kind) {
                   {{ error.message }}
                 }
@@ -133,8 +135,10 @@
             </mat-error>
           </mat-form-field>
 
-          <label for="calculation_args"
-                 class="text-sm">{{ `${_prefix}.calculationArgs` | translate }}</label>
+          <label for="calculation_args" class="text-sm"
+                 [class]="form.calculation_args().invalid() ? 'text-red-700' : ''">
+            {{ `${_prefix}.calculationArgs` | translate }} *
+          </label>
           <mat-form-field class='small-input' appearance="outline">
             <input id="calculation_args" matInput [formField]="form.calculation_args"/>
             <mat-error>
@@ -366,6 +370,20 @@
             <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
               {{ `${_prefix}.multiLineEnabled` | translate }}
             </mat-slide-toggle>
+          </div>
+
+          <div>
+            <label for="text-validation" class="text-sm">{{ `${_prefix}.textValidation` | translate }}</label>
+            <mat-form-field class='small-input w-full' subscriptSizing="fixed" appearance='outline'>
+              <input id="text-validation" matInput [formField]="form.text_validation_min">
+              <mat-error>
+                @if (form.text_validation_min().invalid()) {
+                  @for (error of form.text_validation_min().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
           </div>
         }
 

@@ -164,6 +164,69 @@ const pairing = {
         },
         "login": "0ed25f31-6bb7-4cb9-8296-7e50257e76f1"
       }
+    },
+    {
+      url: "http://localhost/managementportal/api/projects/radar/sources?assigned=false&minimized=true",
+      method: "GET",
+      response: [
+        {
+          "id": 7458,
+          "sourceTypeId": 1201,
+          "sourceTypeProducer": "RADAR",
+          "sourceTypeModel": "aRMT-App",
+          "sourceTypeCatalogVersion": "1.5.0",
+          "expectedSourceName": null,
+          "sourceId": "d1656c0c-1da3-4db8-81b4-7e2f3cab691a",
+          "sourceName": "new-source",
+          "attributes": {
+            "External-identifier": "ooo"
+          },
+          "assigned": false
+        },
+        {
+          "id": 7459,
+          "sourceTypeId": 6151,
+          "sourceTypeProducer": "test",
+          "sourceTypeModel": "test",
+          "sourceTypeCatalogVersion": "test",
+          "expectedSourceName": null,
+          "sourceId": "c8e5dfe1-5b10-4b62-9ed6-7c9af97f97a5",
+          "sourceName": "test56",
+          "attributes": {
+            "External-identifier": "000"
+          },
+          "assigned": false
+        },
+        {
+          "id": 7460,
+          "sourceTypeId": 6151,
+          "sourceTypeProducer": "test",
+          "sourceTypeModel": "test",
+          "sourceTypeCatalogVersion": "test",
+          "expectedSourceName": null,
+          "sourceId": "f7187611-6860-406d-9844-7f07b64a539e",
+          "sourceName": "test44",
+          "attributes": {
+            "External-identifier": "4444"
+          },
+          "assigned": false
+        },
+        {
+          "id": 7461,
+          "sourceTypeId": 6151,
+          "sourceTypeProducer": "test",
+          "sourceTypeModel": "test",
+          "sourceTypeCatalogVersion": "test",
+          "expectedSourceName": null,
+          "sourceId": "6b1f63b7-3f3a-4970-b325-92cc58a609dd",
+          "sourceName": "test77",
+          "attributes": {
+            "External-identifier": "777"
+          },
+          "assigned": false
+        }
+      ]
     }
   ]
 }
+

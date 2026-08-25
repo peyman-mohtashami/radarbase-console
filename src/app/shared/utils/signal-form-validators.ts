@@ -9,6 +9,7 @@ import {untracked} from '@angular/core';
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
 /** Any characters, 1-255 chars (multiline). */
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
+export const IDENTIFIER_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,39}$/;
 
 /** Marks a field as required with the shared error message. */
 export type RequiredWhen = NonNullable<NonNullable<Parameters<typeof required>[1]>['when']>;
@@ -23,7 +24,6 @@ export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root
   });
 }
 
-const IDENTIFIER_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,39}$/;
 
 export function identifierField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
@@ -243,3 +243,53 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
     };
   });
 }
+
+
+export function positiveNumber<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  options?: { when?: LogicFn<TValue, boolean, TPathKind>; }
+) {
+  validate(path, (context) => {
+    if (options?.when && !options.when(context)) {
+      return null;
+    }
+
+    const step = Number(context.value());
+
+    if (Number.isNaN(step)) return null;
+    if (step > 0) return null;
+
+    return {
+      kind: 'rangeStepPositive',
+      message: 'Step must be positive',
+    };
+  });
+}
+
+export function validateRegex<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  options?: { when?: LogicFn<TValue, boolean, TPathKind>; }
+) {
+  validate(path, (context) => {
+    if (options?.when && !options.when(context)) {
+      return null;
+    }
+
+    const regex = `${context.value()}`.trim();
+
+    if (!regex) return null;
+
+    try {
+      new RegExp(regex);
+      return null;
+    } catch (error) {
+      return {
+        kind: 'regexInvalid',
+        message: error instanceof Error ? error.message : 'Invalid regular expression',
+      };
+    }
+  });
+}
+
+
+

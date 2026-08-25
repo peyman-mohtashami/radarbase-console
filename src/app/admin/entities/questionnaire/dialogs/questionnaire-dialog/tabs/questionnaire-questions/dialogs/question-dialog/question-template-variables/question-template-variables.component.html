@@ -1,8 +1,5 @@
-<!--@let _prefix = 'ADMIN.questionnaire.dialog.question';-->
-
 <mat-form-field class='small-input' subscriptSizing="fixed" appearance='outline'>
-  <textarea #input id="field_label" matInput [formField]="formField()" cdkTextareaAutosize
-            rows="3"></textarea>
+  <textarea #input id="field_label" matInput [formField]="formField()" cdkTextareaAutosize></textarea>
   <mat-chip-set>
     @for (variable of variables(); track variable.id) {
       <mat-chip>

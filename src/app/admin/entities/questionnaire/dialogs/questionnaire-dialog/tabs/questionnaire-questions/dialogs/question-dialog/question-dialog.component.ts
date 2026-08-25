@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit, signal,} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
@@ -16,23 +10,19 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
-  requiredField, RequiredWhen, validateDuplicate, validateMaxMin, validateMinMax, validateTemplateVariables
+  positiveNumber,
+  requiredField,
+  RequiredWhen,
+  validateDuplicate,
+  validateMaxMin,
+  validateMinMax, validateRegex,
+  validateTemplateVariables
 } from '../../../../../../../../../shared/utils/signal-form-validators';
-import {
-  applyEach,
-  disabled,
-  form,
-  FormField,
-  validate
-} from '@angular/forms/signals';
+import {applyEach, disabled, form, FormField, validate} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
 import {QuestionChoicesComponent} from './question-choices/question-choices.component';
-import {
-  MatDatepicker,
-  MatDatepickerInput,
-  MatDatepickerToggle
-} from '@angular/material/datepicker';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -44,6 +34,7 @@ import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
 import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
 import {checkValidation, QUESTION_TYPES, withLanguage} from '../../../../services/utils';
+import jexl from 'jexl';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   id: string;
@@ -198,26 +189,15 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
       requiredField(choice.label[this._lang], {when: whenRequired});
     });
 
+    validateRegex(schema.text_validation_min, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TEXT});
+
     requiredField(schema.range.min, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
     requiredField(schema.range.max, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
     requiredField(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
 
     validateMinMax(schema.range.min, schema.range.max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
     validateMaxMin(schema.range.max, schema.range.min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-
-    validate(schema.range.step, ({value, valueOf}) => {
-      if (valueOf(schema.field_type) !== QuestionType.SLIDER) return null;
-
-      const step = Number(value());
-
-      if (Number.isNaN(step)) return null;
-      if (step > 0) return null;
-
-      return {
-        kind: 'rangeStepPositive',
-        message: 'Step must be positive',
-      };
-    });
+    positiveNumber(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
 
     validateMinMax(schema.text_validation_min, schema.text_validation_max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
     validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
@@ -231,18 +211,54 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     requiredField(schema.field_annotation.timer.start, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
     requiredField(schema.field_annotation.timer.end, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
 
-    validateMinMax(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
-    validateMaxMin(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
+    validateMaxMin(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
+    validateMinMax(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
 
     requiredField(schema.calculation_fn, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.CALC});
+    requiredField(schema.calculation_args, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.CALC});
+    validate(schema.calculation_fn, ({ value, valueOf }) => {
+      if (valueOf(schema.field_type) !== QuestionType.CALC) return null;
 
-    // required(schema.calculation_args, {
-    //   when: ({ valueOf }) => {
-    //     const v = valueOf(schema.field_type);
-    //     return v === 'calc'
-    //   }
-    // });
+      jexl.addTransform('num', (val) => Number(val) || 0);
 
+      const expression = value();//this.entity().calculation_fn;
+      const args = valueOf(schema.calculation_args)?.split(',');
+      if (expression && args) {
+        const context = args.reduce((acc: Record<string, string | null>, arg) => {
+          // arg can be a string, number, date, null/undefined
+          const type = 'number'
+          const _arg = arg.trim();
+
+          switch(type) {
+            case 'number':
+              acc[_arg] = "7";
+              return acc;
+            default:
+              acc[_arg] = "7";
+              return acc;
+          }
+        }, {});
+        console.log('CALC_Class: QuestionDialogComponent, Function: , Line 239 context' , context);
+        try {
+          const y = jexl.evalSync(expression, context);
+          console.log('CALC_Class: QuestionDialogComponent, Function: , Line 242 ' , y);
+          return null;
+        } catch (error) {
+          console.log('CALC_Class: QuestionDialogComponent, Function: , Line 245 error' , error);
+          return {
+            kind: 'invalidFunction',
+            message: error instanceof Error
+                ? error.message
+                : 'Invalid JEXL expression'
+          };
+        }
+      }
+      console.log('CALC_Class: QuestionDialogComponent, Function: , Line 254 ' , );
+      return {
+        kind: 'invalidFunction',
+        message: 'Invalid JEXL expression'
+      };
+    });
   });
 
   ngAfterViewInit() {

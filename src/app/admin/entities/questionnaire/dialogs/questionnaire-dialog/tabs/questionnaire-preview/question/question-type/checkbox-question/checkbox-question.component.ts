@@ -31,27 +31,31 @@ export class CheckboxQuestionComponent implements OnInit {
 
   protected isPreviewDisabled = false;
   previewValueChange = output<string[] | null>();
-  protected previewItems = signal<{ code: string; label: Record<string, string>, checked: boolean; }[]>([]);
+
+  protected previewItems = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
-    this.previewItems.set((this.entity().select_choices_or_calculations ?? [])
-      .map(item => (
-        { code: item.code, label: item.label, checked: this.answer()?.value?.includes(item.code) ?? false }
-      ))
-    );
+    this.previewItems.set(this.buildPreviewItems());
+  }
+
+  private buildPreviewItems(): Record<string, boolean> {
+    return (this.entity().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
+      acc[item.code] = this.answer()?.value?.includes(item.code) ?? false;
+      return acc;
+    }, {});
   }
 
   protected onPreviewInputChange(value: string | null) {
     if (value === null) {
-      this.previewItems.update(items =>
-        items.map(item => ({ ...item, checked: false })));
+      this.previewItems.set(
+        (this.entity().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
+          acc[item.code] = false;
+          return acc;
+        }, {}));
       this.previewValueChange.emit(null);
     } else {
-      this.previewItems.update(items =>
-        items.map(item => ({ ...item, checked: item.code === value ? !item.checked : item.checked })));
-      const res = this.previewItems()
-        .filter(item => item.checked)
-        .map(item => item.code);
+      this.previewItems.update(items => ({...items, [value]: !items[value]}));
+      const res = Object.entries(this.previewItems()).filter(([, checked]) => checked).map(([code]) => code)
       this.previewValueChange.emit(res);
     }
   }
