@@ -86,7 +86,8 @@ export class ProfilePageComponent { //implements OnInit {
   //   }
   // }
 
-  save(): void {
+  save(event: SubmitEvent): void {
+    event.preventDefault();
     this.loading.set(true);
     this.error.set(null);
     const user = {

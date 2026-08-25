@@ -2,7 +2,7 @@
   <ng-container header>{{ 'CORE.AUTH.LOGIN_PAGE.title' | translate }}</ng-container>
   <ng-container body>
     <p class="mb-4">{{ 'CORE.AUTH.LOGIN_PAGE.subtitle' | translate }}</p>
-    <form novalidate autocomplete="on">
+    <form novalidate autocomplete="on" (submit)="loginHandler($event)">
       <label for="username" class="text-sm">{{ 'CORE.AUTH.LOGIN_PAGE.username' | translate }} *</label>
       <mat-form-field class="mb-1! w-full small"
                       subscriptSizing="fixed"
@@ -49,10 +49,9 @@
       <button mat-raised-button
               class="gradient-btn w-full mt-2 mb-4"
               color='primary'
-              type='button'
+              type='submit'
               name='update'
-              [disabled]='form().invalid() || !form().dirty() || loading()'
-              (click)='loginHandler()'>
+              [disabled]='form().invalid() || !form().dirty() || loading()'>
         @if (loading()) {
           <mat-icon>
             <mat-spinner diameter='20'></mat-spinner>

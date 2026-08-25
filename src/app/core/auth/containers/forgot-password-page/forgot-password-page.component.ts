@@ -56,7 +56,8 @@ export class ForgotPasswordPageComponent {
     });
   }
 
-  send() {
+  send(event: SubmitEvent) {
+    event.preventDefault();
     if (this.model().email) {
       this.profileService.requestResetPassword(this.model().email).subscribe({
         next: () => {

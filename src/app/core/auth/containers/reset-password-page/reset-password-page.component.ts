@@ -105,7 +105,8 @@ export class ResetPasswordPageComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  update(): void {
+  update(event: SubmitEvent): void {
+    event.preventDefault();
     this.loading.set(true);
     this.error.set(null);
     this.success.set(false);

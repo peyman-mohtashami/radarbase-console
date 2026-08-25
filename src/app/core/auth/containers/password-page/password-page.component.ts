@@ -86,7 +86,8 @@ export class PasswordPageComponent {
     });
   }
 
-  update(): void {
+  update(event: SubmitEvent): void {
+    event.preventDefault();
     this.loading.set(true);
     this.success.set(false);
     this.error.set(null);

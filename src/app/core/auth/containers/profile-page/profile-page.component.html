@@ -1,13 +1,10 @@
-@if (authService.user(); as user) {
+@if (authService.user()) {
   <div class="flex justify-center items-center h-[calc(100vh-64px)]">
     <mat-card appearance="outlined" class="w-2/3 max-w-200">
       <mat-card-header class='block! text-center'>
         <mat-card-title class="text-lg">
           {{ 'CORE.AUTH.PROFILE_PAGE.title' | translate }}
         </mat-card-title>
-<!--        <mat-card-subtitle>-->
-<!--          {{ 'CORE.AUTH.PROFILE_PAGE.subtitle' | translate }}: {{ user.login }}-->
-<!--        </mat-card-subtitle>-->
       </mat-card-header>
 
       <mat-card-content>
@@ -16,7 +13,7 @@
             {{ `ERROR.${error()?.error.error}` | translate }}
           </app-error-message-box>
         }
-        <form novalidate>
+        <form novalidate (submit)="save($event)">
           <label for="login" class="text-sm">{{ 'CORE.AUTH.PROFILE_PAGE.login' | translate }}</label>
           <mat-form-field class='w-full'
                           subscriptSizing="fixed"
@@ -29,9 +26,6 @@
                           subscriptSizing="fixed"
                           appearance='outline'>
             <input matInput [formField]="form.firstName">
-<!--            <mat-hint align="start">-->
-<!--              {{ ValidatorHint.normalTextValidator | translate }}-->
-<!--            </mat-hint>-->
             <mat-error>
               @if (form.firstName().touched() && form.firstName().invalid()) {
                 @for (error of form.firstName().errors(); track error.kind) {
@@ -46,9 +40,6 @@
                           subscriptSizing="fixed"
                           appearance='outline'>
             <input matInput [formField]='form.lastName'/>
-<!--            <mat-hint align="start">-->
-<!--              {{ ValidatorHint.normalTextValidator }}-->
-<!--            </mat-hint>-->
             <mat-error>
               @if (form.lastName().touched() && form.lastName().invalid()) {
                 @for (error of form.lastName().errors(); track error.kind) {
@@ -77,10 +68,8 @@
                 class="w-full mt-4"
                 [class]="success() ? 'bg-green-200! text-green-700!' : ''"
                 color='primary'
-                type='submit'
                 name='update'
-                [disabled]='form().invalid() || !form().dirty() || loading() || success()'
-                (click)='save()'>
+                [disabled]='form().invalid() || !form().dirty() || loading() || success()'>
           @if (loading()) {
             <mat-icon>
               <mat-spinner diameter='20'/>

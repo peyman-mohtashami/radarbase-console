@@ -58,7 +58,8 @@ export class LoginPageComponent implements OnInit {
     this.stateError.set(!!history.state?.['error']);
   }
 
-  loginHandler(): void {
+  loginHandler(event: SubmitEvent): void {
+    event.preventDefault();
     this.loading.set(true);
     this.login();
   }

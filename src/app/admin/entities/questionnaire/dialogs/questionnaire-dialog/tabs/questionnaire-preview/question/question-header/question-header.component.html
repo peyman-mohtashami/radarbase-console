@@ -1,5 +1,3 @@
-@let variables = store.selected()?.variables;
-
 @if (language()) {
   @if (sectionHeader()) {
     <p class="text-sm font-bold mb-4" [innerHtml]="question().section_header?.[language()!.code] | replacePlaceholders"></p>
