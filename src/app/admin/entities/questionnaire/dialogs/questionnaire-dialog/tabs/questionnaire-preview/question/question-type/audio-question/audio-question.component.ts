@@ -4,7 +4,7 @@ import {
   output,
   input
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {
   QuestionHeaderComponent
 } from '../../question-header/question-header.component';
@@ -18,18 +18,20 @@ import {
 })
 export class AudioQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   ngOnInit(): void {
-    this.onPreviewInputChange(`${Date.now()}`);
+    this.onInputChange(`${Date.now()}`);
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
   }
 
-  protected onPreviewInputChange(value: string | null) {
-    this.previewValueChange.emit(value);
+  protected onInputChange(value: string | null) {
+    this.valueChange.emit(value);
   }
 }

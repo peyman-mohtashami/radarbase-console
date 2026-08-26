@@ -1,9 +1,9 @@
 import {
   Component,
   output,
-  input
+  input, OnInit
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatButton} from '@angular/material/button';
 import {MatSlider, MatSliderThumb} from '@angular/material/slider';
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
@@ -22,17 +22,21 @@ import {
   ],
   templateUrl: './slider-question.component.html'
 })
-export class SliderQuestionComponent {
+export class SliderQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+  }
 
-  protected onPreviewInputChange(value: number | null) {
-    this.previewValueChange.emit(value === null ? null : `${value}`);
+  protected onInputChange(value: number | null) {
+    this.valueChange.emit(value === null ? null : `${value}`);
   }
 }

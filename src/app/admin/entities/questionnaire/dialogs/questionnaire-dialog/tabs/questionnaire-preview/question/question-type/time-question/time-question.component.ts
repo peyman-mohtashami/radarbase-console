@@ -2,9 +2,9 @@ import {
   Component,
   inject,
   output,
-  input
+  input, OnInit
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {
   MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
@@ -29,33 +29,38 @@ import {timeToMinutes} from '../../../../../../../../../../shared/utils/signal-f
   providers: [ReplacePlaceholdersPipe],
   templateUrl: './time-question.component.html'
 })
-export class TimeQuestionComponent {
+export class TimeQuestionComponent implements OnInit {
   private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 
   protected readonly Number = Number;
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   protected error: string | null = null;
 
-  protected onPreviewDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+  }
+
+  protected onDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
     if (event === null) {
-      return this.previewValueChange.emit(null);
+      return this.valueChange.emit(null);
     }
     const value = event.value;
     if (!value) return;
     const timestamp = `${value.getTime()}`;
-    this.previewValueChange.emit(timestamp);
+    this.valueChange.emit(timestamp);
   }
 
-  protected onPreviewTimeInputChange(event: Event | null) {
+  protected onTimeInputChange(event: Event | null) {
     if (event === null) {
-      this.previewValueChange.emit(null);
+      this.valueChange.emit(null);
       this.error = null;
       return;
     }
@@ -63,13 +68,13 @@ export class TimeQuestionComponent {
     this.validate(value);
 
     if (this.error === null) {
-      this.previewValueChange.emit(value);
+      this.valueChange.emit(value);
     }
   }
 
   validate(valueString: string) {
-    const minValueString = this.replacePlaceholdersPipe.transform(this.entity()?.text_validation_min);
-    const maxValueString = this.replacePlaceholdersPipe.transform(this.entity().text_validation_max);
+    const minValueString = this.replacePlaceholdersPipe.transform(this.question()?.text_validation_min);
+    const maxValueString = this.replacePlaceholdersPipe.transform(this.question().text_validation_max);
 
     const value = timeToMinutes(valueString);
     const minValue = minValueString !== undefined ? timeToMinutes(minValueString) : undefined;

@@ -32,7 +32,7 @@
                 @if (index() === i) {
                   @for (question of group[1]; track question.id) {
                     @if (question.visible) {
-                      <app-question [question]="question" (answerEvent)="onAnswer($event)"/>
+                      <app-question [questionnaire]="entity" [question]="question" (answerEvent)="onAnswer($event)"/>
                     }
                   }
                 }

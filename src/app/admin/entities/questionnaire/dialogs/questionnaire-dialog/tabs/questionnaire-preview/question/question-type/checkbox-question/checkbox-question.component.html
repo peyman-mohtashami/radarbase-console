@@ -1,19 +1,19 @@
 <section class="">
-  <app-question-header [question]="entity()" [language]="language()"/>
+  <app-question-header [question]="question()" [language]="language()"/>
 
-  @for (item of entity().select_choices_or_calculations; track item.code) {
+  @for (item of question().select_choices_or_calculations; track item.code) {
     <p>
       <mat-checkbox class="w-full"
-                    (click)="onPreviewInputChange(item.code)"
-                    [disabled]="isPreviewDisabled"
+                    (click)="onInputChange(item.code)"
+                    [disabled]="!isEditEnabled"
                     [checked]="previewItems()[item.code]">
         <span class="ion-text-wrap text-lg" [innerHtml]="item.label[language().code] | replacePlaceholders"></span>
       </mat-checkbox>
     </p>
   }
 </section>
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
     Clear
   </button>
 }

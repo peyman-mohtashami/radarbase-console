@@ -4,9 +4,58 @@
 <label for="select_choices_or_calculations" class="text-sm">
   {{ `${_prefix}.choices` | translate }} *
 </label>
+
+<!--<div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" class="border rounded p-2 mb-4"-->
+<!--     cdkDropListOrientation="vertical">-->
+<!--&lt;!&ndash;  <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_32px] gap-1 items-center">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">&ndash;&gt;-->
+<!--&lt;!&ndash;      {{ `${_prefix}.choiceCode` | translate }} *&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">&ndash;&gt;-->
+<!--&lt;!&ndash;      {{ `${_prefix}.choiceLabel` | translate }} *&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--  @for (choice of formField(); let i = $index; track $index) {-->
+<!--    <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_32px] gap-1" cdkDrag-->
+<!--         [cdkDragBoundary]="choicesContainer" cdkDragLockAxis="y">-->
+<!--      <button mat-icon-button class="cursor-move tiny" cdkDragHandle>-->
+<!--        <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>-->
+<!--      </button>-->
+<!--      <div class="grid grid-cols-[32px_minmax(0,1fr)] gap-1 items-center">-->
+<!--        <p>code</p>-->
+<!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
+<!--          <input matInput [formField]="choice.code">-->
+<!--        </mat-form-field>-->
+<!--        <p>label</p>-->
+<!--        <app-question-template-variables [questionIndex]="index()" [formField]="choice.label[language]"/>-->
+<!--      </div>-->
+
+
+<!--      <button class="tiny" [disabled]="i === 0"-->
+<!--              mat-icon-button color="warn"-->
+<!--              (click)="removeChoice(i)" type="button">-->
+<!--        <mat-icon class="material-symbols-outlined">do_not_disturb_on</mat-icon>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  }-->
+
+<!--  <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_32px] gap-1 items-center ">-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--&lt;!&ndash;    <div></div>&ndash;&gt;-->
+<!--    <button class="tiny" mat-icon-button (click)="addChoice()"-->
+<!--            type="button">-->
+<!--      <mat-icon class="material-symbols-outlined">add_circle</mat-icon>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
+
+
 <div #choicesContainer cdkDropList (cdkDropListDropped)="onDrop($event)" class="border rounded p-2 mb-4"
      cdkDropListOrientation="vertical">
-  <div class=" text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1 items-center">
+  <div class=" text-sm grid grid-cols-[32px_minmax(0,0.3fr)_minmax(0,1fr)_32px] gap-1 items-center">
     <div></div>
     <div [class]="formField()().invalid() && formField()().dirty() ? 'text-red-700' : ''">
       {{ `${_prefix}.choiceCode` | translate }} *
@@ -17,7 +66,7 @@
     <div></div>
   </div>
   @for (choice of formField(); let i = $index; track $index) {
-    <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1" cdkDrag
+    <div class="text-sm grid grid-cols-[32px_minmax(0,0.3fr)_minmax(0,1fr)_32px] gap-1" cdkDrag
          [cdkDragBoundary]="choicesContainer" cdkDragLockAxis="y">
       <button mat-icon-button class="cursor-move tiny" cdkDragHandle>
         <mat-icon class="material-symbols-outlined">swap_vertical_circle</mat-icon>
@@ -38,7 +87,7 @@
     </div>
   }
 
-  <div class="text-sm grid grid-cols-[32px_minmax(0,1fr)_minmax(0,1fr)_32px] gap-1 items-center ">
+  <div class="text-sm grid grid-cols-[32px_minmax(0,0.3fr)_minmax(0,1fr)_32px] gap-1 items-center ">
     <div></div>
     <div></div>
     <div></div>

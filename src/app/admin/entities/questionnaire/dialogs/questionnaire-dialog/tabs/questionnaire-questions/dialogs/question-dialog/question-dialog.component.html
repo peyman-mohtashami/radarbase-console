@@ -8,9 +8,9 @@
 </h2>
 
 <mat-dialog-content class="p-4!">
-  <div class="grid grid-cols-2 gap-4 h-full">
+  <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,320px)] gap-2 h-full">
 
-    <form class="h-full overflow-y-auto">
+    <form class="h-full overflow-y-auto pr-4">
       <div class="grid grid-cols-2 gap-2 items-center">
         <div>
           <label for="field_type" class="text-sm"
@@ -425,6 +425,23 @@
               </mat-form-field>
             </div>
           </fieldset>
+        }
+
+        @case (QuestionType.CHECKBOX) {
+          <div>
+            <label for="text_validation_max"
+                   class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>
+            <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
+              <input id="text_validation_max" type="number" matInput [formField]="form.text_validation_max"/>
+              <mat-error>
+                @if (form.text_validation_max().invalid()) {
+                  @for (error of form.text_validation_max().errors(); track error.kind) {
+                    {{ error.message }}
+                  }
+                }
+              </mat-error>
+            </mat-form-field>
+          </div>
         }
 
       }

@@ -6,7 +6,7 @@ import {
   WritableSignal,
   input
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatButton} from '@angular/material/button';
 import {
   QuestionHeaderComponent
@@ -32,19 +32,21 @@ export interface TaskTimer {
 })
 export class TimedQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   ngOnInit(): void {
     this.initTimer();
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
   }
 
-  protected onPreviewInputChange(value: string | null) {
-    this.previewValueChange.emit(value);
+  protected onInputChange(value: string | null) {
+    this.valueChange.emit(value);
   }
 
   taskTimer!: TaskTimer;
@@ -52,7 +54,7 @@ export class TimedQuestionComponent implements OnInit {
   endTime!: number
 
   initTimer() {
-    const fieldAnnotation = this.entity().field_annotation as {
+    const fieldAnnotation = this.question().field_annotation as {
       image: string
       timer: {
         start: string
@@ -103,6 +105,6 @@ export class TimedQuestionComponent implements OnInit {
 
   async stopTimer() {
     this.taskTimer.hasFinished.set(true);
-    this.onPreviewInputChange(this.endTime.toString())
+    this.onInputChange(this.endTime.toString())
   }
 }

@@ -2,9 +2,9 @@ import {
   Component,
   inject,
   output,
-  input
+  input, OnInit
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatFormField, MatHint, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
@@ -25,23 +25,28 @@ import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe'
   providers: [ReplacePlaceholdersPipe],
   templateUrl: './number-question.component.html'
 })
-export class NumberQuestionComponent {
+export class NumberQuestionComponent implements OnInit {
   protected readonly Number = Number;
 
   private replacePlaceholdersPipe = inject(ReplacePlaceholdersPipe);
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   protected error: string | null = null;
 
-  protected onPreviewInputChange(event: Event | null) {
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+  }
+
+  protected onInputChange(event: Event | null) {
     if (event === null) {
-      this.previewValueChange.emit(null);
+      this.valueChange.emit(null);
       this.error = null;
       return;
     }
@@ -50,13 +55,13 @@ export class NumberQuestionComponent {
     this.validate(value);
 
     if (this.error === null) {
-      this.previewValueChange.emit(value);
+      this.valueChange.emit(value);
     }
   }
 
   validate(valueString: string) {
-    const minValueString = this.replacePlaceholdersPipe.transform(this.entity()?.text_validation_min);
-    const maxValueString = this.replacePlaceholdersPipe.transform(this.entity().text_validation_max);
+    const minValueString = this.replacePlaceholdersPipe.transform(this.question()?.text_validation_min);
+    const maxValueString = this.replacePlaceholdersPipe.transform(this.question().text_validation_max);
 
     const value = parseFloat(valueString);
     const minValue = minValueString !== undefined ? parseFloat(minValueString) : undefined;

@@ -5,7 +5,7 @@ import {
   signal,
   input
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
@@ -25,38 +25,40 @@ import {
 })
 export class CheckboxQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
   language = input.required<AppQuestionnaireLanguage>();
+  questionnaire = input.required<AppQuestionnaire>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string[] | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string[] | null>();
 
   protected previewItems = signal<Record<string, boolean>>({});
 
   ngOnInit(): void {
-    this.previewItems.set(this.buildPreviewItems());
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+    this.previewItems.set(this.buildItems());
   }
 
-  private buildPreviewItems(): Record<string, boolean> {
-    return (this.entity().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
+  private buildItems(): Record<string, boolean> {
+    return (this.question().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
       acc[item.code] = this.answer()?.value?.includes(item.code) ?? false;
       return acc;
     }, {});
   }
 
-  protected onPreviewInputChange(value: string | null) {
+  protected onInputChange(value: string | null) {
     if (value === null) {
       this.previewItems.set(
-        (this.entity().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
+        (this.question().select_choices_or_calculations ?? []).reduce((acc: Record<string, boolean>, item) => {
           acc[item.code] = false;
           return acc;
         }, {}));
-      this.previewValueChange.emit(null);
+      this.valueChange.emit(null);
     } else {
       this.previewItems.update(items => ({...items, [value]: !items[value]}));
       const res = Object.entries(this.previewItems()).filter(([, checked]) => checked).map(([code]) => code)
-      this.previewValueChange.emit(res);
+      this.valueChange.emit(res);
     }
   }
 }

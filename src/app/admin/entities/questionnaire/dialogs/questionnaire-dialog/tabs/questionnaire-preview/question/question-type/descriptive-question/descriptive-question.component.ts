@@ -18,18 +18,17 @@ import {
 })
 export class DescriptiveQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  valueChange = output<string | null>();
 
   ngOnInit(): void {
-    this.onPreviewInputChange(`${Date.now()}`);
+    this.onInputChange(`${Date.now()}`);
   }
 
-  protected onPreviewInputChange(value: string | null) {
-    this.previewValueChange.emit(value);
+  protected onInputChange(value: string | null) {
+    this.valueChange.emit(value);
   }
 }

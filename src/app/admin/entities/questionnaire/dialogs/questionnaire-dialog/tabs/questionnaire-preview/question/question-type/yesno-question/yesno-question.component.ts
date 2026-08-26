@@ -1,5 +1,5 @@
-import {Component, output, input} from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {Component, output, input, OnInit} from '@angular/core';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatButton} from '@angular/material/button';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {
@@ -18,14 +18,15 @@ import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe'
   ],
   templateUrl: './yesno-question.component.html'
 })
-export class YesNoQuestionComponent {
+export class YesNoQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
   protected yesNoOptions: {code: string, label: Record<string, string>}[] = [
     {
       code: '1',
@@ -55,9 +56,13 @@ export class YesNoQuestionComponent {
         de: 'Nein'
       }
     }
-  ]
+  ];
 
-  protected onPreviewInputChange(value: string | null) {
-    this.previewValueChange.emit(value);
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+  }
+
+  protected onInputChange(value: string | null) {
+    this.valueChange.emit(value);
   }
 }

@@ -1,9 +1,9 @@
 import {
   Component,
   output,
-  input
+  input, OnInit
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -33,33 +33,38 @@ import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe'
   providers: [ReplacePlaceholdersPipe],
   templateUrl: './date-question.component.html'
 })
-export class DateQuestionComponent {
+export class DateQuestionComponent implements OnInit {
   protected readonly Number = Number;
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   protected error: string | null = null;
 
-  protected get previewDateValue(): Date | null {
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
+  }
+
+  protected get dateValue(): Date | null {
     if (!this.answer()?.value) return null;
 
     const timestamp = Number(this.answer().value);
     return Number.isNaN(timestamp) ? null : new Date(timestamp);
   }
 
-  protected onPreviewDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
+  protected onDateInputChange(event: MatDatepickerInputEvent<Date> | null) {
     if (event === null) {
-      return this.previewValueChange.emit(null);
+      return this.valueChange.emit(null);
     }
     const value = event.value;
     if (!value) return;
     const timestamp = `${value.getTime()}`;
-    this.previewValueChange.emit(timestamp);
+    this.valueChange.emit(timestamp);
   }
 
   protected getDateISOString(timestamp: string | undefined) {

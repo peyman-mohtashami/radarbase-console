@@ -4,7 +4,7 @@ import {
   output,
   input
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatButton} from '@angular/material/button';
 import {ReplacePlaceholdersPipe} from '../../../pipes/replace-placeholders.pipe';
 import {
@@ -22,24 +22,26 @@ import {
 })
 export class RangeQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
-  protected previewValue: string | null = null;
-  protected previewSelectedLabel: string | null = null;
+  protected value: string | null = null;
+  protected selectedLabel: string | null = null;
 
   ngOnInit(): void {
-    this.previewValue = this.answer()?.value !== undefined ? this.answer().value : null;
-    this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().code] ?? null;
+    this.value = this.answer()?.value !== undefined ? this.answer().value : null;
+    this.selectedLabel = this.question().select_choices_or_calculations?.find(e => e.code === this.value)?.label[this.language().code] ?? null;
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
   }
 
-  protected onPreviewInputChange(value: string | null) {
-    this.previewValue = value;
-    this.previewSelectedLabel = this.entity().select_choices_or_calculations?.find(e => e.code === this.previewValue)?.label[this.language().code] ?? null;
-    this.previewValueChange.emit(value);
+  protected onInputChange(value: string | null) {
+    this.value = value;
+    this.selectedLabel = this.question().select_choices_or_calculations?.find(e => e.code === this.value)?.label[this.language().code] ?? null;
+    this.valueChange.emit(value);
   }
 }

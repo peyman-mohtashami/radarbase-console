@@ -6,7 +6,7 @@ import {
   ComponentRef, inject
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../models/kafka';
-import {AppQuestion} from '../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire} from '../../../../../models/questionnaire';
 import {QUESTION_COMPONENTS} from './question-type/question-type.registry';
 import {debounceTime} from 'rxjs/operators';
 import {outputToObservable} from '@angular/core/rxjs-interop';
@@ -21,6 +21,7 @@ export class QuestionComponent implements OnInit {
   previewStore = inject(PreviewStore);
 
   question = input.required<AppQuestion>();
+  questionnaire = input<AppQuestionnaire>();
 
   answerEvent = output<AnswerWithTimeLog>()
 
@@ -48,7 +49,7 @@ export class QuestionComponent implements OnInit {
       this.componentRef = host.createComponent(componentType);
       this.currentFieldType = question.field_type;
 
-      outputToObservable(this.componentRef.instance.previewValueChange)
+      outputToObservable(this.componentRef.instance.valueChange)
         .pipe(debounceTime(300))
         .subscribe((value: any) => {
           this.emitAnswer(value);
@@ -56,7 +57,8 @@ export class QuestionComponent implements OnInit {
     }
 
     this.componentRef.setInput('language', this.previewStore.language());
-    this.componentRef.setInput('entity', question);
+    this.componentRef.setInput('question', question);
+    this.componentRef.setInput('questionnaire', this.questionnaire());
     this.componentRef.setInput('answer', question.field_name ? this.previewStore.answers()[question.field_name]?.[0] : null);
   }
 

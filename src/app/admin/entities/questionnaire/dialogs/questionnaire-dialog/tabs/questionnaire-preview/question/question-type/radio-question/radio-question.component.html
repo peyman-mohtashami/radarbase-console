@@ -1,17 +1,17 @@
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="question()" [language]="language()"/>
 
 <mat-radio-group aria-label="Select an option" [value]="answer()?.value">
-  @for (option of entity().select_choices_or_calculations; track option.code) {
+  @for (option of question().select_choices_or_calculations; track option.code) {
     <div>
-      <mat-radio-button [value]="option.code" (click)="onPreviewInputChange(option.code)"
-                        [disabled]="isPreviewDisabled">
+      <mat-radio-button [value]="option.code" (click)="onInputChange(option.code)"
+                        [disabled]="!isEditEnabled">
         <span class="ion-text-wrap" [innerHtml]="option.label[language()!.code] | replacePlaceholders"></span>
       </mat-radio-button>
     </div>
   }
 </mat-radio-group>
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
     Clear
   </button>
 }

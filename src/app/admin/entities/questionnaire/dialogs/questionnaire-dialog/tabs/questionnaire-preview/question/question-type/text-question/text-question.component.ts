@@ -1,9 +1,9 @@
 import {
   Component,
   output,
-  input
+  input, OnInit
 } from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {
@@ -20,20 +20,25 @@ import {
   ],
   templateUrl: './text-question.component.html'
 })
-export class TextQuestionComponent {
+export class TextQuestionComponent implements OnInit {
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
+  protected isEditEnabled = true;
+  valueChange = output<string | null>();
 
   protected error: string | null = null;
 
-  protected onPreviewInputChange(event: Event | null) {
+  ngOnInit(): void {
+    this.isEditEnabled = this.questionnaire().editEnabled || !this.answer() || !this.answer().value;
+  }
+
+  protected onInputChange(event: Event | null) {
     if (event === null) {
-      this.previewValueChange.emit(null);
+      this.valueChange.emit(null);
       this.error = null;
       return;
     }
@@ -42,14 +47,14 @@ export class TextQuestionComponent {
     this.validate(value);
 
     if (this.error === null) {
-      this.previewValueChange.emit(value);
+      this.valueChange.emit(value);
     } else {
-      this.previewValueChange.emit(null);
+      this.valueChange.emit(null);
     }
   }
 
   validate(valueString: string) {
-    const regex = this.entity().text_validation_max;
+    const regex = this.question().text_validation_min;
     if (!regex) {
       this.error = null;
       return;

@@ -1,15 +1,15 @@
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="question()" [language]="language()"/>
 
 <mat-form-field subscriptSizing="fixed" appearance="outline">
-  @if (entity().multi_line) {
+  @if (question().multi_line) {
     <textarea matInput rows="5" maxlength="256"
               [value]="answer()?.value ?? ''"
-              [disabled]="isPreviewDisabled"
-              (input)="onPreviewInputChange($event)"
+              [disabled]="!isEditEnabled"
+              (input)="onInputChange($event)"
               [type]="'text'"></textarea>
   } @else {
-    <input matInput maxlength="256" [value]="answer()?.value ?? ''" [disabled]="isPreviewDisabled"
-           (input)="onPreviewInputChange($event)"
+    <input matInput maxlength="256" [value]="answer()?.value ?? ''" [disabled]="!isEditEnabled"
+           (input)="onInputChange($event)"
            [type]="'text'">
   }
 </mat-form-field>
@@ -18,8 +18,8 @@
   <p class="text-red-700">{{ error }}</p>
 }
 
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
     Clear
   </button>
 }

@@ -296,6 +296,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
     switch (question.field_type) {
       case QuestionType.TEXT:
         updatedQuestion.multi_line = question.multi_line;
+        updatedQuestion.text_validation_min = question.text_validation_min;
         break;
       case QuestionType.NUMBER:
       case QuestionType.DATE:

@@ -1,15 +1,6 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  output,
-  signal,
-  input
-} from '@angular/core';
-import {AppQuestion, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
-import {
-  QuestionHeaderComponent
-} from '../../question-header/question-header.component';
+import {Component, inject, input, OnInit, output, signal} from '@angular/core';
+import {AppQuestion, AppQuestionnaire, AppQuestionnaireLanguage} from '../../../../../../../models/questionnaire';
+import {QuestionHeaderComponent} from '../../question-header/question-header.component';
 import jexl from 'jexl';
 import {PreviewStore} from '../../../services/preview.store';
 
@@ -21,42 +12,31 @@ import {PreviewStore} from '../../../services/preview.store';
   templateUrl: './calculation-question.component.html'
 })
 export class CalculationQuestionComponent implements OnInit {
-  private previewState = inject(PreviewStore);
+  private store = inject(PreviewStore);
 
-  entity = input.required<AppQuestion>();
+  question = input.required<AppQuestion>();
+  questionnaire = input.required<AppQuestionnaire>();
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isPreviewDisabled = false;
-  previewValueChange = output<string | null>();
-  previewResult = signal('N/A');
-
-  protected error: any;
+  valueChange = output<string | null>();
+  result = signal('N/A');
 
   async ngOnInit(): Promise<void> {
       jexl.addTransform('num', (val) => Number(val) || 0);
 
-      const expression = this.entity().calculation_fn;
-      const args = this.entity().calculation_args?.split(',');
+      const expression = this.question().calculation_fn;
+      const args = this.question().calculation_args?.split(',');
       if (expression && args) {
-        const context = args.reduce((acc: Record<string, any>, arg) => {
+        const context = args.reduce((acc: Record<string, string | null>, arg) => {
           const _arg = arg.trim();
-          const _value = this.previewState.answers()[_arg]?.[0]?.value;
-          acc[_arg] = _value;
+          acc[_arg] = this.store.answers()[_arg]?.[0]?.value;
           return acc;
         }, {});
-        this.previewResult.set(await jexl.eval(expression, context));
+        this.result.set(await jexl.eval(expression, context));
       }
 
-      this.previewValueChange.emit(this.previewResult());
-  }
-
-  protected onPreviewInputChange(event: Event | null) {
-    if (event === null) {
-      this.previewValueChange.emit(null);
-      return;
-    }
-    const value = (event.target as HTMLInputElement).value;
-    this.previewValueChange.emit(value);
+      this.valueChange.emit(this.result());
+    // this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();
   }
 }

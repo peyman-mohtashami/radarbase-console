@@ -1,7 +1,7 @@
-<app-question-header [question]="entity()" [language]="language()" [disableRequiredAsterisk]="true"/>
+<app-question-header [question]="question()" [language]="language()" [disableRequiredAsterisk]="true"/>
 
 <div class="flex flex-col h-full gap-2">
-  @for (item of entity().select_choices_or_calculations; track item.code;) {
+  @for (item of question().select_choices_or_calculations; track item.code;) {
     <div class="border border-gray-400 rounded p-4 m-0">
       <p class="text-sm!">{{ item.code }}</p>
       <p class="text-base! pb-32 text-black" [innerHtml]="item.label[language().code] | replacePlaceholders"></p>

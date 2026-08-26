@@ -1,9 +1,9 @@
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="question()" [language]="language()"/>
 
-@if (entity().range; as range) {
+@if (question().range; as range) {
   <p class="text-center bg-primary/20 p-4">{{ slider.value }}</p>
   <mat-slider class="mt-8! w-[calc(100%-16px)]!"
-              [disabled]="isPreviewDisabled"
+              [disabled]="!isEditEnabled"
               [max]="range.max"
               [min]="range.min"
               [step]="range.step ?? 1"
@@ -11,7 +11,7 @@
               [showTickMarks]="true"
               color="primary">
     <input matSliderThumb class="" [value]="+(answer()?.value ?? range.min)" #slider
-           (valueChange)="onPreviewInputChange($event)">
+           (valueChange)="onInputChange($event)">
   </mat-slider>
 
   <div class="flex justify-between text-sm">
@@ -20,8 +20,8 @@
   </div>
 }
 
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
     Clear
   </button>
 }

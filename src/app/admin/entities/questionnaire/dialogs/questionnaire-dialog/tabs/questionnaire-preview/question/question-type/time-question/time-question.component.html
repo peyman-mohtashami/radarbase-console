@@ -1,19 +1,19 @@
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="question()" [language]="language()"/>
 
 <mat-form-field class='small-input'
                 appearance='outline'
                 subscriptSizing="dynamic">
-  <input matInput type="time" required (input)="onPreviewTimeInputChange($event)"/>
-  @if (entity().text_validation_min && entity().text_validation_max) {
-    <mat-hint>Enter a time between {{ entity().text_validation_min | replacePlaceholders }}
-      and {{ entity().text_validation_max | replacePlaceholders }}
+  <input matInput type="time" [value]="answer()?.value" required (input)="onTimeInputChange($event)" [disabled]="!isEditEnabled"/>
+  @if (question().text_validation_min && question().text_validation_max) {
+    <mat-hint>Enter a time between {{ question().text_validation_min | replacePlaceholders }}
+      and {{ question().text_validation_max | replacePlaceholders }}
     </mat-hint>
   }
-  @if (entity().text_validation_min && !entity().text_validation_max) {
-    <mat-hint>Enter a time after {{ entity().text_validation_min | replacePlaceholders }}</mat-hint>
+  @if (question().text_validation_min && !question().text_validation_max) {
+    <mat-hint>Enter a time after {{ question().text_validation_min | replacePlaceholders }}</mat-hint>
   }
-  @if (!entity().text_validation_min && entity().text_validation_max) {
-    <mat-hint>Enter a time before {{ entity().text_validation_max | replacePlaceholders }}</mat-hint>
+  @if (!question().text_validation_min && question().text_validation_max) {
+    <mat-hint>Enter a time before {{ question().text_validation_max | replacePlaceholders }}</mat-hint>
   }
 </mat-form-field>
 
@@ -22,8 +22,8 @@
 }
 
 
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewDateInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onDateInputChange(null)">
     Clear
   </button>
 }

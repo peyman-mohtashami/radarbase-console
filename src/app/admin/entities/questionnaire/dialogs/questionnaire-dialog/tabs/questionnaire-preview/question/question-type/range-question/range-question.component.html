@@ -1,18 +1,18 @@
-<app-question-header [question]="entity()" [language]="language()"/>
+<app-question-header [question]="question()" [language]="language()"/>
 
 <div class="w-full flex flex-wrap items-center mt-4 gap-px">
-  @for (item of entity().select_choices_or_calculations; track item) {
+  @for (item of question().select_choices_or_calculations; track item) {
     <button
       class="cursor-pointer flex grow items-center justify-center py-3 px-1 border-2 border-primary text-lg first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
-      [class]="(previewValue === item.code ? 'bg-primary/30' : '') + ' ' + (isPreviewDisabled ? 'opacity-70' : '')"
-      (click)="onPreviewInputChange(item.code)">
+      [class]="(value === item.code ? 'bg-primary/30' : '') + ' ' + (!isEditEnabled ? 'opacity-70' : '')"
+      (click)="onInputChange(item.code)">
           <span class="ion-text-wrap text-center"
-                [innerHtml]="(entity().show_code ? item.code : item.label[language().code]) | replacePlaceholders"></span>
+                [innerHtml]="(question().show_code ? item.code : item.label[language().code]) | replacePlaceholders"></span>
     </button>
   }
 </div>
 
-@if (entity().show_code && entity().select_choices_or_calculations; as choices) {
+@if (question().show_code && question().select_choices_or_calculations; as choices) {
   <div class="flex justify-between mt-2">
     <div class="w-1/2" [innerHtml]="choices[0].label[language().code] | replacePlaceholders"></div>
     <div class="w-1/2 text-right"
@@ -20,14 +20,14 @@
   </div>
 }
 
-@if (entity().show_selected_label && previewSelectedLabel) {
+@if (question().show_selected_label && selectedLabel) {
   <div class="p-2 bg-primary/10 mt-2">
-    {{ previewSelectedLabel }}
+    {{ selectedLabel }}
   </div>
 }
 
-@if (!isPreviewDisabled) {
-  <button color="warn" matButton class="my-4 text-sm!" (click)="onPreviewInputChange(null)">
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
     Clear
   </button>
 }
