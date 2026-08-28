@@ -1,29 +1,40 @@
-<!--@let _prefix = 'ADMIN.questionnaire.dialog';-->
-<!--@let _entity = entity();-->
-
 <div class="h-full overflow-auto w-full text-sm">
   <p class="text-base mb-4">Enter values</p>
-<!--  @for (p of placeholders; track $index) {-->
-<!--    <p>{{p.questionnaireId}} / {{p.questionId}} / {{p.operator ?? 'latest'}}</p>-->
-<!--  }-->
-
-<!--      <div class="h-full overflow-auto w-1/3 text-sm">-->
-    <form class="" [formGroup]="placeholderForm">
-<!--      <p class="font-bold mb-2">List of template values</p>-->
-
-      <div formArrayName="placeholders" class="flex flex-col gap-3">
-        @for (placeholderGroup of placeholderControls; track $index) {
-          <div [formGroupName]="$index" class="mb-4">
-            <p>Questionnaire ID: <code class="text-secondary">{{ placeholderGroup.controls['questionnaireId'].value }}</code></p>
-            <p>Question ID: <code class="text-secondary">{{ placeholderGroup.controls['questionId'].value }}</code></p>
-            <p>Operator: <code class="text-secondary">{{ placeholderGroup.controls['operator'].value }}</code></p>
+    <form class="" novalidate>
+      <div class="flex flex-col gap-3">
+        @for (variable of form; track $index) {
+          <div class="mb-4">
+            <p>Name: <code class="text-secondary">{{ variable().value().name }}</code></p>
+            @switch (variable.type().value()) {
+              @case ('questionnaire') {
+            <p>Questionnaire ID: <code class="text-secondary">{{ variable().value().questionId }}</code></p>
+            <p>Question ID: <code class="text-secondary">{{ variable().value().questionId }}</code></p>
+              }
+              @case ('reservedVariable') {
+            <p>Reserved Variable: <code class="text-secondary">{{ variable().value().reservedVariable }}</code></p>
+              }
+              @case ('topic') {
+            <p>Topic: <code class="text-secondary">{{ variable().value().topic }}</code></p>
+            <p>Topic Variable: <code class="text-secondary">{{ variable().value().topicVariable }}</code></p>
+              }
+            }
+<!--            <p>ID: <code class="text-secondary">{{ variable().value().id }}</code></p>-->
+            <p>Method: <code class="text-secondary">{{ variable().value().method }}</code></p>
+            @if (variable().value().start) {
+            <p>Start: <code class="text-secondary">{{ variable().value().start }}</code></p>
+            }
+            @if (variable().value().end) {
+            <p>End: <code class="text-secondary">{{ variable().value().end }}</code></p>
+            }
+            @if (variable().value().function) {
+            <p>Function: <code class="text-secondary">{{ variable().value().function }}</code></p>
+            }
 
             <mat-form-field class="small-input w-full" appearance="outline">
-              <input matInput [formControl]="placeholderGroup.controls.value">
+              <input matInput [formField]="variable.value">
             </mat-form-field>
           </div>
         }
       </div>
     </form>
-<!--      </div>-->
 </div>

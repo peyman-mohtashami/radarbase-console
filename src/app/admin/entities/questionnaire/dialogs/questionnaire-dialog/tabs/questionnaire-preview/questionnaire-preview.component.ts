@@ -8,12 +8,16 @@ import {AnswerWithTimeLog} from './models/kafka';
 import {ToolbarAction, ToolbarComponent} from './components/toolbar/toolbar.component';
 import {JsonPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
-import {QuestionComponent} from './question/question.component';
+import {QuestionComponent} from './components/question/question.component';
 import {PreviewStore} from './services/preview.store';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {evaluateConditionalLogic} from './services/utils';
-import {IntroductionPageComponent} from './question/introduction-page/introduction-page.component';
-import {FinishPageComponent} from './question/finish-page/finish-page.component';
+import {IntroductionPageComponent} from './components/introduction-page/introduction-page.component';
+import {FinishPageComponent} from './components/finish-page/finish-page.component';
+import {
+  PreviewPlaceholderFormComponent
+} from './components/preview-placeholder-form/preview-placeholder-form.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-questionnaire-preview',
@@ -25,6 +29,8 @@ import {FinishPageComponent} from './question/finish-page/finish-page.component'
     JsonPipe,
     IntroductionPageComponent,
     FinishPageComponent,
+    PreviewPlaceholderFormComponent,
+    TranslatePipe,
   ]
 })
 export class QuestionnairePreviewComponent implements OnInit {
@@ -36,7 +42,7 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   index = signal(-1);
 
-  protected loading = true;
+  // protected loading = true;
 
   leftButtonEnabled = signal(false);
   rightButtonEnabled = signal(false);
@@ -77,7 +83,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   private async initQuestionnaire(): Promise<void> {
     // this.startTime = Date.now();
     this.questionGroups = this.groupQuestionsByMatrixGroup(this.entity.questions);
-    this.loading = false;
+    // this.loading = false;
     await this.startQuestionnaire();
   }
 

@@ -46,6 +46,7 @@ import {ActivatedRoute} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
+import {RichTextEditorComponent} from '../../../../../shared/components/rich-text-editor/rich-text-editor.component';
 
 export interface QuestionnaireForm {
   id: string; //TODO
@@ -83,6 +84,7 @@ export interface StoredQuestionnaireDialog {
     MatDialogTitle,
     JsonPipe,
     QuestionnaireVariablesComponent,
+    RichTextEditorComponent,
   ]
 })
 export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
@@ -152,5 +154,13 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
   close() {
     this.configService.clearDialogState();
     animateDialogOut(this.dialogData.id, this.dialogRef);
+  }
+
+  description = `
+    <p>Hello <strong>world</strong>!</p>
+  `;
+
+  onDescriptionChange(value: string): void {
+    console.log(value);
   }
 }

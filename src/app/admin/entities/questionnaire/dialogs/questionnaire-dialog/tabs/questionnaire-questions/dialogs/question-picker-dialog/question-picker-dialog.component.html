@@ -1,0 +1,109 @@
+<h2 mat-dialog-title>
+  Insert question
+</h2>
+
+<mat-dialog-content>
+
+  <mat-form-field
+    appearance="outline"
+    class="search-field">
+
+    <mat-label>
+      Search questions
+    </mat-label>
+
+    <mat-icon matPrefix>
+      search
+    </mat-icon>
+
+    <input
+      matInput
+      [value]="searchTerm()"
+      (input)="updateSearchTerm($any($event.target).value)"
+      placeholder="Search by question name">
+
+    @if (searchTerm()) {
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Clear search"
+        (click)="updateSearchTerm('')">
+
+        <mat-icon>
+          close
+        </mat-icon>
+
+      </button>
+    }
+
+  </mat-form-field>
+
+
+  @if (filteredQuestions().length > 0) {
+
+    <mat-selection-list
+      [multiple]="false"
+      class="question-list">
+
+      @for (
+        question of filteredQuestions();
+        track question.id
+        ) {
+
+        <mat-list-option
+          (click)="selectQuestion(question)">
+
+          <div class="question-item">
+
+            <div class="question-name">
+              {{ question.name }}
+            </div>
+
+            <div class="question-id">
+              {{ question.id }}
+            </div>
+
+          </div>
+
+        </mat-list-option>
+
+      }
+
+    </mat-selection-list>
+
+  } @else {
+
+    <div class="empty-state">
+
+      <mat-icon>
+        search_off
+      </mat-icon>
+
+      <div class="empty-title">
+        No questions found
+      </div>
+
+      <div class="empty-description">
+        Try a different search term.
+      </div>
+
+    </div>
+
+  }
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+
+    Cancel
+
+  </button>
+
+</mat-dialog-actions>

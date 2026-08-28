@@ -1,0 +1,25 @@
+<app-question-header [question]="question()" [language]="language()"/>
+
+<mat-form-field subscriptSizing="dynamic" appearance="outline">
+  @if (question().multi_line) {
+    <textarea matInput rows="5" maxlength="256"
+              [value]="answer()?.value ?? ''"
+              [disabled]="!isEditEnabled"
+              (input)="onInputChange($event)"
+              [type]="'text'"></textarea>
+  } @else {
+    <input matInput maxlength="256" [value]="answer()?.value ?? ''" [disabled]="!isEditEnabled"
+           (input)="onInputChange($event)"
+           [type]="'text'">
+  }
+</mat-form-field>
+
+@if (error) {
+  <p class="p-2 text-red-700 text-sm">{{ error | translateLang}}</p>
+}
+
+@if (isEditEnabled) {
+  <button color="warn" mat-stroked-button class="my-4 text-sm!" (click)="onInputChange(null)">
+    {{ 'clear' | translateLang}}
+  </button>
+}

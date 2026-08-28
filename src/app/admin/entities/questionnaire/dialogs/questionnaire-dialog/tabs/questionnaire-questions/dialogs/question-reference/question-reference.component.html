@@ -1,0 +1,221 @@
+@let _prefix = 'ADMIN.questionnaire.dialog.question.conditionalLogic';
+@let language = _lang();
+
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
+  <span> {{ `${_prefix}.title` | translate }}</span>
+  <code class="text-orange-500"> {{ dialogData.question.field_name }}</code>
+</h2>
+
+<mat-dialog-content class="h-full overflow-auto p-4!">
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <div class='mb-4 text-base'>
+      <div class="mt-4">
+        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
+    @if (form().value().length) {
+      <p class="mb-4">{{ `${_prefix}.message` | translate }}:
+        @if (form().valid()) {
+          <code class="text-base mb-4 text-secondary">{{ branching_logic() }}</code>
+        } @else {
+          <code class="text-base mb-4 text-red-700">{{ `${_prefix}.invalid` | translate }}</code>
+        }
+      </p>
+    } @else {
+      <p>{{ `${_prefix}.noConditionalLogic` | translate }}</p>
+    }
+
+    <form novalidate>
+      @for (conditionalLogicGroup of form; track $index; let i = $index) {
+        @for (conditionalLogicRule of conditionalLogicGroup; let j = $index; track $index; ) {
+          <div class="w-full flex items-center gap-2 justify-between">
+            <div class="grow flex w-full gap-2">
+              <div class="w-1/3!">
+                <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                  <mat-select [formField]="conditionalLogicRule.operand" placeholder="Select question" [compareWith]="compareQuestions">
+                    @for (question of dialogData.questions; track question.field_name; let ind = $index) {
+                      @if (ind < dialogData.selectedIndex) {
+                        <mat-option [value]="question"
+                                    [disabled]="[`${QuestionType.INFO}`, `${QuestionType.DESCRIPTIVE}`, `${QuestionType.AUDIO}`].includes(question.field_type)">
+                          <p>[{{ question.field_name }}] ({{ question.field_type }})</p>
+                          <p>{{ question.section_header?.[language] }}</p>
+                          <p>{{ question.field_label?.[language] }}</p>
+                        </mat-option>
+                      }
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              @let selectedQuestion = conditionalLogicRule.operand().value();
+              @if (selectedQuestion) {
+                <div class="w-1/3!">
+                  <mat-form-field class='small-input w-full! grow-0' appearance='outline' subscriptSizing="dynamic">
+                    <mat-select [formField]="conditionalLogicRule.operator" placeholder="Select operator">
+                      @for (type of OPERATORS[selectedQuestion.field_type]; track type) {
+                        <mat-option [value]="type.value">{{ type.name }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              } @else {
+                <div class="w-1/3!">
+                <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                  <mat-select disabled placeholder="Select operator"></mat-select>
+                </mat-form-field>
+                </div>
+              }
+
+              @if (selectedQuestion && conditionalLogicRule.operator()) {
+                <div class="w-1/3!">
+                  @switch (selectedQuestion.field_type) {
+
+                    @case (QuestionType.CHECKBOX)
+                    @case (QuestionType.RADIO)
+                    @case (QuestionType.RANGE) {
+                      <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                        <mat-select [formField]="conditionalLogicRule.value" placeholder="Select answer">
+                          @for (option of selectedQuestion.select_choices_or_calculations; track option.code) {
+                            <mat-option [value]="option.code">
+                              <p>[{{ option.code }}]: {{ option.label[language] }}</p>
+                            </mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    }
+
+                    @case (QuestionType.SLIDER)
+                    @case (QuestionType.NUMBER) {
+                      <div class="">
+                        <mat-form-field class='small-input' appearance='outline'>
+                          <input matInput [formField]="conditionalLogicRule.value" type="number" placeholder="Enter answer">
+                        </mat-form-field>
+                      </div>
+                    }
+
+                    @case (QuestionType.CALC)
+                    @case (QuestionType.TEXT) {
+                      <div class="">
+                        <mat-form-field class='small-input' appearance='outline'>
+                          <input matInput [formField]="conditionalLogicRule.value" placeholder="Enter answer">
+                        </mat-form-field>
+                      </div>
+                    }
+
+                    @case (QuestionType.YESNO) {
+                      <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                        <mat-select [formField]="conditionalLogicRule.value" placeholder="Select answer">
+                          <mat-option [value]="'1'">
+                            <p>[1]: {{ `${_prefix}.yes` | translate }}</p>
+                          </mat-option>
+                          <mat-option [value]="'0'">
+                            <p>[0]: {{ `${_prefix}.no` | translate }}</p>
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    }
+                    @case (QuestionType.DATE) {
+                      <mat-form-field class="small-input" appearance='outline'>
+                        <input [value]="toDate(conditionalLogicRule.value().value())"
+                               (dateChange)="setDateValue(conditionalLogicRule.value, $event)"
+                               matInput [matDatepicker]="dp" readonly (click)="dp.open()">
+                        <mat-datepicker-toggle matIconSuffix [for]="dp"/>
+                        <mat-datepicker #dp/>
+                      </mat-form-field>
+                    }
+
+                    @case (QuestionType.TIME) {
+                      <mat-form-field class="small-input" appearance='outline'>
+                        <input matInput type="time" [formField]="conditionalLogicRule.value">
+                      </mat-form-field>
+                    }
+                  }
+                </div>
+              } @else {
+                <div class="w-1/3!">
+                <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">
+                  <input matInput disabled type="number" placeholder="Enter answer">
+                </mat-form-field>
+                </div>
+              }
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="tiny" type="button"
+                      mat-icon-button color="warn"
+                      (click)='removeConditionalLogicRule(i, j)'>
+                <mat-icon class="material-symbols-outlined text-xl!">do_not_disturb_on</mat-icon>
+              </button>
+            </div>
+          </div>
+          @if (conditionalLogicRule().valid()) {
+            <code class="text-xs text-secondary">{{`[${conditionalLogicRule.operand().value()?.field_name}] ${OPERATOR_SYMBOLS[conditionalLogicRule.operator().value()]} '${conditionalLogicRule.value().value()}'` }}</code>
+          } @else {
+            <code class="text-xs text-red-700">{{ `${_prefix}.invalid` | translate }}</code>
+          }
+
+
+          <div class="flex items-center my-1 border-t border-t-gray-300">
+            <div>
+              <app-tag class="text-secondary bg-secondary/20">{{ `${_prefix}.and`  | translate }}</app-tag>
+            </div>
+            <div>
+              <button class="tiny" type="button"
+                      mat-icon-button color="accent"
+                      (click)='addConditionalLogicRule(i)'>
+                <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="flex items-center my-1 border-t border-t-gray-300">
+          <div>
+            <app-tag class="text-primary bg-primary/20">{{ `${_prefix}.or` | translate }}</app-tag>
+          </div>
+          <div>
+            <button class="tiny" type="button"
+                    mat-icon-button color="primary"
+                    (click)='addConditionalLogicGroup()'>
+              <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="flex justify-between items-center my-1 border-t border-t-gray-300">
+          <div></div>
+          <div>
+            <button class="tiny" type="button"
+                    mat-icon-button color="primary"
+                    (click)='addConditionalLogicGroup()'>
+              <mat-icon class="material-symbols-outlined text-xl!">add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
+    </form>
+  }
+</mat-dialog-content>
+
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='close()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ 'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+    <button (click)='handleSaveAction()'
+            mat-raised-button
+            color="primary"
+            type="button"
+            [disabled]="form().invalid()">
+      {{ "SHARED.dialog.update" | translate }}
+    </button>
+  </div>
+</div>

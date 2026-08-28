@@ -1,0 +1,18 @@
+<div class="flex flex-col h-full">
+  <div class="shrink-0 rounded-lg text-center">
+  @if (isEditEnabled) {
+    <span class="text-7xl">{{ taskTimer.displayTime() }}</span>
+  } @else {
+    <div class="text-lg">{{ 'done' | translateLang}}!</div>
+  }
+  </div>
+
+  @if (isEditEnabled) {
+    <button mat-raised-button class="shrink-0 my-4!" (click)="startTimer()" [disabled]="taskTimer.hasStarted()"
+            color="primary">
+      {{ 'start' | translateLang}}
+    </button>
+  }
+
+  <app-question-header class="grow min-h-0 overflow-auto" [question]="question()" [language]="language()" [disableRequiredAsterisk]="true"/>
+</div>

@@ -3,8 +3,6 @@ import {PreviewStore} from '../services/preview.store';
 import {QuestionnaireStore} from '../../../../../services/questionnaire.store';
 import {AppQuestionChoice, QuestionType} from '../../../../../models/questionnaire';
 
-const RESERVED_VALUES = ['current_date', 'current_time'];
-
 @Pipe({
   name: 'replacePlaceholders',
   pure: false
@@ -26,57 +24,21 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   replacePlaceholders(str = ""): string {
+    return str.toString().replace(/\{\{([^{}]*)}}/g, (_, content: string) => {
+      const questionTemplateVariable = this.variables?.find(v => v.name === content);
 
-    return str;
-    // return str.toString().replace(/\{\{([^{}]*)\}\}/g, (_, content: string) => {
-    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 30 content' , content);
-    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 33 variables' , variables);
-    //   const variable = variables?.find((v) => v.name === content);
-    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 34 variable' , variable);
-    //   if (!variable) return content;
-    //   const r = this.getAnswer(variable.questionId);
-    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 37 r' , r);
-    //   if (!r) return content;
-    //   console.log('Class: ReplacePlaceholdersPipe, Function: , Line 39 ' , );
-    //   return r;
-    // });
+      switch (questionTemplateVariable?.type) {
+        case 'question': {
+          if (!questionTemplateVariable.questionId) return `<span class="underline text-red-700">{{${content}}</span>`;
 
-    return str.toString().replace(/\[([^[\]]+)]/g, (_, content: string) => {
-      const placeholder = parsePlaceholder(content);
-
-      if (!placeholder) {
-        // Invalid placeholder, leave unchanged
-        return `[${content}]`;
+          const answer = this.getAnswer(questionTemplateVariable.questionId!);
+          return answer !== null ? String(answer) : `<span class="underline text-red-700">{{${content}}}</span>`;
+        }
+        default: {
+          const variableInput = this.previewState.variables().find(v => v.name === content);
+          return variableInput?.value || `<span class="underline text-red-700">{{${content}}}</span>`
+        }
       }
-
-      const {
-        questionnaireId,
-        questionId,
-        operator,
-        startTimestamp,
-        endTimestamp,
-      } = placeholder;
-
-      console.log({
-        questionnaireId,
-        questionId,
-        operator,
-        startTimestamp,
-        endTimestamp,
-      });
-
-      if (questionnaireId) {
-        const answer = this.getAnswerFromPlaceholder(placeholder);
-        return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
-      }
-
-      if (RESERVED_VALUES.includes(questionId)) {
-        const answer = this.getReservedAnswer(questionId);
-        return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>` ;
-      }
-
-      const answer = this.getAnswer(questionId);
-      return answer !== null ? String(answer) : `<span class="underline text-red-700">[${content}]</span>`;
     });
   }
 
@@ -95,75 +57,8 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
     } else if (answer.type === QuestionType.YESNO) {
       const select_choices_or_calculations: AppQuestionChoice[] =  [{code: '0', label: {en: 'No'}}, {code: '1', label: {en: 'Yes'}}];
       return select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
-    // }
-    // if (answer.type === QuestionType.CHECKBOX || answer.type === QuestionType.RADIO || answer.type === QuestionType.RANGE) {
-    //   const questions = this.store.selected()?.questions;
-    //   const question = questions?.find(q => q.field_name === questionId);
-    //   return question?.select_choices_or_calculations?.find(o => o.code === answer?.value)?.label[this.previewState.language().code] ?? answer?.value ?? null;
     } else {
       return answer?.value ?? null;
     }
-  }
-
-  private getAnswerFromPlaceholder(placeholder: Placeholder) {
-    const inputs = this.previewState.placeholderAnswers();
-    const answer = inputs.placeholders?.find(i => {
-      return i.questionnaireId === placeholder.questionnaireId && i.questionId === placeholder.questionId
-    });
-    return answer?.value ?? null;
-  }
-
-  private getReservedAnswer(value: string) {
-    switch (value) {
-      case 'current_date':
-        return new Date().getTime();//.toLocaleDateString();
-      case 'current_time':
-        return new Date().toLocaleTimeString();
-    }
-    return null;
-  }
-}
-
-export interface Placeholder {
-  questionnaireId?: string;
-  questionId: string;
-  operator?: string;
-  startTimestamp?: string;
-  endTimestamp?: string;
-}
-
-export function parsePlaceholder(placeholder: string): Placeholder | null {
-  const parts = placeholder.split(":");
-
-  switch (parts.length) {
-    case 1:
-      return {
-        questionId: parts[0],
-      };
-
-    case 2:
-      return {
-        questionnaireId: parts[0],
-        questionId: parts[1],
-      };
-
-    case 3:
-      return {
-        questionnaireId: parts[0],
-        questionId: parts[1],
-        operator: parts[2],
-      };
-
-    case 5:
-      return {
-        questionnaireId: parts[0],
-        questionId: parts[1],
-        operator: parts[2],
-        startTimestamp: parts[3],
-        endTimestamp: parts[4],
-      };
-
-    default:
-      return null;
   }
 }

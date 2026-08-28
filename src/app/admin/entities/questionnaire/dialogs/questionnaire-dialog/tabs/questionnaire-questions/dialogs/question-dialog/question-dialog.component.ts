@@ -26,7 +26,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/m
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
-import {QuestionComponent} from '../../../questionnaire-preview/question/question.component';
+import {QuestionComponent} from '../../../questionnaire-preview/components/question/question.component';
 import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';

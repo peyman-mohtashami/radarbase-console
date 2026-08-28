@@ -6,9 +6,9 @@ import {PreviewStore} from '../services/preview.store';
   pure: false
 })
 export class TranslateLangPipe implements PipeTransform {
-  private previewState = inject(PreviewStore);
+  private store = inject(PreviewStore);
 
   transform(key: string): string {
-    return this.previewState.translate(key);
+    return this.store.translate(key);
   }
 }

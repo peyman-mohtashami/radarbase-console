@@ -1,0 +1,28 @@
+<app-question-header [question]="question()" [language]="language()"/>
+
+@if (question().range; as range) {
+  <p class="text-center bg-primary/20 p-4">{{ slider.value }}</p>
+  <mat-slider class="mt-8! w-[calc(100%-16px)]!"
+              [disabled]="!isEditEnabled"
+              [max]="range.max"
+              [min]="range.min"
+              [step]="range.step ?? 1"
+              [discrete]="true"
+              [showTickMarks]="true"
+              color="primary">
+    <input matSliderThumb class="" [value]="+(answer()?.value ?? range.min)" #slider
+           (valueChange)="onInputChange($event)">
+  </mat-slider>
+
+  <div class="flex justify-between text-sm">
+    <div class="w-1/2" [innerHtml]="range.labelLeft?.[language()!.code] | replacePlaceholders"></div>
+    <div class="w-1/2 text-right" [innerHtml]="range.labelRight?.[language()!.code] | replacePlaceholders"></div>
+  </div>
+}
+
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
+    {{ 'clear' | translateLang}}
+  </button>
+}
+

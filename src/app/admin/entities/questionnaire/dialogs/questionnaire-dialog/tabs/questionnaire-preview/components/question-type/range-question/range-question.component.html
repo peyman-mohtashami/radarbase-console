@@ -1,0 +1,34 @@
+<app-question-header [question]="question()" [language]="language()"/>
+
+<div class="w-full flex flex-wrap items-center mt-4 gap-px">
+  @for (item of question().select_choices_or_calculations; track item) {
+    <button
+      class="cursor-pointer flex grow items-center justify-center py-3 px-1 border-2 border-primary text-lg first:rounded-l-lg last:rounded-r-lg last:border-r-2 last:border-primary"
+      [class]="(value === item.code ? 'bg-primary/30' : '') + ' ' + (!isEditEnabled ? 'opacity-70' : '')"
+      (click)="onInputChange(item.code)">
+          <span class="ion-text-wrap text-center"
+                [innerHtml]="(question().show_code ? item.code : item.label[language().code]) | replacePlaceholders"></span>
+    </button>
+  }
+</div>
+
+@if (question().show_code && question().select_choices_or_calculations; as choices) {
+  <div class="flex justify-between mt-2">
+    <div class="w-1/2" [innerHtml]="choices[0].label[language().code] | replacePlaceholders"></div>
+    <div class="w-1/2 text-right"
+         [innerHtml]="choices[choices.length - 1].label[language().code] | replacePlaceholders"></div>
+  </div>
+}
+
+@if (question().show_selected_label && selectedLabel) {
+  <div class="p-2 bg-primary/10 mt-2">
+    {{ selectedLabel }}
+  </div>
+}
+
+@if (isEditEnabled) {
+  <button color="warn" matButton class="my-4 text-sm!" (click)="onInputChange(null)">
+    {{ 'clear' | translateLang}}
+  </button>
+}
+
