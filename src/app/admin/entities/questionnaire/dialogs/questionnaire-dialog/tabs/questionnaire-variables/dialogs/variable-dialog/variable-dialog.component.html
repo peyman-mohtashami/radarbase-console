@@ -24,7 +24,7 @@
   } @else {
     <form novalidate>
       @if (dialogData.mode === 'insert' && !addNewVariableEnabled) {
-        <label for="template-variable" class="text-sm">{{ `${_prefix}}.select` | translate }}</label>
+        <label for="template-variable" class="text-sm">{{ `${_prefix}.select` | translate }}</label>
         <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
           <mat-select [formField]="selectForm">
             @for (variable of store.selected()?.variables; track $index) {
@@ -65,7 +65,7 @@
           <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
             <mat-select [formField]='form.type'>
               <mat-option [value]="'reservedVariable'">{{ `${_prefix}.reservedVariable` | translate }}</mat-option>
-              <mat-option [value]="'question'">{{ `${_prefix}.question` | translate }}</mat-option>
+<!--              <mat-option [value]="'question'">{{ `${_prefix}.question` | translate }}</mat-option>-->
               <mat-option [value]="'questionnaire'">{{ `${_prefix}.questionnaire` | translate }}</mat-option>
               <mat-option [value]="'topic'">{{ `${_prefix}.topic` | translate }}</mat-option>
             </mat-select>
@@ -133,9 +133,9 @@
             <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
               <mat-select [formField]='form.questionId'>
                 @for (question of store.selected()?.questions; track question.id) {
-                  @if ($index < dialogData.questionIndex) {
+<!--                  @if ($index < dialogData.questionIndex) {-->
                     <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
-                  }
+<!--                  }-->
                 }
               </mat-select>
               <mat-error>
@@ -149,29 +149,29 @@
           </div>
         }
 
-        @if (form.type().value() === 'question') {
-          <div>
-            <label for="questionId" class="text-sm" [class]="form.questionId().invalid() ? 'text-red-700' : ''">
-              {{ `${_prefix}.questionId` | translate }} *
-            </label>
-            <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-              <mat-select [formField]='form.questionId'>
-                @for (question of store.selected()?.questions; track question.id) {
-                  <!--                @if ($index < dialogData.questionIndex) {-->
-                  <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>
-                  <!--                }-->
-                }
-              </mat-select>
-              <mat-error>
-                @if (form.questionId().invalid()) {
-                  @for (error of form.questionId().errors(); track error.kind) {
-                    {{ error.message }}
-                  }
-                }
-              </mat-error>
-            </mat-form-field>
-          </div>
-        }
+<!--        @if (form.type().value() === 'question') {-->
+<!--          <div>-->
+<!--            <label for="questionId" class="text-sm" [class]="form.questionId().invalid() ? 'text-red-700' : ''">-->
+<!--              {{ `${_prefix}.questionId` | translate }} *-->
+<!--            </label>-->
+<!--            <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">-->
+<!--              <mat-select [formField]='form.questionId'>-->
+<!--                @for (question of store.selected()?.questions; track question.id) {-->
+<!--                  &lt;!&ndash;                @if ($index < dialogData.questionIndex) {&ndash;&gt;-->
+<!--                  <mat-option [value]="question.field_name">{{ question.field_name }}</mat-option>-->
+<!--                  &lt;!&ndash;                }&ndash;&gt;-->
+<!--                }-->
+<!--              </mat-select>-->
+<!--              <mat-error>-->
+<!--                @if (form.questionId().invalid()) {-->
+<!--                  @for (error of form.questionId().errors(); track error.kind) {-->
+<!--                    {{ error.message }}-->
+<!--                  }-->
+<!--                }-->
+<!--              </mat-error>-->
+<!--            </mat-form-field>-->
+<!--          </div>-->
+<!--        }-->
 
 
         @if (form.type().value() === 'topic') {
@@ -223,13 +223,13 @@
             </label>
             <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
               <mat-select [formField]='form.method'>
-                @if (form.type().value() === 'question') {
-                  <mat-option [value]="'value'">Value</mat-option>
-                } @else {
+<!--                @if (form.type().value() === 'question') {-->
+<!--                  <mat-option [value]="'value'">Value</mat-option>-->
+<!--                } @else {-->
                   @for (method of METHODS; track $index) {
                     <mat-option [value]="method.value">{{ method.label }}</mat-option>
                   }
-                }
+<!--                }-->
               </mat-select>
               <mat-error>
                 @if (form.method().invalid()) {

@@ -48,11 +48,11 @@ export class PreviewPlaceholderFormComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const variables = this.store.selected()?.variables;
     const t: VariableInputForm[] = (variables ?? []).map(v => {
-      if (v.type !== 'question') {
+      // if (v.type !== 'question') {
         return {...v, value: ''};
-      } else {
-        return null;
-      }
+      // } else {
+      //   return null;
+      // }
     }).filter(v => !!v);
 
     this.model.set(t);

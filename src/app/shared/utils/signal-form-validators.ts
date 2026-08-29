@@ -93,7 +93,7 @@ export function parseAndValidateTemplateVariables(value: string, questionnaire: 
 export function isValidTemplateVariable(variable: QuestionTemplateVariable, questionnaire: AppQuestionnaire | null, index: number | undefined): boolean {
   if (index === undefined) return true;
 
-  if (variable.type !== 'question') return true;
+  // if (variable.type !== 'question') return true;
 
   const indexOfQuestionInVariable = questionnaire!.questions.findIndex(item => item.field_name === variable.questionId);
   return indexOfQuestionInVariable < index;

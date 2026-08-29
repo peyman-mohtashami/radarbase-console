@@ -17,15 +17,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
+import {AppQuestion} from '../../../../../../models/questionnaire';
+import {MatOption} from '@angular/material/core';
+import {MatSelect, MatSelectChange} from '@angular/material/select';
+import {TranslatePipe} from '@ngx-translate/core';
 
-export interface Question {
-  id: string;
-  name: string;
-}
+// export interface Question {
+//   id: string;
+//   name: string;
+// }
 
-export interface QuestionPickerDialogData {
-  questions: Question[];
-}
+// export interface QuestionPickerDialogData {
+//   questions: Question[];
+// }
 
 @Component({
   selector: 'app-question-picker-dialog',
@@ -38,6 +43,9 @@ export interface QuestionPickerDialogData {
     MatIconModule,
     MatButtonModule,
     MatListModule,
+    MatOption,
+    MatSelect,
+    TranslatePipe,
   ],
   templateUrl: './question-picker-dialog.component.html',
   styles: `
@@ -114,42 +122,40 @@ export interface QuestionPickerDialogData {
   `
 })
 export class QuestionPickerDialogComponent {
+  private store = inject(QuestionnaireStore);
 
-  private readonly dialogRef = inject(
-    MatDialogRef<QuestionPickerDialogComponent>
-  );
+  private readonly dialogRef = inject(MatDialogRef<QuestionPickerDialogComponent>);
 
-  private readonly data = inject<QuestionPickerDialogData>(
-    MAT_DIALOG_DATA
-  );
+  protected readonly data = inject<{questionIndex: number}>(MAT_DIALOG_DATA);
 
-  readonly searchTerm = signal('');
+  // readonly searchTerm = signal('');
 
-  readonly questions = this.data.questions;
+  readonly questions = this.store.selected()?.questions.filter(((q, i) => i < this.data.questionIndex));
 
-  readonly filteredQuestions = computed(() => {
-    const search = this.searchTerm()
-      .trim()
-      .toLowerCase();
+  // readonly filteredQuestions = computed(() => {
+  //   const search = this.searchTerm()
+  //     .trim()
+  //     .toLowerCase();
+  //
+  //   if (!search) {
+  //     return this.questions;
+  //   }
+  //
+  //   return this.questions?.filter(question =>
+  //     question.field_name.toLowerCase().includes(search)
+  //   );
+  // });
 
-    if (!search) {
-      return this.questions;
-    }
-
-    return this.questions.filter(question =>
-      question.name.toLowerCase().includes(search)
-    );
-  });
-
-  selectQuestion(question: Question): void {
-    this.dialogRef.close(question);
+  selectQuestion(event: MatSelectChange<AppQuestion>): void {
+    console.log('Class: QuestionPickerDialogComponent, Function: selectQuestion, Line 150 event' , event);
+    this.dialogRef.close(event.value);
   }
 
   cancel(): void {
     this.dialogRef.close();
   }
 
-  updateSearchTerm(value: string): void {
-    this.searchTerm.set(value);
-  }
+  // updateSearchTerm(value: string): void {
+  //   this.searchTerm.set(value);
+  // }
 }

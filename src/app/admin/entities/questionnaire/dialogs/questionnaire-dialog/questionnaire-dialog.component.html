@@ -8,10 +8,7 @@
 </h2>
 
 <mat-dialog-content [class]="dialogData.mode !== DialogMode.DELETE ? 'p-0!' : ''">
-<!--  <app-rich-text-editor-->
-<!--    [content]="description"-->
-<!--    (contentChange)="onDescriptionChange($event)">-->
-<!--  </app-rich-text-editor>-->
+<!--  <app-rich-text-editor [content]="description" (contentChange)="onDescriptionChange($event)"/>-->
 
   @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>

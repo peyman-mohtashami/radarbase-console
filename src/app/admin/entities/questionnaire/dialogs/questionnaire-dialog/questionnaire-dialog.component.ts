@@ -84,7 +84,7 @@ export interface StoredQuestionnaireDialog {
     MatDialogTitle,
     JsonPipe,
     QuestionnaireVariablesComponent,
-    RichTextEditorComponent,
+    // RichTextEditorComponent,
   ]
 })
 export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
@@ -156,11 +156,11 @@ export class QuestionnaireDialogComponent implements OnInit, AfterViewInit {
     animateDialogOut(this.dialogData.id, this.dialogRef);
   }
 
-  description = `
-    <p>Hello <strong>world</strong>!</p>
-  `;
-
-  onDescriptionChange(value: string): void {
-    console.log(value);
-  }
+  // description = `
+  //   <p>Hello <strong>world</strong>!</p>
+  // `;
+  //
+  // onDescriptionChange(value: string): void {
+  //   console.log(value);
+  // }
 }

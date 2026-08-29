@@ -1,68 +1,30 @@
-import { Node, mergeAttributes } from '@tiptap/core';
+import {Component} from '@angular/core';
+import { AngularNodeViewComponent } from 'ngx-tiptap';
+import {MatIcon} from '@angular/material/icon';
+import {MatIconButton} from '@angular/material/button';
 
-export interface QuestionReferenceAttributes {
-  questionId: string;
-  questionName: string;
-}
+@Component({
+  selector: 'app-question-reference',
+  templateUrl: './question-reference.component.html',
+  imports: [
+    MatIcon,
+    MatIconButton
+  ]
+})
+export class QuestionReferenceComponent extends AngularNodeViewComponent {
 
-export const QuestionReference = Node.create({
-  name: 'questionReference',
-
-  group: 'inline',
-
-  inline: true,
-
-  atom: true,
-
-  selectable: true,
-
-  addAttributes() {
-    return {
-      questionId: {
-        default: null,
-      },
-
-      questionName: {
-        default: '',
-      },
-    };
-  },
-
-  parseHTML() {
-    return [
-      {
-        tag: 'span[data-question-reference]',
-      },
-    ];
-  },
-
-  // renderHTML({ HTMLAttributes }) {
-  //   return [
-  //     'span',
-  //     mergeAttributes(
-  //       HTMLAttributes,
-  //       {
-  //         'data-question-reference': '',
-  //         class: 'question-reference',
-  //       }
-  //     ),
-  //     `{{${HTMLAttributes['data-question-name']}}}`,
-  //   ];
-  // },
-
-  renderHTML({ node, HTMLAttributes }) {
-    return [
-      'span',
-      mergeAttributes(
-        HTMLAttributes,
-        {
-          'data-question-reference': '',
-          'data-question-id': node.attrs['questionId'],
-          'data-question-name': node.attrs['questionName'],
-          class: 'question-reference',
-        }
-      ),
-      node.attrs['questionName'],
-    ];
+  get questionName(): string {
+    return this.node().attrs['questionName'] ?? '';
   }
-});
+
+  remove(): void {
+    const position = this.getPos();
+
+    if (typeof position !== 'number') return;
+
+    this.editor().chain().focus().deleteRange({
+      from: position,
+      to: position + this.node().nodeSize,
+    }).run();
+  }
+}

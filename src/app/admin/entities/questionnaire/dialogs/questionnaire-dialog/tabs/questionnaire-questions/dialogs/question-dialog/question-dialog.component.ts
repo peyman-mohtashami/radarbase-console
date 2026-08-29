@@ -32,9 +32,11 @@ import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
-import {QuestionTemplateVariablesComponent} from './question-template-variables/question-template-variables.component';
 import {checkValidation, QUESTION_TYPES, withLanguage} from '../../../../services/utils';
 import jexl from 'jexl';
+import {
+  RichTextEditorComponent
+} from '../../../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   id: string;
@@ -98,7 +100,7 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     QuestionComponent,
     ToolbarComponent,
     QuestionConditionalLogicComponent,
-    QuestionTemplateVariablesComponent,
+    RichTextEditorComponent,
   ],
   templateUrl: './question-dialog.component.html'
 })

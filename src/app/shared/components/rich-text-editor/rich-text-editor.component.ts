@@ -2,7 +2,7 @@ import {
   Component,
   OnDestroy,
   input,
-  output,
+  inject, OnInit, signal, Injector,
 } from '@angular/core';
 
 import { Editor } from '@tiptap/core';
@@ -12,69 +12,85 @@ import { TiptapEditorDirective } from 'ngx-tiptap';
 import Color from '@tiptap/extension-color';
 import {TextStyle} from '@tiptap/extension-text-style';
 import {FormsModule} from '@angular/forms';
-import {
-  QuestionReference
-} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-reference/question-reference.component';
+// import {
+//   QuestionReference
+// } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-reference/question-reference.component';
 import {MatDialog} from '@angular/material/dialog';
 import {
-  Question,
   QuestionPickerDialogComponent
 } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-picker-dialog/question-picker-dialog.component';
+import {MatIcon} from '@angular/material/icon';
+import {FieldTree} from '@angular/forms/signals';
+import {AppQuestion} from '../../../admin/entities/questionnaire/models/questionnaire';
+import {
+  VariableDialogComponent
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/dialogs/variable-dialog/variable-dialog.component';
+import {
+  QuestionTemplateVariable
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
+import {
+  QuestionReference
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-reference/question-reference.extension';
+import {MatIconButton} from '@angular/material/button';
+import {MatTooltip} from '@angular/material/tooltip';
+import {
+  VariableReference
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/variable-reference/variable-reference.extension';
 
 @Component({
   selector: 'app-rich-text-editor',
-  imports: [TiptapEditorDirective, FormsModule],
+  imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip],
   templateUrl: './rich-text-editor.component.html',
   styles: `
-    .editor-container {
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      overflow: hidden;
-    }
+    //.editor-container {
+    //  border: 1px solid #d1d5db;
+    //  border-radius: 6px;
+    //  overflow: hidden;
+    //}
+    //
+    //.toolbar {
+    //  display: flex;
+    //  align-items: center;
+    //  gap: 4px;
+    //  padding: 6px;
+    //  border-bottom: 1px solid #d1d5db;
+    //  background: #f9fafb;
+    //}
 
-    .toolbar {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px;
-      border-bottom: 1px solid #d1d5db;
-      background: #f9fafb;
-    }
+    //.toolbar button {
+    //  border: 0;
+    //  background: transparent;
+    //  padding: 6px 9px;
+    //  border-radius: 4px;
+    //  cursor: pointer;
+    //}
 
-    .toolbar button {
-      border: 0;
-      background: transparent;
-      padding: 6px 9px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+    //.toolbar button:hover {
+    //  background: #e5e7eb;
+    //}
+    //
+    //.toolbar button.active {
+    //  background: #dbeafe;
+    //}
+    //
+    //.toolbar button:disabled {
+    //  opacity: 0.4;
+    //  cursor: default;
+    //}
 
-    .toolbar button:hover {
-      background: #e5e7eb;
-    }
-
-    .toolbar button.active {
-      background: #dbeafe;
-    }
-
-    .toolbar button:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    .separator {
-      width: 1px;
-      height: 24px;
-      background: #d1d5db;
-      margin: 0 4px;
-    }
+    //.separator {
+    //  width: 1px;
+    //  height: 24px;
+    //  background: #d1d5db;
+    //  margin: 0 4px;
+    //}
 
     /*
      * Tiptap creates a ProseMirror element dynamically.
      */
 
     :host ::ng-deep .ProseMirror {
-      min-height: 200px;
+      min-height: 100px;
       padding: 16px;
       outline: none;
     }
@@ -113,9 +129,10 @@ import {
     }
 
     :host ::ng-deep .ProseMirror {
-      min-height: 200px;
-      padding: 16px;
+      min-height: 30px;
+      padding: 8px;
       outline: none;
+      font-size: 12px;
     }
 
     :host ::ng-deep .ProseMirror p {
@@ -147,125 +164,133 @@ import {
     .source-editor {
       display: block;
       width: 100%;
-      min-height: 300px;
-      padding: 16px;
+      min-height: 30px;
+      padding: 8px;
 
       border: 0;
       outline: none;
 
       font-family: monospace;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1.5;
 
       resize: vertical;
     }
 
-    :host ::ng-deep .question-reference {
-      display: inline-flex;
-      align-items: center;
-
-      padding: 2px 8px;
-
-      margin: 0 2px;
-
-      border-radius: 9999px;
-
-      background: #e0e7ff;
-      color: #3730a3;
-
-      font-size: 0.875rem;
-      font-weight: 500;
-
-      white-space: nowrap;
-
-      cursor: pointer;
-    }
+    //:host ::ng-deep .question-reference {
+    //  display: inline-flex;
+    //  align-items: center;
+    //
+    //  padding: 2px 8px;
+    //
+    //  margin: 0 2px;
+    //
+    //  border-radius: 9999px;
+    //
+    //  background: rgb(16 121 95 / 0.2);
+    //  color: #10795f;
+    //
+    //  font-size: 0.875rem;
+    //  font-weight: 500;
+    //
+    //  white-space: nowrap;
+    //
+    //  cursor: pointer;
+    //}
   `,
 })
-export class RichTextEditorComponent implements OnDestroy {
+export class RichTextEditorComponent implements OnInit, OnDestroy {
+  protected dialog = inject(MatDialog);
+  private readonly injector = inject(Injector);
 
-  readonly content = input<string>('');
+  readonly formField = input.required<FieldTree<string>>();
+  hideQuestionPicker = input<boolean>(false);
+  questionIndex = input<number>();
 
-  readonly contentChange = output<string>();
+  readonly editor = signal<Editor | null>(null);
 
-  readonly editor = new Editor({
-    extensions: [
-      StarterKit,
-      Image.configure({
-        inline: false,
-        allowBase64: false,
-      }),
-      TextStyle,
-      Color,
-      QuestionReference
-    ],
+  ngOnInit() {
+    const value = this.formField()().value();
 
-    content: this.content(),
+    this.editor.set(
+      new Editor({
+        extensions: [
+          StarterKit,
 
-    onUpdate: ({ editor }) => {
-      this.contentChange.emit(editor.getHTML());
-    },
-  });
+          Image.configure({
+            inline: false,
+            allowBase64: false,
+          }),
 
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private readonly dialog: MatDialog,
-  ) {}
+          TextStyle,
+          Color,
+          QuestionReference(
+            this.injector,
+          ),
+          VariableReference(
+            this.injector,
+          ),
+        ],
+
+        content: value ?? '',
+
+        onUpdate: ({ editor }) => {
+          this.formField()().value.set(editor.getHTML());
+        },
+      })
+    );
+  }
 
   ngOnDestroy(): void {
-    this.editor.destroy();
+    this.editor()?.destroy();
   }
 
   toggleBold(): void {
-    this.editor.chain().focus().toggleBold().run();
+    this.editor()?.chain().focus().toggleBold().run();
   }
 
   toggleItalic(): void {
-    this.editor.chain().focus().toggleItalic().run();
+    this.editor()?.chain().focus().toggleItalic().run();
   }
 
   toggleUnderline(): void {
-    this.editor.chain().focus().toggleUnderline().run();
+    this.editor()?.chain().focus().toggleUnderline().run();
   }
 
   toggleStrike(): void {
-    this.editor.chain().focus().toggleStrike().run();
+    this.editor()?.chain().focus().toggleStrike().run();
   }
 
   setParagraph(): void {
-    this.editor.chain().focus().setParagraph().run();
+    this.editor()?.chain().focus().setParagraph().run();
   }
 
   setHeading(level: 1 | 2 | 3): void {
-    this.editor
-      .chain()
-      .focus()
-      .toggleHeading({ level })
-      .run();
+    this.editor()?.chain().focus().toggleHeading({ level }).run();
   }
 
   toggleBulletList(): void {
-    this.editor.chain().focus().toggleBulletList().run();
+    this.editor()?.chain().focus().toggleBulletList().run();
   }
 
   toggleOrderedList(): void {
-    this.editor.chain().focus().toggleOrderedList().run();
+    this.editor()?.chain().focus().toggleOrderedList().run();
   }
 
   toggleBlockquote(): void {
-    this.editor.chain().focus().toggleBlockquote().run();
+    this.editor()?.chain().focus().toggleBlockquote().run();
   }
 
   undo(): void {
-    this.editor.chain().focus().undo().run();
+    this.editor()?.chain().focus().undo().run();
   }
 
   redo(): void {
-    this.editor.chain().focus().redo().run();
+    this.editor()?.chain().focus().redo().run();
   }
 
   isActive(name: string, level?: number): boolean {
-    return this.editor.isActive(name, {level: level});
+    return !!this.editor()?.isActive(name, {level: level});
   }
 
   insertImage(): void {
@@ -275,14 +300,10 @@ export class RichTextEditorComponent implements OnDestroy {
       return;
     }
 
-    this.editor
-      .chain()
-      .focus()
-      .setImage({
-        src: url,
-        alt: '',
-      })
-      .run();
+    this.editor()?.chain().focus().setImage({
+      src: url,
+      alt: '',
+    }).run();
   }
 
   selectedColor = '#000000';
@@ -292,19 +313,11 @@ export class RichTextEditorComponent implements OnDestroy {
 
     this.selectedColor = color;
 
-    this.editor
-      .chain()
-      .focus()
-      .setColor(color)
-      .run();
+    this.editor()?.chain().focus().setColor(color).run();
   }
 
   unsetColor(): void {
-    this.editor
-      .chain()
-      .focus()
-      .unsetColor()
-      .run();
+    this.editor()?.chain().focus().unsetColor().run();
   }
 
   sourceMode = false;
@@ -313,33 +326,14 @@ export class RichTextEditorComponent implements OnDestroy {
 
   toggleSourceMode(): void {
     if (!this.sourceMode) {
-      // Editor → HTML
-      this.sourceHtml = this.editor.getHTML();
+      this.sourceHtml = this.editor()?.getHTML() ?? '';
       this.sourceMode = true;
-
       return;
     }
 
-    // HTML → Editor
-    this.editor.commands.setContent(this.sourceHtml);
-
+    this.editor()?.commands.setContent(this.sourceHtml);
     this.sourceMode = false;
   }
-
-  previousQuestions: Question[] = [
-    {
-      id: 'sport',
-      name: 'Which sport do you play?',
-    },
-    {
-      id: 'score',
-      name: 'What was your score?',
-    },
-    {
-      id: 'duration',
-      name: 'How long did you play?',
-    },
-  ];
 
   openQuestionPicker(): void {
     const dialogRef = this.dialog.open(
@@ -347,35 +341,67 @@ export class RichTextEditorComponent implements OnDestroy {
       {
         width: '500px',
         data: {
-          questions: this.previousQuestions,
+          questionIndex: this.questionIndex(),
         },
       }
     );
 
     dialogRef.afterClosed().subscribe(
-      (question: Question | undefined) => {
-
-        if (!question) {
-          return;
-        }
-
+      (question: AppQuestion | undefined) => {
+        if (!question) return;
         this.insertQuestionReference(question);
       }
     );
   }
 
-  insertQuestionReference(question: Question): void {
-    this.editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: 'questionReference',
+  insertQuestionReference(question: AppQuestion): void {
+    this.editor()?.chain().focus().insertContent({
+      type: 'questionReference',
 
+      attrs: {
+        // questionId: question.id,
+        questionName: question.field_name,
+      },
+    }).run();
+
+
+  }
+
+  openVariablePicker(): void {
+    const dialogRef = this.dialog.open(VariableDialogComponent, {
+      id: 'variable-dialog',
+      data: {id: 'variable-dialog', mode: 'insert'},
+      panelClass: 'tailwind-slide-panel',
+      width: '40%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    const dialogActionSubscription = dialogRef.afterClosed().subscribe(
+      (variable: QuestionTemplateVariable | undefined) => {
+        console.log('Class: RichTextEditorComponent, Function: , Line 371 variable' , variable);
+        if (!variable) return;
+        this.insertVariableReference(variable);
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(() => {
+      dialogActionSubscription.unsubscribe();
+    });
+  }
+
+  insertVariableReference(variable: QuestionTemplateVariable): void {
+    this.editor()?.chain().focus().insertContent({
+        type: 'variableReference',
         attrs: {
-          questionId: question.id,
-          questionName: question.name,
+          variable: JSON.stringify(variable),
+          // variableId: variable.id,
+          // variableName: variable.name,
         },
-      })
-      .run();
+      }).run();
   }
 }

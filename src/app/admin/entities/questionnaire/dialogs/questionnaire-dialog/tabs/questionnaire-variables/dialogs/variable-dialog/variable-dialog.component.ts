@@ -23,7 +23,7 @@ import {KeyValuePipe} from '@angular/common';
 export interface TemplateVariableForm {
   id: string
   name: string
-  type: "reservedVariable" | "question" | "questionnaire" | "topic"
+  type: "reservedVariable" | "questionnaire" | "topic"
   reservedVariable: string
   questionId: string
   questionnaireId: string
@@ -59,7 +59,7 @@ export class VariableDialogComponent implements AfterViewInit {
     id: string;
     mode: string;
     entity?: QuestionTemplateVariable;
-    questionIndex: number;
+    // questionIndex: number;
   };
 
   selectModel = signal<QuestionTemplateVariable | null>(null);
@@ -70,7 +70,7 @@ export class VariableDialogComponent implements AfterViewInit {
   model = signal<TemplateVariableForm>({
     id: this.dialogData.entity?.id ?? `v_${crypto.randomUUID()}`,
     name: this.dialogData.entity?.name ?? '',
-    type: this.dialogData.entity?.type ?? 'question',
+    type: this.dialogData.entity?.type ?? 'questionnaire',
     reservedVariable: this.dialogData.entity?.reservedVariable ?? '',
     questionId: this.dialogData.entity?.questionId ?? '',
     questionnaireId: this.dialogData.entity?.questionnaireId ?? '',

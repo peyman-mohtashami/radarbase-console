@@ -94,24 +94,28 @@
       </div>
 
 
-      <div>
+      <div class="mb-4">
         <label for="field_label" class="text-sm"
                [class]="form.field_label[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
-
-        <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_label[_lang]"/>
+        <app-rich-text-editor [formField]="form.field_label[_lang]" [questionIndex]="dialogData.index"/>
+        <!--        <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_label[_lang]"/>-->
       </div>
 
-      <div class="flex justify-between items-baseline">
+      <div class="mb-4">
+        <!--      <div class="flex justify-between items-baseline">-->
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
+        <app-rich-text-editor [formField]="form.section_header[_lang]" [questionIndex]="dialogData.index"/>
+        <!--      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.section_header[_lang]"/>-->
       </div>
-      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.section_header[_lang]"/>
 
-      <div class="flex justify-between items-baseline">
+      <div class="mb-4">
+        <!--      <div class="flex justify-between items-baseline">-->
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
+        <app-rich-text-editor [formField]="form.field_note[_lang]" [questionIndex]="dialogData.index"/>
+        <!--      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[_lang]"/>-->
       </div>
-      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[_lang]"/>
 
       @if (CHOICES_ENABLED_FIELDS.includes(form.field_type().value())) {
         <app-question-choices [formField]="form.select_choices_or_calculations" [index]="dialogData.index"/>
@@ -122,7 +126,7 @@
         @case (QuestionType.CALC) {
           <label for="calculation_fn" class="text-sm"
                  [class]="form.calculation_fn().invalid() ? 'text-red-700' : ''">
-           {{ `${_prefix}.calculationFn` | translate }} *
+            {{ `${_prefix}.calculationFn` | translate }} *
           </label>
           <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
             <input id="calculation_fn" matInput [formField]="form.calculation_fn"/>
@@ -150,7 +154,6 @@
             </mat-error>
           </mat-form-field>
         }
-
         @case (QuestionType.DATE) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
             <div>
@@ -161,15 +164,15 @@
               <mat-form-field class="small-input" appearance='outline'>
                 <input [formField]="form.text_validation_min"
                        matInput [matDatepicker]="dp1" readonly (click)="dp1.open()">
-                <mat-datepicker-toggle matIconSuffix [for]="dp1" />
+                <mat-datepicker-toggle matIconSuffix [for]="dp1"/>
                 <mat-datepicker #dp1/>
-                  <mat-error>
-                    @if (form.text_validation_min().invalid()) {
-                      @for (error of form.text_validation_min().errors(); track error.kind) {
-                        {{ error.message }}
-                      }
+                <mat-error>
+                  @if (form.text_validation_min().invalid()) {
+                    @for (error of form.text_validation_min().errors(); track error.kind) {
+                      {{ error.message }}
                     }
-                  </mat-error>
+                  }
+                </mat-error>
               </mat-form-field>
             </div>
 
@@ -194,7 +197,6 @@
             </div>
           </fieldset>
         }
-
         @case (QuestionType.TIME) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
             <div>
@@ -228,7 +230,6 @@
             </div>
           </fieldset>
         }
-
         @case (QuestionType.NUMBER) {
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
             <div>
@@ -262,7 +263,6 @@
             </div>
           </fieldset>
         }
-
         @case (QuestionType.RANGE) {
           <div>
             <mat-slide-toggle [formField]="form.show_code" class="my-4" color="primary">
@@ -275,7 +275,6 @@
             </mat-slide-toggle>
           </div>
         }
-
         @case (QuestionType.SLIDER) {
           <label for="" class="text-sm">{{ `${_prefix}.range` | translate }} *</label>
           <fieldset class="p-2 rounded-sm border">
@@ -364,7 +363,6 @@
             </div>
           </fieldset>
         }
-
         @case (QuestionType.TEXT) {
           <div>
             <mat-slide-toggle [formField]="form.multi_line" class="my-4" color="primary">
@@ -386,7 +384,6 @@
             </mat-form-field>
           </div>
         }
-
         @case (QuestionType.TIMED) {
           <label for="unit" class="text-sm">{{ `${_prefix}.annotation` | translate }}</label>
           <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2">
@@ -426,7 +423,6 @@
             </div>
           </fieldset>
         }
-
         @case (QuestionType.CHECKBOX) {
           <div>
             <label for="text_validation_max"

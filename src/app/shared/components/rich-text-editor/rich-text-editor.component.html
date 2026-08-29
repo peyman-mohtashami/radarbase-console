@@ -1,165 +1,107 @@
-<div class="editor-container">
+@if (editor(); as editor) {
+  <div class="border rounded overflow-hidden">
+    <div
+      class="h-8 flex items-center justify-between gap-0.5 p-1 border-b border-b-gray-300 [&>button]:p-px [&>button]:text-sm [&>button]:cursor-pointer [&>button]:bg-gray-200">
+      <div class="flex items-center gap-0.5">
 
-  <div class="toolbar">
+      <button mat-icon-button class="tiny" type="button"
+              [class.active]="isActive('paragraph')"
+              (click)="setParagraph()">
+        <mat-icon class="material-symbols-outlined text-lg!">format_paragraph</mat-icon>
+      </button>
 
-    <!-- Text style -->
+        <button mat-icon-button class="tiny" type="button"
+                [class.active]="isActive('heading', 1)" (click)="setHeading(1)">
+          <mat-icon class="material-symbols-outlined text-lg!">format_h1</mat-icon>
+        </button>
+        <!--    <button mat-icon-button class="tiny" type="button"-->
+        <!--            [class.active]="isActive('heading', 2)"-->
+        <!--            (click)="setHeading(2)">-->
+        <!--      <mat-icon class="material-symbols-outlined text-lg!">format_h2</mat-icon>-->
+        <!--    </button>-->
+        <!--    <button mat-icon-button class="tiny" type="button"-->
+        <!--            [class.active]="isActive('heading', 3)"-->
+        <!--            (click)="setHeading(3)">-->
+        <!--      <mat-icon class="material-symbols-outlined text-lg!">format_h3</mat-icon>-->
+        <!--    </button>-->
 
-    <button
-      type="button"
-      [class.active]="isActive('paragraph')"
-      (click)="setParagraph()">
-      P
-    </button>
+        <!-- Formatting -->
+        <button mat-icon-button class="tiny" type="button"
+                [class.active]="isActive('bold')"
+                (click)="toggleBold()">
+          <mat-icon class="material-symbols-outlined text-lg!">format_bold</mat-icon>
+        </button>
+        <button mat-icon-button class="tiny" type="button"
+                [class.active]="isActive('italic')"
+                (click)="toggleItalic()">
+          <mat-icon class="material-symbols-outlined text-lg!">format_italic</mat-icon>
+        </button>
+        <button mat-icon-button class="tiny" type="button" [class.active]="isActive('underline')"
+                (click)="toggleUnderline()">
+          <mat-icon class="material-symbols-outlined text-lg!">format_underlined</mat-icon>
+        </button>
+        <!--    <button type="button" [class.active]="isActive('strike')" (click)="toggleStrike()"><mat-icon class="material-symbols-outlined text-xl!">format_strikethrough</mat-icon></button>-->
 
-    <button
-      type="button"
-      [class.active]="isActive('heading', 1)"
-      (click)="setHeading(1)">
-      H1
-    </button>
+        <!--    <input type="color" [value]="selectedColor" (input)="setColor($event)" title="Text color"/>-->
+        <!--    <button type="button" (click)="unsetColor()"><mat-icon class="material-symbols-outlined text-xl!">format_clear</mat-icon></button>-->
 
-    <button
-      type="button"
-      [class.active]="isActive('heading', 2)"
-      (click)="setHeading(2)">
-      H2
-    </button>
+        <!--    <p>|</p>-->
 
-    <button
-      type="button"
-      [class.active]="isActive('heading', 3)"
-      (click)="setHeading(3)">
-      H3
-    </button>
+        <!-- Lists -->
 
-    <span class="separator"></span>
+        <!--    <button type="button" [class.active]="isActive('bulletList')" (click)="toggleBulletList()"><mat-icon class="material-symbols-outlined text-xl!">format_list_bulleted</mat-icon></button>-->
+        <!--    <button type="button" [class.active]="isActive('orderedList')" (click)="toggleOrderedList()"><mat-icon class="material-symbols-outlined text-xl!">format_list_numbered</mat-icon></button>-->
+        <!--    <button type="button" [class.active]="isActive('blockquote')" (click)="toggleBlockquote()"><mat-icon class="material-symbols-outlined text-xl!">format_quote</mat-icon></button>-->
 
-    <!-- Formatting -->
-    <input
-      type="color"
-      [value]="selectedColor"
-      (input)="setColor($event)"
-      title="Text color"
-    />
+        <!--    <p>|</p>-->
+        <button mat-icon-button class="tiny" type="button"
+                (click)="insertImage()">
+          <mat-icon class="material-symbols-outlined text-lg!">image</mat-icon>
+        </button>
+      </div>
 
-    <button
-      type="button"
-      (click)="unsetColor()">
-      Clear color
-    </button>
+      <div class="flex items-center gap-0.5">
+        <button mat-icon-button class="tiny" type="button"
+                (click)="undo()" [disabled]="!editor.can().undo()">
+          <mat-icon class="material-symbols-outlined text-lg!">undo</mat-icon>
+        </button>
 
-    <button
-      type="button"
-      [class.active]="isActive('bold')"
-      (click)="toggleBold()">
-      <strong>B</strong>
-    </button>
+        <button mat-icon-button class="tiny" type="button"
+                (click)="redo()" [disabled]="!editor.can().redo()">
+          <mat-icon class="material-symbols-outlined text-lg!">redo</mat-icon>
+        </button>
 
-    <button
-      type="button"
-      [class.active]="isActive('italic')"
-      (click)="toggleItalic()">
-      <em>I</em>
-    </button>
+        @if (!hideQuestionPicker() && questionIndex()) {
+          <button mat-icon-button class="tiny" type="button"
+                  (click)="openQuestionPicker()" [matTooltip]="'Insert question'">
+            <mat-icon class="material-symbols-outlined text-lg!">data_array</mat-icon>
+          </button>
+        }
 
-    <button
-      type="button"
-      [class.active]="isActive('underline')"
-      (click)="toggleUnderline()">
-      <u>U</u>
-    </button>
+        <button mat-icon-button class="tiny" type="button"
+                (click)="openVariablePicker()" [matTooltip]="'Insert variable'">
+          <mat-icon class="material-symbols-outlined text-lg!">data_object</mat-icon>
+        </button>
 
-    <button
-      type="button"
-      [class.active]="isActive('strike')"
-      (click)="toggleStrike()">
-      <s>S</s>
-    </button>
+        <button mat-icon-button class="tiny" type="button"
+                [class.active]="sourceMode"
+                (click)="toggleSourceMode()" [matTooltip]="'view source'">
+          <mat-icon class="material-symbols-outlined text-lg!">code_xml</mat-icon>
+        </button>
+      </div>
+    </div>
 
-    <span class="separator"></span>
-
-    <!-- Lists -->
-
-    <button
-      type="button"
-      [class.active]="isActive('bulletList')"
-      (click)="toggleBulletList()">
-      • List
-    </button>
-
-    <button
-      type="button"
-      [class.active]="isActive('orderedList')"
-      (click)="toggleOrderedList()">
-      1. List
-    </button>
-
-    <button
-      type="button"
-      [class.active]="isActive('blockquote')"
-      (click)="toggleBlockquote()">
-      Quote
-    </button>
-
-    <span class="separator"></span>
-
-    <button
-      type="button"
-      (click)="insertImage()">
-      🖼️
-    </button>
-
-    <span class="separator"></span>
-
-    <!-- Undo / Redo -->
-
-    <button
-      type="button"
-      (click)="undo()"
-      [disabled]="!editor.can().undo()">
-      ↶
-    </button>
-
-    <button
-      type="button"
-      (click)="redo()"
-      [disabled]="!editor.can().redo()">
-      ↷
-    </button>
-
-    <button
-      type="button"
-      [class.active]="sourceMode"
-      (click)="toggleSourceMode()">
-      &lt;/&gt;
-    </button>
+<!--    <div-->
+<!--      class="h-8 flex items-center gap-0.5 p-1 border-b border-b-gray-300 [&>button]:p-px [&>button]:text-sm [&>button]:cursor-pointer [&>button]:bg-gray-200">-->
 
 
-    <button
-      type="button"
-      title="Insert question"
-      (click)="openQuestionPicker()">
-      + Question
-    </button>
+<!--      -->
+<!--    </div>-->
+
+    @if (!sourceMode) {
+      <tiptap-editor [editor]="editor"/>
+    } @else {
+      <textarea class="source-editor" [(ngModel)]="sourceHtml"></textarea>
+    }
   </div>
-
-  @if (!sourceMode) {
-
-    <tiptap-editor
-      [editor]="editor">
-    </tiptap-editor>
-
-  } @else {
-
-    <textarea
-      class="source-editor"
-      [(ngModel)]="sourceHtml">
-  </textarea>
-
-  }
-
-<!--  <tiptap-editor-->
-<!--    [editor]="editor">-->
-<!--  </tiptap-editor>-->
-
-</div>
+}

@@ -24,26 +24,27 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   replacePlaceholders(str = ""): string {
-    return str.toString().replace(/\{\{([^{}]*)}}/g, (_, content: string) => {
+    const replacedVariables =  str.toString().replace(/\{\{([^{}]*)}}/g, (_, content: string) => {
       const questionTemplateVariable = this.variables?.find(v => v.name === content);
 
       switch (questionTemplateVariable?.type) {
-        case 'question': {
-          if (!questionTemplateVariable.questionId) return `<span class="underline text-red-700">{{${content}}</span>`;
-
-          const answer = this.getAnswer(questionTemplateVariable.questionId!);
-          return answer !== null ? String(answer) : `<span class="underline text-red-700">{{${content}}}</span>`;
-        }
         default: {
           const variableInput = this.previewState.variables().find(v => v.name === content);
           return variableInput?.value || `<span class="underline text-red-700">{{${content}}}</span>`
         }
       }
     });
+
+    return replacedVariables.toString()
+      .replace(/\[\[([^\]]*)]]/g, (_, content: string) => {
+        const answer = this.getAnswer(content!);
+        return answer !== null ? String(answer) : `<span class="underline text-red-700">[[${content}]]</span>`;
+      });
+
   }
 
   getAnswer(questionId: string): string | null {
-    const answers = this.previewState.answers();//?.[questionId]?.[0]?.value ?? null;
+    const answers = this.previewState.answers();
     const answer = answers?.[questionId]?.[0];
     if (!answer) { return null}
 

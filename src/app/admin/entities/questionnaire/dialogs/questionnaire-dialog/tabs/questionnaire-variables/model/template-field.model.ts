@@ -10,7 +10,7 @@ export type TemplateVariableFunction =
 export interface QuestionTemplateVariable {
   id: string;
   name: string;
-  type: 'reservedVariable' | 'question' | 'questionnaire' | 'topic';
+  type: 'reservedVariable' | 'questionnaire' | 'topic';
   reservedVariable?: string;
   questionId?: string;
   questionnaireId?: string;

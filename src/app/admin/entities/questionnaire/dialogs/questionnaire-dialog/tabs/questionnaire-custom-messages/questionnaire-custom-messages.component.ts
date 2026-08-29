@@ -8,12 +8,12 @@ import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {
-  QuestionTemplateVariablesComponent
-} from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
-import {
   requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
 import {withLanguage} from '../../services/utils';
+import {
+  RichTextEditorComponent
+} from '../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -38,7 +38,7 @@ export interface QuestionnaireCustomMessagesForm {
     FormField,
     CdkTextareaAutosize,
     MatError,
-    QuestionTemplateVariablesComponent,
+    RichTextEditorComponent,
   ]
 })
 export class QuestionnaireCustomMessagesComponent {

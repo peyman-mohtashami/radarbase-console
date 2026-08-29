@@ -1,0 +1,16 @@
+<span class="h-6 inline-flex items-center mx-0.5 py-0.5 px-1.5 rounded-full text-nowrap cursor-pointer bg-primary/20 text-primary"
+      [attr.data-question-id]="variable?.id"
+      [attr.title]="variable?.name"
+      [matTooltip]="variable?.name">
+
+  <mat-icon class="material-symbols-outlined text-lg!">data_object</mat-icon>
+
+  <span class="overflow-hidden max-w-62.5 text-ellipsis">{{ variable?.name }}</span>
+
+  <button mat-icon-button type="button" color="primary" class="tiny" contenteditable="false" tabindex="-1" aria-label="Remove question"
+          (mousedown)="$event.preventDefault()"
+          (click)="edit()">
+    <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
+  </button>
+
+</span>

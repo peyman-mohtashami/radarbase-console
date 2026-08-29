@@ -81,7 +81,9 @@
 
     <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 [&>div:nth-child(odd)]:text-neutral-500">
         <span [class]="!_field_label ? 'text-red-500' : ''">{{ `${_prefix}.fieldLabel` | translate }}</span>
-        <span class="font-bold" [class]="!_field_label ? 'text-red-500' : ''">{{ _field_label || `${_prefix}.notAvailable` | translate }}</span>
+        <span class="font-bold" [class]="!_field_label ? 'text-red-500' : ''" [innerHtml]="_field_label || `${_prefix}.notAvailable` | translate">
+<!--          {{ _field_label || `${_prefix}.notAvailable` | translate }}-->
+        </span>
 
         <span>{{ `${_prefix}.sectionHeader` | translate }}</span>
         <span>{{ _section_header || `${_prefix}.notAvailable` | translate }}</span>

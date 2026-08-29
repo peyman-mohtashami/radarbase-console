@@ -1,109 +1,147 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   Insert question
 </h2>
 
-<mat-dialog-content>
+<mat-dialog-content class="p-4!">
 
-  <mat-form-field
-    appearance="outline"
-    class="search-field">
-
-    <mat-label>
-      Search questions
-    </mat-label>
-
-    <mat-icon matPrefix>
-      search
-    </mat-icon>
-
-    <input
-      matInput
-      [value]="searchTerm()"
-      (input)="updateSearchTerm($any($event.target).value)"
-      placeholder="Search by question name">
-
-    @if (searchTerm()) {
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        aria-label="Clear search"
-        (click)="updateSearchTerm('')">
-
-        <mat-icon>
-          close
-        </mat-icon>
-
-      </button>
-    }
-
+  <label for="template-variable" class="text-sm">Select</label>
+  <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
+    <mat-select (selectionChange)="selectQuestion($event)">
+      @for (question of questions; track $index) {
+        @if ($index < data.questionIndex) {
+        <mat-option [value]="question">{{ question.field_name }}</mat-option>
+        }
+      }
+    </mat-select>
+<!--    <mat-error>-->
+<!--      @if (selectForm().invalid()) {-->
+<!--        @for (error of selectForm().errors(); track error.kind) {-->
+<!--          {{ error.message }}-->
+<!--        }-->
+<!--      }-->
+<!--    </mat-error>-->
   </mat-form-field>
 
+<!--  <mat-form-field-->
+<!--    appearance="outline"-->
+<!--    class="search-field">-->
 
-  @if (filteredQuestions().length > 0) {
+<!--    <mat-label>-->
+<!--      Search questions-->
+<!--    </mat-label>-->
 
-    <mat-selection-list
-      [multiple]="false"
-      class="question-list">
+<!--    <mat-icon matPrefix>-->
+<!--      search-->
+<!--    </mat-icon>-->
 
-      @for (
-        question of filteredQuestions();
-        track question.id
-        ) {
+<!--    <input-->
+<!--      matInput-->
+<!--      [value]="searchTerm()"-->
+<!--      (input)="updateSearchTerm($any($event.target).value)"-->
+<!--      placeholder="Search by question name">-->
 
-        <mat-list-option
-          (click)="selectQuestion(question)">
+<!--    @if (searchTerm()) {-->
+<!--      <button-->
+<!--        mat-icon-button-->
+<!--        matSuffix-->
+<!--        type="button"-->
+<!--        aria-label="Clear search"-->
+<!--        (click)="updateSearchTerm('')">-->
 
-          <div class="question-item">
+<!--        <mat-icon>-->
+<!--          close-->
+<!--        </mat-icon>-->
 
-            <div class="question-name">
-              {{ question.name }}
-            </div>
+<!--      </button>-->
+<!--    }-->
 
-            <div class="question-id">
-              {{ question.id }}
-            </div>
+<!--  </mat-form-field>-->
 
-          </div>
 
-        </mat-list-option>
+<!--  @if ((filteredQuestions()?.length ?? 0) > 0) {-->
 
-      }
+<!--    <mat-selection-list-->
+<!--      [multiple]="false"-->
+<!--      class="question-list">-->
 
-    </mat-selection-list>
+<!--      @for (-->
+<!--        question of filteredQuestions();-->
+<!--        track question.id-->
+<!--        ) {-->
 
-  } @else {
+<!--        <mat-list-option-->
+<!--          (click)="selectQuestion(question)">-->
 
-    <div class="empty-state">
+<!--          <div class="question-item">-->
 
-      <mat-icon>
-        search_off
-      </mat-icon>
+<!--            <div class="question-name">-->
+<!--              {{ question.field_name }}-->
+<!--            </div>-->
 
-      <div class="empty-title">
-        No questions found
-      </div>
+<!--            <div class="question-id">-->
+<!--              {{ question.id }}-->
+<!--            </div>-->
 
-      <div class="empty-description">
-        Try a different search term.
-      </div>
+<!--          </div>-->
 
-    </div>
+<!--        </mat-list-option>-->
 
-  }
+<!--      }-->
+
+<!--    </mat-selection-list>-->
+
+<!--  } @else {-->
+
+<!--    <div class="empty-state">-->
+
+<!--      <mat-icon>-->
+<!--        search_off-->
+<!--      </mat-icon>-->
+
+<!--      <div class="empty-title">-->
+<!--        No questions found-->
+<!--      </div>-->
+
+<!--      <div class="empty-description">-->
+<!--        Try a different search term.-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+<!--  }-->
 
 </mat-dialog-content>
 
+<div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
+  <div class='flex flex-wrap gap-2'>
+    <button (click)='cancel()'
+            mat-stroked-button
+            color="accent"
+            type="button">
+      {{ 'SHARED.dialog.cancel' | translate }}
+    </button>
+  </div>
+  <div class='ml-auto justify-end flex items-center gap-2'>
+<!--    <button (click)='save()'-->
+<!--            mat-raised-button-->
+<!--            [color]="dialogData.mode === 'delete' ? 'warn' : 'primary'"-->
+<!--            type="button"-->
+<!--            [disabled]="form().invalid() && selectForm().invalid()">-->
+<!--      {{ `${_prefix}.${dialogData.mode}` | translate }}-->
+<!--    </button>-->
+  </div>
+</div>
 
-<mat-dialog-actions align="end">
 
-  <button
-    mat-button
-    type="button"
-    (click)="cancel()">
+<!--<mat-dialog-actions align="end">-->
 
-    Cancel
+<!--  <button-->
+<!--    mat-button-->
+<!--    type="button"-->
+<!--    (click)="cancel()">-->
 
-  </button>
+<!--    Cancel-->
 
-</mat-dialog-actions>
+<!--  </button>-->
+
+<!--</mat-dialog-actions>-->
