@@ -68,7 +68,7 @@
 </div>
 
 @if (entities().length > MIN_ENTITIES_FOR_PAGINATION) {
-  <mat-paginator class="mt-4" (page)="switchPage($event)"
+  <mat-paginator class="my-4" (page)="switchPage($event)"
                  [length]="totalEntities()"
                  [pageSize]="page().pageSize"
                  [pageSizeOptions]="PAGE_SIZE_OPTIONS"

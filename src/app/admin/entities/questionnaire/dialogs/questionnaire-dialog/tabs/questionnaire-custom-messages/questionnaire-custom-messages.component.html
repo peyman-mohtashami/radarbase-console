@@ -59,8 +59,8 @@
                [class]="form.startText[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.startText` | translate }} *
         </label>
-        <app-rich-text-editor [formField]="form.startText[_lang]" [hideQuestionPicker]="true"/>
-
+        <app-html-editor [formField]="form.startText[_lang]" />
+<!--        <app-rich-text-editor [formField]="form.startText[_lang]" [hideQuestionPicker]="true"/>-->
 <!--        <app-question-template-variables [formField]="form.startText[_lang]" />-->
       </div>
     }
@@ -70,7 +70,8 @@
              [class]="form.endText[_lang]().invalid() ? 'text-red-700' : ''">
         {{ `${_prefix}.endText` | translate }} *
       </label>
-      <app-rich-text-editor [formField]="form.endText[_lang]" [hideQuestionPicker]="true"/>
+      <app-html-editor [formField]="form.endText[_lang]" />
+<!--      <app-rich-text-editor [formField]="form.endText[_lang]" [hideQuestionPicker]="true"/>-->
 
 <!--      <app-question-template-variables [formField]="form.endText[_lang]" />-->
     </div>

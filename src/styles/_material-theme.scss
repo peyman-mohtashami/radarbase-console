@@ -1,946 +1,946 @@
-html {
-  /*#region VARS*/
-  --mat-sys-app-background: #fafafa;
-  --mat-sys-app-background-dark: #303030;
-  --mat-sys-background: white;
-  --mat-sys-background-dark: #424242;
-  --mat-sys-foreground: #000000;
-  --mat-sys-foreground-dark: #ffffff;
-
-  --rb-primary: var(--mat-sys-primary);
-  --rb-primary-rgb: var(--mat-sys-primary-rgb);
-  --rb-on-primary: var(--mat-sys-on-primary);
-  --rb-on-primary-rgb: var(--mat-sys-on-primary-rgb);
-  --rb-accent: var(--mat-sys-accent);
-  --rb-accent-rgb: var(--mat-sys-accent-rgb);
-  --rb-on-accent: var(--mat-sys-on-accent);
-  --rb-on-accent-rgb: var(--mat-sys-on-accent-rgb);
-  --rb-tertiary: var(--mat-sys-tertiary);
-  --rb-tertiary-rgb: var(--mat-sys-tertiary-rgb);
-  --rb-on-tertiary: var(--mat-sys-on-tertiary);
-  --rb-on-tertiary-rgb: var(--mat-sys-on-tertiary-rgb);
-  --rb-warn: #d52215;
-  --rb-on-warn: #ffffff;
-
-  --rb-app-background: var(--mat-sys-app-background);
-  --rb-background: var(--mat-sys-background);
-  --rb-foreground: var(--mat-sys-foreground);
-  --rb-foreground-rgb: 0, 0, 0;
-
-  &.dark {
-    --rb-primary: var(--mat-sys-primary-dark);
-    --rb-primary-rgb: var(--mat-sys-primary-rgb-dark);
-    --rb-on-primary: var(--mat-sys-on-primary-dark);
-    --rb-on-primary-rgb: var(--mat-sys-on-primary-rgb-dark);
-    --rb-accent: var(--mat-sys-accent-dark);
-    --rb-accent-rgb: var(--mat-sys-accent-rgb-dark);
-    --rb-on-accent: var(--mat-sys-on-accent-dark);
-    --rb-on-accent-rgb: var(--mat-sys-on-accent-rgb-dark);
-    --rb-tertiary: var(--mat-sys-tertiary-dark);
-    --rb-tertiary-rgb: var(--mat-sys-tertiary-rgb-dark);
-    --rb-on-tertiary: var(--mat-sys-on-tertiary-dark);
-    --rb-on-tertiary-rgb: var(--mat-sys-on-tertiary-rgb-dark);
-    --rb-warn: #f44336;
-    --rb-on-warn: #ffffff;
-
-    --rb-app-background: var(--mat-sys-app-background-dark);
-    --rb-background: var(--mat-sys-background-dark);
-    --rb-foreground: var(--mat-sys-foreground-dark);
-    --rb-foreground-rgb: 255, 255, 255;
-  }
-  /*#endregion*/
-
-  /*#region CORE*/
-  /*#endregion*/
-
-  /*#region AUTOCOMPLETE*/
-  /*#endregion*/
-
-  /*#region BADGE*/
-  /*#endregion*/
-
-  /*#region BOTTOM SHEET*/
-  /*#endregion*/
-
-  /*#region OPTIONS*/
-  --mat-option-selected-state-label-text-color: var(--rb-primary);
-  --mat-option-label-text-color: var(--rb-foreground);
-  --mat-option-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
-  --mat-option-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
-  --mat-option-selected-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
-  --mat-optgroup-label-text-color: var(--rb-foreground);
-
-  .mat-accent {
-    --mat-option-selected-state-label-text-color: var(--rb-accent);
-  }
-
-  .mat-warn {
-    --mat-option-selected-state-label-text-color: var(--rb-warn);
-  }
-  /*#endregion*/
-
-  /*#region PSEUDO CHECKBOX*/
-  --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-primary);
-  --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-primary);
-  --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-primary-rgb), 0.7);
-  --mat-pseudo-checkbox-full-disabled-selected-checkmark-color: #303030;
-  --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-primary);
-  --mat-pseudo-checkbox-full-disabled-unselected-icon-color: color-mix(in srgb, white 38%, transparent);
-  --mat-pseudo-checkbox-full-disabled-selected-icon-color: color-mix(in srgb, white 38%, transparent);
-  --mat-pseudo-checkbox-minimal-disabled-selected-checkmark-color: color-mix(in srgb, white 38%, transparent);
-
-  .mat-accent {
-    --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-accent);
-    --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-accent);
-    --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-accent-rgb), 0.7);
-    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-accent);
-  }
-
-  .mat-warn {
-    --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-warn);
-    --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-warn);
-    --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-warn-rgb), 0.7);
-    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-warn);
-  }
-  /*#endregion*/
-
-  /*#region CARD*/
-  --mat-card-elevated-container-shape: 4px;
-  --mat-card-elevated-container-color: var(--rb-background);
-  --mat-card-elevated-container-elevation: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  --mat-card-filled-container-shape: 4px;
-  --mat-card-outlined-container-shape: 4px;
-  --mat-card-outlined-outline-width: 1px;
-  --mat-card-outlined-container-color: var(--rb-background);
-  --mat-card-outlined-container-elevation: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-  --mat-card-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
-  --mat-card-subtitle-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  /*#endregion*/
-
-  /*#region PROGRESS BAR*/
-  /*#endregion*/
-
-  /*#region TOOLTIP*/
-  --mat-tooltip-container-shape: 4px;
-  --mat-tooltip-supporting-text-line-height: 16px;
-  --mat-tooltip-container-color: var(--rb-foreground);
-  --mat-tooltip-supporting-text-color: var(--rb-background);
-  --mat-tooltip-supporting-text-size: 10px;
-  --mat-tooltip-supporting-text-weight: 400;
-  /*#endregion*/
-
-  /*#region TEXT FIELD*/
-  /*#endregion*/
-
-  /*#region FORM FIELD*/
-  --mat-form-field-container-vertical-padding: 8px;
-  --mat-form-field-container-height: 36px;
-  --mat-form-field-container-text-size: 12px;
-
-  --mat-form-field-filled-active-indicator-height: 1px;
-  --mat-form-field-filled-focus-active-indicator-height: 2px;
-  --mat-form-field-filled-container-shape: 4px;
-  --mat-form-field-outlined-outline-width: 1px;
-  --mat-form-field-outlined-focus-outline-width: 2px;
-  --mat-form-field-outlined-container-shape: 4px;
-
-  --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
-  --mat-form-field-filled-caret-color: var(--rb-primary);
-  --mat-form-field-filled-focus-active-indicator-color: var(--rb-primary);
-  --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
-  --mat-form-field-outlined-caret-color: var(--rb-primary);
-  --mat-form-field-outlined-focus-outline-color: var(--rb-primary);
-  --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
-  --mat-form-field-disabled-input-text-placeholder-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
-  --mat-form-field-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-error-text-color: var(--rb-warn);
-  --mat-form-field-select-option-text-color: inherit;
-  --mat-form-field-select-disabled-option-text-color: rgba(var(--rb-foreground-rgb), 0.87);/*GrayText;*/
-  --mat-form-field-leading-icon-color: unset;
-  --mat-form-field-disabled-leading-icon-color: unset;
-  --mat-form-field-trailing-icon-color: unset;
-  --mat-form-field-disabled-trailing-icon-color: unset;
-  --mat-form-field-error-focus-trailing-icon-color: unset;
-  --mat-form-field-error-hover-trailing-icon-color: unset;
-  --mat-form-field-error-trailing-icon-color: unset;
-  --mat-form-field-enabled-select-arrow-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-disabled-select-arrow-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
-  --mat-form-field-hover-state-layer-opacity: 0.04;
-  --mat-form-field-focus-state-layer-opacity: 0.12;
-  --mat-form-field-filled-container-color: #f6f6f6;
-  --mat-form-field-filled-disabled-container-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 4%, transparent);
-  --mat-form-field-filled-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-filled-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-filled-disabled-label-text-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
-  --mat-form-field-filled-input-text-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-filled-disabled-input-text-color: color-mix(in srgb, rgb(var(--rb-foreground)) 60%, transparent);
-  --mat-form-field-filled-input-text-placeholder-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-filled-error-hover-label-text-color: var(--rb-warn);
-  --mat-form-field-filled-error-focus-label-text-color: var(--rb-warn);
-  --mat-form-field-filled-error-label-text-color: var(--rb-warn);
-  --mat-form-field-filled-error-caret-color: var(--rb-warn);
-  --mat-form-field-filled-active-indicator-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-filled-disabled-active-indicator-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
-  --mat-form-field-filled-hover-active-indicator-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-filled-error-active-indicator-color: var(--rb-warn);
-  --mat-form-field-filled-error-focus-active-indicator-color: var(--rb-warn);
-  --mat-form-field-filled-error-hover-active-indicator-color: var(--rb-warn);
-  --mat-form-field-outlined-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-outlined-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-outlined-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 60%, transparent);
-  --mat-form-field-outlined-input-text-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-outlined-disabled-input-text-color: color-mix(in srgb, var(--rb-foreground) 60%, transparent);
-  --mat-form-field-outlined-input-text-placeholder-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-form-field-outlined-error-caret-color: var(--rb-warn);
-  --mat-form-field-outlined-error-focus-label-text-color: var(--rb-warn);
-  --mat-form-field-outlined-error-label-text-color: var(--rb-warn);
-  --mat-form-field-outlined-error-hover-label-text-color: var(--rb-warn);
-  --mat-form-field-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-form-field-outlined-disabled-outline-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 1) 20%, transparent);
-  --mat-form-field-outlined-hover-outline-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-form-field-outlined-error-focus-outline-color: var(--rb-warn);
-  --mat-form-field-outlined-error-hover-outline-color: var(--rb-warn);
-  --mat-form-field-outlined-error-outline-color: var(--rb-warn);
-
-  .mat-mdc-form-field.mat-accent {
-    --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-accent) 87%, transparent);
-    --mat-form-field-filled-caret-color: var(--rb-accent);
-    --mat-form-field-filled-focus-active-indicator-color: var(--rb-accent);
-    --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-accent) 87%, transparent);
-    --mat-form-field-outlined-caret-color: var(--rb-accent);
-    --mat-form-field-outlined-focus-outline-color: var(--rb-accent);
-    --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-accent) 87%, transparent)
-  }
-
-  .mat-mdc-form-field.mat-warn {
-    --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-warn) 87%, transparent);
-    --mat-form-field-filled-caret-color: var(--rb-warn);
-    --mat-form-field-filled-focus-active-indicator-color: var(--rb-warn);
-    --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-warn) 87%, transparent);
-    --mat-form-field-outlined-caret-color: var(--rb-warn);
-    --mat-form-field-outlined-focus-outline-color: var(--rb-warn);
-    --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-warn) 87%, transparent)
-  }
-
-  .mat-mdc-form-field.large {
-    --mat-form-field-container-vertical-padding: 16px;
-    --mat-form-field-container-height: 56px;
-    --mat-form-field-container-text-size: 14px;
-  }
-  /*#endregion*/
-
-  /*#region SELECT*/
-  --mat-select-arrow-transform: translateY(-8px);
-  --mat-select-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-
-  --mat-select-panel-background-color: var(--rb-background);
-  --mat-select-enabled-trigger-text-color: var(--rb-foreground);
-  --mat-select-disabled-trigger-text-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-select-placeholder-text-color: rgba(var(--rb-foreground-rgb), 0.6);
-  --mat-select-enabled-arrow-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-select-disabled-arrow-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-select-focused-arrow-color: var(--rb-primary);
-  --mat-select-invalid-arrow-color: var(--rb-warn);
-
-  .mat-mdc-form-field.mat-accent {
-    --mat-select-focused-arrow-color: var(--rb-accent);
-  }
-
-  .mat-mdc-form-field.mat-warn {
-    --mat-select-focused-arrow-color: var(--rb-warn);
-  }
-  /*#endregion*/
-
-  /*#region DIALOG*/
-  --mat-dialog-container-shape: 4px;
-  --mat-dialog-container-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
-  --mat-dialog-container-max-width: 80vw;
-  --mat-dialog-container-small-max-width: 80vw;
-  --mat-dialog-container-min-width: 0;
-  --mat-dialog-actions-alignment: start;
-  --mat-dialog-actions-padding: 8px;
-  --mat-dialog-content-padding: 20px 24px;
-  --mat-dialog-with-actions-content-padding: 20px 24px;
-  --mat-dialog-headline-padding: 0 24px 9px;
-
-  --mat-dialog-container-color: var(--rb-background);
-  --mat-dialog-subhead-color: var(--rb-foreground);
-  --mat-dialog-supporting-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  /*#endregion*/
-
-  /*#region CHIP*/
-  /*#endregion*/
-
-  /*#region SWITCH*/
-  --mat-slide-toggle-disabled-handle-opacity: 0.38;
-  --mat-slide-toggle-disabled-selected-handle-opacity: 0.38;
-  --mat-slide-toggle-disabled-selected-icon-opacity: 0.38;
-  --mat-slide-toggle-disabled-track-opacity: 0.12;
-  --mat-slide-toggle-disabled-unselected-handle-opacity: 0.38;
-  --mat-slide-toggle-disabled-unselected-icon-opacity: 0.38;
-  --mat-slide-toggle-disabled-unselected-track-outline-color: transparent;
-  --mat-slide-toggle-disabled-unselected-track-outline-width: 1px;
-  --mat-slide-toggle-handle-height: 20px;
-  --mat-slide-toggle-handle-shape: 10px;
-  --mat-slide-toggle-handle-width: 20px;
-  --mat-slide-toggle-hidden-track-opacity: 1;
-  --mat-slide-toggle-hidden-track-transition: transform 75ms 0ms cubic-bezier(0.4, 0, 0.6, 1);
-  --mat-slide-toggle-pressed-handle-size: 20px;
-  --mat-slide-toggle-selected-focus-state-layer-opacity: 0.12;
-  --mat-slide-toggle-selected-handle-horizontal-margin: 0;
-  --mat-slide-toggle-selected-handle-size: 20px;
-  --mat-slide-toggle-selected-hover-state-layer-opacity: 0.04;
-  --mat-slide-toggle-selected-icon-size: 18px;
-  --mat-slide-toggle-selected-pressed-handle-horizontal-margin: 0;
-  --mat-slide-toggle-selected-pressed-state-layer-opacity: 0.12;
-  --mat-slide-toggle-selected-track-outline-color: transparent;
-  --mat-slide-toggle-selected-track-outline-width: 1px;
-  --mat-slide-toggle-selected-with-icon-handle-horizontal-margin: 0;
-  --mat-slide-toggle-track-height: 14px;
-  --mat-slide-toggle-track-outline-color: transparent;
-  --mat-slide-toggle-track-outline-width: 1px;
-  --mat-slide-toggle-track-shape: 7px;
-  --mat-slide-toggle-track-width: 36px;
-  --mat-slide-toggle-unselected-focus-state-layer-opacity: 0.12;
-  --mat-slide-toggle-unselected-handle-horizontal-margin: 0;
-  --mat-slide-toggle-unselected-handle-size: 20px;
-  --mat-slide-toggle-unselected-hover-state-layer-opacity: 0.12;
-  --mat-slide-toggle-unselected-icon-size: 18px;
-  --mat-slide-toggle-unselected-pressed-handle-horizontal-margin: 0;
-  --mat-slide-toggle-unselected-pressed-state-layer-opacity: 0.1;
-  --mat-slide-toggle-unselected-with-icon-handle-horizontal-margin: 0;
-  --mat-slide-toggle-visible-track-opacity: 1;
-  --mat-slide-toggle-visible-track-transition: transform 75ms 0ms cubic-bezier(0, 0, 0.2, 1);
-  --mat-slide-toggle-with-icon-handle-size: 20px;
-
-  --mat-slide-toggle-selected-icon-color: var(--rb-on-primary);
-  --mat-slide-toggle-disabled-selected-icon-color: var(--rb-on-primary);
-  --mat-slide-toggle-selected-focus-state-layer-color: var(--rb-primary);
-  --mat-slide-toggle-selected-handle-color: var(--rb-primary);
-  --mat-slide-toggle-selected-hover-state-layer-color: var(--rb-primary);
-  --mat-slide-toggle-selected-pressed-state-layer-color: var(--rb-primary);
-  --mat-slide-toggle-selected-focus-handle-color: var(--rb-primary);
-  --mat-slide-toggle-selected-hover-handle-color: var(--rb-primary);
-  --mat-slide-toggle-selected-pressed-handle-color: var(--rb-primary);
-  --mat-slide-toggle-selected-focus-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
-  /*--mat-slide-toggle-selected-focus-track-color: #7986cb;*/
-  --mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
-  --mat-slide-toggle-selected-pressed-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
-  --mat-slide-toggle-selected-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
-  --mat-slide-toggle-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-slide-toggle-disabled-handle-elevation-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-  --mat-slide-toggle-disabled-selected-handle-color: rgba(var(--rb-foreground-rgba), 0.87);
-  --mat-slide-toggle-disabled-selected-track-color: rgba(var(--rb-foreground-rgba), 0.87);
-  --mat-slide-toggle-disabled-unselected-handle-color: rgba(var(--rb-foreground-rgba), 0.87);
-  --mat-slide-toggle-disabled-unselected-icon-color: #f6f6f6;
-  --mat-slide-toggle-disabled-unselected-track-color: rgba(var(--rb-foreground-rgba), 0.87);
-  --mat-slide-toggle-handle-elevation-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  --mat-slide-toggle-handle-surface-color: white;
-  --mat-slide-toggle-label-text-color: rgba(var(--rb-foreground-rgba), 0.87);
-  --mat-slide-toggle-unselected-hover-handle-color: #424242;
-  --mat-slide-toggle-unselected-focus-handle-color: #424242;
-  --mat-slide-toggle-unselected-focus-state-layer-color: rgba(0, 0, 0, 0.87);
-  --mat-slide-toggle-unselected-focus-track-color: rgba(0, 0, 0, 0.12);
-  --mat-slide-toggle-unselected-icon-color: #f6f6f6;
-  --mat-slide-toggle-unselected-handle-color: rgba(0, 0, 0, 0.54);
-  --mat-slide-toggle-unselected-hover-state-layer-color: rgba(0, 0, 0, 0.87);
-  --mat-slide-toggle-unselected-hover-track-color: rgba(0, 0, 0, 0.12);
-  --mat-slide-toggle-unselected-pressed-handle-color: #424242;
-  --mat-slide-toggle-unselected-pressed-track-color: rgba(0, 0, 0, 0.12);
-  --mat-slide-toggle-unselected-pressed-state-layer-color: rgba(0, 0, 0, 0.87);
-  --mat-slide-toggle-unselected-track-color: rgba(0, 0, 0, 0.12);
-
-  .mat-mdc-slide-toggle.mat-accent {
-    --mat-slide-toggle-selected-icon-color: white;
-    --mat-slide-toggle-disabled-selected-icon-color: white;
-    --mat-slide-toggle-selected-focus-state-layer-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-handle-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-hover-state-layer-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-pressed-state-layer-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-focus-handle-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-hover-handle-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-pressed-handle-color: var(--rb-accent); /*#ff4081;*/
-    --mat-slide-toggle-selected-focus-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292;*/
-    /*--mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-accent), white 50%);/*#f06292;*/
-    --mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#7986cb;*/
-    --mat-slide-toggle-selected-pressed-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292;*/
-    --mat-slide-toggle-selected-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292*/
-  }
-
-  .mat-mdc-slide-toggle.mat-warn {
-    --mat-slide-toggle-selected-icon-color: white;
-    --mat-slide-toggle-disabled-selected-icon-color: white;
-    --mat-slide-toggle-selected-focus-state-layer-color: #f44336;
-    --mat-slide-toggle-selected-handle-color: #f44336;
-    --mat-slide-toggle-selected-hover-state-layer-color: #f44336;
-    --mat-slide-toggle-selected-pressed-state-layer-color: #f44336;
-    --mat-slide-toggle-selected-focus-handle-color: #f44336;
-    --mat-slide-toggle-selected-hover-handle-color: #f44336;
-    --mat-slide-toggle-selected-pressed-handle-color: #f44336;
-    --mat-slide-toggle-selected-focus-track-color: #e57373;
-    --mat-slide-toggle-selected-hover-track-color: #e57373;
-    --mat-slide-toggle-selected-pressed-track-color: #e57373;
-    --mat-slide-toggle-selected-track-color: #e57373
-  }
-
-  --mat-slide-toggle-state-layer-size: 40px;
-  /*#endregion*/
-
-  /*#region RADIO*/
-  /*#endregion*/
-
-  /*#region SLIDER*/
-  /*#endregion*/
-
-  /*#region MENU*/
-  --mat-menu-container-shape: 4px;
-  --mat-menu-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  --mat-menu-item-label-text-color: var(--rb-foreground);
-  --mat-menu-item-icon-color: var(--rb-foreground);
-  --mat-menu-item-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
-  --mat-menu-item-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
-  --mat-menu-container-color: var(--rb-background);
-  --mat-menu-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
-  /*#endregion*/
-
-  /*#region LIST*/
-  /*#endregion*/
-
-  /*#region PAGINATOR*/
-  --mat-paginator-container-text-size: 12px;
-  --mat-paginator-container-text-color: var(--rb-foreground);
-  --mat-paginator-container-background-color: var(--rb-app-background);
-  --mat-paginator-enabled-icon-color: var(--rb-foreground);
-  --mat-paginator-disabled-icon-color: rgba(var(--rb-foreground-rgb), 0.3);
-  /*#endregion*/
-
-  /*#region TABS*/
-  --mat-tab-container-height: 48px;
-  --mat-tab-divider-color: transparent;
-  --mat-tab-divider-height: 0;
-  --mat-tab-active-indicator-height: 2px;
-  --mat-tab-active-indicator-shape: 0;
-
-  --mat-tab-disabled-ripple-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-tab-pagination-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
-  --mat-tab-inactive-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-tab-inactive-focus-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-tab-inactive-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-
-  .mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
-    --mat-tab-active-label-text-color: var(--rb-primary);
-    --mat-tab-active-ripple-color: var(--rb-primary);
-    --mat-tab-inactive-ripple-color: var(--rb-primary);
-    --mat-tab-active-focus-label-text-color: var(--rb-primary);
-    --mat-tab-active-hover-label-text-color: var(--rb-primary);
-    --mat-tab-active-focus-indicator-color: var(--rb-primary);
-    --mat-tab-active-hover-indicator-color: var(--rb-primary);
-    --mat-tab-active-indicator-color: var(--rb-primary);
-  }
-
-  .mat-mdc-tab-group.mat-accent, .mat-mdc-tab-nav-bar.mat-accent {
-    --mat-tab-active-label-text-color: var(--rb-accent);
-    --mat-tab-active-ripple-color: var(--rb-accent);
-    --mat-tab-inactive-ripple-color: var(--rb-accent);
-    --mat-tab-active-focus-label-text-color: var(--rb-accent);
-    --mat-tab-active-hover-label-text-color: var(--rb-accent);
-    --mat-tab-active-focus-indicator-color: var(--rb-accent);
-    --mat-tab-active-hover-indicator-color: var(--rb-accent);
-    --mat-tab-active-indicator-color: var(--rb-accent);
-  }
-
-  .mat-mdc-tab-group.mat-warn, .mat-mdc-tab-nav-bar.mat-warn {
-    --mat-tab-active-label-text-color: var(--rb-warn);
-    --mat-tab-active-ripple-color: var(--rb-warn);
-    --mat-tab-inactive-ripple-color: var(--rb-warn);
-    --mat-tab-active-focus-label-text-color: var(--rb-warn);
-    --mat-tab-active-hover-label-text-color: var(--rb-warn);
-    --mat-tab-active-focus-indicator-color: var(--rb-warn);
-    --mat-tab-active-hover-indicator-color: var(--rb-warn);
-    --mat-tab-active-indicator-color: var(--rb-warn)
-  }
-
-  .mat-mdc-tab-group.mat-background-primary, .mat-mdc-tab-nav-bar.mat-background-primary {
-    --mat-tab-background-color: var(--rb-primary);
-    --mat-tab-foreground-color: var(--rb-background);
-  }
-
-  .mat-mdc-tab-group.mat-background-accent, .mat-mdc-tab-nav-bar.mat-background-accent {
-    --mat-tab-background-color: var(--rb-accent);
-    --mat-tab-foreground-color: var(--rb-background);
-  }
-
-  .mat-mdc-tab-group.mat-background-warn, .mat-mdc-tab-nav-bar.mat-background-warn {
-    --mat-tab-background-color: var(--rb-warn);
-    --mat-tab-foreground-color: var(--rb-background);
-  }
-
-  .mat-mdc-tab-header {
-    --mat-tab-container-height: 48px
-  }
-  /*#endregion*/
-
-  /*#region CHECKBOX*/
-  --mat-checkbox-disabled-selected-checkmark-color: ver(--rb-background);
-  --mat-checkbox-selected-focus-state-layer-opacity: 0.12;
-  --mat-checkbox-selected-hover-state-layer-opacity: 0.04;
-  --mat-checkbox-selected-pressed-state-layer-opacity: 0.12;
-  --mat-checkbox-unselected-focus-state-layer-opacity: 0.12;
-  --mat-checkbox-unselected-hover-state-layer-opacity: 0.04;
-  --mat-checkbox-unselected-pressed-state-layer-opacity: 0.12;
-
-  --mat-checkbox-disabled-label-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-checkbox-label-text-color: var(--rb-foreground);
-  --mat-checkbox-disabled-selected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-checkbox-disabled-unselected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-checkbox-selected-checkmark-color: var(--rb-foreground);
-  --mat-checkbox-selected-focus-icon-color: var(--rb-accent);
-  --mat-checkbox-selected-hover-icon-color: var(--rb-accent);
-  --mat-checkbox-selected-icon-color: var(--rb-accent);
-  --mat-checkbox-selected-pressed-icon-color: var(--rb-accent);
-  --mat-checkbox-unselected-focus-icon-color: var(--rb-foreground);
-  --mat-checkbox-unselected-hover-icon-color: var(--rb-foreground);
-  --mat-checkbox-unselected-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-checkbox-selected-focus-state-layer-color: var(--rb-accent);
-  --mat-checkbox-selected-hover-state-layer-color: var(--rb-accent);
-  --mat-checkbox-selected-pressed-state-layer-color: var(--rb-accent);
-  --mat-checkbox-unselected-focus-state-layer-color: var(--rb-foreground);
-  --mat-checkbox-unselected-hover-state-layer-color: var(--rb-foreground);
-  --mat-checkbox-unselected-pressed-state-layer-color: var(--rb-foreground);
-
-  .mat-mdc-checkbox.mat-primary {
-    --mat-checkbox-disabled-selected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-    --mat-checkbox-disabled-unselected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-    --mat-checkbox-selected-checkmark-color: var(--rb-on-primary);
-    --mat-checkbox-selected-focus-icon-color: var(--rb-primary);
-    --mat-checkbox-selected-hover-icon-color: var(--rb-primary);
-    --mat-checkbox-selected-icon-color: var(--rb-primary);
-    --mat-checkbox-selected-pressed-icon-color: var(--rb-primary);
-    --mat-checkbox-unselected-focus-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
-    --mat-checkbox-unselected-hover-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
-    --mat-checkbox-unselected-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
-    --mat-checkbox-selected-focus-state-layer-color: var(--rb-primary);
-    --mat-checkbox-selected-hover-state-layer-color: var(--rb-primary);
-    --mat-checkbox-selected-pressed-state-layer-color: var(--rb-primary);
-    --mat-checkbox-unselected-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
-    --mat-checkbox-unselected-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
-    --mat-checkbox-unselected-pressed-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87)
-  }
-
-  .mat-mdc-checkbox.mat-warn {
-    --mat-checkbox-selected-checkmark-color: var(--rb-on-warn);
-    --mat-checkbox-selected-focus-icon-color: var(--rb-warn);
-    --mat-checkbox-selected-hover-icon-color: var(--rb-warn);
-    --mat-checkbox-selected-icon-color: var(--rb-warn);
-    --mat-checkbox-selected-pressed-icon-color: var(--rb-warn);
-    --mat-checkbox-selected-focus-state-layer-color: var(--rb-warn);
-    --mat-checkbox-selected-hover-state-layer-color: var(--rb-warn);
-    --mat-checkbox-selected-pressed-state-layer-color: var(--rb-warn);
-  }
-
-  --mat-checkbox-touch-target-display: block;
-  --mat-checkbox-state-layer-size: 40px;
-  /*#endregion*/
-
-  /*#region BUTTONS*/
-  --mat-button-filled-container-shape: 4px;
-  --mat-button-filled-horizontal-padding: 16px;
-  --mat-button-filled-icon-offset: -4px;
-  --mat-button-filled-icon-spacing: 8px;
-  --mat-button-outlined-container-shape: 4px;
-  --mat-button-outlined-horizontal-padding: 15px;
-  --mat-button-outlined-icon-offset: -4px;
-  --mat-button-outlined-icon-spacing: 8px;
-  --mat-button-outlined-keep-touch-target: false;
-  --mat-button-outlined-outline-width: 1px;
-  --mat-button-protected-container-elevation-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  --mat-button-protected-container-shape: 4px;
-  --mat-button-protected-disabled-container-elevation-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-  --mat-button-protected-focus-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  --mat-button-protected-horizontal-padding: 16px;
-  --mat-button-protected-hover-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  --mat-button-protected-icon-offset: -4px;
-  --mat-button-protected-icon-spacing: 8px;
-  --mat-button-protected-pressed-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  --mat-button-text-container-shape: 4px;
-  --mat-button-text-horizontal-padding: 8px;
-  --mat-button-text-icon-offset: 0;
-  --mat-button-text-icon-spacing: 8px;
-  --mat-button-text-with-icon-horizontal-padding: 8px;
-  --mat-button-tonal-container-shape: 4px;
-  --mat-button-tonal-horizontal-padding: 16px;
-  --mat-button-tonal-icon-offset: -4px;
-  --mat-button-tonal-icon-spacing: 8px;
-
-  --mat-button-filled-container-color: var(--rb-background);
-  --mat-button-filled-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-filled-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-button-filled-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-button-filled-focus-state-layer-opacity: 0.12;
-  --mat-button-filled-hover-state-layer-opacity: 0.04;
-  --mat-button-filled-label-text-color: var(--rb-foreground);
-  --mat-button-filled-pressed-state-layer-opacity: 0.12;
-  --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-filled-state-layer-color: var(--rb-foreground);
-  --mat-button-outlined-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-button-outlined-disabled-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
-  --mat-button-outlined-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-button-outlined-focus-state-layer-opacity: 0.12;
-  --mat-button-outlined-hover-state-layer-opacity: 0.04;
-  --mat-button-outlined-label-text-color: var(--rb-foreground);
-  --mat-button-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
-  --mat-button-outlined-pressed-state-layer-opacity: 0.12;
-  --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-outlined-state-layer-color: var(--rb-foreground);
-  --mat-button-protected-container-color: var(--rb-background);
-  --mat-button-protected-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-protected-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-button-protected-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-button-protected-focus-state-layer-opacity: 0.12;
-  --mat-button-protected-hover-state-layer-opacity: 0.04;
-  --mat-button-protected-label-text-color: var(--rb-foreground);
-  --mat-button-protected-pressed-state-layer-opacity: 0.12;
-  --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-protected-state-layer-color: var(--rb-foreground);
-  --mat-button-text-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-button-text-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-button-text-focus-state-layer-opacity: 0.12;
-  --mat-button-text-hover-state-layer-opacity: 0.04;
-  /*--mat-button-text-label-text-color: rgba(0, 0, 0, 0.87);*/
-  --mat-button-text-pressed-state-layer-opacity: 0.12;
-  --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-text-state-layer-color: var(--rb-foreground);
-  --mat-button-tonal-container-color: var(--rb-background);
-  --mat-button-tonal-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-tonal-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
-  --mat-button-tonal-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-button-tonal-focus-state-layer-opacity: 0.12;
-  --mat-button-tonal-hover-state-layer-opacity: 0.04;
-  --mat-button-tonal-label-text-color: var(--rb-foreground);
-  --mat-button-tonal-pressed-state-layer-opacity: 0.12;
-  --mat-button-tonal-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
-  --mat-button-tonal-state-layer-color: var(--rb-foreground);
-
-  .mat-mdc-button.mat-primary, .mat-mdc-unelevated-button.mat-primary, .mat-mdc-raised-button.mat-primary, .mat-mdc-outlined-button.mat-primary, .mat-tonal-button.mat-primary {
-    --mat-button-filled-container-color: var(--rb-primary);
-    --mat-button-filled-label-text-color:  var(--rb-on-primary);
-    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-filled-state-layer-color:  var(--rb-background);
-    --mat-button-outlined-label-text-color: var(--rb-primary);
-    --mat-button-outlined-outline-color: var(--rb-primary);
-    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
-    --mat-button-outlined-state-layer-color: var(--rb-primary);
-    --mat-button-protected-container-color: var(--rb-primary);
-    --mat-button-protected-label-text-color:  var(--rb-on-primary);
-    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-protected-state-layer-color:  var(--rb-background);
-    --mat-button-text-label-text-color: var(--rb-primary);
-    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
-    --mat-button-text-state-layer-color: var(--rb-primary);
-    --mat-button-tonal-container-color: var(--rb-primary);
-    --mat-button-tonal-label-text-color:  var(--rb-on-primary);
-    --mat-button-tonal-ripple-color: color-mix(in srgb,  var(--rb-background) 12%, transparent);
-    --mat-button-tonal-state-layer-color:  var(--rb-background);
-  }
-
-  .mat-mdc-button.mat-accent, .mat-mdc-unelevated-button.mat-accent, .mat-mdc-raised-button.mat-accent, .mat-mdc-outlined-button.mat-accent, .mat-tonal-button.mat-accent {
-    --mat-button-filled-container-color: var(--rb-accent);
-    --mat-button-filled-label-text-color: var(--rb-on-accent);
-    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-filled-state-layer-color: var(--rb-background);
-    --mat-button-outlined-label-text-color: var(--rb-accent);
-    --mat-button-outlined-outline-color: var(--rb-accent);
-    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
-    --mat-button-outlined-state-layer-color: var(--rb-accent);
-    --mat-button-protected-container-color: var(--rb-accent);
-    --mat-button-protected-label-text-color: var(--rb-on-accent);
-    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-protected-state-layer-color: var(--rb-background);
-    --mat-button-text-label-text-color: var(--rb-accent);
-    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
-    --mat-button-text-state-layer-color: var(--rb-accent);
-    --mat-button-tonal-container-color: var(--rb-accent);
-    --mat-button-tonal-label-text-color: var(--rb-on-accent);
-    --mat-button-tonal-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-tonal-state-layer-color: var(--rb-background);
-  }
-
-  .mat-mdc-button.mat-warn, .mat-mdc-unelevated-button.mat-warn, .mat-mdc-raised-button.mat-warn, .mat-mdc-outlined-button.mat-warn, .mat-tonal-button.mat-warn {
-    --mat-button-filled-container-color: var(--rb-warn);
-    --mat-button-filled-label-text-color: var(--rb-on-warn);
-    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-filled-state-layer-color: var(--rb-background);
-    --mat-button-outlined-label-text-color: var(--rb-warn);
-    --mat-button-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
-    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
-    --mat-button-outlined-state-layer-color: var(--rb-warn);
-    --mat-button-protected-container-color: var(--rb-warn);
-    --mat-button-protected-label-text-color: var(--rb-on-warn);
-    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
-    --mat-button-protected-state-layer-color: var(--rb-background);
-    --mat-button-text-label-text-color: var(--rb-warn);
-    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
-    --mat-button-text-state-layer-color: var(--rb-warn);
-    --mat-button-tonal-container-color: var(--rb-warn);
-    --mat-button-tonal-label-text-color: var(--rb-on-warn);
-    --mat-button-tonal-ripple-color: color-mix(in srgb, white 12%, transparent);
-    --mat-button-tonal-state-layer-color: var(--rb-background)
-  }
-  /*#endregion*/
-
-  /*#region ICON BUTTONS*/
-  --mat-icon-button-icon-size: 24px;
-  --mat-icon-button-container-shape: 50%;
-
-  --mat-icon-button-disabled-icon-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
-  --mat-icon-button-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-icon-button-focus-state-layer-opacity: 0.12;
-  --mat-icon-button-hover-state-layer-opacity: 0.04;
-  --mat-icon-button-icon-color: inherit;
-  --mat-icon-button-pressed-state-layer-opacity: 0.12;
-  --mat-icon-button-ripple-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
-  --mat-icon-button-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
-
-  .mat-mdc-icon-button.mat-primary {
-    --mat-icon-button-icon-color: var(--rb-primary);
-    --mat-icon-button-state-layer-color: var(--rb-primary);
-    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
-  }
-
-  .mat-mdc-icon-button.mat-accent {
-    --mat-icon-button-icon-color: var(--rb-accent);
-    --mat-icon-button-state-layer-color: var(--rb-accent);
-    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
-  }
-
-  .mat-mdc-icon-button.mat-warn {
-    --mat-icon-button-icon-color: var(--rb-warn);
-    --mat-icon-button-state-layer-color: var(--rb-warn);
-    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
-  }
-
-  --mat-icon-button-touch-target-display: block;
-
-  .mat-mdc-icon-button.mat-mdc-button-base {
-    --mdc-icon-button-state-layer-size: 48px;
-    --mat-icon-button-state-layer-size: 48px;
-    width: var(--mat-icon-button-state-layer-size);
-    height: var(--mat-icon-button-state-layer-size);
-    padding: 12px;
-  }
-
-  .mat-mdc-icon-button.mat-mdc-button-base.tiny {
-    --mdc-icon-button-state-layer-size: 28px;
-    line-height: normal;
-    width: var(--mdc-icon-button-state-layer-size);
-    height: var(--mdc-icon-button-state-layer-size);
-    padding: 1px;
-  }
-
-  .mat-mdc-icon-button.mat-mdc-button-base.small {
-    --mdc-icon-button-state-layer-size: 32px;
-    line-height: normal;
-    width: var(--mdc-icon-button-state-layer-size);
-    height: var(--mdc-icon-button-state-layer-size);
-    padding: 4px;
-  }
-
-  .mat-mdc-icon-button.tiny .mat-mdc-button-touch-target {
-    width: 24px;
-    height: 24px;
-  }
-
-  .mat-mdc-icon-button.small .mat-mdc-button-touch-target {
-    width: 32px;
-    height: 32px;
-  }
-  /*#endregion*/
-
-  /*#region FAB*/
-  /*#endregion*/
-
-  /*#region SNACK BAR*/
-  --mat-snack-bar-container-shape: 4px;
-  --mat-snack-bar-container-color: var(--rb-warn);
-  --mat-snack-bar-supporting-text-color: var(--rb-on-warn);
-  --mat-snack-bar-button-color: var(--rb-on-warn);
-  /*#endregion*/
-
-
-  /*#region TABLE*/
-  /*#endregion*/
-
-  /*#region PROGRESS BAR*/
-  --mdc-circular-progress-active-indicator-width: 4px;
-  --mdc-circular-progress-size: 48px;
-  --mdc-circular-progress-active-indicator-color: var(--rb-primary);
-  .mat-accent {
-    --mdc-circular-progress-active-indicator-color: var(--rb-accent);
-  }
-  .mat-warn {
-    --mdc-circular-progress-active-indicator-color: var(--rb-warn);
-  }
-  /*#endregion*/
-
-  /*#region BUTTON TOGGLE*/
-  /*#endregion*/
-
-  /*#region DATE PICKER*/
-  --mat-datepicker-calendar-container-shape: 4px;
-  --mat-datepicker-calendar-container-touch-shape: 4px;
-  --mat-datepicker-calendar-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  --mat-datepicker-calendar-container-touch-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
-  --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-primary);
-  --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-primary);
-  --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-primary-rgb), 0.4);
-  --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-primary);
-  --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-primary-rgb), 0.3);
-  --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-primary-rgb), 0.3);
-  --mat-datepicker-toggle-active-state-icon-color: var(--rb-primary);
-  --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-primary-rgb), 0.2);
-  --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-primary-rgb), 0.2);
-  --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0; /*#a8dab5; /*TODO*/
-  --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032); /*TODO*/
-  --mat-datepicker-toggle-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-datepicker-calendar-body-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-datepicker-calendar-period-button-text-color: var(--rb-foreground);
-  --mat-datepicker-calendar-period-button-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-datepicker-calendar-navigation-button-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-datepicker-calendar-header-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
-  --mat-datepicker-calendar-header-text-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-datepicker-calendar-date-today-outline-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-datepicker-calendar-date-today-disabled-state-outline-color: rgba(var(--rb-foreground-rgb), 0.18);
-  --mat-datepicker-calendar-date-text-color: var(--rb-foreground);
-  --mat-datepicker-calendar-date-outline-color: transparent;
-  --mat-datepicker-calendar-date-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-datepicker-calendar-date-preview-state-outline-color: rgba(var(--rb-foreground-rgb), 0.24);
-  --mat-datepicker-range-input-separator-color: var(--rb-foreground);
-  --mat-datepicker-range-input-disabled-state-separator-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-datepicker-range-input-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38);
-  --mat-datepicker-calendar-container-background-color: var(--rb-background);
-  --mat-datepicker-calendar-container-text-color: var(--rb-foreground);
-
-  .mat-datepicker-content.mat-accent {
-    --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-accent);
-    --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-accent-rgb);
-    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-accent-rgb), 0.4);
-    --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-accent);
-    --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-accent-rgb), 0.3);
-    --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-accent-rgb), 0.3);
-    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-accent-rgb), 0.2);
-    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-accent-rgb), 0.2);
-    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0;/*#a8dab5; /*TODO*/
-    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032) /*TODO*/
-  }
-
-  .mat-datepicker-content.mat-warn {
-    --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-warn);
-    --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-warn);
-    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-warn-rgb), 0.4);
-    --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-accent);
-    --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-warn-rgb), 0.3);
-    --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-warn-rgb), 0.3);
-    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-warn-rgb), 0.2);
-    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-warn-rgb), 0.2);
-    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0;/*#a8dab5; /*TODO*/
-    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032) /*TODO*/
-  }
-
-  .mat-datepicker-toggle-active.mat-accent {
-    --mat-datepicker-toggle-active-state-icon-color: var(--rb-accent);
-  }
-
-  .mat-datepicker-toggle-active.mat-warn {
-    --mat-datepicker-toggle-active-state-icon-color: var(--rb-warn);
-  }
-
-  .mat-calendar-controls {
-    --mat-icon-button-touch-target-display: none
-  }
-
-  .mat-calendar-controls .mat-mdc-icon-button.mat-mdc-button-base {
-    --mdc-icon-button-state-layer-size: 40px;
-    width: var(--mdc-icon-button-state-layer-size);
-    height: var(--mdc-icon-button-state-layer-size);
-    padding: 8px;
-  }
-  /*#endregion*/
-
-  /*#region DIVIDER*/
-  --mat-divider-width: 1px;
-  --mat-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
-  /*#endregion*/
-
-  /*#region EXPANSION PANEL*/
-  --mat-expansion-container-shape: 4px;
-  --mat-expansion-container-elevation-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  --mat-expansion-legacy-header-indicator-display: inline-block;
-  --mat-expansion-header-indicator-display: none;
-  --mat-expansion-container-background-color: var(--rb-background);
-  --mat-expansion-container-text-color: inherit;/*var(--rb-foreground);*/
-  --mat-expansion-actions-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
-  --mat-expansion-header-hover-state-layer-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 4%, transparent);
-  --mat-expansion-header-focus-state-layer-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
-  --mat-expansion-header-disabled-state-text-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
-  --mat-expansion-header-text-color: inherit; /*var(--rb-foreground);*/
-  --mat-expansion-header-description-color: rgba(var(--rb-foreground-rgb), 0.54);
-  --mat-expansion-header-indicator-color: inherit; /*rgba(var(--rb-foreground-rgb), 0.54);*/
-  --mat-expansion-header-collapsed-state-height: 48px;
-  --mat-expansion-header-expanded-state-height: 64px;
-  /*#endregion*/
-
-  /*#region GRID LIST*/
-  /*#endregion*/
-
-  /*#region ICON*/
-  --mat-icon-color: inherit;
-  .mat-icon .mat-primary {
-    --mat-icon-color: var(--rb-primary);
-  }
-
-  .mat-icon.mat-accent {
-    --mat-icon-color: var(--rb-accent);
-  }
-
-  .mat-icon.mat-warn {
-    --mat-icon-color: var(--rb-warn);
-  }
-  /*#endregion*/
-
-  /*#region SIDENAV*/
-  /*#endregion*/
-
-  /*#region STEPPER*/
-  --mat-stepper-header-error-state-icon-foreground-color: var(--rb-warn);
-  --mat-stepper-header-error-state-label-text-color: var(--rb-warn);
-  /*#endregion*/
-
-  /*#region SORT ARROW*/
-  /*#endregion*/
-
-  /*#region TOOLBAR*/
-  --mat-toolbar-container-background-color: var(--rb-background);
-  --mat-toolbar-container-text-color: var(--rb-foreground);
-
-  .mat-toolbar.mat-primary {
-    --mat-toolbar-container-background-color: var(--rb-primary);
-    --mat-toolbar-container-text-color: var(--rb-on-primary);
-  }
-
-  .mat-toolbar.mat-accent {
-    --mat-toolbar-container-background-color: var(--rb-accent);
-    --mat-toolbar-container-text-color: var(--rb-on-accent);
-  }
-
-  .mat-toolbar.mat-warn {
-    --mat-toolbar-container-background-color: var(--rb-warn);
-    --mat-toolbar-container-text-color: var(--rb-on-warn);
-  }
-  /*#endregion*/
-
-  /*#region TREE*/
-  /*#endregion*/
-
-  /*#region TIME PICKER*/
-  /*#endregion*/
-}
+//html {
+//  /*#region VARS*/
+//  --mat-sys-app-background: #fafafa;
+//  --mat-sys-app-background-dark: #303030;
+//  --mat-sys-background: white;
+//  --mat-sys-background-dark: #424242;
+//  --mat-sys-foreground: #000000;
+//  --mat-sys-foreground-dark: #ffffff;
+//
+//  --rb-primary: var(--mat-sys-primary);
+//  --rb-primary-rgb: var(--mat-sys-primary-rgb);
+//  --rb-on-primary: var(--mat-sys-on-primary);
+//  --rb-on-primary-rgb: var(--mat-sys-on-primary-rgb);
+//  --rb-accent: var(--mat-sys-accent);
+//  --rb-accent-rgb: var(--mat-sys-accent-rgb);
+//  --rb-on-accent: var(--mat-sys-on-accent);
+//  --rb-on-accent-rgb: var(--mat-sys-on-accent-rgb);
+//  --rb-tertiary: var(--mat-sys-tertiary);
+//  --rb-tertiary-rgb: var(--mat-sys-tertiary-rgb);
+//  --rb-on-tertiary: var(--mat-sys-on-tertiary);
+//  --rb-on-tertiary-rgb: var(--mat-sys-on-tertiary-rgb);
+//  --rb-warn: #d52215;
+//  --rb-on-warn: #ffffff;
+//
+//  --rb-app-background: var(--mat-sys-app-background);
+//  --rb-background: var(--mat-sys-background);
+//  --rb-foreground: var(--mat-sys-foreground);
+//  --rb-foreground-rgb: 0, 0, 0;
+//
+//  &.dark {
+//    --rb-primary: var(--mat-sys-primary-dark);
+//    --rb-primary-rgb: var(--mat-sys-primary-rgb-dark);
+//    --rb-on-primary: var(--mat-sys-on-primary-dark);
+//    --rb-on-primary-rgb: var(--mat-sys-on-primary-rgb-dark);
+//    --rb-accent: var(--mat-sys-accent-dark);
+//    --rb-accent-rgb: var(--mat-sys-accent-rgb-dark);
+//    --rb-on-accent: var(--mat-sys-on-accent-dark);
+//    --rb-on-accent-rgb: var(--mat-sys-on-accent-rgb-dark);
+//    --rb-tertiary: var(--mat-sys-tertiary-dark);
+//    --rb-tertiary-rgb: var(--mat-sys-tertiary-rgb-dark);
+//    --rb-on-tertiary: var(--mat-sys-on-tertiary-dark);
+//    --rb-on-tertiary-rgb: var(--mat-sys-on-tertiary-rgb-dark);
+//    --rb-warn: #f44336;
+//    --rb-on-warn: #ffffff;
+//
+//    --rb-app-background: var(--mat-sys-app-background-dark);
+//    --rb-background: var(--mat-sys-background-dark);
+//    --rb-foreground: var(--mat-sys-foreground-dark);
+//    --rb-foreground-rgb: 255, 255, 255;
+//  }
+//  /*#endregion*/
+//
+//  /*#region CORE*/
+//  /*#endregion*/
+//
+//  /*#region AUTOCOMPLETE*/
+//  /*#endregion*/
+//
+//  /*#region BADGE*/
+//  /*#endregion*/
+//
+//  /*#region BOTTOM SHEET*/
+//  /*#endregion*/
+//
+//  /*#region OPTIONS*/
+//  --mat-option-selected-state-label-text-color: var(--rb-primary);
+//  --mat-option-label-text-color: var(--rb-foreground);
+//  --mat-option-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
+//  --mat-option-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
+//  --mat-option-selected-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
+//  --mat-optgroup-label-text-color: var(--rb-foreground);
+//
+//  .mat-accent {
+//    --mat-option-selected-state-label-text-color: var(--rb-accent);
+//  }
+//
+//  .mat-warn {
+//    --mat-option-selected-state-label-text-color: var(--rb-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region PSEUDO CHECKBOX*/
+//  --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-primary);
+//  --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-primary);
+//  --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-primary-rgb), 0.7);
+//  --mat-pseudo-checkbox-full-disabled-selected-checkmark-color: #303030;
+//  --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-primary);
+//  --mat-pseudo-checkbox-full-disabled-unselected-icon-color: color-mix(in srgb, white 38%, transparent);
+//  --mat-pseudo-checkbox-full-disabled-selected-icon-color: color-mix(in srgb, white 38%, transparent);
+//  --mat-pseudo-checkbox-minimal-disabled-selected-checkmark-color: color-mix(in srgb, white 38%, transparent);
+//
+//  .mat-accent {
+//    --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-accent);
+//    --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-accent);
+//    --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-accent-rgb), 0.7);
+//    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-accent);
+//  }
+//
+//  .mat-warn {
+//    --mat-pseudo-checkbox-full-selected-icon-color: var(--rb-warn);
+//    --mat-pseudo-checkbox-full-selected-checkmark-color: var(--rb-on-warn);
+//    --mat-pseudo-checkbox-full-unselected-icon-color: rgba(var(--rb-warn-rgb), 0.7);
+//    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--rb-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region CARD*/
+//  --mat-card-elevated-container-shape: 4px;
+//  --mat-card-elevated-container-color: var(--rb-background);
+//  --mat-card-elevated-container-elevation: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+//  --mat-card-filled-container-shape: 4px;
+//  --mat-card-outlined-container-shape: 4px;
+//  --mat-card-outlined-outline-width: 1px;
+//  --mat-card-outlined-container-color: var(--rb-background);
+//  --mat-card-outlined-container-elevation: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+//  --mat-card-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  --mat-card-subtitle-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  /*#endregion*/
+//
+//  /*#region PROGRESS BAR*/
+//  /*#endregion*/
+//
+//  /*#region TOOLTIP*/
+//  --mat-tooltip-container-shape: 4px;
+//  --mat-tooltip-supporting-text-line-height: 16px;
+//  --mat-tooltip-container-color: var(--rb-foreground);
+//  --mat-tooltip-supporting-text-color: var(--rb-background);
+//  --mat-tooltip-supporting-text-size: 10px;
+//  --mat-tooltip-supporting-text-weight: 400;
+//  /*#endregion*/
+//
+//  /*#region TEXT FIELD*/
+//  /*#endregion*/
+//
+//  /*#region FORM FIELD*/
+//  --mat-form-field-container-vertical-padding: 8px;
+//  --mat-form-field-container-height: 36px;
+//  --mat-form-field-container-text-size: 12px;
+//
+//  --mat-form-field-filled-active-indicator-height: 1px;
+//  --mat-form-field-filled-focus-active-indicator-height: 2px;
+//  --mat-form-field-filled-container-shape: 4px;
+//  --mat-form-field-outlined-outline-width: 1px;
+//  --mat-form-field-outlined-focus-outline-width: 2px;
+//  --mat-form-field-outlined-container-shape: 4px;
+//
+//  --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
+//  --mat-form-field-filled-caret-color: var(--rb-primary);
+//  --mat-form-field-filled-focus-active-indicator-color: var(--rb-primary);
+//  --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
+//  --mat-form-field-outlined-caret-color: var(--rb-primary);
+//  --mat-form-field-outlined-focus-outline-color: var(--rb-primary);
+//  --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-primary) 87%, transparent);
+//  --mat-form-field-disabled-input-text-placeholder-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
+//  --mat-form-field-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-error-text-color: var(--rb-warn);
+//  --mat-form-field-select-option-text-color: inherit;
+//  --mat-form-field-select-disabled-option-text-color: rgba(var(--rb-foreground-rgb), 0.87);/*GrayText;*/
+//  --mat-form-field-leading-icon-color: unset;
+//  --mat-form-field-disabled-leading-icon-color: unset;
+//  --mat-form-field-trailing-icon-color: unset;
+//  --mat-form-field-disabled-trailing-icon-color: unset;
+//  --mat-form-field-error-focus-trailing-icon-color: unset;
+//  --mat-form-field-error-hover-trailing-icon-color: unset;
+//  --mat-form-field-error-trailing-icon-color: unset;
+//  --mat-form-field-enabled-select-arrow-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-disabled-select-arrow-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
+//  --mat-form-field-hover-state-layer-opacity: 0.04;
+//  --mat-form-field-focus-state-layer-opacity: 0.12;
+//  --mat-form-field-filled-container-color: #f6f6f6;
+//  --mat-form-field-filled-disabled-container-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 4%, transparent);
+//  --mat-form-field-filled-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-filled-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-filled-disabled-label-text-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
+//  --mat-form-field-filled-input-text-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-filled-disabled-input-text-color: color-mix(in srgb, rgb(var(--rb-foreground)) 60%, transparent);
+//  --mat-form-field-filled-input-text-placeholder-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-filled-error-hover-label-text-color: var(--rb-warn);
+//  --mat-form-field-filled-error-focus-label-text-color: var(--rb-warn);
+//  --mat-form-field-filled-error-label-text-color: var(--rb-warn);
+//  --mat-form-field-filled-error-caret-color: var(--rb-warn);
+//  --mat-form-field-filled-active-indicator-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-filled-disabled-active-indicator-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
+//  --mat-form-field-filled-hover-active-indicator-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-filled-error-active-indicator-color: var(--rb-warn);
+//  --mat-form-field-filled-error-focus-active-indicator-color: var(--rb-warn);
+//  --mat-form-field-filled-error-hover-active-indicator-color: var(--rb-warn);
+//  --mat-form-field-outlined-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-outlined-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-outlined-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 60%, transparent);
+//  --mat-form-field-outlined-input-text-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-outlined-disabled-input-text-color: color-mix(in srgb, var(--rb-foreground) 60%, transparent);
+//  --mat-form-field-outlined-input-text-placeholder-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-form-field-outlined-error-caret-color: var(--rb-warn);
+//  --mat-form-field-outlined-error-focus-label-text-color: var(--rb-warn);
+//  --mat-form-field-outlined-error-label-text-color: var(--rb-warn);
+//  --mat-form-field-outlined-error-hover-label-text-color: var(--rb-warn);
+//  --mat-form-field-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-form-field-outlined-disabled-outline-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 1) 20%, transparent);
+//  --mat-form-field-outlined-hover-outline-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-form-field-outlined-error-focus-outline-color: var(--rb-warn);
+//  --mat-form-field-outlined-error-hover-outline-color: var(--rb-warn);
+//  --mat-form-field-outlined-error-outline-color: var(--rb-warn);
+//
+//  .mat-mdc-form-field.mat-accent {
+//    --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-accent) 87%, transparent);
+//    --mat-form-field-filled-caret-color: var(--rb-accent);
+//    --mat-form-field-filled-focus-active-indicator-color: var(--rb-accent);
+//    --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-accent) 87%, transparent);
+//    --mat-form-field-outlined-caret-color: var(--rb-accent);
+//    --mat-form-field-outlined-focus-outline-color: var(--rb-accent);
+//    --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-accent) 87%, transparent)
+//  }
+//
+//  .mat-mdc-form-field.mat-warn {
+//    --mat-form-field-focus-select-arrow-color: color-mix(in srgb, var(--rb-warn) 87%, transparent);
+//    --mat-form-field-filled-caret-color: var(--rb-warn);
+//    --mat-form-field-filled-focus-active-indicator-color: var(--rb-warn);
+//    --mat-form-field-filled-focus-label-text-color: color-mix(in srgb, var(--rb-warn) 87%, transparent);
+//    --mat-form-field-outlined-caret-color: var(--rb-warn);
+//    --mat-form-field-outlined-focus-outline-color: var(--rb-warn);
+//    --mat-form-field-outlined-focus-label-text-color: color-mix(in srgb, var(--rb-warn) 87%, transparent)
+//  }
+//
+//  .mat-mdc-form-field.large {
+//    --mat-form-field-container-vertical-padding: 16px;
+//    --mat-form-field-container-height: 56px;
+//    --mat-form-field-container-text-size: 14px;
+//  }
+//  /*#endregion*/
+//
+//  /*#region SELECT*/
+//  --mat-select-arrow-transform: translateY(-8px);
+//  --mat-select-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+//
+//  --mat-select-panel-background-color: var(--rb-background);
+//  --mat-select-enabled-trigger-text-color: var(--rb-foreground);
+//  --mat-select-disabled-trigger-text-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-select-placeholder-text-color: rgba(var(--rb-foreground-rgb), 0.6);
+//  --mat-select-enabled-arrow-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-select-disabled-arrow-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-select-focused-arrow-color: var(--rb-primary);
+//  --mat-select-invalid-arrow-color: var(--rb-warn);
+//
+//  .mat-mdc-form-field.mat-accent {
+//    --mat-select-focused-arrow-color: var(--rb-accent);
+//  }
+//
+//  .mat-mdc-form-field.mat-warn {
+//    --mat-select-focused-arrow-color: var(--rb-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region DIALOG*/
+//  --mat-dialog-container-shape: 4px;
+//  --mat-dialog-container-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+//  --mat-dialog-container-max-width: 80vw;
+//  --mat-dialog-container-small-max-width: 80vw;
+//  --mat-dialog-container-min-width: 0;
+//  --mat-dialog-actions-alignment: start;
+//  --mat-dialog-actions-padding: 8px;
+//  --mat-dialog-content-padding: 20px 24px;
+//  --mat-dialog-with-actions-content-padding: 20px 24px;
+//  --mat-dialog-headline-padding: 0 24px 9px;
+//
+//  --mat-dialog-container-color: var(--rb-background);
+//  --mat-dialog-subhead-color: var(--rb-foreground);
+//  --mat-dialog-supporting-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  /*#endregion*/
+//
+//  /*#region CHIP*/
+//  /*#endregion*/
+//
+//  /*#region SWITCH*/
+//  --mat-slide-toggle-disabled-handle-opacity: 0.38;
+//  --mat-slide-toggle-disabled-selected-handle-opacity: 0.38;
+//  --mat-slide-toggle-disabled-selected-icon-opacity: 0.38;
+//  --mat-slide-toggle-disabled-track-opacity: 0.12;
+//  --mat-slide-toggle-disabled-unselected-handle-opacity: 0.38;
+//  --mat-slide-toggle-disabled-unselected-icon-opacity: 0.38;
+//  --mat-slide-toggle-disabled-unselected-track-outline-color: transparent;
+//  --mat-slide-toggle-disabled-unselected-track-outline-width: 1px;
+//  --mat-slide-toggle-handle-height: 20px;
+//  --mat-slide-toggle-handle-shape: 10px;
+//  --mat-slide-toggle-handle-width: 20px;
+//  --mat-slide-toggle-hidden-track-opacity: 1;
+//  --mat-slide-toggle-hidden-track-transition: transform 75ms 0ms cubic-bezier(0.4, 0, 0.6, 1);
+//  --mat-slide-toggle-pressed-handle-size: 20px;
+//  --mat-slide-toggle-selected-focus-state-layer-opacity: 0.12;
+//  --mat-slide-toggle-selected-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-selected-handle-size: 20px;
+//  --mat-slide-toggle-selected-hover-state-layer-opacity: 0.04;
+//  --mat-slide-toggle-selected-icon-size: 18px;
+//  --mat-slide-toggle-selected-pressed-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-selected-pressed-state-layer-opacity: 0.12;
+//  --mat-slide-toggle-selected-track-outline-color: transparent;
+//  --mat-slide-toggle-selected-track-outline-width: 1px;
+//  --mat-slide-toggle-selected-with-icon-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-track-height: 14px;
+//  --mat-slide-toggle-track-outline-color: transparent;
+//  --mat-slide-toggle-track-outline-width: 1px;
+//  --mat-slide-toggle-track-shape: 7px;
+//  --mat-slide-toggle-track-width: 36px;
+//  --mat-slide-toggle-unselected-focus-state-layer-opacity: 0.12;
+//  --mat-slide-toggle-unselected-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-unselected-handle-size: 20px;
+//  --mat-slide-toggle-unselected-hover-state-layer-opacity: 0.12;
+//  --mat-slide-toggle-unselected-icon-size: 18px;
+//  --mat-slide-toggle-unselected-pressed-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-unselected-pressed-state-layer-opacity: 0.1;
+//  --mat-slide-toggle-unselected-with-icon-handle-horizontal-margin: 0;
+//  --mat-slide-toggle-visible-track-opacity: 1;
+//  --mat-slide-toggle-visible-track-transition: transform 75ms 0ms cubic-bezier(0, 0, 0.2, 1);
+//  --mat-slide-toggle-with-icon-handle-size: 20px;
+//
+//  --mat-slide-toggle-selected-icon-color: var(--rb-on-primary);
+//  --mat-slide-toggle-disabled-selected-icon-color: var(--rb-on-primary);
+//  --mat-slide-toggle-selected-focus-state-layer-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-handle-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-hover-state-layer-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-pressed-state-layer-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-focus-handle-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-hover-handle-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-pressed-handle-color: var(--rb-primary);
+//  --mat-slide-toggle-selected-focus-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
+//  /*--mat-slide-toggle-selected-focus-track-color: #7986cb;*/
+//  --mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
+//  --mat-slide-toggle-selected-pressed-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
+//  --mat-slide-toggle-selected-track-color: color-mix(in srgb, var(--rb-primary), white 50%);
+//  --mat-slide-toggle-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-slide-toggle-disabled-handle-elevation-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+//  --mat-slide-toggle-disabled-selected-handle-color: rgba(var(--rb-foreground-rgba), 0.87);
+//  --mat-slide-toggle-disabled-selected-track-color: rgba(var(--rb-foreground-rgba), 0.87);
+//  --mat-slide-toggle-disabled-unselected-handle-color: rgba(var(--rb-foreground-rgba), 0.87);
+//  --mat-slide-toggle-disabled-unselected-icon-color: #f6f6f6;
+//  --mat-slide-toggle-disabled-unselected-track-color: rgba(var(--rb-foreground-rgba), 0.87);
+//  --mat-slide-toggle-handle-elevation-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+//  --mat-slide-toggle-handle-surface-color: white;
+//  --mat-slide-toggle-label-text-color: rgba(var(--rb-foreground-rgba), 0.87);
+//  --mat-slide-toggle-unselected-hover-handle-color: #424242;
+//  --mat-slide-toggle-unselected-focus-handle-color: #424242;
+//  --mat-slide-toggle-unselected-focus-state-layer-color: rgba(0, 0, 0, 0.87);
+//  --mat-slide-toggle-unselected-focus-track-color: rgba(0, 0, 0, 0.12);
+//  --mat-slide-toggle-unselected-icon-color: #f6f6f6;
+//  --mat-slide-toggle-unselected-handle-color: rgba(0, 0, 0, 0.54);
+//  --mat-slide-toggle-unselected-hover-state-layer-color: rgba(0, 0, 0, 0.87);
+//  --mat-slide-toggle-unselected-hover-track-color: rgba(0, 0, 0, 0.12);
+//  --mat-slide-toggle-unselected-pressed-handle-color: #424242;
+//  --mat-slide-toggle-unselected-pressed-track-color: rgba(0, 0, 0, 0.12);
+//  --mat-slide-toggle-unselected-pressed-state-layer-color: rgba(0, 0, 0, 0.87);
+//  --mat-slide-toggle-unselected-track-color: rgba(0, 0, 0, 0.12);
+//
+//  .mat-mdc-slide-toggle.mat-accent {
+//    --mat-slide-toggle-selected-icon-color: white;
+//    --mat-slide-toggle-disabled-selected-icon-color: white;
+//    --mat-slide-toggle-selected-focus-state-layer-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-handle-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-hover-state-layer-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-pressed-state-layer-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-focus-handle-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-hover-handle-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-pressed-handle-color: var(--rb-accent); /*#ff4081;*/
+//    --mat-slide-toggle-selected-focus-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292;*/
+//    /*--mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-accent), white 50%);/*#f06292;*/
+//    --mat-slide-toggle-selected-hover-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#7986cb;*/
+//    --mat-slide-toggle-selected-pressed-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292;*/
+//    --mat-slide-toggle-selected-track-color: color-mix(in srgb, var(--rb-accent), white 50%); /*#f06292*/
+//  }
+//
+//  .mat-mdc-slide-toggle.mat-warn {
+//    --mat-slide-toggle-selected-icon-color: white;
+//    --mat-slide-toggle-disabled-selected-icon-color: white;
+//    --mat-slide-toggle-selected-focus-state-layer-color: #f44336;
+//    --mat-slide-toggle-selected-handle-color: #f44336;
+//    --mat-slide-toggle-selected-hover-state-layer-color: #f44336;
+//    --mat-slide-toggle-selected-pressed-state-layer-color: #f44336;
+//    --mat-slide-toggle-selected-focus-handle-color: #f44336;
+//    --mat-slide-toggle-selected-hover-handle-color: #f44336;
+//    --mat-slide-toggle-selected-pressed-handle-color: #f44336;
+//    --mat-slide-toggle-selected-focus-track-color: #e57373;
+//    --mat-slide-toggle-selected-hover-track-color: #e57373;
+//    --mat-slide-toggle-selected-pressed-track-color: #e57373;
+//    --mat-slide-toggle-selected-track-color: #e57373
+//  }
+//
+//  --mat-slide-toggle-state-layer-size: 40px;
+//  /*#endregion*/
+//
+//  /*#region RADIO*/
+//  /*#endregion*/
+//
+//  /*#region SLIDER*/
+//  /*#endregion*/
+//
+//  /*#region MENU*/
+//  --mat-menu-container-shape: 4px;
+//  --mat-menu-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+//  --mat-menu-item-label-text-color: var(--rb-foreground);
+//  --mat-menu-item-icon-color: var(--rb-foreground);
+//  --mat-menu-item-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
+//  --mat-menu-item-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.04);
+//  --mat-menu-container-color: var(--rb-background);
+//  --mat-menu-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  /*#endregion*/
+//
+//  /*#region LIST*/
+//  /*#endregion*/
+//
+//  /*#region PAGINATOR*/
+//  --mat-paginator-container-text-size: 12px;
+//  --mat-paginator-container-text-color: var(--rb-foreground);
+//  --mat-paginator-container-background-color: var(--rb-app-background);
+//  --mat-paginator-enabled-icon-color: var(--rb-foreground);
+//  --mat-paginator-disabled-icon-color: rgba(var(--rb-foreground-rgb), 0.3);
+//  /*#endregion*/
+//
+//  /*#region TABS*/
+//  --mat-tab-container-height: 48px;
+//  --mat-tab-divider-color: transparent;
+//  --mat-tab-divider-height: 0;
+//  --mat-tab-active-indicator-height: 2px;
+//  --mat-tab-active-indicator-shape: 0;
+//
+//  --mat-tab-disabled-ripple-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-tab-pagination-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
+//  --mat-tab-inactive-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-tab-inactive-focus-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-tab-inactive-hover-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//
+//  .mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
+//    --mat-tab-active-label-text-color: var(--rb-primary);
+//    --mat-tab-active-ripple-color: var(--rb-primary);
+//    --mat-tab-inactive-ripple-color: var(--rb-primary);
+//    --mat-tab-active-focus-label-text-color: var(--rb-primary);
+//    --mat-tab-active-hover-label-text-color: var(--rb-primary);
+//    --mat-tab-active-focus-indicator-color: var(--rb-primary);
+//    --mat-tab-active-hover-indicator-color: var(--rb-primary);
+//    --mat-tab-active-indicator-color: var(--rb-primary);
+//  }
+//
+//  .mat-mdc-tab-group.mat-accent, .mat-mdc-tab-nav-bar.mat-accent {
+//    --mat-tab-active-label-text-color: var(--rb-accent);
+//    --mat-tab-active-ripple-color: var(--rb-accent);
+//    --mat-tab-inactive-ripple-color: var(--rb-accent);
+//    --mat-tab-active-focus-label-text-color: var(--rb-accent);
+//    --mat-tab-active-hover-label-text-color: var(--rb-accent);
+//    --mat-tab-active-focus-indicator-color: var(--rb-accent);
+//    --mat-tab-active-hover-indicator-color: var(--rb-accent);
+//    --mat-tab-active-indicator-color: var(--rb-accent);
+//  }
+//
+//  .mat-mdc-tab-group.mat-warn, .mat-mdc-tab-nav-bar.mat-warn {
+//    --mat-tab-active-label-text-color: var(--rb-warn);
+//    --mat-tab-active-ripple-color: var(--rb-warn);
+//    --mat-tab-inactive-ripple-color: var(--rb-warn);
+//    --mat-tab-active-focus-label-text-color: var(--rb-warn);
+//    --mat-tab-active-hover-label-text-color: var(--rb-warn);
+//    --mat-tab-active-focus-indicator-color: var(--rb-warn);
+//    --mat-tab-active-hover-indicator-color: var(--rb-warn);
+//    --mat-tab-active-indicator-color: var(--rb-warn)
+//  }
+//
+//  .mat-mdc-tab-group.mat-background-primary, .mat-mdc-tab-nav-bar.mat-background-primary {
+//    --mat-tab-background-color: var(--rb-primary);
+//    --mat-tab-foreground-color: var(--rb-background);
+//  }
+//
+//  .mat-mdc-tab-group.mat-background-accent, .mat-mdc-tab-nav-bar.mat-background-accent {
+//    --mat-tab-background-color: var(--rb-accent);
+//    --mat-tab-foreground-color: var(--rb-background);
+//  }
+//
+//  .mat-mdc-tab-group.mat-background-warn, .mat-mdc-tab-nav-bar.mat-background-warn {
+//    --mat-tab-background-color: var(--rb-warn);
+//    --mat-tab-foreground-color: var(--rb-background);
+//  }
+//
+//  .mat-mdc-tab-header {
+//    --mat-tab-container-height: 48px
+//  }
+//  /*#endregion*/
+//
+//  /*#region CHECKBOX*/
+//  --mat-checkbox-disabled-selected-checkmark-color: ver(--rb-background);
+//  --mat-checkbox-selected-focus-state-layer-opacity: 0.12;
+//  --mat-checkbox-selected-hover-state-layer-opacity: 0.04;
+//  --mat-checkbox-selected-pressed-state-layer-opacity: 0.12;
+//  --mat-checkbox-unselected-focus-state-layer-opacity: 0.12;
+//  --mat-checkbox-unselected-hover-state-layer-opacity: 0.04;
+//  --mat-checkbox-unselected-pressed-state-layer-opacity: 0.12;
+//
+//  --mat-checkbox-disabled-label-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-checkbox-label-text-color: var(--rb-foreground);
+//  --mat-checkbox-disabled-selected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-checkbox-disabled-unselected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-checkbox-selected-checkmark-color: var(--rb-foreground);
+//  --mat-checkbox-selected-focus-icon-color: var(--rb-accent);
+//  --mat-checkbox-selected-hover-icon-color: var(--rb-accent);
+//  --mat-checkbox-selected-icon-color: var(--rb-accent);
+//  --mat-checkbox-selected-pressed-icon-color: var(--rb-accent);
+//  --mat-checkbox-unselected-focus-icon-color: var(--rb-foreground);
+//  --mat-checkbox-unselected-hover-icon-color: var(--rb-foreground);
+//  --mat-checkbox-unselected-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-checkbox-selected-focus-state-layer-color: var(--rb-accent);
+//  --mat-checkbox-selected-hover-state-layer-color: var(--rb-accent);
+//  --mat-checkbox-selected-pressed-state-layer-color: var(--rb-accent);
+//  --mat-checkbox-unselected-focus-state-layer-color: var(--rb-foreground);
+//  --mat-checkbox-unselected-hover-state-layer-color: var(--rb-foreground);
+//  --mat-checkbox-unselected-pressed-state-layer-color: var(--rb-foreground);
+//
+//  .mat-mdc-checkbox.mat-primary {
+//    --mat-checkbox-disabled-selected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//    --mat-checkbox-disabled-unselected-icon-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//    --mat-checkbox-selected-checkmark-color: var(--rb-on-primary);
+//    --mat-checkbox-selected-focus-icon-color: var(--rb-primary);
+//    --mat-checkbox-selected-hover-icon-color: var(--rb-primary);
+//    --mat-checkbox-selected-icon-color: var(--rb-primary);
+//    --mat-checkbox-selected-pressed-icon-color: var(--rb-primary);
+//    --mat-checkbox-unselected-focus-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
+//    --mat-checkbox-unselected-hover-icon-color: rgba(var(--rb-foreground-rgb), 0.87);
+//    --mat-checkbox-unselected-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
+//    --mat-checkbox-selected-focus-state-layer-color: var(--rb-primary);
+//    --mat-checkbox-selected-hover-state-layer-color: var(--rb-primary);
+//    --mat-checkbox-selected-pressed-state-layer-color: var(--rb-primary);
+//    --mat-checkbox-unselected-focus-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
+//    --mat-checkbox-unselected-hover-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
+//    --mat-checkbox-unselected-pressed-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87)
+//  }
+//
+//  .mat-mdc-checkbox.mat-warn {
+//    --mat-checkbox-selected-checkmark-color: var(--rb-on-warn);
+//    --mat-checkbox-selected-focus-icon-color: var(--rb-warn);
+//    --mat-checkbox-selected-hover-icon-color: var(--rb-warn);
+//    --mat-checkbox-selected-icon-color: var(--rb-warn);
+//    --mat-checkbox-selected-pressed-icon-color: var(--rb-warn);
+//    --mat-checkbox-selected-focus-state-layer-color: var(--rb-warn);
+//    --mat-checkbox-selected-hover-state-layer-color: var(--rb-warn);
+//    --mat-checkbox-selected-pressed-state-layer-color: var(--rb-warn);
+//  }
+//
+//  --mat-checkbox-touch-target-display: block;
+//  --mat-checkbox-state-layer-size: 40px;
+//  /*#endregion*/
+//
+//  /*#region BUTTONS*/
+//  --mat-button-filled-container-shape: 4px;
+//  --mat-button-filled-horizontal-padding: 16px;
+//  --mat-button-filled-icon-offset: -4px;
+//  --mat-button-filled-icon-spacing: 8px;
+//  --mat-button-outlined-container-shape: 4px;
+//  --mat-button-outlined-horizontal-padding: 15px;
+//  --mat-button-outlined-icon-offset: -4px;
+//  --mat-button-outlined-icon-spacing: 8px;
+//  --mat-button-outlined-keep-touch-target: false;
+//  --mat-button-outlined-outline-width: 1px;
+//  --mat-button-protected-container-elevation-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+//  --mat-button-protected-container-shape: 4px;
+//  --mat-button-protected-disabled-container-elevation-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+//  --mat-button-protected-focus-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+//  --mat-button-protected-horizontal-padding: 16px;
+//  --mat-button-protected-hover-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+//  --mat-button-protected-icon-offset: -4px;
+//  --mat-button-protected-icon-spacing: 8px;
+//  --mat-button-protected-pressed-container-elevation-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+//  --mat-button-text-container-shape: 4px;
+//  --mat-button-text-horizontal-padding: 8px;
+//  --mat-button-text-icon-offset: 0;
+//  --mat-button-text-icon-spacing: 8px;
+//  --mat-button-text-with-icon-horizontal-padding: 8px;
+//  --mat-button-tonal-container-shape: 4px;
+//  --mat-button-tonal-horizontal-padding: 16px;
+//  --mat-button-tonal-icon-offset: -4px;
+//  --mat-button-tonal-icon-spacing: 8px;
+//
+//  --mat-button-filled-container-color: var(--rb-background);
+//  --mat-button-filled-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-filled-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-button-filled-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-button-filled-focus-state-layer-opacity: 0.12;
+//  --mat-button-filled-hover-state-layer-opacity: 0.04;
+//  --mat-button-filled-label-text-color: var(--rb-foreground);
+//  --mat-button-filled-pressed-state-layer-opacity: 0.12;
+//  --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-filled-state-layer-color: var(--rb-foreground);
+//  --mat-button-outlined-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-button-outlined-disabled-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  --mat-button-outlined-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-button-outlined-focus-state-layer-opacity: 0.12;
+//  --mat-button-outlined-hover-state-layer-opacity: 0.04;
+//  --mat-button-outlined-label-text-color: var(--rb-foreground);
+//  --mat-button-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  --mat-button-outlined-pressed-state-layer-opacity: 0.12;
+//  --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-outlined-state-layer-color: var(--rb-foreground);
+//  --mat-button-protected-container-color: var(--rb-background);
+//  --mat-button-protected-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-protected-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-button-protected-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-button-protected-focus-state-layer-opacity: 0.12;
+//  --mat-button-protected-hover-state-layer-opacity: 0.04;
+//  --mat-button-protected-label-text-color: var(--rb-foreground);
+//  --mat-button-protected-pressed-state-layer-opacity: 0.12;
+//  --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-protected-state-layer-color: var(--rb-foreground);
+//  --mat-button-text-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-button-text-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-button-text-focus-state-layer-opacity: 0.12;
+//  --mat-button-text-hover-state-layer-opacity: 0.04;
+//  /*--mat-button-text-label-text-color: rgba(0, 0, 0, 0.87);*/
+//  --mat-button-text-pressed-state-layer-opacity: 0.12;
+//  --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-text-state-layer-color: var(--rb-foreground);
+//  --mat-button-tonal-container-color: var(--rb-background);
+//  --mat-button-tonal-disabled-container-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-tonal-disabled-label-text-color: color-mix(in srgb, var(--rb-foreground) 38%, transparent);
+//  --mat-button-tonal-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-button-tonal-focus-state-layer-opacity: 0.12;
+//  --mat-button-tonal-hover-state-layer-opacity: 0.04;
+//  --mat-button-tonal-label-text-color: var(--rb-foreground);
+//  --mat-button-tonal-pressed-state-layer-opacity: 0.12;
+//  --mat-button-tonal-ripple-color: color-mix(in srgb, var(--rb-foreground) 12%, transparent);
+//  --mat-button-tonal-state-layer-color: var(--rb-foreground);
+//
+//  .mat-mdc-button.mat-primary, .mat-mdc-unelevated-button.mat-primary, .mat-mdc-raised-button.mat-primary, .mat-mdc-outlined-button.mat-primary, .mat-tonal-button.mat-primary {
+//    --mat-button-filled-container-color: var(--rb-primary);
+//    --mat-button-filled-label-text-color:  var(--rb-on-primary);
+//    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-filled-state-layer-color:  var(--rb-background);
+//    --mat-button-outlined-label-text-color: var(--rb-primary);
+//    --mat-button-outlined-outline-color: var(--rb-primary);
+//    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
+//    --mat-button-outlined-state-layer-color: var(--rb-primary);
+//    --mat-button-protected-container-color: var(--rb-primary);
+//    --mat-button-protected-label-text-color:  var(--rb-on-primary);
+//    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-protected-state-layer-color:  var(--rb-background);
+//    --mat-button-text-label-text-color: var(--rb-primary);
+//    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
+//    --mat-button-text-state-layer-color: var(--rb-primary);
+//    --mat-button-tonal-container-color: var(--rb-primary);
+//    --mat-button-tonal-label-text-color:  var(--rb-on-primary);
+//    --mat-button-tonal-ripple-color: color-mix(in srgb,  var(--rb-background) 12%, transparent);
+//    --mat-button-tonal-state-layer-color:  var(--rb-background);
+//  }
+//
+//  .mat-mdc-button.mat-accent, .mat-mdc-unelevated-button.mat-accent, .mat-mdc-raised-button.mat-accent, .mat-mdc-outlined-button.mat-accent, .mat-tonal-button.mat-accent {
+//    --mat-button-filled-container-color: var(--rb-accent);
+//    --mat-button-filled-label-text-color: var(--rb-on-accent);
+//    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-filled-state-layer-color: var(--rb-background);
+//    --mat-button-outlined-label-text-color: var(--rb-accent);
+//    --mat-button-outlined-outline-color: var(--rb-accent);
+//    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
+//    --mat-button-outlined-state-layer-color: var(--rb-accent);
+//    --mat-button-protected-container-color: var(--rb-accent);
+//    --mat-button-protected-label-text-color: var(--rb-on-accent);
+//    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-protected-state-layer-color: var(--rb-background);
+//    --mat-button-text-label-text-color: var(--rb-accent);
+//    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
+//    --mat-button-text-state-layer-color: var(--rb-accent);
+//    --mat-button-tonal-container-color: var(--rb-accent);
+//    --mat-button-tonal-label-text-color: var(--rb-on-accent);
+//    --mat-button-tonal-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-tonal-state-layer-color: var(--rb-background);
+//  }
+//
+//  .mat-mdc-button.mat-warn, .mat-mdc-unelevated-button.mat-warn, .mat-mdc-raised-button.mat-warn, .mat-mdc-outlined-button.mat-warn, .mat-tonal-button.mat-warn {
+//    --mat-button-filled-container-color: var(--rb-warn);
+//    --mat-button-filled-label-text-color: var(--rb-on-warn);
+//    --mat-button-filled-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-filled-state-layer-color: var(--rb-background);
+//    --mat-button-outlined-label-text-color: var(--rb-warn);
+//    --mat-button-outlined-outline-color: rgba(var(--rb-foreground-rgb), 0.12);
+//    --mat-button-outlined-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
+//    --mat-button-outlined-state-layer-color: var(--rb-warn);
+//    --mat-button-protected-container-color: var(--rb-warn);
+//    --mat-button-protected-label-text-color: var(--rb-on-warn);
+//    --mat-button-protected-ripple-color: color-mix(in srgb, var(--rb-background) 12%, transparent);
+//    --mat-button-protected-state-layer-color: var(--rb-background);
+//    --mat-button-text-label-text-color: var(--rb-warn);
+//    --mat-button-text-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
+//    --mat-button-text-state-layer-color: var(--rb-warn);
+//    --mat-button-tonal-container-color: var(--rb-warn);
+//    --mat-button-tonal-label-text-color: var(--rb-on-warn);
+//    --mat-button-tonal-ripple-color: color-mix(in srgb, white 12%, transparent);
+//    --mat-button-tonal-state-layer-color: var(--rb-background)
+//  }
+//  /*#endregion*/
+//
+//  /*#region ICON BUTTONS*/
+//  --mat-icon-button-icon-size: 24px;
+//  --mat-icon-button-container-shape: 50%;
+//
+//  --mat-icon-button-disabled-icon-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
+//  --mat-icon-button-disabled-state-layer-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-icon-button-focus-state-layer-opacity: 0.12;
+//  --mat-icon-button-hover-state-layer-opacity: 0.04;
+//  --mat-icon-button-icon-color: inherit;
+//  --mat-icon-button-pressed-state-layer-opacity: 0.12;
+//  --mat-icon-button-ripple-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
+//  --mat-icon-button-state-layer-color: rgba(var(--rb-foreground-rgb), 0.87);
+//
+//  .mat-mdc-icon-button.mat-primary {
+//    --mat-icon-button-icon-color: var(--rb-primary);
+//    --mat-icon-button-state-layer-color: var(--rb-primary);
+//    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-primary) 12%, transparent);
+//  }
+//
+//  .mat-mdc-icon-button.mat-accent {
+//    --mat-icon-button-icon-color: var(--rb-accent);
+//    --mat-icon-button-state-layer-color: var(--rb-accent);
+//    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-accent) 12%, transparent);
+//  }
+//
+//  .mat-mdc-icon-button.mat-warn {
+//    --mat-icon-button-icon-color: var(--rb-warn);
+//    --mat-icon-button-state-layer-color: var(--rb-warn);
+//    --mat-icon-button-ripple-color: color-mix(in srgb, var(--rb-warn) 12%, transparent);
+//  }
+//
+//  --mat-icon-button-touch-target-display: block;
+//
+//  .mat-mdc-icon-button.mat-mdc-button-base {
+//    --mdc-icon-button-state-layer-size: 48px;
+//    --mat-icon-button-state-layer-size: 48px;
+//    width: var(--mat-icon-button-state-layer-size);
+//    height: var(--mat-icon-button-state-layer-size);
+//    padding: 12px;
+//  }
+//
+//  .mat-mdc-icon-button.mat-mdc-button-base.tiny {
+//    --mdc-icon-button-state-layer-size: 28px;
+//    line-height: normal;
+//    width: var(--mdc-icon-button-state-layer-size);
+//    height: var(--mdc-icon-button-state-layer-size);
+//    padding: 1px;
+//  }
+//
+//  .mat-mdc-icon-button.mat-mdc-button-base.small {
+//    --mdc-icon-button-state-layer-size: 32px;
+//    line-height: normal;
+//    width: var(--mdc-icon-button-state-layer-size);
+//    height: var(--mdc-icon-button-state-layer-size);
+//    padding: 4px;
+//  }
+//
+//  .mat-mdc-icon-button.tiny .mat-mdc-button-touch-target {
+//    width: 24px;
+//    height: 24px;
+//  }
+//
+//  .mat-mdc-icon-button.small .mat-mdc-button-touch-target {
+//    width: 32px;
+//    height: 32px;
+//  }
+//  /*#endregion*/
+//
+//  /*#region FAB*/
+//  /*#endregion*/
+//
+//  /*#region SNACK BAR*/
+//  --mat-snack-bar-container-shape: 4px;
+//  --mat-snack-bar-container-color: var(--rb-warn);
+//  --mat-snack-bar-supporting-text-color: var(--rb-on-warn);
+//  --mat-snack-bar-button-color: var(--rb-on-warn);
+//  /*#endregion*/
+//
+//
+//  /*#region TABLE*/
+//  /*#endregion*/
+//
+//  /*#region PROGRESS BAR*/
+//  --mdc-circular-progress-active-indicator-width: 4px;
+//  --mdc-circular-progress-size: 48px;
+//  --mdc-circular-progress-active-indicator-color: var(--rb-primary);
+//  .mat-accent {
+//    --mdc-circular-progress-active-indicator-color: var(--rb-accent);
+//  }
+//  .mat-warn {
+//    --mdc-circular-progress-active-indicator-color: var(--rb-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region BUTTON TOGGLE*/
+//  /*#endregion*/
+//
+//  /*#region DATE PICKER*/
+//  --mat-datepicker-calendar-container-shape: 4px;
+//  --mat-datepicker-calendar-container-touch-shape: 4px;
+//  --mat-datepicker-calendar-container-elevation-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+//  --mat-datepicker-calendar-container-touch-elevation-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+//  --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-primary);
+//  --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-primary);
+//  --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-primary-rgb), 0.4);
+//  --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-primary);
+//  --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-primary-rgb), 0.3);
+//  --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-primary-rgb), 0.3);
+//  --mat-datepicker-toggle-active-state-icon-color: var(--rb-primary);
+//  --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-primary-rgb), 0.2);
+//  --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-primary-rgb), 0.2);
+//  --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0; /*#a8dab5; /*TODO*/
+//  --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032); /*TODO*/
+//  --mat-datepicker-toggle-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-datepicker-calendar-body-label-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-datepicker-calendar-period-button-text-color: var(--rb-foreground);
+//  --mat-datepicker-calendar-period-button-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-datepicker-calendar-navigation-button-icon-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-datepicker-calendar-header-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  --mat-datepicker-calendar-header-text-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-datepicker-calendar-date-today-outline-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-datepicker-calendar-date-today-disabled-state-outline-color: rgba(var(--rb-foreground-rgb), 0.18);
+//  --mat-datepicker-calendar-date-text-color: var(--rb-foreground);
+//  --mat-datepicker-calendar-date-outline-color: transparent;
+//  --mat-datepicker-calendar-date-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-datepicker-calendar-date-preview-state-outline-color: rgba(var(--rb-foreground-rgb), 0.24);
+//  --mat-datepicker-range-input-separator-color: var(--rb-foreground);
+//  --mat-datepicker-range-input-disabled-state-separator-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-datepicker-range-input-disabled-state-text-color: rgba(var(--rb-foreground-rgb), 0.38);
+//  --mat-datepicker-calendar-container-background-color: var(--rb-background);
+//  --mat-datepicker-calendar-container-text-color: var(--rb-foreground);
+//
+//  .mat-datepicker-content.mat-accent {
+//    --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-accent);
+//    --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-accent-rgb);
+//    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-accent-rgb), 0.4);
+//    --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-accent);
+//    --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-accent-rgb), 0.3);
+//    --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-accent-rgb), 0.3);
+//    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-accent-rgb), 0.2);
+//    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-accent-rgb), 0.2);
+//    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0;/*#a8dab5; /*TODO*/
+//    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032) /*TODO*/
+//  }
+//
+//  .mat-datepicker-content.mat-warn {
+//    --mat-datepicker-calendar-date-selected-state-text-color: var(--rb-on-warn);
+//    --mat-datepicker-calendar-date-selected-state-background-color: var(--rb-warn);
+//    --mat-datepicker-calendar-date-selected-disabled-state-background-color: rgba(var(--rb-warn-rgb), 0.4);
+//    --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--rb-on-accent);
+//    --mat-datepicker-calendar-date-focus-state-background-color: rgba(var(--rb-warn-rgb), 0.3);
+//    --mat-datepicker-calendar-date-hover-state-background-color: rgba(var(--rb-warn-rgb), 0.3);
+//    --mat-datepicker-calendar-date-in-range-state-background-color: rgba(var(--rb-warn-rgb), 0.2);
+//    --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(var(--rb-warn-rgb), 0.2);
+//    --mat-datepicker-calendar-date-in-overlap-range-state-background-color: #0f0;/*#a8dab5; /*TODO*/
+//    --mat-datepicker-calendar-date-in-overlap-range-selected-state-background-color: rgb(69.5241935484, 163.4758064516, 93.9516129032) /*TODO*/
+//  }
+//
+//  .mat-datepicker-toggle-active.mat-accent {
+//    --mat-datepicker-toggle-active-state-icon-color: var(--rb-accent);
+//  }
+//
+//  .mat-datepicker-toggle-active.mat-warn {
+//    --mat-datepicker-toggle-active-state-icon-color: var(--rb-warn);
+//  }
+//
+//  .mat-calendar-controls {
+//    --mat-icon-button-touch-target-display: none
+//  }
+//
+//  .mat-calendar-controls .mat-mdc-icon-button.mat-mdc-button-base {
+//    --mdc-icon-button-state-layer-size: 40px;
+//    width: var(--mdc-icon-button-state-layer-size);
+//    height: var(--mdc-icon-button-state-layer-size);
+//    padding: 8px;
+//  }
+//  /*#endregion*/
+//
+//  /*#region DIVIDER*/
+//  --mat-divider-width: 1px;
+//  --mat-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  /*#endregion*/
+//
+//  /*#region EXPANSION PANEL*/
+//  --mat-expansion-container-shape: 4px;
+//  --mat-expansion-container-elevation-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+//  --mat-expansion-legacy-header-indicator-display: inline-block;
+//  --mat-expansion-header-indicator-display: none;
+//  --mat-expansion-container-background-color: var(--rb-background);
+//  --mat-expansion-container-text-color: inherit;/*var(--rb-foreground);*/
+//  --mat-expansion-actions-divider-color: rgba(var(--rb-foreground-rgb), 0.12);
+//  --mat-expansion-header-hover-state-layer-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 4%, transparent);
+//  --mat-expansion-header-focus-state-layer-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 12%, transparent);
+//  --mat-expansion-header-disabled-state-text-color: color-mix(in srgb, rgba(var(--rb-foreground-rgb), 0.87) 38%, transparent);
+//  --mat-expansion-header-text-color: inherit; /*var(--rb-foreground);*/
+//  --mat-expansion-header-description-color: rgba(var(--rb-foreground-rgb), 0.54);
+//  --mat-expansion-header-indicator-color: inherit; /*rgba(var(--rb-foreground-rgb), 0.54);*/
+//  --mat-expansion-header-collapsed-state-height: 48px;
+//  --mat-expansion-header-expanded-state-height: 64px;
+//  /*#endregion*/
+//
+//  /*#region GRID LIST*/
+//  /*#endregion*/
+//
+//  /*#region ICON*/
+//  --mat-icon-color: inherit;
+//  .mat-icon .mat-primary {
+//    --mat-icon-color: var(--rb-primary);
+//  }
+//
+//  .mat-icon.mat-accent {
+//    --mat-icon-color: var(--rb-accent);
+//  }
+//
+//  .mat-icon.mat-warn {
+//    --mat-icon-color: var(--rb-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region SIDENAV*/
+//  /*#endregion*/
+//
+//  /*#region STEPPER*/
+//  --mat-stepper-header-error-state-icon-foreground-color: var(--rb-warn);
+//  --mat-stepper-header-error-state-label-text-color: var(--rb-warn);
+//  /*#endregion*/
+//
+//  /*#region SORT ARROW*/
+//  /*#endregion*/
+//
+//  /*#region TOOLBAR*/
+//  --mat-toolbar-container-background-color: var(--rb-background);
+//  --mat-toolbar-container-text-color: var(--rb-foreground);
+//
+//  .mat-toolbar.mat-primary {
+//    --mat-toolbar-container-background-color: var(--rb-primary);
+//    --mat-toolbar-container-text-color: var(--rb-on-primary);
+//  }
+//
+//  .mat-toolbar.mat-accent {
+//    --mat-toolbar-container-background-color: var(--rb-accent);
+//    --mat-toolbar-container-text-color: var(--rb-on-accent);
+//  }
+//
+//  .mat-toolbar.mat-warn {
+//    --mat-toolbar-container-background-color: var(--rb-warn);
+//    --mat-toolbar-container-text-color: var(--rb-on-warn);
+//  }
+//  /*#endregion*/
+//
+//  /*#region TREE*/
+//  /*#endregion*/
+//
+//  /*#region TIME PICKER*/
+//  /*#endregion*/
+//}

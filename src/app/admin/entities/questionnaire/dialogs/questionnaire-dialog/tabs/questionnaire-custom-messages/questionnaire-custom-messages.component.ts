@@ -14,6 +14,7 @@ import {withLanguage} from '../../services/utils';
 import {
   RichTextEditorComponent
 } from '../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -39,6 +40,7 @@ export interface QuestionnaireCustomMessagesForm {
     CdkTextareaAutosize,
     MatError,
     RichTextEditorComponent,
+    HtmlEditorComponent,
   ]
 })
 export class QuestionnaireCustomMessagesComponent {

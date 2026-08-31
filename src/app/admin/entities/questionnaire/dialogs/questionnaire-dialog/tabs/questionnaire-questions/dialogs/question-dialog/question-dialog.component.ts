@@ -37,6 +37,7 @@ import jexl from 'jexl';
 import {
   RichTextEditorComponent
 } from '../../../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireQuestionForm extends Record<string, unknown> {
   id: string;
@@ -101,6 +102,7 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     RichTextEditorComponent,
+    HtmlEditorComponent,
   ],
   templateUrl: './question-dialog.component.html'
 })

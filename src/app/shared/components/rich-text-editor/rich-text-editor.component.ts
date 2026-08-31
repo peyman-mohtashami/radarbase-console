@@ -5,7 +5,7 @@ import {
   inject, OnInit, signal, Injector,
 } from '@angular/core';
 
-import { Editor } from '@tiptap/core';
+import {Editor, Extension, mergeAttributes} from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import { TiptapEditorDirective } from 'ngx-tiptap';
@@ -39,7 +39,7 @@ import {
 
 @Component({
   selector: 'app-rich-text-editor',
-  imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip],
+  imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip, HtmlEditorComponent],
   templateUrl: './rich-text-editor.component.html',
   styles: `
     //.editor-container {
@@ -215,18 +215,39 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
     this.editor.set(
       new Editor({
         extensions: [
+          // StarterKit,
+          //
+          // Image.configure({
+          //   inline: false,
+          //   allowBase64: false,
+          // }),
+          //
+          // TextStyle,
+          // Color,
+          // QuestionReference(
+          //   this.injector,
+          // ),
+          // VariableReference(
+          //   this.injector,
+          // ),
+
           StarterKit,
+
+          TextStyle,
+          Color,
+
+          HtmlAttributes,
 
           Image.configure({
             inline: false,
             allowBase64: false,
           }),
+          Iframe,
 
-          TextStyle,
-          Color,
           QuestionReference(
             this.injector,
           ),
+
           VariableReference(
             this.injector,
           ),
@@ -405,3 +426,160 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
       }).run();
   }
 }
+
+
+export const HtmlAttributes = Extension.create({
+  name: 'htmlAttributes',
+
+  addGlobalAttributes() {
+    return [
+      {
+        types: [
+          'paragraph',
+          'heading',
+          'blockquote',
+          'bulletList',
+          'orderedList',
+          'listItem',
+          'image',
+          'horizontalRule',
+        ],
+
+        attributes: {
+          class: {
+            default: null,
+
+            parseHTML: element =>
+              element.getAttribute('class'),
+
+            renderHTML: attributes =>
+              attributes['class']
+                ? { class: attributes['class'] }
+                : {},
+          },
+
+          style: {
+            default: null,
+
+            parseHTML: element =>
+              element.getAttribute('style'),
+
+            renderHTML: attributes =>
+              attributes['style']
+                ? { style: attributes['style'] }
+                : {},
+          },
+        },
+      },
+    ];
+  },
+});
+
+import { Node } from '@tiptap/core';
+import {HtmlEditorComponent} from '../html-editor/html-editor.component';
+
+export const Iframe = Node.create({
+  name: 'iframe',
+
+  group: 'block',
+
+  atom: true,
+
+  selectable: true,
+
+  draggable: true,
+
+  isolating: true,
+
+  addAttributes() {
+    return {
+      src: {
+        default: null,
+        parseHTML: element => element.getAttribute('src'),
+        renderHTML: attributes =>
+          attributes['src']
+            ? { src: attributes['src'] }
+            : {},
+      },
+
+      title: {
+        default: null,
+        parseHTML: element => element.getAttribute('title'),
+        renderHTML: attributes =>
+          attributes['title']
+            ? { title: attributes['title'] }
+            : {},
+      },
+
+      width: {
+        default: null,
+        parseHTML: element => element.getAttribute('width'),
+        renderHTML: attributes =>
+          attributes['width']
+            ? { width: attributes['width'] }
+            : {},
+      },
+
+      height: {
+        default: null,
+        parseHTML: element => element.getAttribute('height'),
+        renderHTML: attributes =>
+          attributes['height']
+            ? { height: attributes['height'] }
+            : {},
+      },
+
+      class: {
+        default: null,
+        parseHTML: element => element.getAttribute('class'),
+        renderHTML: attributes =>
+          attributes['class']
+            ? { class: attributes['class'] }
+            : {},
+      },
+
+      style: {
+        default: null,
+        parseHTML: element => element.getAttribute('style'),
+        renderHTML: attributes =>
+          attributes['style']
+            ? { style: attributes['style'] }
+            : {},
+      },
+
+      allow: {
+        default: null,
+        parseHTML: element => element.getAttribute('allow'),
+        renderHTML: attributes =>
+          attributes['allow']
+            ? { allow: attributes['allow'] }
+            : {},
+      },
+
+      allowfullscreen: {
+        default: false,
+        parseHTML: element =>
+          element.hasAttribute('allowfullscreen'),
+        renderHTML: attributes =>
+          attributes['allowfullscreen']
+            ? { allowfullscreen: '' }
+            : {},
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'iframe',
+      },
+    ];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return [
+      'iframe',
+      mergeAttributes(HTMLAttributes),
+    ];
+  },
+});

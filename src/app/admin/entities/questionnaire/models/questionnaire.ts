@@ -88,7 +88,7 @@ export interface AppQuestion {
   field_type: string;
   required_field: boolean;
   field_label: Record<string, string>;
-  fieldLabelVariables?: QuestionTemplateVariable[];
+  // fieldLabelVariables?: QuestionTemplateVariable[];
   section_header?: Record<string, string>;
   select_choices_or_calculations?: AppQuestionChoice[];
   text_validation_type_or_show_slider_number?: string;

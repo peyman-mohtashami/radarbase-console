@@ -14,24 +14,25 @@
       </button>
     </nav>
 
-    <div
-      class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 w-full bg-primary/10 dark:bg-primary/10'>
-      <div class='flex flex-wrap gap-2 items-center'>
-        <button class="app-button-small app-button-full-corner" mat-flat-button
-                [routerLink]="['/admin', 'organizations', entity.organization.name, 'projects']">
-          <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.project.icon }}</mat-icon>
-          <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.singular` | translate }}</span>
-        </button>
+    <div class='sticky top-0 z-50 w-full bg-white dark:bg-black'>
+      <div class='flex flex-wrap justify-between gap-2 p-4 w-full bg-primary/10 dark:bg-primary/10'>
+        <div class='flex flex-wrap gap-2 items-center'>
+          <button class="app-button-small app-button-full-corner" mat-flat-button
+                  [routerLink]="['/admin', 'organizations', entity.organization.name, 'projects']">
+            <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.project.icon }}</mat-icon>
+            <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.singular` | translate }}</span>
+          </button>
 
-        <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-primary'>
-          {{ entity.projectName }}
-        </h2>
+          <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-primary'>
+            {{ entity.projectName }}
+          </h2>
+        </div>
+
+        <ng-container
+          *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity.projectName}]'>
+          <app-project-actions [entity]="entity"/>
+        </ng-container>
       </div>
-
-      <ng-container
-        *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity.projectName}]'>
-        <app-project-actions [entity]="entity"/>
-      </ng-container>
     </div>
   }
 

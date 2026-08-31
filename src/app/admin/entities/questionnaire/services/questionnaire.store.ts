@@ -93,9 +93,17 @@ export class QuestionnaireStore {
     }, {});
   }
 
-  async getAll(): Promise<boolean> {
-    const project = this.projectStore.selected() ?? undefined;
-    const subject = this.subjectStore.selected() ?? undefined;
+  async getAll(resolverOptions?: {projectId: string | null, subjectId: string | null}): Promise<boolean> {
+    let project = this.projectStore.selected() ?? undefined;
+    let subject = this.subjectStore.selected() ?? undefined;
+
+    if (resolverOptions) {
+      project = resolverOptions.projectId ? project : undefined;
+      subject = resolverOptions.subjectId ? subject : undefined;
+    }
+    // const project = resolverOptions ? resolverOptions.projectId ? this.projectStore.selected() ?? undefined;
+    // const subject = this.subjectStore.selected() ?? undefined;
+    console.log('Class: QuestionnaireStore, Function: getAll, Line 99 project, subject' , project, subject);
 
     this.loading.set(true);
     try {

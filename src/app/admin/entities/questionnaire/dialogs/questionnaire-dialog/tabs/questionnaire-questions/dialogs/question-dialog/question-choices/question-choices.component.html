@@ -76,8 +76,9 @@
           <input matInput [formField]="choice.code">
         </mat-form-field>
       </div>
+      <app-html-editor [formField]="choice.label[language]" />
 
-      <app-question-template-variables [questionIndex]="index()" [formField]="choice.label[language]"/>
+<!--      <app-question-template-variables [questionIndex]="index()" [formField]="choice.label[language]"/>-->
 
       <button class="tiny" [disabled]="i === 0"
               mat-icon-button color="warn"

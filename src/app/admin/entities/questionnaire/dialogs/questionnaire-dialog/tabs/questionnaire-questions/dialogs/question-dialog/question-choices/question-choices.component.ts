@@ -8,6 +8,7 @@ import {FieldTree, FormField} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 import {dragDropStyles} from '../../../../../services/utils';
 import {QuestionTemplateVariablesComponent} from '../question-template-variables/question-template-variables.component';
+import {HtmlEditorComponent} from '../../../../../../../../../../shared/components/html-editor/html-editor.component';
 
 @Component({
   selector: 'app-question-choices',
@@ -23,6 +24,7 @@ import {QuestionTemplateVariablesComponent} from '../question-template-variables
     CdkDragHandle,
     FormField,
     QuestionTemplateVariablesComponent,
+    HtmlEditorComponent,
   ],
   styles: dragDropStyles
 })

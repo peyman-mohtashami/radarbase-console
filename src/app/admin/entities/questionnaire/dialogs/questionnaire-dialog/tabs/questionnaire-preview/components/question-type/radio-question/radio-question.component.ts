@@ -31,8 +31,9 @@ export class RadioQuestionComponent implements OnInit {
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
-  protected isEditEnabled = true;
   valueChange = output<string | null>();
+
+  protected isEditEnabled = true;
 
   ngOnInit(): void {
     this.isEditEnabled = this.questionnaire().editEnabled || !this.answer();

@@ -2,7 +2,8 @@
 @let entityMetadata = configService.getEntityMetadata();
 @let tableFields = configService.getTableFields();
 
-<div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-app-background dark:bg-app-background-dark'>
+<div class='sticky top-0 z-40 flex flex-wrap justify-between gap-2 p-4 w-full bg-background'>
+<!--  bg-app-background dark:bg-app-background-dark-->
   <h2 class='flex items-center gap-2 m-0 text-lg font-bold '>
     <span class="p-2 w-10! h-10! rounded-full bg-primary dark:bg-primary-dark font-bold text-on-primary relative">
       <span class="material-symbols-outlined absolute left-1 top-1 opacity-50">{{ entityMetadata.icon }}</span>
