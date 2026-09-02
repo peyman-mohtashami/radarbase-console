@@ -11,7 +11,7 @@
         <mat-error>
           @if (form.name().touched() && form.name().invalid()) {
             @for (error of form.name().errors(); track error.kind) {
-              {{ error.message }}
+              {{ error.message  | translate }}
             }
           }
         </mat-error>
@@ -53,7 +53,7 @@
         <mat-error>
           @if (form.estimatedCompletionTime().touched() && form.estimatedCompletionTime().invalid()) {
             @for (error of form.estimatedCompletionTime().errors(); track error.kind) {
-              {{ error.message }}
+              {{ error.message  | translate }}
             }
           }
         </mat-error>

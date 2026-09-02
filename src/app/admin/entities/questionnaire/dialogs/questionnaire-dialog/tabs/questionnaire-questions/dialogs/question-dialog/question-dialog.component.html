@@ -99,7 +99,7 @@
                [class]="form.field_label[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.fieldLabel` | translate }} *
         </label>
-        <app-html-editor [formField]="form.field_label[_lang]" />
+        <app-html-editor [formField]="form.field_label[_lang]" [questionIndex]="dialogData.index" />
 <!--        [questionIndex]="dialogData.index" />-->
 
 <!--        <app-rich-text-editor [formField]="form.field_label[_lang]" [questionIndex]="dialogData.index"/>-->
@@ -109,7 +109,7 @@
       <div class="mb-4">
         <!--      <div class="flex justify-between items-baseline">-->
         <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
-        <app-html-editor [formField]="form.section_header[_lang]" />
+        <app-html-editor [formField]="form.section_header[_lang]"  [questionIndex]="dialogData.index"/>
 <!--        <app-rich-text-editor [formField]="form.section_header[_lang]" [questionIndex]="dialogData.index"/>-->
         <!--      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.section_header[_lang]"/>-->
       </div>
@@ -117,7 +117,7 @@
       <div class="mb-4">
         <!--      <div class="flex justify-between items-baseline">-->
         <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
-        <app-html-editor [formField]="form.field_note[_lang]" />
+        <app-html-editor [formField]="form.field_note[_lang]" [questionIndex]="dialogData.index"/>
 <!--        <app-rich-text-editor [formField]="form.field_note[_lang]" [questionIndex]="dialogData.index"/>-->
         <!--      <app-question-template-variables [questionIndex]="dialogData.index" [formField]="form.field_note[_lang]"/>-->
       </div>

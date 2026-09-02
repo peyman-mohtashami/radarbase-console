@@ -196,7 +196,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'minLessThanMax',
-      message: 'Min must be less than max',
+      message: 'SHARED.validatorError.minLessThanMax',
     };
   });
 }
@@ -239,7 +239,7 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'maxGreaterThanMin',
-      message: 'Max must be greater than min',
+      message: 'SHARED.validatorError.maxGreaterThanMin',
     };
   });
 }
@@ -261,7 +261,7 @@ export function positiveNumber<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'rangeStepPositive',
-      message: 'Step must be positive',
+      message: 'SHARED.validatorError.rangeStepPositive',
     };
   });
 }
@@ -285,7 +285,7 @@ export function validateRegex<TValue, TPathKind extends PathKind = PathKind.Root
     } catch (error) {
       return {
         kind: 'regexInvalid',
-        message: error instanceof Error ? error.message : 'Invalid regular expression',
+        message: error instanceof Error ? error.message : 'SHARED.validatorError.regexInvalid',
       };
     }
   });

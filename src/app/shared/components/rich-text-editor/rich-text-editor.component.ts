@@ -39,7 +39,7 @@ import {
 
 @Component({
   selector: 'app-rich-text-editor',
-  imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip, HtmlEditorComponent],
+  imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip],
   templateUrl: './rich-text-editor.component.html',
   styles: `
     //.editor-container {

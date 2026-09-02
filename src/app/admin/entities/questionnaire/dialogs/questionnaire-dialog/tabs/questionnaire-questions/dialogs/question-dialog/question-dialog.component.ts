@@ -101,7 +101,7 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     QuestionComponent,
     ToolbarComponent,
     QuestionConditionalLogicComponent,
-    RichTextEditorComponent,
+    // RichTextEditorComponent,
     HtmlEditorComponent,
   ],
   templateUrl: './question-dialog.component.html'

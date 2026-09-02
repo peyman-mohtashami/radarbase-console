@@ -176,6 +176,10 @@
       "longTextValidator": "Enter a valid text (Uppercase, lowercase and digits, min 1 max 256)"
     },
     "validatorError": {
+      "required": "This field is required.",
+      "identifierValidator": "Enter a valid identifier (Characters and digits and '_')",
+      "wrongTemplateVariable": "Template variable is invalid.",
+      "duplicateName": "Already exists.",
       "requiredValidator": "'{{value}}' is required.",
       "emailValidator": "Enter a valid email address.",
       "stringIdValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
@@ -187,7 +191,11 @@
       "dateOutOfMinRange": "Date is out of range. It should be after {{value}}.",
       "dateOutOfMaxRange": "Date is out of range. It should be before {{value}}.",
       "numberOutOfMinRange": "Number is out of range. It should be greater than {{value}}.",
-      "numberOutOfMaxRange": "Number is out of range. It should be less than {{value}}."
+      "numberOutOfMaxRange": "Number is out of range. It should be less than {{value}}.",
+      "regexInvalid": "Invalid regular expression.",
+      "rangeStepPositive": "This field must be a positive number",
+      "maxGreaterThanMin": "Max must be greater than min",
+      "minLessThanMax": "Min must be less than max"
     },
     "UNIT": {
       "week": "week",
