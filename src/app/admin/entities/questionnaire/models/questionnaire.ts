@@ -105,6 +105,17 @@ export interface AppQuestion {
   multi_line?: boolean;
   calculation_fn?: string;
   calculation_args?: string;
+  variable?: {
+    type?: string;
+    reserved_var?: string;
+    topic?: string;
+    topic_var?: string;
+    questionnaireId?: string;
+    questionnaire_question?: string;
+    start?: string;
+    end?: string;
+    method?: string;
+  }
   // date_type?: string;
   isValid?: boolean;
   isActive: boolean;
@@ -183,4 +194,5 @@ export enum QuestionType {
   CALC = 'calc',
   MATRIX_RADIO = 'matrix-radio',
   HEALTHKIT = 'healthkit',
+  VARIABLE = 'variable',
 }

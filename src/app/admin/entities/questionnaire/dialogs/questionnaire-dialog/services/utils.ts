@@ -96,6 +96,7 @@ export const QUESTION_TYPES = [
   {
     types: [
       {type: QuestionType.CALC, icon: '', label: 'Calculation', disabled: false},
+      {type: QuestionType.VARIABLE, icon: '', label: 'Variable', disabled: false},
     ]
   }
 ]

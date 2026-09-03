@@ -1,79 +1,58 @@
-import {AfterViewInit, Component, inject, OnInit, signal,} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentRef,
+  inject,
+  OnInit, signal, Type,
+  viewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
+import {AppQuestion, QuestionType} from '../../../../../../models/questionnaire';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton} from '@angular/material/button';
-import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
-import {MatIcon} from '@angular/material/icon';
-import {MatOption, MatSelect} from '@angular/material/select';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {
-  identifierField,
-  positiveNumber,
-  requiredField,
-  RequiredWhen,
-  validateDuplicate,
-  validateMaxMin,
-  validateMinMax, validateRegex,
-  validateTemplateVariables
-} from '../../../../../../../../../shared/utils/signal-form-validators';
-import {applyEach, disabled, form, FormField, validate} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
-import {QuestionChoicesComponent} from './question-choices/question-choices.component';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
-import {UpperCasePipe} from '@angular/common';
-import {MatTooltip} from '@angular/material/tooltip';
-import {QuestionComponent} from '../../../questionnaire-preview/components/question/question.component';
-import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
+import {checkValidation} from '../../../../services/utils';
+import {outputToObservable} from '@angular/core/rxjs-interop';
+import {debounceTime} from 'rxjs/operators';
+import {RadioQuestionComponent} from '../../question-type/radio-question/radio-question.component';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
-import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
-import {QuestionConditionalLogicComponent} from './question-conditional-logic/question-conditional-logic.component';
-import {checkValidation, QUESTION_TYPES, withLanguage} from '../../../../services/utils';
-import jexl from 'jexl';
-import {
-  RichTextEditorComponent
-} from '../../../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
-import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
+import {InfoQuestionComponent} from '../../question-type/info-question/info-question.component';
+import {CheckboxQuestionComponent} from '../../question-type/checkbox-question/checkbox-question.component';
+import {SliderQuestionComponent} from '../../question-type/slider-question/slider-question.component';
+import {RangeQuestionComponent} from '../../question-type/range-question/range-question.component';
+import {TextQuestionComponent} from '../../question-type/text-question/text-question.component';
+import {DateQuestionComponent} from '../../question-type/date-question/date-question.component';
+import {TimeQuestionComponent} from '../../question-type/time-question/time-question.component';
+import {AudioQuestionComponent} from '../../question-type/audio-question/audio-question.component';
+import {TimedQuestionComponent} from '../../question-type/timed-question/timed-question.component';
+import {CalcQuestionComponent} from '../../question-type/calc-question/calc-question.component';
+import {DescriptiveQuestionComponent} from '../../question-type/descriptive-question/descriptive-question.component';
+import {YesNoQuestionComponent} from '../../question-type/yesno-question/yesno-question.component';
+import {NumberQuestionComponent} from '../../question-type/number-question/number-question.component';
+import {VariableQuestionComponent} from '../../question-type/variable-question/variable-question.component';
 
-export interface QuestionnaireQuestionForm extends Record<string, unknown> {
-  id: string;
-  field_name: string;
-  field_type: string;
-  field_label: Record<string, string>;
-  section_header: Record<string, string>
-  required_field: boolean;
-  field_note: Record<string, string>
-  matrix_group_name: string;
-  conditionalLogic: AppQuestionConditionalLogic;
-  select_choices_or_calculations: { code: string; label: Record<string, string> }[];
-  text_validation_min: string;
-  text_validation_max: string
-  field_annotation: {
-    image: string
-    timer: {
-      start: string
-      end: string
-    }
-    unit: string
-  }
-  range: {
-    labelLeft: Record<string, string>
-    labelRight: Record<string, string>
-    max: string
-    min: string
-    step: string
-  }
-  show_selected_label: boolean
-  show_code: boolean
-  multi_line: boolean;
-  calculation_fn: string;
-  calculation_args: string;
-  isActive: boolean;
+export const QUESTION_COMPONENTS: Record<string, Type<unknown>> = {
+  [QuestionType.DESCRIPTIVE]: DescriptiveQuestionComponent,
+  [QuestionType.INFO]: InfoQuestionComponent,
+  [QuestionType.RADIO]: RadioQuestionComponent,
+  [QuestionType.YESNO]: YesNoQuestionComponent,
+  [QuestionType.CHECKBOX]: CheckboxQuestionComponent,
+  [QuestionType.SLIDER]: SliderQuestionComponent,
+  [QuestionType.RANGE]: RangeQuestionComponent,
+  [QuestionType.TEXT]: TextQuestionComponent,
+  [QuestionType.NUMBER]: NumberQuestionComponent,
+  [QuestionType.DATE]: DateQuestionComponent,
+  [QuestionType.TIME]: TimeQuestionComponent,
+  [QuestionType.AUDIO]: AudioQuestionComponent,
+  [QuestionType.TIMED]: TimedQuestionComponent,
+  [QuestionType.CALC]: CalcQuestionComponent,
+  [QuestionType.VARIABLE]: VariableQuestionComponent
 }
+
 
 @Component({
   selector: 'app-question-dialog',
@@ -81,38 +60,13 @@ export interface QuestionnaireQuestionForm extends Record<string, unknown> {
     MatDialogContent,
     TranslatePipe,
     MatButton,
-    MatFormField,
-    MatError,
-    MatInput,
-    MatIcon,
-    MatSelect,
-    MatOption,
-    MatSlideToggle,
     MatDialogTitle,
-    FormField,
-    QuestionChoicesComponent,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatSuffix,
-    TagComponent,
-    UpperCasePipe,
-    MatTooltip,
-    QuestionComponent,
-    ToolbarComponent,
-    QuestionConditionalLogicComponent,
-    // RichTextEditorComponent,
-    HtmlEditorComponent,
   ],
   templateUrl: './question-dialog.component.html'
 })
 export class QuestionDialogComponent implements OnInit, AfterViewInit {
   protected readonly QuestionType = QuestionType;
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
   protected readonly DialogMode = DialogMode;
-
-  protected CHOICES_ENABLED_FIELDS = [`${QuestionType.INFO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.RADIO}`, `${QuestionType.RANGE}`];
-  protected MATRIX_GROUP_NAME_ENABLED_FIELDS = [`${QuestionType.RANGE}`, `${QuestionType.TEXT}`, `${QuestionType.NUMBER}`, `${QuestionType.DATE}`, `${QuestionType.RADIO}`, `${QuestionType.CHECKBOX}`, `${QuestionType.SLIDER}`, `${QuestionType.YESNO}`];
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);
@@ -132,138 +86,13 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
   _lang = this._questionnaire.defaultLanguage.code;
 
   _question = this.dialogData.entity;
+  question = signal<AppQuestion>(this.dialogData.entity);
 
-  previewState = inject(PreviewStore);
+  previewStore = inject(PreviewStore);
 
-  protected model = signal<QuestionnaireQuestionForm>({ //this.dialogData.restoredModel ??{
-    ...this._question,
-    id: this._question.id ?? crypto.randomUUID(),
-    field_name: this._question.field_name ?? '',
-    field_type: this._question.field_type ?? '',
-    field_label: withLanguage(this._question?.field_label, this._lang),
-    section_header: withLanguage(this._question?.section_header, this._lang),
-    required_field: this._question.required_field ?? true,
-    field_note: withLanguage(this._question?.field_note, this._lang),
-    matrix_group_name: this._question.matrix_group_name ?? '',
-    conditionalLogic: this._question.conditionalLogic ?? [],
-    select_choices_or_calculations: this._question.select_choices_or_calculations?.map(c =>
-      ({code: c.code, label: withLanguage(c.label, this._lang)})) ?? [{code: '', label: {[this._lang]: ''}}],
-    text_validation_min: this._question.text_validation_min ?? '',
-    text_validation_max: this._question.text_validation_max ?? '',
-    field_annotation: {
-      image: this._question.field_annotation?.image ?? '',
-      timer: {
-        start: `${this._question.field_annotation?.timer?.start ?? ''}`,
-        end: `${this._question.field_annotation?.timer?.end ?? ''}`
-      },
-      unit: this._question.field_annotation?.unit ?? ''
-    },
-    range: {
-      labelLeft: withLanguage(this._question?.range?.labelLeft, this._lang),
-      labelRight: withLanguage(this._question?.range?.labelRight, this._lang),
-      max: `${this._question.range?.max ?? ''}`,
-      min: `${this._question.range?.min ?? ''}`,
-      step: `${this._question.range?.step ?? ''}`
-    },
-    show_selected_label: this._question.show_selected_label ?? false,
-    show_code: this._question.show_code ?? false,
-    multi_line: this._question.multi_line ?? false,
-    calculation_fn: this._question.calculation_fn ?? '',
-    calculation_args: this._question.calculation_args ?? '',
-    isActive: this._question.isActive ?? false,
-  });
-
-  protected form = form(this.model, (schema) => {
-    requiredField(schema.field_name);
-    identifierField(schema.field_name);
-    validateDuplicate(schema.field_name, this.dialogData.questions, this._question, 'field_name');
-
-    requiredField(schema.field_type);
-    disabled(schema.field_type);
-
-    requiredField(schema.field_label[this._lang]);
-    validateTemplateVariables(schema.field_label[this._lang], () => this.store.selected(), this.dialogData.index);
-
-    validateTemplateVariables(schema.section_header[this._lang], () => this.store.selected(), this.dialogData.index);
-    validateTemplateVariables(schema.field_note[this._lang], () => this.store.selected(), this.dialogData.index);
-
-    applyEach(schema.select_choices_or_calculations, (choice) => {
-      const whenRequired: RequiredWhen = ({valueOf}) => [QuestionType.INFO, QuestionType.CHECKBOX, QuestionType.RADIO, QuestionType.RANGE].includes(valueOf(schema.field_type) as QuestionType);
-      requiredField(choice.code, {when: whenRequired});
-      requiredField(choice.label[this._lang], {when: whenRequired});
-    });
-
-    validateRegex(schema.text_validation_min, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TEXT});
-
-    requiredField(schema.range.min, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-    requiredField(schema.range.max, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-    requiredField(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-
-    validateMinMax(schema.range.min, schema.range.max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-    validateMaxMin(schema.range.max, schema.range.min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-    positiveNumber(schema.range.step, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.SLIDER});
-
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.NUMBER});
-
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.DATE});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'date', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.DATE});
-
-    validateMinMax(schema.text_validation_min, schema.text_validation_max, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIME});
-    validateMaxMin(schema.text_validation_max, schema.text_validation_min, 'time', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIME});
-
-    requiredField(schema.field_annotation.timer.start, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
-    requiredField(schema.field_annotation.timer.end, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
-
-    validateMaxMin(schema.field_annotation.timer.start, schema.field_annotation.timer.end, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
-    validateMinMax(schema.field_annotation.timer.end, schema.field_annotation.timer.start, 'number', {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.TIMED});
-
-    requiredField(schema.calculation_fn, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.CALC});
-    requiredField(schema.calculation_args, {when: ({valueOf}) => valueOf(schema.field_type) === QuestionType.CALC});
-    validate(schema.calculation_fn, ({ value, valueOf }) => {
-      if (valueOf(schema.field_type) !== QuestionType.CALC) return null;
-
-      jexl.addTransform('num', (val) => Number(val) || 0);
-
-      const expression = value();//this.entity().calculation_fn;
-      const args = valueOf(schema.calculation_args)?.split(',');
-      if (expression && args) {
-        const context = args.reduce((acc: Record<string, string | null>, arg) => {
-          // arg can be a string, number, date, null/undefined
-          const type = 'number'
-          const _arg = arg.trim();
-
-          switch(type) {
-            case 'number':
-              acc[_arg] = "7";
-              return acc;
-            default:
-              acc[_arg] = "7";
-              return acc;
-          }
-        }, {});
-        console.log('CALC_Class: QuestionDialogComponent, Function: , Line 239 context' , context);
-        try {
-          const y = jexl.evalSync(expression, context);
-          console.log('CALC_Class: QuestionDialogComponent, Function: , Line 242 ' , y);
-          return null;
-        } catch (error) {
-          console.log('CALC_Class: QuestionDialogComponent, Function: , Line 245 error' , error);
-          return {
-            kind: 'invalidFunction',
-            message: error instanceof Error
-                ? error.message
-                : 'Invalid JEXL expression'
-          };
-        }
-      }
-      console.log('CALC_Class: QuestionDialogComponent, Function: , Line 254 ' , );
-      return {
-        kind: 'invalidFunction',
-        message: 'Invalid JEXL expression'
-      };
-    });
-  });
+  host = viewChild('questionHost', { read: ViewContainerRef });
+  private componentRef?: ComponentRef<any>;
+  private currentFieldType?: string;
 
   ngAfterViewInit() {
     animateDialogIn(this.dialogData.id);
@@ -271,82 +100,42 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.questionsStore.question.set(this._question);
+    this.questionsStore.index.set(this.dialogData.index);
+    this.loadQuestionEditor();
   }
 
-  toAppQuestion(model: QuestionnaireQuestionForm): AppQuestion {
-    const entity = this._question;
-    return this.normalizeQuestion({
-      ...entity,
-      ...model,
-      isValid: this.form().valid()
-    });
-  }
+  private loadQuestionEditor(): void {
+    const host = this.host();
+    if (!host) return;
 
-  normalizeQuestion(question: AppQuestion) {
-    const updatedQuestion: AppQuestion = {
-      id: question.id,
-      field_name: question.field_name,
-      field_type: question.field_type,
-      field_label: question.field_label,
-      section_header: question.section_header?.[this._lang] ? question.section_header : undefined,
-      required_field: question.required_field,
-      field_note: question.field_note?.[this._lang] ? question.field_note : undefined,
-      matrix_group_name: question.matrix_group_name || '',
-      conditionalLogic: question.conditionalLogic?.length ? question.conditionalLogic : undefined,
-      branching_logic: question.branching_logic || undefined,
-      isActive: question.isActive,
-      isValid: question.isValid,
+    const question = this.dialogData.entity;
+    const componentType = QUESTION_COMPONENTS[question.field_type];
+    // if (!componentType) return;
+
+    if (!this.componentRef || this.currentFieldType !== question.field_type) {
+      host.clear();
+      this.componentRef = host.createComponent(componentType);
+      this.currentFieldType = question.field_type;
+
+      outputToObservable(this.componentRef.instance.valueChange)
+        .pipe(debounceTime(300))
+        .subscribe((value) => {
+          this.question.set(value as AppQuestion);
+        });
     }
-    switch (question.field_type) {
-      case QuestionType.TEXT:
-        updatedQuestion.multi_line = question.multi_line;
-        updatedQuestion.text_validation_min = question.text_validation_min;
-        break;
-      case QuestionType.NUMBER:
-      case QuestionType.DATE:
-      case QuestionType.TIME:
-        updatedQuestion.text_validation_min = question.text_validation_min;
-        updatedQuestion.text_validation_max = question.text_validation_max;
-        break;
-      case QuestionType.CHECKBOX:
-      case QuestionType.RADIO:
-      case QuestionType.INFO:
-        updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
-        break;
-      case QuestionType.RANGE:
-        updatedQuestion.select_choices_or_calculations = question.select_choices_or_calculations;
-        updatedQuestion.show_selected_label = question.show_selected_label;
-        updatedQuestion.show_code = question.show_code;
-        break;
-      case QuestionType.SLIDER:
-        updatedQuestion.range = question.range ? {
-          min: question.range?.min,
-          max: question.range?.max,
-          step: question.range?.step,
-          labelLeft: question.range.labelLeft?.[this._lang] ? question.range.labelLeft : undefined,
-          labelRight: question.range.labelRight?.[this._lang] ? question.range.labelRight : undefined,
-        } : undefined;
-        break;
-      case QuestionType.TIMED:
-        updatedQuestion.field_annotation = question.field_annotation;
-        break;
-      case QuestionType.CALC:
-        updatedQuestion.calculation_fn = question.calculation_fn;
-        updatedQuestion.calculation_args = question.calculation_args;
-        break;
-      default:
-        return updatedQuestion;
-    }
-    return updatedQuestion;
+
+    this.componentRef.setInput('matrixIndex', this.dialogData.matrixIndex);
+    this.componentRef.setInput('questionnaire', this.store.selected());
+    this.componentRef.setInput('language', this.previewStore.language());
+    this.componentRef.setInput('answer', question.field_name ? this.previewStore.answers()[question.field_name]?.[0] : null);
   }
 
   protected handleSaveAction(): void {
-    const model = this.model();
 
     this.store.selected.update(value => {
       const questions = value!.questions.map(q => {
         if (q.id === this._question.id) {
-          return this.toAppQuestion(model);
+          return this.question();
         }
         return q;
       }) ?? [];
@@ -363,21 +152,7 @@ export class QuestionDialogComponent implements OnInit, AfterViewInit {
 
   close() {
     this.questionsStore.question.set(null);
+    this.questionsStore.index.set(null);
     animateDialogOut(this.dialogData.id, this.dialogRef);
-  }
-
-  async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
-    const answers = this.previewState.answers();
-    answers[answer.id] = [answer];
-    this.previewState.answers.set({...answers});
-  }
-
-  protected updateConditionalLogic(conditionalLogic: AppQuestionConditionalLogic) {
-    this.model.update(value => {
-      return {
-        ...value,
-        conditionalLogic,
-      };
-    })
   }
 }

@@ -41,8 +41,8 @@ import {AppQuestion} from '../../../admin/entities/questionnaire/models/question
 
 
     .html-editor ::ng-deep .cm-variable-chip-icon {
-      font-family: 'Material Symbols Outlined';
-      font-size: 14px;
+      font-family: 'Material Symbols Outlined',serif;
+      font-size: 12px;
       line-height: 14px;
     }
 
@@ -83,9 +83,7 @@ import {AppQuestion} from '../../../admin/entities/questionnaire/models/question
     }
 
 
-    .html-editor ::ng-deep
-    .cm-variable-chip-button
-    .material-symbols-outlined {
+    .html-editor ::ng-deep .cm-variable-chip-button .material-symbols-outlined {
       font-size: 14px;
       line-height: 14px;
     }`,
@@ -132,14 +130,57 @@ export class HtmlEditorComponent implements AfterViewInit {
             width: '100%',
             height: '100%',
             fontSize: '12px',
+
+            // Material outlined-field appearance
+            border: '1px solid var(--mat-sys-outline)',
+            borderRadius: '4px',
+            boxSizing: 'border-box',
+            backgroundColor: 'transparent',
+
+            // Smooth focus transition
+            transition: 'border-color 150ms ease, box-shadow 150ms ease',
           },
+
+          '&:focus-within': {
+            borderColor: 'var(--mat-sys-primary)',
+            boxShadow: 'inset 0 0 0 1px var(--mat-sys-primary)',
+          },
+
           '.cm-scroller': {
             overflow: 'auto',
           },
+
           '.cm-content': {
             fontFamily: 'monospace',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'break-word',
+
+            // Similar padding to a Material input
+            padding: '6px 16px',
+          },
+
+          '.cm-line': {
+            padding: '0',
+          },
+
+          // Remove active-line background
+          '.cm-activeLine': {
+            backgroundColor: 'transparent',
+          },
+
+          // Remove active-line gutter background
+          '.cm-activeLineGutter': {
+            backgroundColor: 'transparent',
+          },
+
+          // Hide line numbers
+          '.cm-gutters': {
+            display: 'none',
+          },
+
+          // Remove CodeMirror's default focus outline
+          '&.cm-focused': {
+            outline: 'none',
           },
         }),
       ],
@@ -169,7 +210,7 @@ export class HtmlEditorComponent implements AfterViewInit {
   private buildVariableDecorations(state: EditorState): DecorationSet {
     const decorations = [];
     const text = state.doc.toString();
-    const regex = /\{\{([^{}]+)\}\}/g;
+    const regex = /\{\{([^{}]+)}}/g;
     let match: RegExpExecArray | null;
 
     while ((match = regex.exec(text)) !== null) {
