@@ -2,7 +2,7 @@
 # All rights reserved.
 # This file is part of radarbase-console.
 
-FROM --platform=$BUILDPLATFORM node:22.12.0-alpine AS builder
+FROM --platform=$BUILDPLATFORM node:24.15.0-alpine AS builder
 
 WORKDIR /code
 

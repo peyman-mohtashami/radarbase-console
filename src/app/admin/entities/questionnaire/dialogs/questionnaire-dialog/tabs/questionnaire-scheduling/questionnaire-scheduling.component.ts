@@ -174,9 +174,8 @@ export class QuestionnaireSchedulingComponent {
   }
 
   minutesToOffsets(minutes?: string[]): { day: string; time: string; }[] {
-    // if (!minutes) return undefined;
+    if (!minutes) return [{day: '0', time: ''}];
     return minutes?.map(m => minuteToOffset(Number(m))) ?? [];
-    // return [{day: '0', time: ''}]
   }
 
   offsetsToMinutes(offsets: { day: string; time: string; }[]): string[] {

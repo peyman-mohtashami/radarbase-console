@@ -11,6 +11,14 @@ import {
   QuestionPickerDialogComponent
 } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-picker-dialog/question-picker-dialog.component';
 import {AppQuestion} from '../../../admin/entities/questionnaire/models/questionnaire';
+import {
+  VariableDialogComponent
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/dialogs/variable-dialog/variable-dialog.component';
+import {
+  QuestionTemplateVariable
+} from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
+import {QuestionnaireStore} from '../../../admin/entities/questionnaire/services/questionnaire.store';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-html-editor',
@@ -38,7 +46,6 @@ import {AppQuestion} from '../../../admin/entities/questionnaire/models/question
 
       user-select: none;
     }
-
 
     .html-editor ::ng-deep .cm-variable-chip-icon {
       font-family: 'Material Symbols Outlined',serif;
@@ -86,10 +93,83 @@ import {AppQuestion} from '../../../admin/entities/questionnaire/models/question
     .html-editor ::ng-deep .cm-variable-chip-button .material-symbols-outlined {
       font-size: 14px;
       line-height: 14px;
+    }
+
+    //----------
+    .html-editor ::ng-deep .cm-question-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+
+      padding: 2px 4px 2px 7px;
+      margin: 0 2px;
+
+      border-radius: 999px;
+
+      background: var(--mat-sys-primary-container);
+      color: var(--mat-sys-on-primary-container);
+
+      font-family: inherit;
+      font-size: 11px;
+      line-height: 18px;
+
+      white-space: nowrap;
+      vertical-align: middle;
+
+      user-select: none;
+    }
+
+    .html-editor ::ng-deep .cm-question-chip-icon {
+      font-family: 'Material Symbols Outlined',serif;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+
+    .html-editor ::ng-deep .cm-question-chip-text {
+      padding: 0 3px;
+      font-weight: 500;
+    }
+
+
+    .html-editor ::ng-deep .cm-question-chip-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 18px;
+      height: 18px;
+
+      padding: 0;
+      margin: 0;
+
+      border: 0;
+      border-radius: 50%;
+
+      background: transparent;
+      color: inherit;
+
+      cursor: pointer;
+    }
+
+
+    .html-editor ::ng-deep .cm-question-chip-button:hover {
+      background: color-mix(
+        in srgb,
+        currentColor 12%,
+        transparent
+      );
+    }
+
+
+    .html-editor ::ng-deep .cm-question-chip-button .material-symbols-outlined {
+      font-size: 14px;
+      line-height: 14px;
     }`,
   imports: [
     MatIconButton,
-    MatIcon
+    MatIcon,
+    MatTooltip
   ]
 })
 export class HtmlEditorComponent implements AfterViewInit {
@@ -103,6 +183,7 @@ export class HtmlEditorComponent implements AfterViewInit {
 
   private editorView?: EditorView;
 
+  private questionDecorationField!: StateField<DecorationSet>;
   private variableDecorationField!: StateField<DecorationSet>;
 
   ngAfterViewInit(): void {
@@ -110,6 +191,7 @@ export class HtmlEditorComponent implements AfterViewInit {
   }
 
   private createEditor(): void {
+    this.questionDecorationField = this.createQuestionDecorationField();
     this.variableDecorationField = this.createVariableDecorationField();
 
     const state = EditorState.create({
@@ -119,7 +201,9 @@ export class HtmlEditorComponent implements AfterViewInit {
         html(),
         EditorView.lineWrapping,
         this.variableDecorationField,
+        this.questionDecorationField,
         EditorView.atomicRanges.of(view => view.state.field(this.variableDecorationField)),
+        EditorView.atomicRanges.of(view => view.state.field(this.questionDecorationField)),
         EditorView.updateListener.of(update => {
           if (!update.docChanged) return;
           this.formField()().value.set(update.state.doc.toString());
@@ -131,13 +215,11 @@ export class HtmlEditorComponent implements AfterViewInit {
             height: '100%',
             fontSize: '12px',
 
-            // Material outlined-field appearance
             border: '1px solid var(--mat-sys-outline)',
             borderRadius: '4px',
             boxSizing: 'border-box',
             backgroundColor: 'transparent',
 
-            // Smooth focus transition
             transition: 'border-color 150ms ease, box-shadow 150ms ease',
           },
 
@@ -154,8 +236,6 @@ export class HtmlEditorComponent implements AfterViewInit {
             fontFamily: 'monospace',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'break-word',
-
-            // Similar padding to a Material input
             padding: '6px 16px',
           },
 
@@ -163,22 +243,18 @@ export class HtmlEditorComponent implements AfterViewInit {
             padding: '0',
           },
 
-          // Remove active-line background
           '.cm-activeLine': {
             backgroundColor: 'transparent',
           },
 
-          // Remove active-line gutter background
           '.cm-activeLineGutter': {
             backgroundColor: 'transparent',
           },
 
-          // Hide line numbers
           '.cm-gutters': {
             display: 'none',
           },
 
-          // Remove CodeMirror's default focus outline
           '&.cm-focused': {
             outline: 'none',
           },
@@ -199,9 +275,20 @@ export class HtmlEditorComponent implements AfterViewInit {
       },
       update: (decorations, transaction) => {
         if (!transaction.docChanged) return decorations;
-        return this.buildVariableDecorations(
-          transaction.state,
-        );
+        return this.buildVariableDecorations(transaction.state);
+      },
+      provide: field => EditorView.decorations.from(field),
+    });
+  }
+
+  private createQuestionDecorationField(): StateField<DecorationSet> {
+    return StateField.define<DecorationSet>({
+      create: state => {
+        return this.buildQuestionDecorations(state);
+      },
+      update: (decorations, transaction) => {
+        if (!transaction.docChanged) return decorations;
+        return this.buildQuestionDecorations(transaction.state);
       },
       provide: field => EditorView.decorations.from(field),
     });
@@ -223,16 +310,41 @@ export class HtmlEditorComponent implements AfterViewInit {
         Decoration.replace({
           widget: new VariableChipWidget(
             variableName,
-
-            // Edit
             () => { this.editVariable(variableName, from, to); },
-
-            // Remove
             () => { this.removeVariable(from, to); },
           ),
-
           inclusive: false,
+        }).range(from, to),
+      );
+    }
 
+    return Decoration.set(decorations,true);
+  }
+
+  private store = inject(QuestionnaireStore);
+
+  private buildQuestionDecorations(state: EditorState): DecorationSet {
+    const decorations = [];
+    const text = state.doc.toString();
+    const regex = /\[\[([^\]]*)]]/g;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      const fullMatch = match[0];
+      const variableName = match[1].trim();
+      const question = this.store.selected()?.questions.find(q => q.field_name === variableName);
+      const from = match.index;
+      const to = from + fullMatch.length;
+
+      decorations.push(
+        Decoration.replace({
+          widget: new QuestionChipWidget(
+            // variableName,
+            question!,
+            // () => { this.editVariable(variableName, from, to); },
+            () => { this.removeVariable(from, to); },
+          ),
+          inclusive: false,
         }).range(from, to),
       );
     }
@@ -250,31 +362,22 @@ export class HtmlEditorComponent implements AfterViewInit {
       QuestionPickerDialogComponent,
       {
         width: '500px',
-        data: {
-          questionIndex: this.questionIndex(),
-        },
+        data: {questionIndex: this.questionIndex()},
       },
     );
 
     dialogRef.afterClosed().subscribe(
       (question: AppQuestion | undefined) => {
-
         if (!question) return;
 
-        const placeholder = `{{${question.field_name}}}`;
+        const placeholder = `[[${question.field_name}]]`;
 
         const from = selection.main.from;
         const to = selection.main.to;
 
         editor.dispatch({
-          changes: {
-            from,
-            to,
-            insert: placeholder,
-          },
-          selection: {
-            anchor: from + placeholder.length,
-          },
+          changes: {from, to, insert: placeholder},
+          selection: {anchor: from + placeholder.length},
           scrollIntoView: true,
         });
 
@@ -342,6 +445,44 @@ export class HtmlEditorComponent implements AfterViewInit {
       },
     );
   }
+
+  protected openVariableDialog(mode: string) {
+    const editor = this.editorView;
+    if (!editor) return;
+
+    const selection = editor.state.selection;
+    const dialogRef = this.dialog.open(VariableDialogComponent, {
+      id: 'variable-dialog',
+      data: {id: 'variable-dialog', mode},
+      panelClass: 'tailwind-slide-panel',
+      width: '40%',
+      height: '100vh',
+      position: {top: '0', right: '0'},
+      hasBackdrop: true,
+      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (variable: QuestionTemplateVariable | undefined) => {
+        if (!variable) return;
+
+        const placeholder = `{{${variable.name}}}`;
+
+        const from = selection.main.from;
+        const to = selection.main.to;
+
+        editor.dispatch({
+          changes: {from, to, insert: placeholder},
+          selection: {anchor: from + placeholder.length},
+          scrollIntoView: true,
+        });
+
+        editor.focus();
+      },
+    );
+  }
 }
 
 class VariableChipWidget extends WidgetType {
@@ -355,7 +496,6 @@ class VariableChipWidget extends WidgetType {
   }
 
   toDOM(): HTMLElement {
-
     const chip = document.createElement('span');
     chip.className = 'cm-variable-chip';
     const icon = document.createElement('span');
@@ -384,7 +524,6 @@ class VariableChipWidget extends WidgetType {
       event => {
         event.preventDefault();
         event.stopPropagation();
-
         this.onEdit();
       },
     );
@@ -425,6 +564,93 @@ class VariableChipWidget extends WidgetType {
     return (
       other instanceof VariableChipWidget &&
       other.variableName === this.variableName
+    );
+  }
+
+  override ignoreEvent(): boolean {
+    return false;
+  }
+}
+
+
+class QuestionChipWidget extends WidgetType {
+  constructor(
+    private readonly question: AppQuestion,
+    // private readonly onEdit: () => void,
+    private readonly onRemove: () => void,
+  ) {
+    super();
+  }
+
+  toDOM(): HTMLElement {
+    const chip = document.createElement('span');
+    chip.className = 'cm-question-chip';
+    // const icon = document.createElement('span');
+    // icon.className = 'cm-question-chip-icon material-symbols-outlined';
+    // icon.textContent = 'data_array';
+    const text = document.createElement('span');
+    text.className = 'cm-question-chip-text';
+    text.textContent = `[[ ${this.question.field_name} ]]`;
+    // const editButton = document.createElement('button');
+    // editButton.type = 'button';
+    // editButton.className = 'cm-variable-chip-button';
+    // editButton.title = 'Edit variable';
+    // editButton.innerHTML = `<span class="material-symbols-outlined"> edit </span>`;
+
+    // editButton.addEventListener(
+    //   'mousedown',
+    //   event => {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //   },
+    // );
+
+
+    // editButton.addEventListener(
+    //   'click',
+    //   event => {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     this.onEdit();
+    //   },
+    // );
+
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'cm-question-chip-button';
+    removeButton.title = 'Remove question';
+    removeButton.innerHTML = `<span class="material-symbols-outlined"> close </span>`;
+
+    removeButton.addEventListener(
+      'mousedown',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+    );
+
+    removeButton.addEventListener(
+      'click',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.onRemove();
+      },
+    );
+
+    // chip.appendChild(icon);
+    chip.appendChild(text);
+    // chip.appendChild(editButton);
+    chip.appendChild(removeButton);
+
+    return chip;
+  }
+
+  override eq(other: QuestionChipWidget): boolean {
+    return (
+      other instanceof QuestionChipWidget &&
+      other.question === this.question
     );
   }
 

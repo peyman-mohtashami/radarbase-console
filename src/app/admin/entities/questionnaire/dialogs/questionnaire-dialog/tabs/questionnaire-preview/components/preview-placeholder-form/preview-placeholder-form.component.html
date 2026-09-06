@@ -4,31 +4,31 @@
       <div class="flex flex-col gap-3">
         @for (variable of form; track $index) {
           <div class="mb-4">
-            <p>Name: <code class="text-secondary">{{ variable().value().name }}</code></p>
+            <p>Name: <code class="text-secondary">{{ variable.name().value() }}</code></p>
             @switch (variable.type().value()) {
               @case ('questionnaire') {
-            <p>Questionnaire ID: <code class="text-secondary">{{ variable().value().questionId }}</code></p>
-            <p>Question ID: <code class="text-secondary">{{ variable().value().questionId }}</code></p>
+            <p>Questionnaire ID: <code class="text-secondary">{{ variable.questionnaireId().value() }}</code></p>
+            <p>Question ID: <code class="text-secondary">{{ variable.questionnaire_question().value() }}</code></p>
               }
               @case ('reservedVariable') {
-            <p>Reserved Variable: <code class="text-secondary">{{ variable().value().reservedVariable }}</code></p>
+            <p>Reserved Variable: <code class="text-secondary">{{ variable.reserved_var().value() }}</code></p>
               }
               @case ('topic') {
-            <p>Topic: <code class="text-secondary">{{ variable().value().topic }}</code></p>
-            <p>Topic Variable: <code class="text-secondary">{{ variable().value().topicVariable }}</code></p>
+            <p>Topic: <code class="text-secondary">{{ variable.topic().value() }}</code></p>
+            <p>Topic Variable: <code class="text-secondary">{{ variable.topic_var().value() }}</code></p>
               }
             }
 <!--            <p>ID: <code class="text-secondary">{{ variable().value().id }}</code></p>-->
-            <p>Method: <code class="text-secondary">{{ variable().value().method }}</code></p>
+            <p>Method: <code class="text-secondary">{{ variable.method().value() }}</code></p>
             @if (variable().value().start) {
-            <p>Start: <code class="text-secondary">{{ variable().value().start }}</code></p>
+            <p>Start: <code class="text-secondary">{{ variable.start().value() }}</code></p>
             }
             @if (variable().value().end) {
-            <p>End: <code class="text-secondary">{{ variable().value().end }}</code></p>
+            <p>End: <code class="text-secondary">{{ variable.end().value() }}</code></p>
             }
-            @if (variable().value().function) {
-            <p>Function: <code class="text-secondary">{{ variable().value().function }}</code></p>
-            }
+<!--            @if (variable.function().value()) {-->
+<!--            <p>Function: <code class="text-secondary">{{ variable.function().value() }}</code></p>-->
+<!--            }-->
 
             <mat-form-field class="small-input w-full" appearance="outline">
               <input matInput [formField]="variable.value">

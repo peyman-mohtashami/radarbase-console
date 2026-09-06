@@ -31,7 +31,11 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   SearchableMultiSelectComponent
 } from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
-import {longTextField, normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
+import {
+  longTextField,
+  normalTextField,
+  requiredField,
+} from '../../../../../shared/utils/signal-form-validators';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {JsonPipe} from '@angular/common';
@@ -43,7 +47,7 @@ export interface ProjectForm {
   location: string;
   humanReadableProjectName: string,
   organizationName: string,
-  organization: string,
+  organization: OrganizationDto | null,
   projectStatus: string,
   startDate: string,
   endDate: string,
@@ -105,7 +109,7 @@ export class ProjectDialogComponent implements AfterViewInit {
     id: string;
     mode: DialogMode;
     entity?: AppProject;
-    organization: OrganizationDto;
+    organization?: OrganizationDto;
     projectFullList: AppProject[];
     organizationFullList: AppOrganization[];
     sourceTypeFullList: AppSourceType[];
@@ -122,7 +126,7 @@ export class ProjectDialogComponent implements AfterViewInit {
     projectName: this.dialogData.entity?.projectName ?? '',
     humanReadableProjectName: this.dialogData.entity?.humanReadableProjectName ?? '',
     organizationName: this.dialogData.entity?.organizationName ?? '',
-    organization: `${this.dialogData.entity?.organization.id ?? ''}`,
+    organization: this.dialogData.entity?.organization ?? this.dialogData.organization ?? null,
     projectStatus: `${this.dialogData.entity?.projectStatus ?? ''}`,
     startDate: this.dialogData.entity?.startDate ?? '',
     endDate: this.dialogData.entity?.endDate ?? '',
@@ -227,20 +231,38 @@ export class ProjectDialogComponent implements AfterViewInit {
 
   toCreateDtoModel(model: ProjectForm): CreateProjectDto {
     return {
-      ...model,
-      organization: this.organizationStore.selected()!,
+      projectName: model.projectName,
+      description: model.description,
+      location: model.location,
+      humanReadableProjectName: model.humanReadableProjectName || undefined,
+      organizationName: undefined,
+      organization: model.organization ?? this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
+      startDate: model.startDate || undefined,
+      endDate: model.endDate || undefined,
       sourceTypes: model.sourceTypes,
+      attributes: removeEmptyProperties(model.attributes),
     };
   }
 
   toUpdateDtoModel(model: ProjectForm): UpdateProjectDto {
     return {
-      ...model,
       id: Number(model.id),
-      organization: this.organizationStore.selected()!,
+      projectName: model.projectName,
+      description: model.description,
+      location: model.location,
+      humanReadableProjectName: model.humanReadableProjectName || undefined,
+      organizationName: undefined,
+      organization: model.organization ?? this.organizationStore.selected()!,
       projectStatus: toProjectStatus(this.model().projectStatus),
+      startDate: model.startDate || undefined,
+      endDate: model.endDate || undefined,
       sourceTypes: model.sourceTypes,
+      attributes: removeEmptyProperties(model.attributes),
     };
   }
+}
+
+export function removeEmptyProperties(value: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(value).filter(([, v]) => v));
 }

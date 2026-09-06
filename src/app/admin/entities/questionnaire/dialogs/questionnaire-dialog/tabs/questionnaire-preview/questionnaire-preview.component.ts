@@ -42,8 +42,6 @@ export class QuestionnairePreviewComponent implements OnInit {
 
   index = signal(-1);
 
-  // protected loading = true;
-
   leftButtonEnabled = signal(false);
   rightButtonEnabled = signal(false);
 
@@ -83,7 +81,6 @@ export class QuestionnairePreviewComponent implements OnInit {
   private async initQuestionnaire(): Promise<void> {
     // this.startTime = Date.now();
     this.questionGroups = this.groupQuestionsByMatrixGroup(this.entity.questions);
-    // this.loading = false;
     await this.startQuestionnaire();
   }
 
@@ -120,7 +117,7 @@ export class QuestionnairePreviewComponent implements OnInit {
   }
 
   async startQuestionnaire(): Promise<void> {
-    if (this.index() !== -1 || this.entity.showIntroduction === 'no') {
+    if (this.index() !== -1) {//} || this.entity.showIntroduction === 'no') {
       this.index.update(value => value + 1);
     } else {
       this.rightButtonEnabled.set(true);
@@ -140,6 +137,11 @@ export class QuestionnairePreviewComponent implements OnInit {
 
     if (this.allRequiredFieldsAnswered(this.index())) {
       const group = Array.from(this.questionGroups.values())[this.index()];
+      if (group[0].field_type === QuestionType.VARIABLE) {
+        await this.nextQuestion(this.index());
+        return;
+      }
+
       if (this.entity.autoNextEnabled && group.length === 1 && this.AUTO_NEXT_QUESTION_TYPES.includes(group[0].field_type)) {
         await this.nextQuestion(this.index());
       } else {
@@ -260,6 +262,3 @@ export class QuestionnairePreviewComponent implements OnInit {
     this.previewStore.language.set(language);
   }
 }
-
-
-

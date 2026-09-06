@@ -5,10 +5,11 @@ import {MatIcon} from '@angular/material/icon';
 import {AppQuestion, QuestionType} from '../../../../../../models/questionnaire';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {MatTooltip} from '@angular/material/tooltip';
-import {DatePipe, UpperCasePipe} from '@angular/common';
+import {DatePipe, JsonPipe, UpperCasePipe} from '@angular/common';
 import {DialogMode} from '../../../../../../../../shared/enums/dialog';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {QuestionsStore} from '../../services/questions.store';
+import {MatExpansionPanel, MatExpansionPanelHeader} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-question-button',
@@ -21,6 +22,9 @@ import {QuestionsStore} from '../../services/questions.store';
     MatTooltip,
     UpperCasePipe,
     DatePipe,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    JsonPipe,
   ],
 })
 export class QuestionButtonComponent {

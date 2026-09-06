@@ -6,7 +6,7 @@ import {AppQuestionnaire} from '../../admin/entities/questionnaire/models/questi
 import {untracked} from '@angular/core';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-20 chars. */
-export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,20}$/;
+export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,40}$/;
 /** Any characters, 1-255 chars (multiline). */
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
 export const IDENTIFIER_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,39}$/;

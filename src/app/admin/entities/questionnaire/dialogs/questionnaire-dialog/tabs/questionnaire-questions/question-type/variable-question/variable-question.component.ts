@@ -1,7 +1,6 @@
-import {Component, effect, inject, input, output, signal,} from '@angular/core';
+import {Component, computed, effect, inject, input, output, signal,} from '@angular/core';
 import {
   AppQuestion,
-  AppQuestionConditionalLogic,
   AppQuestionnaire, AppQuestionnaireLanguage,
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -17,12 +16,10 @@ import {
 import {disabled, form, FormField} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
 import {MatTooltip} from '@angular/material/tooltip';
-import {QuestionComponent} from '../../../questionnaire-preview/components/question/question.component';
-import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
-import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QUESTION_TYPES} from '../../../../services/utils';
+import {KeyValuePipe} from '@angular/common';
 
 export interface QuestionnaireVariableQuestionForm extends Record<string, unknown> {
   id: string;
@@ -55,8 +52,7 @@ export interface QuestionnaireVariableQuestionForm extends Record<string, unknow
     MatSlideToggle,
     FormField,
     MatTooltip,
-    QuestionComponent,
-    ToolbarComponent,
+    KeyValuePipe,
   ],
   templateUrl: './variable-question.component.html'
 })
@@ -110,20 +106,111 @@ export class VariableQuestionComponent {
     disabled(schema.field_type);
   });
 
+  questionnaireQuestions = computed(() => {
+    return this.store.allItems().find(quest => (quest.name === this.form.variable.questionnaireId()?.value()))?.questions;
+  });
+
   protected VARIABLE_TYPES = [
     {value: 'reserved_variables', label: 'Reserved Variables'},
     {value: 'topic', label: 'Topic'},
     {value: 'questionnaire', label: 'Questionnaire'},
   ];
-  protected RESERVED_VARS = [
-    {value: 'subjectId', label: 'Subject ID'},
-    {value: 'enrolmentDate', label: 'Enrolment Date'},
+
+  protected RESERVED_VARIABLES = [
+    {value: "enrolmentDate", label: "Enrolment Date"},
+    {value: "subjectId", label: "Subject ID"},
   ];
+
   protected METHODS = [
     {value: 'average', label: 'Average'},
-    {value: 'min', label: 'Min'},
-    {value: 'max', label: 'Max'},
+    {value: 'sum', label: 'Sum'},
+    {value: 'min', label: 'Minimum'},
+    {value: 'max', label: 'Maximum'},
+    {value: 'first', label: 'First'},
+    {value: 'last', label: 'Last'}
   ];
+
+  protected TOPICS: Record<string, {name: string; type: unknown, doc: string, default?: unknown}[]> = {
+    'questionnaire_response': [
+      { "name": "time", "type": "double", "doc": "Timestamp in UTC (s) when the questionnaire is started by the subject." },
+      { "name": "timeCompleted", "type": "double", "doc": "Timestamp in UTC (s) when the questionnaire is completed by the subject." },
+      { "name": "timeNotification", "type": ["null", "double"], "doc": "Timestamp in UTC (s) when the notification to complete the questionnaire is sent.", "default": null },
+      { "name": "name", "type": "string", "doc": "Questionnaire names." },
+      { "name": "version", "type": "string", "doc": "It reports the questionnaire version stated in the JSON specification." },
+      { "name": "answers", "type": {
+          "type": "array",
+          "items": {
+            "name": "Answer",
+            "type": "record",
+            "doc": "Questionnaire answer.",
+            "fields": [
+              { "name": "questionId", "type": ["null", "string"], "doc": "Unique identifier for the specific question.", "default": null },
+              { "name": "value", "type": ["int", "string", "double"], "doc": "Subject answer." },
+              { "name": "startTime", "type": "double", "doc": "Timestamp in UTC (s) when the question is shown." },
+              { "name": "endTime", "type": "double", "doc": "Timestamp in UTC (s)  when the question is answered." }
+            ]
+          }}, "doc": "Answers list. The answers order must follow the questions order."}
+    ],
+    'questionnaire_app_event': [
+      { "name": "time", "type": "double", "doc": "Device timestamp in UTC (s)." },
+      { "name": "eventType", "type": {
+          "name": "InteractionEventType",
+          "doc": "Interaction event types:\n- NOTIFICATION_OPEN: User taps notification to open the app\n- APP_OPEN: User opens the app directly\n- QUESTIONNAIRE_STARTED: User begins a questionnaire\n- QUESTIONNAIRE_FINISHED: User completes and submits a questionnaire\n- QUESTIONNAIRE_CANCELLED: User exits a questionnaire without submitting\n- OTHER: Event that does not match any known category\n- UNKNOWN: Event type could not be determined\n- RECORDING_STARTED: An embedded task/recording started (e.g., audio or sensor)\n- RECORDING_STOPPED: The embedded task/recording stopped normally\n- QR_CODE_SCANNED: A QR code was scanned in the app\n- RECORDING_ERROR: The embedded task/recording failed due to an error\n- HEALTHKIT_STARTED: HealthKit sync/import started\n- HEALTHKIT_FINISHED: HealthKit sync/import finished successfully\n- HEALTHKIT_ERROR: HealthKit sync/import failed\n- HEALTHKIT_RETRY: HealthKit sync/import was retried\n- HEALTHKIT_EXIT: User exited the HealthKit sync flow\n- HEALTHKIT_TIMEOUT: HealthKit sync/import timed out\n- SIGN_UP: User sign-up flow started or completed\n- SIGN_UP_FAIL: User sign-up failed validation or server-side checks\n- SIGN_UP_ERROR: Unexpected error during sign-up\n- PROTOCOL_CHANGE: Study protocol changed on device\n- APP_VERSION_CHANGE: App version changed after an update\n- TIMEZONE_CHANGE: Device timezone changed\n- CONFIG_ERROR: Client configuration error detected\n- APP_RESET: Full app reset performed\n- APP_RESET_PARTIAL: Partial app reset performed\n- NOTIFICATION_CANCELLED: Scheduled notification was cancelled\n- NOTIFICATION_REFRESHED: Notification content or schedule refreshed\n- NOTIFICATION_RESCHEDULED: Notification rescheduled\n- NOTIFICATION_TEST: Test notification event.",
+          "type": "enum",
+          "symbols": [
+            "NOTIFICATION_OPEN",
+            "APP_OPEN",
+            "QUESTIONNAIRE_STARTED",
+            "QUESTIONNAIRE_FINISHED",
+            "QUESTIONNAIRE_CANCELLED",
+            "OTHER",
+            "UNKNOWN",
+            "RECORDING_STARTED",
+            "RECORDING_STOPPED",
+            "QR_CODE_SCANNED",
+            "RECORDING_ERROR",
+            "HEALTHKIT_STARTED",
+            "HEALTHKIT_FINISHED",
+            "HEALTHKIT_ERROR",
+            "HEALTHKIT_RETRY",
+            "HEALTHKIT_EXIT",
+            "HEALTHKIT_TIMEOUT",
+            "SIGN_UP",
+            "SIGN_UP_FAIL",
+            "SIGN_UP_ERROR",
+            "PROTOCOL_CHANGE",
+            "APP_VERSION_CHANGE",
+            "TIMEZONE_CHANGE",
+            "CONFIG_ERROR",
+            "APP_RESET",
+            "APP_RESET_PARTIAL",
+            "NOTIFICATION_CANCELLED",
+            "NOTIFICATION_REFRESHED",
+            "NOTIFICATION_RESCHEDULED",
+            "NOTIFICATION_TEST"
+          ]
+        },
+        "doc": "Questionnaire app activity usage event type.",
+        "default": "UNKNOWN"
+      },
+      { "name": "questionnaireName", "type": ["null", "string"], "doc": "Name of the questionnaire.", "default": null },
+      { "name": "metadata", "type": ["null", { "type": "map", "values": ["null", "string"] }], "doc": "Event metadata.", "default": null }
+    ],
+    'connect_fitbit_skin_temperature': [
+      { "name": "time", "type": "double", "doc": "Device timestamp in UTC (s)." },
+      { "name": "timeReceived", "type": "double", "doc": "Time that the data was received from the Fitbit API (seconds since the Unix Epoch)." },
+      { "name": "relativeTemperature", "type": "float", "doc": "The user's average temperature during a period of sleep. It is displayed to the user as a delta from their baseline temperature in degrees Celsius."},
+      { "name": "logType", "type": { "name": "FitbitSkinTemperatureLogType", "type": "enum", "symbols": ["DEDICATED_TEMP_SENSOR", "OTHER_SENSORS", "UNKNOWN"], "doc": "The type of skin temperature log created."}, "doc": "The type of skin temperature log created.", "default": "UNKNOWN"}
+    ],
+    'connect_fitbit_breathing_rate': [
+      { "name": "time", "type": "double", "doc": "Device timestamp in UTC (s)." },
+      { "name": "timeReceived", "type": "double", "doc": "Time that the data was received from the Fitbit API (seconds since the Unix Epoch)." },
+      { "name": "lightSleep", "type": "float", "doc": "Average number of breaths taken per minute when the user was in light sleep."},
+      { "name": "deepSleep", "type": "float", "doc": "Average number of breaths taken per minute when the user was in deep sleep."},
+      { "name": "remSleep", "type": "float", "doc": "Average number of breaths taken per minute when the user was in rem sleep."},
+      { "name": "fullSleep", "type": "float", "doc": "Average number of breaths taken per minute throughout the entire period of sleep which you can compare to the sleep stage-specific measurements."}
+    ],
+  };
 
   constructor() {
     effect(() => {
@@ -154,20 +241,5 @@ export class VariableQuestionComponent {
       isValid: question.isValid,
     }
     return updatedQuestion;
-  }
-
-  async onAnswer(answer: AnswerWithTimeLog): Promise<void> {
-    const answers = this.previewState.answers();
-    answers[answer.id] = [answer];
-    this.previewState.answers.set({...answers});
-  }
-
-  protected updateConditionalLogic(conditionalLogic: AppQuestionConditionalLogic) {
-    this.model.update(value => {
-      return {
-        ...value,
-        conditionalLogic,
-      };
-    })
   }
 }

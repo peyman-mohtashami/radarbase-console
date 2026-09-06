@@ -26,7 +26,7 @@ export class CalculationQuestionComponent implements OnInit {
       jexl.addTransform('num', (val) => Number(val) || 0);
 
       const expression = this.question().calculation_fn;
-      const args = this.question().calculation_args?.split(',');
+      const args = this.question().calculation_args;//?.split(',');
       if (expression && args) {
         const context = args.reduce((acc: Record<string, string | null>, arg) => {
           const _arg = arg.trim();

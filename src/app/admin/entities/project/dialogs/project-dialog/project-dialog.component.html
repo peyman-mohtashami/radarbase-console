@@ -255,6 +255,10 @@
   </app-error-message-box>
 }
 
+@for (error of form().errors(); track error.kind) {
+  {{ error.message }}
+}
+
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
     {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}

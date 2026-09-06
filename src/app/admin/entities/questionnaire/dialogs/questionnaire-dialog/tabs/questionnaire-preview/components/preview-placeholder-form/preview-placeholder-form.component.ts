@@ -5,18 +5,16 @@ import {form, FormField} from '@angular/forms/signals'
 import {PreviewStore} from '../../services/preview.store';
 
 export interface VariableInputForm {
-  id: string
-  name: string
-  type: "reservedVariable" | "question" | "questionnaire" | "topic"
-  reservedVariable?: string
-  questionId?: string
-  questionnaireId?: string
-  method?: string
-  start?: string
-  end?: string
-  function?: string
-  topic?: string
-  topicVariable?: string
+  name: string;
+  type: string;
+  reserved_var: string;
+  topic: string;
+  topic_var: string;
+  questionnaireId: string;
+  questionnaire_question: string;
+  start: string;
+  end: string;
+  method: string;
   value: string;
 }
 
@@ -46,13 +44,22 @@ export class PreviewPlaceholderFormComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const variables = this.store.selected()?.variables;
+    const variables = this.store.selected()?.questions.filter(q => q.field_type === 'variable').map(q => ({name: q.field_name, ...q.variable}));
+
     const t: VariableInputForm[] = (variables ?? []).map(v => {
-      // if (v.type !== 'question') {
-        return {...v, value: ''};
-      // } else {
-      //   return null;
-      // }
+      return {
+        name: v.name,
+        type: v.type ?? '',
+        reserved_var: v.reserved_var ?? '',
+        topic: v.topic ?? '',
+        topic_var: v.topic_var ?? '',
+        questionnaireId: v.questionnaireId ?? '',
+        questionnaire_question: v.questionnaire_question ?? '',
+        start: v.start ?? '',
+        end: v.end ?? '',
+        method: v.method ?? '',
+        value: ''
+      }
     }).filter(v => !!v);
 
     this.model.set(t);

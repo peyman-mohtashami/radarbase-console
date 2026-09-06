@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, output, signal,} from '@angular/core';
+import {Component, computed, effect, inject, input, output, signal,} from '@angular/core';
 import {
   AppQuestion,
   AppQuestionConditionalLogic,
@@ -32,6 +32,9 @@ import {HtmlEditorComponent} from '../../../../../../../../../shared/components/
 import {
   QuestionConditionalLogicComponent
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
+import {
+  SearchableMultiSelectComponent
+} from '../../../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
 
 export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
   id: string;
@@ -44,7 +47,7 @@ export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
   matrix_group_name: string;
   conditionalLogic: AppQuestionConditionalLogic;
   calculation_fn: string;
-  calculation_args: string;
+  calculation_args: AppQuestion[];
   isActive: boolean;
 }
 
@@ -67,6 +70,7 @@ export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     HtmlEditorComponent,
+    SearchableMultiSelectComponent,
   ],
   templateUrl: './calc-dialog.component.html'
 })
@@ -81,6 +85,7 @@ export class CalcQuestionComponent {
   language = input.required<AppQuestionnaireLanguage>();
   answer = input.required<{ value: string}>();
 
+
   valueChange = output<AppQuestion>();
 
   _questionnaire = this.store.selected()!;
@@ -89,6 +94,9 @@ export class CalcQuestionComponent {
   _question = this.questionsStore.question()!;
   _index = this.questionsStore.index()!;
   _questions = this.store.selected()!.questions;
+
+  _questionOptions = this._questions.filter((q, i) => i < this._index);
+
 
   previewState = inject(PreviewStore);
 
@@ -104,7 +112,7 @@ export class CalcQuestionComponent {
     matrix_group_name: this._question.matrix_group_name ?? '',
     conditionalLogic: this._question.conditionalLogic ?? [],
     calculation_fn: this._question.calculation_fn ?? '',
-    calculation_args: this._question.calculation_args ?? '',
+    calculation_args: this._question.calculation_args?.map(arg => this._questions.find(question => question.field_name === arg)).filter(q => q !== undefined) ?? [],
     isActive: this._question.isActive ?? false,
   });
 
@@ -130,12 +138,12 @@ export class CalcQuestionComponent {
       jexl.addTransform('num', (val) => Number(val) || 0);
 
       const expression = value();//this.entity().calculation_fn;
-      const args = valueOf(schema.calculation_args)?.split(',');
+      const args = valueOf(schema.calculation_args);//?.split(',');
       if (expression && args) {
         const context = args.reduce((acc: Record<string, string | null>, arg) => {
           // arg can be a string, number, date, null/undefined
           const type = 'number'
-          const _arg = arg.trim();
+          const _arg = arg.field_name;//.trim();
 
           switch(type) {
             case 'number':
@@ -169,6 +177,10 @@ export class CalcQuestionComponent {
     });
   });
 
+  updatedModel = computed(() => {
+    return this.toAppQuestion(this.form().value());
+  });
+
   constructor() {
     effect(() => {
       this.valueChange.emit(this.toAppQuestion(this.form().value()));
@@ -180,6 +192,7 @@ export class CalcQuestionComponent {
     return this.normalizeQuestion({
       ...entity,
       ...model,
+      calculation_args: model.calculation_args?.map(arg => arg.field_name) ?? [],
       isValid: this.form().valid()
     });
   }

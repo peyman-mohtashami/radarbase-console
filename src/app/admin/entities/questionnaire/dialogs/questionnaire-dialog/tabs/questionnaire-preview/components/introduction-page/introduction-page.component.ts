@@ -8,7 +8,7 @@ import {ReplacePlaceholdersPipe} from '../../pipes/replace-placeholders.pipe';
 @Component({
   selector: 'app-introduction-page',
   imports: [
-    ReplacePlaceholdersPipe
+    // ReplacePlaceholdersPipe
   ],
   templateUrl: './introduction-page.component.html'
 })

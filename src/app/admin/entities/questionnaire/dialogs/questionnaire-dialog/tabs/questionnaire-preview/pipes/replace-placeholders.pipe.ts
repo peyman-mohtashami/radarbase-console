@@ -10,7 +10,8 @@ import {AppQuestionChoice, QuestionType} from '../../../../../models/questionnai
 export class ReplacePlaceholdersPipe implements PipeTransform {
   private previewState = inject(PreviewStore);
   private store = inject(QuestionnaireStore);
-  private variables = this.store.selected()?.variables;
+  private placeHolderInputs = this.previewState.variables();
+  // private variables = this.store.selected()?.variables;
 
   transform(value: string | undefined): string | undefined {
     if (value?.toString()) {
@@ -24,19 +25,23 @@ export class ReplacePlaceholdersPipe implements PipeTransform {
   }
 
   replacePlaceholders(str = ""): string {
-    const replacedVariables =  str.toString().replace(/\{\{([^{}]*)}}/g, (_, content: string) => {
-      const questionTemplateVariable = this.variables?.find(v => v.name === content);
+    // const replacedVariables =  str.toString().replace(/\{\{([^{}]*)}}/g, (_, content: string) => {
+    //   const questionTemplateVariable = this.variables?.find(v => v.name === content);
+    //
+    //   switch (questionTemplateVariable?.type) {
+    //     default: {
+    //       const variableInput = this.previewState.variables().find(v => v.name === content);
+    //       return variableInput?.value || `<span class="underline text-red-700">{{${content}}}</span>`
+    //     }
+    //   }
+    // });
 
-      switch (questionTemplateVariable?.type) {
-        default: {
-          const variableInput = this.previewState.variables().find(v => v.name === content);
-          return variableInput?.value || `<span class="underline text-red-700">{{${content}}}</span>`
-        }
-      }
-    });
-
-    return replacedVariables.toString()
+    return str.toString()
       .replace(/\[\[([^\]]*)]]/g, (_, content: string) => {
+        const questionTemplateVariable = this.placeHolderInputs?.find(v => v.name === content);
+        if (questionTemplateVariable) {
+          return questionTemplateVariable.value;
+        }
         const answer = this.getAnswer(content!);
         return answer !== null ? String(answer) : `<span class="underline text-red-700">[[${content}]]</span>`;
       });

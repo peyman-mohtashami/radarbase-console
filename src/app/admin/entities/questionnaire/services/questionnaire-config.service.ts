@@ -6,7 +6,7 @@ import {BaseConfigService} from '../../../shared/services/base-config.service';
 
 export const TableElements: TableElement[] = [
   {name: 'name', tableClass: "block", extensionClass: "hidden", sortable: true},
-  { name: 'type', width:"w-64", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
+  { name: 'type', width:"w-100", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   // { name: 'completionWindow', width: "w-32", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   { name: 'status', width: "w-16", tableClass: "hidden lg:block", extensionClass: "block lg:hidden" },
   {

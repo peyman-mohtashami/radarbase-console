@@ -1,14 +1,16 @@
 @let _prefix = 'ADMIN.questionnaire.dialog.question';
 
 <div class="flex items-center">
-  <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic.title` | translate }}</label>
+<!--  <label for="conditional-logic" class="text-sm">{{ `${_prefix}.conditionalLogic.title` | translate }}</label>-->
+  <label for="conditional-logic" class="text-sm">Conditional Logic</label>
   <button mat-icon-button color="primary" class="tiny" (click)="editConditionalLogic()" type="button">
     <mat-icon class="material-symbols-outlined text-lg!">edit</mat-icon>
   </button>
 </div>
 @if (branching_logic()) {
-  <p><code class="text-sm text-orange-500">{{ `${_prefix}.conditionalLogic.message` | translate }}
+  <p><code class="text-sm text-tertiary">{{ `${_prefix}.conditionalLogic.message` | translate }}
     : {{ branching_logic() }}</code></p>
 } @else {
-  <p><code class="text-sm text-gray-500">{{ `${_prefix}.conditionalLogic.noConditionalLogic` | translate }}</code></p>
+  <p class="text-sm">N/A</p>
+<!--  <code class="text-sm text-gray-500">{{ `${_prefix}.conditionalLogic.noConditionalLogic` | translate }}</code></p>-->
 }

@@ -6,12 +6,47 @@ import {
   ComponentRef, inject
 } from '@angular/core'
 import {AnswerWithTimeLog} from '../../models/kafka';
-import {AppQuestion, AppQuestionnaire} from '../../../../../../models/questionnaire';
-import {QUESTION_COMPONENTS} from '../question-type/question-type.registry';
+import {AppQuestion, AppQuestionnaire, QuestionType} from '../../../../../../models/questionnaire';
 import {debounceTime} from 'rxjs/operators';
 import {outputToObservable} from '@angular/core/rxjs-interop';
 import {PreviewStore} from '../../services/preview.store';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
+import { Type } from '@angular/core';
+import {RadioQuestionComponent} from '../question-type/radio-question/radio-question.component';
+import {CheckboxQuestionComponent} from '../question-type/checkbox-question/checkbox-question.component';
+import {SliderQuestionComponent} from '../question-type/slider-question/slider-question.component';
+import {RangeQuestionComponent} from '../question-type/range-question/range-question.component';
+import {YesNoQuestionComponent} from '../question-type/yesno-question/yesno-question.component';
+import {InfoQuestionComponent} from '../question-type/info-question/info-question.component';
+import {DescriptiveQuestionComponent} from '../question-type/descriptive-question/descriptive-question.component';
+import {TextQuestionComponent} from '../question-type/text-question/text-question.component';
+import {NumberQuestionComponent} from '../question-type/number-question/number-question.component';
+import {AudioQuestionComponent} from '../question-type/audio-question/audio-question.component';
+import {TimedQuestionComponent} from '../question-type/timed-question/timed-question.component';
+import {CalculationQuestionComponent} from '../question-type/calculation-question/calculation-question.component';
+import {DateQuestionComponent} from '../question-type/date-question/date-question.component';
+import {TimeQuestionComponent} from '../question-type/time-question/time-question.component';
+import {VariableQuestionComponent} from '../question-type/variable-question/variable-question.component';
+
+
+export const QUESTION_COMPONENTS: Record<string, Type<unknown>> = {
+  [QuestionType.DESCRIPTIVE]: DescriptiveQuestionComponent,
+  [QuestionType.INFO]: InfoQuestionComponent,
+  [QuestionType.RADIO]: RadioQuestionComponent,
+  [QuestionType.YESNO]: YesNoQuestionComponent,
+  [QuestionType.CHECKBOX]: CheckboxQuestionComponent,
+  [QuestionType.SLIDER]: SliderQuestionComponent,
+  [QuestionType.RANGE]: RangeQuestionComponent,
+  [QuestionType.TEXT]: TextQuestionComponent,
+  [QuestionType.NUMBER]: NumberQuestionComponent,
+  [QuestionType.DATE]: DateQuestionComponent,
+  [QuestionType.TIME]: TimeQuestionComponent,
+  [QuestionType.AUDIO]: AudioQuestionComponent,
+  [QuestionType.TIMED]: TimedQuestionComponent,
+  [QuestionType.CALC]: CalculationQuestionComponent,
+  [QuestionType.VARIABLE]: VariableQuestionComponent,
+}
+
 
 @Component({
   selector: 'app-question',

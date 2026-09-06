@@ -140,7 +140,7 @@ export interface QuestionDto {
   show_selected_label?: boolean;
   multi_line?: boolean;
   calculation_fn?: string;
-  calculation_args?: string;
+  calculation_args?: string[];
   variable?: {
     type?: string;
     reserved_var?: string;

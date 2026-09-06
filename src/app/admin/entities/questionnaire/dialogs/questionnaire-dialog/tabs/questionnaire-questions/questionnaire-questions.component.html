@@ -1,57 +1,71 @@
 @let _prefix = 'ADMIN.questionnaire.dialog';
 
-<div class="flex h-full gap-1">
-  <div class="w-1/4 p-2 h-full overflow-y-auto flex flex-col gap-2 bg-primary/5"
-       cdkScrollable
-       cdkDropList
-       id="question-types-drop-list"
-       cdkDropListSortingDisabled
-       [cdkDropListConnectedTo]="['questions-drop-list']">
-    <span class="font-bold">{{ `${_prefix}.questionTypes` | translate }}</span>
-    @for (group of QUESTION_TYPES; track $index) {
-      <div class="flex flex-col gap-2">
-        @for (type of group.types; track type.type) {
-          <button mat-stroked-button color="primary"
-                  cdkDrag
-                  [cdkDragData]="type.type"
-                  [cdkDragDisabled]="type.disabled"
-                  [class.cursor-grab]="!type.disabled"
-                  (click)="addQuestion(type.type)"
-                  [disabled]="type.disabled">
-            <span class="text-base">{{ type.label }}</span>
-          </button>
-        }
-        <div class="h-px border-b border-b-gray-300 my-4"></div>
-      </div>
-    }
+<div class="flex flex-col h-full">
+
+  <div class="flex gap-1">
+    <div class="w-60 p-2">
+      <span class="font-bold">{{ `${_prefix}.questionTypes` | translate }}</span>
+    </div>
+    <div class="grow w-3/4">
+      <span class="font-bold">{{ `${_prefix}.questions` | translate }}</span>
+    </div>
   </div>
 
-  <div class="grow w-3/4 h-full overflow-y-auto" cdkScrollable>
-    <div class="p-2 relative flex flex-col min-h-full">
-      <span class="font-bold">{{ `${_prefix}.questions` | translate }}</span>
-      <div #choicesContainer
-           cdkDropList
-           id="questions-drop-list"
-           class="relative grow min-h-32 flex flex-col gap-2"
-           (cdkDropListDropped)="onDrop($event)"
-           cdkDropListOrientation="vertical">
-        @for (question of store.selected()?.questions; track question.id; let index = $index) {
-          <div
-            cdkDrag
-            [attr.data-question-id]="question.id"
-            [cdkDragBoundary]="choicesContainer"
-            cdkDragLockAxis="y">
+  <div class="grow min-h-0 flex gap-1">
+    <div class="w-60 p-2 h-full overflow-y-auto flex flex-col gap-2 bg-primary/5"
+         cdkScrollable
+         cdkDropList
+         id="question-types-drop-list"
+         cdkDropListSortingDisabled
+         [cdkDropListConnectedTo]="['questions-drop-list']">
+      <!--    <span class="font-bold">{{ `${_prefix}.questionTypes` | translate }}</span>-->
+      @for (group of QUESTION_TYPES; track $index) {
+        <div class="flex flex-col gap-2">
+          @for (type of group.types; track type.type) {
+            <button mat-stroked-button color="primary"
+                    cdkDrag
+                    [cdkDragData]="type.type"
+                    [cdkDragDisabled]="type.disabled"
+                    [class.cursor-grab]="!type.disabled"
+                    (click)="addQuestion(type.type)"
+                    [disabled]="type.disabled">
+              <span class="text-base">{{ type.label }}</span>
+            </button>
+          }
+          <div class="h-px border-b border-b-gray-300 my-4"></div>
+        </div>
+      }
+    </div>
+
+    <div class="grow w-3/4 h-full overflow-y-auto" cdkScrollable>
+      <div class="p-2 relative flex flex-col min-h-full">
+        <!--      <span class="font-bold">{{ `${_prefix}.questions` | translate }}</span>-->
+        <div #choicesContainer
+             cdkDropList
+             id="questions-drop-list"
+             class="relative grow min-h-32 flex flex-col gap-2"
+             (cdkDropListDropped)="onDrop($event)"
+             cdkDropListOrientation="vertical">
+          @for (question of store.selected()?.questions; track question.id; let index = $index) {
+            <div
+              cdkDrag
+              [attr.data-question-id]="question.id"
+              [cdkDragBoundary]="choicesContainer"
+              cdkDragLockAxis="y">
               <app-question-button [entity]="question"
                                    [index]="$index"
                                    (removeEvent)="removeQuestion(index)"
                                    (selectEvent)="onSelectQuestion(index, question)"/>
-          </div>
-        } @empty {
-          <div class="question-drop-hint absolute inset-0 grow flex items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-neutral-500 text-sm">
-            {{ `${_prefix}.dropQuestionTypeHint` | translate }}
-          </div>
-        }
+            </div>
+          } @empty {
+            <div
+              class="question-drop-hint absolute inset-0 grow flex items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-neutral-500 text-sm">
+              {{ `${_prefix}.dropQuestionTypeHint` | translate }}
+            </div>
+          }
+        </div>
       </div>
     </div>
   </div>
+
 </div>

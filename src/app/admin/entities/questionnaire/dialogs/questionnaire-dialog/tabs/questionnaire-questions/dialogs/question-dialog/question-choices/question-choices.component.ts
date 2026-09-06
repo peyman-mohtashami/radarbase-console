@@ -24,7 +24,7 @@ import {HtmlEditorComponent} from '../../../../../../../../../../shared/componen
     MatInput,
     CdkDragHandle,
     FormField,
-    QuestionTemplateVariablesComponent,
+    // QuestionTemplateVariablesComponent,
     HtmlEditorComponent,
     // HtmlEditorComponent,
   ],

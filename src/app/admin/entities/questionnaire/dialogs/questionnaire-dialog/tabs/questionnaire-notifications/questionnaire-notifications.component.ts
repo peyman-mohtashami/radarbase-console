@@ -15,6 +15,7 @@ import {
 } from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
 import {withLanguage} from '../../services/utils';
 import {MatDivider} from '@angular/material/list';
+import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -43,6 +44,7 @@ export interface QuestionnaireNotificationsForm {
     MatError,
     QuestionTemplateVariablesComponent,
     MatDivider,
+    HtmlEditorComponent,
   ]
 })
 export class QuestionnaireNotificationsComponent {

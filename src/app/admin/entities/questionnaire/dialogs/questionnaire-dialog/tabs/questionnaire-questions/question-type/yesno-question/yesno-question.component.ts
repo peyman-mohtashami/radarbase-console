@@ -58,7 +58,7 @@ export interface QuestionnaireYesNoQuestionForm extends Record<string, unknown> 
     MatOption,
     MatSlideToggle,
     FormField,
-    QuestionChoicesComponent,
+    // QuestionChoicesComponent,
     TagComponent,
     UpperCasePipe,
     MatTooltip,

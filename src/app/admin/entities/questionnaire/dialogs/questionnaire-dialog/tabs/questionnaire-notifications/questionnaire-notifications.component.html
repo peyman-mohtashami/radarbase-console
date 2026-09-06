@@ -9,7 +9,8 @@
                [class]="form.notification.title[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.notificationTitle` | translate }}
         </label>
-        <app-question-template-variables [formField]="form.notification.title[_lang]" />
+        <app-html-editor [formField]="form.notification.title[_lang]" />
+<!--        <app-question-template-variables [formField]="form.notification.title[_lang]" />-->
       </div>
 
       <div>
@@ -17,7 +18,8 @@
                [class]="form.notification.text[_lang]().invalid() ? 'text-red-700' : ''">
           {{ `${_prefix}.notificationMessage` | translate }}
         </label>
-        <app-question-template-variables [formField]="form.notification.text[_lang]" />
+        <app-html-editor [formField]="form.notification.text[_lang]" />
+<!--        <app-question-template-variables [formField]="form.notification.text[_lang]" />-->
       </div>
     </div>
 

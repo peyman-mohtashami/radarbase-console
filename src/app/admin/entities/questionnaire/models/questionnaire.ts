@@ -104,7 +104,7 @@ export interface AppQuestion {
   show_code?: boolean;
   multi_line?: boolean;
   calculation_fn?: string;
-  calculation_args?: string;
+  calculation_args?: string[];
   variable?: {
     type?: string;
     reserved_var?: string;

@@ -15,7 +15,12 @@
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
     @case ('name') {
-      <button class="font-bold cursor-pointer" (click)="openDialog()">{{ entity()['name'] || '-' }}</button>
+      <button class="text-start font-bold cursor-pointer" (click)="openDialog()">
+        @if (entity().title?.[entity().defaultLanguage.code]) {
+          <p>{{ entity().title![entity().defaultLanguage.code]}} </p>
+        }
+        <code class="text-tertiary">{{ entity()['name'] || '-' }}</code>
+      </button>
       <div class="flex items-center flex-wrap gap-2">
         <span class="text-xs font-bold text-neutral-400 uppercase">{{`${_prefix}.availableLanguages` | translate}}</span>
         <span>

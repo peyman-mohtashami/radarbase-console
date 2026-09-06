@@ -14,14 +14,15 @@ import {withLanguage} from '../../services/utils';
 import {
   RichTextEditorComponent
 } from '../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 // import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
   description: Record<string, string>;
-  showIntroduction: string;
-  startText: Record<string, string>;
-  endText: Record<string, string>;
+  // showIntroduction: string;
+  // startText: Record<string, string>;
+  // endText: Record<string, string>;
   warningEnabled: boolean;
   warn: Record<string, string>;
 }
@@ -34,12 +35,13 @@ export interface QuestionnaireCustomMessagesForm {
     MatSlideToggle,
     MatFormField,
     MatInput,
-    MatSelect,
-    MatOption,
+    // MatSelect,
+    // MatOption,
     FormField,
     CdkTextareaAutosize,
     MatError,
-    RichTextEditorComponent,
+    // RichTextEditorComponent,
+    // HtmlEditorComponent,
     // HtmlEditorComponent,
   ]
 })
@@ -52,17 +54,17 @@ export class QuestionnaireCustomMessagesComponent {
   protected model = signal<QuestionnaireCustomMessagesForm>({//this.dialogData.restoredModel ?? {
     title: withLanguage(this._questionnaire?.title, this._lang),
     description: withLanguage(this._questionnaire?.description, this._lang),
-    showIntroduction: this._questionnaire?.showIntroduction ?? 'no',
-    startText: withLanguage(this._questionnaire?.startText, this._lang),
-    endText: withLanguage(this._questionnaire?.endText, this._lang),
+    // showIntroduction: this._questionnaire?.showIntroduction ?? 'no',
+    // startText: withLanguage(this._questionnaire?.startText, this._lang),
+    // endText: withLanguage(this._questionnaire?.endText, this._lang),
     warningEnabled: this._questionnaire?.warningEnabled ?? false,
     warn: withLanguage(this._questionnaire?.warn, this._lang),
   });
 
   protected form = form(this.model, (schema) => {
-    requiredField(schema.startText[this._lang], {when: ({valueOf}) => valueOf(schema.showIntroduction) !== 'no'});
-    validateTemplateVariables(schema.startText[this._lang], () => this.store.selected());
-    validateTemplateVariables(schema.endText[this._lang], () => this.store.selected());
+    // requiredField(schema.startText[this._lang], {when: ({valueOf}) => valueOf(schema.showIntroduction) !== 'no'});
+    // validateTemplateVariables(schema.startText[this._lang], () => this.store.selected());
+    // validateTemplateVariables(schema.endText[this._lang], () => this.store.selected());
   });
 
   constructor() {
