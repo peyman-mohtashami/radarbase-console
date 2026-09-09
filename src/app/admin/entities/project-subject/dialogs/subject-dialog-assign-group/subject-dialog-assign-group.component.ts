@@ -26,7 +26,7 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
 import {form} from '@angular/forms/signals';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 
 export interface AssignSubjectsToGroupForm {
   group: GroupDto | null,

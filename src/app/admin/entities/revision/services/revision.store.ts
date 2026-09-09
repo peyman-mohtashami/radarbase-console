@@ -98,7 +98,6 @@ export class RevisionStore {
   toAppModel(entity: RevisionDto): AppRevision {
     return {
       ...entity,
-      name: `${entity.id}`,
       search: `${entity.id}`,
     };
   }

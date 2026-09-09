@@ -1,7 +1,8 @@
 import {Component, input} from "@angular/core";
-import {AppProject, ProjectDto} from '../../../project/models/project';
+import {ProjectDto} from '../../../project/models/project';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-organization-projects',
@@ -9,10 +10,11 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   imports: [
     TagComponent,
     TranslatePipe,
+    MatButton,
   ]
 })
 export class OrganizationProjectsComponent {
-  projects = input<ProjectDto[] | AppProject[] | null>()
+  projects = input.required<ProjectDto[]>();
   organization = input<string>()
 
   showAll = false;

@@ -1,5 +1,5 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
   AppQuestionnaire, AppQuestionnaireLanguage, DEFAULT_LANGUAGE,
@@ -13,9 +13,12 @@ import {
 } from '../../../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
+import {
+  InputFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireGeneralForm {
   name: string;
@@ -42,6 +45,8 @@ export interface QuestionnaireGeneralForm {
     FormField,
     SearchableMultiSelectComponent,
     MatSlideToggle,
+    InputFormFieldComponent,
+    MatSuffix,
   ]
 })
 export class QuestionnaireGeneralComponent {

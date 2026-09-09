@@ -15,6 +15,12 @@ import {
   RichTextEditorComponent
 } from '../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
 import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 // import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireCustomMessagesForm {
@@ -40,6 +46,8 @@ export interface QuestionnaireCustomMessagesForm {
     FormField,
     CdkTextareaAutosize,
     MatError,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent,
     // RichTextEditorComponent,
     // HtmlEditorComponent,
     // HtmlEditorComponent,

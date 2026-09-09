@@ -16,14 +16,23 @@ import {MatIconButton} from '@angular/material/button';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {dragDropStyles, minuteToOffset, moveItemInFormArray, offsetToMinute} from '../../services/utils';
+import {
+  DateFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export const UNITS = [
-  { name: 'min', label: 'Minute' },
-  { name: 'hour', label: 'Hour' },
-  { name: 'day', label: 'Day' },
-  { name: 'week', label: 'Week' },
-  { name: 'month', label: 'Month' },
-  { name: 'year', label: 'Year' },
+  { value: 'min', label: 'Minute' },
+  { value: 'hour', label: 'Hour' },
+  { value: 'day', label: 'Day' },
+  { value: 'week', label: 'Week' },
+  { value: 'month', label: 'Month' },
+  { value: 'year', label: 'Year' },
 ];
 
 
@@ -66,7 +75,10 @@ export interface QuestionnaireSchedulingForm {
     CdkDropList,
     FormsModule,
     MatIcon,
-    MatIconButton
+    MatIconButton,
+    DateFormFieldComponent,
+    InputFormFieldComponent,
+    SelectFormFieldComponent
   ],
   styles: dragDropStyles
 })

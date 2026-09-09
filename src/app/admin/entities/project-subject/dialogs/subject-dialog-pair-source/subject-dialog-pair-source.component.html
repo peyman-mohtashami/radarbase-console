@@ -1,6 +1,9 @@
+@let _i18nEntity = "ADMIN.subject.pairSource";
+@let _i18nShared = "SHARED.dialog";
+
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span> {{ `ADMIN.subject.pairSource.title` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  <span> {{ `${_i18nEntity}.title` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.login ? `${dialogData.entity?.login}` : `` }}</code>
 </h2>
 
 <mat-dialog-content>
@@ -47,7 +50,7 @@
             type='button'
             class='close-button'
             (click)='close()'>
-      {{ 'ADMIN.subject.pairSource.cancel' | translate }}
+      {{ `${_i18nEntity}.cancel` | translate }}
     </button>
   </div>
   <div class='ml-auto justify-end'>
@@ -62,7 +65,7 @@
           <mat-spinner diameter='20'/>
         </mat-icon>
       }
-      {{ 'ADMIN.subject.pairSource.save' | translate }}
+      {{ `${_i18nEntity}.save` | translate }}
     </button>
   </div>
 </div>

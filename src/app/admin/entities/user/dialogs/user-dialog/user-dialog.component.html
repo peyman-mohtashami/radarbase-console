@@ -1,18 +1,20 @@
-@let _prefix = "ADMIN.user";
+@let _i18nEntity = "ADMIN.user";
+@let _i18nShared = "SHARED.dialog";
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  <span>{{ `${_i18nShared}.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_i18nEntity}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.login ? `${dialogData.entity?.login}` : `` }}</code>
 </h2>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>
-      <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY" />
+      <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>
       <div class="mt-4">
-        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.login }}</code>.</p>
-        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        <p>{{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.name` | translate }}:
+          <code class="italic text-secondary">{{ dialogData.entity?.login }}</code>.</p>
+        <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
       </div>
     </div>
   }
@@ -21,93 +23,53 @@
     <form novalidate>
 
       @if (dialogData.mode !== DialogMode.ADD) {
-        <label for="id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
-        <mat-form-field subscriptSizing="fixed" appearance='fill'>
-          <input matInput [formField]="form.id">
-        </mat-form-field>
+        <app-input-form-field [field]="form.id" [label]=`${_i18nEntity}.id` [appearance]='"fill"'/>
       }
 
-      <label for="login" class="text-sm">{{ `${_prefix}.login.label` | translate }} *</label>
-      <mat-form-field subscriptSizing="fixed" appearance='outline'>
-        <input matInput [formField]="form.login">
-        <mat-error>
-          @if (form.login().touched() && form.login().invalid()) {
-            @for (error of form.login().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.login" [label]=`${_i18nEntity}.login` [required]="true"/>
 
-      <label for="email" class="text-sm">{{ `${_prefix}.email.label` | translate }} *</label>
-      <mat-form-field subscriptSizing="fixed" [appearance]='dialogData.entity ? "fill": "outline"'>
-        <input matInput [formField]="form.email" >
-        <mat-error>
-          @if (form.email().touched() && form.email().invalid()) {
-            @for (error of form.email().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.email"
+                            [label]=`${_i18nEntity}.email`
+                            [required]="true"
+                            [appearance]='dialogData.entity ? "fill": "outline"'/>
 
       @if (!formFields || formFields['firstName'] === undefined || formFields['firstName']) {
-        <label for="firstName" class="text-sm">{{ `${_prefix}.firstName.label` | translate }}</label>
-      <mat-form-field subscriptSizing="fixed" appearance='outline'>
-        <input matInput [formField]="form.firstName">
-        <mat-error>
-          @if (form.firstName().touched() && form.firstName().invalid()) {
-            @for (error of form.firstName().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+        <app-input-form-field [field]="form.firstName" [label]="`${_i18nEntity}.firstName`"/>
       }
 
       @if (!formFields || formFields['lastName'] === undefined || formFields['lastName']) {
-        <label for="lastName" class="text-sm">{{ `${_prefix}.lastName.label` | translate }}</label>
-      <mat-form-field subscriptSizing="fixed" appearance='outline'>
-        <input matInput [formField]="form.lastName">
-        <mat-error>
-          @if (form.lastName().touched() && form.lastName().invalid()) {
-            @for (error of form.lastName().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+        <app-input-form-field [field]="form.lastName" [label]="`${_i18nEntity}.lastName`"/>
       }
 
-      <label for="_roles" class="text-sm">{{ `${_prefix}.roles.label` | translate }}</label>
+      <label for="_roles" class="text-sm">{{ `${_i18nEntity}.roles` | translate }}</label>
       <fieldset>
         <div>
-          <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._sysAdmin">
-            {{ `${_prefix}.role.sysAdmin` | translate }}
+          <mat-slide-toggle class="my-2" color="primary" [formField]="form.uiRoles._sysAdmin">
+            {{ `${_i18nEntity}.role.sysAdmin` | translate }}
           </mat-slide-toggle>
         </div>
-        @if (!model()._roles._sysAdmin) {
+        @if (!model().uiRoles._sysAdmin) {
           <div>
-            <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._organizationAdmin">
-              {{ `${_prefix}.role.organizationAdmin` | translate }}
+            <mat-slide-toggle class="my-2" color="primary" [formField]="form.uiRoles._organizationAdmin">
+              {{ `${_i18nEntity}.role.organizationAdmin` | translate }}
             </mat-slide-toggle>
           </div>
-          @if (model()._roles._organizationAdmin) {
-            <label for="organizations" class="text-sm">{{ `ADMIN.organization.title.plural` | translate }}</label>
-            <app-searchable-multi-select [formField]="form._roles._organizations"
+          @if (model().uiRoles._organizationAdmin) {
+            <app-searchable-multi-select [field]="form.uiRoles._organizations"
+                                         [label]="`ADMIN.organization.title.plural`"
                                          [labelKey]="'name'"
                                          [options]="dialogData.organizationFullList"
                                          [valueKey]="'name'"/>
           }
 
           <div>
-            <mat-slide-toggle class="my-2" color="primary" [formField]="form._roles._projectAdmin">
-              {{ `${_prefix}.role.projectAdmin` | translate }}
+            <mat-slide-toggle class="my-2" color="primary" [formField]="form.uiRoles._projectAdmin">
+              {{ `${_i18nEntity}.role.projectAdmin` | translate }}
             </mat-slide-toggle>
           </div>
-          @if (model()._roles._projectAdmin) {
-            <label for="projects" class="text-sm">{{ `ADMIN.project.title.plural` | translate }}</label>
-            <app-searchable-multi-select [formField]="form._roles._projects"
+          @if (model().uiRoles._projectAdmin) {
+            <app-searchable-multi-select [field]="form.uiRoles._projects"
+                                         [label]="`ADMIN.project.title.plural`"
                                          [labelKey]="'projectName'"
                                          [options]="dialogData.projectFullList"
                                          [valueKey]="'projectName'"/>
@@ -120,48 +82,51 @@
 
 @if (store.error()) {
   <app-error-message-box>
-    {{store.error() | json}}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
-    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    {{
+      dialogData.mode !== DialogMode.DELETE ?
+        (`${_i18nShared}.cancel` | translate) : (`${_i18nShared}.no` | translate)
+    }}
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
       <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon>
-            <mat-spinner diameter="20" />
+            <mat-spinner diameter="20"/>
           </mat-icon>
         }
 
-        {{ store.loading()
-        ? ('SHARED.dialog.deletingButton' | translate)
-        : ('SHARED.dialog.yes' | translate) }}
-<!--        @if (store.loading()) {-->
-<!--          <mat-icon><mat-spinner diameter='20' /></mat-icon>-->
-<!--          {{ 'SHARED.dialog.deletingButton' | translate }}-->
-<!--        } @else {-->
-<!--          {{ 'SHARED.dialog.yes' | translate }}-->
-<!--        }-->
+        {{
+          store.loading() ?
+            (`${_i18nShared}.deletingButton` | translate) :
+            (`${_i18nShared}.yes` | translate)
+        }}
       </button>
     }
     @case (DialogMode.EDIT) {
       <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
         }
-        {{ "SHARED.dialog.update" | translate }}
+        {{ `${_i18nShared}.update` | translate }}
       </button>
     }
     @case (DialogMode.ADD) {
       <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
         }
-        {{ "SHARED.dialog.create" | translate }}
+        {{ `${_i18nShared}.create` | translate }}
       </button>
     }
   }

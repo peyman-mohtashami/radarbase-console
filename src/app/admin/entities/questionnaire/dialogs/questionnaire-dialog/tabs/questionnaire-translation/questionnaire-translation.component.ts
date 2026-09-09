@@ -6,6 +6,9 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {requiredField, RequiredWhen} from '../../../../../../../shared/utils/signal-form-validators';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
+import {
+  TextareaFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 
 @Component({
@@ -17,6 +20,7 @@ import {QuestionnaireStore} from '../../../../services/questionnaire.store';
     MatInput,
     CdkTextareaAutosize,
     TranslatePipe,
+    TextareaFormFieldComponent,
   ]
 })
 export class QuestionnaireTranslationComponent {

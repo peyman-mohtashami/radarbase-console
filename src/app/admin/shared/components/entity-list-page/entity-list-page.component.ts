@@ -29,7 +29,8 @@ export class EntityListPageComponent {
   protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   customTemplate = input<TemplateRef<unknown>>();
-  entities = input<{name?: string; _name?: string}[]>([]);
+  // entities = input<{name?: string; _name?: string}[]>([]);
+  entities = input<any[]>([]);
   tableFields = input<TableElement[]>([]);
   entityMetadata = input.required<EntityRegistry>();
   page = input.required<PageEvent>();

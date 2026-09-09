@@ -32,25 +32,25 @@ export const TableElements: TableElement[] = [
 export const filters: FilterItem[] = [
   {
     name: 'login',
-    label: 'ADMIN.subject.login.tableLabel',
+    label: 'ADMIN.subject.login',
     placeHolder: '',
     type: FormFieldType.INPUT,
   },
   {
     name: 'externalId',
-    label: 'ADMIN.subject.externalId.tableLabel',
+    label: 'ADMIN.subject.externalId',
     placeHolder: '',
     type: FormFieldType.INPUT,
   },
   {
     name: 'personName',
-    label: 'ADMIN.subject.personName.tableLabel',
+    label: 'ADMIN.subject.personName',
     type: FormFieldType.INPUT,
   },
   {
     name: 'dateOfBirth.is',
     advanced: true,
-    label: 'ADMIN.subject.dateOfBirth.tableLabel',
+    label: 'ADMIN.subject.dateOfBirth',
     type: FormFieldType.DATEPICKER,
   },
   // {
@@ -64,7 +64,7 @@ export const filters: FilterItem[] = [
     name: '',
     advanced: true,
     names: ['enrollmentDate.from', 'enrollmentDate.to'],
-    label: 'ADMIN.subject.enrollmentDate.tableLabel',
+    label: 'ADMIN.subject.enrollmentDate',
     type: FormFieldType.RANGE_PICKER,
   },
 ]

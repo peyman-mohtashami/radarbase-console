@@ -5,7 +5,7 @@ import {
 import {AppQuestionnaire} from '../../admin/entities/questionnaire/models/questionnaire';
 import {untracked} from '@angular/core';
 
-/** Must contain at least one letter; letters/digits/_.,- and space, 2-20 chars. */
+/** Must contain at least one letter; letters/digits/_.,- and space, 2-40 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,40}$/;
 /** Any characters, 1-255 chars (multiline). */
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
@@ -20,7 +20,7 @@ export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root
 ): void {
   required(path, {
     ...options,
-    message: 'SHARED.validatorError.required',
+    message: 'ADMIN.SHARED.validatorError.required',
   });
 }
 
@@ -29,7 +29,7 @@ export function identifierField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, IDENTIFIER_PATTERN, {
-    message: 'SHARED.validatorError.identifierValidator',
+    message: 'ADMIN.SHARED.validatorError.identifierValidator',
   });
 }
 
@@ -39,7 +39,7 @@ export function normalTextField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, NORMAL_TEXT_PATTERN, {
-    message: 'SHARED.validatorError.normalTextValidator',
+    message: 'ADMIN.SHARED.validatorError.normalTextValidator',
   });
 }
 
@@ -48,7 +48,7 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, LONG_TEXT_PATTERN, {
-    message: 'SHARED.validatorError.longTextValidator',
+    message: 'ADMIN.SHARED.validatorError.longTextValidator',
   });
 }
 
@@ -64,7 +64,7 @@ export function validateTemplateVariables<TValue, TPathKind extends PathKind = P
 
     return {
       kind: 'wrongTemplateVariable',
-      message: 'SHARED.validatorError.wrongTemplateVariable',
+      message: 'ADMIN.SHARED.validatorError.wrongTemplateVariable',
     };
   });
 }
@@ -154,7 +154,7 @@ export function validateDuplicate<TValue, TPathKind extends PathKind = PathKind.
     if (item?.[field] === value()) return null;
     return {
       kind: 'duplicate',
-      message: 'SHARED.validatorError.duplicateName',
+      message: 'ADMIN.SHARED.validatorError.duplicateName',
     };
   });
 }
@@ -196,7 +196,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'minLessThanMax',
-      message: 'SHARED.validatorError.minLessThanMax',
+      message: 'ADMIN.SHARED.validatorError.minLessThanMax',
     };
   });
 }
@@ -239,7 +239,7 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'maxGreaterThanMin',
-      message: 'SHARED.validatorError.maxGreaterThanMin',
+      message: 'ADMIN.SHARED.validatorError.maxGreaterThanMin',
     };
   });
 }
@@ -261,7 +261,7 @@ export function positiveNumber<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'rangeStepPositive',
-      message: 'SHARED.validatorError.rangeStepPositive',
+      message: 'ADMIN.SHARED.validatorError.rangeStepPositive',
     };
   });
 }
@@ -285,7 +285,7 @@ export function validateRegex<TValue, TPathKind extends PathKind = PathKind.Root
     } catch (error) {
       return {
         kind: 'regexInvalid',
-        message: error instanceof Error ? error.message : 'SHARED.validatorError.regexInvalid',
+        message: error instanceof Error ? error.message : 'ADMIN.SHARED.validatorError.regexInvalid',
       };
     }
   });

@@ -31,7 +31,7 @@
     }
 
     @case('roles') {
-      <app-permission-roles [roles]="entity()._roles" [organization]="organizationName()" [project]="projectName()" />
+      <app-permission-roles [roles]="entity().uiRoles" [organization]="organizationName()" [project]="projectName()" />
     }
     @default {
       {{ $any(entity())[property.name] || '-' }}

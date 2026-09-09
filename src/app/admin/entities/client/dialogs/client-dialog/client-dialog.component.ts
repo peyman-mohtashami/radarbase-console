@@ -10,7 +10,7 @@ import {
 
 import {AppClient, ClientDto, CreateClientDto, UpdateClientDto} from "../../models/client";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatError, MatFormField, MatInput, MatSuffix} from "@angular/material/input";
+import {MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatButton} from "@angular/material/button";
@@ -27,6 +27,12 @@ import {JsonPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface ClientForm {
   clientId: string;
@@ -34,12 +40,12 @@ export interface ClientForm {
   clientSecret: string;
   scope: string;
   resourceIds: string;
-  _authorizedGrantTypes: Record<string, boolean>;
+  uiAuthorizedGrantTypes: Record<string, boolean>;
   registeredRedirectUri: string;
   autoApproveScopes: string;
   accessTokenValiditySeconds: string;
   refreshTokenValiditySeconds: string;
-  _dynamic_registration: boolean
+  uiDynamicRegistration: boolean
 }
 
 export interface StoredClientDialog {
@@ -56,9 +62,6 @@ export interface StoredClientDialog {
     TranslatePipe,
     ReactiveFormsModule,
     MatCheckbox,
-    MatFormField,
-    MatError,
-    MatInput,
     MatSlideToggle,
     MatButton,
     MatSuffix,
@@ -69,7 +72,9 @@ export interface StoredClientDialog {
     JsonPipe,
     MatIcon,
     MatProgressSpinner,
-    FormField
+    FormField,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent
   ]
 })
 export class ClientDialogComponent implements AfterViewInit {
@@ -102,22 +107,22 @@ export class ClientDialogComponent implements AfterViewInit {
     accessTokenValiditySeconds: this.dialogData.entity?.accessTokenValiditySeconds?.toString() ?? '',
     refreshTokenValiditySeconds: this.dialogData.entity?.refreshTokenValiditySeconds?.toString() ?? '',
     autoApproveScopes: this.dialogData.entity?.autoApproveScopes?.join(', ') ?? '',
-    _dynamic_registration: this.dialogData.entity?._dynamic_registration ?? false,
-    _authorizedGrantTypes: {
-      authorization_code: this.dialogData.entity?._authorizedGrantTypes?.['authorization_code'] ?? false,
-      client_credentials: this.dialogData.entity?._authorizedGrantTypes?.['client_credentials'] ?? false,
-      implicit: this.dialogData.entity?._authorizedGrantTypes?.['implicit'] ?? false,
-      password: this.dialogData.entity?._authorizedGrantTypes?.['password'] ?? false,
-      refresh_token: this.dialogData.entity?._authorizedGrantTypes?.['refresh_token'] ?? false
+    uiDynamicRegistration: this.dialogData.entity?.uiDynamicRegistration ?? false,
+    uiAuthorizedGrantTypes: {
+      authorization_code: this.dialogData.entity?.uiAuthorizedGrantTypes?.['authorization_code'] ?? false,
+      client_credentials: this.dialogData.entity?.uiAuthorizedGrantTypes?.['client_credentials'] ?? false,
+      implicit: this.dialogData.entity?.uiAuthorizedGrantTypes?.['implicit'] ?? false,
+      password: this.dialogData.entity?.uiAuthorizedGrantTypes?.['password'] ?? false,
+      refresh_token: this.dialogData.entity?.uiAuthorizedGrantTypes?.['refresh_token'] ?? false
     },
   });
 
   protected form = form(this.model, (schema) => {
     requiredField(schema.clientId);
     validate(schema.clientId, ({value}) => {
-      const matchedClient = this.dialogData.clientFullList?.find((client) => client.name === value());
+      const matchedClient = this.dialogData.clientFullList?.find((client) => client.clientId === value());
       if (!matchedClient) return null;
-      if (this.dialogData.entity?.name === value()) return null;
+      if (this.dialogData.entity?.clientId === value()) return null;
       return {
         kind: 'duplicate',
         message: 'SHARED.validatorError.duplicateName',
@@ -204,10 +209,10 @@ export class ClientDialogComponent implements AfterViewInit {
 
   private toDtoModel(model: ClientForm): ClientDto {
     return {
-      ...model,
-      additionalInformation: model._dynamic_registration ? {dynamic_registration: true} : {dynamic_registration: false},
-      authorizedGrantTypes: Object.keys(model._authorizedGrantTypes ?? {}).filter(
-        (k) => model._authorizedGrantTypes[k] ?? false
+      clientId: model.clientId,
+      clientSecret: model.clientSecret,
+      authorizedGrantTypes: Object.keys(model.uiAuthorizedGrantTypes ?? {}).filter(
+        (k) => model.uiAuthorizedGrantTypes[k] ?? false
       ),
       scope: model.scope.split(',').map((s) => s.trim()),
       resourceIds: model.resourceIds.split(',').map((s) => s.trim()),
@@ -215,6 +220,8 @@ export class ClientDialogComponent implements AfterViewInit {
       accessTokenValiditySeconds: Number(model.accessTokenValiditySeconds),
       refreshTokenValiditySeconds: Number(model.refreshTokenValiditySeconds),
       registeredRedirectUri: model.registeredRedirectUri.split(',').map((s) => s.trim()),
+      // authorities?: string[]
+      additionalInformation: model.uiDynamicRegistration ? {dynamic_registration: true} : {dynamic_registration: false},
     };
   }
 

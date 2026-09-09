@@ -7,13 +7,17 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {AppOrganization, CreateOrganizationDto, UpdateOrganizationDto} from "../../models/organization";
-import {MatError, MatFormField, MatHint, MatInput} from "@angular/material/input";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
-import {form, FormField, validate} from '@angular/forms/signals';
-import {longTextField, normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
+import {form} from '@angular/forms/signals';
+import {
+  longTextField,
+  normalTextField,
+  requiredField,
+  validateDuplicate
+} from '../../../../../shared/utils/signal-form-validators';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -22,6 +26,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {JsonPipe} from '@angular/common';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface OrganizationForm {
   id: string;
@@ -41,20 +51,16 @@ export interface StoredOrganizationDialog {
   templateUrl: './organization-dialog.component.html',
   imports: [
     MatDialogContent,
-    MatFormField,
-    MatInput,
     TranslatePipe,
-    MatHint,
-    MatError,
-    MatFormField,
     ErrorMessageBoxComponent,
     MatDialogTitle,
-    FormField,
     MatButton,
     MatIcon,
     MatProgressSpinner,
     MatDialogActions,
     JsonPipe,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent,
   ]
 })
 export class OrganizationDialogComponent implements AfterViewInit {
@@ -87,15 +93,7 @@ export class OrganizationDialogComponent implements AfterViewInit {
   protected form = form(this.model, (schema) => {
     requiredField(schema.name);
     normalTextField(schema.name);
-    validate(schema.name, ({value}) => {
-      const matchedOrganization = this.dialogData.organizationFullList?.find((organization) => organization.name === value());
-      if (!matchedOrganization) return null;
-      if (this.dialogData.entity?.name === value()) return null;
-      return {
-        kind: 'duplicate',
-        message: 'SHARED.validatorError.duplicateName',
-      };
-    });
+    validateDuplicate(schema.name, this.dialogData.organizationFullList, this.dialogData.entity, 'name');
     longTextField(schema.description);
     normalTextField(schema.location);
   });
@@ -148,23 +146,34 @@ export class OrganizationDialogComponent implements AfterViewInit {
     if (!selectedOrganization) return;
 
     const urlTree = this.router.parseUrl(this.router.url);
-    this.router.navigate(['./admin/organizations', entityName, getLastSegment(urlTree)], {queryParams: urlTree.queryParams}).then();
+    this.router.navigate(
+      [
+        './admin/organizations',
+        entityName,
+        getLastSegment(urlTree)
+      ],
+      {queryParams: urlTree.queryParams}
+    ).then();
   }
 
   navigateOnDeleteSuccess() {
-    this.router.navigate(['/admin/organizations'], { queryParamsHandling: 'preserve' }).then();
+    this.router.navigate(['/admin/organizations'], {queryParamsHandling: 'preserve'}).then();
   }
 
   toCreateDtoModel(model: OrganizationForm): CreateOrganizationDto {
     return {
-      ...model,
+      name: model.name,
+      description: model.description,
+      location: model.location,
     };
   }
 
   toUpdateDtoModel(model: OrganizationForm): UpdateOrganizationDto {
     return {
-      ...model,
       id: Number(model.id),
+      name: model.name,
+      description: model.description,
+      location: model.location,
     };
   }
 }

@@ -15,9 +15,6 @@ import {
 import {TranslatePipe} from "@ngx-translate/core";
 import {ProjectConfigService} from '../../services/project-config.service';
 import {DialogMode} from '../../../../shared/enums/dialog';
-import {MatError, MatFormField, MatHint, MatInput, MatSuffix} from '@angular/material/input';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {ActivatedRoute, Router} from '@angular/router';
@@ -30,7 +27,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {
   longTextField,
   normalTextField,
@@ -39,6 +36,18 @@ import {
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {JsonPipe} from '@angular/common';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+import {
+  DateFormFieldComponent
+} from '../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface ProjectForm {
   id: string;
@@ -67,19 +76,6 @@ export interface StoredProjectDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    MatError,
-    MatFormField,
-    MatHint,
-    MatInput,
-    MatFormField,
-    MatHint,
-    MatError,
-    MatDatepickerToggle,
-    MatDatepicker,
-    MatOption,
-    MatSelect,
-    MatDatepickerInput,
-    MatSuffix,
     ErrorMessageBoxComponent,
     MatDialogTitle,
     FormField,
@@ -89,6 +85,10 @@ export interface StoredProjectDialog {
     MatProgressSpinner,
     SearchableMultiSelectComponent,
     JsonPipe,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent,
+    DateFormFieldComponent,
+    SelectFormFieldComponent,
   ]
 })
 export class ProjectDialogComponent implements AfterViewInit {
@@ -147,9 +147,9 @@ export class ProjectDialogComponent implements AfterViewInit {
     normalTextField(schema.projectName);
     disabled(schema.projectName, {when: () => !!this.dialogData.entity});
     validate(schema.projectName, ({value}) => {
-      const matchedProject = this.dialogData.projectFullList?.find((project) => project.name === value());
+      const matchedProject = this.dialogData.projectFullList?.find((project) => project.projectName === value());
       if (!matchedProject) return null;
-      if (this.dialogData.entity?.name === value()) return null;
+      if (this.dialogData.entity?.projectName === value()) return null;
       return {
         kind: 'duplicate',
         message: 'SHARED.validatorError.duplicateName',

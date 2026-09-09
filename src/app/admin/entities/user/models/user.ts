@@ -1,5 +1,5 @@
-import {AppProject, ProjectDto} from '../../project/models/project';
-import {AppOrganization, OrganizationDto} from '../../organization/models/organization';
+import {ProjectDto} from '../../project/models/project';
+import {OrganizationDto} from '../../organization/models/organization';
 
 export interface UserDto {
   id: number;
@@ -39,7 +39,10 @@ export interface UpdateUserDto {
   roles?: RoleDto[];
 }
 
-export type AppUser = UserDto & {name: string; search: string, _roles: AppRole};
+export type AppUser = UserDto & {
+  search: string,
+  uiRoles: AppRole
+};
 
 export interface RoleDto {
   id?: number;

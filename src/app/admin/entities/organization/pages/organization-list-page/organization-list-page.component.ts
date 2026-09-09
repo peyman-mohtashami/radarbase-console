@@ -25,6 +25,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {OrganizationStore} from '../../services/organization.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
+import {ListPageHeaderComponent} from '../../../../shared/components/list-page-header/list-page-header.component';
 
 @Component({
   selector: 'app-organization-list-page',
@@ -39,6 +40,7 @@ import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.
     MatIconButton,
     PermissionDirective,
     TranslatePipe,
+    ListPageHeaderComponent,
   ]
 })
 export class OrganizationListPageComponent implements OnInit {
@@ -51,7 +53,6 @@ export class OrganizationListPageComponent implements OnInit {
   readonly dialogService = inject(OrganizationDialogService);
 
   readonly entities = this.store.items;
-  protected gridView = this.configService.getViewMode() === 'grid';
 
   readonly extensionClass = signal(getHighestPriorityClass(this.configService.getTableFields()));
 
@@ -77,8 +78,7 @@ export class OrganizationListPageComponent implements OnInit {
   }
 
   toggleViewMode() {
-    this.gridView = !this.gridView;
-    this.configService.setViewMode(this.gridView ? 'grid' : 'list');
+    this.configService.setViewMode(this.configService.getViewMode() === 'grid' ? 'list' : 'grid');
   }
 
   protected async openDialog(dialogMode: DialogMode) {

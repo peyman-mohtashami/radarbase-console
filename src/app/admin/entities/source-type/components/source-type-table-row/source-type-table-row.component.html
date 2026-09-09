@@ -11,7 +11,7 @@
 
 <ng-template #entityTemplate let-property>
   @switch (property.name) {
-    @case ('_name') {
+    @case ('producerModelVersion') {
       <a
         [routerLink]='["/admin/source-types", entity().producer, entity().model, entity().catalogVersion]'
         class="underline font-bold text-primary dark:text-primary-dark">

@@ -194,14 +194,14 @@ export class ClientStore {
   toAppModel(entity: ClientDto): AppClient {
     return {
       ...entity,
-      id: entity.clientId,
-      name: `${entity.clientId}`,
+      // id: entity.clientId,
+      // name: `${entity.clientId}`,
       search: `${entity.clientId}`,
-      _authorizedGrantTypes: entity.authorizedGrantTypes?.reduce((a: Record<string, boolean>, c: string) => {
+      uiAuthorizedGrantTypes: entity.authorizedGrantTypes?.reduce((a: Record<string, boolean>, c: string) => {
             a[c] = true;
             return a;
           }, {}),
-      _dynamic_registration: entity.additionalInformation?.['dynamic_registration'] === 'true',
+      uiDynamicRegistration: entity.additionalInformation?.['dynamic_registration'] === 'true',
     };
   }
 }

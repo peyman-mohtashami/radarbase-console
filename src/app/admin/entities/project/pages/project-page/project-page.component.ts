@@ -63,7 +63,6 @@ export class ProjectPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('Class: ProjectPageComponent, Function: ngOnDestroy, Line 66 ' , );
     this.store.selected.set(null);
   }
 }

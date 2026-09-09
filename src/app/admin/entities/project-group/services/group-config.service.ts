@@ -13,7 +13,7 @@ export const TableElements: TableElement[] = [
 export const filters: FilterItem[] = [
   {
     name: 'name',
-    label: 'ADMIN.group.name.tableLabel',
+    label: 'ADMIN.group.name',
     type: FormFieldType.INPUT,
   },
 ]

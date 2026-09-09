@@ -1,17 +1,21 @@
-@let _prefix = "ADMIN.source";
+@let _i18nEntity = "ADMIN.source";
+@let _i18nShared = "SHARED.dialog";
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  <span>{{ `${_i18nShared}.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_i18nEntity}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.sourceName ? `${dialogData.entity?.sourceName}` : `` }}</code>
 </h2>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>
       <div class="mt-4">
-        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
-        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        <p>
+          {{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.sourceName` | translate }}:
+          <code class="italic text-secondary">{{ dialogData.entity?.sourceName }}</code>.
+        </p>
+        <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
       </div>
     </div>
   }
@@ -19,69 +23,37 @@
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form novalidate>
       @if (dialogData.mode !== DialogMode.ADD) {
-        <label for="source-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
-        <mat-form-field class='w-full' subscriptSizing="fixed" appearance="fill">
-          <input id="source-id" matInput [formField]="form.id">
-        </mat-form-field>
+        <app-input-form-field [field]="form.id"
+                              [label]=`${_i18nEntity}.id`
+                              [appearance]='"fill"'/>
 
-        <label for="sourceId" class="text-sm">{{ `${_prefix}.sourceId.label` | translate }}</label>
-        <mat-form-field class='w-full' subscriptSizing="fixed" appearance="fill">
-          <input id="sourceId" matInput [formField]="form.sourceId">
-        </mat-form-field>
+        <app-input-form-field [field]="form.sourceId"
+                              [label]=`${_i18nEntity}.sourceId`
+                              [appearance]='"fill"'/>
       }
 
-      <label for="sourceName" class="text-sm">{{ `${_prefix}.sourceName.label` | translate }} *</label>
-      <mat-form-field class='w-full' subscriptSizing="fixed" appearance="outline">
-        <input id="sourceName" matInput [formField]="form.sourceName">
-          <mat-error>
-            @if (form.sourceName().touched() && form.sourceName().invalid()) {
-              @for (error of form.sourceName().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.sourceName"
+                            [label]=`${_i18nEntity}.sourceName`
+                            [required]="true"/>
 
       @if (!formFields || formFields['expectedSourceName'] === undefined || formFields['expectedSourceName']) {
-        <label for="expectedSourceName" class="text-sm">
-          {{ `${_prefix}.expectedSourceName.label` | translate }}
-        </label>
-        <mat-form-field class='w-full' subscriptSizing="fixed" appearance="outline">
-          <input id="expectedSourceName" matInput [formField]="form.expectedSourceName">
-          <mat-error>
-            @if (form.expectedSourceName().touched() && form.expectedSourceName().invalid()) {
-              @for (error of form.expectedSourceName().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+        <app-input-form-field [field]="form.expectedSourceName"
+                              [label]="`${_i18nEntity}.expectedSourceName`"/>
       }
 
-      <label for="project-id" class="text-sm">{{ `${_prefix}.sourceType.label` | translate }}</label>
-      <app-searchable-multi-select [formField]="form.sourceType"
+      <app-searchable-multi-select [field]="form.sourceType"
+                                   [label]="`${_i18nEntity}.sourceType`"
                                    [valueKey]="'id'"
                                    [labelKey]="'name'"
                                    [options]="dialogData.sourceTypeFullList"
                                    [multiple]="false"/>
 
       @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
-        <label for="attributes" class="text-sm">{{ `${_prefix}.attributes.label` | translate }}</label>
+        <label for="attributes" class="text-sm">{{ `${_i18nEntity}.attributes` | translate }}</label>
         <fieldset class="rounded-sm border p-4">
           @if (!formFields || formFields['attributes.External-identifier'] === undefined || formFields['attributes.External-identifier']) {
-            <label for="External-identifier" class="text-sm">
-              {{ `${_prefix}.attributes.External-identifier` | translate }}
-            </label>
-            <mat-form-field class='w-full' subscriptSizing="fixed" appearance='outline'>
-              <input id="External-identifier" matInput [formField]="form.attributes?.['External-identifier']" />
-              <mat-error>
-                @if (form.attributes?.['External-identifier']().touched() && form.attributes?.['External-identifier']().invalid()) {
-                  @for (error of form.attributes?.['External-identifier']().errors(); track error.kind) {
-                    {{ error.message }}
-                  }
-                }
-              </mat-error>
-            </mat-form-field>
+            <app-input-form-field [field]="form.attributes?.['External-identifier']"
+                                  [label]="`${_i18nEntity}.attributes.External-identifier`"/>
           }
         </fieldset>
       }
@@ -96,7 +68,10 @@
 }
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
-    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    {{
+      dialogData.mode !== DialogMode.DELETE ?
+        (`${_i18nShared}.cancel` | translate) : (`${_i18nShared}.no` | translate)
+    }}
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
@@ -107,15 +82,11 @@
           </mat-icon>
         }
 
-        {{ store.loading()
-        ? ('SHARED.dialog.deletingButton' | translate)
-        : ('SHARED.dialog.yes' | translate) }}
-<!--        @if (store.loading()) {-->
-<!--          <mat-icon><mat-spinner diameter='20' /></mat-icon>-->
-<!--          {{ 'SHARED.dialog.deletingButton' | translate }}-->
-<!--        } @else {-->
-<!--          {{ 'SHARED.dialog.yes' | translate }}-->
-<!--        }-->
+        {{
+          store.loading() ?
+            (`${_i18nShared}.deletingButton` | translate) :
+            (`${_i18nShared}.yes` | translate)
+        }}
       </button>
     }
     @case (DialogMode.EDIT) {
@@ -123,7 +94,7 @@
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
-        {{ "SHARED.dialog.update" | translate }}
+        {{ `${_i18nShared}.update` | translate }}
       </button>
     }
     @case (DialogMode.ADD) {
@@ -131,7 +102,7 @@
         @if (store.loading()) {
           <mat-icon><mat-spinner diameter='20' /></mat-icon>
         }
-        {{ "SHARED.dialog.create" | translate }}
+        {{ `${_i18nShared}.create` | translate }}
       </button>
     }
   }

@@ -42,3 +42,10 @@ export class OrganizationConfigService extends BaseConfigService {
   override filters = filters;
   override entityMetadata = ENTITY_REGISTRY.organization;
 }
+
+// all the settings should be here
+// icon / entity name / ...
+// fields: getDefaultFields -> get fieldsFromCOnfig => remove the fields that are removable + add extra fields if applicable ==> fields
+// tableView: getTableViewFields -> remove the fields that are removable + add extra fields if applicable ==> tableFields
+// update filters with tableFields
+

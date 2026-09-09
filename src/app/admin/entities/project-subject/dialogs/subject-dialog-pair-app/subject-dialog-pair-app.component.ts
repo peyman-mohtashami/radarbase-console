@@ -125,7 +125,7 @@ export class SubjectDialogPairAppComponent implements OnInit, AfterViewInit, OnD
 
   async generateQRCode(persistent: boolean) {
     const clientId = this.model().client;
-    const client = this.dialogData.clientFullList.find((c) => c.id === clientId);
+    const client = this.dialogData.clientFullList.find((c) => c.clientId === clientId);
     if (!client) {
       return;
     }

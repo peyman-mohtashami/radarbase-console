@@ -1,38 +1,42 @@
+@let _i18nEntity = "ADMIN.user";
+@let _i18nShared = "SHARED.dialog";
+
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span>{{ 'ADMIN.user.activate.title' | translate }}</span>
+  <span>{{ `${_i18nEntity}.activate.title` | translate }}</span>
 </h2>
 
 <mat-dialog-content>
   <div class='mb-4 text-base'>
-    <p class="mt-4">{{ 'ADMIN.user.activate.message' | translate: {user: dialogData.entity.login, email: dialogData.entity.email} }}</p>
+    <p class="mt-4">{{
+        `${_i18nEntity}.activate.message` | translate: {
+          user: dialogData.entity.login,
+          email: dialogData.entity.email
+        }
+      }}</p>
   </div>
 </mat-dialog-content>
 
 @if (store.error()) {
   <app-error-message-box>
-    {{store.error() | json}}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
-    <button (click)='close()'
-            mat-stroked-button
-            type="button">
-      {{'SHARED.dialog.cancel' | translate }}
+    <button (click)='close()' mat-stroked-button type="button">
+      {{ `${_i18nShared}.cancel` | translate }}
     </button>
   </div>
 
   <div class='ml-auto justify-end flex items-center gap-2'>
-    <button (click)='activate()'
-            [disabled]='store.loading()'
-            mat-raised-button
-            color="primary"
-            type="button">
+    <button (click)='activate()' [disabled]='store.loading()' mat-raised-button color="primary" type="button">
       @if (store.loading()) {
-        <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        <mat-icon>
+          <mat-spinner diameter='20'/>
+        </mat-icon>
       }
-      {{ "ADMIN.user.activate.send" | translate }}
+      {{ `${_i18nEntity}.activate.send` | translate }}
     </button>
   </div>
 </div>

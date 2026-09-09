@@ -4,17 +4,15 @@
             [customTemplate]="detailsTemplate" />
 
 <ng-template #detailsTemplate let-property>
-  @if (entity(); as _entity) {
   @switch (property.name) {
     @case ('sourceType') {
-      <app-source-data-source-type [sourceType]="_entity.sourceType"/>
+      <app-source-data-source-type [sourceType]="entity().sourceType"/>
     }
     @case ('processingState') {
-      <app-source-data-processing-state [processingState]="_entity.processingState"/>
+      <app-source-data-processing-state [processingState]="entity().processingState"/>
     }
     @default {
-      {{ $any(_entity)[property.name] || '-' }}
+      {{ $any(entity())[property.name] || '-' }}
     }
-  }
   }
 </ng-template>

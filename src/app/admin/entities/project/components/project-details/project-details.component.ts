@@ -22,6 +22,6 @@ import {DetailType} from '../../../../shared/enums/detail-type';
 export class ProjectDetailsComponent {
   configService = inject(ProjectConfigService);
 
-  entity = input.required<AppProject | undefined>();
+  entity = input.required<AppProject>();
   detailType = input<DetailType>();
 }

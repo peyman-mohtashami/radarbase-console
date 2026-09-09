@@ -15,8 +15,10 @@ export interface SourceDto {
   sourceTypeCatalogVersion?: string;
 }
 
-export type CreateSourceDto = Partial<Omit<SourceDto, 'id' | 'sourceTypeProducer' | 'sourceTypeModel' | 'sourceTypeCatalogVersion'>>;
+export type CreateSourceDto = Omit<SourceDto, 'id' | 'sourceTypeProducer' | 'sourceTypeModel' | 'sourceTypeCatalogVersion'>;
 
-export type UpdateSourceDto = Partial<Omit<SourceDto, 'sourceTypeProducer' | 'sourceTypeModel' | 'sourceTypeCatalogVersion'>>;
+export type UpdateSourceDto = Omit<SourceDto, 'sourceTypeProducer' | 'sourceTypeModel' | 'sourceTypeCatalogVersion'>;
 
-export type AppSource = SourceDto & {name: string; search: string};
+export type AppSource = SourceDto & {
+  search: string
+};

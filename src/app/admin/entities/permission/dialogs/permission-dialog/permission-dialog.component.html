@@ -1,75 +1,61 @@
-@let _prefix = "ADMIN.permission";
+@let _i18nEntity = "ADMIN.permission";
+@let _i18nShared = "SHARED.dialog";
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-    @if (dialogData.mode === DialogMode.ADD) {
-      <span>{{ `${_prefix}.create` | translate }}</span>
-    }
-    @if (dialogData.mode === DialogMode.DELETE) {
-      <span>{{ `${_prefix}.remove` | translate }}</span>
-    }
+  @if (dialogData.mode === DialogMode.ADD) {
+    <span>{{ `${_i18nEntity}.create` | translate }}</span>
+  }
+  @if (dialogData.mode === DialogMode.DELETE) {
+    <span>{{ `${_i18nEntity}.remove` | translate }}</span>
+  }
 </h2>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>
       <div class="mt-4">
-        <p>{{ `${_prefix}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:
+        <p>{{ `${_i18nEntity}.removeMessage` | translate }} {{ `ADMIN.user.title.singular` | translate }}:
           <strong>{{ dialogData.entity.login }}</strong>.</p>
-        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
       </div>
     </div>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
     <form novalidate>
-      <label for="email" class="text-sm">{{ `${_prefix}.search.label` | translate }} *</label>
-      <mat-form-field subscriptSizing="fixed"
-                      appearance='outline'>
-        <input matInput [formField]="form.email"/>
-        <mat-error>
-          @if (form.email().touched() && form.email().invalid()) {
-            @for (error of form.email().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.email" [label]=`${_i18nEntity}.searchByEmail` [required]="true"/>
     </form>
 
     <div>
       @if (selectedUser(); as user) {
         <div class="text-sm">
-          <div
-            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
-              {{ `ADMIN.user.login.label` | translate }}
+              {{ `ADMIN.user.login` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
               {{ user.login }}
             </span>
           </div>
-          <div
-            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
-              {{ `ADMIN.user.email.label` | translate }}
+              {{ `ADMIN.user.email` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
               {{ user.email }}
             </span>
           </div>
-          <div
-            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
-              {{ `ADMIN.user.firstName.label` | translate }}
+              {{ `ADMIN.user.firstName` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
               {{ user.firstName }}
             </span>
           </div>
-          <div
-            class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
+          <div class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'>
             <span class='shrink-0 w-full sm:w-1/4'>
-              {{ `ADMIN.user.lastName.label` | translate }}
+              {{ `ADMIN.user.lastName` | translate }}
             </span>
             <span class='grow font-bold sm:font-normal flex whitespace-pre-wrap gap-1'>
               {{ user.lastName }}
@@ -81,7 +67,7 @@
         </div>
       } @else {
         @if (form().dirty()) {
-          {{ `${_prefix}.noUserFound` | translate }}
+          {{ `${_i18nEntity}.noUserFound` | translate }}
         }
       }
     </div>
@@ -90,56 +76,81 @@
 
 @if (store.error()) {
   <app-error-message-box>
-    {{store.error() | json}}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
-    <button (click)='close()'
-            mat-stroked-button
-            color="accent"
-            type="button">
+    <button (click)='close()' mat-stroked-button color="accent" type="button">
       {{
         dialogData.mode !== DialogMode.DELETE ?
-          (`SHARED.dialog.cancel` | translate) :
-          (`SHARED.dialog.no` | translate)
+          (`${_i18nShared}.cancel` | translate) : (`${_i18nShared}.no` | translate)
       }}
     </button>
   </div>
-  <div class='ml-auto justify-end flex items-center gap-2'>
-    @if (dialogData.mode === DialogMode.DELETE) {
-      <button [disabled]='store.loading()'
-              (click)='delete()'
-              color="warn"
-              mat-raised-button
-              type="button">
-        @if (store.loading()) {
-          <ng-container>
-            <mat-icon>
-              <mat-spinner diameter='20'/>
-            </mat-icon>
-            {{ `SHARED.dialog.deletingButton` | translate }}
-          </ng-container>
-        } @else {
-          {{ `ADMIN.permission.remove` | translate }}
-        }
-      </button>
-    }
-    @if (dialogData.mode === DialogMode.ADD) {
-      <button [disabled]='!form().valid() || store.loading() || !selectedUser() || selectedUserInvalid()'
-              (click)='save()'
-              color="primary"
-              mat-raised-button
-              type="button">
+  @switch (dialogData.mode) {
+    @case (DialogMode.DELETE) {
+      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon>
-            <mat-spinner diameter='20'/>
+            <mat-spinner diameter="20" />
           </mat-icon>
         }
-        {{ `ADMIN.permission.create` | translate }}
+
+        {{
+          store.loading() ?
+            (`${_i18nShared}.deletingButton` | translate) :
+            (`${_i18nShared}.yes` | translate)
+        }}
       </button>
     }
-  </div>
+    @case (DialogMode.EDIT) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ `${_i18nShared}.update` | translate }}
+      </button>
+    }
+    @case (DialogMode.ADD) {
+      <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
+        @if (store.loading()) {
+          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+        }
+        {{ `${_i18nShared}.create` | translate }}
+      </button>
+    }
+  }
+<!--  <div class='ml-auto justify-end flex items-center gap-2'>-->
+<!--    @if (dialogData.mode === DialogMode.DELETE) {-->
+<!--      <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button type="button">-->
+<!--        @if (store.loading()) {-->
+<!--          <ng-container>-->
+<!--            <mat-icon>-->
+<!--              <mat-spinner diameter='20'/>-->
+<!--            </mat-icon>-->
+<!--            {{ `SHARED.dialog.deletingButton` | translate }}-->
+<!--          </ng-container>-->
+<!--        } @else {-->
+<!--          {{ `ADMIN.permission.remove` | translate }}-->
+<!--        }-->
+<!--      </button>-->
+<!--    }-->
+<!--    @if (dialogData.mode === DialogMode.ADD) {-->
+<!--      <button [disabled]='!form().valid() || store.loading() || !selectedUser() || selectedUserInvalid()'-->
+<!--              (click)='save()'-->
+<!--              color="primary"-->
+<!--              mat-raised-button-->
+<!--              type="button">-->
+<!--        @if (store.loading()) {-->
+<!--          <mat-icon>-->
+<!--            <mat-spinner diameter='20'/>-->
+<!--          </mat-icon>-->
+<!--        }-->
+<!--        {{ `ADMIN.permission.create` | translate }}-->
+<!--      </button>-->
+<!--    }-->
+<!--  </div>-->
 </div>

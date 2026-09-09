@@ -19,20 +19,22 @@ export interface ProjectDto {
   persistentTokenTimeout?: number;
 }
 
-export type CreateProjectDto = Partial<Omit<ProjectDto, 'id' | 'persistentTokenTimeout' | 'groups'>>;
+export type CreateProjectDto = Omit<ProjectDto, 'id' | 'persistentTokenTimeout' | 'groups'>;
 
-export type UpdateProjectDto = Partial<Omit<ProjectDto, 'persistentTokenTimeout' | 'groups'>>;
+export type UpdateProjectDto = Omit<ProjectDto, 'persistentTokenTimeout' | 'groups'>;
 
-export type AppProject = ProjectDto & {name: string; search: string};
+export type AppProject = ProjectDto & {
+  search: string
+};
 
 export const PROJECT_STATUSES = ['PLANNING', 'ONGOING', 'ENDED'] as const;
 export type ProjectStatus = typeof PROJECT_STATUSES[number];
 
-export const PROJECT_STATUS_LABELS = {
-  PLANNING: 'Planning',
-  ONGOING: 'Ongoing',
-  ENDED: 'Ended',
-} satisfies Record<ProjectStatus, string>;
+// export const PROJECT_STATUS_LABELS = {
+//   PLANNING: 'Planning',
+//   ONGOING: 'Ongoing',
+//   ENDED: 'Ended',
+// } satisfies Record<ProjectStatus, string>;
 
 const PROJECT_STATUS_SET: ReadonlySet<string> = new Set(PROJECT_STATUSES);
 

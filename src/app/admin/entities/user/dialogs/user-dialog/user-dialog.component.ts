@@ -13,8 +13,6 @@ import {
 
 import {AppUser, CreateUserDto, RoleDto, UpdateUserDto, UserDialogMode} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput} from "@angular/material/input";
-import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {UserConfigService} from '../../services/user-config.service';
 import {AppProject} from '../../../project/models/project';
@@ -36,8 +34,11 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {ROLES} from '../../../../../shared/enums/roles';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 
 export interface UserForm {
@@ -47,7 +48,7 @@ export interface UserForm {
   lastName: string;
   email: string,
   langKey: string,
-  _roles: {
+  uiRoles: {
     _sysAdmin: boolean;
     _organizationAdmin: boolean;
     _organizations: { id: number, name: string }[];
@@ -68,9 +69,6 @@ export interface StoredUserDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    MatFormField,
-    MatError,
-    MatInput,
     ErrorMessageBoxComponent,
     UserDetailsComponent,
     MatDialogTitle,
@@ -82,6 +80,7 @@ export interface StoredUserDialog {
     FormField,
     MatSlideToggle,
     SearchableMultiSelectComponent,
+    InputFormFieldComponent,
   ]
 })
 export class UserDialogComponent implements AfterViewInit {
@@ -118,12 +117,12 @@ export class UserDialogComponent implements AfterViewInit {
     lastName: this.dialogData.entity?.lastName ?? '',
     email: this.dialogData.entity?.email ?? '',
     langKey: this.dialogData.entity?.langKey ?? '',
-    _roles: {
-      _sysAdmin: this.dialogData.entity?._roles?._sysAdmin ?? false,
-      _organizationAdmin: this.dialogData.entity?._roles?._organizationAdmin ?? false,
-      _projectAdmin: this.dialogData.entity?._roles?._projectAdmin ?? false,
-      _organizations: this.dialogData.entity?._roles?._organizations ?? [],
-      _projects: this.dialogData.entity?._roles?._projects ?? [],
+    uiRoles: {
+      _sysAdmin: this.dialogData.entity?.uiRoles?._sysAdmin ?? false,
+      _organizationAdmin: this.dialogData.entity?.uiRoles?._organizationAdmin ?? false,
+      _projectAdmin: this.dialogData.entity?.uiRoles?._projectAdmin ?? false,
+      _organizations: this.dialogData.entity?.uiRoles?._organizations ?? [],
+      _projects: this.dialogData.entity?.uiRoles?._projects ?? [],
     }
   });
 
@@ -136,8 +135,8 @@ export class UserDialogComponent implements AfterViewInit {
     requiredField(schema.email);
     email(schema.email);
     disabled(schema.email, {when: () => !!this.dialogData.entity});
-    requiredField(schema._roles._organizations);
-    requiredField(schema._roles._projects);
+    requiredField(schema.uiRoles._organizations);
+    requiredField(schema.uiRoles._projects);
   });
 
   constructor() {
@@ -208,7 +207,7 @@ export class UserDialogComponent implements AfterViewInit {
       // authorities?: string[] | {
       //   name: string
       // }[]
-      roles: this.toRoleDto(model._roles)
+      roles: this.toRoleDto(model.uiRoles)
     };
   }
 
@@ -223,11 +222,11 @@ export class UserDialogComponent implements AfterViewInit {
       // authorities?: string[] | {
       //   name: string
       // }[]
-      roles: this.toRoleDto(model._roles)
+      roles: this.toRoleDto(model.uiRoles)
     };
   }
 
-  private toRoleDto(roles: UserForm['_roles'] | undefined): RoleDto[] {
+  private toRoleDto(roles: UserForm['uiRoles'] | undefined): RoleDto[] {
     if (!roles) return [];
 
     if (roles._sysAdmin) {

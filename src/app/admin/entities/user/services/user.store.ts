@@ -197,9 +197,9 @@ export class UserStore {
   toAppModel(entity: UserDto): AppUser {
     return {
       ...entity,
-      name: entity.login,
+      // name: entity.login,
       search: `${entity.login}`,
-      _roles: this.toAppRole(entity.roles),
+      uiRoles: this.toAppRole(entity.roles),
     };
   }
 

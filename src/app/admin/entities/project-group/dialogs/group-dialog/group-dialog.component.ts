@@ -15,8 +15,6 @@ import {
 
 import {AppGroup, CreateGroupDto} from "../../models/group";
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput} from "@angular/material/input";
-import {MatError} from "@angular/material/form-field";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {GroupConfigService} from '../../services/group-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
@@ -24,13 +22,16 @@ import {LocaleService} from '../../../../../core/locale/services/locale.service'
 import {Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {GroupStore} from '../../services/group.store';
-import {form, FormField} from '@angular/forms/signals';
+import {form} from '@angular/forms/signals';
 import {ProjectStore} from '../../../project/services/project.store';
 import {JsonPipe} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface GroupForm {
   id: string;
@@ -50,17 +51,14 @@ export interface StoredGroupDialog {
     MatDialogContent,
     TranslatePipe,
     ReactiveFormsModule,
-    MatFormField,
-    MatInput,
-    MatError,
     ErrorMessageBoxComponent,
     MatDialogTitle,
-    FormField,
     JsonPipe,
     MatDialogActions,
     MatIcon,
     MatProgressSpinner,
-    MatButton
+    MatButton,
+    InputFormFieldComponent
   ]
 })
 export class GroupDialogComponent implements AfterViewInit {
@@ -155,7 +153,7 @@ export class GroupDialogComponent implements AfterViewInit {
     return {
       ...model,
       projectId: this.projectStore.selected()!.id,
-      projectName: this.projectStore.selected()!.name
+      projectName: this.projectStore.selected()!.projectName
     };
   }
 

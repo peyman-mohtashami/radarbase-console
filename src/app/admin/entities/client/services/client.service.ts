@@ -3,7 +3,6 @@ import {AppClient, ClientDto, CreateClientDto, RadarPairInfo, UpdateClientDto} f
 import {environment} from '../../../../../environments/environment';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {AppSubject} from '../../project-subject/models/subject';
 
 @Injectable({providedIn: 'root'})
 export class ClientService {
@@ -27,7 +26,7 @@ export class ClientService {
   }
 
   delete(entity: AppClient) {
-    return this.http.delete<ClientDto>(`${this.apiUrl}/${entity.name}`);
+    return this.http.delete<ClientDto>(`${this.apiUrl}/${entity.clientId}`);
   }
 
   getClientPairInfo(params: HttpParams): Observable<RadarPairInfo> {

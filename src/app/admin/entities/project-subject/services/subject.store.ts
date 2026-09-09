@@ -206,7 +206,6 @@ export class SubjectStore {
   toAppModel(entity: SubjectDto): AppSubject {
     return {
       ...entity,
-      name: entity.login,
       search: `${entity.login}`,
     };
   }

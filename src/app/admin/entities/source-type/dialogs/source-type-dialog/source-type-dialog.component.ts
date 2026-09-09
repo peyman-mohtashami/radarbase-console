@@ -9,10 +9,7 @@ import {
 import {AppSourceType, CreateSourceTypeDto, toSourceTypeScope, UpdateSourceTypeDto} from "../../models/source-type";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatSelect} from '@angular/material/select';
-import {MatOption} from '@angular/material/core';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -25,6 +22,15 @@ import {longTextField, normalTextField, requiredField} from '../../../../../shar
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {JsonPipe} from '@angular/common';
 import {getLastSegment} from '../../../../shared/utils/route.util';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface SourceTypeForm {
   id: string;
@@ -52,13 +58,7 @@ export interface StoredSourceTypeDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    MatFormField,
-    MatInput,
-    MatError,
-    MatSelect,
-    MatOption,
     MatSlideToggle,
-    MatHint,
     ErrorMessageBoxComponent,
     MatDialogTitle,
     FormField,
@@ -66,7 +66,10 @@ export interface StoredSourceTypeDialog {
     MatButton,
     MatIcon,
     MatProgressSpinner,
-    JsonPipe
+    JsonPipe,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent,
+    SelectFormFieldComponent
   ]
 })
 export class SourceTypeDialogComponent implements AfterViewInit {

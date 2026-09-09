@@ -12,16 +12,12 @@ import {
 } from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput} from "@angular/material/input";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatSuffix} from "@angular/material/select";
-import {MatError} from "@angular/material/form-field";
 import {AppSubject, CreateSubjectDto, UpdateSubjectDto} from '../../models/subject';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {AppProject} from '../../../project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
-import {MatDynamicInputComponent} from '../../../../../shared/components/mat-dynamic-input/mat-dynamic-input.component';
+import {MatDynamicInputComponent} from '../../../../shared/components/app-form-fields/mat-dynamic-input/mat-dynamic-input.component';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -37,7 +33,14 @@ import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  DateFormFieldComponent
+} from '../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+import {DialogMode} from '../../../../shared/enums/dialog';
 
 export interface SubjectForm {
   id: string;
@@ -62,13 +65,6 @@ export interface StoredSubjectDialog {
   imports: [
     TranslatePipe,
     MatDialogContent,
-    MatFormField,
-    MatInput,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepicker,
-    MatError,
-    MatSuffix,
     SubjectDetailsComponent,
     MatDynamicInputComponent,
     ErrorMessageBoxComponent,
@@ -80,6 +76,8 @@ export interface StoredSubjectDialog {
     JsonPipe,
     FormField,
     SearchableMultiSelectComponent,
+    InputFormFieldComponent,
+    DateFormFieldComponent,
   ]
 })
 export class SubjectDialogComponent implements AfterViewInit {
@@ -218,4 +216,6 @@ export class SubjectDialogComponent implements AfterViewInit {
       attributes: model.attributes
     };
   }
+
+  protected readonly DialogMode = DialogMode;
 }

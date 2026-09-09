@@ -3,16 +3,16 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModul
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {MatFormField, MatHint, MatOption, MatSelect} from '@angular/material/select';
-import {Validator, ValidatorError, ValidatorHint} from '../../utils/validators';
+import {Validator, ValidatorError, ValidatorHint} from '../../../../../shared/utils/validators';
 import {TranslatePipe} from "@ngx-translate/core";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {MatError} from "@angular/material/form-field";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatInput, MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {ToDatePipe} from "../../pipes/to-date.pipe";
-import {ExtraFieldConfiguration} from '../../../core/configuration/models/custom-configuration.model';
-import {LocaleService} from '../../../core/locale/services/locale.service';
+import {ToDatePipe} from "../../../../../shared/pipes/to-date.pipe";
+import {ExtraFieldConfiguration} from '../../../../../core/configuration/models/custom-configuration.model';
+import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {AsyncPipe, DatePipe} from '@angular/common';
 
 // export interface RadarOption {

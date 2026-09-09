@@ -114,8 +114,9 @@
       <!--      <app-question-template-variables [questionIndex]="_index" [formField]="form.field_note[_lang]"/>-->
     </div>
 
-    <label for="calculation_args" class="text-sm">{{ `${_prefix}.calculationArgs` | translate }}</label>
-    <app-searchable-multi-select [formField]="form.calculation_args"
+<!--    <label for="calculation_args" class="text-sm">{{ `${_prefix}.calculationArgs` | translate }}</label>-->
+    <app-searchable-multi-select [field]="form.calculation_args"
+                                 [label]="`${_prefix}.calculationArgs`"
                                  [labelKey]="'field_name'"
                                  [options]="_questionOptions"
                                  [valueKey]="'field_name'"/>

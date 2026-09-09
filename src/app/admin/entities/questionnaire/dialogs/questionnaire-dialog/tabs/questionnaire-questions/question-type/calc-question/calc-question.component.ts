@@ -34,7 +34,7 @@ import {
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 
 export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
   id: string;

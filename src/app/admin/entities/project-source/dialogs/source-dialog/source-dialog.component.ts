@@ -13,7 +13,6 @@ import {
 } from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatError, MatFormField, MatInput} from "@angular/material/input";
 import {SourceConfigService} from '../../services/source-config.service';
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSource, CreateSourceDto, UpdateSourceDto} from '../../models/source';
@@ -25,15 +24,18 @@ import {LocaleService} from '../../../../../core/locale/services/locale.service'
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SourceStore} from '../../services/source.store';
-import {form, FormField} from '@angular/forms/signals';
+import {form} from '@angular/forms/signals';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {ProjectStore} from '../../../project/services/project.store';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface SourceForm {
   id: string;
@@ -55,19 +57,16 @@ export interface StoredSourceDialog {
   templateUrl: './source-dialog.component.html',
   imports: [
     MatDialogContent,
-    MatFormField,
     TranslatePipe,
-    MatInput,
-    MatError,
     ErrorMessageBoxComponent,
     MatDialogTitle,
-    FormField,
     MatDialogActions,
     MatIcon,
     MatProgressSpinner,
     MatButton,
     JsonPipe,
-    SearchableMultiSelectComponent
+    SearchableMultiSelectComponent,
+    InputFormFieldComponent
   ]
 })
 export class SourceDialogComponent implements AfterViewInit {

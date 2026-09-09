@@ -17,7 +17,7 @@ export const TableElements: TableElement[] = [
   {name: 'model', tableClass: "hidden", extensionClass: "hidden", editable: false},
   {name: 'catalogVersion', tableClass: "hidden", extensionClass: "hidden", editable: false},
   // { name: 'sourceTypeName', width: 'w-40', tableClass: "hidden", extensionClass: "hidden"},
-  {name: '_name', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false},
+  {name: 'producerModelVersion', tableClass: "block", extensionClass: "hidden", sortable: true, editable: false},
   {
     name: 'sourceTypeScope',
     width: 'w-28',

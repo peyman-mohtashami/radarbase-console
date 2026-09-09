@@ -61,7 +61,9 @@ export interface UpdateSubjectDto {
   attributes?: Record<string, string>;
 }
 
-export type AppSubject = SubjectDto & {name: string; search: string};
+export type AppSubject = SubjectDto & {
+  search: string
+};
 
 export enum SubjectStatus {
   DEACTIVATED = 'DEACTIVATED',

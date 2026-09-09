@@ -21,12 +21,18 @@ import {ErrorMessageBoxComponent} from '../../../../../shared/components/message
 import {ActivatedRoute} from '@angular/router';
 import {ConfigStore} from '../../services/config.store';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
-import {form, FormField} from '@angular/forms/signals';
+import {form} from '@angular/forms/signals';
 import {requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {JsonPipe} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  TextareaFormFieldComponent
+} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface ConfigForm {
   name: string;
@@ -44,18 +50,16 @@ export interface StoredConfigDialog {
   templateUrl: './config-dialog.component.html',
   imports: [
     MatDialogContent,
-    MatFormField,
     TranslatePipe,
-    MatInput,
-    CdkTextareaAutosize,
     ErrorMessageBoxComponent,
     MatDialogTitle,
-    FormField,
     JsonPipe,
     MatButton,
     MatDialogActions,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    InputFormFieldComponent,
+    TextareaFormFieldComponent
   ]
 })
 export class ConfigDialogComponent implements AfterViewInit {

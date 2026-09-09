@@ -1,88 +1,58 @@
-@let _prefix = 'ADMIN.questionnaire.dialog';
+@let _i18nEntity = 'ADMIN.questionnaire.dialog';
 
 <form novalidate class="grid grid-cols-2 gap-4">
   <div>
-<!--    <app-rich-text-editor />-->
+    <app-input-form-field [field]="form.name" [label]="`${_i18nEntity}.name`" [required]="true"/>
 
-    <div>
-      <label for="name" class="text-sm">{{ `${_prefix}.name` | translate }} *</label>
-      <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
-        <input id="name" matInput [formField]="form.name">
-        <mat-error>
-          @if (form.name().touched() && form.name().invalid()) {
-            @for (error of form.name().errors(); track error.kind) {
-              {{ error.message  | translate }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-    </div>
+    <app-searchable-multi-select [field]="form.languages"
+                                 [label]="`${_i18nEntity}.languages`"
+                                 [disabledItem]="form.defaultLanguage().value()"
+                                 [labelKey]="'label'"
+                                 [options]="ISO_LANGUAGES"
+                                 [valueKey]="'code'"
+                                 [multiple]="true"/>
 
-    <div>
-      <label for="languages" class="text-sm">{{ `${_prefix}.languages` | translate }}</label>
-      <app-searchable-multi-select [formField]="form.languages"
-                                   [disabledItem]="form.defaultLanguage().value()"
-                                   [labelKey]="'label'"
-                                   [options]="ISO_LANGUAGES"
-                                   [valueKey]="'code'"
-                                   [multiple]="true"/>
-    </div>
-
-    <div>
-      <label for="defaultLanguage" class="text-sm">{{ `${_prefix}.defaultLanguage` | translate }} *</label>
-      <app-searchable-multi-select [formField]="form.defaultLanguage"
-                                   [labelKey]="'label'"
-                                   [options]="form.languages().value()"
-                                   [valueKey]="'code'"
-                                   [multiple]="false"/>
-    </div>
+    <app-searchable-multi-select [field]="form.defaultLanguage"
+                                 [label]="`${_i18nEntity}.defaultLanguage`"
+                                 [labelKey]="'label'"
+                                 [options]="form.languages().value()"
+                                 [valueKey]="'code'"
+                                 [multiple]="false"/>
 
     <mat-slide-toggle [formField]="form.onDemand" class="my-4" color="primary">
-      {{ `${_prefix}.onDemand` | translate }}
+      {{ `${_i18nEntity}.onDemand` | translate }}
     </mat-slide-toggle>
 
-    <div>
-      <label for="estimatedCompletionTime" class="text-sm">
-        {{ `${_prefix}.estimatedCompletionTime` | translate }}
-      </label>
-      <mat-form-field class='small-input w-full' appearance='outline' subscriptSizing="fixed">
-        <input id="estimatedCompletionTime" matInput type="number" [formField]="form.estimatedCompletionTime">
-        <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-          {{ `${_prefix}.minutes` | translate }}
+    <app-input-form-field [field]="form.estimatedCompletionTime" [label]="`${_i18nEntity}.estimatedCompletionTime`">
+      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
+          {{ `${_i18nEntity}.minutes` | translate }}
         </span>
-        <mat-error>
-          @if (form.estimatedCompletionTime().touched() && form.estimatedCompletionTime().invalid()) {
-            @for (error of form.estimatedCompletionTime().errors(); track error.kind) {
-              {{ error.message  | translate }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
-    </div>
+    </app-input-form-field>
 
     <div>
       <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4" color="primary">
-        {{ `${_prefix}.autoNextQuestionEnabled` | translate }}
+        {{ `${_i18nEntity}.autoNextQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
       <mat-slide-toggle [formField]="form.previousEnabled" class="my-4" color="primary">
-        {{ `${_prefix}.previousQuestionEnabled` | translate }}
+        {{ `${_i18nEntity}.previousQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
       <mat-slide-toggle [formField]="form.editEnabled" class="my-4" color="primary">
-        {{ `${_prefix}.editQuestionEnabled` | translate }}
+        {{ `${_i18nEntity}.editQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
   </div>
+
   <!--  <div>-->
   <!--    <div class="">-->
   <!--      <div>-->
   <!--        <label for="order" class="text-sm">-->
-  <!--          {{ `${_prefix}.orderLabel` | translate }}-->
+  <!--          {{ `${_i18nEntity}.orderLabel` | translate }}-->
   <!--        </label>-->
   <!--        <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">-->
   <!--          <input id="order" matInput type="number" formControlName='order'>-->
@@ -91,19 +61,19 @@
   <!--    </div>-->
 
   <!--    <mat-slide-toggle formControlName='onDemand' class="mb-4" color="primary">-->
-  <!--      {{ `${_prefix}.onDemandLabel` | translate }}-->
+  <!--      {{ `${_i18nEntity}.onDemandLabel` | translate }}-->
   <!--    </mat-slide-toggle>-->
 
   <!--    <mat-slide-toggle formControlName='showInCalendar' class="mb-4" color="primary">-->
-  <!--      {{ `${_prefix}.showInCalendarLabel` | translate }}-->
+  <!--      {{ `${_i18nEntity}.showInCalendarLabel` | translate }}-->
   <!--    </mat-slide-toggle>-->
 
   <!--    <mat-slide-toggle formControlName='isDemo' class="mb-4 text-sm" color="primary">-->
-  <!--      {{ `${_prefix}.isDemoLabel` | translate }}-->
+  <!--      {{ `${_i18nEntity}.isDemoLabel` | translate }}-->
   <!--    </mat-slide-toggle>-->
   <!--  </div>-->
-<!--  <pre class="text-sm">-->
-<!--    {{ store.selected() | json }}-->
-<!--  </pre>-->
+  <!--  <pre class="text-sm">-->
+  <!--    {{ store.selected() | json }}-->
+  <!--  </pre>-->
   <div></div>
 </form>

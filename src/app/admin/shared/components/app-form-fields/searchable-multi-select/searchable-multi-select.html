@@ -1,0 +1,66 @@
+<div>
+  @if (label() !== null) {
+    <label for="project-name" class="text-sm">{{ label() | translate }}
+      @if (required()) {
+        *
+      }
+    </label>
+  }
+  <ng-content/>
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-select [formField]="field()"
+                [multiple]="multiple()"
+                [compareWith]="compareWith"
+                panelClass="searchable-multi-select-panel">
+      <mat-select-trigger>
+        <mat-chip-set>
+          @for (option of selectedOptions(); track trackByOption($index, option)) {
+            <mat-chip-row removable (removed)="remove(option)">
+              {{ display(option) }}
+              @if (option[valueKey()] !== disabledItem()?.[valueKey()]) {
+                <button matChipRemove
+                        type="button"
+                        (click)="$event.stopPropagation()"
+                        [disabled]="option[valueKey()] === disabledItem()?.[valueKey()]">
+                  <mat-icon class="material-symbols-outlined">cancel</mat-icon>
+                </button>
+              }
+            </mat-chip-row>
+          }
+        </mat-chip-set>
+      </mat-select-trigger>
+
+      <mat-option>
+        <ngx-mat-select-search [formControl]="searchControl"
+                               placeholderLabel="Search..."
+                               noEntriesFoundLabel="No matching options"/>
+      </mat-option>
+
+      @if (loading()) {
+        <mat-option disabled>
+          <mat-spinner diameter="24"/>
+        </mat-option>
+      } @else {
+        @if (filteredOptions().length === 0) {
+          <mat-option disabled>
+            No options found
+          </mat-option>
+        } @else {
+          @for (option of filteredOptions(); track trackByOption($index, option)) {
+            <mat-option [value]="option"
+                        [disabled]="disabledItem()?.[valueKey()] === option[valueKey()]">{{ display(option) }}
+            </mat-option>
+          }
+        }
+      }
+    </mat-select>
+    <mat-error>
+      @if (field()().touched() && field()().invalid()) {
+        @for (error of field()().errors(); track error.kind) {
+          {{ error.message | translate }}
+        }
+      }
+    </mat-error>
+
+  </mat-form-field>
+</div>

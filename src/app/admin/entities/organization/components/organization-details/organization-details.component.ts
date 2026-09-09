@@ -17,6 +17,6 @@ export class OrganizationDetailsComponent {
 
   configService = inject(OrganizationConfigService);
 
-  entity = input.required<AppOrganization | undefined>();
+  entity = input.required<AppOrganization>();
   detailType = input<DetailType>();
 }

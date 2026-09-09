@@ -5,8 +5,10 @@ export interface GroupDto {
   projectName: string;
 }
 
-export type CreateGroupDto = Partial<Omit<GroupDto, 'id'>>;
+export type CreateGroupDto = Omit<GroupDto, 'id'>;
 
 export type UpdateGroupDto = GroupDto
 
-export type AppGroup = GroupDto & {search: string};
+export type AppGroup = GroupDto & {
+  search: string
+};

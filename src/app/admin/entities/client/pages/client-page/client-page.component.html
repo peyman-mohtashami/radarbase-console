@@ -1,6 +1,8 @@
-@let entity = store.selected();
+@let _i18nEntity = `ADMIN.client`;
 
-@if (entity) {
+@let entity = store.selected()!;
+
+<!--@if (entity) {-->
   <div
     class='sticky top-0 z-30 flex flex-wrap justify-between gap-2 p-4 w-full bg-primary/10 dark:bg-primary/10'>
     <div class='flex flex-wrap gap-2 items-center'>
@@ -38,4 +40,4 @@
       <router-outlet/>
     </mat-tab-nav-panel>
   </div>
-}
+<!--}-->

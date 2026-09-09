@@ -14,11 +14,13 @@ export interface SourceDataDto {
   frequency?: string;
 }
 
-export type CreateSourceDataDto = Partial<Omit<SourceDataDto, 'id'>>;
+export type CreateSourceDataDto = Omit<SourceDataDto, 'id'>;
 
 export type UpdateSourceDataDto = SourceDataDto;
 
-export type AppSourceData = SourceDataDto & {name: string; search: string};
+export type AppSourceData = SourceDataDto & {
+  search: string
+};
 
 
 // export const ProcessingState = {

@@ -16,9 +16,9 @@ export interface SourceTypeDto {
   appProvider?: string;
 }
 
-export type CreateSourceTypeDto = Partial<Omit<SourceTypeDto, 'id' | 'sourceDataId' | 'projectId'>>;
+export type CreateSourceTypeDto = Omit<SourceTypeDto, 'id' | 'sourceDataId' | 'projectId'>;
 
-export type UpdateSourceTypeDto = Partial<Omit<SourceTypeDto, 'sourceDataId' | 'projectId'>>;
+export type UpdateSourceTypeDto = Omit<SourceTypeDto, 'sourceDataId' | 'projectId'>;
 
 export type AppSourceType = SourceTypeDto & {search: string};
 

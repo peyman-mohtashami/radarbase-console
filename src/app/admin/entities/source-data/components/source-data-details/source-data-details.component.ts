@@ -20,6 +20,6 @@ import {DetailType} from '../../../../shared/enums/detail-type';
 export class SourceDataDetailsComponent {
   configService = inject(SourceDataConfigService);
 
-  entity = input.required<AppSourceData | undefined>();
+  entity = input.required<AppSourceData>();
   detailType = input<DetailType>();
 }

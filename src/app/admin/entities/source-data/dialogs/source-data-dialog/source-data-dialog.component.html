@@ -1,170 +1,120 @@
-@let _prefix = "ADMIN.sourceData";
+@let _i18nEntity = "ADMIN.sourceData";
+@let _i18nShared = "SHARED.dialog";
 
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-  <span> {{ `${_prefix}.title.singular` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  <span>{{ `${_i18nShared}.${dialogData.mode}` | translate }}</span>
+  <span> {{ `${_i18nEntity}.title.singular` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.sourceDataName ? `${dialogData.entity?.sourceDataName}` : `` }}</code>
 </h2>
 
 <mat-dialog-content>
   @if (dialogData.mode === DialogMode.DELETE) {
     <div class='mb-4 text-base'>
       <div class="mt-4">
-        <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
-        <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+        <p>
+          {{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.sourceDataName` | translate }}:
+          <code class="italic text-secondary">{{ dialogData.entity?.sourceDataName }}</code>. </p>
+        <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
       </div>
     </div>
   }
 
   @if (dialogData.mode === DialogMode.ADD || dialogData.mode === DialogMode.EDIT) {
-    <form novalidate autocomplete="off">
+    <form novalidate>
       @if (dialogData.mode !== DialogMode.ADD) {
-        <label for="source-data-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
-        <mat-form-field subscriptSizing="fixed" appearance="fill">
-          <input id="source-data-id" matInput [formField]="form.id">
-        </mat-form-field>
+        <app-input-form-field [field]="form.id" [label]=`${_i18nEntity}.id` [appearance]='"fill"'/>
       }
 
-      <label for="source-data-type" class="text-sm">{{ `${_prefix}.sourceDataType.label` | translate  }} *</label>
-      <mat-form-field subscriptSizing="fixed" appearance="outline">
-        <input matInput [formField]="form.sourceDataType" id="source-data-type"
-               autocomplete="off" data-lpignore="true">
-        <mat-error>
-          @if (form.sourceDataType().touched() && form.sourceDataType().invalid()) {
-            @for (error of form.sourceDataType().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.sourceDataType"
+                            [label]=`${_i18nEntity}.sourceDataType`
+                            [required]="true"/>
 
-      <label for="sourcetype" class="text-sm">{{ `${_prefix}.sourceType.label` | translate }}</label>
-      <app-searchable-multi-select [formField]="form.sourceType"
+      <app-searchable-multi-select [field]="form.sourceType"
+                                   [label]="`${_i18nEntity}.sourceType`"
                                    [valueKey]="'id'"
                                    [labelKey]="'name'"
                                    [options]="dialogData.sourceTypeFullList"
                                    [multiple]="false"/>
 
-      <label for="source-data-name" class="text-sm">{{ `${_prefix}.sourceDataName.label` | translate  }} *</label>
-      <mat-form-field subscriptSizing="fixed" appearance="outline">
-        <input matInput [formField]="form.sourceDataName" id="source-data-name"
-               autocomplete="off" data-lpignore="true">
-        <mat-error>
-          @if (form.sourceDataName().touched() && form.sourceDataName().invalid()) {
-            @for (error of form.sourceDataName().errors(); track error.kind) {
-              {{ error.message }}
-            }
-          }
-        </mat-error>
-      </mat-form-field>
+      <app-input-form-field [field]="form.sourceDataName"
+                            [label]=`${_i18nEntity}.sourceDataName`
+                            [required]="true"/>
 
       @if (!formFields || formFields['processingState'] === undefined || formFields['processingState']) {
-        <label for="processing-state" class="text-sm">
-          {{ `${_prefix}.processingState.label` | translate  }}
-        </label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <mat-select [formField]="form.processingState">
-            @for (state of PROCESSING_STATE; track state) {
-              <mat-option [value]='state'>
-                {{ `${_prefix}.processingState.${state}` | translate }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+        <app-select-form-field [field]="form.processingState"
+                               [label]=`${_i18nEntity}.processingState`
+                               [options]="PROCESSING_STATE.map((state) => ({ value: state, label: `${_i18nEntity}.processingState.${state}` }))"/><!--        <label for="processing-state" class="text-sm">-->
       }
 
-<!--      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {-->
-        <label for="topic" class="text-sm">{{ `${_prefix}.topic.label` | translate  }}</label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <input matInput [formField]="form.topic" id="topic"
-                 autocomplete="off" data-lpignore="true">
-        </mat-form-field>
-<!--      }-->
+      <!--      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {-->
+      <app-input-form-field [field]="form.topic" [label]="`${_i18nEntity}.topic`"/>
+      <!--      }-->
 
-<!--      @if (!formFields || formFields['keySchema'] === undefined || formFields['keySchema']) {-->
-        <label for="key-schema" class="text-sm">
-          {{ `${_prefix}.keySchema.label` | translate }}
-        </label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <input matInput [formField]="form.keySchema" id="key-schema"
-                 autocomplete="off" data-lpignore="true">
-        </mat-form-field>
-<!--      }-->
+      <!--      @if (!formFields || formFields['keySchema'] === undefined || formFields['keySchema']) {-->
+      <app-input-form-field [field]="form.keySchema" [label]="`${_i18nEntity}.keySchema`"/>
+      <!--      }-->
 
-<!--      @if (!formFields || formFields['valueSchema'] === undefined || formFields['valueSchema']) {-->
-        <label for="value-schema" class="text-sm">
-          {{ `${_prefix}.valueSchema.label` | translate  }}
-        </label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <input matInput [formField]="form.valueSchema" id="value-schema"
-                 autocomplete="off" data-lpignore="true">
-        </mat-form-field>
-<!--      }-->
+      <!--      @if (!formFields || formFields['valueSchema'] === undefined || formFields['valueSchema']) {-->
+      <app-input-form-field [field]="form.valueSchema" [label]="`${_i18nEntity}.valueSchema`"/>
+      <!--      }-->
 
-<!--      @if (!formFields || formFields['frequency'] === undefined || formFields['frequency']) {-->
-        <label for="frequency" class="text-sm">
-          {{ `${_prefix}.frequency.label` | translate }}
-        </label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <input matInput [formField]="form.frequency" id="frequency"
-                 autocomplete="off" data-lpignore="true">
-        </mat-form-field>
-<!--      }-->
+      <!--      @if (!formFields || formFields['frequency'] === undefined || formFields['frequency']) {-->
+      <app-input-form-field [field]="form.frequency" [label]="`${_i18nEntity}.frequency`"/>
+      <!--      }-->
 
-<!--      @if (!formFields || formFields['unit'] === undefined || formFields['unit']) {-->
-        <label for="unit" class="text-sm">{{ `${_prefix}.unit.label` | translate  }}</label>
-        <mat-form-field subscriptSizing="fixed" appearance="outline">
-          <input matInput [formField]="form.unit" id="unit"
-                 autocomplete="off" data-lpignore="true">
-        </mat-form-field>
-<!--      }-->
+      <!--      @if (!formFields || formFields['unit'] === undefined || formFields['unit']) {-->
+      <app-input-form-field [field]="form.unit" [label]="`${_i18nEntity}.unit`"/>
+      <!--      }-->
     </form>
   }
 </mat-dialog-content>
 
 @if (store.error()) {
   <app-error-message-box>
-    {{store.error() | json}}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">
-    {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+    {{
+      dialogData.mode !== DialogMode.DELETE ?
+        (`${_i18nShared}.cancel` | translate) : (`${_i18nShared}.no` | translate)
+    }}
   </button>
   @switch (dialogData.mode) {
     @case (DialogMode.DELETE) {
       <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
         @if (store.loading()) {
           <mat-icon>
-            <mat-spinner diameter="20" />
+            <mat-spinner diameter="20"/>
           </mat-icon>
         }
 
-        {{ store.loading()
-        ? ('SHARED.dialog.deletingButton' | translate)
-        : ('SHARED.dialog.yes' | translate) }}
-<!--        @if (store.loading()) {-->
-<!--          <mat-icon><mat-spinner diameter='20' /></mat-icon>-->
-<!--          {{ 'SHARED.dialog.deletingButton' | translate }}-->
-<!--        } @else {-->
-<!--          {{ 'SHARED.dialog.yes' | translate }}-->
-<!--        }-->
+        {{
+          store.loading() ?
+            (`${_i18nShared}.deletingButton` | translate) :
+            (`${_i18nShared}.yes` | translate)
+        }}
       </button>
     }
     @case (DialogMode.EDIT) {
       <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
         @if (store.loading()) {
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
         }
-        {{ "SHARED.dialog.update" | translate }}
+        {{ `${_i18nShared}.update` | translate }}
       </button>
     }
     @case (DialogMode.ADD) {
       <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
         @if (store.loading()) {
-          <mat-icon><mat-spinner diameter='20' /></mat-icon>
+          <mat-icon>
+            <mat-spinner diameter='20'/>
+          </mat-icon>
         }
-        {{ "SHARED.dialog.create" | translate }}
+        {{ `${_i18nShared}.create` | translate }}
       </button>
     }
   }

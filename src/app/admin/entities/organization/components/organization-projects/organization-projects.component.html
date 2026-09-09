@@ -1,27 +1,24 @@
-@let _projects = projects();
+<div class="flex items-center flex-wrap gap-2 mt-1">
+  @for (project of showAll ? projects() : projects().slice(0, 5); track project.projectName) {
+    <app-tag class="bg-primary/10"
+             [link]="['/admin/organizations', organization(), 'projects', project.projectName]"
+             (click)="$event.stopPropagation()">
+      {{ project.projectName }}
+    </app-tag>
+  } @empty {
+    -
+  }
 
-@if (_projects && _projects?.length) {
-  <div class="flex items-center flex-wrap gap-2 mt-1">
-    @for (project of showAll ? _projects : _projects?.slice(0, 5); track project.projectName) {
-      <app-tag class="bg-primary/10 dark:text-primary-dark"
-              [link]="['/admin/organizations', organization(), 'projects', project['projectName']]" (click)="$event.stopPropagation()">
-        {{project["projectName"]}}
-      </app-tag>
-    }
-
-    @if (_projects.length > 5) {
-      @if (!showAll) {
+  @if (projects().length > 5) {
+    @if (!showAll) {
       <span>...</span>
-      }
-      <app-tag class="border dark:bg-black dark:text-primary-dark" (click)="toggleView($event, showAll)" style="cursor: pointer;">
-        @if (!showAll) {
-          {{ 'ADMIN.organization.viewAll' | translate: {count: _projects.length} }}
-        } @else {
-          {{ 'ADMIN.organization.viewLess' | translate}}
-        }
-      </app-tag>
     }
-  </div>
-} @else {
-  -
-}
+    <button mat-stroked-button class="app-button-small" color="tertiary" (click)="toggleView($event, showAll)">
+      @if (!showAll) {
+        {{ 'ADMIN.organization.viewAll' | translate: {count: projects().length} }}
+      } @else {
+        {{ 'ADMIN.organization.viewLess' | translate }}
+      }
+    </button>
+  }
+</div>

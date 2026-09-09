@@ -11,7 +11,7 @@
       <app-local-date [date]="entity()['timestamp']" [format]="'medium'"/>
     }
     @case ('data') {
-      <pre class="inline-block w-full overflow-x-auto whitespace-pre-wrap break-words">
+      <pre class="inline-block w-full overflow-x-auto whitespace-pre-wrap wrap-break-word">
         {{ (entity().data | json) || '-' }}
       </pre>
     }

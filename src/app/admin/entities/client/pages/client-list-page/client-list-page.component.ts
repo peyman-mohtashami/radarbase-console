@@ -20,6 +20,7 @@ import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {ClientStore} from '../../services/client.store';
+import {ListPageHeaderComponent} from '../../../../shared/components/list-page-header/list-page-header.component';
 
 @Component({
   selector: 'app-client-list-page',
@@ -33,6 +34,7 @@ import {ClientStore} from '../../services/client.store';
     MatIcon,
     PermissionDirective,
     TranslatePipe,
+    ListPageHeaderComponent,
   ]
 })
 export class ClientListPageComponent implements OnInit {
@@ -45,7 +47,7 @@ export class ClientListPageComponent implements OnInit {
   readonly dialogService = inject(ClientDialogService);
 
   readonly entities = this.store.items;
-  protected gridView = this.configService.getViewMode() === 'grid';
+  // protected gridView = this.configService.getViewMode() === 'grid';
 
   readonly extensionClass = signal(getHighestPriorityClass(this.configService.getTableFields()));
 

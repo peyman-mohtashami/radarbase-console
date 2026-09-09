@@ -16,10 +16,7 @@ import {
   toProcessingState,
   UpdateSourceDataDto
 } from "../../models/source-data";
-import {MatOption} from "@angular/material/core";
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatSelect} from '@angular/material/select';
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
@@ -29,7 +26,7 @@ import {LocaleService} from '../../../../../core/locale/services/locale.service'
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SourceDataStore} from '../../services/source-data.store';
-import {form, FormField} from '@angular/forms/signals';
+import {form} from '@angular/forms/signals';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatButton} from '@angular/material/button';
@@ -37,7 +34,13 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/searchable-multi-select/searchable-multi-select';
+} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface SourceDataForm {
   id: string;
@@ -63,12 +66,7 @@ export interface StoredSourceDataDialog {
   templateUrl: './source-data-dialog.component.html',
   imports: [
     MatDialogContent,
-    MatFormField,
     TranslatePipe,
-    MatInput,
-    MatSelect,
-    MatOption,
-    MatError,
     ErrorMessageBoxComponent,
     MatDialogTitle,
     MatDialogActions,
@@ -76,8 +74,9 @@ export interface StoredSourceDataDialog {
     MatIcon,
     MatProgressSpinner,
     MatButton,
-    FormField,
     SearchableMultiSelectComponent,
+    InputFormFieldComponent,
+    SelectFormFieldComponent,
   ]
 })
 export class SourceDataDialogComponent implements AfterViewInit {

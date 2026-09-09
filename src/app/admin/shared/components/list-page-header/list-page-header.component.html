@@ -1,0 +1,12 @@
+@let _entityMetadata = entityMetadata();
+@let _i18nEntity = `ADMIN.${_entityMetadata.name}`;
+
+<h2 class='flex items-center gap-2 m-0 text-lg font-bold'>
+    <span class="p-2 w-10! h-10! rounded-full bg-primary font-bold text-on-primary relative">
+      <mat-icon class="absolute left-1 top-1 opacity-50">{{ _entityMetadata.icon }}</mat-icon>
+      <mat-icon class="absolute left-2 top-2">{{ _entityMetadata.icon }}</mat-icon>
+    </span>
+  <span class="dark:text-primary-dark">
+      {{ `${_i18nEntity}.title.plural` | translate }}
+    </span>
+</h2>

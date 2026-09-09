@@ -3,4 +3,6 @@ export interface LogDto {
   level: string;
 }
 
-export type AppLog = LogDto & {name: string; search: string};
+export type AppLog = LogDto & {
+  search: string
+};

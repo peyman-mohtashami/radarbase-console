@@ -8,8 +8,10 @@ export interface OrganizationDto {
   projects?: ProjectDto[];
 }
 
-export type CreateOrganizationDto = Partial<Omit<OrganizationDto, 'id' | 'projects'>>;
+export type CreateOrganizationDto = Omit<OrganizationDto, 'id' | 'projects'>;
 
-export type UpdateOrganizationDto = Partial<Omit<OrganizationDto, 'projects'>>;
+export type UpdateOrganizationDto = Omit<OrganizationDto, 'projects'>;
 
-export type AppOrganization = OrganizationDto & {search: string};
+export type AppOrganization = OrganizationDto & {
+  search: string
+};

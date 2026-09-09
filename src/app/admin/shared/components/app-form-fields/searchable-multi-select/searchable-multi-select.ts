@@ -15,6 +15,7 @@ import {
   FormField,
 } from '@angular/forms/signals';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-searchable-multi-select',
@@ -27,26 +28,19 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatProgressSpinnerModule,
     NgxMatSelectSearchModule,
     FormField,
+    TranslatePipe,
   ],
   templateUrl: './searchable-multi-select.html',
 })
 export class SearchableMultiSelectComponent<T extends object> {
-
-  readonly formField = input.required<Field<any>>();
-
+  readonly label = input.required<string | null>();
+  readonly field = input.required<Field<any>>();
   readonly options = input.required<T[]>();
-
   readonly valueKey = input.required<keyof T>();
   readonly labelKey = input.required<keyof T>();
 
-
-  readonly label = input<string>('');
-
-
-  readonly placeholder = input<string>(
-    'Select'
-  );
-
+  readonly required = input(false);
+  readonly placeholder = input<string>('Select');
   readonly multiple = input<boolean>(true);
   readonly disabled = input<boolean>(false);
   readonly loading = input<boolean>(false);
@@ -83,7 +77,7 @@ export class SearchableMultiSelectComponent<T extends object> {
     });
   });
 
-  readonly selectedValues = computed<T[]>(() => this.toArray(this.formField()().value()));
+  readonly selectedValues = computed<T[]>(() => this.toArray(this.field()().value()));
 
   readonly selectedOptions = computed<T[]>(() => {
     const valueKey = this.valueKey();
@@ -119,7 +113,7 @@ export class SearchableMultiSelectComponent<T extends object> {
 
   remove(option: T): void {
 
-    const field = this.formField()();
+    const field = this.field()();
     const valueKey = this.valueKey();
 
     if (!this.multiple()) {

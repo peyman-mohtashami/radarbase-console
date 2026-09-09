@@ -28,7 +28,7 @@
     }
     @case ('externalId') {
       <p>
-        <span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.externalId.tableLabel" | translate }}: </span>
+        <span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.externalId" | translate }}: </span>
         <span class="font-bold">
               @if (entity().externalId) {
                 @if (entity().externalLink) {
@@ -42,12 +42,12 @@
             </span>
       </p>
       @if (!configFields || configFields['personName'] === undefined || configFields['personName']) {
-        <p><span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.personName.tableLabel" | translate }}
+        <p><span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.personName" | translate }}
           : </span><span
           class="font-bold">{{ entity().personName ?? '-' }}</span></p>
       }
       @if (!configFields || configFields['dateOfBirth'] === undefined || configFields['dateOfBirth']) {
-        <p><span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.dateOfBirth.tableLabel" | translate }}
+        <p><span class="text-gray-500 dark:text-gray-300">{{ "ADMIN.subject.dateOfBirth" | translate }}
           : </span> <span class="font-bold"><app-local-date
           [date]="entity().dateOfBirth" [format]="'longDate'"/></span></p>
       }

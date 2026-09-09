@@ -20,6 +20,7 @@ import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-
 import {ROLES} from '../../../../../shared/enums/roles';
 import {ProjectStore} from '../../services/project.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
+import {ListPageHeaderComponent} from '../../../../shared/components/list-page-header/list-page-header.component';
 
 @Component({
   selector: 'app-project-list-page',
@@ -34,6 +35,7 @@ import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.
     MatIconButton,
     PermissionDirective,
     TranslatePipe,
+    ListPageHeaderComponent,
   ]
 })
 export class ProjectListPageComponent implements OnInit {
@@ -46,7 +48,6 @@ export class ProjectListPageComponent implements OnInit {
   readonly dialogService = inject(ProjectDialogService);
 
   readonly entities = this.store.items;
-  protected gridView = this.configService.getViewMode() === 'grid';
 
   readonly extensionClass = signal(getHighestPriorityClass(this.configService.getTableFields()));
 
@@ -71,8 +72,7 @@ export class ProjectListPageComponent implements OnInit {
   }
 
   toggleViewMode() {
-    this.gridView = !this.gridView;
-    this.configService.setViewMode(this.gridView ? 'grid' : 'list');
+    this.configService.setViewMode(this.configService.getViewMode() === 'grid' ? 'list' : 'grid');
   }
 
   protected async openDialog(dialogMode: DialogMode) {

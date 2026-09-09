@@ -5,4 +5,6 @@ export interface AuditDto {
   type: string;
 }
 
-export type AppAudit = AuditDto & {name: string; search: string};
+export type AppAudit = AuditDto & {
+  search: string
+};

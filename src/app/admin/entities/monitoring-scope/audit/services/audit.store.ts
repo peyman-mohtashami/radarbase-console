@@ -98,7 +98,6 @@ export class AuditStore {
   toAppModel(entity: AuditDto): AppAudit {
     return {
       ...entity,
-      name: `${entity.principal}`,
       search: `${entity.principal}`,
     };
   }

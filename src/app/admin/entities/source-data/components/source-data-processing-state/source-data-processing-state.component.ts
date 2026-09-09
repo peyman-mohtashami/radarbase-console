@@ -12,7 +12,5 @@ import {TagComponent} from '../../../../../shared/components/tag/tag.component';
   ]
 })
 export class SourceDataProcessingStateComponent {
-  // protected readonly ProcessingState = ProcessingState;
-
   processingState = input<ProcessingState | null>();
 }

@@ -1,52 +1,45 @@
+@let _i18nEntity = "ADMIN.subject.discontinue";
+@let _i18nShared = "SHARED.dialog";
+
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
-  <span> {{ `ADMIN.subject.discontinue.title` | translate }}</span>
-  <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
+  <span> {{ `${_i18nEntity}.title` | translate }}</span>
+  <code class="italic text-secondary"> {{ dialogData.entity?.login ? `${dialogData.entity?.login}` : `` }}</code>
 </h2>
 
 <mat-dialog-content>
   <p class="mb-4">
-    {{ "ADMIN.subject.discontinue.message" | translate }} {{ 'Subject' }}:
-    <strong>{{ dialogData.entity.login }}</strong>.
-  </p>
+    {{ `${_i18nEntity}.message` | translate }} {{ 'Subject' }}:
+    <strong>{{ dialogData.entity.login }}</strong>. </p>
 
   <div class='mb-4 text-base'>
-    <app-subject-details class="py-4"
-                         [entity]='dialogData.entity'
-                         [detailType]="DetailType.SUMMARY"/>
+    <app-subject-details class="py-4" [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>
   </div>
-  <p class="mt-4">{{ 'ADMIN.subject.discontinue.warning' | translate }}</p>
+  <p class="mt-4">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
 </mat-dialog-content>
 
 @if (store.error()) {
   <app-error-message-box>
-    {{store.error() | json}}
+    {{ store.error() | json }}
   </app-error-message-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full border-t border-neutral-400 dark:border-neutral-500'>
   <div class='flex flex-wrap gap-2'>
-    <button mat-stroked-button
-            color='accent'
-            type='button'
-            class='close-button'
-            (click)='close()'>
-      {{ 'ADMIN.subject.discontinue.no' | translate }}
+    <button mat-stroked-button color='accent' type='button' class='close-button' (click)='close()'>
+      {{ `${_i18nEntity}.no` | translate }}
     </button>
   </div>
   <div class='ml-auto justify-end'>
-    <button mat-raised-button
-            color='warn'
-            [disabled]='store.loading()'
-            (click)='discontinue()'>
+    <button mat-raised-button color='warn' [disabled]='store.loading()' (click)='discontinue()'>
       @if (store.loading()) {
         <ng-container>
           <mat-icon>
             <mat-spinner diameter='20'/>
           </mat-icon>
-          {{ 'ADMIN.subject.discontinue.deleting' | translate }}
+          {{ `${_i18nEntity}.deleting` | translate }}
         </ng-container>
       } @else {
-        {{ 'ADMIN.subject.discontinue.discontinue' | translate }}
+        {{ `${_i18nEntity}.discontinue` | translate }}
       }
     </button>
   </div>

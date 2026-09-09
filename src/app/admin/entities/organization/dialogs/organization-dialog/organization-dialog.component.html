@@ -1,9 +1,10 @@
-@let _prefix = "ADMIN.organization";
+@let _i18nEntity = "ADMIN.organization";
+@let _i18nShared = "SHARED.dialog";
 
 @if (dialogData.mode) {
   <h2 mat-dialog-title class="border-b border-neutral-400">
-    <span>{{ `SHARED.dialog.${dialogData.mode}` | translate }}</span>
-    <span> {{ `${_prefix}.title.singular` | translate }}</span>
+    <span>{{ `${_i18nShared}.${dialogData.mode}` | translate }}</span>
+    <span> {{ `${_i18nEntity}.title.singular` | translate }}</span>
     <code class="italic text-secondary"> {{ dialogData.entity?.name ? `${dialogData.entity?.name}` : `` }}</code>
   </h2>
 
@@ -11,8 +12,10 @@
     @if (dialogData.mode === DialogMode.DELETE) {
       <div class='mb-4 text-base'>
         <div class="mt-4">
-          <p>{{ "SHARED.dialog.deleteMessage" | translate }} {{ `${_prefix}.name.label` | translate }}: <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>.</p>
-          <p class="font-bold">{{ "SHARED.dialog.deleteWarning" | translate }}</p>
+          <p>
+            {{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.name` | translate }}:
+            <code class="italic text-secondary">{{ dialogData.entity?.name }}</code>. </p>
+          <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
         </div>
       </div>
     }
@@ -21,60 +24,17 @@
 
       <form novalidate>
         @if (dialogData.mode !== DialogMode.ADD) {
-          <label for="organization-id" class="text-sm">{{ `${_prefix}.id.label` | translate }}</label>
-          <mat-form-field appearance='fill'>
-            <input matInput id="organization-id" [formField]="form.id">
-          </mat-form-field>
+          <app-input-form-field [field]="form.id" [label]="`${_i18nEntity}.id`" [appearance]='"fill"'/>
         }
 
-        <label for="organization-name" class="text-sm">{{ `${_prefix}.name.label` | translate }} *</label>
-        <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
-          <input matInput id="organization-id" autocomplete="off" data-lpignore="true"
-                 [formField]='form.name'
-                 type="text">
-
-          <mat-error>
-            @if (form.name().touched() && form.name().invalid()) {
-              @for (error of form.name().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
+        <app-input-form-field [field]="form.name" [label]="`${_i18nEntity}.name`" [required]="true"/>
 
         @if (!formFields || formFields['location'] === undefined || formFields['location']) {
-          <label for="location" class="text-sm">{{ `${_prefix}.location.label` | translate }}</label>
-          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
-            <input matInput id="location" autocomplete="off" data-lpignore="true"
-                   [formField]="form.location"
-                   type="text">
-            <mat-error>
-              @if (form.location().touched() && form.location().invalid()) {
-                @for (error of form.location().errors(); track error.kind) {
-                  {{ error.message }}
-                }
-              }
-            </mat-error>
-          </mat-form-field>
+          <app-input-form-field [field]="form.location" [label]='`${_i18nEntity}.location`'/>
         }
 
         @if (!formFields || formFields['description'] === undefined || formFields['description']) {
-          <label for="description" class="text-sm">{{ `${_prefix}.description.label` | translate }}</label>
-          <mat-form-field class="mb-1! w-full small" subscriptSizing="fixed" appearance='outline'>
-          <textarea matInput #description
-                    [formField]="form.description"
-                    id="description"
-                    rows='3'></textarea>
-            <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
-
-            <mat-error>
-              @if (form.description().touched() && form.description().invalid()) {
-                @for (error of form.description().errors(); track error.kind) {
-                  {{ error.message }}
-                }
-              }
-            </mat-error>
-          </mat-form-field>
+          <app-textarea-form-field [field]="form.description" [label]='`${_i18nEntity}.description`'/>
         }
       </form>
     }
@@ -82,48 +42,51 @@
 
   @if (store.error()) {
     <app-error-message-box>
-      {{store.error() | json}}
+      {{ store.error() | json }}
     </app-error-message-box>
   }
 
   <mat-dialog-actions align="end" class="justify-between!">
     <button (click)='close()' mat-stroked-button color="accent">
-      {{ dialogData.mode !== DialogMode.DELETE ? ('SHARED.dialog.cancel' | translate) : ('SHARED.dialog.no' | translate) }}
+      {{
+        dialogData.mode !== DialogMode.DELETE ?
+          (`${_i18nShared}.cancel` | translate) : (`${_i18nShared}.no` | translate)
+      }}
     </button>
     @switch (dialogData.mode) {
       @case (DialogMode.DELETE) {
         <button [disabled]='store.loading()' (click)='delete()' color="warn" mat-raised-button>
           @if (store.loading()) {
             <mat-icon>
-              <mat-spinner diameter="20" />
+              <mat-spinner diameter="20"/>
             </mat-icon>
           }
 
-          {{ store.loading()
-          ? ('SHARED.dialog.deletingButton' | translate)
-          : ('SHARED.dialog.yes' | translate) }}
-<!--          @if (store.loading()) {-->
-<!--            <mat-icon><mat-spinner diameter='20' /></mat-icon>-->
-<!--            {{ 'SHARED.dialog.deletingButton' | translate }}-->
-<!--          } @else {-->
-<!--            {{ 'SHARED.dialog.yes' | translate }}-->
-<!--          }-->
+          {{
+            store.loading() ?
+              (`${_i18nShared}.deletingButton` | translate) :
+              (`${_i18nShared}.yes` | translate)
+          }}
         </button>
       }
       @case (DialogMode.EDIT) {
         <button [disabled]='form().invalid() || store.loading()' (click)='save()' mat-raised-button color="primary">
           @if (store.loading()) {
-            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+            <mat-icon>
+              <mat-spinner diameter='20'/>
+            </mat-icon>
           }
-          {{ "SHARED.dialog.update" | translate }}
+          {{ `${_i18nShared}.update` | translate }}
         </button>
       }
       @case (DialogMode.ADD) {
         <button [disabled]='form().invalid() || store.loading()' (click)='save()' color="primary" mat-raised-button>
           @if (store.loading()) {
-            <mat-icon><mat-spinner diameter='20' /></mat-icon>
+            <mat-icon>
+              <mat-spinner diameter='20'/>
+            </mat-icon>
           }
-          {{ "SHARED.dialog.create" | translate }}
+          {{ `${_i18nShared}.create` | translate }}
         </button>
       }
     }

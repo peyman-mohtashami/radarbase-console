@@ -160,7 +160,7 @@ export class ProjectStore {
   toAppModel(entity: ProjectDto): AppProject {
     return {
       ...entity,
-      name: entity.projectName,
+      // name: entity.projectName,
       search: `${entity.projectName} ${entity.description} ${entity.location}`,
     };
   }

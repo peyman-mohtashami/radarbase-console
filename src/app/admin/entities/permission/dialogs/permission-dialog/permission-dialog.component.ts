@@ -21,6 +21,9 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
 import {PermissionStore} from '../../services/permission.store';
 import {form, FormField} from '@angular/forms/signals';
 import {JsonPipe} from '@angular/common';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface PermissionForm {
   email: string,
@@ -50,6 +53,7 @@ export interface StoredPermissionDialog {
     ErrorMessageBoxComponent,
     FormField,
     JsonPipe,
+    InputFormFieldComponent,
   ]
 })
 export class PermissionDialogComponent implements AfterViewInit {

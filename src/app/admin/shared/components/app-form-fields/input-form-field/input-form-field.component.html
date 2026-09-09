@@ -1,0 +1,22 @@
+<div>
+  @if (label() !== null) {
+    <label for="project-name" class="text-sm">{{ label() | translate }}
+      @if (required()) {
+        *
+      }
+    </label>
+  }
+  <ng-content/> <!-- anything else, if you still need a catch-all -->
+  <mat-form-field class='small-input w-full' [subscriptSizing]="subscriptSizing()" [appearance]='appearance()'>
+    <input id="project-name" matInput [formField]="field()" [type]="type()">
+    <ng-content select="[matPrefix], [matIconPrefix]"/>
+    <ng-content select="[matSuffix], [matIconSuffix]"/>
+    <mat-error>
+      @if (field()().touched() && field()().invalid()) {
+        @for (error of field()().errors(); track error.kind) {
+          {{ error.message | translate }}
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+</div>

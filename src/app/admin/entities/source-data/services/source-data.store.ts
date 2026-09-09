@@ -162,7 +162,6 @@ export class SourceDataStore {
   toAppModel(entity: SourceDataDto): AppSourceData {
     return {
       ...entity,
-      name: entity.sourceDataName,
       search: `${entity.sourceDataName}`,
     };
   }

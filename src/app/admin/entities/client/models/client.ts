@@ -17,11 +17,9 @@ export type CreateClientDto = ClientDto;
 export type UpdateClientDto = ClientDto;
 
 export type AppClient = ClientDto & {
-  id: string;
-  name: string;
   search: string;
-  _authorizedGrantTypes: Record<string, boolean>;
-  _dynamic_registration: boolean
+  uiAuthorizedGrantTypes: Record<string, boolean>;
+  uiDynamicRegistration: boolean
 };
 
 export interface RadarPairInfo {

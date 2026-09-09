@@ -3,7 +3,7 @@ import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
 import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 import {UserService} from '../../user/services/user.service';
-import {AppUser, UpdateUserDto, UserDto} from '../../user/models/user';
+import {AppUser, UpdateUserDto} from '../../user/models/user';
 import {UserStore} from '../../user/services/user.store';
 import {PageEvent} from '@angular/material/paginator';
 import {RbSort, TableElement} from '../../../shared/models/table.model';
@@ -121,12 +121,12 @@ export class PermissionStore {
     currentProject?: string
   ): AppUser[] {
     return entities.filter(e => {
-      if (e._roles?._sysAdmin) {
+      if (e.uiRoles?._sysAdmin) {
         return true;
       }
       if (currentOrganization) {
-        if (e._roles?._organizationAdmin) {
-          const organization = e._roles._organizations?.find(o =>
+        if (e.uiRoles?._organizationAdmin) {
+          const organization = e.uiRoles._organizations?.find(o =>
             o.name === currentOrganization);
           // o._name === currentOrganization?.name);
           if (organization) {
@@ -135,8 +135,8 @@ export class PermissionStore {
         }
       }
       if (currentProject) {
-        if (e._roles?._projectAdmin) {
-          const project = e._roles._projects?.find(p =>
+        if (e.uiRoles?._projectAdmin) {
+          const project = e.uiRoles._projects?.find(p =>
             p.projectName === currentProject);
           // p._name === currentProject?.projectName);
           if (project) {

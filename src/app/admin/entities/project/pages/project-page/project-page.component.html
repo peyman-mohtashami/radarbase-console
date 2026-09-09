@@ -5,7 +5,7 @@
     <nav aria-label="breadcrumb" class="bg-tertiary/10 px-4 py-2 flex flex-wrap items-center gap-1">
       <button class="app-button-small" mat-flat-button color="tertiary" [routerLink]="['/admin', 'organizations']">
         <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.organization.icon }}</mat-icon>
-        <span>{{ `ADMIN.${ENTITY_REGISTRY.organization.name}.title.plural` | translate }}</span>
+        <span>{{ `ADMIN.organization.title.plural` | translate }}</span>
       </button>
       <mat-icon class="material-symbols-outlined text-tertiary!">chevron_right</mat-icon>
       <button class="app-button-small" mat-flat-button color="tertiary"
@@ -20,7 +20,7 @@
           <button class="app-button-small app-button-full-corner" mat-flat-button
                   [routerLink]="['/admin', 'organizations', entity.organization.name, 'projects']">
             <mat-icon class="material-symbols-outlined">{{ ENTITY_REGISTRY.project.icon }}</mat-icon>
-            <span>{{ `ADMIN.${ENTITY_REGISTRY.project.name}.title.singular` | translate }}</span>
+            <span>{{ `ADMIN.project.title.singular` | translate }}</span>
           </button>
 
           <h2 class='flex items-center gap-2 m-0 text-lg font-bold text-primary'>
@@ -28,10 +28,7 @@
           </h2>
         </div>
 
-        <ng-container
-          *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity.projectName}]'>
-          <app-project-actions [entity]="entity"/>
-        </ng-container>
+        <app-project-actions *appShowIfHasRole='[{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: entity.projectName}]' [entity]="entity"/>
       </div>
     </div>
   }

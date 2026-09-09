@@ -2,17 +2,19 @@ import {Component, input} from "@angular/core";
 import {SourceTypeDto} from '../../../source-type/models/source-type';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-project-source-types',
   templateUrl: './project-source-types.component.html',
   imports: [
     TagComponent,
-    TranslatePipe
+    TranslatePipe,
+    MatButton
   ]
 })
 export class ProjectSourceTypesComponent {
-  sourceTypes = input<SourceTypeDto[] | null>();
+  sourceTypes = input.required<SourceTypeDto[]>();
 
   showAll = false;
 

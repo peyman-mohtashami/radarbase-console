@@ -7,4 +7,6 @@ export interface RevisionDto {
   changes: unknown;
 }
 
-export type AppRevision = RevisionDto & {name: string; search: string};
+export type AppRevision = RevisionDto & {
+  search: string
+};

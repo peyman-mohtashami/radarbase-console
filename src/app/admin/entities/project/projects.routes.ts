@@ -30,13 +30,6 @@ export const projectRoutes: Routes = [
         loadChildren: () =>
           import('../project-subject/subject.routes').then((m) => m.subjectRoutes),
       },
-      // // {
-      // //   path: 'subjects-authorizer',
-      // //   loadChildren: () =>
-      // //     import('../subject-authorizer/subject-authorizer.module').then(
-      // //       (m) => m.SubjectAuthorizerModule
-      // //     ),
-      // // },
       {
         path: 'sources',
         loadChildren: () =>
@@ -58,12 +51,6 @@ export const projectRoutes: Routes = [
           import('../client/app-config.routes').then((m) => m.appConfigRoutes),
         data: {scope: 'project'}
       },
-      // {
-      //   path: 'protocols',
-      //   loadChildren: () =>
-      //     import('../../configuration-scope/protocol/protocols.route').then((m) => m.protocolsRoutes),
-      //   data: {scope: 'project'}
-      // },
       {
         path: 'questionnaires',
         loadChildren: () =>

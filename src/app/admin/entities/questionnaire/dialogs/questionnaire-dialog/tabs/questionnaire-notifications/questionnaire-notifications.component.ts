@@ -10,12 +10,12 @@ import {
   requiredField, validateTemplateVariables
 } from '../../../../../../../shared/utils/signal-form-validators';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {
-  QuestionTemplateVariablesComponent
-} from '../questionnaire-questions/dialogs/question-dialog/question-template-variables/question-template-variables.component';
 import {withLanguage} from '../../services/utils';
 import {MatDivider} from '@angular/material/list';
 import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireNotificationsForm {
   notification: {
@@ -42,9 +42,9 @@ export interface QuestionnaireNotificationsForm {
     MatOption,
     FormField,
     MatError,
-    QuestionTemplateVariablesComponent,
     MatDivider,
     HtmlEditorComponent,
+    InputFormFieldComponent,
   ]
 })
 export class QuestionnaireNotificationsComponent {

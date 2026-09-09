@@ -391,20 +391,20 @@
   .mat-mdc-icon-button.app-icon-button-small {
     @include mat.icon-button-overrides((
       icon-size: 20px,
-      state-layer-size: 20px,
-      touch-target-size: 20px,
+      state-layer-size: 28px,
+      touch-target-size: 28px,
       container-shape: var(--mat-sys-corner-full),
     ));
 
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     padding: 0;
 
     mat-icon {
       font-size: 20px;
       width: 20px;
       height: 20px;
-      line-height: 20px;
+      line-height: 28px;
     }
   }
 }

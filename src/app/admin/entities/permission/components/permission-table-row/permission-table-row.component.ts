@@ -48,9 +48,9 @@ export class PermissionTableRowComponent {
     }
 
     if (this.projectName() && this.organizationName()) {
-      return !!(this.entity()._roles._sysAdmin || (this.entity()._roles._organizationAdmin && this.entity()._roles._organizations?.find(o => o.name === this.organizationName())));
+      return !!(this.entity().uiRoles._sysAdmin || (this.entity().uiRoles._organizationAdmin && this.entity().uiRoles._organizations?.find(o => o.name === this.organizationName())));
     } else if (!this.projectName() && this.organizationName()) {
-      return !!this.entity()._roles._sysAdmin;
+      return !!this.entity().uiRoles._sysAdmin;
     }
 
     return false;
