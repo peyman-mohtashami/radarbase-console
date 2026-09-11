@@ -36,10 +36,10 @@
                             [label]=`${_i18nEntity}.sourceName`
                             [required]="true"/>
 
-      @if (!formFields || formFields['expectedSourceName'] === undefined || formFields['expectedSourceName']) {
+<!--      @if (!formFields || formFields['expectedSourceName'] === undefined || formFields['expectedSourceName']) {-->
         <app-input-form-field [field]="form.expectedSourceName"
                               [label]="`${_i18nEntity}.expectedSourceName`"/>
-      }
+<!--      }-->
 
       <app-searchable-multi-select [field]="form.sourceType"
                                    [label]="`${_i18nEntity}.sourceType`"
@@ -48,15 +48,15 @@
                                    [options]="dialogData.sourceTypeFullList"
                                    [multiple]="false"/>
 
-      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+<!--      @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {-->
         <label for="attributes" class="text-sm">{{ `${_i18nEntity}.attributes` | translate }}</label>
         <fieldset class="rounded-sm border p-4">
-          @if (!formFields || formFields['attributes.External-identifier'] === undefined || formFields['attributes.External-identifier']) {
+<!--          @if (!formFields || formFields['attributes.External-identifier'] === undefined || formFields['attributes.External-identifier']) {-->
             <app-input-form-field [field]="form.attributes?.['External-identifier']"
                                   [label]="`${_i18nEntity}.attributes.External-identifier`"/>
-          }
+<!--          }-->
         </fieldset>
-      }
+<!--      }-->
     </form>
   }
 </mat-dialog-content>

@@ -29,7 +29,7 @@
     }
 
     @case('roles') {
-      <app-user-roles [roles]="entity()._roles" />
+      <app-user-roles [roles]="entity().uiRoles" />
     }
     @default {
       {{ $any(entity())[property.name] || '-' }}

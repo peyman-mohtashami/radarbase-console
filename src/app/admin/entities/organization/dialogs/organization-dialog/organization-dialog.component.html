@@ -29,13 +29,13 @@
 
         <app-input-form-field [field]="form.name" [label]="`${_i18nEntity}.name`" [required]="true"/>
 
-        @if (!formFields || formFields['location'] === undefined || formFields['location']) {
+<!--        @if (!formFields || formFields['location'] === undefined || formFields['location']) {-->
           <app-input-form-field [field]="form.location" [label]='`${_i18nEntity}.location`'/>
-        }
+<!--        }-->
 
-        @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+<!--        @if (!formFields || formFields['description'] === undefined || formFields['description']) {-->
           <app-textarea-form-field [field]="form.description" [label]='`${_i18nEntity}.description`'/>
-        }
+<!--        }-->
       </form>
     }
   </mat-dialog-content>

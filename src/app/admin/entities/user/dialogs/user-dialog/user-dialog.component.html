@@ -33,13 +33,13 @@
                             [required]="true"
                             [appearance]='dialogData.entity ? "fill": "outline"'/>
 
-      @if (!formFields || formFields['firstName'] === undefined || formFields['firstName']) {
+<!--      @if (!formFields || formFields['firstName'] === undefined || formFields['firstName']) {-->
         <app-input-form-field [field]="form.firstName" [label]="`${_i18nEntity}.firstName`"/>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['lastName'] === undefined || formFields['lastName']) {
+<!--      @if (!formFields || formFields['lastName'] === undefined || formFields['lastName']) {-->
         <app-input-form-field [field]="form.lastName" [label]="`${_i18nEntity}.lastName`"/>
-      }
+<!--      }-->
 
       <label for="_roles" class="text-sm">{{ `${_i18nEntity}.roles` | translate }}</label>
       <fieldset>

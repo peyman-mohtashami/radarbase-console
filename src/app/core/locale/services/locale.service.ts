@@ -21,7 +21,7 @@ export class LocaleService {
   readonly currentLocale = this._currentLocale.asReadonly();
 
   init(): void {
-    const languages = this.configurationService.localeCustomization().languages;
+    const languages = this.configurationService.customLocalization().locales;//.localeCustomization().languages;
     this.initLocales(languages);
   }
 

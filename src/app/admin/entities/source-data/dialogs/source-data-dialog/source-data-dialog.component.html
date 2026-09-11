@@ -40,11 +40,11 @@
                             [label]=`${_i18nEntity}.sourceDataName`
                             [required]="true"/>
 
-      @if (!formFields || formFields['processingState'] === undefined || formFields['processingState']) {
+<!--      @if (!formFields || formFields['processingState'] === undefined || formFields['processingState']) {-->
         <app-select-form-field [field]="form.processingState"
                                [label]=`${_i18nEntity}.processingState`
                                [options]="PROCESSING_STATE.map((state) => ({ value: state, label: `${_i18nEntity}.processingState.${state}` }))"/><!--        <label for="processing-state" class="text-sm">-->
-      }
+<!--      }-->
 
       <!--      @if (!formFields || formFields['topic'] === undefined || formFields['topic']) {-->
       <app-input-form-field [field]="form.topic" [label]="`${_i18nEntity}.topic`"/>

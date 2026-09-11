@@ -107,7 +107,7 @@ export class UserDialogComponent implements AfterViewInit {
     restoredModel?: UserForm;
   };
 
-  formFields = this.configService.getFormFields();
+  // formFields = this.configService.getFormFields();
 
   protected model = signal<UserForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,

@@ -94,7 +94,7 @@ export class ClientDialogComponent implements AfterViewInit {
     restoredModel?: ClientForm;
   };
 
-  protected formFields = this.configService.getFormFields();
+  // protected formFields = this.configService.getFormFields();
 
   protected model = signal<ClientForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,

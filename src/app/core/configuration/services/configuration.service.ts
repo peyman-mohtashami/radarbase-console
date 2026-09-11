@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, resource, signal} from '@angular/core';
 import {HttpClient, HttpContext} from '@angular/common/http';
 import {firstValueFrom} from "rxjs";
 import {SKIP_AUTH} from '../../auth/interceptors/auth.interceptor';
@@ -9,151 +9,227 @@ import {
   DEFAULT_DEPLOYMENT_CONFIGURATION,
   DEFAULT_DEPLOYMENT_CONFIGURATION_URL
 } from '../consts/default-deployment-configuration';
-import {DEFAULT_CUSTOM_CONFIGURATION} from '../consts/default-custom-configuration.const';
+// import {DEFAULT_CUSTOM_CONFIGURATION} from '../consts/default-custom-configuration.const';
 import {
-  BrandingConfiguration,
-  CustomConfiguration,
-  EntityConfiguration, ExtraFieldConfiguration, ExtraFieldType, Language, LocaleConfiguration,
+  // BrandingConfiguration,
+  // CustomConfiguration2,
+  EntityConfiguration, ExtraFieldConfiguration, ExtraFieldType, Language,
+  // LocaleConfiguration,
   Theme,
   ThemesConfiguration
 } from '../models/custom-configuration.model';
-import {DeploymentConfiguration} from '../models/deployment-configuration.model';
+import {CustomConfiguration} from '../models/deployment-configuration.model';
 import {RadarbaseAppConfigService} from './radarbase-app-config.service';
 import {SKIP_ERROR} from '../../auth/interceptors/server-error.interceptor';
+import {ProjectStore} from '../../../admin/entities/project/services/project.store';
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
 
   private radarbaseAppConfigService = inject(RadarbaseAppConfigService);
   private http = inject(HttpClient);
+  // private projectStore = inject(ProjectStore);
 
-  private _navGroupItems = signal<NavGroupItem[]>([]);
-  navGroupItems = this._navGroupItems.asReadonly();
 
-  appCustomization = signal<CustomConfiguration>(DEFAULT_CUSTOM_CONFIGURATION);
-  themeCustomization = computed(() => this.appCustomization()?.theme);
-  brandingCustomization = computed(() => this.appCustomization()?.branding);
-  localeCustomization = computed(() => this.appCustomization().locale);
-  entitiesCustomization = computed(() => this.appCustomization()?.entities);
+  customConfiguration = signal<CustomConfiguration>(DEFAULT_DEPLOYMENT_CONFIGURATION);
+  customNavigation = computed(() => this.customConfiguration()?.mainNavigation);
+  customBranding = computed(() => this.customConfiguration()?.branding);
+  customLocalization = computed(() => this.customConfiguration()?.localization);
+  customEntitiesConfig = computed(() => this.customConfiguration()?.entities);
+
+  // themeCustomization = computed(() => this.instanceCustomization()?.theme);
+  // private _navGroupItems = signal<NavGroupItem[]>([]);
+  // navGroupItems = this._navGroupItems.asReadonly();
+
+
+  // appCustomization = signal<CustomConfiguration>(DEFAULT_CUSTOM_CONFIGURATION);
+  // themeCustomization = computed(() => this.appCustomization()?.theme);
+  // brandingCustomization = computed(() => this.appCustomization()?.branding);
+  // localeCustomization = computed(() => this.appCustomization().locale);
+  // entitiesCustomization = computed(() => this.appCustomization()?.entities);
+
+  // TODO When something is changed customBranding and customEntitiesConfig should be updated -> what is changed? selectedProject or config updated
+  // if customBranding updated => theme should update (a separate service)
+  // TODO in init customLocalization and mainNavigationCustomization should be updated + branding + entities
+
+  // customEntitiesConfig = resource({
+  //   params: () => {
+  //     const project = this.projectStore.selected() ?? undefined;
+  //     return project ? { projectName: project.projectName } : undefined;
+  //   },
+  //
+  //   loader: async ({ params }) => {
+  //     const customEntitiesConfig = this.customConfiguration()?.entities;
+  //     const configBundleDto = await firstValueFrom(this.radarbaseAppConfigService.getRadarConfigBundle('ManagementPortalapp', params.projectName));
+  //     const configDto = this.radarbaseAppConfigService.getConfig(configBundleDto,'configs');
+  //
+  //     const customConfiguration = (!configDto ?  customEntitiesConfig : JSON.parse(configDto.value)) as CustomConfiguration;
+  //     return customConfiguration.entities;
+  //   },
+  // });
+
 
   async init(): Promise<void> {
     await this.applyDeploymentConfiguration();
-    await this.applyCustomConfiguration();
+    // await this.applyCustomConfiguration();
   }
 
-  private async applyCustomConfiguration() {
-    try {
-      const context = new HttpContext().set(SKIP_ERROR, true);
-      const radarConfigBundle = await firstValueFrom(this.radarbaseAppConfigService.getRadarConfigBundle('ManagementPortalapp', undefined, undefined, context));
-      const radarConfig = this.radarbaseAppConfigService.getConfig(radarConfigBundle, 'config')
-      const brandingUrl = radarConfig?.value;
-      if (!brandingUrl) {
-        this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
-        return;
-      }
-      const customization = await firstValueFrom(this.http.get<unknown>(brandingUrl, {
-        context: new HttpContext().set(SKIP_AUTH, true)
-      }));
-      const validatedCustomization = sanitizeCustomConfiguration(customization, DEFAULT_CUSTOM_CONFIGURATION);
-      this.appCustomization.set(validatedCustomization);
-      return;
-    } catch {
-      this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
-      return;
-    }
-  }
+  // private async applyCustomConfiguration() {
+  //   try {
+  //     const context = new HttpContext().set(SKIP_ERROR, true);
+  //     const radarConfigBundle = await firstValueFrom(this.radarbaseAppConfigService.getRadarConfigBundle('ManagementPortalapp', undefined, undefined, context));
+  //     const radarConfig = this.radarbaseAppConfigService.getConfig(radarConfigBundle, 'config')
+  //     const brandingUrl = radarConfig?.value;
+  //     if (!brandingUrl) {
+  //       this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
+  //       return;
+  //     }
+  //     const customization = await firstValueFrom(this.http.get<unknown>(brandingUrl, {
+  //       context: new HttpContext().set(SKIP_AUTH, true)
+  //     }));
+  //     const validatedCustomization = sanitizeCustomConfiguration(customization, DEFAULT_CUSTOM_CONFIGURATION);
+  //     this.appCustomization.set(validatedCustomization);
+  //     return;
+  //   } catch {
+  //     this.appCustomization.set(DEFAULT_CUSTOM_CONFIGURATION);
+  //     return;
+  //   }
+  // }
 
   private async applyDeploymentConfiguration() {
     try {
       const config = await firstValueFrom(this.http.get<unknown>(DEFAULT_DEPLOYMENT_CONFIGURATION_URL));
-      const validatedConfig = sanitizeDeploymentConfiguration(config, DEFAULT_DEPLOYMENT_CONFIGURATION)
-      this.setNavGroupItems(validatedConfig);
+      console.log('Class: ConfigurationService, Function: applyDeploymentConfiguration, Line 69 config', config);
+      // const validatedConfig = sanitizeDeploymentConfiguration(config, DEFAULT_DEPLOYMENT_CONFIGURATION)
+      //TODO sanitize
+      const validatedConfig = Object.keys(config as Record<string, unknown>).length > 0 ? config as CustomConfiguration : DEFAULT_DEPLOYMENT_CONFIGURATION;
+      console.log('Class: ConfigurationService, Function: applyDeploymentConfiguration, Line 72 validatedConfig', validatedConfig);
+      this.customConfiguration.set(validatedConfig);
+      // this.setNavGroupItems(validatedConfig);
     } catch {
-      this.setNavGroupItems(DEFAULT_DEPLOYMENT_CONFIGURATION);
+      // this.setNavGroupItems(DEFAULT_DEPLOYMENT_CONFIGURATION);
     }
   }
 
-  private setNavGroupItems(config: DeploymentConfiguration) {
-    const navGroupItems: NavGroupItem[] = [
-      {
-        permission: [{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN}, {role: ROLES.PROJECT_ADMIN}],
-        close: false,
-        header: {icon: 'workspaces', name: 'coreManagement'},
-        navList: [
-          ENTITY_REGISTRY.project,
-          ENTITY_REGISTRY.organization,
-          ENTITY_REGISTRY.user
-        ],
-      },
-      {
-        permission: [{role: ROLES.SYS_ADMIN}],
-        close: false,
-        header: {icon: 'tune', name: 'systemConfiguration'},
-        navList: ([
-          enabled(config.internal.client, ENTITY_REGISTRY.client),
-          enabled(config.internal.sourceType, ENTITY_REGISTRY.sourceType),
-          enabled(config.internal.sourceData, ENTITY_REGISTRY.sourceData),
-          enabled(config.internal.appConfig, ENTITY_REGISTRY.appConfig),
-          // enabled(config.internal.protocol, ENTITY_REGISTRY.protocol),
-          enabled(config.internal.questionnaire, ENTITY_REGISTRY.questionnaire),
-          enabled(config.internal.audit, ENTITY_REGISTRY.audit),
-          enabled(config.internal.revision, ENTITY_REGISTRY.revision),
-        ]).filter(item => !!item),
-      },
-      {
-        permission: [{role: ROLES.SYS_ADMIN}],
-        close: true,
-        header: {icon: 'monitor_heart', name: 'monitoring'},
-        navList: ([
-          enabled(config.internal.health, ENTITY_REGISTRY.health),
-          enabled(config.internal.metrics, ENTITY_REGISTRY.metrics),
-          enabled(config.internal.log, ENTITY_REGISTRY.log),
-          enabled(config.external.systemLogs, ENTITY_REGISTRY.systemLogs),
-          enabled(config.external.systemStatus, ENTITY_REGISTRY.systemStatus),
-        ]).filter(item => !!item),
-      },
-      {
-        close: true,
-        header: {icon: 'extension', name: 'externalLinks'},
-        navList: ([
-          enabled(config.external.uploadPortal, ENTITY_REGISTRY.uploadPortal),
-          enabled(config.external.dataStorage, ENTITY_REGISTRY.dataStorage),
-          enabled(config.external.grafana, ENTITY_REGISTRY.grafana),
-        ]).filter(item => !!item),
-      },
-      {
-        close: false,
-        header: {icon: 'help', name: 'documentation'},
-        navList: ([
-          enabled(config.external.website, ENTITY_REGISTRY.website),
-          enabled(config.external.wiki, ENTITY_REGISTRY.wiki),
-        ]).filter(item => !!item),
-      },
-    ];
-    this._navGroupItems.set(navGroupItems)
-  }
+
 }
 
-function sanitizeDeploymentConfiguration(value: unknown, defaults: DeploymentConfiguration): DeploymentConfiguration {
-  const obj = isRecord(value) ? value : {};
-  const objInternal = isRecord(obj["internal"]) ? obj["internal"] : {};
-  return {
-    internal: {
-      client: withDefault(objInternal["client"], defaults.internal.client, isBoolean, "client"),
-      sourceType: withDefault(objInternal["sourceType"], defaults.internal.sourceType, isBoolean, "sourceType"),
-      sourceData: withDefault(objInternal["sourceData"], defaults.internal.sourceData, isBoolean, "sourceData"),
-      appConfig: withDefault(objInternal["appConfig"], defaults.internal.client, isBoolean, "appConfig"),
-      protocol: withDefault(objInternal["protocol"], defaults.internal.client, isBoolean, "protocol"),
-      questionnaire: withDefault(objInternal["questionnaire"], defaults.internal.client, isBoolean, "questionnaire"),
-      audit: withDefault(objInternal["audit"], defaults.internal.client, isBoolean, "audit"),
-      revision: withDefault(objInternal["revision"], defaults.internal.client, isBoolean, "revision"),
-      health: withDefault(objInternal["health"], defaults.internal.client, isBoolean, "health"),
-      metrics: withDefault(objInternal["metrics"], defaults.internal.client, isBoolean, "metrics"),
-      log: withDefault(objInternal["log"], defaults.internal.client, isBoolean, "log"),
-    },
-    external: obj["external"] as DeploymentConfiguration['external']
-  }
-}
+// function sanitizeDeploymentConfiguration(value: unknown, defaults: DeploymentConfiguration): DeploymentConfiguration {
+//   const valueObj = isRecord(value) ? value : {};
+//
+//   const valueInternalObj = isRecord(valueObj["internal"]) ? valueObj["internal"] : {};
+//   const sanitizedInternalObj = {
+//     audit: withDefault(valueInternalObj["audit"], defaults.internal.audit, isBoolean, "audit"),
+//     health: withDefault(valueInternalObj["health"], defaults.internal.health, isBoolean, "health"),
+//     log: withDefault(valueInternalObj["log"], defaults.internal.log, isBoolean, "log"),
+//     metrics: withDefault(valueInternalObj["metrics"], defaults.internal.metrics, isBoolean, "metrics"),
+//     questionnaire: withDefault(valueInternalObj["questionnaire"], defaults.internal.questionnaire, isBoolean, "questionnaire"),
+//     revision: withDefault(valueInternalObj["revision"], defaults.internal.revision, isBoolean, "revision"),
+//   }
+//
+//   const valueExternalObj = isRecord(valueObj["external"]) ? valueObj["external"] : {};
+//   const sanitizedExternalObj = {
+//     dataStorage: withDefault(valueExternalObj["dataStorage"], defaults.external.dataStorage, isRecord, "dataStorage"),
+//     grafana: withDefault(valueExternalObj["grafana"], defaults.external.grafana, isRecord, "grafana"),
+//     systemLogs: withDefault(valueExternalObj["systemLogs"], defaults.external.systemLogs, isRecord, "systemLogs"),
+//     systemStatus: withDefault(valueExternalObj["systemStatus"], defaults.external.systemStatus, isRecord, "systemStatus"),
+//     uploadPortal: withDefault(valueExternalObj["uploadPortal"], defaults.external.uploadPortal, isRecord, "uploadPortal"),
+//     website: withDefault(valueExternalObj["website"], defaults.external.website, isRecord, "website"),
+//     wiki: withDefault(valueExternalObj["wiki"], defaults.external.wiki, isRecord, "wiki"),
+//   }
+//
+//   const valueThemeObj = isRecord(valueObj["theme"]) ? valueObj["theme"] : {};
+//   const sanitizedTheme = {
+//     dark: {
+//       primary: string
+//       'on-primary': string
+//       accent: string
+//       'on-accent': string
+//       tertiary: string
+//       'on-tertiary': string
+//     }
+//   }
+//   return {
+//     internal: {
+//       audit:
+//       health: boolean
+//       log: boolean
+//       metrics: boolean
+//       questionnaire: boolean
+//       revision: boolean
+//     }
+//     external: {
+//       dataStorage?: {
+//         url: string
+//       }
+//       grafana?: {
+//         url: string
+//       }
+//       systemLogs?: {
+//         url: string
+//       }
+//       systemStatus?: {
+//         url: string
+//       }
+//       uploadPortal?: {
+//         url: string
+//       }
+//       website?: {
+//         url: string
+//       }
+//       wiki?: {
+//         url: string
+//       }
+//     }
+//     theme: {
+//       dark: {
+//         primary: string
+//         'on-primary': string
+//         accent: string
+//         'on-accent': string
+//         tertiary: string
+//         'on-tertiary': string
+//       }
+//       light: {
+//         primary: string
+//         'on-primary': string
+//         accent: string
+//         'on-accent': string
+//         tertiary: string
+//         'on-tertiary': string
+//       }
+//     }
+//     translationsBaseUrl: string
+//     locale: {
+//       code: string
+//       dateFormat: string
+//       label: string
+//       locale: string
+//       shortLabel?: string
+//     }[]
+//     title: string
+//     logo: string
+//     logo2: string
+//     branding: {
+//       description: string
+//       title: string
+//     }
+//     internal: {
+//       client: withDefault(objInternal["client"], defaults.internal.client, isBoolean, "client"),
+//       sourceType: withDefault(objInternal["sourceType"], defaults.internal.sourceType, isBoolean, "sourceType"),
+//       sourceData: withDefault(objInternal["sourceData"], defaults.internal.sourceData, isBoolean, "sourceData"),
+//       appConfig: withDefault(objInternal["appConfig"], defaults.internal.client, isBoolean, "appConfig"),
+//       protocol: withDefault(objInternal["protocol"], defaults.internal.client, isBoolean, "protocol"),
+//       questionnaire: withDefault(objInternal["questionnaire"], defaults.internal.client, isBoolean, "questionnaire"),
+//       audit: withDefault(objInternal["audit"], defaults.internal.client, isBoolean, "audit"),
+//       revision: withDefault(objInternal["revision"], defaults.internal.client, isBoolean, "revision"),
+//       health: withDefault(objInternal["health"], defaults.internal.client, isBoolean, "health"),
+//       metrics: withDefault(objInternal["metrics"], defaults.internal.client, isBoolean, "metrics"),
+//       log: withDefault(objInternal["log"], defaults.internal.client, isBoolean, "log"),
+//     },
+//     external: obj["external"] as DeploymentConfiguration['external']
+//   }
+// }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -218,37 +294,37 @@ function isExtraFieldConfiguration(v: unknown): v is ExtraFieldConfiguration {
     && optionsOk;
 }
 
-export function sanitizeCustomConfiguration(
-  raw: unknown,
-  defaults: CustomConfiguration
-): CustomConfiguration {
-  const obj = isRecord(raw) ? raw : {};
+// export function sanitizeCustomConfiguration(
+//   raw: unknown,
+//   defaults: CustomConfiguration2
+// ): CustomConfiguration2 {
+//   const obj = isRecord(raw) ? raw : {};
+//
+//   return {
+//     branding: sanitizeBranding(obj["branding"], defaults.branding),
+//     theme: sanitizeThemes(obj["theme"], defaults.theme),
+//     locale: sanitizeLocale(obj["locale"], defaults.locale),
+//     entities: sanitizeEntities(obj["entities"], defaults.entities),
+//   };
+// }
 
-  return {
-    branding: sanitizeBranding(obj["branding"], defaults.branding),
-    theme: sanitizeThemes(obj["theme"], defaults.theme),
-    locale: sanitizeLocale(obj["locale"], defaults.locale),
-    entities: sanitizeEntities(obj["entities"], defaults.entities),
-  };
-}
-
-export function sanitizeBranding(raw: unknown, defaults: BrandingConfiguration) {
-  const obj = isRecord(raw) ? raw : {};
-  return {
-    name: withDefault(obj["name"], defaults.name, isString, "branding.name"),
-    logo: withDefault(obj["logo"], defaults.logo, isString, "branding.logo"),
-    title: withDefault(obj["title"], defaults.title, isString, "branding.title"),
-    description: withDefault(obj["description"], defaults.description, isString, "branding.description"),
-  }
-}
-
-export function sanitizeThemes(raw: unknown, defaults: ThemesConfiguration) {
-  const obj = isRecord(raw) ? raw : {};
-  return {
-    light: sanitizeTheme(obj["light"], defaults.light),
-    dark: sanitizeTheme(obj["dark"], defaults.dark),
-  }
-}
+// export function sanitizeBranding(raw: unknown, defaults: BrandingConfiguration) {
+//   const obj = isRecord(raw) ? raw : {};
+//   return {
+//     name: withDefault(obj["name"], defaults.name, isString, "branding.name"),
+//     logo: withDefault(obj["logo"], defaults.logo, isString, "branding.logo"),
+//     title: withDefault(obj["title"], defaults.title, isString, "branding.title"),
+//     description: withDefault(obj["description"], defaults.description, isString, "branding.description"),
+//   }
+// }
+//
+// export function sanitizeThemes(raw: unknown, defaults: ThemesConfiguration) {
+//   const obj = isRecord(raw) ? raw : {};
+//   return {
+//     light: sanitizeTheme(obj["light"], defaults.light),
+//     dark: sanitizeTheme(obj["dark"], defaults.dark),
+//   }
+// }
 
 export function sanitizeTheme(raw: unknown, defaults: Theme) {
   const obj = isRecord(raw) ? raw : {};
@@ -262,17 +338,17 @@ export function sanitizeTheme(raw: unknown, defaults: Theme) {
   }
 }
 
-export function sanitizeLocale(raw: unknown, defaults: LocaleConfiguration): LocaleConfiguration {
-  const obj = isRecord(raw) ? raw : {};
-  return {
-    languages: sanitizeLanguages(obj["languages"], defaults.languages),
-    translationsBaseUrl: withDefault(obj["translationsBaseUrl"], defaults.translationsBaseUrl, isString, "locale.translationsBaseUrl"),
-  }
-}
+// export function sanitizeLocale(raw: unknown, defaults: LocaleConfiguration): LocaleConfiguration {
+//   const obj = isRecord(raw) ? raw : {};
+//   return {
+//     languages: sanitizeLanguages(obj["languages"], defaults.languages),
+//     translationsBaseUrl: withDefault(obj["translationsBaseUrl"], defaults.translationsBaseUrl, isString, "locale.translationsBaseUrl"),
+//   }
+// }
 
 export function sanitizeLanguages(raw: unknown, defaults: Language[]): Language[] {
   const array = Array.isArray(raw) ? raw : [];
-  const validated =  array.filter(language => isLanguage(language));
+  const validated = array.filter(language => isLanguage(language));
   if (validated.length === 0) {
     console.error(`Languages are not valid. Fallback to '${defaults}'`);
     return defaults;
@@ -317,7 +393,7 @@ export function sanitizeEntityFields(raw: unknown, defaults: Record<string, bool
 
 export function sanitizeEntityExtraFields(raw: unknown, defaults: ExtraFieldConfiguration[] = []): ExtraFieldConfiguration[] {
   const array = Array.isArray(raw) ? raw : [];
-  const validated =  array.filter(f => isExtraFieldConfiguration(f));
+  const validated = array.filter(f => isExtraFieldConfiguration(f));
   if (validated.length === 0) {
     return defaults;
   }
@@ -340,7 +416,7 @@ function isHexColor(value: unknown): value is string {
 }
 
 function pickHexColor(value: unknown, fallback: string, name: string): string {
-  if(!isHexColor(value)) {
+  if (!isHexColor(value)) {
     console.error(`${name} is not valid. Fallback to '${fallback}'`);
     return fallback;
   }

@@ -1,4 +1,7 @@
 {
+  "title": "Management Portal",
+  "welcomeTitle": "Welcome to Management Portal",
+  "welcomeMessage": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs (e.g. Fitbit, Withings and ...)",
   "CORE": {
     "AUTH": {
       "LOGIN_PAGE": {
@@ -224,18 +227,10 @@
         "regexInvalid": "Invalid regular expression"
       }
     },
-    "dashboard": {
-      "title": "Dashboard",
-      "view": "View"
-    },
     "appConfig": {
-      "title": {
-        "singular": "App Config",
-        "plural": "App Config"
-      },
-      "global": {
-        "title": "Global App Config"
-      }
+      "title.singular": "App Config",
+      "title.plural": "App Config",
+      "global.title": "Global App Config"
     },
     "audit": {
       "title.singular": "Audit",
@@ -246,12 +241,6 @@
       "extra": "Extra Data",
       "actions": "Actions",
       "noItemFound": "No Audit Found"
-    },
-    "authorizer": {
-      "title": {
-        "plural": "Authorizers",
-        "singular": "Authorizer"
-      }
     },
     "client": {
       "title.singular": "OAuth Client",
@@ -298,6 +287,10 @@
         "search": "Search"
       }
     },
+    "dashboard": {
+      "title": "Dashboard",
+      "view": "View"
+    },
     "database": {
       "title": {
         "singular": "Database",
@@ -326,10 +319,8 @@
       "noItemFoundWithTheFilter": "No Group found with the filter"
     },
     "health": {
-      "title": {
-        "singular": "Health Check",
-        "plural": "Health Checks"
-      },
+      "title.singular": "Health Check",
+      "title.plural": "Health Checks",
       "refresh": "Refresh",
       "service": "Service",
       "status": "Status",
@@ -355,10 +346,8 @@
       "noItemFound": "No Log Found"
     },
     "metrics": {
-      "title": {
-        "singular": "Application Metrics",
-        "plural": "Metrics"
-      },
+      "title.singular": "Application Metrics",
+      "title.plural": "Metrics",
       "subTitle": "JVM Metrics",
       "jvm": {
         "title": "Memory",
@@ -1341,30 +1330,13 @@
       "noItemFound": "No Organization Found"
     },
     "config": {
-      "title": {
-        "singular": "Config",
-        "plural": "Configs"
-      },
-      "name": {
-        "tableLabel": "Name",
-        "label": "Name"
-      },
-      "value": {
-        "tableLabel": "Value",
-        "label": "Value"
-      },
-      "defaultValue": {
-        "tableLabel": "Default Value",
-        "label": "Default Value"
-      },
-      "defaultSource": {
-        "tableLabel": "Default Source",
-        "label": "Default Source"
-      },
-      "type": {
-        "tableLabel": "Type",
-        "label": "Type"
-      },
+      "title.singular": "Config",
+      "title.plural": "Configs",
+      "name": "Name",
+      "value": "Value",
+      "defaultValue": "Default Value",
+      "defaultSource": "Default Source",
+      "type": "Type",
       "discardDialog": {
         "title": "Discard changes",
         "discard": "Discard",
@@ -1386,10 +1358,7 @@
         "deleted": "Deleted",
         "cancel": "Cancel"
       },
-      "actions": {
-        "tableLabel": "Actions",
-        "label": "Actions"
-      },
+      "actions": "Actions",
       "create": "Add Config",
       "edit": "Edit",
       "delete": "Delete",
@@ -1485,10 +1454,5 @@
         "emailNotRegistered": "This email is not registered."
       }
     }
-  },
-  "hello": "Hello-en",
-  "title": "Management Portal",
-  "HOME": {
-    "TITLE": "English TITLE"
   }
 }

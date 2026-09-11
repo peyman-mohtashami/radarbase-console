@@ -1,7 +1,7 @@
 import {
   Component,
   inject,
-  AfterViewInit, signal, effect
+  AfterViewInit, signal, effect, OnInit
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -118,10 +118,10 @@ export class SubjectDialogComponent implements AfterViewInit {
       ...this.dialogData.entity?.attributes,
       'humanReadableIdentifier': this.dialogData.entity?.attributes?.['humanReadableIdentifier'] ?? '',
       'participant_group': this.dialogData.entity?.attributes?.['participant_group'] ?? '',
-      ...this.extraFields?.reduce((acc: Record<string, string>, cur) => {
-        acc[cur.name] = this.dialogData.entity?.attributes?.[cur.name] ?? '';
-        return acc;
-      }, {}),
+      // ...this.extraFields?.reduce((acc: Record<string, string>, cur: any) => {
+      //   acc[cur.name] = this.dialogData.entity?.attributes?.[cur.name] ?? '';
+      //   return acc;
+      // }, {}),
     },
   });
 

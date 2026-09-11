@@ -54,26 +54,26 @@
         {{ `${_i18nEntity}.canRegisterDynamically.hint` | translate }}
       </p>
 
-      @if (!formFields || formFields['name'] === undefined || formFields['name']) {
+<!--      @if (!formFields || formFields['name'] === undefined || formFields['name']) {-->
         <app-input-form-field [field]="form.name"
                               [label]="`${_i18nEntity}.name`"/>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['description'] === undefined || formFields['description']) {
+<!--      @if (!formFields || formFields['description'] === undefined || formFields['description']) {-->
         <app-textarea-form-field [field]="form.description"
                                  [label]=`${_i18nEntity}.description` />
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['assessmentType'] === undefined || formFields['assessmentType']) {
+<!--      @if (!formFields || formFields['assessmentType'] === undefined || formFields['assessmentType']) {-->
         <app-input-form-field [field]="form.assessmentType"
                               [label]="`${_i18nEntity}.assessmentType`"/>
-      }
+<!--      }-->
 
-      @if (!formFields || formFields['appProvider'] === undefined || formFields['appProvider']) {
+<!--      @if (!formFields || formFields['appProvider'] === undefined || formFields['appProvider']) {-->
         <app-input-form-field [field]="form.appProvider"
                               [label]=`${_i18nEntity}.appProvider`
                               [required]="true"/>
-      }
+<!--      }-->
     </form>
   }
 </mat-dialog-content>

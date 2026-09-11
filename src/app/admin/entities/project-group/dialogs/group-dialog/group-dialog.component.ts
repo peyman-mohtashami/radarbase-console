@@ -82,7 +82,7 @@ export class GroupDialogComponent implements AfterViewInit {
     restoredModel?: GroupForm;
   };
 
-  formFields = this.configService.getFormFields();
+  // formFields = this.configService.getFormFields();
 
   private model = signal<GroupForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,

@@ -28,19 +28,19 @@ export const filters: FilterItem[] = [
   // },
   {
     name: 'login',
-    label: 'ADMIN.user.login.tableLabel',
+    label: 'ADMIN.user.login',
     type: FormFieldType.INPUT,
   },
   {
     name: 'email',
     advanced: true,
-    label: 'ADMIN.user.email.tableLabel',
+    label: 'ADMIN.user.email',
     type: FormFieldType.INPUT,
   },
   {
     name: 'authority',
     advanced: true,
-    label: 'ADMIN.user.authority.tableLabel',
+    label: 'ADMIN.user.authority',
     type: FormFieldType.SELECT,
     options: [
       { value: 'ROLE_SYS_ADMIN', label: 'ROLE_SYS_ADMIN' },

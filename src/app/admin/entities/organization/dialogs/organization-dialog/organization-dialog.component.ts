@@ -80,7 +80,7 @@ export class OrganizationDialogComponent implements AfterViewInit {
     restoredModel?: OrganizationForm;
   };
 
-  protected formFields = this.configService.getFormFields();
+  // protected formFields = this.configService.getFormFields();
 
   private model = signal<OrganizationForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,

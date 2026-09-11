@@ -24,7 +24,7 @@
         {{ _entity.langKey?.toUpperCase() || '-' }}
       }
       @case ('roles') {
-        <app-user-roles [roles]="_entity._roles"/>
+        <app-user-roles [roles]="_entity.uiRoles"/>
       }
       @case ('createdBy') {
         <app-user-created-by [createdBy]="_entity.createdBy"/>

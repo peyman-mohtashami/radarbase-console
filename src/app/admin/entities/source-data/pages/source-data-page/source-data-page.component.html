@@ -27,7 +27,7 @@
         <a mat-tab-link
            routerLinkActive #rla="routerLinkActive"
            [active]="rla.isActive"
-           [routerLink]="['/', 'admin', 'source-data', entity.name, link.path]">
+           [routerLink]="['/', 'admin', 'source-data', entity.sourceDataName, link.path]">
           <h2 class='flex items-center gap-2 m-0 text-base font-bold'>
             {{ link.label | translate }}
           </h2>

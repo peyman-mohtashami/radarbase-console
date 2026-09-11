@@ -1,28 +1,28 @@
 // import {Language} from '../../locale/models/locale.model';
 
-export interface CustomConfiguration {
-  branding: BrandingConfiguration;
-  theme: ThemesConfiguration;
-  locale: LocaleConfiguration;
-  entities: Record<string, EntityConfiguration>
-// {
-//     organization: EntityConfiguration;
-//     project: EntityConfiguration;
-//     user: EntityConfiguration;
-//     client: EntityConfiguration;
-//     subject: EntityConfiguration;
-//     source: EntityConfiguration;
-//     sourceType: EntityConfiguration;
-//     sourceData: EntityConfiguration;
-//   }
-}
+// export interface CustomConfiguration2 {
+//   branding: BrandingConfiguration;
+//   theme: ThemesConfiguration;
+//   locale: LocaleConfiguration;
+//   entities: Record<string, EntityConfiguration>
+// // {
+// //     organization: EntityConfiguration;
+// //     project: EntityConfiguration;
+// //     user: EntityConfiguration;
+// //     client: EntityConfiguration;
+// //     subject: EntityConfiguration;
+// //     source: EntityConfiguration;
+// //     sourceType: EntityConfiguration;
+// //     sourceData: EntityConfiguration;
+// //   }
+// }
 
-export interface BrandingConfiguration {
-  name: string;
-  logo: string;
-  title: string;
-  description: string;
-}
+// export interface BrandingConfiguration {
+//   name: string;
+//   logo: string;
+//   title: string;
+//   description: string;
+// }
 
 export interface ThemesConfiguration {
   light: Theme;
@@ -39,10 +39,10 @@ export interface Theme {
 }
 
 
-export interface LocaleConfiguration {
-  languages: Language[];
-  translationsBaseUrl?: string;
-}
+// export interface LocaleConfiguration {
+//   languages: Language[];
+//   translationsBaseUrl?: string;
+// }
 
 export interface Language {
   code: string;

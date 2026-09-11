@@ -89,7 +89,7 @@ export class SourceTypeDialogComponent implements AfterViewInit {
     restoredModel?: SourceTypeForm;
   };
 
-  protected formFields = this.configService.getFormFields();
+  // protected formFields = this.configService.getFormFields();
 
   private model = signal<SourceTypeForm>(this.dialogData.restoredModel ?? {
     ...this.dialogData.entity,

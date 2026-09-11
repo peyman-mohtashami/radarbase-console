@@ -9,11 +9,11 @@ export class BaseConfigService {
   protected readonly filters: FilterItem[] = [];
   protected readonly entityMetadata!: EntityRegistry;
 
-  private readonly configurationService = inject(ConfigurationService);
+  protected readonly configurationService = inject(ConfigurationService);
 
-  private config = computed(() => {
-    return this.configurationService.entitiesCustomization()?.[this.entityMetadata?.name];
-  })
+  protected config = computed(() => {
+    return (this.configurationService.customEntitiesConfig() as Record<string, any>)?.[this.entityMetadata?.name];
+  });
 
   getFormFields() {
     return this.config()?.fields;

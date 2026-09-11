@@ -1,6 +1,7 @@
 @let _i18nEntity = "ADMIN.subject";
 @let _i18nShared = "SHARED.dialog";
 
+
 <h2 mat-dialog-title class="border-b border-neutral-400 dark:border-neutral-500">
   <span>{{ `${_i18nShared}.${dialogData.mode}` | translate }}</span>
   <span> {{ `${_i18nEntity}.title.singular` | translate }}</span>
@@ -27,25 +28,25 @@
         <app-input-form-field [field]="form.login" [label]=`${_i18nEntity}.login` [appearance]='"fill"'/>
       }
 
-      @if (!formFields || formFields['personName'] === undefined || formFields['personName']) {
+      @if (formFields?.personName) {
         <app-input-form-field [field]="form.personName" [label]="`${_i18nEntity}.personName`"/>
       }
 
-      @if (!formFields || formFields['dateOfBirth'] === undefined || formFields['dateOfBirth']) {
+      @if (formFields?.dateOfBirth) {
         <app-date-form-field [field]="form.dateOfBirth"
                              [label]=`${_i18nEntity}.dateOfBirth`
                              [placeholder]='localeService.currentLocale()?.dateFormat || "dd/MM/yyyy"'/>
       }
 
-      @if (!formFields || formFields['externalId'] === undefined || formFields['externalId']) {
+      @if (formFields?.externalId) {
         <app-input-form-field [field]="form.externalId" [label]="`${_i18nEntity}.externalId`"/>
       }
 
-      @if (!formFields || formFields['externalLink'] === undefined || formFields['externalLink']) {
+      @if (formFields?.externalLink) {
         <app-input-form-field [field]="form.externalLink" [label]="`${_i18nEntity}.externalLink`"/>
       }
 
-      @if (!formFields || formFields['group'] === undefined || formFields['group']) {
+      @if (formFields?.group) {
         <app-searchable-multi-select [field]="form.group"
                                      [label]="`${_i18nEntity}.group`"
                                      [valueKey]="'name'"
@@ -56,20 +57,25 @@
 
       <div>
         @for (field of extraFields; track field.name) {
-          <app-mat-dynamic-input [entityName]="configService.getEntityMetadata().name"
-                                 [field]="field"
-                                 [formField]="form.attributes[field.name]"/>
+          @switch (field.type) {
+            @case ('text') {
+              <app-input-form-field [field]="form.attributes[field.name]" [label]="field.name"/>
+            }
+            @case ('date') {
+              <app-date-form-field [field]="form.attributes[field.name]" [label]="field.name"/>
+            }
+          }
         }
 
-        @if (!formFields || formFields['attributes'] === undefined || formFields['attributes']) {
+        @if (formFields?.attributes) {
           <label for="subject-attributes" class="text-sm">{{ `${_i18nEntity}.attributes` | translate }}</label>
           <fieldset class="rounded-sm border px-4">
-            @if (!formFields || formFields['attributes.humanReadableIdentifier'] === undefined || formFields['attributes.humanReadableIdentifier']) {
+            @if (formFields?.["attributes.humanReadableIdentifier"]) {
               <app-input-form-field [field]="form.attributes?.['humanReadableIdentifier']"
                                     [label]="`${_i18nEntity}.attributes.humanReadableIdentifier`"/>
             }
 
-            @if (!formFields || formFields['attributes.participant_group'] === undefined || formFields['attributes.participant_group']) {
+            @if (formFields?.["attributes.participant_group"]) {
               <app-input-form-field [field]="form.attributes?.['participant_group']"
                                     [label]="`${_i18nEntity}.attributes.participant_group`"/>
             }
@@ -130,3 +136,4 @@
     }
   }
 </mat-dialog-actions>
+

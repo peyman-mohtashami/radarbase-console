@@ -10,7 +10,7 @@ export class RuntimeConfigTranslateLoader implements TranslateLoader {
   private http = inject(HttpClient);
 
   getTranslation(lang: string): Observable<TranslationObject> {
-    const localeCustomization = this.configurationService.localeCustomization();
+    const localeCustomization = this.configurationService.customLocalization();//.localeCustomization();
     const base = localeCustomization.translationsBaseUrl || this.defaultBase();
     const url = this.joinUrl(base, `${lang}.json`);
 

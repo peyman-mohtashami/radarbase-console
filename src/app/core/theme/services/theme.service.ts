@@ -17,7 +17,7 @@ export class ThemeService {
     this._isLightTheme.set(isLight);
     this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
 
-    const themeCustomization = this.appCustomizationService.themeCustomization();
+    const themeCustomization = this.appCustomizationService.customBranding().theme; //.themeCustomization();
     setTheme(themeCustomization);
   }
 

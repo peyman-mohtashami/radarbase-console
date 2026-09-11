@@ -77,7 +77,7 @@ export class PermissionDialogComponent implements AfterViewInit {
     userFullList: AppUser[];
   };
 
-  formFields = this.configService.getFormFields();
+  // formFields = this.configService.getFormFields();
 
   private model = signal<PermissionForm>({
     ...this.dialogData.entity,

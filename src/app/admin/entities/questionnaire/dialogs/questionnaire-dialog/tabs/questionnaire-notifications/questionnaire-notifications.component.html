@@ -43,8 +43,8 @@
             </label>
             <mat-form-field class='small-input' appearance='outline' subscriptSizing="fixed">
               <mat-select id="reminders-unit" [formField]="form.reminders.unit">
-                @for (unit of UNITS; track unit.name) {
-                  <mat-option [value]="unit.name">{{ unit.label }}</mat-option>
+                @for (unit of UNITS; track unit.value) {
+                  <mat-option [value]="unit.value">{{ unit.label }}</mat-option>
                 }
               </mat-select>
               <mat-error>
