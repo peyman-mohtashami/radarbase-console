@@ -10,10 +10,10 @@ export const adminRoutes: Routes = [
     children: [
       {
         path: 'profile',
-        loadComponent: () => import('../core/auth/containers/profile-page/profile-page.component').then((c) => c.ProfilePageComponent)},
+        loadComponent: () => import('../core/auth/pages/profile-page/profile-page.component').then((c) => c.ProfilePageComponent)},
       {
         path: 'change-password',
-        loadComponent: () => import('../core/auth/containers/password-page/password-page.component').then((c) => c.PasswordPageComponent),
+        loadComponent: () => import('../core/auth/pages/password-page/password-page.component').then((c) => c.PasswordPageComponent),
       },
       {
         path: 'organizations',

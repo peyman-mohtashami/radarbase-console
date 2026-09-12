@@ -1,83 +1,64 @@
 {
   "title": "Management Portal",
   "welcomeTitle": "Welcome to Management Portal",
-  "welcomeMessage": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs (e.g. Fitbit, Withings and ...)",
-  "CORE": {
-    "AUTH": {
-      "LOGIN_PAGE": {
-        "title": "Login",
-        "subtitle": "Log in to Management Portal App",
-        "description": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs (e.g. Fitbit, Withings and ...)",
-        "loginButtonOauthCodeGrant": "Login with Management Portal",
-        "username": "Username",
-        "password": "Password",
-        "loginButtonPasswordGrant": "Login",
-        "gotoForgotPassword": "Forgot your password?"
-      },
-      "ACTIVATION_PAGE": {
-        "title": "Activation",
-        "invalidKeyErrorMessage": "Your user could not be activated. Key is not valid.",
-        "invalidKeyErrorDescription": "Contact support team and request activation link again.",
-        "successMessage": "Your user account has been activated.",
-        "gotTo": "Go to",
-        "loginPage": "Login",
-        "errorMessage": "Request activation link again."
-      },
-      "FORGOT_PASSWORD_PAGE": {
-        "title": "Forgot Password?",
-        "subtitle": "Fill the form to reset your password",
-        "successMessage": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
-        "successButton": "Submitted",
-        "email": "Email",
-        "submitButton": "Send",
-        "gotTo": "Go to",
-        "loginPage": "Login",
-        "return": "Return to Login"
-      },
-      "PASSWORD_PAGE": {
-        "title": "Change Your Password",
-        "subtitle": "Create a new password for your account",
-        "newPassword": "New Password",
-        "weakPasswordError": "Weak Password. (At least 8 characters with 1 uppercase, 1 lowercase, 1 digit and 1 symbol)",
-        "confirmPassword": "Password Confirmation",
-        "confirmPasswordError": "Password and Password Confirmation didn't match.",
-        "updateButton": "Update",
-        "successButton": "Updated Successfully"
-      },
-      "PROFILE_PAGE": {
-        "title": "Edit Profile",
-        "subtitle": "User",
-        "login": "Login",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "language": "Language",
-        "updateButton": "Update",
-        "successButton": "Updated Successfully"
-      },
-      "RESET_PASSWORD_PAGE": {
-        "title": "Reset Your Password",
-        "subtitle": "Create a new password for your account",
-        "invalidKeyErrorMessage": "The link is invalid or expired.",
-        "invalidKeyErrorDescription": "Request reset password link again?",
-        "gotoForgotPasswordPage": "Go to Forgot Password",
-        "successMessage": "Your user account has been activated.",
-        "errorMessage": "Request activation link again.",
-        "newPassword": "New Password",
-        "weakPasswordError": "Weak Password. (At least 8 characters, 1 letter, 1 digit and 1 symbol)",
-        "confirmPassword": "Password Confirmation",
-        "confirmPasswordError": "Password and Password Confirmation didn't match.",
-        "updateButton": "Update",
-        "successButton": "Updated Successfully",
-        "gotTo": "Go to",
-        "loginPage": "Login",
-        "forgotPasswordPage": "Forgot password",
-        "gotToForgotPasswordEndMessage": "to request reset password link again."
-      }
+  "welcomeMessage": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs",
+  "AUTH": {
+    "LOGIN": {
+      "title": "Login",
+      "subtitle": "Log in to Management Portal App",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Login",
+      "goToForgotPassword": "Forgot your password?"
+    },
+    "ACTIVATION": {
+      "title": "Activation",
+      "successMessage": "Your account has been activated.",
+      "errorMessage": "Your account could not be activated. The link is not valid. Contact support team and request activation link again.",
+      "gotToLogin": "Go to Login page"
+    },
+    "FORGOT_PASSWORD": {
+      "title": "Forgot Password?",
+      "subtitle": "Fill the form to reset your password",
+      "email": "Email",
+      "submit": "Send",
+      "success": "Submitted",
+      "successMessage": "A confirmation mail with instructions has been sent to your email address. Follow those instructions to confirm your email address and activate your account.",
+      "goToLogin": "Return to Login"
+    },
+    "PASSWORD": {
+      "title": "Change Your Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Password Confirmation",
+      "update": "Update",
+      "success": "Updated Successfully"
+    },
+    "PROFILE": {
+      "title": "Edit Profile",
+      "login": "Login",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "update": "Update",
+      "success": "Updated Successfully"
+    },
+    "RESET_PASSWORD": {
+      "title": "Reset Your Password",
+      "subtitle": "Create a new password for your account",
+      "successMessage": "Your password has been reset successfully.",
+      "errorMessage": "The link is invalid or expired. Go to Forgot Password Page and request the link again.",
+      "newPassword": "New Password",
+      "confirmPassword": "Password Confirmation",
+      "submit": "Update",
+      "success": "Password Updated Successfully",
+      "goToForgotPassword": "Go to Forgot Password Page"
     },
     "ERROR": {
       "sessionExpired": "The session has been expired. Log in again.",
-      "authGuard": "You need to be logged in to see the requested page."
+      "authGuard": "You need to be logged in to see the requested page.",
+      "invalid_grant": "Invalid username or password",
+      "error.emailNotRegistered": "Email is not registered",
+      "undefined": "An error occurred"
     }
   },
   "SHARED": {
@@ -224,7 +205,10 @@
         "minLessThanMax": "Min must be less than max",
         "maxGreaterThanMin": "Max must be greater than min",
         "rangeStepPositive": "This field must be a positive number",
-        "regexInvalid": "Invalid regular expression"
+        "regexInvalid": "Invalid regular expression",
+        "emailValidator": "Must be a valid email address",
+        "passwordMismatch": "Passwords do not match",
+        "passwordStrength": "Password must contain one lowercase, uppercase, digit, special character, and minimum 8 characters"
       }
     },
     "appConfig": {

@@ -2,10 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, shareReplay, switchMap, tap} from "rxjs/operators";
 
-import {
-  CredentialAuthRequest,
-  ManagementPortalUser, TokenData
-} from '../models/auth.model';
+import {CredentialAuthRequest, ManagementPortalUser, TokenData} from '../models/auth.model';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {StorageService} from "../../storage/services/storage.service";
 import {Router} from "@angular/router";
@@ -46,14 +43,9 @@ export class AuthService {
     this._user.set(user);
   }
 
-  authenticateWithCredential(
-    credentials: CredentialAuthRequest
-  ): Observable<ManagementPortalUser> {
+  authenticateWithCredential(credentials: CredentialAuthRequest): Observable<ManagementPortalUser> {
     const url = `${environment.apiUrl}oauth/token`;
-    const payload = this.getTokenRequestParams(
-      credentials.username,
-      credentials.password
-    );
+    const payload = this.getTokenRequestParams(credentials.username, credentials.password);
     const options = { headers: this.getTokenRequestHeaders() };
 
     return this.http.post<TokenData>(url, payload, options).pipe(
@@ -62,21 +54,16 @@ export class AuthService {
       }),
       shareReplay(),
       switchMap((tokenData: TokenData) => {
-        const authHeaders = new HttpHeaders().append(
-          'Authorization',
-          'Bearer ' + tokenData.access_token
-        );
-        return this.http
-          .post<ManagementPortalUser>(`${environment.apiUrl}api/login`, null, {
-            headers: authHeaders,
-            observe: 'body',
-            withCredentials: true,
+        const authHeaders = new HttpHeaders().append('Authorization', 'Bearer ' + tokenData.access_token);
+        return this.http.post<ManagementPortalUser>(`${environment.apiUrl}api/login`, null, {
+          headers: authHeaders,
+          observe: 'body',
+          withCredentials: true,
+        }).pipe(
+          tap((user) => {
+            this._user.set(user);
           })
-          .pipe(
-            tap((user) => {
-              this._user.set(user);
-            })
-          );
+        );
       })
     );
   }
@@ -99,10 +86,7 @@ export class AuthService {
     return roles.some(r => r.authorityName && allowedSet.has(r.authorityName));
   }
 
-  private getTokenRequestParams(
-    username: string,
-    password: string
-  ): HttpParams {
+  private getTokenRequestParams(username: string, password: string): HttpParams {
     return new HttpParams()
       .set('client_id', 'ManagementPortalapp')
       .set('username', username)

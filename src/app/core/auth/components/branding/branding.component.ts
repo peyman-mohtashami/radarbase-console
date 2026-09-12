@@ -12,5 +12,5 @@ import {ConfigurationService} from '../../../configuration/services/configuratio
   ],
 })
 export class BrandingComponent {
-  configurationService = inject(ConfigurationService)
+  protected readonly configurationService = inject(ConfigurationService)
 }

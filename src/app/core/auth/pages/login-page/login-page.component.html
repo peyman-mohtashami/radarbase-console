@@ -1,0 +1,52 @@
+@let _i18nLogin = "AUTH.LOGIN";
+@let _i18nError = "AUTH.ERROR";
+
+<div class="flex justify-center items-center h-full">
+  <mat-card class="w-1/2 max-w-200">
+    <mat-card-content class="p-0! grid! grid-cols-2">
+      <div class="p-8">
+        <h4 class="my-12 text-center text-xl font-bold">{{ `${_i18nLogin}.title` | translate }}</h4>
+        <p class="mb-4">{{ `${_i18nLogin}.subtitle` | translate }}</p>
+
+        <form novalidate autocomplete="on" (submit)="onSubmit($event)">
+          <app-input-form-field [field]="form.username" [label]="`${_i18nLogin}.username`" [required]="true"/>
+
+          <app-input-form-field [field]="form.password"
+                                [label]="`${_i18nLogin}.password`"
+                                [required]="true"
+                                type="password"/>
+
+          @if (error() || stateError()) {
+            <app-error-message-box>
+              @if (error()) {
+                {{ `${_i18nError}.${error()?.error?.errorCode ?? error()?.error?.error}` | translate }}
+              } @else {
+                {{ `${_i18nError}.sessionExpired` | translate }}
+              }
+            </app-error-message-box>
+          }
+
+          <button mat-raised-button
+                  class="my-4 w-full"
+                  color='primary'
+                  type='submit'
+                  name='login'
+                  [disabled]='formSubmitDisabled()'>
+            @if (loading()) {
+              <mat-icon>
+                <mat-spinner diameter='20'/>
+              </mat-icon>
+            }
+            {{ `${_i18nLogin}.submit` | translate }}
+          </button>
+
+          <a class="text-primary"
+             [routerLink]='["/auth/forgot-password"]'>{{ `${_i18nLogin}.goToForgotPassword` | translate }}
+          </a>
+        </form>
+
+      </div>
+      <app-branding class="w-full"/>
+    </mat-card-content>
+  </mat-card>
+</div>

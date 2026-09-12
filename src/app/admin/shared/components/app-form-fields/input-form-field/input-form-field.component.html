@@ -13,9 +13,10 @@
     <ng-content select="[matSuffix], [matIconSuffix]"/>
     <mat-error>
       @if (field()().touched() && field()().invalid()) {
-        @for (error of field()().errors(); track error.kind) {
-          {{ error.message | translate }}
-        }
+        {{field()().errors()[0].message | translate}}
+<!--        @for (error of field()().errors(); track error.kind) {-->
+<!--          {{ error.message | translate }}-->
+<!--        }-->
       }
     </mat-error>
   </mat-form-field>

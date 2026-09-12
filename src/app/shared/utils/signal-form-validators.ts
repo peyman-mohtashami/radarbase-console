@@ -4,12 +4,14 @@ import {
 } from '../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
 import {AppQuestionnaire} from '../../admin/entities/questionnaire/models/questionnaire';
 import {untracked} from '@angular/core';
+// import {measureStrength} from '../../core/auth/pages/password-page/password-page.component';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-40 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,40}$/;
 /** Any characters, 1-255 chars (multiline). */
 export const LONG_TEXT_PATTERN = /^.{1,255}$/m;
 export const IDENTIFIER_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,39}$/;
+export const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 /** Marks a field as required with the shared error message. */
 export type RequiredWhen = NonNullable<NonNullable<Parameters<typeof required>[1]>['when']>;
@@ -30,6 +32,14 @@ export function identifierField<TPathKind extends PathKind = PathKind.Root>(
 ): void {
   pattern(path, IDENTIFIER_PATTERN, {
     message: 'ADMIN.SHARED.validatorError.identifierValidator',
+  });
+}
+
+export function emailField<TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
+): void {
+  pattern(path, EMAIL_PATTERN, {
+    message: 'ADMIN.SHARED.validatorError.emailValidator',
   });
 }
 
@@ -158,6 +168,56 @@ export function validateDuplicate<TValue, TPathKind extends PathKind = PathKind.
     };
   });
 }
+
+export function validatePasswordStrength<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>
+): void {
+  validate(path, ({value}) => {
+    if (measureStrength(String(value()))) {
+      return null;
+    } else {
+      return {
+        kind: 'passwordStrength',
+        message: 'ADMIN.SHARED.validatorError.passwordStrength',
+      };
+    }
+  });
+}
+
+export function measureStrength(p?: string): boolean {
+  if (!p) {
+    return false;
+  }
+  const strongPassword = new RegExp(
+    '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})'
+  );
+  return strongPassword.test(p);
+}
+
+export function validatePasswordMatch<TValue, TPathKind extends PathKind = PathKind.Root>(
+  path: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  confirmPasswordPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,
+  options?: { when?: LogicFn<TValue, boolean, TPathKind>; }
+) {
+  validate(path, (context) => {
+    if (options?.when && !options.when(context)) {
+      return null;
+    }
+    const password = context.value();
+    const confirmPassword = context.valueOf(confirmPasswordPath);
+    if (password && confirmPassword) {
+      if (password !== confirmPassword) {
+        return {
+          kind: 'passwordMismatch',
+          message: 'ADMIN.SHARED.validatorError.passwordMismatch',
+        }
+      }
+      return null;
+    }
+    return null;
+  });
+}
+
 
 export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Root>(
   minPath: SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>,

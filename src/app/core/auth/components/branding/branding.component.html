@@ -1,28 +1,11 @@
-<div
-  class="hidden md:flex h-full w-full items-center bg-linear-to-r from-primary to-tertiary dark:from-primary-dark dark:to-tertiary-dark rounded-b md:rounded-r md:rounded-bl-none">
+<div class="hidden md:flex h-full w-full items-center bg-linear-to-r from-primary to-tertiary rounded-b md:rounded-r md:rounded-bl-none">
   @if (configurationService.customBranding(); as branding) {
     <div class="p-16 text-white text-center w-full">
       <app-logo class="block mx-auto" [url]="branding.logo"/>
       <h2 class="mb-12 mt-1 text-lg font-semibold">
-        {{ "welcomeTitle" | translate }}
-      </h2>
+        {{ "welcomeTitle" | translate }} </h2>
       <p class="text-sm">
-        {{ "welcomeMessage" | translate }}
-      </p>
+        {{ "welcomeMessage" | translate }} </p>
     </div>
   }
 </div>
-
-<!--<div>-->
-<!--  @if (configurationService.brandingCustomization(); as branding) {-->
-<!--    <div class="p-16 text-white text-center">-->
-<!--      <app-logo class="block mx-auto" [url]="branding.logo"/>-->
-<!--      <h2 class="mb-12 mt-1 text-lg font-semibold">-->
-<!--        {{ "welcomeTitle" | translate }}-->
-<!--      </h2>-->
-<!--      <p class="text-sm">-->
-<!--        {{ "welcomeMessage" | translate }}-->
-<!--      </p>-->
-<!--    </div>-->
-<!--  }-->
-<!--</div>-->

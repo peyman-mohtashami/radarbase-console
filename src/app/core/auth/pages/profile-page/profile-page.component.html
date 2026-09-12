@@ -1,0 +1,43 @@
+@let _i18nProfile = "AUTH.PROFILE";
+@let _i18nError = "AUTH.ERROR";
+
+@if (authService.user()) {
+  <div class="flex justify-center items-center h-full">
+    <mat-card class="w-1/3 max-w-200">
+      <h4 class="my-4 text-center text-xl font-bold">{{ `${_i18nProfile}.title` | translate }}</h4>
+
+      <mat-card-content>
+        @if (error()) {
+          <app-error-message-box>
+            {{ `${_i18nError}.${error()?.error?.errorCode ?? error()?.error?.error}` | translate }}
+          </app-error-message-box>
+        }
+
+        <form novalidate (submit)="onSubmit($event)">
+          <app-input-form-field [field]="form.login" [label]=`${_i18nProfile}.login` appearance='fill'/>
+          <app-input-form-field [field]="form.firstName" [label]="`${_i18nProfile}.firstName`"/>
+          <app-input-form-field [field]="form.lastName" [label]="`${_i18nProfile}.lastName`"/>
+          <app-input-form-field [field]="form.email" [label]="`${_i18nProfile}.email`" appearance='fill'/>
+        </form>
+
+        <button mat-raised-button
+                class="w-full my-4"
+                [class]="success() ? 'bg-green-200! text-green-700!' : ''"
+                color='primary'
+                name='update'
+                [disabled]='formSubmitDisabled()'>
+          @if (loading()) {
+            <mat-icon>
+              <mat-spinner diameter='20'/>
+            </mat-icon>
+          }
+
+          @if (success()) {
+            <mat-icon>check</mat-icon>
+          }
+          {{ success() ? (`${_i18nProfile}.success` | translate) : (`${_i18nProfile}.update` | translate) }}
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
