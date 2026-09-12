@@ -19,7 +19,7 @@ import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-
 import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DialogMode} from '../../../../shared/enums/dialog';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {SourceStore} from '../../services/source.store';
 
 @Component({
@@ -38,7 +38,7 @@ import {SourceStore} from '../../services/source.store';
 })
 export class SourceListPageComponent {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   readonly store = inject(SourceStore);

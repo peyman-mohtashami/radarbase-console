@@ -12,9 +12,6 @@ import { TiptapEditorDirective } from 'ngx-tiptap';
 import Color from '@tiptap/extension-color';
 import {TextStyle} from '@tiptap/extension-text-style';
 import {FormsModule} from '@angular/forms';
-// import {
-//   QuestionReference
-// } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-reference/question-reference.component';
 import {MatDialog} from '@angular/material/dialog';
 import {
   QuestionPickerDialogComponent
@@ -42,53 +39,6 @@ import {
   imports: [TiptapEditorDirective, FormsModule, MatIcon, MatIconButton, MatTooltip],
   templateUrl: './rich-text-editor.component.html',
   styles: `
-    //.editor-container {
-    //  border: 1px solid #d1d5db;
-    //  border-radius: 6px;
-    //  overflow: hidden;
-    //}
-    //
-    //.toolbar {
-    //  display: flex;
-    //  align-items: center;
-    //  gap: 4px;
-    //  padding: 6px;
-    //  border-bottom: 1px solid #d1d5db;
-    //  background: #f9fafb;
-    //}
-
-    //.toolbar button {
-    //  border: 0;
-    //  background: transparent;
-    //  padding: 6px 9px;
-    //  border-radius: 4px;
-    //  cursor: pointer;
-    //}
-
-    //.toolbar button:hover {
-    //  background: #e5e7eb;
-    //}
-    //
-    //.toolbar button.active {
-    //  background: #dbeafe;
-    //}
-    //
-    //.toolbar button:disabled {
-    //  opacity: 0.4;
-    //  cursor: default;
-    //}
-
-    //.separator {
-    //  width: 1px;
-    //  height: 24px;
-    //  background: #d1d5db;
-    //  margin: 0 4px;
-    //}
-
-    /*
-     * Tiptap creates a ProseMirror element dynamically.
-     */
-
     :host ::ng-deep .ProseMirror {
       min-height: 100px;
       padding: 16px;
@@ -176,27 +126,6 @@ import {
 
       resize: vertical;
     }
-
-    //:host ::ng-deep .question-reference {
-    //  display: inline-flex;
-    //  align-items: center;
-    //
-    //  padding: 2px 8px;
-    //
-    //  margin: 0 2px;
-    //
-    //  border-radius: 9999px;
-    //
-    //  background: rgb(16 121 95 / 0.2);
-    //  color: #10795f;
-    //
-    //  font-size: 0.875rem;
-    //  font-weight: 500;
-    //
-    //  white-space: nowrap;
-    //
-    //  cursor: pointer;
-    //}
   `,
 })
 export class RichTextEditorComponent implements OnInit, OnDestroy {
@@ -215,39 +144,18 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
     this.editor.set(
       new Editor({
         extensions: [
-          // StarterKit,
-          //
-          // Image.configure({
-          //   inline: false,
-          //   allowBase64: false,
-          // }),
-          //
-          // TextStyle,
-          // Color,
-          // QuestionReference(
-          //   this.injector,
-          // ),
-          // VariableReference(
-          //   this.injector,
-          // ),
-
           StarterKit,
-
           TextStyle,
           Color,
-
           HtmlAttributes,
-
           Image.configure({
             inline: false,
             allowBase64: false,
           }),
           Iframe,
-
           QuestionReference(
             this.injector,
           ),
-
           VariableReference(
             this.injector,
           ),
@@ -404,7 +312,6 @@ export class RichTextEditorComponent implements OnInit, OnDestroy {
 
     const dialogActionSubscription = dialogRef.afterClosed().subscribe(
       (variable: QuestionTemplateVariable | undefined) => {
-        console.log('Class: RichTextEditorComponent, Function: , Line 371 variable' , variable);
         if (!variable) return;
         this.insertVariableReference(variable);
       }
@@ -476,7 +383,6 @@ export const HtmlAttributes = Extension.create({
 });
 
 import { Node } from '@tiptap/core';
-import {HtmlEditorComponent} from '../html-editor/html-editor.component';
 
 export const Iframe = Node.create({
   name: 'iframe',

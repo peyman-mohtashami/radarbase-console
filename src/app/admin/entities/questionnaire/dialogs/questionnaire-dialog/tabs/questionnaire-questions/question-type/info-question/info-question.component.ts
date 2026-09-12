@@ -29,10 +29,10 @@ import {
 import {QuestionsStore} from '../../services/questions.store';
 import {
   SelectFormFieldComponent
-} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 import {
   InputFormFieldComponent
-} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireInfoQuestionForm extends Record<string, unknown> {
   id: string;

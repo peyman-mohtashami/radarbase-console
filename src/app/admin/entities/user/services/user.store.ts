@@ -3,7 +3,7 @@ import {firstValueFrom} from 'rxjs';
 import {Params} from '@angular/router';
 import {AppRole, AppUser, CreateUserDto, RoleDto, UpdateUserDto, UserDto} from '../models/user';
 import {UserService} from './user.service';
-import {ROLES} from '../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../core/auth/models/auth.model';
 import {UserConfigService} from './user-config.service';
 import {PageEvent} from '@angular/material/paginator';
 import {RbSort, TableElement} from '../../../shared/models/table.model';
@@ -209,15 +209,15 @@ export class UserStore {
     };
     return roles.reduce((acc: AppRole, role: RoleDto) => {
       const authorityName = role.authorityName ?? role.authority?.name;
-      if (authorityName === ROLES.SYS_ADMIN) {
+      if (authorityName === APP_ROLES.SYS_ADMIN) {
         acc._sysAdmin = true;
-      } else if (authorityName === ROLES.ORGANIZATION_ADMIN) {
+      } else if (authorityName === APP_ROLES.ORGANIZATION_ADMIN) {
         const organizationId = role.organizationId ?? role.organization?.id ?? '';
         const organizationName = role.organizationName ?? role.organization?.name ?? '';
         acc._organizationAdmin = true;
         acc._organizations = acc._organizations || [];
         acc._organizations.push({ id: Number(organizationId), name: organizationName });
-      } else if (authorityName === ROLES.PROJECT_ADMIN) {
+      } else if (authorityName === APP_ROLES.PROJECT_ADMIN) {
         const projectId = role.projectId ?? role.project?.id ?? '';
         const projectName = role.projectName ?? role.project?.projectName ?? '';
         acc._projectAdmin = true;

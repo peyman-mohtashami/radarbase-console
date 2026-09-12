@@ -66,7 +66,6 @@ export class TableQueryReflectorDirective implements OnInit {
       replaceUrl: true,
       queryParams,
       queryParamsHandling: 'merge',
-      // fragment: this.activatedRoute.snapshot.fragment ?? undefined,
     }).then();
   }
 }

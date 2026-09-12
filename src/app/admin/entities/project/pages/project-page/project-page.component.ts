@@ -12,7 +12,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../shared/models/tab-link";
 import {ProjectActionsComponent} from '../../components/project-actions/project-actions.component';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {ProjectStore} from '../../services/project.store';
 import {MatIcon} from '@angular/material/icon';
 import {SubjectStore} from '../../../project-subject/services/subject.store';
@@ -35,7 +35,7 @@ import {SubjectStore} from '../../../project-subject/services/subject.store';
   ]
 })
 export class ProjectPageComponent implements OnDestroy {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(ProjectStore);

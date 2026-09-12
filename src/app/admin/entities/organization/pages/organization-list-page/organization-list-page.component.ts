@@ -22,7 +22,7 @@ import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
 import {DialogMode} from '../../../../shared/enums/dialog';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {OrganizationStore} from '../../services/organization.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
 import {ListPageHeaderComponent} from '../../../../shared/components/list-page-header/list-page-header.component';
@@ -45,7 +45,7 @@ import {ListPageHeaderComponent} from '../../../../shared/components/list-page-h
 })
 export class OrganizationListPageComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   readonly store = inject(OrganizationStore);

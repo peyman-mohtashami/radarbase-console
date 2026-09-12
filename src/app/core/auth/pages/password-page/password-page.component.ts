@@ -15,7 +15,7 @@ import {
 import {form} from '@angular/forms/signals';
 import {
   InputFormFieldComponent
-} from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {MatSuffix} from '@angular/material/input';
 
 @Component({

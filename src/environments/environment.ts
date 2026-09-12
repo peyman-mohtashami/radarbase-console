@@ -4,6 +4,6 @@
 
 export const environment = {
   production: false,
-  version: "2.1.3-dev",
-  apiUrl: '/managementportal/', //http://localhost/managementportal/',
+  version: "2.1.5-dev",
+  apiUrl: '/managementportal/',
 };

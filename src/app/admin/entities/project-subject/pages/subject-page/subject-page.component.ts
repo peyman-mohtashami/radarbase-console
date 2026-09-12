@@ -11,7 +11,7 @@ import {SubjectActionsComponent} from '../../components/subject-actions/subject-
 import {MatIcon} from '@angular/material/icon';
 import {ENTITY_REGISTRY} from '../../../../../shared/consts/entity-registry';
 import {SubjectStore} from '../../services/subject.store';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {ProjectStore} from '../../../project/services/project.store';
 import {OrganizationStore} from '../../../organization/services/organization.store';
 
@@ -33,7 +33,7 @@ import {OrganizationStore} from '../../../organization/services/organization.sto
   ]
 })
 export class SubjectPageComponent implements OnDestroy {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(SubjectStore);

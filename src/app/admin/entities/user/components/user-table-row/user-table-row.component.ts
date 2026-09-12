@@ -8,7 +8,7 @@ import {UserConfigService} from "../../services/user-config.service";
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {UserActionsComponent} from '../user-actions/user-actions.component';
 import {UserActivateComponent} from '../user-activate/user-activate.component';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
@@ -25,7 +25,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
   ]
 })
 export class UserTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(UserConfigService);

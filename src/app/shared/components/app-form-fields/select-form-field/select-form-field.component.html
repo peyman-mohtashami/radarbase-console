@@ -1,0 +1,27 @@
+<div>
+  @if (label() !== null) {
+    <label for="project-name" class="text-sm">{{ label() | translate }}
+      @if (required()) {
+        *
+      }
+    </label>
+  }
+  <ng-content/>
+  <mat-form-field class='small-input w-full' subscriptSizing="fixed" [appearance]='appearance()'>
+    <mat-select [formField]="field()">
+      @for (option of options(); track option.value) {
+        <mat-option [value]="option.value">{{ `${option.label}` | translate }}</mat-option>
+      }
+    </mat-select>
+    @if (!disableError()) {
+      <mat-error>
+        @if (field()().touched() && field()().invalid()) {
+          {{ field()().errors()[0].message | translate }}
+          <!--          @for (error of field()().errors(); track error.kind) {-->
+          <!--            {{ error.message | translate }}-->
+          <!--          }-->
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+</div>

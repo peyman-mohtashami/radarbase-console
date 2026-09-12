@@ -1,56 +1,59 @@
-import {inject, Injectable, signal} from "@angular/core";
+import {effect, inject, Injectable, signal} from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 
 import {ConfigurationService} from '../../configuration/services/configuration.service';
-import {ThemesConfiguration} from '../../configuration/models/custom-configuration.model';
+
+type ThemeMode = 'light' | 'dark';
+
+const THEME_STORAGE_KEY = 'theme';
+const CSS_VAR_PREFIX = '--mat-sys';
 
 @Injectable({providedIn: 'root'})
 export class ThemeService {
-  private readonly appCustomizationService  = inject(ConfigurationService);
+  private readonly configurationService = inject(ConfigurationService);
   private readonly document = inject(DOCUMENT);
 
-  private readonly _isLightTheme = signal<boolean>(true);
-  readonly isLightTheme = this._isLightTheme.asReadonly();
+  private readonly _mode = signal<ThemeMode>(this.getStoredMode());
+  readonly isLightTheme = () => this._mode() === 'light';
+
+  constructor() {
+    effect(() => {
+      const mode = this._mode();
+      this.document.documentElement.classList.toggle('dark', mode === 'dark');
+      localStorage.setItem(THEME_STORAGE_KEY, mode);
+    });
+  }
 
   init(): void {
-    const isLight = localStorage.getItem('theme') !== 'dark';
-    this._isLightTheme.set(isLight);
-    this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
-
-    const themeCustomization = this.appCustomizationService.customBranding().theme; //.themeCustomization();
-    setTheme(themeCustomization);
+    const { light, dark } = this.configurationService.customBranding().theme;
+    this.applyThemeVariables(light, '');
+    this.applyThemeVariables(dark, '-dark');
   }
 
   toggleTheme(): void {
-    this._isLightTheme.set(!this.isLightTheme());
-    localStorage.setItem('theme', this.isLightTheme() ? 'light' : 'dark');
-    this.document.documentElement.classList.toggle('dark', !this.isLightTheme());
+    this._mode.update((mode) => (mode === 'light' ? 'dark' : 'light'));
   }
-}
 
-export function setTheme(themeConfig: ThemesConfiguration): void {
-  const root = document.documentElement;
+  private getStoredMode(): ThemeMode {
+    return localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
+  }
 
-  Object.entries(themeConfig.light).forEach(([key, value]) => {
-    root.style.setProperty(`--mat-sys-${key}`, value);
-    root.style.setProperty(`--mat-sys-${key}-rgb`, hexToRgb(value));
-  });
-
-  Object.entries(themeConfig.dark).forEach(([key, value]) => {
-    root.style.setProperty(`--mat-sys-${key}-dark`, value);
-    root.style.setProperty(`--mat-sys-${key}-rgb-dark`, hexToRgb(value));
-  });
+  private applyThemeVariables(colors: Record<string, string>, suffix: string): void {
+    const root = this.document.documentElement;
+    Object.entries(colors).forEach(([key, value]) => {
+      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}${suffix}`, value);
+      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}-rgb${suffix}`, hexToRgb(value));
+    });
+  }
 }
 
 export function hexToRgb(hex: string): string {
-  hex = hex.replace(/^#/, '');
+  const normalized = hex.replace(/^#/, '');
+  const full = normalized.length === 3
+    ? normalized.split('').map((c) => c + c).join('')
+    : normalized;
 
-  // Expand short form (e.g., 'abc') to full form (e.g., 'aabbcc')
-  if (hex.length === 3) {
-    hex = hex.split('').map((c) => c + c).join('');
-  }
-
-  const num = parseInt(hex, 16);
+  const num = parseInt(full, 16);
   const r = (num >> 16) & 255;
   const g = (num >> 8) & 255;
   const b = num & 255;

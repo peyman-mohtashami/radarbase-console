@@ -21,7 +21,7 @@ import {AppConfig} from '../../../config/models/config';
 import {PageEvent} from '@angular/material/paginator';
 import {TableElement} from '../../../../shared/models/table.model';
 import {DialogMode} from '../../../../shared/enums/dialog';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {AppQuestionnaire} from '../../models/questionnaire';
@@ -42,7 +42,7 @@ import {AppQuestionnaire} from '../../models/questionnaire';
 })
 export class QuestionnaireListPageComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   readonly store = inject(QuestionnaireStore);

@@ -12,7 +12,7 @@ import {ConfigurationService} from '../../../core/configuration/services/configu
 import {MatIcon} from '@angular/material/icon';
 import {CustomConfiguration} from '../../../core/configuration/models/deployment-configuration.model';
 import {NavGroupItem} from '../../../core/configuration/models/nav-group-item.model';
-import {ROLES} from '../../enums/roles';
+import {APP_ROLES} from '../../../core/auth/models/auth.model';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../consts/entity-registry';
 
 @Component({
@@ -60,7 +60,7 @@ export class SidebarNavComponent {
   private setNavGroupItems(config: CustomConfiguration['mainNavigation']) {
     const navGroupItems: NavGroupItem[] = [
       {
-        permission: [{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN}, {role: ROLES.PROJECT_ADMIN}],
+        permission: [{role: APP_ROLES.SYS_ADMIN}, {role: APP_ROLES.ORGANIZATION_ADMIN}, {role: APP_ROLES.PROJECT_ADMIN}],
         close: false,
         header: {icon: 'workspaces', name: 'coreManagement'},
         navList: [
@@ -70,7 +70,7 @@ export class SidebarNavComponent {
         ],
       },
       {
-        permission: [{role: ROLES.SYS_ADMIN}],
+        permission: [{role: APP_ROLES.SYS_ADMIN}],
         close: false,
         header: {icon: 'tune', name: 'systemConfiguration'},
         navList: ([
@@ -84,7 +84,7 @@ export class SidebarNavComponent {
         ]).filter(item => !!item),
       },
       {
-        permission: [{role: ROLES.SYS_ADMIN}],
+        permission: [{role: APP_ROLES.SYS_ADMIN}],
         close: true,
         header: {icon: 'monitor_heart', name: 'monitoring'},
         navList: ([

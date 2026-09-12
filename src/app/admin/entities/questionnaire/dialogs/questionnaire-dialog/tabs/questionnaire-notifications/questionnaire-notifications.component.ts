@@ -15,7 +15,7 @@ import {MatDivider} from '@angular/material/list';
 import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 import {
   InputFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireNotificationsForm {
   notification: {

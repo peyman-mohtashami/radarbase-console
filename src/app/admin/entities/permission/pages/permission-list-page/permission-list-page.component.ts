@@ -20,7 +20,7 @@ import {PageEvent} from '@angular/material/paginator';
 import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
 import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {PermissionStore} from '../../services/permission.store';
 import {OrganizationStore} from '../../../organization/services/organization.store';
 
@@ -40,7 +40,7 @@ import {OrganizationStore} from '../../../organization/services/organization.sto
 })
 export class PermissionListPageComponent implements OnInit {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   readonly store = inject(PermissionStore);

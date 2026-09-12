@@ -13,7 +13,7 @@ import {emailField, requiredField} from '../../../../shared/utils/signal-form-va
 import {BrandingComponent} from '../../components/branding/branding.component';
 import {
   InputFormFieldComponent
-} from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatSuffix} from '@angular/material/input';
 

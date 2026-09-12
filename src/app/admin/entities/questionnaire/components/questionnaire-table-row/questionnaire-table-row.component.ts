@@ -8,7 +8,7 @@ import {QuestionnaireActionsComponent} from '../questionnaire-actions/questionna
 import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {JsonPipe} from '@angular/common';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
@@ -32,7 +32,7 @@ import {OffsetTimePipe} from '../../../../../shared/pipes/offset-time.pipe';
   ]
 })
 export class QuestionnaireTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(QuestionnaireConfigService);

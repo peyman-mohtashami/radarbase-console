@@ -74,6 +74,14 @@ export const DEFAULT_CONFIGURATION: CustomConfiguration = {
         "on-tertiary": "#ffffff"
       },
     },
+    // "sampleColors": {
+    //   "primary": "#9262ff",
+    //   "on-primary": "#ffffff",
+    //   "accent": "#5c3ccf",
+    //   "on-accent": "#ffffff",
+    //   "tertiary": "#cf3ca5",
+    //   "on-tertiary": "#ffffff"
+    // },
   },
   "entities": {
     project: {

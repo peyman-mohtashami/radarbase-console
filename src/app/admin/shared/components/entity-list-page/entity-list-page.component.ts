@@ -29,7 +29,6 @@ export class EntityListPageComponent {
   protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   customTemplate = input<TemplateRef<unknown>>();
-  // entities = input<{name?: string; _name?: string}[]>([]);
   entities = input<any[]>([]);
   tableFields = input<TableElement[]>([]);
   entityMetadata = input.required<EntityRegistry>();
@@ -52,14 +51,10 @@ export class EntityListPageComponent {
   }
 
   masterToggle() {
-    console.log('Class: EntityListPageComponent, Function: masterToggle, Line 54 ' , );
     if (this.isAllSelected()) {
-      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 56 ' , );
       this.selection().clear();
     } else {
-      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 59 ' , );
       this.selection().select(...this.entities());
-      console.log('Class: EntityListPageComponent, Function: masterToggle, Line 64 this.selection().selected' , this.selection().selected);
     }
   }
 

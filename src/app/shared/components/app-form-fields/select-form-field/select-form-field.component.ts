@@ -25,4 +25,6 @@ export class SelectFormFieldComponent {
   readonly required = input(false);
   readonly appearance = input<'fill' | 'outline'>('outline');
   readonly subscriptSizing = input<'fixed' | 'dynamic'>('fixed');
+  readonly disableError = input(false);
+
 }

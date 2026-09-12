@@ -14,13 +14,13 @@ import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {dragDropStyles, minuteToOffset, moveItemInFormArray, offsetToMinute} from '../../services/utils';
 import {
   DateFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
 import {
   InputFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export const UNITS = [
   { value: 'min', label: 'Minute' },

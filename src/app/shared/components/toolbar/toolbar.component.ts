@@ -47,8 +47,8 @@ export class ToolbarComponent implements OnInit {
     this.authService.logout();
   }
 
-  switchLanguage(currentLanguage: Language): void {
-    this.localeService.switchLanguage(currentLanguage);
+  async switchLanguage(currentLanguage: Language): Promise<void> {
+    await this.localeService.switchLanguage(currentLanguage);
   }
 
   toggleMenu(): void {

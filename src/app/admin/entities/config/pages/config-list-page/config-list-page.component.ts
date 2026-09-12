@@ -20,7 +20,7 @@ import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
 import {TableElement} from '../../../../shared/models/table.model';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {ConfigStore} from '../../services/config.store';
 
 @Component({
@@ -40,7 +40,7 @@ import {ConfigStore} from '../../services/config.store';
 })
 export class ConfigListPageComponent {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
   readonly store = inject(ConfigStore);

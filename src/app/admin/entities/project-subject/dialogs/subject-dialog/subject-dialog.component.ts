@@ -32,13 +32,13 @@ import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   DateFormFieldComponent
-} from '../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+} from '../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
 import {DialogMode} from '../../../../shared/enums/dialog';
 
 export interface SubjectForm {

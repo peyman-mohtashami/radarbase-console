@@ -23,7 +23,7 @@ import {form, FormField} from '@angular/forms/signals';
 import {JsonPipe} from '@angular/common';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface PermissionForm {
   email: string,

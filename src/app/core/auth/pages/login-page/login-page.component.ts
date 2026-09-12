@@ -8,7 +8,6 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButton} from "@angular/material/button";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
-import {LastUrlService} from '../../../navigation-tracker/services/last-url.service';
 import {requiredField} from '../../../../shared/utils/signal-form-validators';
 import {form} from "@angular/forms/signals";
 import {ReactiveFormsModule} from '@angular/forms';
@@ -16,7 +15,7 @@ import {BrandingComponent} from '../../components/branding/branding.component';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {
   InputFormFieldComponent
-} from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 @Component({
   selector: 'app-login-page',
@@ -74,9 +73,7 @@ export class LoginPageComponent {
   }
 
   private redirectAfterLogin(): void {
-    const lastLocation = LastUrlService.getLastUrl();
-    this.router.navigateByUrl(lastLocation || '/admin').then(() => {
-      LastUrlService.clearLastUrl();
-    });
+    const returnUrl = history.state?.returnUrl as string | undefined;
+    this.router.navigateByUrl(returnUrl || '/admin').then();
   }
 }

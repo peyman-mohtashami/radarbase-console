@@ -7,7 +7,7 @@ import {
 import {SourceTypeDetailsComponent} from "../source-type-details/source-type-details.component";
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SourceTypeActionsComponent} from '../source-type-actions/source-type-actions.component';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
@@ -25,7 +25,7 @@ import {SourceTypeConfigService} from '../../services/source-type-config.service
   ]
 })
 export class SourceTypeTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(SourceTypeConfigService);

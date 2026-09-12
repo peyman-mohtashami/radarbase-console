@@ -1,4 +1,4 @@
-export enum RADAR_ROLES {
+export enum APP_ROLES {
   SYS_ADMIN = 'ROLE_SYS_ADMIN',
   ORGANIZATION_ADMIN = 'ROLE_ORGANIZATION_ADMIN',
   PROJECT_ADMIN = 'ROLE_PROJECT_ADMIN',
@@ -24,3 +24,4 @@ export interface AppAuthCredential {
   password: string;
   remember?: boolean;
 }
+

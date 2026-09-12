@@ -13,7 +13,7 @@ import {disabled, email, form} from '@angular/forms/signals';
 import {ReactiveFormsModule} from '@angular/forms';
 import {
   InputFormFieldComponent
-} from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {UserDto} from '../../../../admin/entities/user/models/user';
 
 @Component({

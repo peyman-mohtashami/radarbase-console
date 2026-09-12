@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 type unit = 'bytes' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB';
 type unitPrecisionMap = Record<unit, number>;
@@ -50,7 +50,7 @@ const defaultPrecisionMap: unitPrecisionMap = {
  * {{ 1500 | fileSize:2 }}
  */
 @Pipe({
-    name: 'fileSize',
+  name: 'fileSize',
 })
 export class FileSizePipe implements PipeTransform {
   private readonly units: unit[] = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];

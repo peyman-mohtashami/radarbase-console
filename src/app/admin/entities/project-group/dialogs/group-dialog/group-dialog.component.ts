@@ -31,7 +31,7 @@ import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface GroupForm {
   id: string;

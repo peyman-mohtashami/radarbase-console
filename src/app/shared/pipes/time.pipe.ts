@@ -1,12 +1,12 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-    name: 'time',
+  name: 'time',
 })
 export class TimePipe implements PipeTransform {
 
   transform(value?: number, unit = 'min') {
-    return value? this.minutesToWDHM(value, unit) : '0';
+    return value ? this.minutesToWDHM(value, unit) : '0';
   }
 
   protected minutesToWDHM(value: number, unit: string): string {

@@ -34,13 +34,13 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
-} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface SourceDataForm {
   id: string;

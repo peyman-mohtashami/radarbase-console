@@ -13,7 +13,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {AsyncPipe} from '@angular/common';
 
@@ -36,7 +36,7 @@ import {AsyncPipe} from '@angular/common';
   ]
 })
 export class SubjectTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(SubjectConfigService);

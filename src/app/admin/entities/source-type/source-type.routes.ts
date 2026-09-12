@@ -4,8 +4,8 @@ import {SourceTypePageComponent} from "./pages/source-type-page/source-type-page
 import {SourceTypeListResolver} from './services/source-type-list.resolver';
 import {SourceTypeResolver} from './services/source-type.resolver';
 import {SourceTypeListPageComponent} from './pages/source-type-list-page/source-type-list-page.component';
-import {RADAR_ROLES} from '../../../core/auth/models/auth.model';
 import {SourceTypeDetailsPageComponent} from './pages/source-type-details-page/source-type-details-page.component';
+import {APP_ROLES} from '../../../core/auth/models/auth.model';
 
 export const sourceTypeRoutes: Routes = [
   {
@@ -16,7 +16,7 @@ export const sourceTypeRoutes: Routes = [
     },
     canActivate: [roleGuard],
     data: {
-      allowedRoles: [RADAR_ROLES.SYS_ADMIN],
+      allowedRoles: [APP_ROLES.SYS_ADMIN],
     },
   },
   {

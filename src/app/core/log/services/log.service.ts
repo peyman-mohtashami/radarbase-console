@@ -5,25 +5,17 @@ import { NGXLogger } from "ngx-logger";
   providedIn: 'root'
 })
 export class LogService {
-  private logger = inject(NGXLogger);
+  private readonly logger = inject(NGXLogger);
 
   logError(error: Error){
     this.logger.error(error);
   }
 
-  logWarn(error: Error){ //message: string[], stack: string | undefined){
-    // this.logger.debug(error);
+  logWarn(error: Error){
     this.logger.warn(error);
   }
 
-  logInfo(error: Error){ //message: string[], stack: string | undefined){
-    // this.logger.debug(error);
+  logInfo(error: Error){
     this.logger.info(error);
   }
-  // logError(message: string[], stack: string | undefined) {
-  //   // TODO Send errors to server here
-  //   if (message.length) {
-  //     console.log('LoggingService', message, stack);
-  //   }
-  // }
 }

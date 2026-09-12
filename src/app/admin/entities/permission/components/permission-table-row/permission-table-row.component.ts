@@ -9,7 +9,7 @@ import {
 } from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {PermissionActionsComponent} from '../permission-actions/permission-actions.component';
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
@@ -25,7 +25,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
   ]
 })
 export class PermissionTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(PermissionConfigService);

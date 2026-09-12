@@ -22,9 +22,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
   private readonly dialog = inject(MatDialog);
   private readonly logService = inject(LogService);
 
-
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
     if (request.context.get(SKIP_ERROR)) {
       return next.handle(request);
     }
@@ -61,7 +59,10 @@ export class ServerErrorInterceptor implements HttpInterceptor {
 
     if (!request.url.includes('api/account')) {
       const navigationExtras: NavigationExtras = {
-        state: {error: 'sessionExpired'},
+        state: {
+          error: 'sessionExpired',
+          returnUrl: this.router.url,
+        },
       };
       void this.router.navigate(['/auth/login'], navigationExtras);
     }

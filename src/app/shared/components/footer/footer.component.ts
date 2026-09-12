@@ -10,6 +10,6 @@ import { environment } from '../../../../environments/environment';
   ],
 })
 export class FooterComponent {
-  isMenuOpen = input<boolean>(true)
-  readonly version = environment.version;
+  readonly isMenuOpen = input<boolean>(true);
+  protected readonly version = environment.version;
 }

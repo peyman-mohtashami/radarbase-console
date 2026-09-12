@@ -2,12 +2,12 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {finalize, Observable, of} from 'rxjs';
 import {catchError, switchMap, tap} from "rxjs/operators";
 
-import {AppAuthCredential, TokenDataDto} from '../models/auth.model';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {StorageService} from "../../storage/services/storage.service";
 import {Router} from "@angular/router";
 import {environment} from '../../../../environments/environment';
 import {UserDto} from '../../../admin/entities/user/models/user';
+import {AppAuthCredential, TokenDataDto} from '../models/auth.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {

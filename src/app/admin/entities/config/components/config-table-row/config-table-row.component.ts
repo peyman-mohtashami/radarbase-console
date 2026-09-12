@@ -3,7 +3,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {MatIcon} from '@angular/material/icon';
 import {ConfigActionsComponent} from '../config-actions/config-actions.component';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {ConfigConfigService} from '../../services/config-config.service';
 import {AppConfig} from '../../models/config';
@@ -19,7 +19,7 @@ import {AppConfig} from '../../models/config';
   ]
 })
 export class ConfigTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(ConfigConfigService);

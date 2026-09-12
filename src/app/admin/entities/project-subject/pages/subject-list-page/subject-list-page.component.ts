@@ -17,7 +17,7 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
  import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
  import {TableElement} from '../../../../shared/models/table.model';
  import {DialogMode} from '../../../../shared/enums/dialog';
- import {ROLES} from '../../../../../shared/enums/roles';
+ import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
  import {SubjectStore} from '../../services/subject.store';
  import {SubjectDialogMode} from '../../enums/dialog';
  import {ProjectStore} from '../../../project/services/project.store';
@@ -39,7 +39,7 @@ import {SubjectAssignGroupComponent} from '../../components/subject-assign-group
 })
 export class SubjectListPageComponent {
   protected readonly DialogMode = DialogMode;
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
   protected readonly SubjectDialogMode = SubjectDialogMode;
 

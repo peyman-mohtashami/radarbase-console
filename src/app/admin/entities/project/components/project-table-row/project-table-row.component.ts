@@ -12,7 +12,7 @@ import {EntityTableRowComponent} from '../../../../shared/components/entity-tabl
 import {ProjectActionsComponent} from '../project-actions/project-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatIcon} from '@angular/material/icon';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../shared/enums/detail-type';
 
 @Component({
@@ -34,7 +34,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
   ]
 })
 export class ProjectTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(ProjectConfigService);

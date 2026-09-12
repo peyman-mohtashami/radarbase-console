@@ -5,7 +5,7 @@ import {LocalDateComponent} from "../../../../../../core/locale/components/local
 import {AuditConfigService} from "../../services/audit-config.service";
 import {EntityTableRowComponent} from '../../../../../shared/components/entity-table-row/entity-table-row.component';
 import {AuditDetailsComponent} from '../audit-details/audit-details.component';
-import {ROLES} from '../../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../../core/auth/models/auth.model';
 import {DetailType} from '../../../../../shared/enums/detail-type';
 
 @Component({
@@ -19,7 +19,7 @@ import {DetailType} from '../../../../../shared/enums/detail-type';
   ]
 })
 export class AuditTableRowComponent {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly DetailType = DetailType;
 
   configService = inject(AuditConfigService);

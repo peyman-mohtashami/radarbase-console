@@ -1,4 +1,4 @@
-import {ROLES} from "../enums/roles";
+import {APP_ROLES} from "../../core/auth/models/auth.model";
 
 export interface EntityRegistry {
   name: string;
@@ -49,7 +49,7 @@ export const ENTITY_REGISTRY: Record<EntityKey, EntityRegistry> = {
   client: {name: "client", icon: "important_devices", route: "/admin/clients"},
   sourceType: {name: "sourceType", icon: "category", route: "/admin/source-types"},
   sourceData: {name: "sourceData", icon: "schema", route: "/admin/source-data"},
-  user: {name: "user", icon: "person", route: "/admin/users", permission: [{role: ROLES.SYS_ADMIN}]},
+  user: {name: "user", icon: "person", route: "/admin/users", permission: [{role: APP_ROLES.SYS_ADMIN}]},
   audit: {name: "audit", icon: "policy", route: "/admin/audits"},
   log: {name: "log", icon: "description", route: "/admin/logs"},
   revision: {name: "revision", icon: "history", route: "/admin/revisions"},

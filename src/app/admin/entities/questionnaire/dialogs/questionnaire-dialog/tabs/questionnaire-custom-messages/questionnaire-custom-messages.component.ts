@@ -7,10 +7,10 @@ import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {withLanguage} from '../../services/utils';
 import {
   InputFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;

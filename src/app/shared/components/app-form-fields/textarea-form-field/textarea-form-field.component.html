@@ -15,12 +15,15 @@
               [rows]='rows()'
               cdkTextareaAutosize></textarea>
     <mat-hint align="end">{{ description.value.length }} / 255</mat-hint>
-    <mat-error>
-      @if (field()().touched() && field()().invalid()) {
-        @for (error of field()().errors(); track error.kind) {
-          {{ error.message | translate }}
+    @if (!disableError()) {
+      <mat-error>
+        @if (field()().touched() && field()().invalid()) {
+          {{ field()().errors()[0].message | translate }}
+          <!--        @for (error of field()().errors(); track error.kind) {-->
+          <!--          {{ error.message | translate }}-->
+          <!--        }-->
         }
-      }
-    </mat-error>
+      </mat-error>
+    }
   </mat-form-field>
 </div>

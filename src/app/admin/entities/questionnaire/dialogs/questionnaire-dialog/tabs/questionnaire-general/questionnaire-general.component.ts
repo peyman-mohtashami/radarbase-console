@@ -12,12 +12,12 @@ import {
 } from '../../../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
 import {
   InputFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireGeneralForm {
   name: string;

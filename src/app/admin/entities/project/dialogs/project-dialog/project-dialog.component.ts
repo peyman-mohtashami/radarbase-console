@@ -27,7 +27,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   SearchableMultiSelectComponent
-} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {
   longTextField,
   normalTextField,
@@ -38,16 +38,16 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {JsonPipe} from '@angular/common';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 import {
   DateFormFieldComponent
-} from '../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+} from '../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface ProjectForm {
   id: string;

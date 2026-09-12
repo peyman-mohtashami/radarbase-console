@@ -17,7 +17,7 @@ import {MatCard, MatCardContent} from '@angular/material/card';
 import {BrandingComponent} from '../../components/branding/branding.component';
 import {
   InputFormFieldComponent
-} from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 @Component({
   selector: 'app-reset-password-page',

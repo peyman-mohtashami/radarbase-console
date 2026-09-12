@@ -33,10 +33,10 @@ import {
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
 import {
   SelectFormFieldComponent
-} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 import {
   InputFormFieldComponent
-} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireNumberQuestionForm extends Record<string, unknown> {
   id: string;

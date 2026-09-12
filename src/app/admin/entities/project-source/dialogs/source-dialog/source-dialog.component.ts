@@ -31,11 +31,11 @@ import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
 import {ProjectStore} from '../../../project/services/project.store';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface SourceForm {
   id: string;

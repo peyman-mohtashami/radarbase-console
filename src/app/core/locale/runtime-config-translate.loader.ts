@@ -4,49 +4,35 @@ import {TranslateLoader, TranslationObject} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {ConfigurationService} from '../configuration/services/configuration.service';
 
+const DEFAULT_TRANSLATIONS_PATH = 'assets/i18n/';
+
 @Injectable({providedIn: 'root'})
 export class RuntimeConfigTranslateLoader implements TranslateLoader {
-  private configurationService = inject(ConfigurationService)
-  private http = inject(HttpClient);
+
+  private readonly configurationService = inject(ConfigurationService);
+  private readonly http = inject(HttpClient);
 
   getTranslation(lang: string): Observable<TranslationObject> {
-    const localeCustomization = this.configurationService.customLocalization();//.localeCustomization();
-    const base = localeCustomization.translationsBaseUrl || this.defaultBase();
-    const url = this.joinUrl(base, `${lang}.json`);
+    const { translationsBaseUrl } = this.configurationService.customLocalization();
+    const url = this.buildTranslationUrl(translationsBaseUrl, `${lang}.json`);
 
-    // if (!environment.localDeployment) {
-     return this.http.get<TranslationObject>(url);
-    // } else {
-    //   return from(
-    //     fetch(url, {
-    //       method: 'GET',
-    //     })
-    //   ).pipe(
-    //     switchMap(response => {
-    //       if (!response.ok) {
-    //         throw new Error(`Translation request failed with status ${response.status}`);
-    //       }
-    //       return response.json(); // Promise -> Observable via switchMap
-    //     })
-    //   );
-    // }
+    return this.http.get<TranslationObject>(url);
   }
 
-  private defaultBase(): string {
-    // Use document.baseURI when available to build absolute URL under the deployed subpath
-    if (typeof document !== 'undefined' && document.baseURI) {
-      try {
-        return new URL('assets/i18n/', document.baseURI).href;
-      } catch {
-        return 'assets/i18n/';
-      }
+  private buildTranslationUrl(baseUrl: string | undefined, fileName: string): string {
+    const base = baseUrl || this.defaultBaseUrl();
+    return `${base.replace(/\/+$/, '')}/${fileName.replace(/^\/+/, '')}`;
+  }
+
+  private defaultBaseUrl(): string {
+    if (typeof document === 'undefined' || !document.baseURI) {
+      return DEFAULT_TRANSLATIONS_PATH;
     }
-    return 'assets/i18n/';
-  }
 
-  private joinUrl(base: string, path: string): string {
-    if (!base) return path;
-    // Ensure exactly one slash between parts
-    return base.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '');
+    try {
+      return new URL(DEFAULT_TRANSLATIONS_PATH, document.baseURI).href;
+    } catch {
+      return DEFAULT_TRANSLATIONS_PATH;
+    }
   }
 }

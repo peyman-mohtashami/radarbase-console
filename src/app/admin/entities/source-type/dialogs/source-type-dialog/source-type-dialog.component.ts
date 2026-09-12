@@ -24,13 +24,13 @@ import {JsonPipe} from '@angular/common';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
 
 export interface SourceTypeForm {
   id: string;

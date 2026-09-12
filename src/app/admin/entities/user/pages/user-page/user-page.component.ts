@@ -9,7 +9,7 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {ProjectStore} from '../../../project/services/project.store';
 import {OrganizationStore} from '../../../organization/services/organization.store';
-import {ROLES} from '../../../../../shared/enums/roles';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {UserStore} from '../../services/user.store';
 import {SubjectConfigService} from '../../../project-subject/services/subject-config.service';
 
@@ -30,7 +30,7 @@ import {SubjectConfigService} from '../../../project-subject/services/subject-co
   ]
 })
 export class UserPageComponent implements OnDestroy {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(UserStore);

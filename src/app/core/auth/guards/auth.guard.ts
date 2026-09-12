@@ -1,9 +1,9 @@
 import {inject} from '@angular/core';
-import {Router, NavigationExtras, CanActivateFn} from '@angular/router';
+import {Router, CanActivateFn} from '@angular/router';
 
 import {AuthService} from "../services/auth.service";
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -11,11 +11,11 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  const navigationExtras: NavigationExtras = {
+  void router.navigate(['/auth/login'], {
     state: {
       error: 'requiredLogin',
+      returnUrl: state.url,
     },
-  };
-  void router.navigate(['/auth/login'], navigationExtras);
+  });
   return false;
-}
+};

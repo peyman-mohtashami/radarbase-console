@@ -8,7 +8,7 @@ import {PermissionDirective} from "../../../../../core/auth/directives/show-if-h
 import {MatTabLink, MatTabNav, MatTabNavPanel} from "@angular/material/tabs";
 import {OrganizationActionsComponent} from '../../components/organization-actions/organization-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {ROLES} from "../../../../../shared/enums/roles";
+import {APP_ROLES} from "../../../../../core/auth/models/auth.model";
 import {ENTITY_REGISTRY} from "../../../../../shared/consts/entity-registry";
 import {TabLink} from "../../../../shared/models/tab-link";
 import {MatButton} from '@angular/material/button';
@@ -34,7 +34,7 @@ import {ProjectStore} from '../../../project/services/project.store';
   ]
 })
 export class OrganizationPageComponent implements OnDestroy {
-  protected readonly ROLES = ROLES;
+  protected readonly ROLES = APP_ROLES;
   protected readonly ENTITY_REGISTRY = ENTITY_REGISTRY;
 
   protected store = inject(OrganizationStore);
@@ -45,7 +45,7 @@ export class OrganizationPageComponent implements OnDestroy {
     {
       path: 'users',
       label: `ADMIN.${ENTITY_REGISTRY.user.name}.title.plural`,
-      permissions: [{role: ROLES.SYS_ADMIN}, {role: ROLES.ORGANIZATION_ADMIN, entityName: this.store.selected()!.name}]
+      permissions: [{role: APP_ROLES.SYS_ADMIN}, {role: APP_ROLES.ORGANIZATION_ADMIN, entityName: this.store.selected()!.name}]
     },
     {path: 'details', label: `ADMIN.${ENTITY_REGISTRY.organization.name}.details`},
   ];

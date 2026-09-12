@@ -25,6 +25,5 @@ export class TextareaFormFieldComponent {
   readonly appearance = input<'fill' | 'outline'>('outline');
   readonly subscriptSizing = input<'fixed' | 'dynamic'>('fixed');
   readonly rows = input(3);
-
-  readonly simple = input(false);
+  readonly disableError = input(false);
 }

@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'offsetTime',
-  standalone: true,
 })
 export class OffsetTimePipe implements PipeTransform {
   transform(offset: string | number): string {

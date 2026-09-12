@@ -4,8 +4,8 @@ import {roleGuard} from "../../../core/auth/guards/role.guard";
 import {SourceDataPageComponent} from "./pages/source-data-page/source-data-page.component";
 import {SourceDataResolver} from "./services/source-data.resolver";
 import {SourceDataListPageComponent} from './pages/source-data-list-page/source-data-list-page.component';
-import {RADAR_ROLES} from '../../../core/auth/models/auth.model';
 import {SourceDataDetailsPageComponent} from './pages/source-data-details-page/source-data-details-page.component';
+import {APP_ROLES} from '../../../core/auth/models/auth.model';
 
 export const sourceDataRoutes: Routes = [
   {
@@ -16,7 +16,7 @@ export const sourceDataRoutes: Routes = [
     },
     canActivate: [roleGuard],
     data: {
-      allowedRoles: [RADAR_ROLES.SYS_ADMIN],
+      allowedRoles: [APP_ROLES.SYS_ADMIN],
     },
   },
   {

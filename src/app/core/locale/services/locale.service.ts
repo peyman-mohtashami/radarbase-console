@@ -4,9 +4,33 @@ import { DateAdapter } from '@angular/material/core';
 import {registerLocaleData} from "@angular/common";
 import {Locale} from 'date-fns';
 
-// import {Language} from '../models/locale.model';
 import {ConfigurationService} from '../../configuration/services/configuration.service';
 import {Language} from '../../configuration/models/custom-configuration.model';
+import {firstValueFrom} from 'rxjs';
+
+const LOCALE_STORAGE_KEY = 'locale';
+
+const LOCALE_LOADERS: Record<
+  string,
+  { angular: () => Promise<{ default: unknown }>; dateFns: () => Promise<Locale> }
+> = {
+  en: {
+    angular: () => import('@angular/common/locales/en'),
+    dateFns: () => import('date-fns/locale/en-GB').then(m => m.enGB),
+  },
+  'en-GB': {
+    angular: () => import('@angular/common/locales/en-GB'),
+    dateFns: () => import('date-fns/locale/en-GB').then(m => m.enGB),
+  },
+  nl: {
+    angular: () => import('@angular/common/locales/nl'),
+    dateFns: () => import('date-fns/locale/nl').then(m => m.nl),
+  },
+  fr: {
+    angular: () => import('@angular/common/locales/fr'),
+    dateFns: () => import('date-fns/locale/fr').then(m => m.fr),
+  },
+};
 
 @Injectable({providedIn: 'root'})
 export class LocaleService {
@@ -14,130 +38,70 @@ export class LocaleService {
   private readonly translate = inject(TranslateService);
   private readonly dateAdapter = inject(DateAdapter<string>);
 
-  private _locales = signal<Language[]>([]);
+  private readonly _locales = signal<Language[]>([]);
   readonly locales = this._locales.asReadonly();
 
-  private _currentLocale = signal<Language | undefined>(undefined);
+  private readonly _currentLocale = signal<Language | undefined>(undefined);
   readonly currentLocale = this._currentLocale.asReadonly();
 
-  init(): void {
-    const languages = this.configurationService.customLocalization().locales;//.localeCustomization().languages;
-    this.initLocales(languages);
+  async init(): Promise<void> {
+    const { locales } = this.configurationService.customLocalization();
+    this._locales.set(locales);
+    this.translate.addLangs(locales.map(lang => lang.code));
+
+    const initialLanguage = this.resolveInitialLanguage(locales);
+    await this.applyLanguage(initialLanguage);
   }
 
-  switchLanguage(language: Language): void {
-    this.storeLocale(language.code);
-
-    document.dir = language.direction || 'ltr';
-    this.registerCulture(language);
-    this.translate.use(language.code).subscribe(() => {
-      this._currentLocale.set(language);
-    });
+  async switchLanguage(language: Language): Promise<void> {
+    localStorage.setItem(LOCALE_STORAGE_KEY, language.code);
+    await this.applyLanguage(language);
   }
 
-  private initLocales(languages: Language[]) {
-    const browserLanguage = this.getBrowserLanguage(languages);
-    document.dir = browserLanguage.direction || 'ltr';
-    this.registerCulture(browserLanguage);
-    this._locales.set(languages);
-    this._currentLocale.set(browserLanguage);
-  }
-
-  private getBrowserLanguage(languages: Language[]) {
+  private resolveInitialLanguage(languages: Language[]): Language {
     const availableCodes = languages.map(lang => lang.code);
-    this.translate.addLangs(availableCodes);
+    const storedCode = localStorage.getItem(LOCALE_STORAGE_KEY);
+    const browserCode = this.translate.getBrowserLang();
 
-    const browserLang = this.translate.getBrowserLang();
-    const storedLang = localStorage.getItem('locale');
+    const selectedCode =
+      (storedCode && availableCodes.includes(storedCode) && storedCode) ||
+      (browserCode && availableCodes.includes(browserCode) && browserCode) ||
+      availableCodes[0];
 
-    const selectedLang = storedLang ?? (
-      browserLang && availableCodes.includes(browserLang)
-        ? browserLang
-        : availableCodes[0]
-    );
-
-    // Set to localStorage if not already stored
-    if (!storedLang) {
-      localStorage.setItem('locale', selectedLang);
-      this.translate.addLangs([selectedLang]);
-      this.translate.use(selectedLang);
+    if (!storedCode) {
+      localStorage.setItem(LOCALE_STORAGE_KEY, selectedCode);
     }
 
-    return languages.find(lang => lang.code === selectedLang) || languages[0];
+    return languages.find(lang => lang.code === selectedCode) ?? languages[0];
   }
 
-  private getAngularLocaleLoader(localeId: string): (() => Promise<{ default: unknown }>) | undefined {
-    switch (localeId) {
-      case 'en':
-        return () => import('@angular/common/locales/en');
-      case 'en-GB':
-        return () => import('@angular/common/locales/en-GB');
-      case 'nl':
-        return () => import('@angular/common/locales/nl');
-      case 'fr':
-        return () => import('@angular/common/locales/fr');
-      default:
-        return undefined;
-    }
+  private async applyLanguage(language: Language): Promise<void> {
+    document.dir = language.direction || 'ltr';
+    await this.loadCultureData(language.locale);
+    await firstValueFrom(this.translate.use(language.code));
+    this._currentLocale.set(language);
   }
 
-  private getDateFnsLocaleLoader(localeId: string): (() => Promise<Locale>) | undefined {
-    switch (localeId) {
-      case 'en':
-      case 'en-GB':
-        return () =>
-          import('date-fns/locale/en-GB').then(m => m.enGB);
-      case 'nl':
-        return () =>
-          import('date-fns/locale/nl').then(m => m.nl);
-      case 'fr':
-        return () =>
-          import('date-fns/locale/fr').then(m => m.fr);
-      default:
-        return undefined;
-    }
-  }
-
-  private storeLocale(languageCode: string): void {
-    localStorage.setItem('locale', languageCode);
-  }
-
-  private registerCulture(language: Language): void {
-    const localeCode = language.locale;
+  private async loadCultureData(localeCode: string | undefined): Promise<void> {
     if (!localeCode) return;
-    const angularLocaleId =
-      localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
 
-    this.localeInitializer(angularLocaleId)
-      .then(() => this.translate.use(language.code))
-      .catch(err => console.warn('Error initializing locale', angularLocaleId, err));
-  }
+    const localeId = localeCode === 'en-GB' ? 'en-GB' : localeCode.substring(0, 2);
+    const loaders = LOCALE_LOADERS[localeId];
 
-  private async localeInitializer(localeId: string): Promise<void> {
-    // Angular i18n locale
-    const angularLoader = this.getAngularLocaleLoader(localeId);
-    if (angularLoader) {
-      try {
-        const module = await angularLoader();
-        registerLocaleData(module.default);
-      } catch (e) {
-        console.warn(`Failed to load Angular locale data for ${localeId}`, e);
-      }
-    } else {
-      console.warn(`Angular locale loader for ${localeId} not found`);
+    if (!loaders) {
+      console.warn(`No locale loaders registered for "${localeId}"`);
+      return;
     }
 
-    // date-fns locale
-    const dateFnsLoader = this.getDateFnsLocaleLoader(localeId);
-    if (dateFnsLoader) {
-      try {
-        const locale = await dateFnsLoader();
-        this.dateAdapter.setLocale(locale);
-      } catch (e) {
-        console.warn(`Failed to load date-fns locale for ${localeId}`, e);
-      }
-    } else {
-      console.warn(`date-fns locale loader for ${localeId} not found`);
-    }
+    await Promise.all([
+      loaders
+        .angular()
+        .then(module => registerLocaleData(module.default))
+        .catch(err => console.warn(`Failed to load Angular locale data for ${localeId}`, err)),
+      loaders
+        .dateFns()
+        .then(locale => this.dateAdapter.setLocale(locale))
+        .catch(err => console.warn(`Failed to load date-fns locale for ${localeId}`, err)),
+    ]);
   }
 }

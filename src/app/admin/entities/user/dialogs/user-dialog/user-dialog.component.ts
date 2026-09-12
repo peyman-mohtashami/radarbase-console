@@ -34,11 +34,11 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   SearchableMultiSelectComponent
-} from '../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
-import {ROLES} from '../../../../../shared/enums/roles';
+} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 
 export interface UserForm {
@@ -230,7 +230,7 @@ export class UserDialogComponent implements AfterViewInit {
     if (!roles) return [];
 
     if (roles._sysAdmin) {
-      return [{ authorityName: ROLES.SYS_ADMIN }];
+      return [{ authorityName: APP_ROLES.SYS_ADMIN }];
     }
 
     let result: RoleDto[] = [];
@@ -238,7 +238,7 @@ export class UserDialogComponent implements AfterViewInit {
     if (roles._organizationAdmin) {
       result = roles._organizations?.map((organization) => {
         return {
-          authorityName: ROLES.ORGANIZATION_ADMIN,
+          authorityName: APP_ROLES.ORGANIZATION_ADMIN,
           organizationId: organization?.id,
           organizationName: organization?.name,
         }
@@ -248,7 +248,7 @@ export class UserDialogComponent implements AfterViewInit {
     if (roles._projectAdmin) {
       result = [...result, ...(roles._projects?.map((project) => {
         return {
-          authorityName: ROLES.PROJECT_ADMIN,
+          authorityName: APP_ROLES.PROJECT_ADMIN,
           projectId: project?.id,
           projectName: project?.projectName,
         }

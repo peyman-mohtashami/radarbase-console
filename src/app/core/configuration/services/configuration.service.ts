@@ -2,13 +2,13 @@ import {computed, inject, Injectable, resource, signal} from '@angular/core';
 import {HttpClient, HttpContext} from '@angular/common/http';
 import {firstValueFrom} from "rxjs";
 import {SKIP_AUTH} from '../../auth/interceptors/auth.interceptor';
-import {ROLES} from '../../../shared/enums/roles';
+import {APP_ROLES} from '../../auth/models/auth.model';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../../shared/consts/entity-registry';
 import {NavGroupItem} from '../models/nav-group-item.model';
 import {
   DEFAULT_CONFIGURATION,
   DEFAULT_CONFIGURATION_URL
-} from '../consts/default-deployment-configuration';
+} from '../consts/default-configuration';
 // import {DEFAULT_CUSTOM_CONFIGURATION} from '../consts/default-custom-configuration.const';
 import {
   // BrandingConfiguration,

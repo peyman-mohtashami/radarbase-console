@@ -29,10 +29,10 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface ConfigForm {
   name: string;

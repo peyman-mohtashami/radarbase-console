@@ -1,7 +1,7 @@
 import {Component, input} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
-import {FieldTree, form, FormField,} from '@angular/forms/signals';
+import {FieldTree, FormField,} from '@angular/forms/signals';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 
 @Component({
@@ -29,4 +29,5 @@ export class DateFormFieldComponent {
   readonly minDate = input<Date | null>(null);
   readonly maxDate = input<Date | null>(null);
   readonly placeholder = input<string | null>(null);
+  readonly disableError = input(false);
 }
