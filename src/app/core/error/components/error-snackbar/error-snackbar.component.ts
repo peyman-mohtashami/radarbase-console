@@ -1,4 +1,4 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
   MatSnackBarRef,
@@ -10,7 +10,6 @@ import {MatIcon} from '@angular/material/icon';
 @Component({
   selector: 'app-error-snackbar',
   templateUrl: './error-snackbar.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TranslatePipe,
     MatIconButton,

@@ -1,7 +1,7 @@
-import {ErrorHandler, makeEnvironmentProviders} from "@angular/core";
+import {EnvironmentProviders, ErrorHandler, makeEnvironmentProviders} from "@angular/core";
 import {GlobalErrorHandler} from "./services/global-error-handler";
 
-export function provideError() {
+export function provideError(): EnvironmentProviders {
   return makeEnvironmentProviders([
     {
       provide: ErrorHandler,

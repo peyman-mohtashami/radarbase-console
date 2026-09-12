@@ -26,7 +26,7 @@ export function provideCore() {
       lang: 'en',
       fallbackLang: 'en'
     }),
-    { provide: TranslateLoader, useClass: RuntimeConfigTranslateLoader },
+    {provide: TranslateLoader, useClass: RuntimeConfigTranslateLoader},
 
     provideAppInitializer(() => {
       const initializerFn = configInitializerFn(

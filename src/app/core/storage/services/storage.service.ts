@@ -4,15 +4,10 @@ import {TokenDataDto} from '../../auth/models/auth.model';
 export enum AuthStorageItem {
   ACCESS_TOKEN = 'accessToken',
   REFRESH_TOKEN = 'refreshToken',
-  USER = 'user',
 }
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
-  // static setAuthResponse(authResponse: AuthResponse): void {
-  //   this.setAccessToken(authResponse.access_token);
-  //   this.setRefreshToken(authResponse.refresh_token);
-  // }
 
   static setAuthTokenData(tokenData: TokenDataDto): void {
     this.setAccessToken(tokenData.access_token);
@@ -23,11 +18,6 @@ export class StorageService {
     this.clearAccessToken();
     this.clearRefreshToken();
   }
-
-  // static clearAuth(): void {
-  //   this.clearAccessToken();
-  //   this.clearRefreshToken();
-  // }
 
   static getAccessToken(): string {
     return localStorage.getItem(AuthStorageItem.ACCESS_TOKEN) as string;
@@ -41,10 +31,6 @@ export class StorageService {
     localStorage.removeItem(AuthStorageItem.ACCESS_TOKEN);
   }
 
-  // static getRefreshToken(): string {
-  //   return <string>localStorage.getItem(AuthStorageItem.REFRESH_TOKEN);
-  // }
-
   static setRefreshToken(token: string): void {
     localStorage.setItem(AuthStorageItem.REFRESH_TOKEN, token);
   }
@@ -52,17 +38,4 @@ export class StorageService {
   static clearRefreshToken(): void {
     localStorage.removeItem(AuthStorageItem.REFRESH_TOKEN);
   }
-
-  // static getUser(): Observable<ManagementPortalUser | null> {
-  //   const user = localStorage.getItem(AuthStorageItem.USER);
-  //   return user ? of(JSON.parse(user)) : of(null);
-  // }
-
-  // static setUser(user: ManagementPortalUser): void {
-  //   localStorage.setItem(AuthStorageItem.USER, JSON.stringify(user));
-  // }
-
-  // static clearUser(): void {
-  //   localStorage.removeItem(AuthStorageItem.USER);
-  // }
 }
