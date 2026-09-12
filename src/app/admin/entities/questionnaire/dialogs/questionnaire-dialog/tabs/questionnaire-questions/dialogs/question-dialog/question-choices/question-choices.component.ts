@@ -7,9 +7,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 import {dragDropStyles} from '../../../../../services/utils';
-import {QuestionTemplateVariablesComponent} from '../question-template-variables/question-template-variables.component';
 import {HtmlEditorComponent} from '../../../../../../../../../../shared/components/html-editor/html-editor.component';
-// import {HtmlEditorComponent} from '../../../../../../../../../../shared/components/html-editor/html-editor.component';
 
 @Component({
   selector: 'app-question-choices',
@@ -24,9 +22,7 @@ import {HtmlEditorComponent} from '../../../../../../../../../../shared/componen
     MatInput,
     CdkDragHandle,
     FormField,
-    // QuestionTemplateVariablesComponent,
     HtmlEditorComponent,
-    // HtmlEditorComponent,
   ],
   styles: dragDropStyles
 })

@@ -1,4 +1,4 @@
-@let _prefix = 'ADMIN.questionnaire.dialog.question';
+@let _i18nQuestion = 'ADMIN.questionnaire.dialog.question';
 @let _language = store.selected()!.defaultLanguage!.code;
 @let _question = entity();
 @let _index = index();
@@ -25,7 +25,7 @@
           <button class="app-icon-button-small"
                   mat-icon-button color="primary"
                   (click)='selectQuestion($event)'>
-            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+            <mat-icon class="">edit</mat-icon>
           </button>
           <app-tag class="text-primary" [class]="_field_type === 'variable' ? 'bg-orange-300' : 'bg-primary/20'">
             {{ _field_type | uppercase }}
@@ -34,7 +34,7 @@
           <div class="shrink-0 grow-0">
             <app-tag class="cursor-pointer"
                      [class]="_question.field_name ? _field_type === 'variable' ? 'bg-orange-300 text-primary' : 'bg-tertiary/20 text-primary' : 'bg-red-500/20 text-red-500'">
-              {{ _question.field_name || `${_prefix}.notAvailable` | translate }}
+              {{ _question.field_name || `${_i18nQuestion}.notAvailable` | translate }}
             </app-tag>
           </div>
         </div>
@@ -44,7 +44,7 @@
             {{ _question.field_label[_language] }}
             <!--            <app-tag class="cursor-pointer"-->
             <!--                     [class]="_question.field_name ? _field_type === 'variable' ? 'bg-orange-300 text-primary' : 'bg-tertiary/20 text-primary' : 'bg-red-500/20 text-red-500'">-->
-            <!--              {{ _question.field_name || `${_prefix}.notAvailable` | translate }}-->
+            <!--              {{ _question.field_name || `${_i18nQuestion}.notAvailable` | translate }}-->
             <!--            </app-tag>-->
           </div>
         </div>
@@ -57,8 +57,8 @@
           }
 
           @if (_question.conditionalLogic?.length) {
-            <mat-icon class="material-symbols-outlined text-xl! text-orange-500! cursor-pointer"
-                      [matTooltip]="`${_prefix}.hasConditionalLogic` | translate">
+            <mat-icon class=" text-xl! text-orange-500! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.hasConditionalLogic` | translate">
               rule
             </mat-icon>
           }
@@ -69,30 +69,30 @@
           <button class="app-icon-button-small"
                   mat-icon-button color="warn"
                   (click)='removeQuestion($event)'>
-            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            <mat-icon class="">delete</mat-icon>
           </button>
 
           @if (!_question.isValid) {
-            <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.isInvalid` | translate">
+            <mat-icon class=" text-xl! text-red-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.isInvalid` | translate">
               warning
             </mat-icon>
           } @else {
-            <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.isValid` | translate">
+            <mat-icon class=" text-xl! text-green-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.isValid` | translate">
               check_circle
             </mat-icon>
           }
 
           @if (!_question.isActive) {
-            <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.isInactive` | translate">
+            <mat-icon class=" text-xl! text-red-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.isInactive` | translate">
               <!--                visibility_off-->
               toggle_off
             </mat-icon>
           } @else {
-            <mat-icon class="material-symbols-outlined text-xl! text-green-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.isActive` | translate">
+            <mat-icon class=" text-xl! text-green-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.isActive` | translate">
               <!--                visibility-->
               toggle_on
             </mat-icon>
@@ -104,35 +104,35 @@
     </mat-expansion-panel-header>
     <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 [&>div:nth-child(odd)]:text-neutral-500">
       @if (_field_type !== 'variable') {
-        <span [class]="!_field_label ? 'text-red-500' : ''">{{ `${_prefix}.fieldLabel` | translate }}</span>
+        <span [class]="!_field_label ? 'text-red-500' : ''">{{ `${_i18nQuestion}.fieldLabel` | translate }}</span>
         <span class="font-bold" [class]="!_field_label ? 'text-red-500' : ''"
-              [innerHtml]="_field_label || `${_prefix}.notAvailable` | translate">
-<!--          {{ _field_label || `${_prefix}.notAvailable` | translate }}-->
+              [innerHtml]="_field_label || `${_i18nQuestion}.notAvailable` | translate">
+<!--          {{ _field_label || `${_i18nQuestion}.notAvailable` | translate }}-->
         </span>
 
-        <span>{{ `${_prefix}.sectionHeader` | translate }}</span>
-        <span>{{ _section_header || `${_prefix}.notAvailable` | translate }}</span>
+        <span>{{ `${_i18nQuestion}.sectionHeader` | translate }}</span>
+        <span>{{ _section_header || `${_i18nQuestion}.notAvailable` | translate }}</span>
 
         @if (CHOICES_ENABLED_FIELDS.includes(_field_type)) {
           <span [class]="!_choices ? 'text-red-500' : ''">
-            {{ `${_prefix}.choices` | translate }}:
+            {{ `${_i18nQuestion}.choices` | translate }}:
           </span>
           <span class="grid grid-cols-[auto_1fr] gap-y-1 font-bold" [class]="!_choices ? 'text-red-500' : ''">
               @for (choice of _choices; track choice.code) {
                 @if (choice.code) {
-                  <mat-icon class="material-symbols-outlined text-base!">
+                  <mat-icon class=" text-base!">
                       {{ CHOICE_ICON_REGISTRY[_field_type] }}
                     </mat-icon>
                   <span> {{ choice.code }}: {{ choice.label[_language] }}</span>
                 } @else {
-                  <mat-icon class="material-symbols-outlined text-base!">
+                  <mat-icon class=" text-base!">
                       {{ CHOICE_ICON_REGISTRY[_field_type] }}
                     </mat-icon>
-                  <span> {{ `${_prefix}.notAvailable` | translate }}: {{ `${_prefix}.notAvailable` | translate }}</span>
+                  <span> {{ `${_i18nQuestion}.notAvailable` | translate }}: {{ `${_i18nQuestion}.notAvailable` | translate }}</span>
                 }
               } @empty {
                 <span></span>
-                <span class="font-bold text-red-500">{{ `${_prefix}.notAvailable` | translate }}</span>
+                <span class="font-bold text-red-500">{{ `${_i18nQuestion}.notAvailable` | translate }}</span>
               }
           </span>
         }
@@ -142,71 +142,71 @@
           @case (QuestionType.RANGE) {
             @if (_question.show_code) {
               <span></span>
-              <span>{{ `${_prefix}.showCode` | translate }}</span>
+              <span>{{ `${_i18nQuestion}.showCode` | translate }}</span>
             }
             @if (_question.show_selected_label) {
               <span></span>
-              <span>{{ `${_prefix}.showSelectedLabel` | translate }}</span>
+              <span>{{ `${_i18nQuestion}.showSelectedLabel` | translate }}</span>
             }
           }
           @case (QuestionType.NUMBER)
           @case (QuestionType.TIME) {
             @if (_question.text_validation_min || _question.text_validation_max) {
-              <span>{{ `${_prefix}.validation` | translate }}</span>
+              <span>{{ `${_i18nQuestion}.validation` | translate }}</span>
               <span>
-                <span>{{ `${_prefix}.textValidationMin` | translate }}
-                  : {{ _question.text_validation_min || `${_prefix}.notAvailable` | translate }}, </span>
-                <span>{{ `${_prefix}.textValidationMax` | translate }}
-                  : {{ _question.text_validation_max || `${_prefix}.notAvailable` | translate }}</span>
+                <span>{{ `${_i18nQuestion}.textValidationMin` | translate }}
+                  : {{ _question.text_validation_min || `${_i18nQuestion}.notAvailable` | translate }}, </span>
+                <span>{{ `${_i18nQuestion}.textValidationMax` | translate }}
+                  : {{ _question.text_validation_max || `${_i18nQuestion}.notAvailable` | translate }}</span>
             </span>
             }
           }
           @case (QuestionType.DATE) {
             @if (_question.text_validation_min || _question.text_validation_max) {
-              <span>{{ `${_prefix}.validation` | translate }}</span>
+              <span>{{ `${_i18nQuestion}.validation` | translate }}</span>
               <span>
-                <span>{{ `${_prefix}.textValidationMin` | translate }}
-                  : {{ (_question.text_validation_min | date) || `${_prefix}.notAvailable` | translate }}, </span>
-                <span>{{ `${_prefix}.textValidationMax` | translate }}
-                  : {{ (_question.text_validation_max | date) || `${_prefix}.notAvailable` | translate }}</span>
+                <span>{{ `${_i18nQuestion}.textValidationMin` | translate }}
+                  : {{ (_question.text_validation_min | date) || `${_i18nQuestion}.notAvailable` | translate }}, </span>
+                <span>{{ `${_i18nQuestion}.textValidationMax` | translate }}
+                  : {{ (_question.text_validation_max | date) || `${_i18nQuestion}.notAvailable` | translate }}</span>
             </span>
             }
           }
           @case (QuestionType.SLIDER) {
-            <span [class]="!_question.range ? 'text-red-500' : ''">{{ `${_prefix}.range` | translate }}</span>
+            <span [class]="!_question.range ? 'text-red-500' : ''">{{ `${_i18nQuestion}.range` | translate }}</span>
             <span>
             <span
-              [class]="(_question.range?.min) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMin` | translate }}
-              : {{ _question.range?.min ?? `${_prefix}.notAvailable` | translate }}, </span>
+              [class]="(_question.range?.min) === null ? 'text-red-500' : ''">{{ `${_i18nQuestion}.rangeMin` | translate }}
+              : {{ _question.range?.min ?? `${_i18nQuestion}.notAvailable` | translate }}, </span>
             <span
-              [class]="(_question.range?.max) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeMax` | translate }}
-              : {{ _question.range?.max ?? `${_prefix}.notAvailable` | translate }}, </span>
+              [class]="(_question.range?.max) === null ? 'text-red-500' : ''">{{ `${_i18nQuestion}.rangeMax` | translate }}
+              : {{ _question.range?.max ?? `${_i18nQuestion}.notAvailable` | translate }}, </span>
             <span
-              [class]="(_question.range?.step) === null ? 'text-red-500' : ''">{{ `${_prefix}.rangeStep` | translate }}
-              : {{ _question.range?.step ?? `${_prefix}.notAvailable` | translate }}</span>
+              [class]="(_question.range?.step) === null ? 'text-red-500' : ''">{{ `${_i18nQuestion}.rangeStep` | translate }}
+              : {{ _question.range?.step ?? `${_i18nQuestion}.notAvailable` | translate }}</span>
           </span>
           }
           @case (QuestionType.TEXT) {
             @if (_question.multi_line) {
               <span></span>
-              <p>{{ `${_prefix}.multiLineEnabled` | translate }}</p>
+              <p>{{ `${_i18nQuestion}.multiLineEnabled` | translate }}</p>
             }
           }
           @case (QuestionType.TIMED) {
             <span
-              [class]="(_question.field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_prefix}.annotationTimer` | translate }}</span>
+              [class]="(_question.field_annotation?.timer) === null ? 'text-red-500' : ''">{{ `${_i18nQuestion}.annotationTimer` | translate }}</span>
             <span [class]="(_question.field_annotation?.timer) === null ? 'text-red-500' : ''">
-            <span>{{ `${_prefix}.annotationTimerStart` | translate }}
-              : {{ _question.field_annotation?.timer?.start ?? `${_prefix}.notAvailable` | translate }}, </span>
-            <span>{{ `${_prefix}.annotationTimerEnd` | translate }}
-              : {{ _question.field_annotation?.timer?.end ?? `${_prefix}.notAvailable` | translate }}</span>
+            <span>{{ `${_i18nQuestion}.annotationTimerStart` | translate }}
+              : {{ _question.field_annotation?.timer?.start ?? `${_i18nQuestion}.notAvailable` | translate }}, </span>
+            <span>{{ `${_i18nQuestion}.annotationTimerEnd` | translate }}
+              : {{ _question.field_annotation?.timer?.end ?? `${_i18nQuestion}.notAvailable` | translate }}</span>
           </span>
           }
           @case (QuestionType.CALC) {
-            <span>{{ `${_prefix}.calculationFn` | translate }}</span>
-            <code>{{ _question.calculation_fn ?? `${_prefix}.notAvailable` | translate }}</code>
-            <span>{{ `${_prefix}.calculationArgs` | translate }}:</span>
-            <code>{{ _question.calculation_args?.join(', ') ?? `${_prefix}.notAvailable` | translate }}</code>
+            <span>{{ `${_i18nQuestion}.calculationFn` | translate }}</span>
+            <code>{{ _question.calculation_fn ?? `${_i18nQuestion}.notAvailable` | translate }}</code>
+            <span>{{ `${_i18nQuestion}.calculationArgs` | translate }}:</span>
+            <code>{{ _question.calculation_args?.join(', ') ?? `${_i18nQuestion}.notAvailable` | translate }}</code>
           }
 
         }

@@ -1025,6 +1025,11 @@
           "questionIsInvalid": "Question is invalid",
           "questionIsValid": "Question is valid",
           "validation": "Validation",
+          "variableType": "Variable Type",
+          "variableReservedVar": "Reserved Variable",
+          "textValidation": "Validation Regex",
+          "isInvalid": "Invalid",
+          "isValid": "Valid",
           "conditionalLogic": {
             "title": "Edit Conditional Logic of Question",
             "message": "Show this question if",
