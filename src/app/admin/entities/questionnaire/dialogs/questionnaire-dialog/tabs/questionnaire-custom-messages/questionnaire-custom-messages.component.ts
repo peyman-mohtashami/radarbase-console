@@ -1,27 +1,16 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {
-  requiredField, validateTemplateVariables
-} from '../../../../../../../shared/utils/signal-form-validators';
 import {withLanguage} from '../../services/utils';
-import {
-  RichTextEditorComponent
-} from '../../../../../../../shared/components/rich-text-editor/rich-text-editor.component';
-import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 import {
   InputFormFieldComponent
 } from '../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
 } from '../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
-// import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 export interface QuestionnaireCustomMessagesForm {
   title: Record<string, string>;
@@ -39,18 +28,9 @@ export interface QuestionnaireCustomMessagesForm {
   imports: [
     TranslatePipe,
     MatSlideToggle,
-    MatFormField,
-    MatInput,
-    // MatSelect,
-    // MatOption,
     FormField,
-    CdkTextareaAutosize,
-    MatError,
     InputFormFieldComponent,
     TextareaFormFieldComponent,
-    // RichTextEditorComponent,
-    // HtmlEditorComponent,
-    // HtmlEditorComponent,
   ]
 })
 export class QuestionnaireCustomMessagesComponent {

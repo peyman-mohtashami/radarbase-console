@@ -6,9 +6,7 @@ import {
   QuestionType
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
@@ -29,11 +27,17 @@ import {ToolbarComponent} from '../../../questionnaire-preview/components/toolba
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
-import {QUESTION_TYPES, withLanguage} from '../../../../services/utils';
+import {QUESTION_TYPES_OPTIONS, withLanguage} from '../../../../services/utils';
 import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
 import {
   QuestionConditionalLogicComponent
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireSliderQuestionForm extends Record<string, unknown> {
   id: string;
@@ -59,12 +63,7 @@ export interface QuestionnaireSliderQuestionForm extends Record<string, unknown>
   selector: 'app-slider-question',
   imports: [
     TranslatePipe,
-    MatFormField,
-    MatError,
-    MatInput,
     MatIcon,
-    MatSelect,
-    MatOption,
     MatSlideToggle,
     FormField,
     TagComponent,
@@ -74,11 +73,13 @@ export interface QuestionnaireSliderQuestionForm extends Record<string, unknown>
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     HtmlEditorComponent,
+    SelectFormFieldComponent,
+    InputFormFieldComponent,
   ],
   templateUrl: './slider-question.component.html'
 })
 export class SliderQuestionComponent {
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+  protected readonly QUESTION_TYPE_OPTIONS = QUESTION_TYPES_OPTIONS;
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);

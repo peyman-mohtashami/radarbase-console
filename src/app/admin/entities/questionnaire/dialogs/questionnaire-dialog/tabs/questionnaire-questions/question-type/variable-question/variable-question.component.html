@@ -1,44 +1,27 @@
-@let _prefix = 'ADMIN.questionnaire.dialog.question';
+@let _i18nQuestion = 'ADMIN.questionnaire.dialog.question';
 
 <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,320px)] gap-2 h-full">
 
   <form class="h-full overflow-y-auto pr-4">
     <div class="grid grid-cols-2 gap-2 items-center">
-      <div>
-        <label for="field_type" class="text-sm"
-               [class]="form.field_type().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.fieldType` | translate }} *
-        </label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <mat-select [formField]='form.field_type'>
-            @for (item of QUESTION_TYPES; track item) {
-              @for (type of item.types; track type.type) {
-                <mat-option [value]="type.type">{{ type.label }}</mat-option>
-              }
-            }
-          </mat-select>
-          <mat-error>
-            @if (form.field_type().invalid()) {
-              @for (error of form.field_type().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <app-select-form-field [field]="form.field_type"
+                             [options]="QUESTION_TYPE_OPTIONS"
+                             [label]="`${_i18nQuestion}.fieldType`"
+                             [required]="true"/>
+
       <div class="flex items-center justify-between">
         <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
-          {{ `${_prefix}.isActive` | translate }}
+          {{ `${_i18nQuestion}.isActive` | translate }}
         </mat-slide-toggle>
         <div class="flex items-center gap-1">
           @if (form().valid()) {
-            <mat-icon class="material-symbols-outlined text-green-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.questionIsValid` | translate">
+            <mat-icon class=" text-green-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.questionIsValid` | translate">
               check_circle
             </mat-icon>
           } @else {
-            <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+            <mat-icon class=" text-xl! text-red-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.questionIsInvalid` | translate">
               warning
             </mat-icon>
           }
@@ -49,29 +32,14 @@
     </div>
 
     <div class="grid grid-cols-2 gap-2 items-center">
-      <div>
-        <label for="field_name" class="text-sm"
-               [class]="form.field_name().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.fieldName` | translate }} *
-        </label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <input matInput [formField]='form.field_name'/>
-          <mat-error>
-            @if (form.field_name().invalid()) {
-              @for (error of form.field_name().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <app-input-form-field [field]="form.field_name" [label]="`${_i18nQuestion}.fieldName`" [required]="true"/>
     </div>
 
 
     <div>
       <label for="variable_type" class="text-sm"
              [class]="form.variable.type().invalid() ? 'text-red-700' : ''">
-        {{ `${_prefix}.variableType` | translate }} *
+        {{ `${_i18nQuestion}.variableType` | translate }} *
       </label>
       <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
         <mat-select [formField]='form.variable.type'>
@@ -93,7 +61,7 @@
       <div>
         <label for="variable_reserver_var" class="text-sm"
                [class]="form.variable.reserved_var().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableReservedVar` | translate }} *
+          {{ `${_i18nQuestion}.variableReservedVar` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.reserved_var'>
@@ -116,7 +84,7 @@
       <div>
         <label for="variable_questionnaireId" class="text-sm"
                [class]="form.variable.questionnaireId().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableQuestionnaireId` | translate }} *
+          {{ `${_i18nQuestion}.variableQuestionnaireId` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.questionnaireId'>
@@ -137,7 +105,7 @@
       <div>
         <label for="variable_questionnaire_question" class="text-sm"
                [class]="form.variable.questionnaire_question().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableQuestionnaireQuestion` | translate }} *
+          {{ `${_i18nQuestion}.variableQuestionnaireQuestion` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.questionnaire_question'>
@@ -160,7 +128,7 @@
       <div>
         <label for="variable_topic" class="text-sm"
                [class]="form.variable.topic().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableTopic` | translate }} *
+          {{ `${_i18nQuestion}.variableTopic` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.topic'>
@@ -181,7 +149,7 @@
       <div>
         <label for="variable_topic_var" class="text-sm"
                [class]="form.variable.topic_var().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableTopicVar` | translate }} *
+          {{ `${_i18nQuestion}.variableTopicVar` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.topic_var'>
@@ -204,7 +172,7 @@
       <div>
         <label for="variable_method" class="text-sm"
                [class]="form.variable.method().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.variableMethod` | translate }} *
+          {{ `${_i18nQuestion}.variableMethod` | translate }} *
         </label>
         <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
           <mat-select [formField]='form.variable.method'>

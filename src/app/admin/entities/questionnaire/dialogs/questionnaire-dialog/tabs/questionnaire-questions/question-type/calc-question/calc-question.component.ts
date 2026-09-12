@@ -6,9 +6,7 @@ import {
   QuestionType
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
@@ -26,7 +24,7 @@ import {ToolbarComponent} from '../../../questionnaire-preview/components/toolba
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
-import {QUESTION_TYPES, withLanguage} from '../../../../services/utils';
+import {QUESTION_TYPES_OPTIONS, withLanguage} from '../../../../services/utils';
 import jexl from 'jexl';
 import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
 import {
@@ -35,6 +33,12 @@ import {
 import {
   SearchableMultiSelectComponent
 } from '../../../../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
   id: string;
@@ -55,12 +59,7 @@ export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
   selector: 'app-calc-question',
   imports: [
     TranslatePipe,
-    MatFormField,
-    MatError,
-    MatInput,
     MatIcon,
-    MatSelect,
-    MatOption,
     MatSlideToggle,
     FormField,
     TagComponent,
@@ -71,11 +70,13 @@ export interface QuestionnaireCalcQuestionForm extends Record<string, unknown> {
     QuestionConditionalLogicComponent,
     HtmlEditorComponent,
     SearchableMultiSelectComponent,
+    SelectFormFieldComponent,
+    InputFormFieldComponent,
   ],
   templateUrl: './calc-dialog.component.html'
 })
 export class CalcQuestionComponent {
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+  protected readonly QUESTION_TYPE_OPTIONS = QUESTION_TYPES_OPTIONS;
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);

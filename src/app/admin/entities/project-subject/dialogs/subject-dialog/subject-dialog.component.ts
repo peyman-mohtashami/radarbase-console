@@ -1,7 +1,7 @@
 import {
   Component,
   inject,
-  AfterViewInit, signal, effect, OnInit
+  AfterViewInit, signal, effect
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -17,13 +17,12 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {AppProject} from '../../../project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
-import {MatDynamicInputComponent} from '../../../../shared/components/app-form-fields/mat-dynamic-input/mat-dynamic-input.component';
 import {JsonPipe} from '@angular/common';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SubjectStore} from '../../services/subject.store';
-import {form, FormField} from '@angular/forms/signals';
+import {form} from '@angular/forms/signals';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
@@ -66,7 +65,6 @@ export interface StoredSubjectDialog {
     TranslatePipe,
     MatDialogContent,
     SubjectDetailsComponent,
-    MatDynamicInputComponent,
     ErrorMessageBoxComponent,
     MatDialogTitle,
     MatButton,
@@ -74,7 +72,6 @@ export interface StoredSubjectDialog {
     MatIcon,
     MatProgressSpinner,
     JsonPipe,
-    FormField,
     SearchableMultiSelectComponent,
     InputFormFieldComponent,
     DateFormFieldComponent,

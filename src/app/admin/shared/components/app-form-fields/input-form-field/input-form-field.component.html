@@ -6,18 +6,21 @@
       }
     </label>
   }
-  <ng-content/> <!-- anything else, if you still need a catch-all -->
+  <ng-content/>
+
   <mat-form-field class='small-input w-full' [subscriptSizing]="subscriptSizing()" [appearance]='appearance()'>
     <input id="project-name" matInput [formField]="field()" [type]="type()">
     <ng-content select="[matPrefix], [matIconPrefix]"/>
     <ng-content select="[matSuffix], [matIconSuffix]"/>
-    <mat-error>
-      @if (field()().touched() && field()().invalid()) {
-        {{field()().errors()[0].message | translate}}
-<!--        @for (error of field()().errors(); track error.kind) {-->
-<!--          {{ error.message | translate }}-->
-<!--        }-->
-      }
-    </mat-error>
+    @if (!disableError()) {
+      <mat-error>
+        @if (field()().touched() && field()().invalid()) {
+          {{ field()().errors()[0].message | translate }}
+          <!--        @for (error of field()().errors(); track error.kind) {-->
+          <!--          {{ error.message | translate }}-->
+          <!--        }-->
+        }
+      </mat-error>
+    }
   </mat-form-field>
 </div>

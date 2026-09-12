@@ -1,9 +1,5 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatDivider} from '@angular/material/list';
-import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
-import {MatOption} from '@angular/material/core';
-import {MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {TranslatePipe} from '@ngx-translate/core';
 import {LocaleService} from '../../../../../../../core/locale/services/locale.service';
@@ -58,18 +54,9 @@ export interface QuestionnaireSchedulingForm {
   selector: 'app-questionnaire-scheduling',
   templateUrl: 'questionnaire-scheduling.component.html',
   imports: [
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
     MatDivider,
-    MatFormField,
-    MatInput,
-    MatOption,
-    MatSelect,
     MatSlideToggle,
-    MatSuffix,
     TranslatePipe,
-    MatError,
     FormField,
     CdkDrag,
     CdkDropList,

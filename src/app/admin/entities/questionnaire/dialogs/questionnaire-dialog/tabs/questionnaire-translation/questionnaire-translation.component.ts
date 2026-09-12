@@ -1,26 +1,18 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
 import {AppQuestionnaire, QuestionType} from '../../../../models/questionnaire';
-import {applyEach, form, FormField} from '@angular/forms/signals';
-import {MatFormField, MatInput} from '@angular/material/input';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {applyEach, form} from '@angular/forms/signals';
 import {requiredField, RequiredWhen} from '../../../../../../../shared/utils/signal-form-validators';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {
-  TextareaFormFieldComponent
-} from '../../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
 
 
 @Component({
   selector: 'app-questionnaire-translation',
   templateUrl: 'questionnaire-translation.component.html',
   imports: [
-    FormField,
-    MatFormField,
-    MatInput,
-    CdkTextareaAutosize,
     TranslatePipe,
-    TextareaFormFieldComponent,
+    HtmlEditorComponent,
   ]
 })
 export class QuestionnaireTranslationComponent {

@@ -15,18 +15,12 @@ export class GlobalErrorHandler implements ErrorHandler {
     console.error(error);
 
     if (error instanceof HttpErrorResponse) {
-      // 401 is handled by ServerErrorInterceptor (clears the session and redirects
-      // to login), so showing an error snackbar on top of that would be noise.
       if (error.status === 401) return;
       this.show(this.extractServerErrorMessage(error));
       return;
     }
-    // } else {
-    //   this.show([this.extractClientErrorMessage(error)]);
-    // }
-      this.show([this.extractClientErrorMessage(error)]);
-
-    }
+    this.show([this.extractClientErrorMessage(error)]);
+  }
 
   private show(messages: string[]): void {
     const data = messages.filter(Boolean);
@@ -64,29 +58,6 @@ export class GlobalErrorHandler implements ErrorHandler {
         return this.generateCustomErrorMessage(error);
     }
   }
-
-  // protected generateCustomErrorMessage(error: HttpErrorResponse): string[] {
-  //   const managementPortalError = error.headers.get(
-  //     'x-managementportalapp-error'
-  //   );
-  //   const managementPortalParams = error.headers.get(
-  //     'x-managementportalapp-params'
-  //   );
-  //   if (managementPortalError && managementPortalParams) {
-  //     return [`ERROR.${managementPortalParams}.${managementPortalError}`];
-  //   }
-  //
-  //   const body = error.error;
-  //   const detail =
-  //     body?.error ||
-  //     body?.message ||
-  //     body?.error_description ||
-  //     body?.statusText ||
-  //     error.message ||
-  //     (typeof body === 'string' ? body : undefined);
-  //
-  //   return [detail ? `ERROR.${detail}` : 'ERROR.unknownError'];
-  // }
 
   protected generateCustomErrorMessage(error: HttpErrorResponse): string[] {
     const managementPortalError = error.headers.get(MANAGEMENT_PORTAL_ERROR_HEADER);

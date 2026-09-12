@@ -21,7 +21,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
 import {OrganizationStore} from '../../../organization/services/organization.store';
 import {ProjectStore} from '../../services/project.store';
-import {disabled, form, FormField, validate} from '@angular/forms/signals';
+import {disabled, form, validate} from '@angular/forms/signals';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -78,7 +78,6 @@ export interface StoredProjectDialog {
     TranslatePipe,
     ErrorMessageBoxComponent,
     MatDialogTitle,
-    FormField,
     MatButton,
     MatDialogActions,
     MatIcon,

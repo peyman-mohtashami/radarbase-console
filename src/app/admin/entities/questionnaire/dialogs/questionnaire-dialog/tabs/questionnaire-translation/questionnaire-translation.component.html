@@ -16,69 +16,22 @@
         <div class="">{{ `${_prefix}.title` | translate }}</div>
         @for (language of languagesList(); track language) {
           @if (form.title) {
-            <app-textarea-form-field [field]="form.title[language.code]"
-                                     [label]="null"
-                                     [subscriptSizing]="'dynamic'"
-                                     [rows]="1"/>
-<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--              <textarea matInput [formField]="form.title[language.code]" cdkTextareaAutosize rows="1"></textarea>-->
-<!--            </mat-form-field>-->
+            <app-html-editor [formField]="form.title[language.code]" [picker]="false"/>
           }
         }
 
         <div class="">{{ `${_prefix}.description` | translate }}</div>
         @for (language of languagesList(); track language) {
           @if (form.description) {
-            <app-textarea-form-field [field]="form.description[language.code]"
-                                     [label]="null"
-                                     [subscriptSizing]="'dynamic'"/>
-<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--              <textarea matInput [formField]="form.description[language.code]" cdkTextareaAutosize rows="3"></textarea>-->
-<!--            </mat-form-field>-->
+            <app-html-editor [formField]="form.description[language.code]" [picker]="false"/>
           }
-        }
-
-        @if (entity?.showIntroduction !== 'no') {
-          <div class="">{{ `${_prefix}.startText` | translate }}</div>
-          @for (language of languagesList(); track language) {
-            @if (form.startText) {
-              <app-textarea-form-field [field]="form.startText[language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="4"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="form.startText[language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="4"></textarea>-->
-<!--              </mat-form-field>-->
-            }
-          }
-        }
-
-        <div class="">{{ `${_prefix}.endText` | translate }}</div>
-        @for (language of languagesList(); track language) {
-          <app-textarea-form-field [field]="form.endText[language.code]"
-                                   [label]="null"
-                                   [subscriptSizing]="'dynamic'"
-                                   [rows]="4"/>
-<!--          <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--            <textarea id="" matInput [formField]="form.endText[language.code]" cdkTextareaAutosize rows="4"></textarea>-->
-<!--          </mat-form-field>-->
         }
 
         @if (entity?.warningEnabled) {
           <div class="">{{ `${_prefix}.warningText` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.warn) {
-              <app-textarea-form-field [field]="form.warn[language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="2"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id="" matInput [formField]="form.warn[language.code]" cdkTextareaAutosize rows="2"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="form.warn[language.code]" [picker]="false"/>
             }
           }
         }
@@ -87,34 +40,14 @@
           <div class="">{{ `${_prefix}.notificationTitle` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.title) {
-              <app-textarea-form-field [field]="form.schedule!.notification!.title![language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="2"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="form.schedule!.notification!.title![language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="2"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="form.schedule!.notification!.title![language.code]" [picker]="false"/>
             }
           }
 
           <div class="">{{ `${_prefix}.notificationMessage` | translate }}</div>
           @for (language of languagesList(); track language) {
             @if (form.schedule?.notification?.text) {
-              <app-textarea-form-field [field]="form.schedule!.notification!.text![language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="3"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="form.schedule!.notification!.text![language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="3"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="form.schedule!.notification!.text![language.code]" [picker]="false"/>
             }
           }
         }
@@ -131,50 +64,20 @@
 
           <div class="px-8!">{{ `${_prefix}.question.fieldLabel` | translate }}</div>
           @for (language of languagesList(); track language) {
-            <app-textarea-form-field [field]="question.field_label[language.code]"
-                                     [label]="null"
-                                     [subscriptSizing]="'dynamic'"
-                                     [rows]="3"/>
-<!--            <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--              <textarea id=""-->
-<!--                        matInput-->
-<!--                        [formField]="question.field_label[language.code]"-->
-<!--                        cdkTextareaAutosize-->
-<!--                        rows="3"></textarea>-->
-<!--            </mat-form-field>-->
+            <app-html-editor [formField]="question.field_label[language.code]" [picker]="false"/>
           }
 
           @if (question.section_header) {
             <div class="px-8!">{{ `${_prefix}.question.sectionHeader` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <app-textarea-form-field [field]="question.section_header[language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="3"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="question.section_header[language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="3"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="question.section_header[language.code]" [picker]="false"/>
             }
           }
 
           @if (question.field_note) {
             <div class="px-8!">{{ `${_prefix}.question.fieldNote` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <app-textarea-form-field [field]="question.field_note[language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="3"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="question.field_note[language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="3"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="question.field_note[language.code]" [picker]="false"/>
             }
           }
 
@@ -184,54 +87,23 @@
                                            ]</code> {{ `${_prefix}.question.choiceLabel` | translate }}
             </div>
             @for (language of languagesList(); track language) {
-              <app-textarea-form-field [field]="choice.label[language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="1"/>
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea id=""-->
-<!--                          matInput-->
-<!--                          [formField]="choice.label[language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="1"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="choice.label[language.code]" [picker]="false"/>
             }
           }
 
           @if (question.range?.labelLeft) {
             <div class="px-8!">{{ `${_prefix}.question.rangeLabelLeft` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <app-textarea-form-field [field]="question.range!.labelLeft![language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="1"/>
-
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea matInput-->
-<!--                          [formField]="question.range!.labelLeft![language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="1"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="question.range!.labelLeft![language.code]" [picker]="false"/>
             }
           }
 
           @if (question.range?.labelRight) {
             <div class="px-8!">{{ `${_prefix}.question.rangeLabelRight` | translate }}</div>
             @for (language of languagesList(); track language) {
-              <app-textarea-form-field [field]="question.range!.labelRight![language.code]"
-                                       [label]="null"
-                                       [subscriptSizing]="'dynamic'"
-                                       [rows]="1"/>
-
-<!--              <mat-form-field class='small-input' appearance='outline' subscriptSizing="dynamic">-->
-<!--                <textarea matInput-->
-<!--                          [formField]="question.range!.labelRight![language.code]"-->
-<!--                          cdkTextareaAutosize-->
-<!--                          rows="1"></textarea>-->
-<!--              </mat-form-field>-->
+              <app-html-editor [formField]="question.range!.labelRight![language.code]" [picker]="false"/>
             }
           }
-
         }
       </div>
     </div>

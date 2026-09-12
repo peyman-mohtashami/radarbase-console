@@ -19,30 +19,28 @@
                                  [valueKey]="'code'"
                                  [multiple]="false"/>
 
-    <mat-slide-toggle [formField]="form.onDemand" class="my-4" color="primary">
+    <mat-slide-toggle [formField]="form.onDemand" class="mx-3 my-4" color="primary" (click)="onClickSlideToggle()">
       {{ `${_i18nEntity}.onDemand` | translate }}
     </mat-slide-toggle>
 
-    <app-input-form-field [field]="form.estimatedCompletionTime" [label]="`${_i18nEntity}.estimatedCompletionTime`">
-      <span matSuffix class="mx-4 text-neutral-500 dark:text-neutral-400">
-          {{ `${_i18nEntity}.minutes` | translate }}
-        </span>
-    </app-input-form-field>
+    <app-input-form-field [field]="form.estimatedCompletionTime"
+                          [label]="`${_i18nEntity}.estimatedCompletionTime`"
+                          type="number"/>
 
     <div>
-      <mat-slide-toggle [formField]="form.autoNextEnabled" class="my-4" color="primary">
+      <mat-slide-toggle [formField]="form.autoNextEnabled" class="mx-3 my-4" color="primary" (click)="onClickSlideToggle()">
         {{ `${_i18nEntity}.autoNextQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
-      <mat-slide-toggle [formField]="form.previousEnabled" class="my-4" color="primary">
+      <mat-slide-toggle [formField]="form.previousEnabled" class="mx-3 my-4" color="primary" (click)="onClickSlideToggle()">
         {{ `${_i18nEntity}.previousQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>
 
     <div>
-      <mat-slide-toggle [formField]="form.editEnabled" class="my-4" color="primary">
+      <mat-slide-toggle [formField]="form.editEnabled" class="mx-3 my-4" color="primary" (click)="onClickSlideToggle()">
         {{ `${_i18nEntity}.editQuestionEnabled` | translate }}
       </mat-slide-toggle>
     </div>

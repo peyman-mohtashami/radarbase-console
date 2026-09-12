@@ -5,9 +5,7 @@ import {
   AppQuestionnaire, AppQuestionnaireLanguage,
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
@@ -24,13 +22,19 @@ import {QuestionComponent} from '../../../questionnaire-preview/components/quest
 import {ToolbarComponent} from '../../../questionnaire-preview/components/toolbar/toolbar.component';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
-import {QUESTION_TYPES, withLanguage} from '../../../../services/utils';
+import {QUESTION_TYPES_OPTIONS, withLanguage} from '../../../../services/utils';
 import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
 import {QuestionChoicesComponent} from '../../dialogs/question-dialog/question-choices/question-choices.component';
 import {
   QuestionConditionalLogicComponent
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
 import {QuestionsStore} from '../../services/questions.store';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireRadioQuestionForm extends Record<string, unknown> {
   id: string;
@@ -50,12 +54,7 @@ export interface QuestionnaireRadioQuestionForm extends Record<string, unknown> 
   selector: 'app-radio-question',
   imports: [
     TranslatePipe,
-    MatFormField,
-    MatError,
-    MatInput,
     MatIcon,
-    MatSelect,
-    MatOption,
     MatSlideToggle,
     FormField,
     QuestionChoicesComponent,
@@ -66,11 +65,13 @@ export interface QuestionnaireRadioQuestionForm extends Record<string, unknown> 
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     HtmlEditorComponent,
+    SelectFormFieldComponent,
+    InputFormFieldComponent,
   ],
   templateUrl: './radio-question.component.html'
 })
 export class RadioQuestionComponent {
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+  protected readonly QUESTION_TYPE_OPTIONS = QUESTION_TYPES_OPTIONS;
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);

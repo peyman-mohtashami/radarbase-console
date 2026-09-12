@@ -1,7 +1,7 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
+import {MatError, MatFormField} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {applyWhen, form, FormField} from '@angular/forms/signals';
 import {AppQuestionnaire} from '../../../../models/questionnaire';
@@ -37,7 +37,6 @@ export interface QuestionnaireNotificationsForm {
     TranslatePipe,
     MatSlideToggle,
     MatFormField,
-    MatInput,
     MatSelect,
     MatOption,
     FormField,

@@ -6,8 +6,8 @@ import {ROLES} from '../../../shared/enums/roles';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../../shared/consts/entity-registry';
 import {NavGroupItem} from '../models/nav-group-item.model';
 import {
-  DEFAULT_DEPLOYMENT_CONFIGURATION,
-  DEFAULT_DEPLOYMENT_CONFIGURATION_URL
+  DEFAULT_CONFIGURATION,
+  DEFAULT_CONFIGURATION_URL
 } from '../consts/default-deployment-configuration';
 // import {DEFAULT_CUSTOM_CONFIGURATION} from '../consts/default-custom-configuration.const';
 import {
@@ -31,7 +31,7 @@ export class ConfigurationService {
   // private projectStore = inject(ProjectStore);
 
 
-  customConfiguration = signal<CustomConfiguration>(DEFAULT_DEPLOYMENT_CONFIGURATION);
+  customConfiguration = signal<CustomConfiguration>(DEFAULT_CONFIGURATION);
   customNavigation = computed(() => this.customConfiguration()?.mainNavigation);
   customBranding = computed(() => this.customConfiguration()?.branding);
   customLocalization = computed(() => this.customConfiguration()?.localization);
@@ -98,11 +98,11 @@ export class ConfigurationService {
 
   private async applyDeploymentConfiguration() {
     try {
-      const config = await firstValueFrom(this.http.get<unknown>(DEFAULT_DEPLOYMENT_CONFIGURATION_URL));
+      const config = await firstValueFrom(this.http.get<unknown>(DEFAULT_CONFIGURATION_URL));
       console.log('Class: ConfigurationService, Function: applyDeploymentConfiguration, Line 69 config', config);
       // const validatedConfig = sanitizeDeploymentConfiguration(config, DEFAULT_DEPLOYMENT_CONFIGURATION)
       //TODO sanitize
-      const validatedConfig = Object.keys(config as Record<string, unknown>).length > 0 ? config as CustomConfiguration : DEFAULT_DEPLOYMENT_CONFIGURATION;
+      const validatedConfig = Object.keys(config as Record<string, unknown>).length > 0 ? config as CustomConfiguration : DEFAULT_CONFIGURATION;
       console.log('Class: ConfigurationService, Function: applyDeploymentConfiguration, Line 72 validatedConfig', validatedConfig);
       this.customConfiguration.set(validatedConfig);
       // this.setNavGroupItems(validatedConfig);

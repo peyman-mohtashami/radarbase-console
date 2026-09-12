@@ -54,9 +54,9 @@
               <mat-icon>swap_vertical_circle</mat-icon>
             </button>
 
-            <app-input-form-field [field]="offset.day" [label]="null" subscriptSizing="dynamic" />
+            <app-input-form-field [field]="offset.day" [label]="null" subscriptSizing="dynamic" type="number" [disableError]="true" />
 
-            <app-input-form-field [field]="offset.time" [label]="null" subscriptSizing="dynamic" />
+            <app-input-form-field [field]="offset.time" [label]="null" subscriptSizing="dynamic" type="time" [disableError]="true" />
 
             <button mat-icon-button class="tiny"
                     color="warn"

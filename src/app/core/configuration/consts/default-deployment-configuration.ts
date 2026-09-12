@@ -1,8 +1,8 @@
 import {CustomConfiguration} from '../models/deployment-configuration.model';
 
-export const DEFAULT_DEPLOYMENT_CONFIGURATION_URL = 'config-assets/frontend-config.json'
+export const DEFAULT_CONFIGURATION_URL = 'config-assets/frontend-config.json'
 
-export const DEFAULT_DEPLOYMENT_CONFIGURATION: CustomConfiguration = {
+export const DEFAULT_CONFIGURATION: CustomConfiguration = {
   "mainNavigation": {
     "internal": {
       "questionnaire": true,
@@ -55,8 +55,6 @@ export const DEFAULT_DEPLOYMENT_CONFIGURATION: CustomConfiguration = {
     ],
   },
   "branding": {
-    // "title": "RADAR-base Console",//?
-    // "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",//?
     "logo": "assets/images/rb-logo-full-white.svg",
     "theme": {
       "light": {
@@ -93,13 +91,6 @@ export const DEFAULT_DEPLOYMENT_CONFIGURATION: CustomConfiguration = {
         "attributes.Phase": true,
         "attributes.External-project-url": true,
         "attributes.External-project-id": true
-        // attributes: {
-        //   "Privacy-policy-url": false,
-        //   "Work-package": false,
-        //   "Phase": false,
-        //   "External-project-url": false,
-        //   "External-project-id": true
-        // }
       }
     },
     subject: {
@@ -113,23 +104,7 @@ export const DEFAULT_DEPLOYMENT_CONFIGURATION: CustomConfiguration = {
         "attributes.participant_group": true,
         "attributes.humanReadableIdentifier": true,
       },
-      "extraFields": [
-        // {"name": "slideToggle", "type": "slideToggle", "validators": {}, "hint": "Hint for slideToggle field"},
-        // // {"name": "select", "type": "Select", validators: {}, "hint": "Hint for select field"},
-        // {"name": "select", "type": "select", options: ["RED", "YELLOW", "BLUE"], validators: {}, "hint": "Hint for select field"},
-        // {"name": "text", "type": "text", validators: {normalTextValidator: true, requiredValidator: true}, "hint": "Hint for text field"},
-        // // {"name": "number", "type": "number", validators: {}, "hint": "Hint for number field", min: "10", max: "20"},
-        // {"name": "number", "type": "number", min: '10', max: '15', validators: {}, "hint": "Hint for text field"},
-        // {"name": "textArea", "type": "textarea", validators: {longTextValidator: true}, "hint": "Hint for textArea field", rows: 5, maxlength: 120, required: true},
-        // {"name": "email", "type": "text", "validators": {}},
-        // {
-        //   "name": "lastInjectionDate",
-        //   "type": "date",
-        //   "validators": {requiredValidator: true},
-        //   "min": "01-01-2023",
-        //   "max": "01-01-2026"
-        // }
-      ]
+      "extraFields": []
     },
   },
 

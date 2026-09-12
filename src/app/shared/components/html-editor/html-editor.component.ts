@@ -11,91 +11,14 @@ import {
   QuestionPickerDialogComponent
 } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-questions/dialogs/question-picker-dialog/question-picker-dialog.component';
 import {AppQuestion} from '../../../admin/entities/questionnaire/models/questionnaire';
-// import {
-//   VariableDialogComponent
-// } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/dialogs/variable-dialog/variable-dialog.component';
-// import {
-//   QuestionTemplateVariable
-// } from '../../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
 import {QuestionnaireStore} from '../../../admin/entities/questionnaire/services/questionnaire.store';
 import {MatTooltip} from '@angular/material/tooltip';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-html-editor',
   templateUrl: './html-editor.component.html',
   styles: `
-    //.html-editor ::ng-deep .cm-variable-chip {
-    //  display: inline-flex;
-    //  align-items: center;
-    //  gap: 3px;
-    //
-    //  padding: 2px 4px 2px 7px;
-    //  margin: 0 2px;
-    //
-    //  border-radius: 999px;
-    //
-    //  background: var(--mat-sys-primary-container);
-    //  color: var(--mat-sys-on-primary-container);
-    //
-    //  font-family: inherit;
-    //  font-size: 11px;
-    //  line-height: 18px;
-    //
-    //  white-space: nowrap;
-    //  vertical-align: middle;
-    //
-    //  user-select: none;
-    //}
-    //
-    //.html-editor ::ng-deep .cm-variable-chip-icon {
-    //  font-family: 'Material Symbols Outlined',serif;
-    //  font-size: 12px;
-    //  line-height: 14px;
-    //}
-    //
-    //
-    //.html-editor ::ng-deep .cm-variable-chip-text {
-    //  padding: 0 3px;
-    //  font-weight: 500;
-    //}
-    //
-    //
-    //.html-editor ::ng-deep .cm-variable-chip-button {
-    //  display: inline-flex;
-    //  align-items: center;
-    //  justify-content: center;
-    //
-    //  width: 18px;
-    //  height: 18px;
-    //
-    //  padding: 0;
-    //  margin: 0;
-    //
-    //  border: 0;
-    //  border-radius: 50%;
-    //
-    //  background: transparent;
-    //  color: inherit;
-    //
-    //  cursor: pointer;
-    //}
-    //
-    //
-    //.html-editor ::ng-deep .cm-variable-chip-button:hover {
-    //  background: color-mix(
-    //    in srgb,
-    //    currentColor 12%,
-    //    transparent
-    //  );
-    //}
-    //
-    //
-    //.html-editor ::ng-deep .cm-variable-chip-button .material-symbols-outlined {
-    //  font-size: 14px;
-    //  line-height: 14px;
-    //}
-
-    //----------
     .html-editor ::ng-deep .cm-question-chip {
       display: inline-flex;
       align-items: center;
@@ -120,7 +43,7 @@ import {MatTooltip} from '@angular/material/tooltip';
     }
 
     .html-editor ::ng-deep .cm-question-chip-icon {
-      font-family: 'Material Symbols Outlined',serif;
+      font-family: 'Material Symbols Outlined', serif;
       font-size: 12px;
       line-height: 14px;
     }
@@ -169,23 +92,28 @@ import {MatTooltip} from '@angular/material/tooltip';
   imports: [
     MatIconButton,
     MatIcon,
-    MatTooltip
+    MatTooltip,
+    TranslatePipe
   ]
 })
 export class HtmlEditorComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
+  private store = inject(QuestionnaireStore);
 
   @ViewChild('editorContainer', {static: true})
   editorContainer!: ElementRef<HTMLDivElement>;
 
   readonly formField = input.required<FieldTree<string>>();
+  readonly label = input.required<string | null>();
+
+  readonly required = input(false);
   questionIndex = input<number>();
   questionPicker = input<boolean>(true);
+  picker = input<boolean>(true);
 
   private editorView?: EditorView;
 
   private questionDecorationField!: StateField<DecorationSet>;
-  // private variableDecorationField!: StateField<DecorationSet>;
 
   ngAfterViewInit(): void {
     this.createEditor();
@@ -193,7 +121,6 @@ export class HtmlEditorComponent implements AfterViewInit {
 
   private createEditor(): void {
     this.questionDecorationField = this.createQuestionDecorationField();
-    // this.variableDecorationField = this.createVariableDecorationField();
 
     const state = EditorState.create({
       doc: this.formField()().value(),
@@ -201,9 +128,7 @@ export class HtmlEditorComponent implements AfterViewInit {
         basicSetup,
         html(),
         EditorView.lineWrapping,
-        // this.variableDecorationField,
         this.questionDecorationField,
-        // EditorView.atomicRanges.of(view => view.state.field(this.variableDecorationField)),
         EditorView.atomicRanges.of(view => view.state.field(this.questionDecorationField)),
         EditorView.updateListener.of(update => {
           if (!update.docChanged) return;
@@ -269,19 +194,6 @@ export class HtmlEditorComponent implements AfterViewInit {
     });
   }
 
-  // private createVariableDecorationField(): StateField<DecorationSet> {
-  //   return StateField.define<DecorationSet>({
-  //     create: state => {
-  //       return this.buildVariableDecorations(state);
-  //     },
-  //     update: (decorations, transaction) => {
-  //       if (!transaction.docChanged) return decorations;
-  //       return this.buildVariableDecorations(transaction.state);
-  //     },
-  //     provide: field => EditorView.decorations.from(field),
-  //   });
-  // }
-
   private createQuestionDecorationField(): StateField<DecorationSet> {
     return StateField.define<DecorationSet>({
       create: state => {
@@ -294,35 +206,6 @@ export class HtmlEditorComponent implements AfterViewInit {
       provide: field => EditorView.decorations.from(field),
     });
   }
-
-  // private buildVariableDecorations(state: EditorState): DecorationSet {
-  //   const decorations = [];
-  //   const text = state.doc.toString();
-  //   const regex = /\{\{([^{}]+)}}/g;
-  //   let match: RegExpExecArray | null;
-  //
-  //   while ((match = regex.exec(text)) !== null) {
-  //     const fullMatch = match[0];
-  //     const variableName = match[1].trim();
-  //     const from = match.index;
-  //     const to = from + fullMatch.length;
-  //
-  //     decorations.push(
-  //       Decoration.replace({
-  //         widget: new VariableChipWidget(
-  //           variableName,
-  //           () => { this.editVariable(variableName, from, to); },
-  //           () => { this.removeVariable(from, to); },
-  //         ),
-  //         inclusive: false,
-  //       }).range(from, to),
-  //     );
-  //   }
-  //
-  //   return Decoration.set(decorations,true);
-  // }
-
-  private store = inject(QuestionnaireStore);
 
   private buildQuestionDecorations(state: EditorState): DecorationSet {
     const decorations = [];
@@ -341,17 +224,17 @@ export class HtmlEditorComponent implements AfterViewInit {
         Decoration.replace({
           widget: new QuestionChipWidget(
             this.questionPicker(),
-            // variableName,
             question!,
-            // () => { this.editVariable(variableName, from, to); },
-            () => { this.removeQuestion(from, to); },
+            () => {
+              this.removeQuestion(from, to);
+            },
           ),
           inclusive: false,
         }).range(from, to),
       );
     }
 
-    return Decoration.set(decorations,true);
+    return Decoration.set(decorations, true);
   }
 
   protected openQuestionPickerDialog(): void {
@@ -407,180 +290,12 @@ export class HtmlEditorComponent implements AfterViewInit {
 
     editor.focus();
   }
-  //
-  // private editVariable(variableName: string, from: number, to: number): void {
-  //
-  //   const dialogRef = this.dialog.open(
-  //     QuestionPickerDialogComponent,
-  //     {
-  //       width: '500px',
-  //
-  //       data: {
-  //         questionIndex: this.questionIndex(),
-  //
-  //         // Tell the dialog which question is currently selected
-  //         currentVariable: variableName,
-  //       },
-  //     },
-  //   );
-  //
-  //
-  //   dialogRef.afterClosed().subscribe(
-  //     (question: AppQuestion | undefined) => {
-  //
-  //       if (!question) return;
-  //
-  //       const placeholder = `{{${question.field_name}}}`;
-  //
-  //       this.editorView?.dispatch({
-  //         changes: {
-  //           from,
-  //           to,
-  //           insert: placeholder,
-  //         },
-  //         selection: {
-  //           anchor: from + placeholder.length,
-  //         },
-  //         scrollIntoView: true,
-  //       });
-  //
-  //       this.editorView?.focus();
-  //     },
-  //   );
-  // }
-  //
-  // protected openVariableDialog(mode: string) {
-  //   const editor = this.editorView;
-  //   if (!editor) return;
-  //
-  //   const selection = editor.state.selection;
-  //   const dialogRef = this.dialog.open(VariableDialogComponent, {
-  //     id: 'variable-dialog',
-  //     data: {id: 'variable-dialog', mode},
-  //     panelClass: 'tailwind-slide-panel',
-  //     width: '40%',
-  //     height: '100vh',
-  //     position: {top: '0', right: '0'},
-  //     hasBackdrop: true,
-  //     disableClose: true,
-  //     autoFocus: false,
-  //     restoreFocus: false
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(
-  //     (variable: QuestionTemplateVariable | undefined) => {
-  //       if (!variable) return;
-  //
-  //       const placeholder = `{{${variable.name}}}`;
-  //
-  //       const from = selection.main.from;
-  //       const to = selection.main.to;
-  //
-  //       editor.dispatch({
-  //         changes: {from, to, insert: placeholder},
-  //         selection: {anchor: from + placeholder.length},
-  //         scrollIntoView: true,
-  //       });
-  //
-  //       editor.focus();
-  //     },
-  //   );
-  // }
 }
-
-// class VariableChipWidget extends WidgetType {
-//
-//   constructor(
-//     private readonly variableName: string,
-//     private readonly onEdit: () => void,
-//     private readonly onRemove: () => void,
-//   ) {
-//     super();
-//   }
-//
-//   toDOM(): HTMLElement {
-//     const chip = document.createElement('span');
-//     chip.className = 'cm-variable-chip';
-//     const icon = document.createElement('span');
-//     icon.className = 'cm-variable-chip-icon material-symbols-outlined';
-//     icon.textContent = 'data_array';
-//     const text = document.createElement('span');
-//     text.className = 'cm-variable-chip-text';
-//     text.textContent = this.variableName;
-//     const editButton = document.createElement('button');
-//     editButton.type = 'button';
-//     editButton.className = 'cm-variable-chip-button';
-//     editButton.title = 'Edit variable';
-//     editButton.innerHTML = `<span class="material-symbols-outlined"> edit </span>`;
-//
-//     editButton.addEventListener(
-//       'mousedown',
-//       event => {
-//         event.preventDefault();
-//         event.stopPropagation();
-//       },
-//     );
-//
-//
-//     editButton.addEventListener(
-//       'click',
-//       event => {
-//         event.preventDefault();
-//         event.stopPropagation();
-//         this.onEdit();
-//       },
-//     );
-//
-//     const removeButton = document.createElement('button');
-//     removeButton.type = 'button';
-//     removeButton.className = 'cm-variable-chip-button';
-//     removeButton.title = 'Remove variable';
-//     removeButton.innerHTML = `<span class="material-symbols-outlined"> close </span>`;
-//
-//     removeButton.addEventListener(
-//       'mousedown',
-//       event => {
-//         event.preventDefault();
-//         event.stopPropagation();
-//       },
-//     );
-//
-//     removeButton.addEventListener(
-//       'click',
-//       event => {
-//         event.preventDefault();
-//         event.stopPropagation();
-//
-//         this.onRemove();
-//       },
-//     );
-//
-//     chip.appendChild(icon);
-//     chip.appendChild(text);
-//     chip.appendChild(editButton);
-//     chip.appendChild(removeButton);
-//
-//     return chip;
-//   }
-//
-//   override eq(other: VariableChipWidget): boolean {
-//     return (
-//       other instanceof VariableChipWidget &&
-//       other.variableName === this.variableName
-//     );
-//   }
-//
-//   override ignoreEvent(): boolean {
-//     return false;
-//   }
-// }
-
 
 class QuestionChipWidget extends WidgetType {
   constructor(
     private readonly isQuestion: boolean,
     private readonly question: AppQuestion | string,
-    // private readonly onEdit: () => void,
     private readonly onRemove: () => void,
   ) {
     super();
@@ -589,35 +304,9 @@ class QuestionChipWidget extends WidgetType {
   toDOM(): HTMLElement {
     const chip = document.createElement('span');
     chip.className = 'cm-question-chip';
-    // const icon = document.createElement('span');
-    // icon.className = 'cm-question-chip-icon material-symbols-outlined';
-    // icon.textContent = 'data_array';
     const text = document.createElement('span');
     text.className = 'cm-question-chip-text';
     text.textContent = this.isQuestion ? `[[ ${(this.question as AppQuestion).field_name} ]]` : `[[${(this.question as string)}]]`;
-    // const editButton = document.createElement('button');
-    // editButton.type = 'button';
-    // editButton.className = 'cm-variable-chip-button';
-    // editButton.title = 'Edit variable';
-    // editButton.innerHTML = `<span class="material-symbols-outlined"> edit </span>`;
-
-    // editButton.addEventListener(
-    //   'mousedown',
-    //   event => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //   },
-    // );
-
-
-    // editButton.addEventListener(
-    //   'click',
-    //   event => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     this.onEdit();
-    //   },
-    // );
 
     const removeButton = document.createElement('button');
     removeButton.type = 'button';
@@ -643,9 +332,7 @@ class QuestionChipWidget extends WidgetType {
       },
     );
 
-    // chip.appendChild(icon);
     chip.appendChild(text);
-    // chip.appendChild(editButton);
     chip.appendChild(removeButton);
 
     return chip;

@@ -6,9 +6,7 @@ import {
   QuestionType
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   identifierField,
@@ -20,7 +18,6 @@ import {
 } from '../../../../../../../../../shared/utils/signal-form-validators';
 import {disabled, form, FormField} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
 import {UpperCasePipe} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -29,11 +26,20 @@ import {ToolbarComponent} from '../../../questionnaire-preview/components/toolba
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
-import {QUESTION_TYPES, withLanguage} from '../../../../services/utils';
+import {QUESTION_TYPES_OPTIONS, withLanguage} from '../../../../services/utils';
 import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
 import {
   QuestionConditionalLogicComponent
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {
+  DateFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
 
 export interface QuestionnaireDateQuestionForm extends Record<string, unknown> {
   id: string;
@@ -54,18 +60,9 @@ export interface QuestionnaireDateQuestionForm extends Record<string, unknown> {
   selector: 'app-date-question',
   imports: [
     TranslatePipe,
-    MatFormField,
-    MatError,
-    MatInput,
     MatIcon,
-    MatSelect,
-    MatOption,
     MatSlideToggle,
     FormField,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatSuffix,
     TagComponent,
     UpperCasePipe,
     MatTooltip,
@@ -73,11 +70,14 @@ export interface QuestionnaireDateQuestionForm extends Record<string, unknown> {
     ToolbarComponent,
     QuestionConditionalLogicComponent,
     HtmlEditorComponent,
+    SelectFormFieldComponent,
+    InputFormFieldComponent,
+    DateFormFieldComponent,
   ],
   templateUrl: './date-question.component.html'
 })
 export class DateQuestionComponent {
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+  protected readonly QUESTION_TYPE_OPTIONS = QUESTION_TYPES_OPTIONS;
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);

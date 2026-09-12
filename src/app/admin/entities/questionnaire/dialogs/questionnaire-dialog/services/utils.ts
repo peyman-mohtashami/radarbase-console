@@ -99,7 +99,26 @@ export const QUESTION_TYPES = [
       {type: QuestionType.VARIABLE, icon: '', label: 'Variable', disabled: false},
     ]
   }
-]
+];
+
+export const QUESTION_TYPES_OPTIONS = [
+  {value: QuestionType.DESCRIPTIVE, label: 'Descriptive'},
+  {value: QuestionType.INFO, label: 'Info'},
+  {value: QuestionType.RADIO, label: 'Radio'},
+  {value: QuestionType.YESNO, label: 'Yes/No'},
+  {value: QuestionType.CHECKBOX, label: 'Checkbox'},
+  {value: QuestionType.SLIDER, label: 'Slider'},
+  {value: QuestionType.RANGE, label: 'Range'},
+  {value: QuestionType.TEXT, label: 'Text'},
+  {value: QuestionType.NUMBER, label: 'Number'},
+  {value: QuestionType.DATE, label: 'Date'},
+  {value: QuestionType.TIME, label: 'Time'},
+  {value: QuestionType.AUDIO, label: 'Audio'},
+  {value: QuestionType.TIMED, label: 'Timed'},
+  {value: QuestionType.CALC, label: 'Calculation'},
+  {value: QuestionType.VARIABLE, label: 'Variable'},
+];
+
 export function checkValidation(questions: AppQuestion[]) {
   return questions.map((q, i) => {
     if (validateQuestion(q, i, questions)) {

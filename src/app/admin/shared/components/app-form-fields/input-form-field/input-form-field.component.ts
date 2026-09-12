@@ -22,4 +22,5 @@ export class InputFormFieldComponent {
   readonly appearance = input<'fill' | 'outline'>('outline');
   readonly subscriptSizing = input<'fixed' | 'dynamic'>('fixed');
   readonly type = input<string>('text');
+  readonly disableError = input(false);
 }

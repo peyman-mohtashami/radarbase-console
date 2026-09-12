@@ -4,7 +4,7 @@ import {
   AppQuestionnaire, AppQuestionnaireLanguage,
 } from '../../../../../../models/questionnaire';
 import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatInput} from '@angular/material/input';
+import {MatError, MatFormField} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
@@ -18,8 +18,14 @@ import {QuestionnaireStore} from '../../../../../../services/questionnaire.store
 import {MatTooltip} from '@angular/material/tooltip';
 import {QuestionsStore} from '../../services/questions.store';
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
-import {QUESTION_TYPES} from '../../../../services/utils';
+import {QUESTION_TYPES, QUESTION_TYPES_OPTIONS} from '../../../../services/utils';
 import {KeyValuePipe} from '@angular/common';
+import {
+  SelectFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+import {
+  InputFormFieldComponent
+} from '../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireVariableQuestionForm extends Record<string, unknown> {
   id: string;
@@ -45,7 +51,6 @@ export interface QuestionnaireVariableQuestionForm extends Record<string, unknow
     TranslatePipe,
     MatFormField,
     MatError,
-    MatInput,
     MatIcon,
     MatSelect,
     MatOption,
@@ -53,11 +58,13 @@ export interface QuestionnaireVariableQuestionForm extends Record<string, unknow
     FormField,
     MatTooltip,
     KeyValuePipe,
+    SelectFormFieldComponent,
+    InputFormFieldComponent,
   ],
   templateUrl: './variable-question.component.html'
 })
 export class VariableQuestionComponent {
-  protected readonly QUESTION_TYPES = QUESTION_TYPES;
+  protected readonly QUESTION_TYPE_OPTIONS = QUESTION_TYPES_OPTIONS;
 
   protected store = inject(QuestionnaireStore);
   protected questionsStore = inject(QuestionsStore);

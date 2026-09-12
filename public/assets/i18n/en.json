@@ -123,33 +123,6 @@
       "filterBy": "Filter by",
       "all": "All"
     },
-    "AUTHORIZATION_PAGE": {
-      "title": "Link your {{sourceType}} account to RADAR-base",
-      "subtitle": "",
-      "description": "You are going to link your {{sourceType}} account to RADAR-base for Project {{project}}",
-      "authorizeButton": "Authorize {{sourceType}} Account",
-      "ERROR": {
-        "title": "Error",
-        "subtitle": "",
-        "badUrl": "The url is not valid.",
-        "badSecret": "Secret does not match token.",
-        "registrationNotFound": "State has expired or not found.",
-        "contactSupport": "Copy and paste the complete url and try again. If the error persists contact the support team."
-      }
-    },
-    "AUTHORIZATION_COMPLETE_PAGE": {
-      "title": "Thank you!",
-      "subtitle": "",
-      "description": "Your {{sourceType}} account has been linked to RADAR-base for Project {{project}}",
-      "actionMessage": "You can close this page.",
-      "actionButton": "Login",
-      "ERROR": {
-        "title": "Error",
-        "subtitle": "",
-        "badUrl": "The url is not valid.",
-        "contactSupport": "Retry to link your account. If the error persists contact the support team."
-      }
-    },
     "validatorHint": {
       "requiredValidator": "",
       "emailValidator": "Enter a valid email.",
@@ -930,146 +903,6 @@
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No User Found"
     },
-    "protocol": {
-      "title": {
-        "singular": "Protocol",
-        "plural": "Protocols"
-      },
-      "subtitle": "Select a Protocol",
-      "id": {
-        "tableLabel": "ID",
-        "label": "ID"
-      },
-      "name": {
-        "tableLabel": "Name",
-        "label": "Name"
-      },
-      "repeatProtocol": {
-        "tableLabel": "Schedule's Description",
-        "label": "Schedule's Description",
-        "tableContent": "Every <span class=\"font-bold\">{{ amount }} {{ unit }}(s)</span> at specific times"
-      },
-      "oneTimeProtocol": {
-        "tableLabel": "Schedule's Description",
-        "label": "Schedule's Description",
-        "tableContent": "Once at specific times"
-      },
-      "completionWindow": {
-        "tableLabel": "Completion Window",
-        "label": "Completion Window",
-        "tableContent": "Expires after {{ amount }} {{ unit }}(s)"
-      },
-      "questionnaire": {
-        "tableLabel": "Questionnaire",
-        "label": "Questionnaire"
-      },
-      "description": {
-        "tableLabel": "Description",
-        "label": "Description"
-      },
-      "createdBy": {
-        "tableLabel": "Created By",
-        "label": "Created By"
-      },
-      "modifiedBy": {
-        "tableLabel": "Modified By",
-        "label": "Modified By"
-      },
-      "createdAt": {
-        "tableLabel": "Created At",
-        "label": "Created At"
-      },
-      "modifiedAt": {
-        "tableLabel": "Modified At",
-        "label": "Modified At"
-      },
-      "discard": {
-        "title": "Discard changes",
-        "discard": "Discard",
-        "discarding": "Discarding",
-        "discardAll": "Discard all"
-      },
-      "publish": {
-        "title": "Publish changes",
-        "publish": "Publish",
-        "publishing": "Publishing",
-        "unpublishedMessage": "Unpublished changes"
-      },
-      "dialog": {
-        "showCode": "Show code",
-        "showForm": "Show form",
-        "general": {
-          "title": "Configuration",
-          "errorMessage": "Configuration is required.",
-          "nameLabel": "Name",
-          "": "Protocol name exists",
-          "languagesLabel": "Languages",
-          "orderLabel": "Display Order",
-          "onDemandLabel": "On Demand",
-          "showInCalendarLabel": "Show In Calendar",
-          "isDemoLabel": "Demo mode"
-        },
-        "content": {
-          "title": "Content",
-          "errorMessage": "Content is required.",
-          "showIntroductionLabel": "Show Introduction",
-          "showIntroductionNo": "No",
-          "showIntroductionOnce": "Once",
-          "showIntroductionAlways": "Always",
-          "startTextLabel": "Start Text (per language)",
-          "endTextLabel": "End Text (per language)",
-          "warningTextLabel": "Warning text (per language)",
-          "notificationLabel": "Notification",
-          "notificationTitleLabel": "Title (per language)",
-          "notificationMessageLabel": "Message (per language)"
-        },
-        "questionsGroup": {
-          "title": "Question Set",
-          "errorMessage": "Question set is required.",
-          "githubLabel": "Use GitHub repository",
-          "githubPropertiesLabel": "Github Properties",
-          "questionnaireNameLabel": "Questionnaire Name",
-          "questionnaireRepositoryLabel": "Questionnaire Repository",
-          "appQuestionnaireLabel": "App Questionnaire",
-          "estimatedCompletionTimeLabel": "Estimated completion time (minutes)",
-          "minutes": "minutes"
-        },
-        "scheduling": {
-          "title": "Scheduling",
-          "errorMessage": "Scheduling is required.",
-          "relativeToReferenceTimeLabel": "Relative To reference timestamp",
-          "referenceTimeLabel": "Reference timestamp",
-          "repeatedProtocolLabel": "Enable repeating",
-          "repeatProtocolLabel": "Repeat every",
-          "repeatProtocolAmount": "Amount",
-          "repeatProtocolUnit": "Unit",
-          "timeOffsetsLabel": "Time offsets",
-          "timeOffsetsDay": "Day",
-          "timeOffsetsTime": "Time",
-          "completionWindowLabel": "Time to complete",
-          "completionWindowUnit": "Unit",
-          "completionWindowAmount": "Amount",
-          "remindersLabel": "Reminders",
-          "remindersEnableLabel": "Enable reminders",
-          "reminderUnit": "Unit",
-          "reminderAmount": "Amount",
-          "reminderRepeat": "Repeat count"
-        },
-        "backButton": "Back",
-        "nextButton": "Next"
-      },
-      "availableLanguages": "Languages",
-      "actions": {
-        "tableLabel": "Actions",
-        "label": "Actions"
-      },
-      "create": "Add Protocol",
-      "edit": "Edit",
-      "delete": "Delete",
-      "deleteMessage": "You are going to delete Protocol",
-      "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Protocol Found"
-    },
     "questionnaire": {
       "title.singular": "Questionnaire",
       "title.plural": "Questionnaires",
@@ -1093,9 +926,6 @@
       "completionWindow.tableContent": "Expires after {{ amount }} {{ unit }}(s)",
       "onDemand": "On Demand",
       "scheduled": "Scheduled",
-      "filters": {
-        "search": "Search"
-      },
       "availableLanguages": "Languages",
       "actions": "Actions",
       "create": "Add Questionnaire",
@@ -1104,6 +934,9 @@
       "deleteMessage": "You are going to delete Questionnaire",
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No Questionnaire Found",
+      "filters": {
+        "search": "Search"
+      },
       "dialog": {
         "name": "Name",
         "languages": "Languages",

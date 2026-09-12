@@ -1,5 +1,4 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
-import {MatError, MatFormField, MatInput, MatSuffix} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {
   AppQuestionnaire, AppQuestionnaireLanguage, DEFAULT_LANGUAGE,
@@ -38,15 +37,11 @@ export interface QuestionnaireGeneralForm {
   selector: 'app-questionnaire-general',
   templateUrl: './questionnaire-general.component.html',
   imports: [
-    MatError,
-    MatFormField,
-    MatInput,
     TranslatePipe,
     FormField,
     SearchableMultiSelectComponent,
     MatSlideToggle,
     InputFormFieldComponent,
-    MatSuffix,
   ]
 })
 export class QuestionnaireGeneralComponent {
@@ -93,5 +88,9 @@ export class QuestionnaireGeneralComponent {
       const updated = {...entity, ...model, isGeneralTabValid: this.form().valid()} as AppQuestionnaire;
       this.store.selected.set(updated);
     });
+  }
+
+  protected onClickSlideToggle() {
+    (document.activeElement as HTMLElement)?.blur();
   }
 }

@@ -1,34 +1,17 @@
-@let _prefix = 'ADMIN.questionnaire.dialog.question';
+@let _i18nQuestion = 'ADMIN.questionnaire.dialog.question';
 
 <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,320px)] gap-2 h-full">
 
   <form class="h-full overflow-y-auto pr-4">
     <div class="grid grid-cols-2 gap-2 items-center">
-      <div>
-        <label for="field_type" class="text-sm"
-               [class]="form.field_type().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.fieldType` | translate }} *
-        </label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <mat-select [formField]='form.field_type'>
-            @for (item of QUESTION_TYPES; track item) {
-              @for (type of item.types; track type.type) {
-                <mat-option [value]="type.type">{{ type.label }}</mat-option>
-              }
-            }
-          </mat-select>
-          <mat-error>
-            @if (form.field_type().invalid()) {
-              @for (error of form.field_type().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <app-select-form-field [field]="form.field_type"
+                             [options]="QUESTION_TYPE_OPTIONS"
+                             [label]="`${_i18nQuestion}.fieldType`"
+                             [required]="true"/>
+
       <div class="flex items-center justify-between">
         <mat-slide-toggle [formField]="form.isActive" class="my-4" color="primary">
-          {{ `${_prefix}.isActive` | translate }}
+          {{ `${_i18nQuestion}.isActive` | translate }}
         </mat-slide-toggle>
         <div class="flex items-center gap-1">
           @if (form.matrix_group_name().value()) {
@@ -38,21 +21,21 @@
           }
 
           @if (form.conditionalLogic().value().length) {
-            <mat-icon class="material-symbols-outlined text-orange-500! cursor-pointer"
-                      [matTooltip]="`${_prefix}.questionHasConditionalLogic` | translate">
+            <mat-icon class=" text-orange-500! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.questionHasConditionalLogic` | translate">
               rule
             </mat-icon>
           }
 
 
           @if (form().valid()) {
-            <mat-icon class="material-symbols-outlined text-green-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.questionIsValid` | translate">
+            <mat-icon class=" text-green-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.questionIsValid` | translate">
               check_circle
             </mat-icon>
           } @else {
-            <mat-icon class="material-symbols-outlined text-xl! text-red-700! cursor-pointer"
-                      [matTooltip]="`${_prefix}.questionIsInvalid` | translate">
+            <mat-icon class=" text-xl! text-red-700! cursor-pointer"
+                      [matTooltip]="`${_i18nQuestion}.questionIsInvalid` | translate">
               warning
             </mat-icon>
           }
@@ -63,103 +46,40 @@
     </div>
 
     <div class="grid grid-cols-2 gap-2 items-center">
-      <div>
-        <label for="field_name" class="text-sm"
-               [class]="form.field_name().invalid() ? 'text-red-700' : ''">
-          {{ `${_prefix}.fieldName` | translate }} *
-        </label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <input matInput [formField]='form.field_name'/>
-          <mat-error>
-            @if (form.field_name().invalid()) {
-              @for (error of form.field_name().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <app-input-form-field [field]="form.field_name" [label]="`${_i18nQuestion}.fieldName`" [required]="true"/>
 
       <mat-slide-toggle [formField]="form.required_field" class="my-4" color="primary">
-        {{ `${_prefix}.requiredField` | translate }}
+        {{ `${_i18nQuestion}.requiredField` | translate }}
       </mat-slide-toggle>
     </div>
 
 
     <div class="mb-4">
-      <label for="field_label" class="text-sm"
-             [class]="form.field_label[_lang]().invalid() ? 'text-red-700' : ''">
-        {{ `${_prefix}.fieldLabel` | translate }} *
-      </label>
-      <app-html-editor [formField]="form.field_label[_lang]" [questionIndex]="_index"/>
-      <!--        [questionIndex]="_index" />-->
-
-      <!--        <app-rich-text-editor [formField]="form.field_label[_lang]" [questionIndex]="_index"/>-->
-      <!--        <app-question-template-variables [questionIndex]="_index" [formField]="form.field_label[_lang]"/>-->
+      <app-html-editor [formField]="form.field_label[_lang]"
+                       [questionIndex]="_index"
+                       [label]="`${_i18nQuestion}.fieldLabel`"
+                       [required]="true"/>
     </div>
 
     <div class="mb-4">
-      <!--      <div class="flex justify-between items-baseline">-->
-      <label for="section_header" class="text-sm">{{ `${_prefix}.sectionHeader` | translate }}</label>
-      <app-html-editor [formField]="form.section_header[_lang]" [questionIndex]="_index"/>
-      <!--        <app-rich-text-editor [formField]="form.section_header[_lang]" [questionIndex]="_index"/>-->
-      <!--      <app-question-template-variables [questionIndex]="_index" [formField]="form.section_header[_lang]"/>-->
+      <app-html-editor [formField]="form.section_header[_lang]"
+                       [questionIndex]="_index"
+                       [label]="`${_i18nQuestion}.sectionHeader`"/>
     </div>
 
     <div class="mb-4">
-      <!--      <div class="flex justify-between items-baseline">-->
-      <label for="field_note" class="text-sm">{{ `${_prefix}.fieldNote` | translate }}</label>
-      <app-html-editor [formField]="form.field_note[_lang]" [questionIndex]="_index"/>
-      <!--        <app-rich-text-editor [formField]="form.field_note[_lang]" [questionIndex]="_index"/>-->
-      <!--      <app-question-template-variables [questionIndex]="_index" [formField]="form.field_note[_lang]"/>-->
+      <app-html-editor [formField]="form.field_note[_lang]"
+                       [questionIndex]="_index"
+                       [label]="`${_i18nQuestion}.fieldNote`"/>
     </div>
 
 
     <fieldset class="p-2 rounded-sm border grid grid-cols-2 gap-2 mb-4">
-      <div>
-        <label for="text_validation_min"
-               class="text-sm">{{ `${_prefix}.textValidationMin` | translate }}</label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <input id="text_validation_max" matInput [formField]="form.text_validation_min" type="time"/>
-          <mat-error>
-            @if (form.text_validation_min().invalid()) {
-              @for (error of form.text_validation_min().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <div>
-        <label for="text_validation_max"
-               class="text-sm">{{ `${_prefix}.textValidationMax` | translate }}</label>
-        <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-          <input id="text_validation_max" matInput [formField]="form.text_validation_max" type="time"/>
-          <mat-error>
-            @if (form.text_validation_max().invalid()) {
-              @for (error of form.text_validation_max().errors(); track error.kind) {
-                {{ error.message }}
-              }
-            }
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <app-input-form-field [field]="form.text_validation_min" [label]="`${_i18nQuestion}.textValidationMin`" type="time"/>
+      <app-input-form-field [field]="form.text_validation_max" [label]="`${_i18nQuestion}.textValidationMax`" type="time"/>
     </fieldset>
 
-    <label for="matrix_group_name"
-           class="text-sm">{{ `${_prefix}.matrixGroupName` | translate }}</label>
-    <mat-form-field class='small-input' appearance="outline" subscriptSizing="fixed">
-      <input id="matrix_group_name" matInput [formField]='form.matrix_group_name'/>
-      <mat-error>
-        @if (form.matrix_group_name().invalid()) {
-          @for (error of form.matrix_group_name().errors(); track error.kind) {
-            {{ error.message }}
-          }
-        }
-      </mat-error>
-    </mat-form-field>
-
+    <app-input-form-field [field]="form.matrix_group_name" [label]="`${_i18nQuestion}.matrixGroupName`" type="number"/>
 
     @if ((matrixIndex() ?? 0) > 0 || (_index ?? 0) > 0) {
       <app-question-conditional-logic [conditionalLogic]="model().conditionalLogic"
