@@ -6,8 +6,7 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { StorageService } from '../../storage/services/storage.service';
 
@@ -16,7 +15,7 @@ export const SKIP_AUTH = new HttpContextToken<boolean>(() => false);
 @Injectable({providedIn: 'root'})
 export class AuthInterceptor implements HttpInterceptor {
 
-  static addToken(request: HttpRequest<unknown>, token: string) {
+  private static addToken(request: HttpRequest<unknown>, token: string): HttpRequest<unknown>{
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
@@ -24,18 +23,15 @@ export class AuthInterceptor implements HttpInterceptor {
     });
   }
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
     if (request.context.get(SKIP_AUTH)) {
-      return next.handle(request).pipe(catchError((error) => throwError(() => error)));
+      return next.handle(request);
     }
 
     const token = StorageService.getAccessToken();
-    if (token) {
-      request = AuthInterceptor.addToken(request, token);
-    }
-    return next.handle(request).pipe(catchError((error) => throwError(() => error)));
+    const authorizedRequest = token ? AuthInterceptor.addToken(request, token) : request;
+
+    return next.handle(authorizedRequest);
   }
 }

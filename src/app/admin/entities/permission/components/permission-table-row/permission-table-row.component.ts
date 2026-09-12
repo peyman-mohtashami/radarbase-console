@@ -2,14 +2,13 @@ import {Component, computed, inject, input, signal} from "@angular/core";
 import {PermissionRolesComponent} from '../permission-roles/permission-roles.component';
 import {UserActivatedComponent} from '../../../user/components/user-activated/user-activated.component';
 import {PermissionDetailsComponent} from '../permission-details/permission-details.component';
-import {AppUser} from "../../../user/models/user";
+import {AppUser, UserDto} from "../../../user/models/user";
 import {PermissionConfigService} from "../../services/permission-config.service";
 import {
   EntityTableRowComponent
 } from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {PermissionActionsComponent} from '../permission-actions/permission-actions.component';
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
-import {ManagementPortalUser} from '../../../../../core/auth/models/auth.model';
 import {ROLES} from '../../../../../shared/enums/roles';
 import {DetailType} from '../../../../shared/enums/detail-type';
 
@@ -40,7 +39,7 @@ export class PermissionTableRowComponent {
   organizationName = input<string>();
   projectName = input<string>();
 
-  user = input.required<ManagementPortalUser | null>();
+  user = input.required<UserDto | null>();
 
   isDisabled = computed(() => {
     if (this.user()?.id === this.entity().id) {

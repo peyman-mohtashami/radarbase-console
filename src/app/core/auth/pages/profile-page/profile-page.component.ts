@@ -5,7 +5,6 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {ManagementPortalUser} from '../../models/auth.model';
 import {AuthService} from "../../services/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
@@ -15,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {
   InputFormFieldComponent
 } from '../../../../admin/shared/components/app-form-fields/input-form-field/input-form-field.component';
+import {UserDto} from '../../../../admin/entities/user/models/user';
 
 @Component({
   selector: 'app-profile-page',
@@ -65,7 +65,7 @@ export class ProfilePageComponent {
     const user = {
       ...this.authService.user(),
       ...this.model()
-    } as ManagementPortalUser;
+    } as UserDto;
 
     this.profileService.update(user).subscribe({
       next: () => {

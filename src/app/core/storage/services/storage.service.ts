@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {TokenData} from '../../auth/models/auth.model';
+import {TokenDataDto} from '../../auth/models/auth.model';
 
 export enum AuthStorageItem {
   ACCESS_TOKEN = 'accessToken',
@@ -14,9 +14,14 @@ export class StorageService {
   //   this.setRefreshToken(authResponse.refresh_token);
   // }
 
-  static setAuthTokenData(tokenData: TokenData): void {
+  static setAuthTokenData(tokenData: TokenDataDto): void {
     this.setAccessToken(tokenData.access_token);
     this.setRefreshToken(tokenData.refresh_token);
+  }
+
+  static clearAuthTokenData() {
+    this.clearAccessToken();
+    this.clearRefreshToken();
   }
 
   // static clearAuth(): void {
