@@ -13,7 +13,7 @@
         <span>{{ entity().clientId || '-' }}</span>
       </a>
     }
-    @case ('_dynamic_registration') {
+    @case ('dynamic_registration') {
       @if (entity().additionalInformation['dynamic_registration'] === "true") {
         <app-tag class="bg-primary text-white">{{ 'ADMIN.client.dynamic_registration.dynamic' | translate }}</app-tag>
       } @else {
@@ -38,10 +38,10 @@
         }
       </div>
     }
-    @case ('accessTokenValiditySeconds') {
+    @case ('accessTokenValidity') {
       {{ entity().accessTokenValiditySeconds | duration:'s' }}
     }
-    @case ('refreshTokenValiditySeconds') {
+    @case ('refreshTokenValidity') {
       {{ entity().refreshTokenValiditySeconds | duration:'s' }}
     }
     @default {

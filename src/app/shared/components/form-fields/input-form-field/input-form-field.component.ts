@@ -13,7 +13,7 @@ import {LabelFormFieldComponent} from '../label-form-field/label-form-field.comp
     MatFormField,
     MatInput,
     FormField,
-    LabelFormFieldComponent
+    LabelFormFieldComponent,
   ]
 })
 export class InputFormFieldComponent {
@@ -24,5 +24,6 @@ export class InputFormFieldComponent {
   readonly appearance = input<'fill' | 'outline'>('outline');
   readonly subscriptSizing = input<'fixed' | 'dynamic'>('fixed');
   readonly type = input<string>('text');
+  readonly placeholder = input<string | null>(null);
   readonly errors = input<'none' | 'one' | 'all'>('one');
 }

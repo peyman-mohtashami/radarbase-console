@@ -9,7 +9,7 @@ import {EntityTableRowComponent} from '../../../../shared/components/entity-tabl
 import {SourceDataActionsComponent} from '../source-data-actions/source-data-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-source-data-table-row',

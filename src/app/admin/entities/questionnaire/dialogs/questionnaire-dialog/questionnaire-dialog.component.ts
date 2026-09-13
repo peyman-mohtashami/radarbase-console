@@ -6,7 +6,8 @@ import {
 import {MAT_DIALOG_DATA, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from "../../../../shared/enums/dialog";
+// import {DialogMode} from "../../../../shared/models/dialog.model';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';

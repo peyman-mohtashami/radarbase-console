@@ -4,7 +4,6 @@ import {
 } from '../../admin/entities/questionnaire/dialogs/questionnaire-dialog/tabs/questionnaire-variables/model/template-field.model';
 import {AppQuestionnaire} from '../../admin/entities/questionnaire/models/questionnaire';
 import {untracked} from '@angular/core';
-// import {measureStrength} from '../../core/auth/pages/password-page/password-page.component';
 
 /** Must contain at least one letter; letters/digits/_.,- and space, 2-40 chars. */
 export const NORMAL_TEXT_PATTERN = /^(?=.*[a-zA-Z])[a-zA-Z0-9_., -]{2,40}$/;
@@ -22,7 +21,7 @@ export function requiredField<TValue, TPathKind extends PathKind = PathKind.Root
 ): void {
   required(path, {
     ...options,
-    message: 'ADMIN.SHARED.validatorError.required',
+    message: 'SHARED.VALIDATOR_ERROR.required',
   });
 }
 
@@ -31,7 +30,7 @@ export function identifierField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, IDENTIFIER_PATTERN, {
-    message: 'ADMIN.SHARED.validatorError.identifierValidator',
+    message: 'SHARED.VALIDATOR_ERROR.identifierValidator',
   });
 }
 
@@ -39,7 +38,7 @@ export function emailField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, EMAIL_PATTERN, {
-    message: 'ADMIN.SHARED.validatorError.emailValidator',
+    message: 'SHARED.VALIDATOR_ERROR.emailValidator',
   });
 }
 
@@ -49,7 +48,7 @@ export function normalTextField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, NORMAL_TEXT_PATTERN, {
-    message: 'ADMIN.SHARED.validatorError.normalTextValidator',
+    message: 'SHARED.VALIDATOR_ERROR.normalTextValidator',
   });
 }
 
@@ -58,7 +57,7 @@ export function longTextField<TPathKind extends PathKind = PathKind.Root>(
   path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
 ): void {
   pattern(path, LONG_TEXT_PATTERN, {
-    message: 'ADMIN.SHARED.validatorError.longTextValidator',
+    message: 'SHARED.VALIDATOR_ERROR.longTextValidator',
   });
 }
 
@@ -74,15 +73,19 @@ export function validateTemplateVariables<TValue, TPathKind extends PathKind = P
 
     return {
       kind: 'wrongTemplateVariable',
-      message: 'ADMIN.SHARED.validatorError.wrongTemplateVariable',
+      message: 'SHARED.VALIDATOR_ERROR.wrongTemplateVariable',
     };
   });
 }
 
-export function parseAndValidateTemplateVariables(value: string, questionnaire: AppQuestionnaire | null, index: number | undefined): QuestionTemplateVariable[] | null {
+export function parseAndValidateTemplateVariables(
+  value: string,
+  questionnaire: AppQuestionnaire | null,
+  index: number | undefined
+): QuestionTemplateVariable[] | null {
   const matches = [...value.matchAll(/\{\{([^{}]*)}}/g),];
 
-  const stripped = value.replace(/\{\{([^{}]*)}}/g,'',);
+  const stripped = value.replace(/\{\{([^{}]*)}}/g, '',);
 
   // Detect unmatched {{
   if (stripped.includes('{{') || stripped.includes('}}')) return null;
@@ -100,55 +103,16 @@ export function parseAndValidateTemplateVariables(value: string, questionnaire: 
   return _variables;
 }
 
-export function isValidTemplateVariable(variable: QuestionTemplateVariable, questionnaire: AppQuestionnaire | null, index: number | undefined): boolean {
+export function isValidTemplateVariable(
+  variable: QuestionTemplateVariable,
+  questionnaire: AppQuestionnaire | null,
+  index: number | undefined
+): boolean {
   if (index === undefined) return true;
-
-  // if (variable.type !== 'question') return true;
 
   const indexOfQuestionInVariable = questionnaire!.questions.findIndex(item => item.field_name === variable.questionId);
   return indexOfQuestionInVariable < index;
 }
-
-// export function parseAndValidateTemplateVariables(value: string, field: string, variables: Record<string, QuestionTemplateVariable[]>): QuestionTemplateVariable[] | null {
-//   const matches = [...value.matchAll(/\{\{([^{}]*)\}\}/g),];
-//
-//   const stripped = value.replace(/\{\{([^{}]*)\}\}/g,'',);
-//
-//   // Detect unmatched {{
-//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 134 ' , );
-//   if (stripped.includes('{{') || stripped.includes('}}')) return null;
-//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 136 ' , );
-//
-//   const _variables: QuestionTemplateVariable[] = [];
-//
-//   for (const match of matches) {
-//     const id = match[1].trim();
-//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 142 ' , );
-//     if (!id) return null;
-//
-//     const variable = variables[field]?.find(item => item.name === id);
-//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 146 variable' , variable);
-//     if (!variable) return null;
-//     console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 148 ' , );
-//     if (!isValidTemplateVariable(variable)) return null;
-//     _variables.push(variable);
-//   }
-//   console.log('Class: parseAndValidateTemplateVariables, Function: parseAndValidateTemplateVariables, Line 152 _variables' , _variables);
-//   return _variables;
-// }
-//
-// export function isValidTemplateVariable(variable: QuestionTemplateVariable): boolean {
-//   if (!variable.id) return false;
-//   return true;
-//   // switch (variable.type) {
-//   //   case 'reservedVariable':
-//   //     return true;
-//   // }
-//   // if (variable.type !== 'question') return false;
-//   // if (!variable.questionId) return false;
-//   // if (variable.start && variable.end && variable.start > variable.end) return false;
-//   // return true;
-// }
 
 export function timeToMinutes(time: string) {
   const [hours, minutes] = time.split(':').map(Number);
@@ -164,7 +128,7 @@ export function validateDuplicate<TValue, TPathKind extends PathKind = PathKind.
     if (item?.[field] === value()) return null;
     return {
       kind: 'duplicate',
-      message: 'ADMIN.SHARED.validatorError.duplicateName',
+      message: 'SHARED.VALIDATOR_ERROR.duplicateName',
     };
   });
 }
@@ -178,7 +142,7 @@ export function validatePasswordStrength<TValue, TPathKind extends PathKind = Pa
     } else {
       return {
         kind: 'passwordStrength',
-        message: 'ADMIN.SHARED.validatorError.passwordStrength',
+        message: 'SHARED.VALIDATOR_ERROR.passwordStrength',
       };
     }
   });
@@ -209,7 +173,7 @@ export function validatePasswordMatch<TValue, TPathKind extends PathKind = PathK
       if (password !== confirmPassword) {
         return {
           kind: 'passwordMismatch',
-          message: 'ADMIN.SHARED.validatorError.passwordMismatch',
+          message: 'SHARED.VALIDATOR_ERROR.passwordMismatch',
         }
       }
       return null;
@@ -231,7 +195,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
     }
 
     if (!context.value() || !context.valueOf(maxPath)) return null;
-    switch(type) {
+    switch (type) {
       case 'number': {
         const min = Number(context.value());
         const max = Number(context.valueOf(maxPath));
@@ -256,7 +220,7 @@ export function validateMinMax<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'minLessThanMax',
-      message: 'ADMIN.SHARED.validatorError.minLessThanMax',
+      message: 'SHARED.VALIDATOR_ERROR.minLessThanMax',
     };
   });
 }
@@ -274,7 +238,7 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
 
     if (!context.value() || !context.valueOf(minPath)) return null;
 
-    switch(type) {
+    switch (type) {
       case 'number': {
         const max = Number(context.value());
         const min = Number(context.valueOf(minPath));
@@ -299,7 +263,7 @@ export function validateMaxMin<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'maxGreaterThanMin',
-      message: 'ADMIN.SHARED.validatorError.maxGreaterThanMin',
+      message: 'SHARED.VALIDATOR_ERROR.maxGreaterThanMin',
     };
   });
 }
@@ -321,7 +285,7 @@ export function positiveNumber<TValue, TPathKind extends PathKind = PathKind.Roo
 
     return {
       kind: 'rangeStepPositive',
-      message: 'ADMIN.SHARED.validatorError.rangeStepPositive',
+      message: 'SHARED.VALIDATOR_ERROR.rangeStepPositive',
     };
   });
 }
@@ -345,7 +309,7 @@ export function validateRegex<TValue, TPathKind extends PathKind = PathKind.Root
     } catch (error) {
       return {
         kind: 'regexInvalid',
-        message: error instanceof Error ? error.message : 'ADMIN.SHARED.validatorError.regexInvalid',
+        message: error instanceof Error ? error.message : 'SHARED.VALIDATOR_ERROR.regexInvalid',
       };
     }
   });

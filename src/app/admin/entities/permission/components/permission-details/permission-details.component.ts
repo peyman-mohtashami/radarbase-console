@@ -7,7 +7,7 @@ import {PermissionRolesComponent} from '../permission-roles/permission-roles.com
 import {PermissionConfigService} from "../../services/permission-config.service";
 import {AppUser} from "../../../user/models/user";
 import {UserActivateComponent} from '../../../user/components/user-activate/user-activate.component';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-permission-details',

@@ -23,7 +23,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SubjectStore} from '../../services/subject.store';
 import {form} from '@angular/forms/signals';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
@@ -39,7 +39,7 @@ import {
 import {
   DateFormFieldComponent
 } from '../../../../../shared/components/form-fields/date-form-field/date-form-field.component';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 
 export interface SubjectForm {
   id: string;

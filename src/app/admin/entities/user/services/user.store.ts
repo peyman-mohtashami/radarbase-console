@@ -6,7 +6,7 @@ import {UserService} from './user.service';
 import {APP_ROLES} from '../../../../core/auth/models/auth.model';
 import {UserConfigService} from './user-config.service';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../shared/components/data-table-filter/data-table-filter.component';
@@ -29,7 +29,7 @@ export class UserStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly params = computed<Params>(() => ({
@@ -55,6 +55,7 @@ export class UserStore {
   }
 
   async setFilter(filter: FilterEvent) {
+    console.log('Class: UserStore, Function: setFilter, Line 58 filter' , filter);
     this.filter.set(filter);
     await this.getWithQuery();
   }
@@ -65,6 +66,7 @@ export class UserStore {
       const dtos = await firstValueFrom(this.api.getAll());
       this.allItems.set(dtos.map(dto => this.toAppModel(dto)));
       this.total.set(dtos.length);
+      console.log('Class: UserStore, Function: getAll, Line 67 this.total()' , this.total());
       return true;
     } catch (e) {
       this.errorHandler.handleError(e);
@@ -76,14 +78,21 @@ export class UserStore {
 
   async getWithQuery(): Promise<boolean> {
     console.log('Class: UserStore, Function: getWithQuery, Line 78 ' , this.params());
+    const filterEnabled = Object.keys(this.params()).some(key => key !== 'page' && key !== 'size' && key !== 'sort');
     this.loading.set(true);
     try {
       const response = await firstValueFrom(this.api.getWithQuery(this.params()));
       console.log('Class: UserStore, Function: getWithQuery, Line 82 response' , response);
       const sourceData = (response.body ?? []).map((dto: UserDto) => this.toAppModel(dto));
       const total = response.headers.get('X-Total-Count');
+      console.log('Class: UserStore, Function: getWithQuery, Line 86 total' , total);
       this.items.set([...sourceData]);
-      this.total.set(total ? +total : 0);
+      if (!filterEnabled) {
+        this.total.set(total ? +total : 0);
+        console.log('Class: UserStore, Function: getWithQuery, Line 88 this.total()', this.total());
+      } else {
+        this.total.set(1);
+      }
       return true;
     } catch (e) {
       this.errorHandler.handleError(e);
@@ -197,7 +206,6 @@ export class UserStore {
   toAppModel(entity: UserDto): AppUser {
     return {
       ...entity,
-      // name: entity.login,
       search: `${entity.login}`,
       uiRoles: this.toAppRole(entity.roles),
     };

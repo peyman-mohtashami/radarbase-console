@@ -11,6 +11,10 @@
 }
 
 @layer utilities {
+  .app-background {
+    @apply bg-white bg-linear-to-r to-primary/20 from-tertiary/20 dark:bg-gray-900;
+  }
+
   /*#region SCROLLBAR*/
   /* Base scrollbar style*/
   .scrollbar::-webkit-scrollbar {

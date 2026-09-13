@@ -17,7 +17,7 @@ import {
   UpdateSourceDataDto
 } from "../../models/source-data";
 import {TranslatePipe} from '@ngx-translate/core';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {JsonPipe} from '@angular/common';

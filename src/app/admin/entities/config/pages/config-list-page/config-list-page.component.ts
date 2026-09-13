@@ -1,5 +1,5 @@
 import {Component, computed, inject, signal} from '@angular/core';
-import { DialogMode } from '../../../../shared/enums/dialog';
+import { DialogMode } from '../../../../shared/models/dialog.model';
 import {AppConfig} from "../../models/config";
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoaderComponent} from "../../../../../shared/components/loader/loader.component";
@@ -13,7 +13,7 @@ import {ConfigConfigService} from "../../services/config-config.service";
 import {ConfigDialogService} from "../../services/config-dialog.service";
 import {MatIcon} from '@angular/material/icon';
 import {EntityListPageComponent} from '../../../../shared/components/entity-list-page/entity-list-page.component';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/models/table.model';
 import {PermissionDirective} from '../../../../../core/auth/directives/show-if-has-role.directive';
 import {ProjectStore} from '../../../project/services/project.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';

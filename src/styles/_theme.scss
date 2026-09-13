@@ -27,16 +27,12 @@ $theme: mat.define-theme((
   color: (
     theme-type: light,
     primary: palettes.$primary-palette,
-    tertiary: palettes.$primary-palette,//mat.$cyan-palette,
+    tertiary: palettes.$primary-palette,
     use-system-variables: true,
   ),
   typography: (
-    plain-family: Inter var, //sans-serif, //Roboto,
+    plain-family: Inter var,
     brand-family: Inter var,
-    //brand-family: Open Sans,
-    //bold-weight: 900,
-    //medium-weight: 500,
-    //regular-weight: 300,
     use-system-variables: true,
   ),
   density: (
@@ -52,12 +48,8 @@ $dark-theme: mat.define-theme((
     use-system-variables: true,
   ),
   typography: (
-    plain-family: Inter var, //sans-serif, //Roboto,
+    plain-family: Inter var,
     brand-family: Inter var,
-    //brand-family: Open Sans,
-    //bold-weight: 900,
-    //medium-weight: 500,
-    //regular-weight: 300,
     use-system-variables: true,
   ),
   density: (
@@ -69,9 +61,6 @@ $dark-theme: mat.define-theme((
   @include mat.all-component-themes($theme);
   @include mat.system-level-colors($theme);
   @include mat.system-level-typography($theme);
-  //@include mat.system-level-shape($theme, (
-  //  corner-small: 4px,
-  //));
   @include mat.system-level-shape($theme);
   @include mat.system-level-elevation($theme);
   @include mat.system-level-state($theme);
@@ -96,9 +85,6 @@ $dark-theme: mat.define-theme((
   //@include table.theme();
   @include toolbar.overrides();
   //@include tooltip.theme();
-
-
-  //--mat-sys-background: white;
 }
 
 :root.dark {

@@ -13,14 +13,12 @@ import {
 
 import {AppUser, CreateUserDto, RoleDto, UpdateUserDto, UserDialogMode} from "../../models/user";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from '../../../../shared/enums/dialog';
 import {UserConfigService} from '../../services/user-config.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {JsonPipe} from '@angular/common';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {UserDetailsComponent} from '../../components/user-details/user-details.component';
-import {DetailType} from '../../../../shared/enums/detail-type';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -39,6 +37,8 @@ import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {
   InputFormFieldComponent
 } from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
+import {DialogMode} from '../../../../shared/models/dialog.model';
+import {DetailType} from '../../../../shared/models/table.model';
 
 
 export interface UserForm {

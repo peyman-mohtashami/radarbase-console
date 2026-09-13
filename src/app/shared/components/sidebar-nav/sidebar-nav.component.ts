@@ -10,8 +10,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {RouterLinkExactActiveDirective} from "../../directives/router-link-exact-active.directive";
 import {ConfigurationService} from '../../../core/configuration/services/configuration.service';
 import {MatIcon} from '@angular/material/icon';
-import {CustomConfiguration} from '../../../core/configuration/models/deployment-configuration.model';
-import {NavGroupItem} from '../../../core/configuration/models/nav-group-item.model';
+import {CustomConfiguration, AppNavGroupItem} from '../../../core/configuration/models/configuration.model';
 import {APP_ROLES} from '../../../core/auth/models/auth.model';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../consts/entity-registry';
 import {MenuStateService} from '../../../core/ui-state/menu-state.service';
@@ -59,7 +58,7 @@ export class SidebarNavComponent {
   navGroupItems = computed(() => this.setNavGroupItems(this.mainNavigationCustomization()));
 
   private setNavGroupItems(config: CustomConfiguration['mainNavigation']) {
-    const navGroupItems: NavGroupItem[] = [
+    const navGroupItems: AppNavGroupItem[] = [
       {
         permission: [{role: APP_ROLES.SYS_ADMIN}, {role: APP_ROLES.ORGANIZATION_ADMIN}, {role: APP_ROLES.PROJECT_ADMIN}],
         close: false,

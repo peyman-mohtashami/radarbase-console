@@ -8,7 +8,7 @@ import {
 } from '@angular/material/dialog';
 import {AppOrganization, CreateOrganizationDto, UpdateOrganizationDto} from "../../models/organization";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {OrganizationConfigService} from '../../services/organization-config.service';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {form} from '@angular/forms/signals';

@@ -9,7 +9,7 @@
 
     @if (roles["_organizationAdmin"]) {
       @for (organization of roles['_organizations']; track organization.id) {
-        <app-tag class="bg-secondary dark:bg-secondary-dark text-white">
+        <app-tag class="bg-secondary text-white">
           {{ 'ADMIN.user.role.organizationAdmin' | translate }}: {{organization.name}}
         </app-tag>
       }
@@ -17,7 +17,7 @@
 
     @if (roles["_projectAdmin"]) {
       @for (project of roles['_projects']; track project.id) {
-        <app-tag class="bg-tertiary/10 dark:bg-tertiary-dark/10 text-tertiary">
+        <app-tag class="bg-tertiary/10 text-tertiary">
           {{ 'ADMIN.user.role.projectAdmin' | translate}}: {{project.projectName}}
         </app-tag>
       }

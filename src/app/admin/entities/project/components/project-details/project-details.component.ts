@@ -6,7 +6,7 @@ import {LocalDateComponent} from "../../../../../core/locale/components/local-da
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {KeyValuePipe} from "@angular/common";
 import {ProjectConfigService} from "../../services/project-config.service";
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-project-details',

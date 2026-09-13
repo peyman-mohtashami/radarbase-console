@@ -8,7 +8,8 @@ import {SourceTypeDetailsComponent} from "../source-type-details/source-type-det
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SourceTypeActionsComponent} from '../source-type-actions/source-type-actions.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+// import {DetailType} from '../../../../shared/models/table.model';
+import {DetailType} from '../../../../shared/models/table.model';
 import {AppSourceType} from '../../models/source-type';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
 

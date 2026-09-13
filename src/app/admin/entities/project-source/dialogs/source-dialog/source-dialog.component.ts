@@ -14,7 +14,7 @@ import {
 
 import {TranslatePipe} from "@ngx-translate/core";
 import {SourceConfigService} from '../../services/source-config.service';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {AppSource, CreateSourceDto, UpdateSourceDto} from '../../models/source';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {JsonPipe} from '@angular/common';

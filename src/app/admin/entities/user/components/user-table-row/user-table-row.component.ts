@@ -9,7 +9,7 @@ import {EntityTableRowComponent} from '../../../../shared/components/entity-tabl
 import {UserActionsComponent} from '../user-actions/user-actions.component';
 import {UserActivateComponent} from '../user-activate/user-activate.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-user-table-row',

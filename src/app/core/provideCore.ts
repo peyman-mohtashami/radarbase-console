@@ -1,5 +1,4 @@
 import {inject, makeEnvironmentProviders, provideAppInitializer} from "@angular/core";
-import {ThemeService} from "./theme/services/theme.service";
 import {provideAuth} from "./auth/provideAuth";
 import {provideError} from "./error/provideError";
 import {provideLocale} from "./locale/provideLocale";
@@ -8,10 +7,9 @@ import {LocaleService} from "./locale/services/locale.service";
 import {RuntimeConfigTranslateLoader} from "./locale/runtime-config-translate.loader";
 import {ConfigurationService} from './configuration/services/configuration.service';
 
-function configInitializerFn(customizationService: ConfigurationService, themeService: ThemeService, localeService: LocaleService) {
+function configInitializerFn(customizationService: ConfigurationService, localeService: LocaleService) {
   return async () => {
     await customizationService.init();
-    // themeService.init();
     await localeService.init();
   };
 }
@@ -30,7 +28,6 @@ export function provideCore() {
     provideAppInitializer(() => {
       const initializerFn = configInitializerFn(
         inject(ConfigurationService),
-        inject(ThemeService),
         inject(LocaleService)
       );
       return initializerFn();

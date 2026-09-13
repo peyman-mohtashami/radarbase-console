@@ -5,7 +5,7 @@ import {AuditService} from './audit.service';
 import {AppAudit, AuditDto} from '../models/audit';
 import {AuditConfigService} from './audit-config.service';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../../shared/components/data-table-filter/data-table-filter.component';
@@ -27,7 +27,7 @@ export class AuditStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly params = computed<Params>(() => ({

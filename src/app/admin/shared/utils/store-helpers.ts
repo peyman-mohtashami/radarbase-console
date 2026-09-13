@@ -1,4 +1,4 @@
-import {RbSort} from '../models/table.model';
+import {AppSort} from '../models/table.model';
 
 export function filterItems<T extends object>(
   items: T[],
@@ -17,7 +17,7 @@ export function filterItems<T extends object>(
 
 export function sortItems<T extends object>(
   items: T[],
-  {sortField, sortOrder}: RbSort,
+  {sortField, sortOrder}: AppSort,
 ): T[] {
   const collator = new Intl.Collator('en', {
     numeric: true,

@@ -1,11 +1,5 @@
 @if (activated()) {
-  <mat-icon class="text-green-600"
-        [matTooltip]="'ADMIN.user.activated.label' | translate ">
-    verified
-  </mat-icon>
+  <mat-icon class="text-green-700!" [matTooltip]="'ADMIN.user.activated' | translate ">verified</mat-icon>
 } @else {
-  <mat-icon class="text-red-600"
-        [matTooltip]="'ADMIN.user.notActivated.label' | translate">
-    verified_off
-  </mat-icon>
+  <mat-icon class="text-red-700!" [matTooltip]="'ADMIN.user.notActivated' | translate">verified_off</mat-icon>
 }

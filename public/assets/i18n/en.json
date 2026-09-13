@@ -70,7 +70,6 @@
     "poweredBy": "Powered by"
   },
   "SHARED": {
-    "loading": "Loading",
     "NAV": {
       "coreManagement": "Workspace",
       "systemConfiguration": "Advanced Settings",
@@ -96,23 +95,13 @@
       "deleteMessage": "You are going to delete",
       "deleteWarning": "Are you sure?"
     },
-    "filter": {
+    "FILTER": {
       "from": "From",
       "to": "To",
       "filterBy": "Filter by",
       "all": "All"
     },
-    "validatorHint": {
-      "requiredValidator": "",
-      "emailValidator": "Enter a valid email.",
-      "stringIdValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 50)",
-      "urlValidator": "Enter a valid URL",
-      "normalTextValidator": "Enter a valid string (Uppercase, lowercase and digits, min 2 max 20)",
-      "longTextValidator": "Enter a valid text (Uppercase, lowercase and digits, min 1 max 256)"
-    },
-    "validatorError": {
-      "required": "This field is required.",
-      "identifierValidator": "Enter a valid identifier (Characters and digits and '_')",
+    "VALIDATOR_ERROR": {
       "wrongTemplateVariable": "Template variable is invalid.",
       "duplicateName": "Already exists.",
       "requiredValidator": "'{{value}}' is required.",
@@ -127,12 +116,16 @@
       "dateOutOfMaxRange": "Date is out of range. It should be before {{value}}.",
       "numberOutOfMinRange": "Number is out of range. It should be greater than {{value}}.",
       "numberOutOfMaxRange": "Number is out of range. It should be less than {{value}}.",
-      "regexInvalid": "Invalid regular expression.",
-      "rangeStepPositive": "This field must be a positive number",
+      "required": "This field is required.",
+      "identifierValidator": "Identifier must be alphanumeric and can contain underscores.",
+      "minLessThanMax": "Min must be less than max",
       "maxGreaterThanMin": "Max must be greater than min",
-      "minLessThanMax": "Min must be less than max"
+      "rangeStepPositive": "This field must be a positive number",
+      "regexInvalid": "Invalid regular expression",
+      "passwordMismatch": "Passwords do not match",
+      "passwordStrength": "Password must contain one lowercase, uppercase, digit, special character, and minimum 8 characters"
     },
-    "UNIT": {
+    "TIME_UNIT": {
       "week": "week",
       "weeks": "weeks",
       "day": "day",
@@ -147,21 +140,6 @@
   },
   "ADMIN": {
     "SHARED": {
-      "validatorError": {
-        "required": "This field is required.",
-        "identifierValidator": "Identifier must be alphanumeric and can contain underscores.",
-        "normalTextValidator": "Must contain at least one letter; letters/digits/_.,- and space, 2-40 chars.",
-        "longTextValidator": "Any characters, 1-255 chars (multiline).",
-        "wrongTemplateVariable": "Wrong template variable",
-        "duplicateName": "Duplicate name",
-        "minLessThanMax": "Min must be less than max",
-        "maxGreaterThanMin": "Max must be greater than min",
-        "rangeStepPositive": "This field must be a positive number",
-        "regexInvalid": "Invalid regular expression",
-        "emailValidator": "Must be a valid email address",
-        "passwordMismatch": "Passwords do not match",
-        "passwordStrength": "Password must contain one lowercase, uppercase, digit, special character, and minimum 8 characters"
-      },
       "PAGINATOR": {
         "ITEMS_PER_PAGE": "Items per page",
         "NEXT_PAGE": "Next page",
@@ -213,8 +191,10 @@
       "registeredRedirectUri.hint": "Comma separated list of resolvable redirect URIs.",
       "autoApproveScopes": "Auto Approve Scopes",
       "autoApproveScopes.hint": "Comma separated list of scopes that do not require explicit user approval in the authorization code grant.",
+      "accessTokenValidity": "Access Token Validity",
       "accessTokenValiditySeconds": "Access Token Validity (Seconds)",
       "accessTokenValiditySeconds.hint": "Token validity period in seconds.",
+      "refreshTokenValidity": "Refresh Token Validity",
       "refreshTokenValiditySeconds": "Refresh Token Validity (Seconds)",
       "refreshTokenValiditySeconds.hint": "Token validity period in seconds.",
       "additionalInformation": "Additional Information",
@@ -571,7 +551,7 @@
       "producerModelVersion": "Producer/Model/Version",
       "model": "Model",
       "catalogVersion": "Catalog Version",
-      "sourceTypeScope": "Source Type Scope",
+      "sourceTypeScope": "Scope",
       "sourceTypeScope.PASSIVE": "Passive",
       "sourceTypeScope.ACTIVE": "Active",
       "canRegisterDynamically": "Source Registration",
@@ -748,6 +728,7 @@
       "authority": "Authority",
       "projectOrOrganization": "Organization Or Project",
       "activate": {
+        "shortTitle": "Activate",
         "title": "Confirm sending activation link",
         "message": "Are you sure you want to resend activation link for User {{user}} to {{email}}?",
         "send": "Send",
@@ -782,6 +763,7 @@
       "deleteMessage": "You are going to delete User",
       "deleteConfirmationMessage": "Are you sure?",
       "noItemFound": "No User Found",
+      "noItemFoundWithTheFilter": "No User Found with this filter",
       "filters": {
         "search": "Search"
       }

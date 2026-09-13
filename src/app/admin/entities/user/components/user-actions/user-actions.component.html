@@ -1,19 +1,21 @@
 @let _i18nEntity = `ADMIN.user`;
 
 @if (isExpanded()) {
-  <div class="flex items-center gap-2">
+  <div class="flex items-center">
     <button class="app-icon-button-small"
             mat-icon-button
             color="primary"
             [matTooltip]="`${_i18nEntity}.edit` | translate"
-            (click)='onAction(UserDialogMode.EDIT)'>
+            (click)='onAction(UserDialogMode.EDIT)'
+            [disabled]="entity().login === authService.user()?.login">
       <mat-icon>edit</mat-icon>
     </button>
     <button class="app-icon-button-small"
             mat-icon-button
             color="warn"
             [matTooltip]="`${_i18nEntity}.delete` | translate"
-            (click)='onAction(UserDialogMode.DELETE)'>
+            (click)='onAction(UserDialogMode.DELETE)'
+            [disabled]="entity().login === authService.user()?.login">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
@@ -23,38 +25,20 @@
   </button>
 
   <mat-menu #menu="matMenu">
-    <button (click)='onAction(UserDialogMode.EDIT)' mat-menu-item type="button">
+    <button (click)='onAction(UserDialogMode.EDIT)'
+            mat-menu-item
+            type="button"
+            [disabled]="entity().login === authService.user()?.login">
       <mat-icon matButtonIconPrefix>edit</mat-icon>
       {{ `${_i18nEntity}.edit` | translate }}
     </button>
 
-    <button (click)='onAction(UserDialogMode.DELETE)' mat-menu-item type="button">
-      <mat-icon matButtonIconPrefix class="text-red-500!">delete</mat-icon>
+    <button (click)='onAction(UserDialogMode.DELETE)'
+            mat-menu-item
+            type="button"
+            [disabled]="entity().login === authService.user()?.login">
+      <mat-icon matButtonIconPrefix class="text-error!">delete</mat-icon>
       {{ `${_i18nEntity}.delete` | translate }}
     </button>
   </mat-menu>
-
-<!--  <button mat-icon-button class="tiny"-->
-<!--          [matMenuTriggerFor]="menu"-->
-<!--          (click)="$event.stopPropagation();">-->
-<!--    <mat-icon class="font-bold! material-symbols-outlined text-xl!">more_vert</mat-icon>-->
-<!--  </button>-->
-<!--  <mat-menu #menu="matMenu" class="*:p-0! text-base shadow-lg">-->
-<!--    <button class="hover:text-primary! hover:dark:text-primary-dark! hover:bg-transparent! transition-all"-->
-<!--            mat-menu-item-->
-<!--            (click)='onAction(UserDialogMode.EDIT)'>-->
-<!--                <span class="flex items-center gap-2">-->
-<!--                  <mat-icon class="text-xl! text-primary dark:text-primary-dark material-symbols-outlined font-bold!">edit</mat-icon>-->
-<!--                  <span>{{ `ADMIN.${entityName}.edit` | translate }}</span>-->
-<!--                </span>-->
-<!--    </button>-->
-<!--    <button class="hover:text-red-500 hover:bg-transparent! transition-all"-->
-<!--            mat-menu-item-->
-<!--            (click)='onAction(UserDialogMode.DELETE)'>-->
-<!--                <span class="flex items-center gap-2">-->
-<!--                  <mat-icon class="text-xl! text-red-500 material-symbols-outlined font-bold!">delete</mat-icon>-->
-<!--                  <span>{{ `ADMIN.${entityName}.delete` | translate }}</span>-->
-<!--                </span>-->
-<!--    </button>-->
-<!--  </mat-menu>-->
 }

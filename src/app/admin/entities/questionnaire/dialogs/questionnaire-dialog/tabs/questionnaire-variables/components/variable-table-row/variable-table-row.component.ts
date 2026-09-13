@@ -5,7 +5,7 @@ import {
 } from '../../../../../../../../shared/components/entity-table-row/entity-table-row.component';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
-import {DialogMode} from '../../../../../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../../../../../shared/models/dialog.model';
 import {MatTooltip} from '@angular/material/tooltip';
 import {QuestionTemplateVariable} from '../../model/template-field.model';
 import {TableFields} from '../../questionnaire-variables.component';

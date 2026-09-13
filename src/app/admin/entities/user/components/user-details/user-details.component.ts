@@ -7,7 +7,7 @@ import {LocalDateComponent} from "../../../../../core/locale/components/local-da
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {UserConfigService} from "../../services/user-config.service";
 import {UserActivateComponent} from '../user-activate/user-activate.component';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-user-details',

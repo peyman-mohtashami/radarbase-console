@@ -4,7 +4,7 @@ import {firstValueFrom} from 'rxjs';
 import {OrganizationConfigService} from './organization-config.service';
 import {Params} from '@angular/router';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {FilterEvent} from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {OrganizationService} from './organization.service';
 import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
@@ -26,7 +26,7 @@ export class OrganizationStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppOrganization[]>(() => {

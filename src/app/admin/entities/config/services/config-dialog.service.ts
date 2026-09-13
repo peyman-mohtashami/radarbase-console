@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../shared/enums/dialog';
+import {DialogMode} from '../../../shared/models/dialog.model';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppConfig} from '../models/config';
 import {ConfigDialogComponent, ConfigForm, StoredConfigDialog} from '../dialogs/config-dialog/config-dialog.component';

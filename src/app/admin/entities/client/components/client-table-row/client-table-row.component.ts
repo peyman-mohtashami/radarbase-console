@@ -6,7 +6,7 @@ import {EntityTableRowComponent} from '../../../../shared/components/entity-tabl
 import {TranslatePipe} from '@ngx-translate/core';
 import {ClientActionsComponent} from '../client-actions/client-actions.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {AppClient} from '../../models/client';
 import {ClientConfigService} from '../../services/client-config.service';
 

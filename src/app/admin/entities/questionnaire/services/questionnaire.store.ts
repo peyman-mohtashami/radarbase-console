@@ -18,7 +18,7 @@ import {
 import {ProjectStore} from '../../project/services/project.store';
 import {SubjectStore} from '../../project-subject/services/subject.store';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../shared/components/data-table-filter/data-table-filter.component';
@@ -46,7 +46,7 @@ export class QuestionnaireStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'name', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'name', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppQuestionnaire[]>(() => {

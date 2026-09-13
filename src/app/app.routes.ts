@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {authGuard} from './core/auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -8,5 +8,5 @@ export const routes: Routes = [
       import('./admin/admin.routes').then((m) => m.adminRoutes),
     canActivate: [authGuard],
   },
-  { path: '**', redirectTo: 'admin' },
+  {path: '**', redirectTo: 'admin'},
 ];

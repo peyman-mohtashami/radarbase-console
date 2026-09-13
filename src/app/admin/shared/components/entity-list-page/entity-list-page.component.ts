@@ -1,12 +1,16 @@
 import {Component, input, output, signal, TemplateRef} from "@angular/core";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DetailType} from "../../enums/detail-type";
-import {RbPageSortEvent, RbSort, TableElement} from "../../models/table.model";
+import {
+  AppPageSortEvent,
+  AppSort,
+  DetailType,
+  MIN_ENTITIES_FOR_PAGINATION, PAGE_SIZE_OPTIONS,
+  TableElement
+} from "../../models/table.model";
 import {NgTemplateOutlet} from "@angular/common";
 import {EntityRegistry} from "../../../../shared/consts/entity-registry";
 import {TableQueryReflectorDirective} from '../../directives/table-query-reflector.directive';
 import {MatCheckbox} from '@angular/material/checkbox';
-import {MIN_ENTITIES_FOR_PAGINATION, PAGE_SIZE_OPTIONS} from '../../consts/default-table-values';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatIcon} from '@angular/material/icon';
@@ -29,11 +33,11 @@ export class EntityListPageComponent {
   protected readonly PAGE_SIZE_OPTIONS = PAGE_SIZE_OPTIONS;
 
   customTemplate = input<TemplateRef<unknown>>();
-  entities = input<any[]>([]);
+  entities = input<unknown[]>([]);
   tableFields = input<TableElement[]>([]);
   entityMetadata = input.required<EntityRegistry>();
   page = input.required<PageEvent>();
-  sort = input.required<RbSort>();
+  sort = input.required<AppSort>();
   gridView = input<boolean>(false);
   totalEntities = input.required<number>();
 
@@ -41,7 +45,7 @@ export class EntityListPageComponent {
 
   switchPageEvent = output<PageEvent>();
   switchSortEvent = output<TableElement>();
-  activeQueryChangeEvent = output<RbPageSortEvent>();
+  activeQueryChangeEvent = output<AppPageSortEvent>();
 
   extensionClass = signal('hidden');
 
@@ -72,7 +76,7 @@ export class EntityListPageComponent {
     this.switchSortEvent.emit(tableField)
   }
 
-  protected handleActiveQueryChange($event: RbPageSortEvent) {
+  protected handleActiveQueryChange($event: AppPageSortEvent) {
     this.activeQueryChangeEvent.emit($event);
   }
 }

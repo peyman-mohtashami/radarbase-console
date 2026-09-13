@@ -4,21 +4,19 @@ import {firstValueFrom} from "rxjs";
 import {SKIP_AUTH} from '../../auth/interceptors/auth.interceptor';
 import {APP_ROLES} from '../../auth/models/auth.model';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../../shared/consts/entity-registry';
-import {NavGroupItem} from '../models/nav-group-item.model';
+// import {NavGroupItem} from '../models/nav-group-item.model';
 import {
   DEFAULT_CONFIGURATION,
   DEFAULT_CONFIGURATION_URL
 } from '../consts/default-configuration';
 // import {DEFAULT_CUSTOM_CONFIGURATION} from '../consts/default-custom-configuration.const';
+
 import {
-  // BrandingConfiguration,
-  // CustomConfiguration2,
-  EntityConfiguration, ExtraFieldConfiguration, ExtraFieldType, Language,
-  // LocaleConfiguration,
-  Theme,
-  ThemesConfiguration
-} from '../models/custom-configuration.model';
-import {CustomConfiguration} from '../models/deployment-configuration.model';
+  CustomConfiguration, EntityConfiguration,
+  ExtraFieldConfiguration,
+  ExtraFieldType,
+  CustomLocale, CustomTheme
+} from '../models/configuration.model';
 import {RadarbaseAppConfigService} from './radarbase-app-config.service';
 import {SKIP_ERROR} from '../../auth/interceptors/server-error.interceptor';
 import {ProjectStore} from '../../../admin/entities/project/services/project.store';
@@ -243,16 +241,16 @@ function isBoolean(value: unknown): value is boolean {
   return typeof value === 'boolean';
 }
 
-function withDefault<T>(value: unknown, fallback: T, validate: (value: unknown) => value is T, name?: string): T {
-  if (validate(value)) {
-    return value;
-  } else {
-    console.error(`${name} is not valid. Fallback to '${fallback}'`);
-    return fallback;
-  }
-}
+// function withDefault<T>(value: unknown, fallback: T, validate: (value: unknown) => value is T, name?: string): T {
+//   if (validate(value)) {
+//     return value;
+//   } else {
+//     console.error(`${name} is not valid. Fallback to '${fallback}'`);
+//     return fallback;
+//   }
+// }
 
-function isLanguage(v: unknown): v is Language {
+function isLanguage(v: unknown): v is CustomLocale {
   if (!isRecord(v)) return false;
   return isString(v["code"])
     && isString(v["locale"])
@@ -326,7 +324,7 @@ function isExtraFieldConfiguration(v: unknown): v is ExtraFieldConfiguration {
 //   }
 // }
 
-export function sanitizeTheme(raw: unknown, defaults: Theme) {
+export function sanitizeTheme(raw: unknown, defaults: CustomTheme) {
   const obj = isRecord(raw) ? raw : {};
   return {
     primary: pickHexColor(obj["primary"], defaults.primary, "theme.primary"),
@@ -346,7 +344,7 @@ export function sanitizeTheme(raw: unknown, defaults: Theme) {
 //   }
 // }
 
-export function sanitizeLanguages(raw: unknown, defaults: Language[]): Language[] {
+export function sanitizeLanguages(raw: unknown, defaults: CustomLocale[]): CustomLocale[] {
   const array = Array.isArray(raw) ? raw : [];
   const validated = array.filter(language => isLanguage(language));
   if (validated.length === 0) {
@@ -400,12 +398,12 @@ export function sanitizeEntityExtraFields(raw: unknown, defaults: ExtraFieldConf
   return validated;
 }
 
-const enabled = (config: boolean | undefined | { url: string }, item: EntityRegistry) => {
-  if (config === undefined || config === true) return item;
-  if (config === false) return undefined;
-  if (config.url) return {...item, external: true, route: config.url};
-  return item;
-}
+// const enabled = (config: boolean | undefined | { url: string }, item: EntityRegistry) => {
+//   if (config === undefined || config === true) return item;
+//   if (config === false) return undefined;
+//   if (config.url) return {...item, external: true, route: config.url};
+//   return item;
+// }
 
 function isHexColor(value: unknown): value is string {
   if (typeof value !== 'string') return false;

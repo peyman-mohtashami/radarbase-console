@@ -21,7 +21,7 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {MatFormField, MatOption, MatSelect} from '@angular/material/select';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {
   DetailElementComponent
 } from '../../../../shared/components/detail-element/detail-element.component';

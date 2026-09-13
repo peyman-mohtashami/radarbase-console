@@ -9,10 +9,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {JsonPipe} from '@angular/common';
 import {QuestionnaireDialogService} from '../../services/questionnaire-dialog.service';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {OffsetTimePipe} from '../../../../../shared/pipes/offset-time.pipe';
 

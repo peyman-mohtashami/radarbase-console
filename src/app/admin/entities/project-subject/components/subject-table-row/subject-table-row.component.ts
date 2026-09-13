@@ -14,7 +14,7 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectActionsComponent} from '../subject-actions/subject-actions.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {AsyncPipe} from '@angular/common';
 
 @Component({

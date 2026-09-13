@@ -16,7 +16,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {JsonPipe} from '@angular/common';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {AppSubject} from '../../models/subject';

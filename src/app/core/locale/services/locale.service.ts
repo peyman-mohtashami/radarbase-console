@@ -5,8 +5,8 @@ import {registerLocaleData} from "@angular/common";
 import {Locale} from 'date-fns';
 
 import {ConfigurationService} from '../../configuration/services/configuration.service';
-import {Language} from '../../configuration/models/custom-configuration.model';
 import {firstValueFrom} from 'rxjs';
+import {CustomLocale} from '../../configuration/models/configuration.model';
 
 const LOCALE_STORAGE_KEY = 'locale';
 
@@ -38,10 +38,10 @@ export class LocaleService {
   private readonly translate = inject(TranslateService);
   private readonly dateAdapter = inject(DateAdapter<string>);
 
-  private readonly _locales = signal<Language[]>([]);
+  private readonly _locales = signal<CustomLocale[]>([]);
   readonly locales = this._locales.asReadonly();
 
-  private readonly _currentLocale = signal<Language | undefined>(undefined);
+  private readonly _currentLocale = signal<CustomLocale | undefined>(undefined);
   readonly currentLocale = this._currentLocale.asReadonly();
 
   async init(): Promise<void> {
@@ -53,12 +53,12 @@ export class LocaleService {
     await this.applyLanguage(initialLanguage);
   }
 
-  async switchLanguage(language: Language): Promise<void> {
+  async switchLanguage(language: CustomLocale): Promise<void> {
     localStorage.setItem(LOCALE_STORAGE_KEY, language.code);
     await this.applyLanguage(language);
   }
 
-  private resolveInitialLanguage(languages: Language[]): Language {
+  private resolveInitialLanguage(languages: CustomLocale[]): CustomLocale {
     const availableCodes = languages.map(lang => lang.code);
     const storedCode = localStorage.getItem(LOCALE_STORAGE_KEY);
     const browserCode = this.translate.getBrowserLang();
@@ -75,7 +75,7 @@ export class LocaleService {
     return languages.find(lang => lang.code === selectedCode) ?? languages[0];
   }
 
-  private async applyLanguage(language: Language): Promise<void> {
+  private async applyLanguage(language: CustomLocale): Promise<void> {
     document.dir = language.direction || 'ltr';
     await this.loadCultureData(language.locale);
     await firstValueFrom(this.translate.use(language.code));

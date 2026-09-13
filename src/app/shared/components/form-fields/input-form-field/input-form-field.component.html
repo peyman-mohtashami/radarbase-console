@@ -4,7 +4,12 @@
   <ng-content/>
 
   <mat-form-field class='small-input w-full' [subscriptSizing]="subscriptSizing()" [appearance]='appearance()'>
-    <input [id]="field()().name()" matInput [formField]="field()" [type]="type()">
+    <input [id]="field()().name()"
+           matInput
+           [formField]="field()"
+           [type]="type()"
+           [placeholder]="placeholder() ?? ''"
+           [class]="appearance() === 'fill' ? 'text-current!' : ''">
     <ng-content select="[matPrefix], [matIconPrefix]"/>
     <ng-content select="[matSuffix], [matIconSuffix]"/>
 

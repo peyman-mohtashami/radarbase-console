@@ -2,13 +2,20 @@
   <app-label-form-field [field]="field()" [label]="label()" [required]="required()"/>
 
   <ng-content/>
-
-  <mat-form-field class='small-input w-full' subscriptSizing="fixed" [appearance]='appearance()'>
-    <mat-select [id]="field()().name()" [formField]="field()">
+{{field()().value()}}
+  <mat-form-field class='small-input w-full' [subscriptSizing]="subscriptSizing()" [appearance]='appearance()'>
+    <mat-select [id]="field()().name()" [formField]="field()" [placeholder]="placeholder() ?? ''">
       @for (option of options(); track option.value) {
         <mat-option [value]="option.value">{{ `${option.label}` | translate }}</mat-option>
       }
     </mat-select>
+    @if (field()().value()) {
+      <button mat-icon-button matSuffix class="app-icon-button-small"
+              (click)="clearSelection($event)"
+              aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
 
     @if (errors() !== 'none') {
       <mat-error>
@@ -25,3 +32,5 @@
     }
   </mat-form-field>
 </div>
+
+

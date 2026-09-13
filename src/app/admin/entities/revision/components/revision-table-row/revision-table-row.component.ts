@@ -5,7 +5,7 @@ import {LocalDateComponent} from "../../../../../core/locale/components/local-da
 import {RevisionConfigService} from '../../services/revision-config.service';
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-revision-table-row',

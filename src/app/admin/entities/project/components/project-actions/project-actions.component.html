@@ -1,7 +1,7 @@
 @let _i18nEntity = `ADMIN.project`;
 
 @if (isExpanded()) {
-  <div class="flex items-center gap-2">
+  <div class="flex items-center">
     <button class="app-icon-button-small"
             mat-icon-button
             color="primary"
@@ -20,7 +20,7 @@
   </div>
 } @else {
   <button mat-icon-button class="app-icon-button-small" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation();">
-    <mat-icon>more_vert</mat-icon>
+    <mat-icon class="font-bold!">more_vert</mat-icon>
   </button>
 
   <mat-menu #menu="matMenu">
@@ -30,7 +30,7 @@
     </button>
 
     <button (click)='onAction(DialogMode.DELETE)' mat-menu-item type="button" disabled>
-      <mat-icon matButtonIconPrefix class="text-red-500!">delete</mat-icon>
+      <mat-icon matButtonIconPrefix class="text-error!">delete</mat-icon>
       {{ `${_i18nEntity}.delete` | translate }}
     </button>
   </mat-menu>

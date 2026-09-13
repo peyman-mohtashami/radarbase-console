@@ -1,9 +1,9 @@
 @let _i18nLogin = "AUTH.LOGIN";
 @let _i18nError = "AUTH.ERROR";
 
-<div class="flex justify-center items-center h-full">
-  <mat-card class="w-1/2 max-w-200">
-    <mat-card-content class="p-0! grid! grid-cols-2">
+<div class="flex justify-center items-center h-full p-4">
+  <mat-card class="w-full max-w-200">
+    <mat-card-content class="p-0! block lg:grid! lg:grid-cols-2">
       <div class="p-8">
         <h4 class="my-12 text-center text-xl font-bold">{{ `${_i18nLogin}.title` | translate }}</h4>
         <p class="mb-4">{{ `${_i18nLogin}.subtitle` | translate }}</p>
@@ -46,7 +46,7 @@
         </form>
 
       </div>
-      <app-branding class="w-full"/>
+      <app-branding class="hidden lg:block w-full"/>
     </mat-card-content>
   </mat-card>
 </div>

@@ -1,6 +1,5 @@
 import { FormFieldType } from './dialog.model';
 import {PageEvent} from "@angular/material/paginator";
-import {DialogMode} from "../enums/dialog";
 
 export interface FilterItem {
   name: string;
@@ -24,20 +23,26 @@ export interface TableElement {
   showInDelete?: boolean; //!
 }
 
-export type RbSortOrder = 'asc' | 'desc' | '';
+export type AppSortOrder = 'asc' | 'desc' | '';
 
-export interface RbSort {
+export interface AppSort {
   sortField: string;
-  sortOrder: RbSortOrder;
+  sortOrder: AppSortOrder;
 }
 
-export interface RbPageSortEvent {
+export interface AppPageSortEvent {
   page: PageEvent;
-  sort: RbSort;
+  sort: AppSort;
 }
 
-export interface DialogQuery {
-  mode: DialogMode;
-  id?: string;
+export enum DetailType {
+  TABLE = 'table',
+  SUMMARY = 'summary',
 }
+
+
+export const DEFAULT_PAGE_SIZE = 10;
+export const PAGE_SIZE_OPTIONS = [5, 10, 20, 50, 100];
+export const MIN_ENTITIES_FOR_FILTERS = 0;
+export const MIN_ENTITIES_FOR_PAGINATION = 0;
 

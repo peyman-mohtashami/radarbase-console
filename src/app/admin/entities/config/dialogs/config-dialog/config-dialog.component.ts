@@ -14,7 +14,7 @@ import {
 import {AppConfig, CreateConfigDto, UpdateConfigDto} from "../../models/config";
 import {TranslatePipe} from "@ngx-translate/core";
 import {MatFormField, MatInput} from "@angular/material/input";
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {ConfigConfigService} from "../../services/config-config.service";
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';

@@ -21,10 +21,10 @@ export class DurationPipe implements PipeTransform {
 
     const parts: string[] = [];
 
-    if (d > 0) parts.push(`${d} ${this.translate.instant(d === 1 ? 'SHARED.UNIT.day' : 'SHARED.UNIT.days')}`);
-    if (h > 0) parts.push(`${h} ${this.translate.instant(h === 1 ? 'SHARED.UNIT.hour' : 'SHARED.UNIT.hours')}`);
-    if (m > 0) parts.push(`${m} ${this.translate.instant(m === 1 ? 'SHARED.UNIT.minute' : 'SHARED.UNIT.minutes')}`);
-    if (s > 0 && unit === 's') parts.push(`${s} ${this.translate.instant(s === 1 ? 'SHARED.UNIT.second' : 'SHARED.UNIT.seconds')}`);
+    if (d > 0) parts.push(`${d} ${this.translate.instant(d === 1 ? 'SHARED.TIME_UNIT.day' : 'SHARED.TIME_UNIT.days')}`);
+    if (h > 0) parts.push(`${h} ${this.translate.instant(h === 1 ? 'SHARED.TIME_UNIT.hour' : 'SHARED.TIME_UNIT.hours')}`);
+    if (m > 0) parts.push(`${m} ${this.translate.instant(m === 1 ? 'SHARED.TIME_UNIT.minute' : 'SHARED.TIME_UNIT.minutes')}`);
+    if (s > 0 && unit === 's') parts.push(`${s} ${this.translate.instant(s === 1 ? 'SHARED.TIME_UNIT.second' : 'SHARED.TIME_UNIT.seconds')}`);
 
     return parts.join(', ');
   }

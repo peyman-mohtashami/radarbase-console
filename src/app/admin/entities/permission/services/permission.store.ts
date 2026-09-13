@@ -6,7 +6,7 @@ import {UserService} from '../../user/services/user.service';
 import {AppUser, UpdateUserDto} from '../../user/models/user';
 import {UserStore} from '../../user/services/user.store';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {FilterEvent} from '../../../shared/components/data-table-filter/data-table-filter.component';
 import {PermissionConfigService} from './permission-config.service';
 import {OrganizationStore} from '../../organization/services/organization.store';
@@ -32,7 +32,7 @@ export class PermissionStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppUser[]>(() => {

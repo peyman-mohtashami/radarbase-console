@@ -4,7 +4,7 @@ import {FormFieldType} from '../../../shared/models/dialog.model';
 import {ENTITY_REGISTRY} from "../../../../shared/consts/entity-registry";
 import {BaseConfigService} from '../../../shared/services/base-config.service';
 import {firstValueFrom} from 'rxjs';
-import {CustomConfiguration} from '../../../../core/configuration/models/deployment-configuration.model';
+import {CustomConfiguration} from '../../../../core/configuration/models/configuration.model';
 import {ProjectStore} from '../../project/services/project.store';
 import {RadarbaseAppConfigService} from '../../../../core/configuration/services/radarbase-app-config.service';
 
@@ -114,7 +114,7 @@ export class SubjectConfigService extends BaseConfigService {
 // import {ConfigurationService} from '../../../../core/configuration/services/configuration.service';
 // import {firstValueFrom} from 'rxjs';
 // import {ProjectStore} from '../../project/services/project.store';
-// import {CustomConfiguration} from '../../../../core/configuration/models/deployment-configuration.model';
+// import {CustomConfiguration} from '../../../../core/configuration/models/configuration.model';
 //
 // export const TableElements: TableElement[] = [
 //   {name: 'checkbox', width: 'w-12', tableClass: "block", extensionClass: "hidden", editable: true},

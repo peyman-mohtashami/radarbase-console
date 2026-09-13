@@ -2,8 +2,8 @@
 @let _i18nError = "AUTH.ERROR";
 
 @if (authService.user()) {
-  <div class="flex justify-center items-center h-full">
-    <mat-card class="w-1/3 max-w-200">
+  <div class="flex justify-center items-center h-full p-4">
+    <mat-card class="w-full max-w-150">
       <h4 class="my-4 text-center text-xl font-bold">{{ `${_i18nProfile}.title` | translate }}</h4>
 
       <mat-card-content>

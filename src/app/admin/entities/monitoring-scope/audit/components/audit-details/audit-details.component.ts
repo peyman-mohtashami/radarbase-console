@@ -3,7 +3,7 @@ import {Component, inject, input} from '@angular/core';
 import {EntityDetailsComponent} from "../../../../../shared/components/entity-details/entity-details.component";
 import {AppAudit} from '../../models/audit';
 import {AuditConfigService} from "../../services/audit-config.service";
-import {DetailType} from '../../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-audit-details',

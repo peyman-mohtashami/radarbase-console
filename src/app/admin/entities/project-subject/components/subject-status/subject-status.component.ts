@@ -1,8 +1,8 @@
 import {Component, input} from "@angular/core";
-import {DetailType} from "../../../../shared/enums/detail-type";
 import {MatTooltip} from "@angular/material/tooltip";
 import {SubjectStatus} from '../../models/subject';
 import {MatIcon} from '@angular/material/icon';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-subject-status',

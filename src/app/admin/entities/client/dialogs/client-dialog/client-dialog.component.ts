@@ -14,7 +14,7 @@ import {MatSuffix} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatButton} from "@angular/material/button";
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {ClientConfigService} from '../../services/client-config.service';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';

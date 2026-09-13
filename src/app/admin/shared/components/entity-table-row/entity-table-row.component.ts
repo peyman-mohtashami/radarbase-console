@@ -1,10 +1,9 @@
 import {Component, HostBinding, input, signal, TemplateRef} from "@angular/core";
-import {DialogMode} from "../../enums/dialog";
-import {DetailType} from "../../enums/detail-type";
-import {TableElement} from "../../models/table.model";
+import {DetailType, TableElement} from "../../models/table.model";
 import {NgTemplateOutlet} from "@angular/common";
 import {MatCard} from '@angular/material/card';
 import {MatIconButton} from '@angular/material/button';
+import {DialogMode} from '../../models/dialog.model';
 
 @Component({
   selector: 'app-entity-table-row',

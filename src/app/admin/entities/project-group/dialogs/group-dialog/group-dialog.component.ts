@@ -15,7 +15,7 @@ import {
 
 import {AppGroup, CreateGroupDto} from "../../models/group";
 import {TranslatePipe} from "@ngx-translate/core";
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {GroupConfigService} from '../../services/group-config.service';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';

@@ -59,7 +59,7 @@
     ]
   },
   "branding": {
-    "logo": "https://www.thehyve.nl/static/img/logos/the-hyve_logo.png",
+    "logo": "https://peyman-mohtashami.github.io/radarbase-console-config/instances/thehyve/assets/images/the-hyve_logo-large_white.png",
     "logo2": "assets/images/rb-logo-full-white.svg",
     "theme": {
       "light": {
@@ -71,11 +71,11 @@
         "on-tertiary": "#ffffff"
       },
       "dark": {
-        "primary": "#ff0000",
+        "primary": "#824dff",
         "on-primary": "#ffffff",
-        "accent": "#00ff00",
+        "accent": "#3e288a",
         "on-accent": "#ffffff",
-        "tertiary": "#009900",
+        "tertiary": "#ff5ccc",
         "on-tertiary": "#ffffff"
       }
     }
@@ -83,14 +83,14 @@
   "entities": {
     "project": {
       "fields": {
-        "location": false,
+        "location": true,
         "description": true,
-        "startDate": false,
-        "endDate": false,
-        "projectStatus": false,
+        "startDate": true,
+        "endDate": true,
+        "projectStatus": true,
         "sourceTypes": true,
         "humanReadableProjectName": true,
-        "attributes": false,
+        "attributes": true,
         "attributes.Privacy-policy-url": true,
         "attributes.Work-package": true,
         "attributes.Phase": true,

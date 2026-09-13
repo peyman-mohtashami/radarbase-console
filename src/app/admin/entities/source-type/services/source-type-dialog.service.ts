@@ -1,5 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {DialogMode} from '../../../shared/enums/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {AppSourceType} from '../models/source-type';
 import {
@@ -9,6 +8,7 @@ import {
 } from '../dialogs/source-type-dialog/source-type-dialog.component';
 import {SourceTypeStore} from './source-type.store';
 import {SourceTypeConfigService} from './source-type-config.service';
+import {DialogMode} from '../../../shared/models/dialog.model';
 
 @Injectable({providedIn: 'root'})
 export class SourceTypeDialogService {

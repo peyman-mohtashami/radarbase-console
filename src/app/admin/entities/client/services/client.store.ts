@@ -6,7 +6,7 @@ import {ClientService} from './client.service';
 import {ClientConfigService} from './client-config.service';
 import {AppClient, ClientDto, CreateClientDto, UpdateClientDto} from '../models/client';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../shared/components/data-table-filter/data-table-filter.component';
@@ -31,7 +31,7 @@ export class ClientStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppClient[]>(() => {

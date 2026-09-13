@@ -6,7 +6,7 @@ import {SourceTypeService} from './source-type.service';
 import {Params} from '@angular/router';
 import {filterItems, paginateItems, sortItems} from '../../../shared/utils/store-helpers';
 import {PageEvent} from '@angular/material/paginator';
-import {RbSort, TableElement} from '../../../shared/models/table.model';
+import {AppSort, TableElement} from '../../../shared/models/table.model';
 import {
   FilterEvent
 } from '../../../shared/components/data-table-filter/data-table-filter.component';
@@ -28,7 +28,7 @@ export class SourceTypeStore {
     pageSize: this.configService.getStoredPageSize(),
     length: 0,
   });
-  readonly sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  readonly sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
   readonly filter = signal<FilterEvent>({});
 
   readonly items = computed<AppSourceType[]>(() => {

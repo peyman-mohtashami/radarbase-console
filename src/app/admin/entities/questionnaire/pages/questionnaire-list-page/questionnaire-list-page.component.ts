@@ -20,9 +20,9 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {AppConfig} from '../../../config/models/config';
 import {PageEvent} from '@angular/material/paginator';
 import {TableElement} from '../../../../shared/models/table.model';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/models/table.model';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {AppQuestionnaire} from '../../models/questionnaire';
 

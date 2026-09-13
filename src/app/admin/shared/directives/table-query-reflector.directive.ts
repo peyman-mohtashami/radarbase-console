@@ -1,8 +1,8 @@
 import {Directive, effect, EventEmitter, inject, input, OnInit, Output, signal} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {PageEvent} from "@angular/material/paginator";
-import {DialogQuery, RbPageSortEvent, RbSort} from "../models/table.model";
-import {DEFAULT_PAGE_SIZE} from '../consts/default-table-values';
+import {AppPageSortEvent, AppSort, DEFAULT_PAGE_SIZE} from "../models/table.model";
+import {DialogQuery} from '../models/dialog.model';
 
 @Directive({
   selector: '[appTableQueryReflector]',
@@ -12,12 +12,12 @@ export class TableQueryReflectorDirective implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
 
   page = input<PageEvent>({pageSize: DEFAULT_PAGE_SIZE, pageIndex: 0, length: 0});
-  sort= input<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  sort= input<AppSort>({sortField: 'id', sortOrder: 'desc'});
 
   private _page = signal<PageEvent>({pageSize: DEFAULT_PAGE_SIZE, pageIndex: 0, length: 0});
-  private _sort = signal<RbSort>({sortField: 'id', sortOrder: 'desc'});
+  private _sort = signal<AppSort>({sortField: 'id', sortOrder: 'desc'});
 
-  @Output() activeQueryParams = new EventEmitter<RbPageSortEvent>();
+  @Output() activeQueryParams = new EventEmitter<AppPageSortEvent>();
 
   @Output() dialogQueryParams = new EventEmitter<DialogQuery>();
 

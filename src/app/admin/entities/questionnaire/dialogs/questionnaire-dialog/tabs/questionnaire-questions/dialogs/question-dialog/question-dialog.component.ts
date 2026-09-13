@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {AppQuestion, QuestionType} from '../../../../../../models/questionnaire';
-import {DialogMode} from '../../../../../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../../../../../shared/models/dialog.model';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatButton} from '@angular/material/button';
 import {QuestionnaireStore} from '../../../../../../services/questionnaire.store';

@@ -8,6 +8,7 @@ import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectConfigService} from "../../services/subject-config.service";
 import {MatIcon} from '@angular/material/icon';
 import {SubjectDialogService} from '../../services/subject-dialog.service';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 
 @Component({
   selector: 'app-subject-actions',

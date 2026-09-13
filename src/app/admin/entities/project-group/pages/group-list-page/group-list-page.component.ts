@@ -15,10 +15,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ProjectStore} from '../../../project/services/project.store';
 import {getHighestPriorityClass} from '../../../../shared/utils/table-extension.util';
 import {PageEvent} from '@angular/material/paginator';
-import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/consts/default-table-values';
+import {MIN_ENTITIES_FOR_FILTERS} from '../../../../shared/models/table.model';
 import {TableElement} from '../../../../shared/models/table.model';
 import {SelectionModel} from '@angular/cdk/collections';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {GroupStore} from '../../services/group.store';
 

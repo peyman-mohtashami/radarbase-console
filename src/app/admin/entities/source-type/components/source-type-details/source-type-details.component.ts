@@ -7,7 +7,7 @@ import {
 import {SourceTypeSourcesDataComponent} from "../source-type-sources-data/source-type-sources-data.component";
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-source-type-details',

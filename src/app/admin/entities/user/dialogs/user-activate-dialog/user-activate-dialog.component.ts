@@ -17,13 +17,13 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserDialogService} from '../../services/user-dialog.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
-import {DialogMode} from '../../../../shared/enums/dialog';
 import {UserStore} from '../../services/user.store';
 import {animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {JsonPipe} from '@angular/common';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 
 @Component({
   selector: 'app-user-activate-dialog',

@@ -14,7 +14,7 @@ import {
 } from "../../../organization/models/organization";
 import {TranslatePipe} from "@ngx-translate/core";
 import {ProjectConfigService} from '../../services/project-config.service';
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {ActivatedRoute, Router} from '@angular/router';

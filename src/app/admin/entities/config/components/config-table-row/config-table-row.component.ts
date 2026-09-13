@@ -4,7 +4,7 @@ import {EntityTableRowComponent} from '../../../../shared/components/entity-tabl
 import {MatIcon} from '@angular/material/icon';
 import {ConfigActionsComponent} from '../config-actions/config-actions.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 import {ConfigConfigService} from '../../services/config-config.service';
 import {AppConfig} from '../../models/config';
 

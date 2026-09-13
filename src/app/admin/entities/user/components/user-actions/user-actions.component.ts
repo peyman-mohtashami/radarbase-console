@@ -1,13 +1,12 @@
 import {Component, inject, input} from '@angular/core';
 import {MatIconButton} from '@angular/material/button';
-import {DialogMode} from '../../../../shared/enums/dialog';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppUser, UserDialogMode} from '../../models/user';
 import {MatTooltip} from "@angular/material/tooltip";
-// import {UserConfigService} from '../../services/user-config.service';
 import {MatIcon} from '@angular/material/icon';
 import {UserDialogService} from '../../services/user-dialog.service';
+import {AuthService} from '../../../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-user-actions',
@@ -24,19 +23,16 @@ import {UserDialogService} from '../../services/user-dialog.service';
 })
 export class UserActionsComponent {
 
-  protected readonly DialogMode = DialogMode;
+  protected readonly authService = inject(AuthService);
+  private readonly dialogService = inject(UserDialogService);
 
-  // private configService = inject(UserConfigService);
-  private dialogService = inject(UserDialogService);
+  protected readonly UserDialogMode = UserDialogMode;
 
-  entity = input.required<AppUser>();
-  isExpanded = input<boolean>(true);
-
-  // entityName = this.configService.getEntityMetadata().name;
+  readonly entity = input.required<AppUser>();
+  readonly isExpanded = input<boolean>(true);
 
   async onAction(mode: UserDialogMode) {
     await this.dialogService.openDialog(mode, this.entity());
   }
 
-  protected readonly UserDialogMode = UserDialogMode;
 }

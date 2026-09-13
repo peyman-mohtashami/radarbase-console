@@ -8,7 +8,7 @@ import {
   OPERATOR_SYMBOLS
 } from '../../conditional-logic-dialog/conditional-logic-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {DialogMode} from '../../../../../../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../../../../../../shared/models/dialog.model';
 import {AppQuestion, AppQuestionConditionalLogic} from '../../../../../../../models/questionnaire';
 
 @Component({

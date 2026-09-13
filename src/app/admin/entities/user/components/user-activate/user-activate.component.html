@@ -1,6 +1,8 @@
 @if (!entity().activated) {
-  <button mat-icon-button color="primary" class="tiny"
-          [disabled]='entity().activated'
+  <button mat-icon-button
+          color="primary"
+          class="app-icon-button-small"
+          [matTooltip]="'ADMIN.user.activate.shortTitle' | translate "
           (click)="onAction()">
     <mat-icon class="font-bold!">forward_to_inbox</mat-icon>
   </button>

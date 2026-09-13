@@ -9,7 +9,7 @@ import {SourceConfigService} from "../../services/source-config.service";
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {SourceActionsComponent} from '../source-actions/source-actions.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-source-table-row',

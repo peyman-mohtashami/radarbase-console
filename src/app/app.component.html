@@ -1,8 +1,8 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full app-background">
   <app-toolbar />
   <div class="flex grow min-h-0">
-    <aside class="h-full bg-primary shrink-0 flex flex-col transition-property:width duration-300"
-           [class]="menuState.isOpen() ? 'w-64' : 'w-22'">
+    <aside class="absolute lg:relative z-50 -ml-64 w-64 lg:ml-0 h-full bg-primary shrink-0 flex flex-col transition-property:width duration-300"
+           [class]="menuState.isOpen() ? 'ml-0 lg:w-64 lg:ml-0' : '-ml-64 lg:w-22 lg:ml-0'">
       <div class="overflow-y-auto grow min-h-0">
         <app-sidebar-nav />
       </div>

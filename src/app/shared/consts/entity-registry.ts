@@ -27,7 +27,6 @@ export const ENTITY_KEYS = [
   "appConfig",
   "config",
   "questionnaire",
-  // "protocol",
   "dataDownload",
   "dataVisualization",
   "dataCompliance",

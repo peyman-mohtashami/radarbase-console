@@ -1,4 +1,4 @@
-import {CustomConfiguration} from '../models/deployment-configuration.model';
+import {CustomConfiguration} from '../models/configuration.model';
 
 export const DEFAULT_CONFIGURATION_URL = 'config-assets/frontend-config.json'
 

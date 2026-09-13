@@ -4,7 +4,7 @@ import {GroupConfigService} from '../../services/group-config.service';
 import {EntityTableRowComponent} from '../../../../shared/components/entity-table-row/entity-table-row.component';
 import {GroupActionsComponent} from '../group-actions/group-actions.component';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-group-table-row',

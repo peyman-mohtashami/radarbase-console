@@ -1,7 +1,7 @@
 import {Component, inject, } from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {DialogMode} from '../../../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../../../shared/models/dialog.model';
 import {MatDialog} from '@angular/material/dialog';
 import {VariableDialogComponent} from './dialogs/variable-dialog/variable-dialog.component';
 import {TableElement} from '../../../../../../shared/models/table.model';

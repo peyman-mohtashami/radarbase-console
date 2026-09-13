@@ -7,7 +7,7 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {AppSourceType, CreateSourceTypeDto, toSourceTypeScope, UpdateSourceTypeDto} from "../../models/source-type";
-import {DialogMode} from '../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../shared/models/dialog.model';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';

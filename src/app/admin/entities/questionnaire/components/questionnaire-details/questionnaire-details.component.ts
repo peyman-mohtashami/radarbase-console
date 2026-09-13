@@ -1,7 +1,7 @@
 import {Component, inject, input} from '@angular/core';
 import {AppQuestionnaire} from "../../models/questionnaire";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
     selector: 'app-questionnaire-details',

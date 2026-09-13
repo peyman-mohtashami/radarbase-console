@@ -6,7 +6,7 @@ import {
 } from "../source-data-processing-state/source-data-processing-state.component";
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceDataConfigService} from "../../services/source-data-config.service";
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-source-data-details',

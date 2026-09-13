@@ -1,74 +1,78 @@
+@let _i18nEntity = `ADMIN.subject`;
+
 @if (isExpanded()) {
-    <button class="tiny" [matTooltip]="`ADMIN.${entityName}.edit` | translate"
-            mat-icon-button color="primary"
+  <div class="flex items-center">
+    <button class="app-icon-button-small"
+            mat-icon-button
+            color="primary"
+            [matTooltip]="`${_i18nEntity}.edit` | translate"
             (click)='onAction(DialogMode.EDIT)'>
-      <mat-icon class="material-symbols-outlined text-xl!">edit</mat-icon>
-    </button>
-    <button class="tiny"
-            mat-icon-button color="warn" [matTooltip]="`ADMIN.${entityName}.delete` | translate"
-            (click)='onAction(DialogMode.DELETE)'>
-      <mat-icon class="material-symbols-outlined text-xl!">delete</mat-icon>
-    </button>
-    <button class="tiny" mat-icon-button color="primary" [disabled]="entity().status === 'DISCONTINUED'"
-            [matTooltip]="`ADMIN.${entityName}.discontinue.buttonLabel` | translate" (click)='onAction(DialogMode.DISCONTINUE)'>
-      <mat-icon class="text-xl! material-symbols-outlined font-bold"
-            [class]="entity().status === 'DISCONTINUED' ? 'text-gray-300': 'text-yellow-500'">stop_circle</mat-icon>
+      <mat-icon>edit</mat-icon>
     </button>
 
-    <button class="tiny" mat-icon-button color="primary"
-            [matTooltip]="`ADMIN.${entityName}.pairSource.buttonLabel` | translate" (click)='onAction(DialogMode.PAIR_SOURCE)'>
-      <mat-icon class="text-xl! material-symbols-outlined font-bold">link</mat-icon>
-    </button>
-    <button class="tiny" mat-icon-button color="primary"
-            [matTooltip]="`ADMIN.${entityName}.pairApp.buttonLabel` | translate" (click)='onAction(DialogMode.PAIR_APP)'>
-      <mat-icon class="text-xl! material-symbols-outlined font-bold">qr_code</mat-icon>
-    </button>
-} @else {
-  <button mat-icon-button class="tiny"
-          [matMenuTriggerFor]="menu"
-          (click)="$event.stopPropagation();">
-    <mat-icon class="font-bold! material-symbols-outlined text-xl!">more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu" class="*:p-0! text-base bg-white shadow-lg">
-    <button class="hover:text-primary! dark:hover:text-primary-dark! hover:bg-transparent! transition-all"
-            mat-menu-item
-            (click)='onAction(DialogMode.EDIT)'>
-              <span class="flex items-center gap-2">
-                <mat-icon class="text-xl! text-primary! dark:text-primary-dark! material-symbols-outlined font-bold!">edit</mat-icon>
-                <span>{{ `ADMIN.${entityName}.edit` | translate }}</span>
-              </span>
-    </button>
-    <button class="hover:text-red-500 hover:bg-transparent! transition-all"
-            mat-menu-item
+    <button class="app-icon-button-small"
+            mat-icon-button
+            color="warn"
+            [matTooltip]="`${_i18nEntity}.delete` | translate"
             (click)='onAction(DialogMode.DELETE)'>
-                <span class="flex items-center gap-2">
-                  <mat-icon class="text-xl! text-red-500! material-symbols-outlined font-bold!">delete</mat-icon>
-                  <span>{{ `ADMIN.${entityName}.delete` | translate }}</span>
-                </span>
+      <mat-icon>delete</mat-icon>
     </button>
-    <button class="hover:text-yellow-600 hover:bg-transparent! transition-all"
-            mat-menu-item [disabled]="entity().status === 'DISCONTINUED'"
-            (click)='onAction(DialogMode.DISCONTINUE)'>
-      <span class="flex items-center gap-2">
-                  <mat-icon class="text-xl! text-yellow-600! material-symbols-outlined font-bold!">stop_circle</mat-icon>
-                  <span>{{ `ADMIN.${entityName}.discontinue.buttonLabel` | translate }}</span>
-                </span>
+
+    <button class="app-icon-button-small"
+            mat-icon-button
+            color="primary"
+            [matTooltip]="`${_i18nEntity}.discontinue` | translate"
+            (click)='onAction(DialogMode.DISCONTINUE)'
+            [disabled]="entity().status === 'DISCONTINUED'">
+      <mat-icon [class]="entity().status === 'DISCONTINUED' ? 'text-gray-300!': 'text-yellow-600!'">stop_circle</mat-icon>
     </button>
-    <button class="hover:text-primary hover:bg-transparent! transition-all"
-            mat-menu-item
+
+    <button class="app-icon-button-small"
+            mat-icon-button
+            color="primary"
+            [matTooltip]="`${_i18nEntity}.pairSource` | translate"
             (click)='onAction(DialogMode.PAIR_SOURCE)'>
-      <span class="flex items-center gap-2">
-                  <mat-icon class="text-xl! text-primary! dark:text-primary-dark! material-symbols-outlined font-bold!">link</mat-icon>
-                  <span>{{ `ADMIN.${entityName}.pairSource.buttonLabel` | translate }}</span>
-                </span>
+      <mat-icon>link</mat-icon>
     </button>
-    <button class="hover:text-primary hover:bg-transparent! transition-all"
-            mat-menu-item
+
+    <button class="app-icon-button-small"
+            mat-icon-button
+            color="primary"
+            [matTooltip]="`${_i18nEntity}.pairApp` | translate"
             (click)='onAction(DialogMode.PAIR_APP)'>
-      <span class="flex items-center gap-2">
-                  <mat-icon class="text-xl! text-primary! dark:text-primary-dark! material-symbols-outlined font-bold!">qr_code</mat-icon>
-                  <span>{{ `ADMIN.${entityName}.pairApp.buttonLabel` | translate }}</span>
-                </span>
+      <mat-icon>qr_code</mat-icon>
+    </button>
+
+  </div>
+} @else {
+  <button mat-icon-button class="app-icon-button-small" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation();">
+    <mat-icon class="font-bold!">more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button (click)='onAction(DialogMode.EDIT)' mat-menu-item type="button">
+      <mat-icon matButtonIconPrefix>edit</mat-icon>
+      {{ `${_i18nEntity}.edit` | translate }}
+    </button>
+
+    <button (click)='onAction(DialogMode.DELETE)' mat-menu-item type="button">
+      <mat-icon matButtonIconPrefix class="text-error!">delete</mat-icon>
+      {{ `${_i18nEntity}.delete` | translate }}
+    </button>
+
+    <button (click)='onAction(DialogMode.DISCONTINUE)' mat-menu-item type="button">
+      <mat-icon class="text-yellow-600!" matButtonIconPrefix>stop_circle</mat-icon>
+      {{ `${_i18nEntity}.discontinue` | translate }}
+    </button>
+
+    <button (click)='onAction(DialogMode.PAIR_SOURCE)' mat-menu-item type="button">
+      <mat-icon matButtonIconPrefix>link</mat-icon>
+      {{ `${_i18nEntity}.pairSource` | translate }}
+    </button>
+
+    <button (click)='onAction(DialogMode.PAIR_APP)' mat-menu-item type="button">
+      <mat-icon matButtonIconPrefix>qr_code</mat-icon>
+      {{ `${_i18nEntity}.pairApp` | translate }}
     </button>
   </mat-menu>
 }

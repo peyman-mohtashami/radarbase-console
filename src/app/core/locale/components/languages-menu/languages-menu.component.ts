@@ -4,7 +4,7 @@ import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {LocaleService} from '../../services/locale.service';
 import {MatSuffix} from '@angular/material/input';
-import {Language} from '../../../configuration/models/custom-configuration.model';
+import {CustomLocale} from '../../../configuration/models/configuration.model';
 
 @Component({
   selector: 'app-languages-menu',
@@ -21,7 +21,7 @@ import {Language} from '../../../configuration/models/custom-configuration.model
 export class LanguagesMenuComponent {
   protected readonly localeService = inject(LocaleService);
 
-  async switchLanguage(currentLanguage: Language): Promise<void> {
+  async switchLanguage(currentLanguage: CustomLocale): Promise<void> {
     await this.localeService.switchLanguage(currentLanguage);
   }
 }

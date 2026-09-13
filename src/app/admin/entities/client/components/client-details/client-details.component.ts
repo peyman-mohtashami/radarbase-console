@@ -6,7 +6,7 @@ import {MatIcon} from "@angular/material/icon";
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {ClientConfigService} from "../../services/client-config.service";
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-client-details',

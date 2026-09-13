@@ -22,7 +22,7 @@ import {LabelFormFieldComponent} from '../label-form-field/label-form-field.comp
   ]
 })
 export class DateFormFieldComponent {
-  readonly label = input.required<string>();
+  readonly label = input.required<string | null>();
   readonly field = input.required<FieldTree<string>>();
 
   readonly required = input(false);

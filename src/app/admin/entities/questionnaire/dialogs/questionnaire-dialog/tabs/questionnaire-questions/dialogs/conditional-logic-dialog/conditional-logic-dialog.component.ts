@@ -5,7 +5,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {TagComponent} from '../../../../../../../../../shared/components/tag/tag.component';
-import {DialogMode} from '../../../../../../../../shared/enums/dialog';
+import {DialogMode} from '../../../../../../../../shared/models/dialog.model';
 import {AppQuestion, AppQuestionConditionalLogic, QuestionType} from '../../../../../../models/questionnaire';
 import {animateDialogIn, animateDialogOut} from '../../../../../../../../shared/utils/dialog.util';
 import {applyEach, FieldTree, form, FormField, validate} from '@angular/forms/signals';

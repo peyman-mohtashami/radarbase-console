@@ -6,7 +6,7 @@ import {KeyValuePipe} from "@angular/common";
 import {SourceSourceTypeComponent} from "../source-source-type/source-source-type.component";
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {SourceConfigService} from "../../services/source-config.service";
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-source-details',

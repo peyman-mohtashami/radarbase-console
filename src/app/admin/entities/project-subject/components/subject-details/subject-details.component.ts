@@ -8,7 +8,7 @@ import {SubjectGroupComponent} from "../subject-group/subject-group.component";
 import {EntityDetailsComponent} from "../../../../shared/components/entity-details/entity-details.component";
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
 import {SubjectConfigService} from "../../services/subject-config.service";
-import {DetailType} from '../../../../shared/enums/detail-type';
+import {DetailType} from '../../../../shared/models/table.model';
 
 @Component({
   selector: 'app-subject-details',

@@ -1,12 +1,9 @@
 import {Component, computed, effect, inject, input, OnInit, output, signal,} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {MatOption} from '@angular/material/core';
 
 import {TranslatePipe} from "@ngx-translate/core";
-import {MatFormField, MatInput, MatPrefix, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatPrefix, MatSuffix} from "@angular/material/input";
 import {
-  MatDatepicker,
-  MatDatepickerInput,
   MatDatepickerToggle,
   MatDateRangeInput,
   MatDateRangePicker,
@@ -14,7 +11,6 @@ import {
   MatStartDate
 } from "@angular/material/datepicker";
 import {MatMenu, MatMenuTrigger} from "@angular/material/menu";
-import {MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
 import {FormFieldType} from '../../models/dialog.model';
@@ -24,6 +20,15 @@ import {LocalDateComponent} from '../../../../core/locale/components/local-date/
 import {TagComponent} from '../../../../shared/components/tag/tag.component';
 import {LocaleService} from "../../../../core/locale/services/locale.service";
 import {form, FormField} from '@angular/forms/signals';
+import {
+  InputFormFieldComponent
+} from '../../../../shared/components/form-fields/input-form-field/input-form-field.component';
+import {
+  SelectFormFieldComponent
+} from '../../../../shared/components/form-fields/select-form-field/select-form-field.component';
+import {
+  DateFormFieldComponent
+} from '../../../../shared/components/form-fields/date-form-field/date-form-field.component';
 
 export type FilterEvent = Record<string, string | null | undefined>
 
@@ -32,14 +37,9 @@ export type FilterEvent = Record<string, string | null | undefined>
   templateUrl: './data-table-filter.component.html',
   imports: [
     MatFormField,
-    MatSelect,
-    MatOption,
     TranslatePipe,
     MatIcon,
-    MatInput,
-    MatDatepickerInput,
     MatDatepickerToggle,
-    MatDatepicker,
     MatDateRangeInput,
     MatDateRangePicker,
     MatMenuTrigger,
@@ -53,6 +53,9 @@ export type FilterEvent = Record<string, string | null | undefined>
     LocalDateComponent,
     TagComponent,
     FormField,
+    InputFormFieldComponent,
+    SelectFormFieldComponent,
+    DateFormFieldComponent,
   ]
 })
 export class DataTableFilterComponent implements OnInit {
@@ -71,13 +74,13 @@ export class DataTableFilterComponent implements OnInit {
   filterEnableChanged = output<boolean>();
 
   filterEnabled = false;
-  advFilterEnabled = false;
+  // advFilterEnabled = false;
 
   advancedFilterEnabled = false;
 
-  protected model = signal<Record<string, any>>({});
+  protected model = signal<Record<string, string>>({});
 
-  protected form = form(this.model, (schema) => {});
+  protected form = form(this.model);
 
   readonly requestModel = computed(() => {
     const model = this.model();
@@ -87,14 +90,12 @@ export class DataTableFilterComponent implements OnInit {
         case FormFieldType.RANGE_PICKER:
           if (filter.names) {
             if (model[filter.names[0]]) {
-              acc[filter.names[0]] = format(model[filter.names[0]], 'yyyy-MM-dd');
-              // if (filter.advanced) this.advFilterEnabled = true;
+              acc[filter.names[0]] = format(model[filter.names[0]]!, 'yyyy-MM-dd');
             } else {
               acc[filter.names[0]] = null;
             }
             if (model[filter.names[1]]) {
-              acc[filter.names[1]] = format(model[filter.names[1]], 'yyyy-MM-dd');
-              // if (filter.advanced) this.advFilterEnabled = true;
+              acc[filter.names[1]] = format(model[filter.names[1]]!, 'yyyy-MM-dd');
             } else {
               acc[filter.names[1]] = null;
             }
@@ -102,7 +103,7 @@ export class DataTableFilterComponent implements OnInit {
           break;
         case FormFieldType.DATEPICKER:
           if (model[filter.name]) {
-            acc[filter.name] = format(model[filter.name], 'yyyy-MM-dd');
+            acc[filter.name] = format(model[filter.name]!, 'yyyy-MM-dd');
           } else {
             acc[filter.name] = null;
           }
@@ -116,26 +117,12 @@ export class DataTableFilterComponent implements OnInit {
           break;
       }
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, string | null>);
   });
 
   constructor() {
     effect(() => {
       const model = this.requestModel();
-      // if (this.form?.controls) {
-      //   this.filterEnabled = Object.keys(this.form?.controls).some(
-      //     (formKey) => this.form?.controls[formKey].value
-      //   );
-      //   this.advFilterEnabled = Object.keys(this.form?.controls).some(
-      //     (formKey) => {
-      //       const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
-      //       if (!t) return false;
-      //       return this.form?.controls[formKey].value
-      //     }
-      //   );
-      //   this.filterEnableChanged.emit(this.filterEnabled);
-      // }
-
       this.applyStateChangesToUrlQueryParams(model);
       Object.entries(model).forEach(([key, value]) => {
         if (!value) {
@@ -156,80 +143,22 @@ export class DataTableFilterComponent implements OnInit {
         acc[filter.name] = '';
       }
       return acc;
-    }, {} as Record<string, any>));
+    }, {} as Record<string, string>));
     this.advancedFilterEnabled = !!this._filters?.find(filter => filter.advanced);
-
-    // this.advancedFilterEnabled = !!this.filters()?.find(filter => filter.advanced);
-
-    // const filterGroup = this.filters()?.reduce(
-    //   (acc: Record<string, FormControl>, filterItem: FilterItem) => {
-    //     if (
-    //       filterItem.type === FormFieldType.RANGE_PICKER &&
-    //       filterItem.names
-    //     ) {
-    //       acc[filterItem.names[0]] = new FormControl("");
-    //       acc[filterItem.names[1]] = new FormControl("");
-    //       return acc;
-    //     }
-    //     acc[filterItem.name] = new FormControl("");
-    //     return acc;
-    //   }, {}
-    // );
-    //
-    // this.form = new FormGroup(filterGroup)
-
-    // this.form?.valueChanges
-    //   .pipe(debounceTime(300), takeUntil(this._destroy$))
-    //   .subscribe(() => {
-    //     const formValue = {...this.form?.value};
-    //     this.filters()?.map((filter) => {
-    //       if (filter.type === FormFieldType.DATEPICKER && filter.name) {
-    //         if (formValue[filter.name]) {
-    //           formValue[filter.name] = format(formValue[filter.name], 'yyyy-MM-dd')
-    //         }
-    //       }
-    //
-    //       if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
-    //         if (formValue[filter.names[0]]) {
-    //           formValue[filter.names[0]] = format(formValue[filter.names[0]], 'yyyy-MM-dd');
-    //         }
-    //         if (formValue[filter.names[1]]) {
-    //           formValue[filter.names[1]] = format(formValue[filter.names[1]], 'yyyy-MM-dd');
-    //         }
-    //       }
-    //     });
-    //     if (this.form?.controls) {
-    //       this.filterEnabled = Object.keys(this.form?.controls).some(
-    //         (formKey) => this.form?.controls[formKey].value
-    //       );
-    //       this.advFilterEnabled = Object.keys(this.form?.controls).some(
-    //         (formKey) => {
-    //           const t = this.filters().find(filter => filter.advanced && filter.name === formKey);
-    //           if (!t) return false;
-    //           return this.form?.controls[formKey].value
-    //         }
-    //       );
-    //       this.filterEnableChanged.emit(this.filterEnabled);
-    //     }
-    //     this.applyStateChangesToUrlQueryParams(formValue);
-    //     console.log('Class: DataTableFilterComponent, Function: , Line 146 formValue' , formValue);
-    //     this.filterChanged.emit(formValue);
-    //   });
-
     this.checkActiveFilterQuery();
   }
 
   removeFilter(filter: FilterItem) {
     if (filter.type === FormFieldType.RANGE_PICKER && filter.names) {
       this.model.update((value) => {
-        return {...value, [filter.names![0]]: null};
+        return {...value, [filter.names![0]]: ''};
       })
       this.model.update((value) => {
-        return {...value, [filter.names![1]]: null};
+        return {...value, [filter.names![1]]: ''};
       })
     } else {
       this.model.update((value) => {
-        return {...value, [filter.name]: null};
+        return {...value, [filter.name]: ''};
       })
     }
   }
