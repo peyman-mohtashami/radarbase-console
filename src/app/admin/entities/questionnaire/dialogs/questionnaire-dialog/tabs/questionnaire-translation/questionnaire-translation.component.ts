@@ -4,7 +4,7 @@ import {applyEach, form} from '@angular/forms/signals';
 import {requiredField, RequiredWhen} from '../../../../../../../shared/utils/signal-form-validators';
 import {TranslatePipe} from '@ngx-translate/core';
 import {QuestionnaireStore} from '../../../../services/questionnaire.store';
-import {HtmlEditorComponent} from '../../../../../../../shared/components/html-editor/html-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../shared/components/form-fields/html-editor/html-editor.component';
 
 
 @Component({

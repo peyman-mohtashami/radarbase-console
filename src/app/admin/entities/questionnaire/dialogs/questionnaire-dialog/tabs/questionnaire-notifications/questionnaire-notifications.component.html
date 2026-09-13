@@ -5,13 +5,13 @@
     <div>
       <p class="text-sm">{{ `${_i18nEntity}.notification` | translate }}</p>
       <div>
-        <app-html-editor [formField]="form.notification.title[_lang]"
+        <app-html-editor [field]="form.notification.title[_lang]"
                          [questionPicker]="false"
                          [label]="`${_i18nEntity}.notificationTitle`"/>
       </div>
 
       <div>
-        <app-html-editor [formField]="form.notification.text[_lang]"
+        <app-html-editor [field]="form.notification.text[_lang]"
                          [questionPicker]="false"
                          [label]="`${_i18nEntity}.notificationMessage`"/>
       </div>

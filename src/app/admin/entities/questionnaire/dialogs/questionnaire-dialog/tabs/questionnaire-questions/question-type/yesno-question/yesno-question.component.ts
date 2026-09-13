@@ -23,17 +23,17 @@ import {ToolbarComponent} from '../../../questionnaire-preview/components/toolba
 import {PreviewStore} from '../../../questionnaire-preview/services/preview.store';
 import {AnswerWithTimeLog} from '../../../questionnaire-preview/models/kafka';
 import {QUESTION_TYPES_OPTIONS, withLanguage} from '../../../../services/utils';
-import {HtmlEditorComponent} from '../../../../../../../../../shared/components/html-editor/html-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../../../shared/components/form-fields/html-editor/html-editor.component';
 import {
   QuestionConditionalLogicComponent
 } from '../../dialogs/question-dialog/question-conditional-logic/question-conditional-logic.component';
 import {QuestionsStore} from '../../services/questions.store';
 import {
   SelectFormFieldComponent
-} from '../../../../../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../../../../../shared/components/form-fields/select-form-field/select-form-field.component';
 import {
   InputFormFieldComponent
-} from '../../../../../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 export interface QuestionnaireYesNoQuestionForm extends Record<string, unknown> {
   id: string;

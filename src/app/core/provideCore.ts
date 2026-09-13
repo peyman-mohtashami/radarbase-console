@@ -11,7 +11,7 @@ import {ConfigurationService} from './configuration/services/configuration.servi
 function configInitializerFn(customizationService: ConfigurationService, themeService: ThemeService, localeService: LocaleService) {
   return async () => {
     await customizationService.init();
-    themeService.init();
+    // themeService.init();
     await localeService.init();
   };
 }

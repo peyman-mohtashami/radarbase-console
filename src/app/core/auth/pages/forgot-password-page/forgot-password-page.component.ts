@@ -7,13 +7,12 @@ import {RouterLink} from "@angular/router";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
-import {form} from "@angular/forms/signals";
+import {ErrorBoxComponent} from '../../../../shared/components/error-box/error-box.component';import {form} from "@angular/forms/signals";
 import {emailField, requiredField} from '../../../../shared/utils/signal-form-validators';
 import {BrandingComponent} from '../../components/branding/branding.component';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatSuffix} from '@angular/material/input';
 
@@ -26,7 +25,7 @@ import {MatSuffix} from '@angular/material/input';
     MatProgressSpinner,
     RouterLink,
     MatIcon,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     BrandingComponent,
     InputFormFieldComponent,
     MatCard,

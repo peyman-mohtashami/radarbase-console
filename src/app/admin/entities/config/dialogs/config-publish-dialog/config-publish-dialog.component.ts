@@ -15,7 +15,7 @@ import {MatButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {ConfigConfigService} from '../../services/config-config.service';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {ConfigDifference, ConfigStore} from '../../services/config.store';
 import {JsonPipe, UpperCasePipe} from '@angular/common';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -30,7 +30,7 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
     TranslatePipe,
     MatIcon,
     MatProgressSpinner,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     UpperCasePipe,
     JsonPipe,
   ]

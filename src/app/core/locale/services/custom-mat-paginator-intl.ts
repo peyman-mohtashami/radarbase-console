@@ -6,10 +6,10 @@ import {takeUntil} from "rxjs/operators";
 
 
 const PAGINATOR_TRANSLATION_KEYS = {
-  itemsPerPage: 'ADMIN.PAGINATOR.ITEMS_PER_PAGE',
-  nextPage: 'ADMIN.PAGINATOR.NEXT_PAGE',
-  previousPage: 'ADMIN.PAGINATOR.PREVIOUS_PAGE',
-  of: 'ADMIN.PAGINATOR.OF_LABEL',
+  itemsPerPage: 'ADMIN.SHARED.PAGINATOR.ITEMS_PER_PAGE',
+  nextPage: 'ADMIN.SHARED.PAGINATOR.NEXT_PAGE',
+  previousPage: 'ADMIN.SHARED.PAGINATOR.PREVIOUS_PAGE',
+  of: 'ADMIN.SHARED.PAGINATOR.OF_LABEL',
 } as const;
 
 @Injectable()

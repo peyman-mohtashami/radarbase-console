@@ -18,7 +18,7 @@ import {AppProject} from '../../../project/models/project';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {JsonPipe} from '@angular/common';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {SubjectStore} from '../../services/subject.store';
@@ -32,13 +32,13 @@ import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   DateFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+} from '../../../../../shared/components/form-fields/date-form-field/date-form-field.component';
 import {DialogMode} from '../../../../shared/enums/dialog';
 
 export interface SubjectForm {
@@ -65,7 +65,7 @@ export interface StoredSubjectDialog {
     TranslatePipe,
     MatDialogContent,
     SubjectDetailsComponent,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     MatButton,
     MatDialogActions,

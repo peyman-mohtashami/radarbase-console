@@ -17,7 +17,7 @@ import {AppGroup, CreateGroupDto} from "../../models/group";
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {GroupConfigService} from '../../services/group-config.service';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -31,7 +31,7 @@ import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 export interface GroupForm {
   id: string;
@@ -51,7 +51,7 @@ export interface StoredGroupDialog {
     MatDialogContent,
     TranslatePipe,
     ReactiveFormsModule,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     JsonPipe,
     MatDialogActions,

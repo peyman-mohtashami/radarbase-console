@@ -7,47 +7,12 @@
 
 
 /* Include any additional sources (for example, third-party components) as needed */
-/*@custom-variant dark (&:is(.dark *));*/
 @custom-variant dark (&:where(.dark, .dark *));
-/*:root {*/
-/*  --mat-sys-primary: #6200ee;*/
-/*  --mat-sys-primary-dark: #ff0000;*/
-/*  --mat-sys-on-primary: #ff0000;*/
-/*  --mat-sys-on-primary-dark: #ff0000;*/
-/*  --mat-sys-accent: #0f0;*/
-/*  --mat-sys-accent-dark: #0f0;*/
-/*  --mat-sys-on-accent: #0f0;*/
-/*  --mat-sys-on-accent-dark: #0f0;*/
-/*  --mat-sys-tertiary: #00f;*/
-/*  --mat-sys-tertiary-dark: #00f;*/
-/*  --mat-sys-on-tertiary: #00f;*/
-/*  --mat-sys-on-tertiary-dark: #00f;*/
-/*}*/
-
 
 /**
  * Map Tailwind theme → CSS variables
  */
 @theme inline {
-
-  /*!* PRIMARY *!*/
-  /*--color-primary: var(--color-primary);*/
-  /*--color-on-primary: var(--color-on-primary);*/
-
-  /*!* SURFACE *!*/
-  /*--color-surface: var(--color-surface);*/
-  /*--color-on-surface: var(--color-on-surface);*/
-
-  /*!* ERROR *!*/
-  /*--color-error: var(--color-error);*/
-
-  /*!* containers *!*/
-  /*--color-primary-container: var(--color-primary-container);*/
-  /*--color-on-primary-container: var(--color-on-primary-container);*/
-
-
-
-
 
   --breakpoint-sm: 37.5rem; /* 600px */
   --breakpoint-md: 60rem; /* 960px */

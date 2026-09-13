@@ -4,8 +4,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {ProfileService} from '../../services/profile.service';
 import {TranslatePipe} from "@ngx-translate/core";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
-import {BrandingComponent} from '../../components/branding/branding.component';
+import {ErrorBoxComponent} from '../../../../shared/components/error-box/error-box.component';import {BrandingComponent} from '../../components/branding/branding.component';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {ReactiveFormsModule} from '@angular/forms';
 
@@ -15,7 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
   imports: [
     TranslatePipe,
     RouterLink,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     BrandingComponent,
     MatCard,
     MatCardContent,

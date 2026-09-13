@@ -1,7 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
-import {LogoComponent} from '../../../../shared/components/logo/logo.component';
-import {ConfigurationService} from '../../../configuration/services/configuration.service';
+import {LogoComponent} from '../../../configuration/components/logo/logo.component';
 
 @Component({
   selector: 'app-branding',
@@ -12,5 +11,4 @@ import {ConfigurationService} from '../../../configuration/services/configuratio
   ],
 })
 export class BrandingComponent {
-  protected readonly configurationService = inject(ConfigurationService)
 }

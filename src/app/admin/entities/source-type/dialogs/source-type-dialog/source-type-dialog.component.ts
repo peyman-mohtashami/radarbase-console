@@ -11,7 +11,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {SourceTypeConfigService} from '../../services/source-type-config.service';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SourceTypeStore} from '../../services/source-type.store';
 import {form, FormField} from '@angular/forms/signals';
@@ -24,13 +24,13 @@ import {JsonPipe} from '@angular/common';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/form-fields/textarea-form-field/textarea-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/form-fields/select-form-field/select-form-field.component';
 
 export interface SourceTypeForm {
   id: string;
@@ -59,7 +59,7 @@ export interface StoredSourceTypeDialog {
     MatDialogContent,
     TranslatePipe,
     MatSlideToggle,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     FormField,
     MatDialogActions,

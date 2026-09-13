@@ -71,11 +71,11 @@
         "on-tertiary": "#ffffff"
       },
       "dark": {
-        "primary": "#9262ff",
+        "primary": "#ff0000",
         "on-primary": "#ffffff",
-        "accent": "#22A2C9",
+        "accent": "#00ff00",
         "on-accent": "#ffffff",
-        "tertiary": "#cf3ca5",
+        "tertiary": "#009900",
         "on-tertiary": "#ffffff"
       }
     }

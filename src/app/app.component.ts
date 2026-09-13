@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 
 import {ToolbarComponent} from './shared/components/toolbar/toolbar.component';
 import {FooterComponent} from "./shared/components/footer/footer.component";
 import {SidebarNavComponent} from "./shared/components/sidebar-nav/sidebar-nav.component";
+import {MenuStateService} from './core/ui-state/menu-state.service';
 
 @Component({
   selector: 'app-root',
@@ -16,5 +17,5 @@ import {SidebarNavComponent} from "./shared/components/sidebar-nav/sidebar-nav.c
   ],
 })
 export class AppComponent {
-  isMenuOpened = true;
+  protected readonly menuState = inject(MenuStateService);
 }

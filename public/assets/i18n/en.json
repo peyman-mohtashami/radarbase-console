@@ -1,7 +1,4 @@
 {
-  "title": "Management Portal",
-  "welcomeTitle": "Welcome to Management Portal",
-  "welcomeMessage": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs",
   "AUTH": {
     "LOGIN": {
       "title": "Login",
@@ -53,6 +50,11 @@
       "success": "Password Updated Successfully",
       "goToForgotPassword": "Go to Forgot Password Page"
     },
+    "MENU": {
+      "resetPassword": "Reset Password",
+      "profile": "Profile",
+      "logout": "Sign out"
+    },
     "ERROR": {
       "sessionExpired": "The session has been expired. Log in again.",
       "authGuard": "You need to be logged in to see the requested page.",
@@ -61,47 +63,24 @@
       "undefined": "An error occurred"
     }
   },
+  "BRANDING": {
+    "title": "Management Portal",
+    "welcomeTitle": "Welcome to Management Portal",
+    "welcomeMessage": "With this app you can link subjects from RADAR-base Management Portal to External Device APIs",
+    "poweredBy": "Powered by"
+  },
   "SHARED": {
     "loading": "Loading",
-    "footer": "Powered by",
-    "nav": {
-      "dashboard": "Dashboard",
-      "entities": "Entities",
-      "organizations": "Organizations",
-      "projects": "Projects",
-      "details": "Details",
-      "subjects": "Subjects",
-      "authorizer": "Authorizer",
-      "sources": "Sources",
-      "groups": "Groups",
-      "app-config": "App Config",
-      "members": "Members",
-      "sourceTypes": "Source Types",
-      "sourceData": "Source Data",
-      "questionnaires": "Questionnaires",
-      "protocols": "Protocols",
-      "administrator": "Administrator",
-      "users": "User management",
-      "clients": "OAuth Clients",
-      "metrics": "Metrics",
-      "audits": "Audits",
-      "health": "Health",
-      "revisions": "Revisions",
-      "logs": "Logs",
-      "database": "Database",
-      "applications": "Applications",
-      "outcomesDashboard": "Outcomes Dashboard",
-      "restSourceAuthorizer": "REST Source Authorizer",
-      "appConfig": "App Config",
-      "help": "Help",
-      "support": "Support",
-      "docs": "Docs",
-      "q_a": "Q/A",
-      "externalLinks": "External Tools",
+    "NAV": {
       "coreManagement": "Workspace",
       "systemConfiguration": "Advanced Settings",
       "monitoring": "Monitoring & Logs",
-      "documentation": "Help & Support"
+      "documentation": "Help & Support",
+      "externalLinks": "External Tools"
+    },
+    "FORM_FIELD": {
+      "noOptionFound": "No options found",
+      "insertVariable": "Insert a variable"
     },
     "dialog": {
       "edit": "Edit",
@@ -182,6 +161,18 @@
         "emailValidator": "Must be a valid email address",
         "passwordMismatch": "Passwords do not match",
         "passwordStrength": "Password must contain one lowercase, uppercase, digit, special character, and minimum 8 characters"
+      },
+      "PAGINATOR": {
+        "ITEMS_PER_PAGE": "Items per page",
+        "NEXT_PAGE": "Next page",
+        "PREVIOUS_PAGE": "Previous page",
+        "OF_LABEL": "of"
+      },
+      "detail": {
+        "title": {
+          "plural": "Details",
+          "singular": "Detail"
+        }
       }
     },
     "appConfig": {
@@ -244,21 +235,8 @@
         "search": "Search"
       }
     },
-    "dashboard": {
-      "title": "Dashboard",
-      "view": "View"
-    },
     "database": {
-      "title": {
-        "singular": "Database",
-        "plural": "Databases"
-      }
-    },
-    "detail": {
-      "title": {
-        "plural": "Details",
-        "singular": "Detail"
-      }
+      "title.plural": "Databases"
     },
     "group": {
       "title.singular": "Group",
@@ -1088,69 +1066,6 @@
         "plural": "Data"
       }
     },
-    "sourceAuthorizerSubject": {
-      "title": {
-        "singular": "Subject",
-        "plural": "Subjects"
-      },
-      "id": {
-        "tableLabel": "ID",
-        "label": "ID"
-      },
-      "login": {
-        "tableLabel": "login",
-        "label": "login"
-      },
-      "sourceType": {
-        "tableLabel": "sourceType",
-        "label": "sourceType"
-      },
-      "project": {
-        "tableLabel": "project",
-        "label": "project"
-      },
-      "authorized": {
-        "tableLabel": "authorized",
-        "label": "authorized",
-        "yes": "Yes",
-        "no": "No",
-        "pending": "Pending",
-        "unset": "Unset"
-      },
-      "registrationCreatedAt": {
-        "tableLabel": "registrationCreatedAt",
-        "label": "registrationCreatedAt"
-      },
-      "sourceId": {
-        "tableLabel": "sourceId",
-        "label": "sourceId"
-      },
-      "hasValidToken": {
-        "tableLabel": "hasValidToken",
-        "label": "hasValidToken",
-        "yes": "Yes",
-        "no": "No"
-      },
-      "serviceUserId": {
-        "tableLabel": "serviceUserId",
-        "label": "serviceUserId"
-      },
-      "timesReset": {
-        "tableLabel": "timesReset",
-        "label": "timesReset"
-      },
-      "startEndDate": {
-        "tableLabel": "startEndDate",
-        "label": "startEndDate"
-      },
-      "actions": "Actions",
-      "create": "Add Organization",
-      "edit": "Edit",
-      "delete": "Delete",
-      "deleteMessage": "You are going to delete Organization",
-      "deleteConfirmationMessage": "Are you sure?",
-      "noItemFound": "No Organization Found"
-    },
     "config": {
       "title.singular": "Config",
       "title.plural": "Configs",
@@ -1191,59 +1106,29 @@
         "search": "Search"
       }
     },
-    "PAGINATOR": {
-      "ITEMS_PER_PAGE": "Items per page",
-      "NEXT_PAGE": "Next page",
-      "PREVIOUS_PAGE": "Previous page",
-      "OF_LABEL": "of"
-    },
     "uploadPortal": {
-      "title": {
-        "singular": "Upload Portal",
-        "plural": "Upload Portal"
-      }
+      "title.plural": "Upload Portal"
     },
     "dataStorage": {
-      "title": {
-        "singular": "Data storage",
-        "plural": "Data storage"
-      }
+      "title.plural": "Data storage"
     },
     "grafana": {
-      "title": {
-        "singular": "Grafana",
-        "plural": "Grafana"
-      }
+      "title.plural": "Grafana"
     },
     "systemMonitor": {
-      "title": {
-        "singular": "System Monitor",
-        "plural": "System Monitor"
-      }
+      "title.plural": "System Monitor"
     },
     "systemStatus": {
-      "title": {
-        "singular": "System Monitor",
-        "plural": "System Monitor"
-      }
+      "title.plural": "System Monitor"
     },
     "systemLogs": {
-      "title": {
-        "singular": "System logs",
-        "plural": "System logs"
-      }
+      "title.plural": "System logs"
     },
     "website": {
-      "title": {
-        "singular": "RADAR-base website",
-        "plural": "RADAR-base website"
-      }
+      "title.plural": "RADAR-base website"
     },
     "wiki": {
-      "title": {
-        "singular": "RADAR-base wiki",
-        "plural": "User's guide"
-      }
+      "title.plural": "User's guide"
     }
   },
   "ERROR": {

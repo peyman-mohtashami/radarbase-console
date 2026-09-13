@@ -7,15 +7,14 @@ import {MatIcon} from "@angular/material/icon";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButton} from "@angular/material/button";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
-import {requiredField} from '../../../../shared/utils/signal-form-validators';
+import {ErrorBoxComponent} from '../../../../shared/components/error-box/error-box.component';import {requiredField} from '../../../../shared/utils/signal-form-validators';
 import {form} from "@angular/forms/signals";
 import {ReactiveFormsModule} from '@angular/forms';
 import {BrandingComponent} from '../../components/branding/branding.component';
 import {MatCard, MatCardContent} from '@angular/material/card';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 @Component({
   selector: 'app-login-page',
@@ -26,7 +25,7 @@ import {
     MatProgressSpinner,
     RouterLink,
     MatButton,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     ReactiveFormsModule,
     BrandingComponent,
     MatCard,

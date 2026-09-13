@@ -1,0 +1,25 @@
+<div>
+  <app-label-form-field [field]="field()" [label]="label()" [required]="required()"/>
+
+  <ng-content/>
+
+  <mat-form-field class='small-input w-full' [subscriptSizing]="subscriptSizing()" [appearance]='appearance()'>
+    <input [id]="field()().name()" matInput [formField]="field()" [type]="type()">
+    <ng-content select="[matPrefix], [matIconPrefix]"/>
+    <ng-content select="[matSuffix], [matIconSuffix]"/>
+
+    @if (errors() !== 'none') {
+      <mat-error>
+        @if (field()().touched() && field()().invalid()) {
+          @if (errors() === 'all') {
+            @for (error of field()().errors(); track error.kind) {
+              {{ error.message | translate }}
+            }
+          } @else {
+            {{ field()().errors()[0].message | translate }}
+          }
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+</div>

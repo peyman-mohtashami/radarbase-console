@@ -54,20 +54,20 @@
 
 
     <div class="mb-4">
-      <app-html-editor [formField]="form.field_label[_lang]"
+      <app-html-editor [field]="form.field_label[_lang]"
                        [questionIndex]="_index"
                        [label]="`${_i18nQuestion}.fieldLabel`"
                        [required]="true"/>
     </div>
 
     <div class="mb-4">
-      <app-html-editor [formField]="form.section_header[_lang]"
+      <app-html-editor [field]="form.section_header[_lang]"
                        [questionIndex]="_index"
                        [label]="`${_i18nQuestion}.sectionHeader`"/>
     </div>
 
     <div class="mb-4">
-      <app-html-editor [formField]="form.field_note[_lang]"
+      <app-html-editor [field]="form.field_note[_lang]"
                        [questionIndex]="_index"
                        [label]="`${_i18nQuestion}.fieldNote`"/>
     </div>
@@ -82,11 +82,11 @@
       </div>
 
       <div class="grid grid-cols-2 gap-2">
-        <app-html-editor [formField]="form.range.labelLeft[_lang]"
+        <app-html-editor [field]="form.range.labelLeft[_lang]"
                          [questionIndex]="_index"
                          [label]="`${_i18nQuestion}.rangeLabelLeft`"/>
 
-        <app-html-editor [formField]="form.range.labelRight[_lang]"
+        <app-html-editor [field]="form.range.labelRight[_lang]"
                          [questionIndex]="_index"
                          [label]="`${_i18nQuestion}.rangeLabelRight`"/>
       </div>

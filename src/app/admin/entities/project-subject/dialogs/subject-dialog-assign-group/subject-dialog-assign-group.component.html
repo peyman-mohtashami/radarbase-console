@@ -16,9 +16,9 @@
 </mat-dialog-content>
 
 @if (store.error()) {
-  <app-error-message-box>
+  <app-error-box>
     {{ store.error() | json }}
-  </app-error-message-box>
+  </app-error-box>
 }
 
 <div class='px-6 py-4 flex flex-wrap justify-between gap-2 w-full'>

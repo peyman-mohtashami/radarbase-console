@@ -9,7 +9,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from "../../../../shared/enums/dialog";
 import {QuestionnaireConfigService} from "../../services/questionnaire-config.service";
 import {AppQuestionnaire} from "../../models/questionnaire";
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {
   MatTab,
   MatTabContent,
@@ -46,7 +46,7 @@ import {ActivatedRoute} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {QuestionnaireStore} from '../../services/questionnaire.store';
 import {QuestionnaireVariablesComponent} from './tabs/questionnaire-variables/questionnaire-variables.component';
-import {RichTextEditorComponent} from '../../../../../shared/components/rich-text-editor/rich-text-editor.component';
+import {RichTextEditorComponent} from '../../../../../shared/components/form-fields/rich-text-editor/rich-text-editor.component';
 
 export interface QuestionnaireForm {
   id: string; //TODO
@@ -64,7 +64,7 @@ export interface StoredQuestionnaireDialog {
   imports: [
     TranslatePipe,
     MatDialogContent,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatTabGroup,
     MatTab,
     MatTabLabel,

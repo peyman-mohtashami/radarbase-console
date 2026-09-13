@@ -18,7 +18,7 @@ import {UserConfigService} from '../../services/user-config.service';
 import {AppProject} from '../../../project/models/project';
 import {AppOrganization} from '../../../organization/models/organization';
 import {JsonPipe} from '@angular/common';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {UserDetailsComponent} from '../../components/user-details/user-details.component';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
@@ -34,11 +34,11 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 
 export interface UserForm {
@@ -69,7 +69,7 @@ export interface StoredUserDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     UserDetailsComponent,
     MatDialogTitle,
     MatDialogActions,

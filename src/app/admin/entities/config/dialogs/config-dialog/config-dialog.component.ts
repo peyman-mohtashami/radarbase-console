@@ -17,7 +17,7 @@ import {MatFormField, MatInput} from "@angular/material/input";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {ConfigConfigService} from "../../services/config-config.service";
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {ActivatedRoute} from '@angular/router';
 import {ConfigStore} from '../../services/config.store';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -29,10 +29,10 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface ConfigForm {
   name: string;
@@ -51,7 +51,7 @@ export interface StoredConfigDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     JsonPipe,
     MatButton,

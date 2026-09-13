@@ -17,13 +17,13 @@
                                 type="password"/>
 
           @if (error() || stateError()) {
-            <app-error-message-box>
+            <app-error-box>
               @if (error()) {
                 {{ `${_i18nError}.${error()?.error?.errorCode ?? error()?.error?.error}` | translate }}
               } @else {
                 {{ `${_i18nError}.sessionExpired` | translate }}
               }
-            </app-error-message-box>
+            </app-error-box>
           }
 
           <button mat-raised-button

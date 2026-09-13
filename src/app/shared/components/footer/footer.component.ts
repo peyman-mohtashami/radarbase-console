@@ -1,6 +1,7 @@
-import {Component, input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 import { environment } from '../../../../environments/environment';
+import {MenuStateService} from '../../../core/ui-state/menu-state.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,6 +11,6 @@ import { environment } from '../../../../environments/environment';
   ],
 })
 export class FooterComponent {
-  readonly isMenuOpen = input<boolean>(true);
   protected readonly version = environment.version;
+  protected readonly menuState = inject(MenuStateService);
 }

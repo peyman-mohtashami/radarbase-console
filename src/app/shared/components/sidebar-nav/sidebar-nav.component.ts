@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {PermissionDirective} from "../../../core/auth/directives/show-if-has-role.directive";
 import {
   MatExpansionPanel,
@@ -14,6 +14,7 @@ import {CustomConfiguration} from '../../../core/configuration/models/deployment
 import {NavGroupItem} from '../../../core/configuration/models/nav-group-item.model';
 import {APP_ROLES} from '../../../core/auth/models/auth.model';
 import {ENTITY_REGISTRY, EntityRegistry} from '../../consts/entity-registry';
+import {MenuStateService} from '../../../core/ui-state/menu-state.service';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -52,10 +53,10 @@ import {ENTITY_REGISTRY, EntityRegistry} from '../../consts/entity-registry';
 })
 export class SidebarNavComponent {
 
+  protected readonly menuState = inject(MenuStateService);
+
   mainNavigationCustomization = inject(ConfigurationService).customNavigation;
   navGroupItems = computed(() => this.setNavGroupItems(this.mainNavigationCustomization()));
-
-  isMenuOpen = input<boolean>(false);
 
   private setNavGroupItems(config: CustomConfiguration['mainNavigation']) {
     const navGroupItems: NavGroupItem[] = [
@@ -116,7 +117,6 @@ export class SidebarNavComponent {
     return navGroupItems;
   }
 }
-
 
 const enabled = (config: boolean | undefined | { url: string }, item: EntityRegistry) => {
   if (config === undefined || config === true) return item;

@@ -10,7 +10,7 @@ import {AppOrganization, CreateOrganizationDto, UpdateOrganizationDto} from "../
 import {TranslatePipe} from "@ngx-translate/core";
 import {DialogMode} from '../../../../shared/enums/dialog';
 import {OrganizationConfigService} from '../../services/organization-config.service';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {form} from '@angular/forms/signals';
 import {
   longTextField,
@@ -28,10 +28,10 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/form-fields/textarea-form-field/textarea-form-field.component';
 
 export interface OrganizationForm {
   id: string;
@@ -52,7 +52,7 @@ export interface StoredOrganizationDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     MatButton,
     MatIcon,

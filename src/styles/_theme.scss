@@ -47,8 +47,8 @@ $theme: mat.define-theme((
 $dark-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$spring-green-palette,
-    tertiary: mat.$blue-palette,
+    primary: palettes.$primary-palette,
+    tertiary: palettes.$primary-palette,
     use-system-variables: true,
   ),
   typography: (

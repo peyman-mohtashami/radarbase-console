@@ -21,7 +21,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {SourceDataConfigService} from '../../services/source-data-config.service';
 import {JsonPipe} from '@angular/common';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
@@ -34,13 +34,13 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {normalTextField, requiredField} from '../../../../../shared/utils/signal-form-validators';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/form-fields/select-form-field/select-form-field.component';
 
 export interface SourceDataForm {
   id: string;
@@ -67,7 +67,7 @@ export interface StoredSourceDataDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     MatDialogActions,
     JsonPipe,

@@ -18,7 +18,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSource, CreateSourceDto, UpdateSourceDto} from '../../models/source';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {JsonPipe} from '@angular/common';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {AppProject} from '../../../project/models/project';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -31,11 +31,11 @@ import {MatButton} from '@angular/material/button';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 import {ProjectStore} from '../../../project/services/project.store';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 export interface SourceForm {
   id: string;
@@ -58,7 +58,7 @@ export interface StoredSourceDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     MatDialogActions,
     MatIcon,

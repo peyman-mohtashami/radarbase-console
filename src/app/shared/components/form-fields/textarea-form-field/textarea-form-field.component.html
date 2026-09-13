@@ -1,0 +1,28 @@
+<div>
+  <app-label-form-field [field]="field()" [label]="label()" [required]="required()"/>
+
+  <ng-content/>
+
+  <mat-form-field class='small-input w-full' subscriptSizing="fixed" [appearance]='appearance()'>
+    <textarea [id]="field()().name()"
+              matInput
+              #textArea
+              [formField]="field()"
+              [rows]='rows()'
+              cdkTextareaAutosize></textarea>
+    <mat-hint align="end">{{ textArea.value.length }} / 255</mat-hint>
+    @if (errors() !== 'none') {
+      <mat-error>
+        @if (field()().touched() && field()().invalid()) {
+          @if (errors() === 'all') {
+            @for (error of field()().errors(); track error.kind) {
+              {{ error.message | translate }}
+            }
+          } @else {
+            {{ field()().errors()[0].message | translate }}
+          }
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+</div>

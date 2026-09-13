@@ -8,9 +8,9 @@
 
       <mat-card-content>
         @if (error()) {
-          <app-error-message-box>
+          <app-error-box>
             {{ `${_i18nError}.${error()?.error?.errorCode ?? error()?.error?.error}` | translate }}
-          </app-error-message-box>
+          </app-error-box>
         }
 
         <form novalidate (submit)="onSubmit($event)">

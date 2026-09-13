@@ -6,8 +6,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorMessageBoxComponent} from '../../../../shared/components/message-box/error-message-box.component';
-import {
+import {ErrorBoxComponent} from '../../../../shared/components/error-box/error-box.component';import {
   requiredField,
   validatePasswordMatch,
   validatePasswordStrength
@@ -15,7 +14,7 @@ import {
 import {form} from '@angular/forms/signals';
 import {
   InputFormFieldComponent
-} from '../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {MatSuffix} from '@angular/material/input';
 
 @Component({
@@ -28,7 +27,7 @@ import {MatSuffix} from '@angular/material/input';
     MatIcon,
     MatButton,
     MatProgressSpinner,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     InputFormFieldComponent,
     MatIconButton,
     MatSuffix

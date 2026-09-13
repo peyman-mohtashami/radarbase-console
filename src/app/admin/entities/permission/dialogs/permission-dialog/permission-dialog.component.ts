@@ -13,7 +13,7 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {AppUser, RoleDto, UpdateUserDto} from "../../../user/models/user";
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {LocaleService} from '../../../../../core/locale/services/locale.service';
 import {ActivatedRoute} from '@angular/router';
 import {requiredField} from '../../../../../shared/utils/signal-form-validators';
@@ -23,7 +23,7 @@ import {form, FormField} from '@angular/forms/signals';
 import {JsonPipe} from '@angular/common';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 
 export interface PermissionForm {
   email: string,
@@ -47,7 +47,7 @@ export interface StoredPermissionDialog {
     MatButton,
     MatIcon,
     MatProgressSpinner,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     JsonPipe,
     InputFormFieldComponent,
   ]

@@ -18,7 +18,7 @@ import {DialogMode} from '../../../../shared/enums/dialog';
 import {AppSourceType, SourceTypeDto} from '../../../source-type/models/source-type';
 import {LocaleService} from "../../../../../core/locale/services/locale.service";
 import {ActivatedRoute, Router} from '@angular/router';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {OrganizationStore} from '../../../organization/services/organization.store';
 import {ProjectStore} from '../../services/project.store';
 import {disabled, form, validate} from '@angular/forms/signals';
@@ -27,7 +27,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 import {
   longTextField,
   normalTextField,
@@ -38,16 +38,16 @@ import {getLastSegment} from '../../../../shared/utils/route.util';
 import {JsonPipe} from '@angular/common';
 import {
   InputFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/input-form-field/input-form-field.component';
+} from '../../../../../shared/components/form-fields/input-form-field/input-form-field.component';
 import {
   TextareaFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/textarea-form-field/textarea-form-field.component';
+} from '../../../../../shared/components/form-fields/textarea-form-field/textarea-form-field.component';
 import {
   DateFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/date-form-field/date-form-field.component';
+} from '../../../../../shared/components/form-fields/date-form-field/date-form-field.component';
 import {
   SelectFormFieldComponent
-} from '../../../../../shared/components/app-form-fields/select-form-field/select-form-field.component';
+} from '../../../../../shared/components/form-fields/select-form-field/select-form-field.component';
 
 export interface ProjectForm {
   id: string;
@@ -76,7 +76,7 @@ export interface StoredProjectDialog {
   imports: [
     MatDialogContent,
     TranslatePipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     MatButton,
     MatDialogActions,

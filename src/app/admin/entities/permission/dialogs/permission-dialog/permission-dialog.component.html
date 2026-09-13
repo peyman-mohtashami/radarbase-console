@@ -75,9 +75,9 @@
 </mat-dialog-content>
 
 @if (store.error()) {
-  <app-error-message-box>
+  <app-error-box>
     {{ store.error() | json }}
-  </app-error-message-box>
+  </app-error-box>
 }
 
 

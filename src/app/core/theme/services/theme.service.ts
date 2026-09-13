@@ -21,13 +21,11 @@ export class ThemeService {
       const mode = this._mode();
       this.document.documentElement.classList.toggle('dark', mode === 'dark');
       localStorage.setItem(THEME_STORAGE_KEY, mode);
-    });
-  }
 
-  init(): void {
-    const { light, dark } = this.configurationService.customBranding().theme;
-    this.applyThemeVariables(light, '');
-    this.applyThemeVariables(dark, '-dark');
+      // Re-apply the branding colors for whichever mode is now active
+      const { light, dark } = this.configurationService.customBranding().theme;
+      this.applyThemeVariables(mode === 'dark' ? dark : light);
+    });
   }
 
   toggleTheme(): void {
@@ -38,11 +36,11 @@ export class ThemeService {
     return localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
   }
 
-  private applyThemeVariables(colors: Record<string, string>, suffix: string): void {
+  private applyThemeVariables(colors: Record<string, string>): void {
     const root = this.document.documentElement;
     Object.entries(colors).forEach(([key, value]) => {
-      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}${suffix}`, value);
-      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}-rgb${suffix}`, hexToRgb(value));
+      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}`, value);
+      root.style.setProperty(`${CSS_VAR_PREFIX}-${key}-rgb`, hexToRgb(value));
     });
   }
 }

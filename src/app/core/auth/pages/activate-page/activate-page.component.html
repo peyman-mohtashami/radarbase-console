@@ -7,9 +7,9 @@
       <div class="p-8">
         <h4 class="my-12 text-center text-xl font-bold">{{ `${_i18nActivation}.title` | translate }}</h4>
         @if (!key) {
-          <app-error-message-box>
+          <app-error-box>
             <p class="text-start">{{ `${_i18nActivation}.errorMessage` | translate }}</p>
-          </app-error-message-box>
+          </app-error-box>
         } @else {
           @if (loading()) {
             <p>{{ `${_i18nActivation}.loading` | translate }}</p>
@@ -20,10 +20,10 @@
           }
 
           @if (error()) {
-            <app-error-message-box>
+            <app-error-box>
               {{ `${_i18nError}.${error()?.error?.errorCode ?? error()?.error?.error}` | translate }}
               <p class="my-4 text-start">{{ `${_i18nActivation}.errorMessage` | translate }}</p>
-            </app-error-message-box>
+            </app-error-box>
           }
         }
 

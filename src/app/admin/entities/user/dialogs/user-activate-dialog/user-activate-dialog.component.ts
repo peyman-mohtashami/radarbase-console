@@ -22,7 +22,7 @@ import {UserStore} from '../../services/user.store';
 import {animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {JsonPipe} from '@angular/common';
 
 @Component({
@@ -36,7 +36,7 @@ import {JsonPipe} from '@angular/common';
     MatButton,
     MatIcon,
     MatProgressSpinner,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     JsonPipe,
   ]
 })

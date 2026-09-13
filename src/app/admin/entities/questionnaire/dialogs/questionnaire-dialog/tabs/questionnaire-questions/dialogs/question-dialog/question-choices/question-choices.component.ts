@@ -7,7 +7,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {FieldTree, FormField} from '@angular/forms/signals';
 import {QuestionnaireStore} from '../../../../../../../services/questionnaire.store';
 import {dragDropStyles} from '../../../../../services/utils';
-import {HtmlEditorComponent} from '../../../../../../../../../../shared/components/html-editor/html-editor.component';
+import {HtmlEditorComponent} from '../../../../../../../../../../shared/components/form-fields/html-editor/html-editor.component';
 
 @Component({
   selector: 'app-question-choices',

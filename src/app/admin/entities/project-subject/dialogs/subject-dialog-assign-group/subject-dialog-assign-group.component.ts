@@ -18,7 +18,7 @@ import {SubjectConfigService} from '../../services/subject-config.service';
 import {SubjectDialogMode} from '../../enums/dialog';
 import {DetailType} from '../../../../shared/enums/detail-type';
 import {JsonPipe} from '@angular/common';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {AppSubject} from '../../models/subject';
 import {AppGroup, GroupDto} from '../../../project-group/models/group';
 import {SubjectStore} from '../../services/subject.store';
@@ -26,7 +26,7 @@ import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog
 import {form} from '@angular/forms/signals';
 import {
   SearchableMultiSelectComponent
-} from '../../../../../shared/components/app-form-fields/searchable-multi-select/searchable-multi-select';
+} from '../../../../../shared/components/form-fields/searchable-multi-select/searchable-multi-select';
 
 export interface AssignSubjectsToGroupForm {
   group: GroupDto | null,
@@ -49,7 +49,7 @@ export interface StoredAssignSubjectsToGroupsDialog {
     MatDialogClose,
     MatIcon,
     MatProgressSpinner,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     JsonPipe,
     SearchableMultiSelectComponent

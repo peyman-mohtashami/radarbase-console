@@ -1,0 +1,33 @@
+<div>
+  <app-label-form-field [field]="field()" [label]="label()" [required]="required()"/>
+
+  <div class="flex">
+    <div #editorContainer class="html-editor grow" [class]="field()().touched() && field()().invalid() ? 'error': ''"></div>
+
+    @if (picker()) {
+      <div class="flex">
+        <button mat-icon-button
+                class="tiny"
+                type="button"
+                (click)="openQuestionPickerDialog()"
+                [matTooltip]="`SHARED.FORM_FIELD.insertVariable` | translate">
+          <mat-icon class="material-symbols-outlined">variable_insert</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+
+  @if (errors() !== 'none') {
+    <mat-error class="text-sm">
+      @if (field()().touched() && field()().invalid()) {
+        @if (errors() === 'all') {
+          @for (error of field()().errors(); track error.kind) {
+            {{ error.message | translate }}
+          }
+        } @else {
+          {{ field()().errors()[0].message | translate }}
+        }
+      }
+    </mat-error>
+  }
+</div>

@@ -87,9 +87,9 @@
 </mat-dialog-content>
 
 @if (store.error()) {
-  <app-error-message-box>
+  <app-error-box>
     {{ store.error() | json }}
-  </app-error-message-box>
+  </app-error-box>
 }
 <mat-dialog-actions align="end" class="justify-between!">
   <button (click)='close()' mat-stroked-button color="accent">

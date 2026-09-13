@@ -2,7 +2,7 @@
   @for (property of tableFields(); track property.name) {
     @if ((detailType() !== DetailType.SUMMARY || property.showInSummary === true) && property.name !== 'actions' && property.name !== 'checkbox') {
       <div
-        class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300 dark:border-neutral-500 border-b'
+        class='py-1 flex items-center gap-1 sm:gap-0 flex-wrap sm:flex-nowrap bg-inherit border-neutral-300'
         [class]="detailType() !== DetailType.TABLE ? '' : property?.extensionClass || ''">
         <span class='shrink-0 w-full' [class]="detailType() === DetailType.TABLE ? 'sm:w-52' : ' sm:w-1/4'">
           {{ `ADMIN.${entityMetadata().name}.${property.name}` | translate }}

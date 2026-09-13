@@ -26,7 +26,7 @@ import {
   DetailElementComponent
 } from '../../../../shared/components/detail-element/detail-element.component';
 import {DurationPipe} from '../../../../../shared/pipes/duration.pipe';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {form, FormField} from '@angular/forms/signals';
 import {ClientStore} from '../../../client/services/client.store';
@@ -61,7 +61,7 @@ export interface StoredPairAppDialog {
     SubjectDetailsComponent,
     QrCodeComponent,
     DurationPipe,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     FormField,
     JsonPipe

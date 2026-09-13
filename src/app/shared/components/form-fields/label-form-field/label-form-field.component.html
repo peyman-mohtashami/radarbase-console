@@ -1,0 +1,9 @@
+@if (label() !== null) {
+  <label [for]="field()().name()"
+         class="text-sm"
+         [class]="field()().touched() && field()().invalid() ? 'text-red-700' : ''">{{ label() | translate }}
+    @if (required()) {
+      <span class="text-red-700">*</span>
+    }
+  </label>
+}

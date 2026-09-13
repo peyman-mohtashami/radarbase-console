@@ -1,18 +1,20 @@
-<div class="m-2 flex flex-col gap-2" [class]="!isMenuOpen() ? 'md:[&_.item-label]:hidden' : ''">
+@let _i18nSharedNav = `SHARED.NAV`;
+@let _i18nAdmin = `ADMIN`;
+
+<div class="m-2 flex flex-col gap-2" [class]="!menuState.isOpen() ? 'md:[&_.item-label]:hidden' : ''">
   @for (navGroupItem of navGroupItems(); track navGroupItem) {
     <mat-expansion-panel *appShowIfHasRole="navGroupItem.permission"
                          class="hover:bg-black/20! bg-white/10!"
                          [expanded]="!navGroupItem.close">
 
-      <mat-expansion-panel-header class="" [class]="isMenuOpen() ? 'px-4!': 'px-2!'">
-        <div class="flex gap-2 items-center w-full!" [class]="!isMenuOpen() ? 'md:justify-start' : ''">
-              <span class="material-symbols-outlined"
-                    [matTooltip]="!isMenuOpen() ? (('SHARED.nav.' + navGroupItem.header?.name) | translate) : ''"
+      <mat-expansion-panel-header [class]="menuState.isOpen() ? 'px-4!': 'px-2!'">
+        <div class="flex gap-2 items-center w-full!" [class]="!menuState.isOpen() ? 'md:justify-start' : ''">
+          <mat-icon [matTooltip]="!menuState.isOpen() ? (`${_i18nSharedNav}.${navGroupItem.header?.name}` | translate) : ''"
                     [matTooltipPosition]="'after'">
-                {{ navGroupItem.header?.icon }}
-              </span>
+            {{ navGroupItem.header?.icon }}
+          </mat-icon>
           <div class="item-label uppercase whitespace-nowrap">
-            <span class=''>{{ ("SHARED.nav." + navGroupItem.header?.name) | translate }}</span>
+            <span class=''>{{ `${_i18nSharedNav}.${navGroupItem.header?.name}` | translate }}</span>
           </div>
         </div>
       </mat-expansion-panel-header>
@@ -20,32 +22,38 @@
       @for (nav of navGroupItem.navList; track nav) {
         <div class="border-t border-on-tertiary/50 w-full" *appShowIfHasRole='nav.permission'>
           @if (!nav.external) {
-            <a class="w-full" [routerLink]='nav.route' appRouterLinkExactActive="routerLinkActive" [targetUrl]="nav.route">
+            <a class="w-full"
+               [routerLink]='nav.route'
+               appRouterLinkExactActive="routerLinkActive"
+               [targetUrl]="nav.route">
               <span class="flex items-center gap-2 text-on-tertiary text-sm px-4 py-2">
-                <mat-icon class="material-symbols-outlined"
-                          [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                <mat-icon [matTooltip]="!menuState.isOpen() ? (`${_i18nAdmin}.${nav.name}.title.plural` | translate) : ''"
                           [matTooltipPosition]="'after'">{{ nav.icon }}</mat-icon>
                 <span class="item-label whitespace-nowrap">
-                  {{ ('ADMIN.' + nav.name + '.title.plural') | translate }}
+                  {{ `${_i18nAdmin}.${nav.name}.title.plural` | translate }}
                 </span>
               </span>
             </a>
           } @else {
             <a class="w-full" [href]="nav.route" [target]="'_blank'">
               <span class="flex items-center gap-2 text-on-tertiary text-sm px-4 py-2">
-                <mat-icon class="material-symbols-outlined"
-                          [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
-                          [matTooltipPosition]="'after'">{{ nav.icon }}</mat-icon>
-                <span class="item-label whitespace-nowrap">
-                  {{ ('ADMIN.' + nav.name + '.title.plural') | translate }}
-                </span>
-                <span class="flex-auto" [class]="isMenuOpen() ? 'inline-block' : 'hidden!'"></span>
-                <mat-icon class="material-symbols-outlined text-lg! opacity-50"
-                          [class]="isMenuOpen() ? 'inline-block' : 'hidden!'"
-                          [matTooltip]="!isMenuOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                <mat-icon [matTooltip]="!menuState.isOpen() ? (`${_i18nAdmin}.${nav.name}.title.plural` | translate) : ''"
                           [matTooltipPosition]="'after'">
-                    open_in_new
-                  </mat-icon>
+                  {{ nav.icon }}
+                </mat-icon>
+
+                <span class="item-label whitespace-nowrap">
+                  {{ `${_i18nAdmin}.${nav.name}.title.plural` | translate }}
+                </span>
+
+                <span class="flex-auto" [class]="menuState.isOpen() ? 'inline-block' : 'hidden!'"></span>
+
+                <mat-icon class="text-lg! opacity-50"
+                          [class]="menuState.isOpen() ? 'inline-block' : 'hidden!'"
+                          [matTooltip]="!menuState.isOpen() ? (('ADMIN.' + nav.name + '.title.plural') | translate) : ''"
+                          [matTooltipPosition]="'after'">
+                  open_in_new
+                </mat-icon>
               </span>
             </a>
           }

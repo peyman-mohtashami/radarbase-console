@@ -21,7 +21,7 @@ import {DetailType} from '../../../../shared/enums/detail-type';
 import {SubjectDetailsComponent} from '../../components/subject-details/subject-details.component';
 import {AppProject} from '../../../project/models/project';
 import {TagComponent} from '../../../../../shared/components/tag/tag.component';
-import {ErrorMessageBoxComponent} from '../../../../../shared/components/message-box/error-message-box.component';
+import {ErrorBoxComponent} from '../../../../../shared/components/error-box/error-box.component';
 import {AppSource} from '../../../project-source/models/source';
 import {animateDialogIn, animateDialogOut} from '../../../../shared/utils/dialog.util';
 import {getLastSegment} from '../../../../shared/utils/route.util';
@@ -43,7 +43,7 @@ import {Router} from '@angular/router';
     SubjectDetailsComponent,
     ReactiveFormsModule,
     TagComponent,
-    ErrorMessageBoxComponent,
+    ErrorBoxComponent,
     MatDialogTitle,
     JsonPipe,
   ]
