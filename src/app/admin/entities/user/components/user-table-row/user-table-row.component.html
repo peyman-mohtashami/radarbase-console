@@ -22,10 +22,10 @@
 
     @case('email') {
       <span class="flex items-center gap-1">
-              <app-user-activated class="inline-flex" [activated]="entity().activated" />
-              <app-user-activate [entity]="entity()" />
-              <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
-            </span>
+        <app-user-activated class="inline-flex" [activated]="entity().activated" />
+        <app-user-activate [entity]="entity()" />
+        <a class="underline" href="mailto:{{ entity().email}}" target="_blank">{{ entity().email || '-' }}</a>
+      </span>
     }
 
     @case('roles') {

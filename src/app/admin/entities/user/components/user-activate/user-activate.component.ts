@@ -15,7 +15,10 @@ import {MatTooltip} from '@angular/material/tooltip';
     MatIcon,
     TranslatePipe,
     MatTooltip,
-  ]
+  ],
+  host: {
+    style: 'display: contents;'
+  }
 })
 export class UserActivateComponent {
   private dialog = inject(MatDialog);
@@ -27,10 +30,8 @@ export class UserActivateComponent {
   }
 
   private async createDialogRef(mode: UserDialogMode, entity?: AppUser): Promise<MatDialogRef<UserActivateDialogComponent>> {
-    const _data = {id: 'user-dialog', mode, entity};
-
     return this.dialog.open(UserActivateDialogComponent, {
-      data: _data,
+      data: {id: 'user-activate-dialog', mode, entity},
       width: '50%',
       hasBackdrop: true,
       disableClose: true,

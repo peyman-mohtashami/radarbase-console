@@ -12,7 +12,7 @@
     <div class='mb-4 text-base'>
       <app-user-details [entity]='dialogData.entity' [detailType]="DetailType.SUMMARY"/>
       <div class="mt-4">
-        <p>{{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.name` | translate }}:
+        <p>{{ `${_i18nShared}.deleteMessage` | translate }} {{ `${_i18nEntity}.title.singular` | translate }}:
           <code class="italic text-secondary">{{ dialogData.entity?.login }}</code>.</p>
         <p class="font-bold">{{ `${_i18nShared}.deleteWarning` | translate }}</p>
       </div>

@@ -19,7 +19,7 @@ import {MIN_ENTITIES_FOR_FILTERS, TableElement} from '../../../../shared/models/
 import {SelectionModel} from '@angular/cdk/collections';
 import {APP_ROLES} from '../../../../../core/auth/models/auth.model';
 import {UserStore} from '../../services/user.store';
-import {DialogMode} from '../../../../shared/models/dialog.model';
+import {MatPrefix} from '@angular/material/input';
 
 @Component({
   selector: 'app-user-list-page',
@@ -33,10 +33,11 @@ import {DialogMode} from '../../../../shared/models/dialog.model';
     MatIcon,
     PermissionDirective,
     TranslatePipe,
+    MatPrefix,
   ]
 })
 export class UserListPageComponent implements OnInit {
-  protected readonly DialogMode = DialogMode;
+  protected readonly UserDialogMode = UserDialogMode;
   protected readonly ROLES = APP_ROLES;
   protected readonly MIN_ENTITIES_FOR_FILTERS = MIN_ENTITIES_FOR_FILTERS;
 
@@ -73,6 +74,4 @@ export class UserListPageComponent implements OnInit {
   protected async openDialog(dialogMode: UserDialogMode) {
     await this.dialogService.openDialog(dialogMode);
   }
-
-  protected readonly UserDialogMode = UserDialogMode;
 }
